@@ -26,7 +26,7 @@ public abstract class AbstractGeoLoader implements GeoLoader {
 		int x = geoFileInfo.getX() - 15;
 		int y = geoFileInfo.getY() - 10;
 
-		if (x < 0 || y < 0 || x > (L2World.MAP_MAX_X >> 15) + Math.abs(L2World.MAP_MIN_X >> 15) || y > (L2World.MAP_MAX_Y >> 15) + Math.abs(L2World.MAP_MIN_Y >> 15)) {
+		if (x < 0 || y < 0 || x > (L2World.WORLD_X_MAX >> 15) + Math.abs(L2World.WORLD_X_MIN >> 15) || y > (L2World.WORLD_Y_MAX >> 15) + Math.abs(L2World.WORLD_Y_MIN >> 15)) {
 			log.info("Geo Engine: File " + file.getName() + " was not loaded!!! Reason: file is out of map.");
 			return false;
 		}

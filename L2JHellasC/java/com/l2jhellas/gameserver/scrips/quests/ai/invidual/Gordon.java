@@ -18,6 +18,7 @@ import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Spawn;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -392,7 +393,8 @@ public class Gordon extends AbstractNpcAI
 				// check if player have Cursed Weapon and in radius
 				if (npc.getNpcId() == GORDON)
 				{
-					for (L2PcInstance pc : npc.getKnownList().getKnownPlayers().values())
+					
+					for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(npc, L2PcInstance.class,5000))
 					{
 						if (pc.isCursedWeaponEquiped() && pc.isInsideRadius(npc, 5000, false, false))
 						{

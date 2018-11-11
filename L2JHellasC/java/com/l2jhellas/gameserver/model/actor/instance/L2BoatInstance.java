@@ -80,4 +80,16 @@ public class L2BoatInstance extends L2Vehicle
 		broadcastToPassengers(new OnVehicleCheckLocation(this, x, y, z));
 	}
 
+	@Override
+	public void sendInfo(L2PcInstance activeChar)
+	{
+		if (!activeChar.isInBoat())
+			if (this != activeChar.getBoat())
+			{
+				activeChar.sendPacket(new VehicleInfo((L2BoatInstance) this));
+				activeChar.sendPacket(new VehicleDeparture((L2BoatInstance)this));
+			}
+		
+	}
+
 }

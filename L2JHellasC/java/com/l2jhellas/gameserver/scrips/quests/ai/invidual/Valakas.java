@@ -24,6 +24,7 @@ import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.holder.SkillHolder;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -425,7 +426,7 @@ public class Valakas extends AbstractNpcAI
 		}
 		
 		// Pickup a target if no or dead victim. 10% luck he decides to reconsiders his target.
-		if ((_actualVictim == null) || _actualVictim.isDead() || !(npc.getKnownList().knowsObject(_actualVictim)) || (getRandom(10) == 0))
+		if ((_actualVictim == null) || _actualVictim.isDead() || (getRandom(10) == 0))
 		{
 			_actualVictim = getRandomTarget(npc);
 		}
@@ -507,13 +508,13 @@ public class Valakas extends AbstractNpcAI
 	{
 		List<L2Playable> result = new ArrayList<>();
 		
-		for (L2Character obj : npc.getKnownList().getKnownCharacters())
+		for (L2Character obj : L2World.getInstance().getVisibleObjects(npc, L2Playable.class,2000))
 		{
 			if ((obj == null) || obj instanceof L2Summon || obj instanceof L2PetInstance)
 			{
 				continue;
 			}
-			else if (!obj.isDead() && obj instanceof L2Playable)
+			else if (!obj.isDead())
 			{
 				result.add((L2Playable) obj);
 			}

@@ -14,12 +14,13 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
+import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public final class AttackRequest extends L2GameClientPacket
 {
@@ -52,13 +53,7 @@ public final class AttackRequest extends L2GameClientPacket
 			
 		if (activeChar.isSpawnProtected())
 			activeChar.setProtection(false);
-		
-		if(_objectId==0)
-		{
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		
+
 		if (activeChar.inObserverMode())
 		{
 			activeChar.sendPacket(SystemMessageId.OBSERVERS_CANNOT_PARTICIPATE);
@@ -66,8 +61,8 @@ public final class AttackRequest extends L2GameClientPacket
 			return;
 		}
 	
-		// avoid using expensive operations if not needed
-		final L2Object target;
+		 L2Object target;
+
 		if (activeChar.getTargetId() == _objectId)
 			target = activeChar.getTarget();
 		else
@@ -79,23 +74,20 @@ public final class AttackRequest extends L2GameClientPacket
 			return;
 		}
 		
-		if (target instanceof L2PcInstance)
-		{
-			final L2PcInstance ptar = (L2PcInstance)activeChar.getTarget();
-			
-			if(ptar.isInsideZone(ZoneId.PEACE))
-			{
-				activeChar.sendPacket(new ActionFailed());
-				return;
-			}			
-		}
-		
 		// Like L2OFF
 		if (activeChar.isAttackingNow() && activeChar.isMoving())
 		{
 			// If target is not attackable, send a Server->Client packet ActionFailed
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
+		}
+
+		if (activeChar.isInsidePeaceZone(activeChar, target))
+		{
+			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
+			activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;	
 		}
 		
 		if (activeChar.getTarget() != target)

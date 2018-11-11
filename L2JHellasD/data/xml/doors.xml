@@ -405,34 +405,6 @@
 	<door name="Gate" id="19250002" x="-28438" y="249888" z="-3505" XMin="-28515" YMin="249873" ZMin="-3505" XMax="-28416" YMax="249904" ZMax="-3505" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
 	<door name="Old_Gate" id="19250003" x="-27410" y="252390" z="-3550" XMin="-27429" YMin="252382" ZMin="-3550" XMax="-27390" YMax="252459" ZMax="-3550" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
 	<door name="Old_Gate" id="19250004" x="-27410" y="252516" z="-3550" XMin="-27428" YMin="252450" ZMin="-3550" XMax="-27389" YMax="252526" ZMax="-3550" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<!-- Doors on region 19_26: -->
-	<door name="Tullys_Gate" id="19260001" x="-13381" y="276039" z="-9065" XMin="-13419" YMin="275970" ZMin="-9066" XMax="-13344" YMax="276108" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260002" x="-13463" y="275658" z="-9065" XMin="-13527" YMin="275594" ZMin="-9066" XMax="-13398" YMax="275723" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260003" x="-11975" y="275812" z="-9065" XMin="-12051" YMin="275790" ZMin="-9066" XMax="-11901" YMax="275835" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260004" x="-11808" y="275635" z="-9065" XMin="-11846" YMin="275566" ZMin="-9066" XMax="-11770" YMax="275704" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260005" x="-12188" y="275473" z="-9065" XMin="-12264" YMin="275451" ZMin="-9066" XMax="-12114" YMax="275496" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260006" x="-10421" y="274796" z="-9065" XMin="-10490" YMin="274758" ZMin="-9066" XMax="-10352" YMax="274836" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260007" x="-10655" y="274496" z="-9065" XMin="-10682" YMin="274424" ZMin="-9066" XMax="-10629" YMax="274568" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260008" x="-10996" y="274280" z="-9065" XMin="-11023" YMin="274208" ZMin="-9066" XMax="-10970" YMax="274352" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260009" x="-10826" y="273222" z="-9065" XMin="-10897" YMin="273183" ZMin="-9066" XMax="-10754" YMax="273262" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260010" x="-11167" y="273363" z="-9065" XMin="-11238" YMin="273324" ZMin="-9066" XMax="-11095" YMax="273403" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260011" x="-10802" y="273010" z="-9065" XMin="-10866" YMin="272946" ZMin="-9066" XMax="-10737" YMax="273075" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260012" x="-11041" y="272456" z="-9065" XMin="-11101" YMin="272396" ZMin="-9066" XMax="-10981" YMax="272517" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260013" x="-13084" y="272064" z="-9065" XMin="-13160" YMin="272042" ZMin="-9066" XMax="-13010" YMax="272087" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260014" x="-12869" y="272404" z="-9065" XMin="-12945" YMin="272382" ZMin="-9066" XMax="-12795" YMax="272427" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260015" x="-13455" y="272218" z="-9065" XMin="-13522" YMin="272153" ZMin="-9066" XMax="-13390" YMax="272286" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260016" x="-14625" y="273080" z="-9065" XMin="-14695" YMin="273042" ZMin="-9066" XMax="-14556" YMax="273118" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260017" x="-14229" y="273244" z="-9065" XMin="-14299" YMin="273206" ZMin="-9066" XMax="-14160" YMax="273282" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260018" x="-14061" y="273597" z="-9065" XMin="-14088" YMin="273525" ZMin="-9066" XMax="-14035" YMax="273670" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260019" x="-14619" y="273938" z="-9065" XMin="-14689" YMin="273925" ZMin="-9066" XMax="-14549" YMax="273951" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260020" x="-14061" y="274283" z="-9065" XMin="-14088" YMin="274211" ZMin="-9066" XMax="-14035" YMax="274356" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260021" x="-14220" y="274653" z="-9065" XMin="-14287" YMin="274616" ZMin="-9066" XMax="-14152" YMax="274691" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260022" x="-13879" y="274514" z="-9065" XMin="-13946" YMin="274477" ZMin="-9066" XMax="-13811" YMax="274552" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260023" x="-13239" y="272241" z="-9065" XMin="-13277" YMin="272172" ZMin="-9066" XMax="-13201" YMax="272311" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260051" x="-13614" y="273336" z="-9065" XMin="-13677" YMin="273272" ZMin="-9066" XMax="-13550" YMax="273402" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260052" x="-11924" y="272856" z="-9065" XMin="-11988" YMin="272792" ZMin="-9066" XMax="-11859" YMax="272921" ZMax="-9066" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260053" x="-13955" y="273258" z="-15216" XMin="0" YMin="0" ZMin="0" XMax="0" YMax="0" ZMax="0" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Tullys_Gate" id="19260054" x="-13307" y="274610" z="-15216" XMin="0" YMin="0" ZMin="0" XMax="0" YMax="0" ZMax="0" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
 	<!-- Doors on region 20_21: -->
 	<!-- Cruma Tower - Core Room Doors -->
 	<door name="cruma_001" id="20210001" x="17624" y="112427" z="-6456" XMin="17506" YMin="112402" ZMin="-6625" XMax="17741" YMax="112452" ZMax="-6287" hp="150000" pdef="476" mdef="383" unlockable="true" autoOpen="false" />
@@ -461,13 +433,6 @@
 	<door name="Transparent_Gate" id="20250009" x="20641" y="244037" z="11181" XMin="0" YMin="0" ZMin="0" XMax="0" YMax="0" ZMax="0" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
 	<door name="Bascule_Bridge" id="20250077" x="20449" y="244053" z="11056" XMin="0" YMin="0" ZMin="0" XMax="0" YMax="0" ZMax="0" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
 	<door name="Bascule_Bridge" id="20250078" x="18375" y="244247" z="11586" XMin="0" YMin="0" ZMin="0" XMax="0" YMax="0" ZMax="0" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<!-- Doors on region 20_26: -->
-	<door name="Dark_Gate" id="20260001" x="15601" y="282676" z="-9564" XMin="15595" YMin="282578" ZMin="-9734" XMax="15611" YMax="282775" ZMax="-9734" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Blood_Gate" id="20260002" x="12763" y="280154" z="-9564" XMin="0" YMin="0" ZMin="0" XMax="0" YMax="0" ZMax="0" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Closed_Gate" id="20260003" x="14553" y="277479" z="-9557" XMin="14547" YMin="277381" ZMin="-9727" XMax="14563" YMax="277578" ZMax="-9727" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Closed_Gate" id="20260004" x="18055" y="277478" z="-9557" XMin="18049" YMin="277380" ZMin="-9727" XMax="18065" YMax="277577" ZMax="-9727" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Blood_Gate" id="20260005" x="19848" y="280142" z="-9564" XMin="0" YMin="0" ZMin="0" XMax="0" YMax="0" ZMax="0" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
-	<door name="Gateway_to_Destruction" id="20260006" x="16978" y="280541" z="-9564" XMin="16972" YMin="280443" ZMin="-9734" XMax="16988" YMax="280640" ZMax="-9734" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
 	<!-- Doors on region 21_15: -->
 	<door name="Wild_beast_reserve_Door002" id="21150001" x="59974" y="-94123" z="-1350" XMin="59945" YMin="-94178" ZMin="-1382" XMax="59985" YMax="-94114" ZMax="-1226" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />
 	<door name="Wild_beast_reserve_Door001" id="21150002" x="59922" y="-94221" z="-1350" XMin="59917" YMin="-94231" ZMin="-1382" XMax="59957" YMax="-94166" ZMax="-1226" hp="158250" pdef="644" mdef="518" unlockable="false" autoOpen="false" />

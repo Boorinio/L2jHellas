@@ -106,6 +106,7 @@ public class DaChallenge
 				player.OriginalTitle = player.getTitle();
 				player.setTitle("Challenger");
 				player.getAppearance().setNameColor(0x0000FF);
+				player.broadcastUserInfo();
 			}
 		}
 		for (L2PcInstance part : _Participants)

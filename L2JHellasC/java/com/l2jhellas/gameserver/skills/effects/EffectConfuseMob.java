@@ -15,12 +15,12 @@
 package com.l2jhellas.gameserver.skills.effects;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.skills.Env;
@@ -67,8 +67,8 @@ public final class EffectConfuseMob extends L2Effect
 
 		// Getting the possible targets
 
-		Collection<L2Object> objs = getEffected().getKnownList().getKnownObjects().values();
-		for (L2Object obj : objs)
+	    for (L2Character obj : L2World.getInstance().getVisibleObjects(getEffected(),L2Attackable.class))
+
 		{
 			if ((obj instanceof L2Attackable) && (obj != getEffected()))
 				targetList.add((L2Character) obj);

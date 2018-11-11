@@ -14,18 +14,15 @@
  */
 package com.l2jhellas.gameserver.model.actor.position;
 
-import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.L2WorldRegion;
 import com.l2jhellas.gameserver.model.Location;
-import com.l2jhellas.gameserver.model.actor.L2Character;
 
 public class ObjectPosition
 {
-	private static final Logger _log = Logger.getLogger(ObjectPosition.class.getName());
-	
+
 	private final L2Object _activeObject;
 	private int _heading = 0;
 	private Location _worldPosition;
@@ -45,32 +42,24 @@ public class ObjectPosition
 	 */
 	public final void setXYZ(int x, int y, int z)
 	{
-		assert getWorldRegion() != null;
 		setWorldPosition(x, y, z);
+
+		final L2WorldRegion oldRegion = getWorldRegion();
+		final L2WorldRegion newRegion = L2World.getInstance().getRegion(getWorldPosition());
 		
-		try
+		if (newRegion != oldRegion)
 		{
-			if (L2World.getInstance().getRegion(getWorldPosition()) != getWorldRegion())
-				updateWorldRegion();
+			if (oldRegion != null)
+			{
+				oldRegion.removeVisibleObject(getActiveObject());
+			}
+			newRegion.addVisibleObject(getActiveObject());
+			L2World.getInstance().switchRegion(getActiveObject(), newRegion);
+			setWorldRegion(newRegion);
 		}
-		catch (Exception e)
-		{
-			_log.warning(ObjectPosition.class.getName() + ":Object Id at bad coords: (x: " + getX() + ", y: " + getY() + ", z: " + getZ() + ").");
-			badCoords();
-		}
+		
 	}
-	
-	/**
-	 * Called on setXYZ exception.<BR>
-	 * <BR>
-	 * <B><U> Overwritten in </U> :</B><BR>
-	 * <BR>
-	 * <li>CharPosition</li> <li>PcPosition</li><BR>
-	 */
-	protected void badCoords()
-	{
-	}
-	
+
 	/**
 	 * Set the x,y,z position of the L2Object and make it invisible. A L2Object is invisble if <B>_hidden</B>=true or <B>_worldregion</B>==null
 	 * @param x
@@ -79,47 +68,25 @@ public class ObjectPosition
 	 */
 	public final void setXYZInvisible(int x, int y, int z)
 	{
-		assert getWorldRegion() == null;
-
-		if (x > L2World.MAP_MAX_X)
+		if (x > L2World.WORLD_X_MAX)
 		{
-			x = L2World.MAP_MAX_X - 5000;
+			x = L2World.WORLD_X_MAX - 5000;
 		}
-		if (x < L2World.MAP_MIN_X)
+		if (x < L2World.WORLD_X_MIN)
 		{
-			x = L2World.MAP_MIN_X + 5000;
+			x = L2World.WORLD_X_MIN + 5000;
 		}
-		if (y > L2World.MAP_MAX_Y)
+		if (y > L2World.WORLD_Y_MAX)
 		{
-			y = L2World.MAP_MAX_Y - 5000;
+			y = L2World.WORLD_Y_MAX - 5000;
 		}
-		if (y < L2World.MAP_MIN_Y)
+		if (y < L2World.WORLD_Y_MIN)
 		{
-			y = L2World.MAP_MIN_Y + 5000;
+			y = L2World.WORLD_Y_MIN + 5000;
 		}
 		
 		setWorldPosition(x, y, z);
 		getActiveObject().setIsVisible(false);
-	}
-	
-	/**
-	 * checks if current object changed its region, if so, update referencies
-	 */
-	public void updateWorldRegion()
-	{
-		if (!getActiveObject().isVisible())
-			return;
-		
-		L2WorldRegion newRegion = L2World.getInstance().getRegion(getWorldPosition());
-		if (newRegion != getWorldRegion())
-		{
-			getWorldRegion().removeVisibleObject(getActiveObject());
-			
-			setWorldRegion(newRegion);
-			
-			// Add the L2Oject spawn to _visibleObjects and if necessary to _allplayers of its L2WorldRegion
-			getWorldRegion().addVisibleObject(getActiveObject());
-		}
 	}
 	
 	public L2Object getActiveObject()
@@ -174,20 +141,10 @@ public class ObjectPosition
 		return _worldRegion;
 	}
 	
-	public void setWorldRegion(L2WorldRegion value)
+	public void setWorldRegion(L2WorldRegion newRegion)
 	{
-		// confirm revalidation of old region's zones
-		if (_worldRegion != null && getActiveObject() instanceof L2Character)
-		{
-			if (value != null)
-				_worldRegion.revalidateZones((L2Character) getActiveObject());
-			else
-				_worldRegion.removeFromZones((L2Character) getActiveObject());
-		}
-		
-		_worldRegion = value;
+		_worldRegion = newRegion;	
 	}
-	
 
 	public final int getHeading()
 	{

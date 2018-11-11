@@ -44,6 +44,7 @@ import com.l2jhellas.gameserver.handler.SkillHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
+import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.ChanceSkillList;
 import com.l2jhellas.gameserver.model.CharEffectList;
 import com.l2jhellas.gameserver.model.ForceBuff;
@@ -70,7 +71,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance.SkillDat;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RiftInvaderInstance;
-import com.l2jhellas.gameserver.model.actor.knownlist.CharKnownList;
 import com.l2jhellas.gameserver.model.actor.stat.CharStat;
 import com.l2jhellas.gameserver.model.actor.status.CharStatus;
 import com.l2jhellas.gameserver.model.entity.Castle;
@@ -179,7 +179,6 @@ public abstract class L2Character extends L2Object
 	/** FastMap containing the active chance skills on this character */
 	protected ChanceSkillList _chanceSkills;
 	
-	
 	private int _PremiumService;
 	
 	public boolean _enemy;
@@ -188,15 +187,14 @@ public abstract class L2Character extends L2Object
 	private final byte[] _zones = new byte[ZoneId.getZoneCount()];
 	protected byte _zoneValidateCounter = 4;
 	
+	@Override
 	public boolean isInsideZone(ZoneId zone)
 	{
 		return zone == ZoneId.PVP ? _zones[ZoneId.PVP.getId()] > 0 && _zones[ZoneId.PEACE.getId()] == 0 : _zones[zone.getId()] > 0;
-
 	}
 	
 	public void setInsideZone(ZoneId zone, boolean state)
 	{
-
 		if (state)
 			_zones[zone.getId()]++;
 		else
@@ -206,7 +204,7 @@ public abstract class L2Character extends L2Object
 				_zones[zone.getId()] = 0;
 		}
 	}
-	
+		
 	/**
 	 * Constructor of L2Character.<BR>
 	 * <BR>
@@ -235,7 +233,6 @@ public abstract class L2Character extends L2Object
 	public L2Character(int objectId, L2CharTemplate template)
 	{
 		super(objectId);
-		getKnownList();
 		
 		// Set its template to the new L2Character
 		_template = template;
@@ -286,9 +283,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public void onDecay()
 	{
-		L2WorldRegion reg = getWorldRegion();
-		if (reg != null)
-			reg.removeFromZones(this);
+		//ZoneManager.getInstance().getRegion(this).removeFromZones(this);
 		decayMe();
 	}
 	
@@ -296,7 +291,7 @@ public abstract class L2Character extends L2Object
 	public void onSpawn()
 	{
 		super.onSpawn();
-		this.revalidateZone();
+		revalidateZone(true);
 	}
 	
 	public void onTeleported()
@@ -310,7 +305,7 @@ public abstract class L2Character extends L2Object
 			if (!isTeleporting())
 				return;
 			
-			spawnMe(getPosition().getX(), getPosition().getY(), getPosition().getZ());
+			spawnMe(getX(), getY(), getZ());
 			
 			setIsTeleporting(false);
 		}
@@ -325,7 +320,7 @@ public abstract class L2Character extends L2Object
 		if (getPet() != null)
 		{
 			getPet().setFollowStatus(false);
-			getPet().teleToLocation(getPosition().getX() + Rnd.get(-100, 100), getPosition().getY() + Rnd.get(-100, 100), getPosition().getZ(), false);
+			getPet().teleToLocation(getX() + Rnd.get(-100, 100), getY() + Rnd.get(-100, 100), getZ(), false);
 			getPet().setFollowStatus(true);
 		}
 		
@@ -470,8 +465,7 @@ public abstract class L2Character extends L2Object
 		setTarget(null);
 		
 		// Remove from world regions zones
-		if (getWorldRegion() != null)
-			getWorldRegion().removeFromZones(this);
+		//ZoneManager.getInstance().getRegion(this).removeFromZones(this);
 		
 		getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 		
@@ -490,12 +484,14 @@ public abstract class L2Character extends L2Object
 		broadcastPacket(new TeleportToLocation(this, x, y, z));
 		
 		// Set the x,y,z position of the L2Object and if necessary modify its _worldRegion
-		getPosition().setXYZ(x, y, z);
+		setXYZ(x, y, z);
 		
 		decayMe();
 		
 		if (!(this instanceof L2PcInstance))
 			onTeleported();
+		
+		revalidateZone(true);
 	}
 	
 	public void teleToLocation(int x, int y, int z)
@@ -550,7 +546,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public void doAttack(L2Character target)
 	{
-		if (isAlikeDead() || target == null || (this instanceof L2Npc && target.isAlikeDead()) || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath()) || !getKnownList().knowsObject(target) || (this instanceof L2PcInstance && isDead()) || (target instanceof L2PcInstance && ((L2PcInstance) target).getDuelState() == Duel.DUELSTATE_DEAD))
+		if (isAlikeDead() || target == null || (this instanceof L2Npc && target.isAlikeDead()) || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath()) || (this instanceof L2PcInstance && isDead()) || (target instanceof L2PcInstance && ((L2PcInstance) target).getDuelState() == Duel.DUELSTATE_DEAD))
 		{
 			// If L2PcInstance is dead or the target is dead, the action is stopped
 			getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
@@ -559,12 +555,20 @@ public abstract class L2Character extends L2Object
 			return;
 		}
 		
-		if(!GeoEngine.canSeeTarget(this,target, isFlying()))
+		if(target.isInsideZone(ZoneId.PEACE))
 		{
-			 sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANT_SEE_TARGET));
-			 getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-			 sendPacket(ActionFailed.STATIC_PACKET);
-			 return;
+			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANT_ATK_PEACEZONE));
+			getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+			sendPacket(ActionFailed.STATIC_PACKET);
+			return;		
+		}
+
+		if (((Config.GEODATA) ? !GeoEngine.canSeeTarget(this,target, isFlying()) :!GeoEngine.canSeeTarget(this,target)))
+		{
+			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANT_SEE_TARGET));
+			getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+			sendPacket(ActionFailed.STATIC_PACKET);
+			return;
 		}
 		
 		if (this instanceof L2Summon)
@@ -722,10 +726,7 @@ public abstract class L2Character extends L2Object
 					return;
 			}
 		}
-		
-		// Add the L2PcInstance to _knownObjects and _knownPlayer of the target
-		target.getKnownList().addKnownObject(this);
-		
+			
 		// Reduce the current CP if TIREDNESS configuration is activated
 		if (Config.ALT_GAME_TIREDNESS)
 			setCurrentCp(getCurrentCp() - 10);
@@ -1043,15 +1044,12 @@ public abstract class L2Character extends L2Object
 		// ===========================================================
 		
 		L2Character target;
-		for (L2Object obj : getKnownList().getKnownObjects().values())
+		for (L2Object obj : L2World.getInstance().getVisibleObjects(this, L2Object.class,maxRadius))
 		{
 			// Check if the L2Object is a L2Character
 			if (obj instanceof L2Character)
 			{
 				if (obj instanceof L2PetInstance && this instanceof L2PcInstance && ((L2PetInstance) obj).getOwner() == ((L2PcInstance) this))
-					continue;
-				
-				if (!Util.checkIfInRange(maxRadius, this, obj, false))
 					continue;
 				
 				// otherwise hit too high/low. 650 because mob z coord sometimes wrong on hills
@@ -1218,10 +1216,13 @@ public abstract class L2Character extends L2Object
 			if (skill.getTargetType() == L2SkillTargetType.TARGET_GROUND && this instanceof L2PcInstance)
 			{
 				Point3D wp = ((L2PcInstance) this).getCurrentSkillWorldPosition();
-				if (!region.checkEffectRangeInsidePeaceZone(skill, wp.getX(), wp.getY(), wp.getZ()))
+				
+
+				if(!ZoneManager.getInstance().getRegion(this).checkEffectRangeInsidePeaceZone(skill, wp.getX(), wp.getY(), wp.getZ()))
 					canCast = false;
 			}
-			else if (!region.checkEffectRangeInsidePeaceZone(skill, getX(), getY(), getZ()))
+			else 
+				if(!ZoneManager.getInstance().getRegion(this).checkEffectRangeInsidePeaceZone(skill, getX(), getY(), getZ()))
 				canCast = false;
 			if (!canCast)
 			{
@@ -1603,9 +1604,8 @@ public abstract class L2Character extends L2Object
 		
 		// Notify L2Character AI
 		getAI().notifyEvent(CtrlEvent.EVT_DEAD, null);
-		
-		if (getWorldRegion() != null)
-			getWorldRegion().onDeath(this);
+
+		ZoneManager.getInstance().getRegion(this).onDeath(this);
 		
 		// Notify Quest of character's death
 		for (QuestState qs : getNotifyQuestOfDeath())
@@ -1646,8 +1646,8 @@ public abstract class L2Character extends L2Object
 			
 			// Start broadcast status
 			broadcastPacket(new Revive(this));
-			if (getWorldRegion() != null)
-				getWorldRegion().onRevive(this);
+			
+			ZoneManager.getInstance().getRegion(this).onRevive(this);
 			
 			final L2PcInstance  player = getActingPlayer();
 
@@ -2083,15 +2083,7 @@ public abstract class L2Character extends L2Object
 	{
 		return _template.isUndead;
 	}
-	
-	@Override
-	public CharKnownList getKnownList()
-	{
-		if (super.getKnownList() == null || !(super.getKnownList() instanceof CharKnownList))
-			setKnownList(new CharKnownList(this));
-		return ((CharKnownList) super.getKnownList());
-	}
-	
+
 	public CharStat getStat()
 	{
 		if (_stat == null)
@@ -3575,7 +3567,7 @@ public abstract class L2Character extends L2Object
 		{
 			if (broadcastFull)
 			{
-				for (L2PcInstance player : getKnownList().getKnownType(L2PcInstance.class))
+				for (L2PcInstance player : L2World.getInstance().getVisibleObjects(this, L2PcInstance .class))
 				{
 					if (getMoveSpeed() == 0)
 						player.sendPacket(new ServerObjectInfo((L2Npc) this, player));
@@ -3962,15 +3954,13 @@ public abstract class L2Character extends L2Object
 		if (distFraction > 1) // already there
 		{
 			// Set the position of the L2Character to the destination
-			super.getPosition().setXYZ(m._xDestination, m._yDestination, m._zDestination);
+			super.setXYZ(m._xDestination, m._yDestination, m._zDestination);
 			if (this instanceof L2BoatInstance)
 			{
 				((L2BoatInstance)this).updatePeopleInTheBoat(m._xDestination, m._yDestination, m._zDestination);
 			}
-			else
-			{
-				revalidateZone();
-			}
+			
+			revalidateZone(false);
 		}
 		else
 		{
@@ -3978,17 +3968,15 @@ public abstract class L2Character extends L2Object
 			m._yAccurate += dy * distFraction;
 
 			// Set the position of the L2Character to estimated after parcial move
-			super.getPosition().setXYZ((int)(m._xAccurate), (int)(m._yAccurate), zPrev + (int)(dz * distFraction + 0.5));
+			super.setXYZ((int)(m._xAccurate), (int)(m._yAccurate), zPrev + (int)(dz * distFraction + 0.5));
 			if(this instanceof L2BoatInstance )
 			{
 				((L2BoatInstance)this).updatePeopleInTheBoat((int)(m._xAccurate), (int)(m._yAccurate), zPrev + (int)(dz * distFraction + 0.5));
 			}
-			else
-			{
-				revalidateZone();
-			}
 		}
 
+		revalidateZone(false);
+		
 		// Set the timer of last position update to now
 		m._moveTimestamp = gameTicks;
 
@@ -4010,11 +3998,25 @@ public abstract class L2Character extends L2Object
 		return false;
 	}
 	
-	public void revalidateZone()
+	public void revalidateZone(boolean force)
 	{
+		
 		if (getWorldRegion() == null)
 			return;
-		getWorldRegion().revalidateZones(this);
+		
+		// This function is called too often from movement code
+		if (force)
+			_zoneValidateCounter = 4;
+		else
+		{
+			_zoneValidateCounter--;
+			if (_zoneValidateCounter < 0)
+				_zoneValidateCounter = 4;
+			else
+				return;
+		}
+		
+		ZoneManager.getInstance().getRegion(this).revalidateZones(this);		
 	}
 	
 	/**
@@ -4034,18 +4036,12 @@ public abstract class L2Character extends L2Object
 		// Delete movement data of the L2Character
 		_move = null;
 		
-		// if (getAI() != null)
-		// getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-		
-		// Set the current position (x,y,z), its current L2WorldRegion if
-		// necessary and its heading
-		// All data are contained in a L2CharPosition object
+		// Set the current position and refresh the region if necessary.
 		if (pos != null)
 		{
-			getPosition().setXYZ(pos.x, pos.y, pos.z);
+			setXYZ(pos.x, pos.y, pos.z);
 			setHeading(pos.heading);
-			if (this instanceof L2PcInstance)
-				((L2PcInstance) this).revalidateZone(true);
+			revalidateZone(true);
 		}
 		broadcastPacket(new StopMove(this));
 	}
@@ -4094,12 +4090,6 @@ public abstract class L2Character extends L2Object
 		if (object != null && !object.isVisible())
 			object = null;
 		
-		if (object != null && object != _target)
-		{
-			getKnownList().addKnownObject(object);
-			object.getKnownList().addKnownObject(this);
-		}
-		
 		// If object==null, Cancel Attak or Cast
 		if (object == null)
 		{
@@ -4107,31 +4097,6 @@ public abstract class L2Character extends L2Object
 			{
 				broadcastPacket(new TargetUnselected(this));
 			}
-			/*
-			 * if (isAttackingNow() && getAI().getAttackTarget() == _target)
-			 * {
-			 * abortAttack();
-			 * getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-			 * if (this instanceof L2PcInstance) {
-			 * sendPacket(ActionFailed.STATIC_PACKET);
-			 * SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-			 * sm.addString("Attack is aborted");
-			 * sendPacket(sm);
-			 * }
-			 * }
-			 * if (isCastingNow() && canAbortCast() && getAI().getCastTarget()
-			 * == _target)
-			 * {
-			 * abortCast();
-			 * getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-			 * if (this instanceof L2PcInstance) {
-			 * SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-			 * SystemMessage sm = SystemMessageId.S1_S2);
-			 * sm.addString("Casting is aborted");
-			 * sendPacket(sm);
-			 * }
-			 * }
-			 */
 		}
 		
 		_target = object;
@@ -4143,12 +4108,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public final int getTargetId()
 	{
-		if (_target != null)
-		{
-			return _target.getObjectId();
-		}
-		
-		return -1;
+		return (_target != null) ? _target.getObjectId() : -1;
 	}
 	
 	/**
@@ -4212,6 +4172,9 @@ public abstract class L2Character extends L2Object
 		final int curY = super.getY();
 		final int curZ = super.getZ();
 
+		if (isAttackingNow() && this instanceof L2Attackable)
+			breakAttack();
+		
 		if(DoorData.getInstance().checkIfDoorsBetween(curX, curY, curZ, x, y, z) > 0)
 		{		
 			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
@@ -4307,8 +4270,8 @@ public abstract class L2Character extends L2Object
 			int originalX = x;
 			int originalY = y;
 			int originalZ = z;
-			int gtx = (originalX - L2World.MAP_MIN_X) >> 4;
-			int gty = (originalY - L2World.MAP_MIN_Y) >> 4;
+			int gtx = (originalX - L2World.WORLD_X_MIN) >> 4;
+			int gty = (originalY - L2World.TILE_Y_MIN) >> 4;
 
 			// Movement checks:
 			// when geodata == 2, for all characters except mobs returning home (could be changed later to teleport if pathfinding fails)
@@ -4332,7 +4295,7 @@ public abstract class L2Character extends L2Object
 					}
 				}
 
-				if (curX < L2World.MAP_MIN_X || curX > L2World.MAP_MAX_X || curY < L2World.MAP_MIN_Y  || curY > L2World.MAP_MAX_Y)
+				if (curX < L2World.WORLD_X_MIN || curX > L2World.WORLD_X_MAX || curY < L2World.TILE_Y_MIN  || curY > L2World.WORLD_Y_MAX)
 				{
 					// Temporary fix for character outside world region errors
 					_log.warning("Character "+this.getName()+" outside world area, in coordinates x:"+curX+" y:"+curY);
@@ -4967,7 +4930,7 @@ public abstract class L2Character extends L2Object
 			return;
 		}
 		
-		if ((this instanceof L2Npc && target.isAlikeDead()) || target.isDead() || (!getKnownList().knowsObject(target) && !(this instanceof L2DoorInstance)))
+		if ((this instanceof L2Npc && target.isAlikeDead()) || target.isDead())
 		{
 			// getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE, null);
 			getAI().notifyEvent(CtrlEvent.EVT_CANCEL);
@@ -5246,20 +5209,15 @@ public abstract class L2Character extends L2Object
 	@Override
 	public void onForcedAttack(L2PcInstance player)
 	{
-		if (isInsidePeaceZone(player))
+		
+		if (player.isInsidePeaceZone(player, this))
 		{
-			if (!player.isInFunEvent() || !isInFunEvent())
-			{
-				player.sendPacket(SystemMessageId.TARGET_IN_PEACEZONE);
-				player.sendPacket(ActionFailed.STATIC_PACKET);
-				return;
-			}
-			// If L2Character or target is in a peace zone, send a system
-			// message TARGET_IN_PEACEZONE a Server->Client packet ActionFailed
 			player.sendPacket(SystemMessageId.TARGET_IN_PEACEZONE);
 			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
 		}
-		else if (player.isInOlympiadMode() && player.getTarget() != null)
+		
+		if (player.isInOlympiadMode() && player.getTarget() != null)
 		{
 			L2PcInstance target;
 			if (player.getTarget() instanceof L2Summon)
@@ -5274,31 +5232,30 @@ public abstract class L2Character extends L2Object
 				player.sendPacket(ActionFailed.STATIC_PACKET);
 			}
 		}
-		else if (player.isConfused())
+		
+		if (player.isConfused())
 		{
 			// If target is confused, send a Server->Client packet ActionFailed
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
-		else if (this instanceof L2ArtefactInstance)
+		 
+		if (this instanceof L2ArtefactInstance)
 		{
 			// If L2Character is a L2ArtefactInstance, send a Server->Client
 			// packet ActionFailed
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
-		else
+
+		if (((Config.GEODATA) ? !GeoEngine.canSeeTarget(player,this, isFlying()) :!GeoEngine.canSeeTarget(player,this)))
 		{
-			
-			if(!GeoEngine.canSeeTarget(player,this, player.isFlying()))
-			{
-				 sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANT_SEE_TARGET));
-				 getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-				 sendPacket(ActionFailed.STATIC_PACKET);
-				 return;
-			}
+			player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANT_SEE_TARGET));
+			player.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
 			
 			// Notify AI with AI_INTENTION_ATTACK
-			player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
-		}
+		player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
 	}
 	
 	/**
@@ -5310,19 +5267,23 @@ public abstract class L2Character extends L2Object
 		return isInsidePeaceZone(attacker, this);
 	}
 	
-	public boolean isInsidePeaceZone(L2PcInstance attacker, L2Object target)
-	{
-		return (!attacker.getAccessLevel().allowPeaceAttack() && isInsidePeaceZone((L2Object) attacker, target));
-	}
-	
 	public boolean isInsidePeaceZone(L2Object attacker, L2Object target)
 	{
 		if (target == null)
 			return false;
+		
 		if (target instanceof L2MonsterInstance)
 			return false;
+		
 		if (attacker instanceof L2MonsterInstance)
 			return false;
+
+		
+		// Summon or player check.
+		if (attacker.getActingPlayer() != null && attacker.getActingPlayer().getAccessLevel().allowPeaceAttack())
+			return false;
+
+		
 		if (Config.ALT_GAME_KARMA_PLAYER_CAN_BE_KILLED_IN_PEACEZONE)
 		{
 			// allows red to be attacked and red to attack flagged players
@@ -5345,20 +5306,10 @@ public abstract class L2Character extends L2Object
 					return false;
 			}
 		}
-		// Right now only L2PcInstance has up-to-date zone status...
-		// TODO: ZONETODO: Are there things < L2Characters in peace zones that
-		// can be attacked? If not this could be cleaned up
+		if (target instanceof L2Character)
+			return (((L2Character) target).isInsideZone(ZoneId.PEACE) || (((L2Character) attacker).isInsideZone(ZoneId.PEACE)));
 		
-		if (attacker instanceof L2Character && target instanceof L2Character)
-		{
-			return (((L2Character) target).isInsideZone(ZoneId.PEACE) || ((L2Character) attacker).isInsideZone(ZoneId.PEACE));
-		}
-		if (attacker instanceof L2Character)
-		{
-			return (MapRegionTable.getTown(target.getX(), target.getY(), target.getZ()) != null || ((L2Character) attacker).isInsideZone(ZoneId.PEACE));
-		}
-		
-		return (MapRegionTable.getTown(target.getX(), target.getY(), target.getZ()) != null || MapRegionTable.getTown(attacker.getX(), attacker.getY(), attacker.getZ()) != null);
+		return (MapRegionTable.getTown(target.getX(), target.getY(), target.getZ()) != null || (((L2Character) attacker).isInsideZone(ZoneId.PEACE)));
 	}
 	
 	/**
@@ -5368,7 +5319,7 @@ public abstract class L2Character extends L2Object
 	{
 		try
 		{
-			L2WorldRegion region = L2World.getInstance().getRegion(getX(), getY());
+			L2WorldRegion region = L2World.getInstance().getRegion(getX(), getY(), getZ());
 			return ((region != null) && (region.isActive()));
 		}
 		catch (Exception e)
@@ -5808,10 +5759,9 @@ public abstract class L2Character extends L2Object
 					{
 						_range++;
 						continue;
-					}
+					}					
 					
-					
-					if (skill.getSkillRadius() > 0 && skill.isOffensive() && !GeoEngine.canSeeTarget(this, targets[i], isFlying()))
+					if (skill.getSkillRadius() > 0 && skill.isOffensive() && ((Config.GEODATA) ? !GeoEngine.canSeeTarget(this,targets[i], isFlying()) :!GeoEngine.canSeeTarget(this,targets[i])))
 					{
 						_geo++;
 						continue;
@@ -6324,11 +6274,11 @@ public abstract class L2Character extends L2Object
 					}
 				}
 				if (skill.getAggroPoints() > 0)
-					for (L2Object spMob : caster.getKnownList().getKnownObjects().values())
+					for (L2Object spMob : L2World.getInstance().getVisibleObjects(this, L2Object.class, 1000))
 						if (spMob instanceof L2Npc)
 						{
 							L2Npc npcMob = (L2Npc) spMob;
-							if (npcMob.isInsideRadius(caster, 1000, true, true) && npcMob.hasAI() && npcMob.getAI().getIntention() == AI_INTENTION_ATTACK)
+							if (npcMob.hasAI() && npcMob.getAI().getIntention() == AI_INTENTION_ATTACK)
 							{
 								L2Object npcTarget = npcMob.getTarget();
 								for (L2Object target : targets)
@@ -7095,11 +7045,6 @@ public abstract class L2Character extends L2Object
 		return false;
 	}
 	
-	public void initKnownList()
-	{
-		setKnownList(new CharKnownList(this));
-	}
-	
 	/**
 	 * @return the RunSpeed (base+modifier) or WalkSpeed (base+modifier) of the L2Character in function of the movement type.
 	 */
@@ -7210,5 +7155,23 @@ public abstract class L2Character extends L2Object
 	public final void stopEffectsOnDamage(boolean awake)
 	{
 		_effects.stopEffectsOnDamage(awake);
+	}
+	
+	
+	@Override
+	public void setXYZ(int x, int y, int z)
+	{
+		
+		//final ZoneRegion oldZoneRegion = ZoneManager.getInstance().getRegion(this);
+		//final ZoneRegion newZoneRegion = ZoneManager.getInstance().getRegion(x, y);
+		
+		//if (oldZoneRegion != newZoneRegion)
+		//{
+			//oldZoneRegion.removeFromZones(this);
+			//newZoneRegion.revalidateZones(this);		
+		//}
+		
+		super.setXYZ(x, y, z);
+		
 	}
 }

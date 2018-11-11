@@ -18,6 +18,7 @@ import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -100,7 +101,7 @@ public class Monastery extends AbstractNpcAI
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
-		for (L2PcInstance target : npc.getKnownList().getKnownPlayers().values())
+		for (L2PcInstance target : L2World.getInstance().getVisibleObjects(npc, L2PcInstance.class))
 		{
 			if (!target.isDead() && GeoEngine.canSeeTarget(npc, target,false) && Util.checkIfInRange(npc.getAggroRange(), npc, target, true))
 			{

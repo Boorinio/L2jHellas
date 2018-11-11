@@ -67,7 +67,7 @@ public class GeoEngine
     
 	public static short getType(int x, int y)
 	{
-		return NgetType(x - L2World.MAP_MIN_X >> 4, y - L2World.MAP_MIN_Y >> 4);
+		return NgetType(x - L2World.WORLD_X_MIN >> 4, y - L2World.WORLD_Y_MIN >> 4);
 	}
 
 	public static int getHeight(Location loc)
@@ -77,7 +77,7 @@ public class GeoEngine
 
 	public static int getHeight(int x, int y, int z)
 	{
-		return NgetHeight(x - L2World.MAP_MIN_X >> 4, y - L2World.MAP_MIN_Y >> 4, z);
+		return NgetHeight(x - L2World.WORLD_X_MIN >> 4, y - L2World.WORLD_Y_MIN >> 4, z);
 	}
 
 	public static boolean canMoveToCoord(int x, int y, int z, int tx, int ty, int tz)
@@ -87,7 +87,7 @@ public class GeoEngine
 
 	public static byte getNSWE(int x, int y, int z)
 	{
-		return NgetNSWE(x - L2World.MAP_MIN_X >> 4, y - L2World.MAP_MIN_Y >> 4, z);
+		return NgetNSWE(x - L2World.WORLD_X_MIN >> 4, y - L2World.WORLD_Y_MIN >> 4, z);
 	}
 
 	public static Location moveCheck(int x, int y, int z, int tx, int ty)
@@ -132,20 +132,20 @@ public class GeoEngine
 
 	public static Location moveInWaterCheck(int x, int y, int z, int tx, int ty, int tz)
 	{
-		return MoveInWaterCheck(x - L2World.MAP_MIN_X >> 4, y - L2World.MAP_MIN_Y >> 4, z, tx - L2World.MAP_MIN_X >> 4, ty - L2World.MAP_MIN_Y >> 4, tz);
+		return MoveInWaterCheck(x - L2World.WORLD_X_MIN >> 4, y - L2World.WORLD_Y_MIN >> 4, z, tx - L2World.WORLD_X_MIN >> 4, ty - L2World.WORLD_Y_MIN >> 4, tz);
 	}
 
 	public static Location moveCheckForAI(Location loc1, Location loc2)
 	{
-		return MoveCheckForAI(loc1._x - L2World.MAP_MIN_X >> 4, loc1._y - L2World.MAP_MIN_Y >> 4, loc1._z, loc2._x - L2World.MAP_MIN_X >> 4, loc2._y - L2World.MAP_MIN_Y >> 4);
+		return MoveCheckForAI(loc1._x - L2World.WORLD_X_MIN >> 4, loc1._y - L2World.WORLD_Y_MIN >> 4, loc1._z, loc2._x - L2World.WORLD_X_MIN >> 4, loc2._y - L2World.WORLD_Y_MIN >> 4);
 	}
 	
 	public static Location moveCheckInAir(int x, int y, int z, int tx, int ty, int tz, float ColRadius)
 	{
-		int gx = x - L2World.MAP_MIN_X >> 4;
-		int gy = y - L2World.MAP_MIN_Y >> 4;
-		int tgx = tx - L2World.MAP_MIN_X >> 4;
-		int tgy = ty - L2World.MAP_MIN_Y >> 4;
+		int gx = x - L2World.WORLD_X_MIN >> 4;
+		int gy = y - L2World.WORLD_Y_MIN >> 4;
+		int tgx = tx - L2World.WORLD_X_MIN >> 4;
+		int tgy = ty - L2World.WORLD_Y_MIN >> 4;
 
 		int nz = NgetHeight(tgx, tgy, tz);
 		
@@ -180,10 +180,10 @@ public class GeoEngine
 
 	public static boolean canSeeCoord(int x, int y, int z, int tx, int ty, int tz, boolean air)
 	{
-		int mx = x - L2World.MAP_MIN_X >> 4;
-		int my = y - L2World.MAP_MIN_Y >> 4;
-		int tmx = tx - L2World.MAP_MIN_X >> 4;
-		int tmy = ty - L2World.MAP_MIN_Y >> 4;
+		int mx = x - L2World.WORLD_X_MIN >> 4;
+		int my = y - L2World.WORLD_Y_MIN >> 4;
+		int tmx = tx - L2World.WORLD_X_MIN >> 4;
+		int tmy = ty - L2World.WORLD_Y_MIN >> 4;
 		return canSee(mx, my, z, tmx, tmy, tz, air).equals(tmx, tmy, tz) && canSee(tmx, tmy, tz, mx, my, z, air).equals(mx, my, z);
 	}
 
@@ -228,7 +228,7 @@ public class GeoEngine
 
 	public static String geoXYZ2Str(int _x, int _y, int _z)
 	{
-		return "(" + String.valueOf((_x << 4) + L2World.MAP_MIN_X + 8) + " " + String.valueOf((_y << 4) + L2World.MAP_MIN_Y + 8) + " " + _z + ")";
+		return "(" + String.valueOf((_x << 4) + L2World.WORLD_X_MIN + 8) + " " + String.valueOf((_y << 4) + L2World.WORLD_Y_MIN + 8) + " " + _z + ")";
 	}
 
 	public static String NSWE2Str(byte nswe)
@@ -637,10 +637,10 @@ public class GeoEngine
 
 	public static int canMove(int __x, int __y, int _z, int __tx, int __ty, int _tz, boolean withCollision)
 	{
-		int _x = __x - L2World.MAP_MIN_X >> 4;
-		int _y = __y - L2World.MAP_MIN_Y >> 4;
-		int _tx = __tx - L2World.MAP_MIN_X >> 4;
-		int _ty = __ty - L2World.MAP_MIN_Y >> 4;
+		int _x = __x - L2World.WORLD_X_MIN >> 4;
+		int _y = __y - L2World.WORLD_Y_MIN >> 4;
+		int _tx = __tx - L2World.WORLD_X_MIN >> 4;
+		int _ty = __ty - L2World.WORLD_Y_MIN >> 4;
 		int diff_x = _tx - _x, diff_y = _ty - _y, diff_z = _tz - _z;
 		int dx = Math.abs(diff_x), dy = Math.abs(diff_y), dz = Math.abs(diff_z);
 		float steps = Math.max(dx, dy);
@@ -685,10 +685,10 @@ public class GeoEngine
 
 	public static Location MoveCheck(int __x, int __y, int _z, int __tx, int __ty, boolean withCollision, boolean backwardMove, boolean returnPrev)
 	{
-		int _x = __x - L2World.MAP_MIN_X >> 4;
-		int _y = __y - L2World.MAP_MIN_Y >> 4;
-		int _tx = __tx - L2World.MAP_MIN_X >> 4;
-		int _ty = __ty - L2World.MAP_MIN_Y >> 4;
+		int _x = __x - L2World.WORLD_X_MIN >> 4;
+		int _y = __y - L2World.WORLD_Y_MIN >> 4;
+		int _tx = __tx - L2World.WORLD_X_MIN >> 4;
+		int _ty = __ty - L2World.WORLD_Y_MIN >> 4;
 
 		int diff_x = _tx - _x, diff_y = _ty - _y;
 		int dx = Math.abs(diff_x), dy = Math.abs(diff_y);
@@ -749,10 +749,10 @@ public class GeoEngine
 
 	public static ArrayList<Location> MoveList(int __x, int __y, int _z, int __tx, int __ty, boolean onlyFullPath)
 	{
-		int _x = __x - L2World.MAP_MIN_X >> 4;
-		int _y = __y - L2World.MAP_MIN_Y >> 4;
-		int _tx = __tx - L2World.MAP_MIN_X >> 4;
-		int _ty = __ty - L2World.MAP_MIN_Y >> 4;
+		int _x = __x - L2World.WORLD_X_MIN >> 4;
+		int _y = __y - L2World.WORLD_Y_MIN >> 4;
+		int _tx = __tx - L2World.WORLD_X_MIN >> 4;
+		int _ty = __ty - L2World.WORLD_Y_MIN >> 4;
 
 		int diff_x = _tx - _x, diff_y = _ty - _y;
 		int dx = Math.abs(diff_x), dy = Math.abs(diff_y);
@@ -1559,7 +1559,7 @@ public class GeoEngine
 		int ix = rx - Config.GEO_X_FIRST;
 		int iy = ry - Config.GEO_Y_FIRST;
 
-		if(ix < 0 || iy < 0 || ix > (L2World.MAP_MAX_X >> 15) + Math.abs(L2World.MAP_MIN_X >> 15) || iy > (L2World.MAP_MAX_Y >> 15) + Math.abs(L2World.MAP_MIN_Y >> 15))
+		if(ix < 0 || iy < 0 || ix > (L2World.WORLD_X_MAX >> 15) + Math.abs(L2World.WORLD_X_MIN >> 15) || iy > (L2World.WORLD_Y_MAX >> 15) + Math.abs(L2World.WORLD_Y_MIN >> 15))
 		{
 			log.info("Geo Engine: File " + fname + " was not loaded!!! ");
 			return false;
@@ -1713,8 +1713,8 @@ public class GeoEngine
 
 	private static boolean check_cell_in_door(int geoX, int geoY, L2Territory pos)
 	{
-		geoX = (geoX << 4) + L2World.MAP_MIN_X + 8;
-		geoY = (geoY << 4) + L2World.MAP_MIN_Y + 8;
+		geoX = (geoX << 4) + L2World.WORLD_X_MIN + 8;
+		geoY = (geoY << 4) + L2World.WORLD_Y_MIN + 8;
 		for(int ax = geoX; ax < geoX + 16; ax++)
 			for(int ay = geoY; ay < geoY + 16; ay++)
 				if(pos.isInside(ax, ay))
@@ -1850,10 +1850,10 @@ public class GeoEngine
 		{
 			around = new HashMap<Long, Byte>();
 			GArray<Long> around_blocks = new GArray<Long>();
-			int minX = pos.getXmin() - L2World.MAP_MIN_X >> 4;
-			int maxX = pos.getXmax() - L2World.MAP_MIN_X >> 4;
-			int minY = pos.getYmin() - L2World.MAP_MIN_Y >> 4;
-			int maxY = pos.getYmax() - L2World.MAP_MIN_Y >> 4;
+			int minX = pos.getXmin() - L2World.WORLD_X_MIN >> 4;
+			int maxX = pos.getXmax() - L2World.WORLD_X_MIN >> 4;
+			int minY = pos.getYmin() - L2World.WORLD_Y_MIN >> 4;
+			int maxY = pos.getYmax() - L2World.WORLD_Y_MIN >> 4;
 			for(int geoX = minX; geoX <= maxX; geoX++)
 				for(int geoY = minY; geoY <= maxY; geoY++)
 					if(check_cell_in_door(geoX, geoY, pos))

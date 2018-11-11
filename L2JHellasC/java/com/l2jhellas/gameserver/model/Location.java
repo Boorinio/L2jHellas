@@ -63,15 +63,15 @@ public final class Location
 	
     public Location world2geo()
     {
-        _x = _x - L2World.MAP_MIN_X >> 4;
-        _y = _y - L2World.MAP_MIN_Y >> 4;
+        _x = _x - L2World.WORLD_X_MIN >> 4;
+        _y = _y - L2World.WORLD_Y_MIN >> 4;
         return this;
     }
 
     public Location geo2world()
     {
-        _x = (_x << 4) + L2World.MAP_MIN_X + 8;
-        _y = (_y << 4) + L2World.MAP_MIN_Y + 8;
+        _x = (_x << 4) + L2World.WORLD_X_MIN + 8;
+        _y = (_y << 4) + L2World.WORLD_Y_MIN + 8;
         return this;
     }
 	@Override

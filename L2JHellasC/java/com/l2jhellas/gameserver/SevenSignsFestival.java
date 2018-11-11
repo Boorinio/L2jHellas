@@ -2493,7 +2493,7 @@ public class SevenSignsFestival implements SpawnListener
 				// If an exception occurs, just move the player to the nearest town.
 				try
 				{
-					participant.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+					participant.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 					participant.sendMessage("You have been removed from the festival arena.");
 				}
 				catch (NullPointerException e2)

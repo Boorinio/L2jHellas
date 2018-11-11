@@ -1119,7 +1119,7 @@ public final class Formulas
 		if (activeChar == null || activeChar.getClan() == null)
 			return 0;
 
-		Siege siege = SiegeManager.getInstance().getSiege(activeChar.getPosition().getX(), activeChar.getPosition().getY(), activeChar.getPosition().getZ());
+		Siege siege = SiegeManager.getInstance().getSiege(activeChar.getPosition().getWorldPosition().getX(), activeChar.getPosition().getWorldPosition().getY(), activeChar.getPosition().getWorldPosition().getZ());
 		if (siege == null || !siege.getIsInProgress())
 			return 0;
 
@@ -1161,7 +1161,7 @@ public final class Formulas
 		// get the vulnerability for the instance due to skills (buffs, passives, toggles, etc)
 		damage = target.calcStat(Stats.DAGGER_WPN_VULN, damage, target, null);
 		damage *= 70. / defence;
-		damage += Rnd.get() * attacker.getRandomDamage(target);
+		damage += Rnd.nextDouble() * attacker.getRandomDamage(target);
 		// Sami: Must be removed, after armor resistances are checked.
 		// These values are a quick fix to balance dagger gameplay and give
 		// armor resistances vs dagger. daggerWpnRes could also be used if a skill
@@ -1997,6 +1997,6 @@ public final class Formulas
 		if (fallHeight < 0)
 			return 0;
 		
-		return cha.calcStat(Stats.FALL_VULN, fallHeight * cha.getMaxHp() / 1000, null, null);
+		return cha.calcStat(Stats.FALL, fallHeight * cha.getMaxHp() / 1000, null, null);
 	}
 }

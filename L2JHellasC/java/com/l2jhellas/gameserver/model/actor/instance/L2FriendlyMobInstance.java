@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.actor.knownlist.FriendlyMobKnownList;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 /**
@@ -29,15 +28,6 @@ public class L2FriendlyMobInstance extends L2Attackable
 	public L2FriendlyMobInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-		getKnownList();	// init knownlist
-	}
-
-	@Override
-	public final FriendlyMobKnownList getKnownList()
-	{
-		if ((super.getKnownList() == null) || !(super.getKnownList() instanceof FriendlyMobKnownList))
-			setKnownList(new FriendlyMobKnownList(this));
-		return (FriendlyMobKnownList) super.getKnownList();
 	}
 
 	@Override

@@ -117,9 +117,7 @@ public final class Logout extends L2GameClientPacket
 		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		
-		// Remove From Boss
-		
-		
+		// Remove From Boss	
 		player.removeFromBossZone();
 		
 		notifyFriends(player);

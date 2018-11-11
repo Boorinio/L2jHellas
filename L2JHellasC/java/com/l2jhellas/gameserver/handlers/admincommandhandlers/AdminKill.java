@@ -69,7 +69,7 @@ public class AdminKill implements IAdminCommandHandler
 						try
 						{
 							int radius = Integer.parseInt(st.nextToken());
-							for (L2Character knownChar : plyr.getKnownList().getKnownTypeInRadius(L2Character.class, radius))
+							for (L2Character knownChar : L2World.getInstance().getVisibleObjects(activeChar, L2Character.class,radius))
 							{
 								if ((knownChar == null) || (knownChar instanceof L2ControllableMobInstance) || knownChar.equals(activeChar))
 								{
@@ -95,7 +95,7 @@ public class AdminKill implements IAdminCommandHandler
 					try
 					{
 						int radius = Integer.parseInt(firstParam);
-						for (L2Character knownChar : activeChar.getKnownList().getKnownTypeInRadius(L2Character.class, radius))
+						for (L2Character knownChar : L2World.getInstance().getVisibleObjects(activeChar, L2Character.class,radius))
 						{
 							if ((knownChar == null) || (knownChar instanceof L2ControllableMobInstance) || knownChar.equals(activeChar))
 							{

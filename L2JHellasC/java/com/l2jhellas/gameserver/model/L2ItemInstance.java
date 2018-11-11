@@ -27,10 +27,10 @@ import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.knownlist.NullKnownList;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
+import com.l2jhellas.gameserver.network.serverpackets.SpawnItem;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.funcs.Func;
@@ -151,7 +151,6 @@ public final class L2ItemInstance extends L2Object
 	public L2ItemInstance(int objectId, int itemId)
 	{
 		super(objectId);
-		super.setKnownList(new NullKnownList(this));
 		_itemId = itemId;
 		_item = ItemTable.getInstance().getTemplate(itemId);
 		if (_itemId == 0 || _item == null)
@@ -175,7 +174,6 @@ public final class L2ItemInstance extends L2Object
 	public L2ItemInstance(int objectId, L2Item item)
 	{
 		super(objectId);
-		super.setKnownList(new NullKnownList(this));
 		_itemId = item.getItemId();
 		_item = item;
 		if (_itemId == 0 || _item == null)
@@ -368,8 +366,6 @@ public final class L2ItemInstance extends L2Object
 	 */
 	public int getEquipSlot()
 	{
-		if (Config.ASSERT)
-			assert _loc == ItemLocation.PAPERDOLL || _loc == ItemLocation.PET_EQUIP || _loc == ItemLocation.FREIGHT;
 		return _locData;
 	}
 
@@ -1135,9 +1131,6 @@ public final class L2ItemInstance extends L2Object
 	{
 		if(this.getItemType() == L2EtcItemType.HERB)
 			return;
-		
-		if (Config.ASSERT)
-			assert getPosition().getWorldRegion() == null;
 	
 		synchronized (this)
 		{
@@ -1147,14 +1140,14 @@ public final class L2ItemInstance extends L2Object
 			getPosition().setWorldRegion(L2World.getInstance().getRegion(getPosition().getWorldPosition()));
 
 			// Add the L2ItemInstance dropped to _visibleObjects of its L2WorldRegion
-			getPosition().getWorldRegion().addVisibleObject(this);
+			getWorldRegion().addVisibleObject(this);
 		}
 		setDropTime(System.currentTimeMillis());
 
 		// this can synchronize on others instancies, so it's out of
 		// synchronized, to avoid deadlocks
 		// Add the L2ItemInstance dropped in the world as a visible objectz
-		L2World.getInstance().addVisibleObject(this, getPosition().getWorldRegion());
+		L2World.getInstance().addVisibleObject(this, getWorldRegion());
 		if (Config.SAVE_DROPPED_ITEM)
 			ItemsOnGroundManager.getInstance().save(this);
 	}
@@ -1164,8 +1157,6 @@ public final class L2ItemInstance extends L2Object
 	 */
 	private void updateInDb()
 	{
-		if (Config.ASSERT)
-			assert _existsInDb;
 		if (_wear)
 			return;
 		if (_storedInDb)
@@ -1206,8 +1197,7 @@ public final class L2ItemInstance extends L2Object
 	{
 		if (_wear)
 			return;
-		if (Config.ASSERT)
-			assert !_existsInDb && getObjectId() != 0;
+		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("INSERT INTO items (owner_id,item_id,count,loc,loc_data,enchant_level,price_sell,price_buy,object_id,custom_type1,custom_type2,mana_left) " + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -1244,8 +1234,6 @@ public final class L2ItemInstance extends L2Object
 	{
 		if (_wear)
 			return;
-		if (Config.ASSERT)
-			assert _existsInDb;
 
 		// delete augmentation data
 		if (isAugmented())
@@ -1373,5 +1361,12 @@ public final class L2ItemInstance extends L2Object
 	public boolean isQuestItem()
 	{
 		return getItem().isQuestItem();
+	}
+
+	@Override
+	public void sendInfo(L2PcInstance activeChar)
+	{
+         if(isVisible())
+			activeChar.sendPacket(new SpawnItem((L2ItemInstance) this));
 	}
 }

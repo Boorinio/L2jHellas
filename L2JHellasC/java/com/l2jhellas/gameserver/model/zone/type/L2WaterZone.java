@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.model.zone.type;
 
 
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -39,7 +40,7 @@ public class L2WaterZone extends L2ZoneType
 			((L2PcInstance) character).broadcastUserInfo();
 		else if (character instanceof L2Npc)
 		{
-			for (L2PcInstance player : character.getKnownList().getKnownPlayers().values())
+			for (L2PcInstance player : L2World.getInstance().getVisibleObjects(character, L2PcInstance.class))
 			{
 				if(player!=null)
 				{
@@ -62,7 +63,7 @@ public class L2WaterZone extends L2ZoneType
 			((L2PcInstance) character).broadcastUserInfo();
 		else if (character instanceof L2Npc)
 		{
-			for (L2PcInstance player : character.getKnownList().getKnownPlayers().values())
+			for (L2PcInstance player : L2World.getInstance().getVisibleObjects(character, L2PcInstance.class))
 			{
 				if(player!=null)
 				{

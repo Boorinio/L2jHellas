@@ -118,14 +118,14 @@ public class ItemsOnGroundManager
 					item.setEnchantLevel(result.getInt(4));
 				item.getPosition().setWorldPosition(result.getInt(5), result.getInt(6), result.getInt(7));
 				item.getPosition().setWorldRegion(L2World.getInstance().getRegion(item.getPosition().getWorldPosition()));
-				item.getPosition().getWorldRegion().addVisibleObject(item);
+				item.getWorldRegion().addVisibleObject(item);
 				item.setDropTime(result.getLong(8));
 				if (result.getLong(8) == -1)
 					item.setProtected(true);
 				else
 					item.setProtected(false);
 				item.setIsVisible(true);
-				L2World.getInstance().addVisibleObject(item, item.getPosition().getWorldRegion());
+				L2World.getInstance().addVisibleObject(item, item.getWorldRegion());
 				_items.add(item);
 				count++;
 				// add to ItemsAutoDestroy only items not protected

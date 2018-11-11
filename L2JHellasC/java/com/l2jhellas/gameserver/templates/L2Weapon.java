@@ -26,6 +26,7 @@ import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -408,7 +409,8 @@ public final class L2Weapon extends L2Item
 				if (caster instanceof L2PcInstance)
 				{
 					// Mobs in range 1000 see spell
-					Collection<L2Object> objs = caster.getKnownList().getKnownObjects().values();
+					
+					final Collection<L2Object> objs = L2World.getInstance().getVisibleObjects(caster,L2Object.class,1000);
 					//synchronized (caster.getKnownList().getKnownObjects())
 					{
 						for (L2Object spMob : objs)

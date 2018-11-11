@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -61,13 +61,13 @@ public class SummonFriend implements ISkillHandler
 		}
 
 		// check for summoner not in raid areas
-		List<L2Object> objects = L2World.getVisibleObjects(activeChar, 5000);
+		Collection<L2Object> objects = L2World.getInstance().getAllVisibleObjects().values();
 
 		if (objects != null)
 		{
 			for (L2Object object : objects)
 			{
-				if (object instanceof L2RaidBossInstance)
+				if (object instanceof L2RaidBossInstance && Util.checkIfInRange(5000, activePlayer, object, true))
 				{
 					activePlayer.sendPacket(SystemMessageId.YOU_MAY_NOT_SUMMON_FROM_YOUR_CURRENT_LOCATION);
 					return;

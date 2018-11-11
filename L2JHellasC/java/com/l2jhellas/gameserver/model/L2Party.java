@@ -216,8 +216,9 @@ public class L2Party
 		}
 		
 		if (looter == null)
+		{
 			looter = player;
-		
+		}				
 		return looter;
 	}
 	

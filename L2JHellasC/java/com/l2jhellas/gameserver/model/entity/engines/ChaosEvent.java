@@ -286,7 +286,7 @@ public class ChaosEvent
 					if(player.isinZodiac && zone.isCharacterInZone(player));
 					{
 					   zone.removePlayer(player);
-					   player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+					   player.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 					}											
 				}
 			  }

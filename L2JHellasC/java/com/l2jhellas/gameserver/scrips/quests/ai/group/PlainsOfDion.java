@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.group;
 
 import com.l2jhellas.gameserver.geodata.GeoEngine;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -64,7 +65,7 @@ public final class PlainsOfDion extends AbstractNpcAI
 		{
 			npc.broadcastNpcSay(MONSTERS_MSG[Rnd.get(5)].replace("$s1", player.getName()));
 			
-			for (L2MonsterInstance obj : npc.getKnownList().getKnownTypeInRadius(L2MonsterInstance.class, 300))
+			for (L2MonsterInstance obj : L2World.getInstance().getVisibleObjects(npc, L2MonsterInstance.class,300))
 			{
 				if (Util.contains(MONSTERS, obj.getNpcId()) && !obj.isAttackingNow() && !obj.isDead() && GeoEngine.canSeeTarget(npc, obj,false))
 				{

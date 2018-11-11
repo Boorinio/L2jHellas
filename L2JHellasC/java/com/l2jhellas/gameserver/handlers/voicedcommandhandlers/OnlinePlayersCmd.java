@@ -14,9 +14,12 @@
  */
 package com.l2jhellas.gameserver.handlers.voicedcommandhandlers;
 
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 
 public class OnlinePlayersCmd implements IVoicedCommandHandler
 {
@@ -32,6 +35,29 @@ public class OnlinePlayersCmd implements IVoicedCommandHandler
 		if (command.startsWith(VOICED_COMMANDS[0]))
 		{
 			showPlayers(activeChar);
+			
+			L2ZoneType town = MapRegionTable.getTown(activeChar.getX(),activeChar.getY(),activeChar.getZ());
+			
+			if(town!=null)
+			{
+			int count = town.getCharactersInside().size();
+			
+			activeChar.sendMessage("There are " + count +" characters inside that town");
+			
+			for(L2Character asd : town.getCharactersInside())
+			{
+				if(asd instanceof L2PcInstance)
+				{
+					activeChar.sendMessage("Names:" +  asd.getName() +"  inside that town");
+
+				}
+			}
+			}
+			else
+			{
+				activeChar.sendMessage("No town found");
+
+			}
 		}
 		return true;
 	}

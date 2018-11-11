@@ -40,6 +40,7 @@ import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
+import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.instancemanager.games.Lottery;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2DropCategory;
@@ -53,7 +54,6 @@ import com.l2jhellas.gameserver.model.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.L2WorldRegion;
 import com.l2jhellas.gameserver.model.MobGroupTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2ControlTowerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2ControllableMobInstance;
@@ -65,7 +65,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2TeleporterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2WarehouseInstance;
-import com.l2jhellas.gameserver.model.actor.knownlist.NpcKnownList;
 import com.l2jhellas.gameserver.model.actor.stat.NpcStat;
 import com.l2jhellas.gameserver.model.actor.status.NpcStatus;
 import com.l2jhellas.gameserver.model.entity.Castle;
@@ -90,6 +89,7 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
 import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
 import com.l2jhellas.gameserver.network.serverpackets.RadarControl;
+import com.l2jhellas.gameserver.network.serverpackets.ServerObjectInfo;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -180,8 +180,6 @@ public class L2Npc extends L2Character
 				{
 					if (!isInActiveRegion()) // NPCs in inactive region don't run this task
 						return;
-					// update knownlist to remove playable which aren't in range any more
-					getKnownList().forgetObjects();
 				}
 
 				if (!(isDead() || isStunned() || isSleeping() || isParalyzed()))
@@ -296,8 +294,7 @@ public class L2Npc extends L2Character
 		// Call the L2Character constructor to set the _template of the L2Character, copy skills from template to object
 		// and link _calculators to NPC_STD_CALCULATOR
 		super(objectId, template);
-
-		getKnownList(); // init knownlist
+		
 		getStat(); // init stats
 		getStatus(); // init status
 		initCharStatusUpdateValues();
@@ -325,14 +322,6 @@ public class L2Npc extends L2Character
 
 		// Set the name of the L2Character
 		setName(template.name);
-	}
-
-	@Override
-	public NpcKnownList getKnownList()
-	{
-		if ((super.getKnownList() == null) || !(super.getKnownList() instanceof NpcKnownList))
-			setKnownList(new NpcKnownList(this));
-		return (NpcKnownList) super.getKnownList();
 	}
 
 	@Override
@@ -435,9 +424,14 @@ public class L2Npc extends L2Character
 		//broadcastPacket(info);
 
 		// Send a Server->Client packet NpcInfo with state of abnormal effect to all L2PcInstance in the _KnownPlayers of the L2NpcInstance
-		for (L2PcInstance player : getKnownList().getKnownPlayers().values())
+		for (L2PcInstance player : L2World.getInstance().getVisibleObjects(this, L2PcInstance.class,2000))
 			if (player != null)
-				player.sendPacket(new NpcInfo(this, player));
+			{
+				if (getMoveSpeed() == 0)
+					player.sendPacket(new ServerObjectInfo(this, player));
+				else
+					player.sendPacket(new NpcInfo(this, player));
+			}
 	}
 
 	/**
@@ -2470,21 +2464,10 @@ public class L2Npc extends L2Character
 	 */
 	public void deleteMe()
 	{
-		final L2WorldRegion region = getWorldRegion();
-		
-		if (region != null)
-		{
-			region.removeFromZones(this);	
-		}
-		
+		ZoneManager.getInstance().getRegion(this).removeFromZones(this);
 		decayMe();
-		// Remove all L2Object from _knownObjects and _knownPlayer of the L2Character then cancel Attak or Cast and notify AI
-		getKnownList().removeAllKnownObjects();
 		// Remove L2Object object from _allObjects of L2World
-		L2World.getInstance().removeObject(this);
-		
-		
-		
+		L2World.getInstance().removeObject(this);					
 		super.deleteMe();				
 	}
 
@@ -2832,6 +2815,15 @@ public class L2Npc extends L2Character
 	 */
 	public void broadcastNpcSay(String message)
 	{
-		broadcastPacket(new NpcSay(getObjectId(), Say2.ALL, getNpcId(), message));
+		broadcastPacket(new NpcSay(getObjectId(), Say2.ALL, getNpcId(), message),1250);
+	}
+
+	@Override
+	public void sendInfo(L2PcInstance activeChar)
+	{
+		if (getMoveSpeed() == 0)
+			activeChar.sendPacket(new ServerObjectInfo(this, activeChar));
+		else
+			activeChar.sendPacket(new NpcInfo(this, activeChar));
 	}
 }

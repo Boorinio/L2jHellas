@@ -14,138 +14,65 @@
  */
 package com.l2jhellas.gameserver.model;
 
-import com.l2jhellas.gameserver.templates.StatsSet;
-
 /**
  * @author Rayan RPG
  */
 public class L2NpcWalkerNode
 {
-	private int _routeId;
-	private int _npcId;
-	private String _movePoint;
+	private final int _routeId;
 	private String _chatText;
-	private int _moveX;
-	private int _moveY;
-	private int _moveZ;
-	private int _delay;
-
-	private boolean _running;
-
-	public void setRunning(boolean val)
+	private final int _moveX, _moveY, _moveZ;
+	private final int _delay;
+	private final boolean _running;
+	
+	public L2NpcWalkerNode(int routeId, int moveX, int moveY, int moveZ, boolean running, int delay, String chatText)
 	{
-		_running = val;
+		super();
+		_routeId = routeId;
+		_chatText = chatText;
+		
+		if (_chatText.trim().isEmpty())
+			_chatText = null;
+		
+		_moveX = moveX;
+		_moveY = moveY;
+		_moveZ = moveZ;
+		_running = running;
+		_delay = delay;
 	}
-
-	public void setRouteId(int id)
-	{
-		_routeId = id;
-	}
-
-	public void setNpcId(int id)
-	{
-		_npcId = id;
-	}
-
-	public void setMovePoint(String val)
-	{
-		_movePoint = val;
-	}
-
-	public void setChatText(String val)
-	{
-		_chatText = val;
-	}
-
-	public void setMoveX(int val)
-	{
-		_moveX = val;
-	}
-
-	public void setMoveY(int val)
-	{
-		_moveY = val;
-	}
-
-	public void setMoveZ(int val)
-	{
-		_moveZ = val;
-	}
-
-	public void setDelay(int val)
-	{
-		_delay = val;
-	}
-
+	
 	public int getRouteId()
 	{
 		return _routeId;
 	}
-
-	public int getNpcId()
-	{
-		return _npcId;
-	}
-
-	public String getMovePoint()
-	{
-		return _movePoint;
-	}
-
+	
 	public String getChatText()
 	{
 		return _chatText;
 	}
-
+	
 	public int getMoveX()
 	{
 		return _moveX;
 	}
-
+	
 	public int getMoveY()
 	{
 		return _moveY;
 	}
-
+	
 	public int getMoveZ()
 	{
 		return _moveZ;
 	}
-
+	
 	public int getDelay()
 	{
 		return _delay;
 	}
-
+	
 	public boolean getRunning()
 	{
 		return _running;
-	}
-
-	/**
-	 * Constructor of L2NpcWalker.<BR>
-	 * <BR>
-	 */
-	public L2NpcWalkerNode()
-	{
-
-	}
-
-	/**
-	 * Constructor of L2NpcWalker.<BR>
-	 * <BR>
-	 * 
-	 * @param set
-	 *        The StatsSet object to transfert data to the method
-	 */
-	public L2NpcWalkerNode(StatsSet set)
-	{
-		_npcId = set.getInteger("npc_id");
-		_movePoint = set.getString("move_point");
-		_chatText = set.getString("chatText");
-		_moveX = set.getInteger("move_x");
-		_moveX = set.getInteger("move_y");
-		_moveX = set.getInteger("move_z");
-		_delay = set.getInteger("delay");
 	}
 }

@@ -23,7 +23,6 @@ import com.l2jhellas.gameserver.ai.L2SiegeGuardAI;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.actor.knownlist.SiegeGuardKnownList;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
@@ -47,16 +46,8 @@ public final class L2SiegeGuardInstance extends L2Attackable
 	public L2SiegeGuardInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-		getKnownList(); //inits the knownlist
 	}
 
-	@Override
-	public final SiegeGuardKnownList getKnownList()
-	{
-		if ((super.getKnownList() == null) || !(super.getKnownList() instanceof SiegeGuardKnownList))
-			setKnownList(new SiegeGuardKnownList(this));
-		return (SiegeGuardKnownList) super.getKnownList();
-	}
 
 	@Override
 	public L2CharacterAI getAI()

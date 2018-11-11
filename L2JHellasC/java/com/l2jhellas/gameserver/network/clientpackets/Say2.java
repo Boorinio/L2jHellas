@@ -26,6 +26,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.ChatHandler;
 import com.l2jhellas.gameserver.handler.IChatHandler;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance.PunishLevel;
@@ -181,13 +182,15 @@ public final class Say2 extends L2GameClientPacket
 			String name = saymode.getName();
 			int actor = saymode.getObjectId();
 			_type = 0;
-			Collection<L2Object> list = saymode.getKnownList().getKnownObjects().values();
+			
+			Collection<L2PcInstance> list = L2World.getInstance().getVisibleObjects(saymode, L2PcInstance.class);
 
 			CreatureSay cs = new CreatureSay(actor, _type, name, _text);
 			for (L2Object obj : list)
 			{
-				if ((obj == null) || !(obj instanceof L2Character))
+				if ((obj == null))
 					continue;
+				
 				L2Character chara = (L2Character) obj;
 				chara.sendPacket(cs);
 			}

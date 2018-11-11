@@ -20,6 +20,7 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.EtcStatusUpdate;
+import com.l2jhellas.gameserver.network.serverpackets.PledgeShowInfoUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class AdminClanFull implements IAdminCommandHandler
@@ -76,6 +77,7 @@ public class AdminClanFull implements IAdminCommandHandler
 		player.getClan().changeLevel(Config.CLAN_LEVEL);
 		player.ClanSkills();
 		player.sendPacket(new EtcStatusUpdate(activeChar));
+		player.sendPacket(new PledgeShowInfoUpdate(player.getClan()));
 	}
 
 	@Override

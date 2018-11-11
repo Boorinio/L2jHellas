@@ -25,7 +25,6 @@ import com.l2jhellas.gameserver.audio.Sound;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
-import com.l2jhellas.gameserver.model.actor.knownlist.RaceManagerKnownList;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.DeleteObject;
@@ -82,7 +81,6 @@ public class L2RaceManagerInstance extends L2Npc
 	public L2RaceManagerInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-		getKnownList();	// init knownlist
 		if (_notInitialized)
 		{
 			_notInitialized = false;
@@ -112,14 +110,6 @@ public class L2RaceManagerInstance extends L2Npc
 			s.scheduleGeneralAtFixedRate(new Announcement(SystemMessageId.MONSRACE_RACE_START), 9 * MINUTE, 10 * MINUTE);
 		}
 		_managers.add(this);
-	}
-
-	@Override
-	public final RaceManagerKnownList getKnownList()
-	{
-		if ((super.getKnownList() == null) || !(super.getKnownList() instanceof RaceManagerKnownList))
-			setKnownList(new RaceManagerKnownList(this));
-		return (RaceManagerKnownList) super.getKnownList();
 	}
 
 	class Announcement implements Runnable

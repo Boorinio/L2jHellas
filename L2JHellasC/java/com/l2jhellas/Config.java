@@ -1181,7 +1181,6 @@ public final class Config
 	public static boolean SHOW_LICENCE;
 	public static boolean AUTO_CREATE_ACCOUNTS;
 	public static int IP_UPDATE_TIME;
-	public static boolean ASSERT;
 	public static boolean DEVELOPER;
 	public static boolean FORCE_GGAUTH;
 	public static boolean FLOOD_PROTECTION;
@@ -3322,7 +3321,6 @@ public final class Config
 			{
 				_log.severe(Config.class.getName() + ": Error while loading " + LOGIN_CONFIGURATION_FILE + " settings!");
 			}
-			ASSERT = Boolean.parseBoolean(serverSettings.getProperty("Assert", "False"));
 			ACCEPT_NEW_GAMESERVER = Boolean.parseBoolean(serverSettings.getProperty("AcceptNewGameServer", "True"));
 			REQUEST_ID = Integer.parseInt(serverSettings.getProperty("RequestServerID", "0"));
 			ACCEPT_ALTERNATE_ID = Boolean.parseBoolean(serverSettings.getProperty("AcceptAlternateID", "True"));

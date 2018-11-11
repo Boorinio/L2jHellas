@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.TradeList.TradeItem;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * @author Yme
@@ -32,6 +33,17 @@ public class TradeOtherAdd extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		
+		if (activeChar == null)
+			return;
+
+		if (activeChar.getActiveTradeList() == null)
+			return;
+		
+		if (activeChar.getActiveTradeList().getPartner().getActiveTradeList()==null)
+			return;
+			
 		writeC(0x21);
 		
 		writeH(1); // item count

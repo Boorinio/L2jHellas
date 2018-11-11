@@ -15,122 +15,109 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import javolution.util.FastList;
-
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import com.PackRoot;
 import com.l2jhellas.gameserver.model.L2NpcWalkerNode;
+import com.l2jhellas.util.XMLDocumentFactory;
 
 public class NpcWalkerRoutesData
 {
-	protected static Logger _log = Logger.getLogger(NpcWalkerRoutesData.class.getName());
-
-	private static NpcWalkerRoutesData _instance;
-
-	private static FastList<L2NpcWalkerNode> _routes = new FastList<L2NpcWalkerNode>();
-
+	private static final Logger _log = Logger.getLogger(NpcWalkerRoutesData.class.getName());
+	
+	private final Map<Integer, List<L2NpcWalkerNode>> _routes = new HashMap<>();
+	
 	public static NpcWalkerRoutesData getInstance()
 	{
-		if (_instance == null)
-		{
-			_instance = new NpcWalkerRoutesData();
-		}
-
-		return _instance;
+		return SingletonHolder._instance;
 	}
-
-	public static void reload()
+	
+	protected NpcWalkerRoutesData()
 	{
-		if(_routes == null)
-			_log.warning(NpcWalkerRoutesData.class.getSimpleName() + ": WalkerRoutesData NPE error.");
+		load();
+	}
+	
+	public void reload()
+	{
 		_routes.clear();
 		load();
 	}
 	
-	public static void load()
+	public void load()
 	{
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setValidating(false);
-		factory.setIgnoringComments(true);
-		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/walker_routes.xml");
-		if (!f.exists())
-		{
-			_log.warning(NpcWalkerRoutesData.class.getSimpleName() + ": walker_routes.xml could not be loaded: file not found");
-			return;
-		}
 		try
 		{
-			final InputSource in = new InputSource(new InputStreamReader(new FileInputStream(f), "UTF-8"));
-			in.setEncoding("UTF-8");
-			Document doc = factory.newDocumentBuilder().parse(in);
-			final L2NpcWalkerNode route = new L2NpcWalkerNode();
-			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
+			File f = new File("./data/xml/walker_routes.xml");
+			Document doc = XMLDocumentFactory.getInstance().loadDocument(f);
+			
+			Node n = doc.getFirstChild();
+			for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
 			{
-				if (n.getNodeName().equalsIgnoreCase("list"))
+				if (d.getNodeName().equals("walker"))
 				{
-					for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
+					List<L2NpcWalkerNode> list = new ArrayList<>();
+					int npcId = Integer.parseInt(d.getAttributes().getNamedItem("npcId").getNodeValue());
+					boolean running = Boolean.parseBoolean(d.getAttributes().getNamedItem("run").getNodeValue());
+					
+					for (Node r = d.getFirstChild(); r != null; r = r.getNextSibling())
 					{
-						if (d.getNodeName().equalsIgnoreCase("walker_route"))
+						if (r.getNodeName().equals("route"))
 						{
-							final int route_id = Integer.valueOf(d.getAttributes().getNamedItem("route_id").getNodeValue());
-							final int npc_id = Integer.valueOf(d.getAttributes().getNamedItem("npc_id").getNodeValue());
-							final String move_point = String.valueOf(d.getAttributes().getNamedItem("move_point").getNodeValue());
-							final String chatText = String.valueOf(d.getAttributes().getNamedItem("chatText").getNodeValue());
-							final int move_x = Integer.valueOf(d.getAttributes().getNamedItem("move_x").getNodeValue());
-							final int move_y = Integer.valueOf(d.getAttributes().getNamedItem("move_y").getNodeValue());
-							final int move_z = Integer.valueOf(d.getAttributes().getNamedItem("move_z").getNodeValue());
-							final int delay = Integer.valueOf(d.getAttributes().getNamedItem("delay").getNodeValue());
-							final boolean running = Boolean.valueOf(d.getAttributes().getNamedItem("running").getNodeValue());
-
-							route.setRouteId(route_id);
-							route.setNpcId(npc_id);
-							route.setMovePoint(move_point);
-							route.setChatText(chatText);
-							route.setMoveX(move_x);
-							route.setMoveY(move_y);
-							route.setMoveZ(move_z);
-							route.setDelay(delay);
-							route.setRunning(running);
-							_routes.add(route);
+							// Additional parameters are "defaulted" here.
+							String chat = "";
+							int delay = 0;
+							
+							NamedNodeMap attrs = r.getAttributes();
+							int id = Integer.parseInt(attrs.getNamedItem("id").getNodeValue());
+							int x = Integer.parseInt(attrs.getNamedItem("X").getNodeValue());
+							int y = Integer.parseInt(attrs.getNamedItem("Y").getNodeValue());
+							int z = Integer.parseInt(attrs.getNamedItem("Z").getNodeValue());
+							
+							// Additional parameters : message && delay
+							for (Node c = r.getFirstChild(); c != null; c = c.getNextSibling())
+							{
+								if ("delay".equalsIgnoreCase(c.getNodeName()))
+									delay = Integer.parseInt(c.getAttributes().getNamedItem("val").getNodeValue());
+								else if ("chat".equalsIgnoreCase(c.getNodeName()))
+									chat = c.getAttributes().getNamedItem("val").getNodeValue();
+							}
+							list.add(new L2NpcWalkerNode(id, x, y, z, running, delay, chat));
 						}
 					}
+					
+					_routes.put(npcId, list);
 				}
 			}
 		}
-		catch (SAXException e)
+		catch (Exception e)
 		{
-			_log.warning(NpcWalkerRoutesData.class.getSimpleName() + ": Error while creating table");
+			_log.log(Level.SEVERE, "WalkerRoutesTable: Error while loading routes: " + e);
 		}
-		catch (IOException e)
-		{
-			_log.warning(NpcWalkerRoutesData.class.getSimpleName() + ": Error while creating table");
-		}
-		catch (ParserConfigurationException e)
-		{
-			_log.warning(NpcWalkerRoutesData.class.getSimpleName() + ": Error while creating table");
-		}
-
-		_log.warning(NpcWalkerRoutesData.class.getSimpleName() + ": WalkerRoutesData: Loaded " + _routes.size() + " npc walker routes.");
+		
+		_log.info("WalkerRoutesTable: Loaded " + _routes.size() + " NpcWalker routes.");
 	}
-
-	public FastList<L2NpcWalkerNode> getRouteForNpc(int id)
+	
+	public List<L2NpcWalkerNode> getRouteForNpc(int id)
 	{
-		FastList<L2NpcWalkerNode> _return = new FastList<L2NpcWalkerNode>();
-		for (FastList.Node<L2NpcWalkerNode> n = _routes.head(), end = _routes.tail(); (n = n.getNext()) != end;)
-			if (n.getValue().getNpcId() == id)
-				_return.add(n.getValue());
-		return _return;
+		return _routes.get(id);
+	}
+	
+	public Collection<List<L2NpcWalkerNode>> getWalkers()
+	{
+		return _routes.values();
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final NpcWalkerRoutesData _instance = new NpcWalkerRoutesData();
 	}
 }

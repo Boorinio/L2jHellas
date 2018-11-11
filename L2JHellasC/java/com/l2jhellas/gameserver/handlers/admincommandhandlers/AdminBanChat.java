@@ -62,14 +62,16 @@ public class AdminBanChat implements IAdminCommandHandler
 		{
 			try
 			{
-				for (L2PcInstance player : admin.getKnownList().getKnownPlayers().values())
+				
+				L2World.getInstance().forEachVisibleObject(admin, L2PcInstance.class, player ->
 				{
 					if (!player.isGM())
 					{
 						player.setBanChatTimer(120 * 60000); // setting max 2 min
 						player.setChatBannedForAnnounce(true);
 					}
-				}
+				});
+
 			}
 			catch (Exception e)
 			{
@@ -79,10 +81,10 @@ public class AdminBanChat implements IAdminCommandHandler
 		{
 			try
 			{
-				for (L2PcInstance player : admin.getKnownList().getKnownPlayers().values())
+				L2World.getInstance().forEachVisibleObject(admin, L2PcInstance.class, player ->
 				{
 					player.setChatBannedForAnnounce(false);
-				}
+				});
 			}
 			catch (Exception e)
 			{

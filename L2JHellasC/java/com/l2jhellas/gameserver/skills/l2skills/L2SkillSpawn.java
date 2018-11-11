@@ -6,6 +6,7 @@ import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2Spawn;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -70,7 +71,7 @@ public class L2SkillSpawn extends L2Skill
 				npc.scheduleDespawn(_despawnDelay);
 			
 
-			for (L2PcInstance player : npc.getKnownList().getKnownTypeInRadius(L2PcInstance.class,1200))
+			for (L2PcInstance player : L2World.getInstance().getVisibleObjects(npc, L2PcInstance.class,1200))
 			{
 				 npc.broadcastPacket(new NpcInfo(npc, player));
 			}

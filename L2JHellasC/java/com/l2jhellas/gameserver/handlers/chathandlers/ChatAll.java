@@ -23,6 +23,7 @@ import com.l2jhellas.gameserver.handler.IChatHandler;
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.handler.VoicedCommandHandler;
 import com.l2jhellas.gameserver.model.BlockList;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 
@@ -100,11 +101,11 @@ public class ChatAll implements IChatHandler
 			if (!vcd_used)
 			{
 				CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text);
-				Collection<L2PcInstance> plrs = activeChar.getKnownList().getKnownPlayers().values();
+				Collection<L2PcInstance> plrs = L2World.getInstance().getVisibleObjects(activeChar,L2PcInstance.class, 1250);
 
 				for (L2PcInstance player : plrs)
 				{
-					if ((player != null) && activeChar.isInsideRadius(player, 1250, false, true) && !BlockList.isBlocked(player, activeChar))
+					if ((player != null) && !BlockList.isBlocked(player, activeChar))
 						player.sendPacket(cs);
 				}
 				activeChar.sendPacket(cs);

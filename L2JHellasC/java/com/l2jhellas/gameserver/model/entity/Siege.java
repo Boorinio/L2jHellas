@@ -288,9 +288,9 @@ public class Siege
 				clan.clearSiegeDeaths();
 			}
 			removeFlags(); // Removes all flags. Note: Remove flag before teleporting players
-			teleportPlayer(Siege.TeleportWhoType.Attacker, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town
-			teleportPlayer(Siege.TeleportWhoType.DefenderNotOwner, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town
-			teleportPlayer(Siege.TeleportWhoType.Spectator, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town
+			teleportPlayer(Siege.TeleportWhoType.Attacker, MapRegionTable.TeleportWhereType.TOWN); // Teleport to the second closest town
+			teleportPlayer(Siege.TeleportWhoType.DefenderNotOwner, MapRegionTable.TeleportWhereType.TOWN); // Teleport to the second closest town
+			teleportPlayer(Siege.TeleportWhoType.Spectator, MapRegionTable.TeleportWhereType.TOWN); // Teleport to the second closest town
 			_isInProgress = false; // Flag so that siege instance can be started
 			updatePlayerSiegeStateFlags(true);
 			saveCastleSiege(); // Save castle specific data
@@ -426,8 +426,8 @@ public class Siege
 						}
 					}
 				}
-				teleportPlayer(Siege.TeleportWhoType.Attacker, MapRegionTable.TeleportWhereType.SiegeFlag); // Teleport to the second closest town
-				teleportPlayer(Siege.TeleportWhoType.Spectator, MapRegionTable.TeleportWhereType.Town);     // Teleport to the second closest town
+				teleportPlayer(Siege.TeleportWhoType.Attacker, MapRegionTable.TeleportWhereType.SIEGE_FLAG); // Teleport to the second closest town
+				teleportPlayer(Siege.TeleportWhoType.Spectator, MapRegionTable.TeleportWhereType.TOWN);     // Teleport to the second closest town
 
 				removeDefenderFlags(); 		 // Removes defenders' flags
 				getCastle().removeUpgrade(); // Remove all castle upgrade
@@ -462,7 +462,7 @@ public class Siege
 
 			loadSiegeClan(); // Load siege clan from db
 			updatePlayerSiegeStateFlags(false);
-			teleportPlayer(Siege.TeleportWhoType.Attacker, MapRegionTable.TeleportWhereType.Town); // Teleport to the closest town
+			teleportPlayer(Siege.TeleportWhoType.Attacker, MapRegionTable.TeleportWhereType.TOWN); // Teleport to the closest town
 			// teleportPlayer(Siege.TeleportWhoType.Spectator, MapRegionTable.TeleportWhereType.Town); // Teleport to the second closest town
 			spawnArtifact(getCastle().getCastleId()); // Spawn artifact
 			spawnControlTower(getCastle().getCastleId()); // Spawn control tower
@@ -527,7 +527,7 @@ public class Siege
 				else
 					member.setSiegeState((byte) 1);
 				member.sendPacket(new UserInfo(member));
-				for (L2PcInstance player : member.getKnownList().getKnownPlayers().values())
+				for (L2PcInstance player : L2World.getInstance().getVisibleObjects(member, L2PcInstance.class))
 				{
 					player.sendPacket(new RelationChanged(member, member.getRelation(player), member.isAutoAttackable(player)));
 				}
@@ -546,7 +546,7 @@ public class Siege
 				else
 					member.setSiegeState((byte) 2);
 				member.sendPacket(new UserInfo(member));
-				for (L2PcInstance player : member.getKnownList().getKnownPlayers().values())
+				for (L2PcInstance player : L2World.getInstance().getVisibleObjects(member, L2PcInstance.class))
 				{
 					player.sendPacket(new RelationChanged(member, member.getRelation(player), member.isAutoAttackable(player)));
 				}
@@ -706,7 +706,7 @@ public class Siege
 	/** Return list of L2PcInstance in the zone. */
 	public List<L2Character> getPlayersInZone()
 	{
-		return getCastle().getZone().getCharactersInside();
+		return (List<L2Character>) getCastle().getZone().getCharactersInside();
 	}
 
 	/** Return list of L2PcInstance owning the castle in the zone. */

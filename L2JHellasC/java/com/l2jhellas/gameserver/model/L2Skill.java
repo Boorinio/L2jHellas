@@ -1282,7 +1282,7 @@ public abstract class L2Skill
 					src = ((L2Summon) activeChar).getOwner();
 
 				// Go through the L2Character _knownList
-				for (L2Object obj : activeChar.getKnownList().getKnownObjects().values())
+				for (L2Object obj : L2World.getInstance().getVisibleObjects(activeChar, L2Object.class,radius))
 				{
 					if (src instanceof L2PcInstance && obj != null && (obj instanceof L2Attackable || obj instanceof L2Playable))
 					{
@@ -1374,7 +1374,7 @@ public abstract class L2Skill
 
 				boolean srcInArena = (activeChar.isInsideZone(ZoneId.PVP) && !activeChar.isInsideZone(ZoneId.SIEGE));
 
-				for (L2Object obj : activeChar.getKnownList().getKnownObjects().values())
+				for (L2Object obj : L2World.getInstance().getVisibleObjects(activeChar, L2Object.class,radius))
 				{
 					if (obj == null)
 						continue;
@@ -1389,9 +1389,6 @@ public abstract class L2Skill
 
 					if (!target.isAlikeDead() && (target != activeChar))
 					{
-						if (!Util.checkIfInRange(radius, obj, cha, true))
-							continue;
-
 						if (src != null) // caster is l2playableinstance and exists
 						{
 
@@ -1483,8 +1480,7 @@ public abstract class L2Skill
 					};
 
 				int radius = getSkillRadius();
-
-				for (L2Object obj : activeChar.getKnownList().getKnownObjects().values())
+				for (L2Object obj : L2World.getInstance().getVisibleObjects(activeChar, L2Object.class,radius))
 				{
 					if (obj == null)
 						continue;
@@ -1646,7 +1642,7 @@ public abstract class L2Skill
 					{
 						// Get all visible objects in a spheric area near the L2Character
 						// Get Clan Members
-						for (L2Object newTarget : activeChar.getKnownList().getKnownObjects().values())
+						for (L2Object newTarget : L2World.getInstance().getVisibleObjects(activeChar, L2Object.class,radius))
 						{
 							if (newTarget == null || !(newTarget instanceof L2PcInstance))
 								continue;
@@ -1677,8 +1673,6 @@ public abstract class L2Skill
 										continue;
 								}
 							}
-							if (!Util.checkIfInRange(radius, activeChar, newTarget, true))
-								continue;
 
 							// Don't add this target if this is a Pc->Pc pvp casting and pvp condition not met
 							if (!player.checkPvpSkill(newTarget, this))
@@ -1880,15 +1874,12 @@ public abstract class L2Skill
 				L2PcInstance trg = null;
 
 				int radius = getSkillRadius();
-				if (activeChar.getKnownList() != null)
-					for (L2Object obj : activeChar.getKnownList().getKnownObjects().values())
+
+				for (L2Object obj : L2World.getInstance().getVisibleObjects(activeChar, L2Object.class,radius))
 					{
 						if (obj == null)
 							continue;
 						if (!(obj instanceof L2Attackable || obj instanceof L2Playable) || ((L2Character) obj).isDead() || ((L2Character) obj) == activeChar)
-							continue;
-
-						if (!Util.checkIfInRange(radius, target, obj, true))
 							continue;
 
 						if (!GeoEngine.canSeeTarget(activeChar, obj,false))
@@ -2023,8 +2014,7 @@ public abstract class L2Skill
 				else
 					cha = activeChar;
 
-				if (cha != null && cha.getKnownList() != null)
-					for (L2Object obj : cha.getKnownList().getKnownObjects().values())
+				for (L2Object obj : L2World.getInstance().getVisibleObjects(activeChar, L2Object.class,radius))
 					{
 						if (obj == null)
 							continue;
@@ -2041,8 +2031,6 @@ public abstract class L2Skill
 						if (!target.isAlikeDead()) // If target is not dead/fake death and not self
 						{
 							if (!target.isUndead())
-								continue;
-							if (!Util.checkIfInRange(radius, cha, obj, true)) // Go to next obj if obj isn't in range
 								continue;
 
 							if (onlyFirst == false)
@@ -2097,8 +2085,7 @@ public abstract class L2Skill
 				else
 					cha = activeChar;
 
-				if (cha != null && cha.getKnownList() != null)
-					for (L2Object obj : cha.getKnownList().getKnownObjects().values())
+				for (L2Object obj : L2World.getInstance().getVisibleObjects(activeChar, L2Object.class,radius))
 					{
 						if (obj == null)
 							continue;
@@ -2110,8 +2097,6 @@ public abstract class L2Skill
 						{
 							if (target.isUndead())
 								continue; // Go to next obj if obj isn't a angel
-							if (!Util.checkIfInRange(radius, cha, obj, true)) // Go to next obj if obj isn't in range
-								continue;
 
 							if (onlyFirst == false)
 								targetList.add((L2Character) obj); // Add obj to target lists

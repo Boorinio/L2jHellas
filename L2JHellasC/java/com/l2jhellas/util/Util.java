@@ -93,7 +93,7 @@ public final class Util
 	{
 		if (obj1 == null || obj2 == null)
 			return 1000000;
-		return calculateDistance(obj1.getPosition().getX(), obj1.getPosition().getY(), obj1.getPosition().getZ(), obj2.getPosition().getX(), obj2.getPosition().getY(), obj2.getPosition().getZ(), includeZAxis);
+		return calculateDistance(obj1.getX(), obj1.getY(), obj1.getZ(), obj2.getX(), obj2.getY(), obj2.getZ(), includeZAxis);
 	}
 
 	public static String capitalizeFirst(String str)
@@ -718,5 +718,35 @@ public final class Util
 		}
 		rt.runFinalization();
 		return MemoryWatchOptimize.getMemFree() - freeMemBefore;
+	}
+	
+	public static boolean cubeIntersectsSphere(int x1, int y1, int z1, int x2, int y2, int z2, int sX, int sY, int sZ, int radius)
+	{
+		double d = radius * radius;
+		if (sX < x1)
+		{
+			d -= Math.pow(sX - x1, 2);
+		}
+		else if (sX > x2)
+		{
+			d -= Math.pow(sX - x2, 2);
+		}
+		if (sY < y1)
+		{
+			d -= Math.pow(sY - y1, 2);
+		}
+		else if (sY > y2)
+		{
+			d -= Math.pow(sY - y2, 2);
+		}
+		if (sZ < z1)
+		{
+			d -= Math.pow(sZ - z1, 2);
+		}
+		else if (sZ > z2)
+		{
+			d -= Math.pow(sZ - z2, 2);
+		}
+		return d > 0;
 	}
 }

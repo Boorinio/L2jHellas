@@ -126,7 +126,7 @@ public class L2SiegeZone extends L2ZoneType
 	{
 		if (_isActiveSiege)
 		{
-			for (L2Character character : _characterList)
+			for (L2Character character : _characterList.values())
 			{
 				if (character != null)
 					onEnter(character);
@@ -134,7 +134,7 @@ public class L2SiegeZone extends L2ZoneType
 		}
 		else
 		{
-			for (L2Character character : _characterList)
+			for (L2Character character : _characterList.values())
 			{
 				if (character == null)
 					continue;
@@ -194,7 +194,7 @@ public class L2SiegeZone extends L2ZoneType
 			if (player.getClan() == owningClan || player.isGM())
 				continue;
 			
-			player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+			player.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 		}
 	}
 }

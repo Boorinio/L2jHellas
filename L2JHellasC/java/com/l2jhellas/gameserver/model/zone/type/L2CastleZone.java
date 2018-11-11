@@ -89,7 +89,7 @@ public class L2CastleZone extends L2SpawnZone
 			if (player.getClanId() == owningClanId)
 				continue;
 			
-			player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+			player.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 		}
 	}
 	
@@ -113,7 +113,7 @@ public class L2CastleZone extends L2SpawnZone
 	 */
 	public void announceToPlayers(String message)
 	{
-		for (L2Character temp : _characterList)
+		for (L2Character temp : _characterList.values())
 		{
 			if (temp instanceof L2PcInstance)
 				((L2PcInstance) temp).sendMessage(message);
@@ -124,7 +124,7 @@ public class L2CastleZone extends L2SpawnZone
 	{
 		if (_castle.getSiege().getIsInProgress())
 		{
-			for (L2Character character : _characterList)
+			for (L2Character character : _characterList.values())
 			{
 				try
 				{
@@ -137,7 +137,7 @@ public class L2CastleZone extends L2SpawnZone
 		}
 		else
 		{
-			for (L2Character character : _characterList)
+			for (L2Character character : _characterList.values())
 			{
 				try
 				{

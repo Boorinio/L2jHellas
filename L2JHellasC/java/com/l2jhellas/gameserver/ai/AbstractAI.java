@@ -50,7 +50,7 @@ import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 abstract class AbstractAI implements Ctrl
 {
 	protected static final Logger _log = Logger.getLogger(AbstractAI.class.getName());
-
+	
 	class FollowTask implements Runnable
 	{
 		protected int _range = 60;
@@ -767,15 +767,11 @@ abstract class AbstractAI implements Ctrl
 		{
 			if (_clientMovingToPawnOffset != 0 && _followTarget != null)
 			{
-				// Send a Server->Client packet MoveToPawn to the actor and all L2PcInstance in its _knownPlayers
-				MoveToPawn msg = new MoveToPawn(_actor, _followTarget, _clientMovingToPawnOffset);
-				player.sendPacket(msg);
+				player.sendPacket(new MoveToPawn(_actor, _followTarget, _clientMovingToPawnOffset));
 			}
 			else
 			{
-				// Send a Server->Client packet CharMoveToLocation to the actor and all L2PcInstance in its _knownPlayers
-				CharMoveToLocation msg = new CharMoveToLocation(_actor);
-				player.sendPacket(msg);
+				player.sendPacket(new CharMoveToLocation(_actor));
 			}
 		}
 	}

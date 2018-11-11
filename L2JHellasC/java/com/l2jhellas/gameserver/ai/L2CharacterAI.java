@@ -34,6 +34,7 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2SkillType;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -646,11 +647,7 @@ public class L2CharacterAI extends AbstractAI
 	@Override
 	protected void onEvtArrived()
 	{
-		// Launch an explore task if necessary
-		if (_accessor.getActor() instanceof L2PcInstance)
-			((L2PcInstance) _accessor.getActor()).revalidateZone(true);
-		else
-			_accessor.getActor().revalidateZone();
+		_accessor.getActor().revalidateZone(true);
 		
 		if (_accessor.getActor().moveToNextRoutePoint())
 			return;
@@ -1312,7 +1309,8 @@ public class L2CharacterAI extends AbstractAI
 	{
 		if (sk.getTargetType() == L2SkillTargetType.TARGET_AURA)
 		{
-			for (L2Object target : _actor.getKnownList().getKnownCharactersInRadius(sk.getSkillRadius()))
+			final List<L2Character> objs =L2World.getInstance().getVisibleObjects(_actor, L2Character.class,sk.getSkillRadius());
+		    for (L2Character target :objs)
 			{
 				if (target == getAttackTarget())
 					return true;
@@ -1328,7 +1326,8 @@ public class L2CharacterAI extends AbstractAI
 			if (sk.getTargetType() == L2SkillTargetType.TARGET_AURA || sk.getTargetType() == L2SkillTargetType.TARGET_MULTIFACE)
 			{
 				boolean cancast = true;
-				for (L2Character target : _actor.getKnownList().getKnownCharactersInRadius(sk.getSkillRadius()))
+				final List<L2Character> objs =L2World.getInstance().getVisibleObjects(_actor, L2Character.class,sk.getSkillRadius());
+			    for (L2Character target :objs)
 				{
 					if (!GeoEngine.canSeeTarget(_actor, target,false))
 						continue;
@@ -1357,7 +1356,8 @@ public class L2CharacterAI extends AbstractAI
 			else if (sk.getTargetType() == L2SkillTargetType.TARGET_AREA)
 			{
 				boolean cancast = true;
-				for (L2Character target : getAttackTarget().getKnownList().getKnownCharactersInRadius(sk.getSkillRadius()))
+				final List<L2Character> objs =L2World.getInstance().getVisibleObjects(_actor, L2Character.class,sk.getSkillRadius());
+			    for (L2Character target :objs)
 				{
 					if (!GeoEngine.canSeeTarget(_actor, target,false) || target == null)
 						continue;
@@ -1381,7 +1381,8 @@ public class L2CharacterAI extends AbstractAI
 			if (sk.getTargetType() == L2SkillTargetType.TARGET_AURA || sk.getTargetType() == L2SkillTargetType.TARGET_MULTIFACE)
 			{
 				boolean cancast = false;
-				for (L2Character target : _actor.getKnownList().getKnownCharactersInRadius(sk.getSkillRadius()))
+				final List<L2Character> objs =L2World.getInstance().getVisibleObjects(_actor, L2Character.class,sk.getSkillRadius());
+			    for (L2Character target :objs)
 				{
 					if (!GeoEngine.canSeeTarget(_actor, target,false))
 						continue;
@@ -1402,7 +1403,8 @@ public class L2CharacterAI extends AbstractAI
 			else if (sk.getTargetType() == L2SkillTargetType.TARGET_AREA)
 			{
 				boolean cancast = true;
-				for (L2Character target : getAttackTarget().getKnownList().getKnownCharactersInRadius(sk.getSkillRadius()))
+				final List<L2Character> objs =L2World.getInstance().getVisibleObjects(_actor, L2Character.class,sk.getSkillRadius());
+			    for (L2Character target :objs)
 				{
 					if (!GeoEngine.canSeeTarget(_actor, target,false))
 						continue;
@@ -1469,7 +1471,8 @@ public class L2CharacterAI extends AbstractAI
 		{
 			int count = 0;
 			int ccount = 0;
-			for (L2Character target : _actor.getKnownList().getKnownCharactersInRadius(sk.getSkillRadius()))
+			final List<L2Character> objs =L2World.getInstance().getVisibleObjects(_actor, L2Character.class,sk.getSkillRadius());
+		    for (L2Character target :objs)
 			{
 				if (!(target instanceof L2Attackable) || !GeoEngine.canSeeTarget(_actor, target,false))
 				{

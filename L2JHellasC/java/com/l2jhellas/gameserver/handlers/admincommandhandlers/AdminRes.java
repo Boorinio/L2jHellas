@@ -98,7 +98,7 @@ public class AdminRes implements IAdminCommandHandler
 				{
 					int radius = Integer.parseInt(resParam);
 
-					for (L2PcInstance knownPlayer : activeChar.getKnownList().getKnownPlayersInRadius(radius))
+					for (L2Character knownPlayer : L2World.getInstance().getVisibleObjects(activeChar, L2Character.class,radius))
 					{
 						doResurrect(knownPlayer);
 					}
@@ -176,7 +176,7 @@ public class AdminRes implements IAdminCommandHandler
 			{
 				radius = Integer.parseInt(radiusStr);
 
-				for (L2Character knownChar : activeChar.getKnownList().getKnownCharactersInRadius(radius))
+				for (L2Character knownChar : L2World.getInstance().getVisibleObjects(activeChar, L2Character.class,radius))
 					if (!(knownChar instanceof L2PcInstance) && !(knownChar instanceof L2ControllableMobInstance))
 					{
 						doResurrect(knownChar);

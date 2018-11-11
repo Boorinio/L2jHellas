@@ -22,6 +22,7 @@ import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2Spawn;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -875,7 +876,7 @@ public class VanHalter extends AbstractNpcAI
 		Map<Integer, L2PcInstance> _targets = new HashMap<>();
 		int i = 0;
 
-		for (L2PcInstance pc : _vanHalter.getKnownList().getKnownPlayers().values())
+		for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(_vanHalter, L2PcInstance.class))
 		{
 			i++;
 			_targets.put(Integer.valueOf(i), pc);
@@ -900,12 +901,12 @@ public class VanHalter extends AbstractNpcAI
 
 		for (L2Npc tr : _triolRevelation)
 		{
-			if ((!tr.getKnownList().getKnownPlayersInRadius(tr.getAggroRange()).iterator().hasNext()) || (tr.isDead()))
+			if (tr==null || tr.isDead())
 				continue;
 
 			List<L2PcInstance> bpc = new ArrayList<>();
 
-			for (L2PcInstance pc : tr.getKnownList().getKnownPlayersInRadius(tr.getAggroRange()))
+			for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(tr, L2PcInstance.class,tr.getAggroRange()))
 			{
 				if (pc.getFirstEffect(bleed) == null)
 				{
@@ -1078,7 +1079,7 @@ public class VanHalter extends AbstractNpcAI
 				case 1:
 					GrandBossManager.setBossStatus(29062, 2);
 
-					for (L2PcInstance pc : _vanHalter.getKnownList().getKnownPlayers().values())
+for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(_vanHalter, L2PcInstance.class))
 						if (pc.getPlanDistanceSq(_vanHalter) <= 6502500.0D)
 							_vanHalter.broadcastPacket(new SpecialCamera(_vanHalter.getObjectId(), 50, 90, 0, 0, 15000));
 
@@ -1089,7 +1090,7 @@ public class VanHalter extends AbstractNpcAI
 
 				break;
 				case 2:
-					for (L2PcInstance pc : _vanHalter.getKnownList().getKnownPlayers().values())
+for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(_vanHalter, L2PcInstance.class))
 						if (pc.getPlanDistanceSq(_cameraMarker.get(Integer.valueOf(5))) <= 6502500.0D)
 							_cameraMarker.get(Integer.valueOf(5)).broadcastPacket(new SpecialCamera(_cameraMarker.get(Integer.valueOf(5)).getObjectId(), 1842, 100, -3, 0, 15000));
 
@@ -1100,7 +1101,7 @@ public class VanHalter extends AbstractNpcAI
 
 				break;
 				case 3:
-					for (L2PcInstance pc : _vanHalter.getKnownList().getKnownPlayers().values())
+for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(_vanHalter, L2PcInstance.class))
 						if (pc.getPlanDistanceSq(_cameraMarker.get(Integer.valueOf(5))) <= 6502500.0D)
 							_cameraMarker.get(Integer.valueOf(5)).broadcastPacket(new SpecialCamera(_cameraMarker.get(Integer.valueOf(5)).getObjectId(), 1861, 97, -10, 1500, 15000));
 
@@ -1111,7 +1112,7 @@ public class VanHalter extends AbstractNpcAI
 
 				break;
 				case 4:
-					for (L2PcInstance pc : _vanHalter.getKnownList().getKnownPlayers().values())
+for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(_vanHalter, L2PcInstance.class))
 						if (pc.getPlanDistanceSq(_cameraMarker.get(Integer.valueOf(4))) <= 6502500.0D)
 							_cameraMarker.get(Integer.valueOf(4)).broadcastPacket(new SpecialCamera(_cameraMarker.get(Integer.valueOf(4)).getObjectId(), 1876, 97, 12, 0, 15000));
 
@@ -1122,7 +1123,7 @@ public class VanHalter extends AbstractNpcAI
 
 				break;
 				case 5:
-					for (L2PcInstance pc : _vanHalter.getKnownList().getKnownPlayers().values())
+for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(_vanHalter, L2PcInstance.class))
 						if (pc.getPlanDistanceSq(_cameraMarker.get(Integer.valueOf(4))) <= 6502500.0D)
 							_cameraMarker.get(Integer.valueOf(4)).broadcastPacket(new SpecialCamera(_cameraMarker.get(Integer.valueOf(4)).getObjectId(), 1839, 94, 0, 1500, 15000));
 
@@ -1133,7 +1134,7 @@ public class VanHalter extends AbstractNpcAI
 
 				break;
 				case 6:
-					for (L2PcInstance pc : _vanHalter.getKnownList().getKnownPlayers().values())
+for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(_vanHalter, L2PcInstance.class))
 						if (pc.getPlanDistanceSq(_cameraMarker.get(Integer.valueOf(3))) <= 6502500.0D)
 							_cameraMarker.get(Integer.valueOf(3)).broadcastPacket(new SpecialCamera(_cameraMarker.get(Integer.valueOf(3)).getObjectId(), 1872, 94, 15, 0, 15000));
 
@@ -1144,7 +1145,7 @@ public class VanHalter extends AbstractNpcAI
 
 				break;
 				case 7:
-					for (L2PcInstance pc : _vanHalter.getKnownList().getKnownPlayers().values())
+for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(_vanHalter, L2PcInstance.class))
 						if (pc.getPlanDistanceSq(_cameraMarker.get(Integer.valueOf(3))) <= 6502500.0D)
 							_cameraMarker.get(Integer.valueOf(3)).broadcastPacket(new SpecialCamera(_cameraMarker.get(Integer.valueOf(3)).getObjectId(), 1839, 92, 0, 1500, 15000));
 
@@ -1155,7 +1156,8 @@ public class VanHalter extends AbstractNpcAI
 
 				break;
 				case 8:
-					for (L2PcInstance pc : _vanHalter.getKnownList().getKnownPlayers().values())
+					
+					for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(_vanHalter, L2PcInstance.class))
 						if (pc.getPlanDistanceSq(_cameraMarker.get(Integer.valueOf(2))) <= 6502500.0D)
 							_cameraMarker.get(Integer.valueOf(2)).broadcastPacket(new SpecialCamera(_cameraMarker.get(Integer.valueOf(2)).getObjectId(), 1872, 92, 15, 0, 15000));
 
@@ -1166,7 +1168,7 @@ public class VanHalter extends AbstractNpcAI
 
 				break;
 				case 9:
-					for (L2PcInstance pc : _vanHalter.getKnownList().getKnownPlayers().values())
+for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(_vanHalter, L2PcInstance.class))
 						if (pc.getPlanDistanceSq(_cameraMarker.get(Integer.valueOf(2))) <= 6502500.0D)
 							_cameraMarker.get(Integer.valueOf(2)).broadcastPacket(new SpecialCamera(_cameraMarker.get(Integer.valueOf(2)).getObjectId(), 1839, 90, 5, 1500, 15000));
 
@@ -1177,7 +1179,7 @@ public class VanHalter extends AbstractNpcAI
 
 				break;
 				case 10:
-					for (L2PcInstance pc : _vanHalter.getKnownList().getKnownPlayers().values())
+for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(_vanHalter, L2PcInstance.class))
 						if (pc.getPlanDistanceSq(_cameraMarker.get(Integer.valueOf(1))) <= 6502500.0D)
 							_cameraMarker.get(Integer.valueOf(1)).broadcastPacket(new SpecialCamera(_cameraMarker.get(Integer.valueOf(1)).getObjectId(), 1872, 90, 5, 0, 15000));
 
@@ -1187,7 +1189,7 @@ public class VanHalter extends AbstractNpcAI
 					_movieTask = ThreadPoolManager.getInstance().scheduleGeneral(new Movie(11), 1L);
 				break;
 				case 11:
-					for (L2PcInstance pc : _vanHalter.getKnownList().getKnownPlayers().values())
+for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(_vanHalter, L2PcInstance.class))
 						if (pc.getPlanDistanceSq(_cameraMarker.get(Integer.valueOf(1))) <= 6502500.0D)
 							_cameraMarker.get(Integer.valueOf(1)).broadcastPacket(new SpecialCamera(_cameraMarker.get(Integer.valueOf(1)).getObjectId(), 2002, 90, 2, 1500, 15000));
 
@@ -1198,7 +1200,7 @@ public class VanHalter extends AbstractNpcAI
 
 				break;
 				case 12:
-					for (L2PcInstance pc : _vanHalter.getKnownList().getKnownPlayers().values())
+for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(_vanHalter, L2PcInstance.class))
 						if (pc.getPlanDistanceSq(_vanHalter) <= 6502500.0D)
 							_vanHalter.broadcastPacket(new SpecialCamera(_vanHalter.getObjectId(), 50, 90, 10, 0, 15000));
 
@@ -1235,7 +1237,7 @@ public class VanHalter extends AbstractNpcAI
 					spawnRitualSacrifice();
 					deleteRitualOffering();
 
-					for (L2PcInstance pc : _vanHalter.getKnownList().getKnownPlayers().values())
+for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(_vanHalter, L2PcInstance.class))
 						if (pc.getPlanDistanceSq(_vanHalter) <= 6502500.0D)
 							_vanHalter.broadcastPacket(new SpecialCamera(_vanHalter.getObjectId(), 100, 90, 15, 1500, 15000));
 
@@ -1246,7 +1248,7 @@ public class VanHalter extends AbstractNpcAI
 
 				break;
 				case 16:
-					for (L2PcInstance pc : _vanHalter.getKnownList().getKnownPlayers().values())
+for (L2PcInstance pc : L2World.getInstance().getVisibleObjects(_vanHalter, L2PcInstance.class))
 						if (pc.getPlanDistanceSq(_vanHalter) <= 6502500.0D)
 							_vanHalter.broadcastPacket(new SpecialCamera(_vanHalter.getObjectId(), 5200, 90, -10, 9500, 6000));
 

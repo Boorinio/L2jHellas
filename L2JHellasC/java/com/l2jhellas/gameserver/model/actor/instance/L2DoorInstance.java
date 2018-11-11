@@ -29,15 +29,16 @@ import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
-import com.l2jhellas.gameserver.model.actor.knownlist.DoorKnownList;
 import com.l2jhellas.gameserver.model.actor.stat.DoorStat;
 import com.l2jhellas.gameserver.model.actor.status.DoorStatus;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ConfirmDlg;
+import com.l2jhellas.gameserver.network.serverpackets.DoorInfo;
 import com.l2jhellas.gameserver.network.serverpackets.DoorStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -198,22 +199,11 @@ public class L2DoorInstance extends L2Character
 	public L2DoorInstance(int objectId, L2CharTemplate template, int doorId, String name, boolean unlockable)
 	{
 		super(objectId, template);
-		getKnownList();	// init knownlist
 		getStat(); // init stats
 		getStatus(); // init status
 		_doorId = doorId;
 		_name = name;
 		_unlockable = unlockable;
-	}
-
-	@Override
-	public final DoorKnownList getKnownList()
-	{
-		if ((super.getKnownList() == null) || !(super.getKnownList() instanceof DoorKnownList))
-		{
-			setKnownList(new DoorKnownList(this));
-		}
-		return (DoorKnownList) super.getKnownList();
 	}
 
 	@Override
@@ -529,13 +519,12 @@ public class L2DoorInstance extends L2Character
 	@Override
 	public void broadcastStatusUpdate()
 	{
-		Collection<L2PcInstance> knownPlayers = getKnownList().getKnownPlayers().values();
-		if (knownPlayers == null || knownPlayers.isEmpty())
-			return;
-
 		DoorStatusUpdate su = new DoorStatusUpdate(this);
-		for (L2PcInstance player : knownPlayers)
+		for (L2PcInstance player : L2World.getInstance().getVisibleObjects(this, L2PcInstance.class))
 		{
+			if (player == null)
+				continue;
+			
 			player.sendPacket(su);
 		}
 	}
@@ -633,12 +622,12 @@ public class L2DoorInstance extends L2Character
 	{
 		ArrayList<L2SiegeGuardInstance> result = new ArrayList<L2SiegeGuardInstance>();
 
-		for (L2Object obj : getKnownList().getKnownObjects().values())
+		for (L2SiegeGuardInstance Sguard : L2World.getInstance().getVisibleObjects(this, L2SiegeGuardInstance.class))
 		{
-			if (obj instanceof L2SiegeGuardInstance)
-			{
-				result.add((L2SiegeGuardInstance) obj);
-			}
+			if(Sguard==null)
+				continue;
+			
+				result.add(Sguard);
 		}
 
 		return result;
@@ -682,5 +671,13 @@ public class L2DoorInstance extends L2Character
 	public int getD()
 	{
 		return _D;
+	}
+
+	@Override
+	public void sendInfo(L2PcInstance activeChar)
+	{
+		activeChar.sendPacket(new DoorInfo((L2DoorInstance) this, false));
+		activeChar.sendPacket(new DoorStatusUpdate((L2DoorInstance) this));
+		
 	}
 }

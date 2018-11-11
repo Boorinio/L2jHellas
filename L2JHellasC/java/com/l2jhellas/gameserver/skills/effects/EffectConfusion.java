@@ -21,6 +21,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.skills.Env;
@@ -54,7 +55,7 @@ public final class EffectConfusion extends L2Effect
 
 		// Getting the possible targets
 
-		for (L2Object obj : getEffected().getKnownList().getKnownObjects().values())
+		for (L2Character obj : L2World.getInstance().getVisibleObjects(getEffected(), L2Character.class))
 		{
 			if (obj == null)
 				continue;

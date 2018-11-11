@@ -16,13 +16,13 @@ package com.l2jhellas.gameserver.datatables.xml;
 
 import java.io.File;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
@@ -34,7 +34,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
-import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.model.zone.type.L2ArenaZone;
 import com.l2jhellas.gameserver.model.zone.type.L2ClanHallZone;
@@ -75,10 +74,10 @@ public class MapRegionTable
 	
 	public static enum TeleportWhereType
 	{
-		Castle,
-		ClanHall,
-		SiegeFlag,
-		Town
+		CASTLE,
+		CLAN_HALL,
+		SIEGE_FLAG,
+		TOWN
 	}
 	
 	public static MapRegionTable getInstance()
@@ -112,25 +111,14 @@ public class MapRegionTable
 		}
 		catch (Exception e)
 		{
-			_log.warning(MapRegionTable.class.getSimpleName() + ": MapRegionTable: Error while loading \"map_region.xml\".");
+			_log.log(Level.WARNING, "MapRegionTable: Error while loading \"map_region.xml\".", e);
 		}
 		_log.info("MapRegionTable: Loaded " + count + " regions.");
 	}
 	
 	public static final int getMapRegion(int posX, int posY)
 	{
-		try
-		{
-			return _regions[getMapRegionX(posX)][getMapRegionY(posY)];
-		}
-		catch (ArrayIndexOutOfBoundsException e)
-		{
-			// Position sent is outside MapRegionTable area.
-			if (Config.DEBUG)
-				_log.warning(MapRegionTable.class.getSimpleName() + ": MapRegionTable: Player outside map regions at X,Y=" + posX + "," + posY);
-			
-			return 0;
-		}
+		return _regions[getMapRegionX(posX)][getMapRegionY(posY)];
 	}
 	
 	public static final int getMapRegionX(int posX)
@@ -286,7 +274,7 @@ public class MapRegionTable
 			if (player.getClan() != null)
 			{
 				// If teleport to clan hall
-				if (teleportWhere == TeleportWhereType.ClanHall)
+				if (teleportWhere == TeleportWhereType.CLAN_HALL)
 				{
 					clanhall = ClanHallManager.getInstance().getClanHallByOwner(player.getClan());
 					if (clanhall != null)
@@ -298,7 +286,7 @@ public class MapRegionTable
 				}
 				
 				// If teleport to castle
-				if (teleportWhere == TeleportWhereType.Castle)
+				if (teleportWhere == TeleportWhereType.CASTLE)
 				{
 					castle = CastleManager.getInstance().getCastleByOwner(player.getClan());
 					
@@ -315,7 +303,7 @@ public class MapRegionTable
 				}
 				
 				// If teleport to SiegeHQ
-				if (teleportWhere == TeleportWhereType.SiegeFlag)
+				if (teleportWhere == TeleportWhereType.SIEGE_FLAG)
 				{
 					castle = CastleManager.getInstance().getCastle(player);
 					
@@ -357,11 +345,9 @@ public class MapRegionTable
 			// Get the nearest town
 			return getClosestTown(player.getTemplate().race, activeChar.getX(), activeChar.getY()).getSpawnLoc();
 		}
-		
-		// Get the nearest town
+
 		return getClosestTown(activeChar.getX(), activeChar.getY()).getSpawnLoc();
 	}
-	
 	/**
 	 * A specific method, used ONLY by players. There's a Race condition.
 	 * @param race : The Race of the player, got an effect for Elf and Dark Elf.
@@ -430,7 +416,6 @@ public class MapRegionTable
 		}
 		return getTown(16); // Default to floran
 	}
-	
 	/**
 	 * @param x : The current character's X location.
 	 * @param y : The current character's Y location.
@@ -642,12 +627,7 @@ public class MapRegionTable
 	 */
 	public static final L2TownZone getTown(int x, int y, int z)
 	{
-		for (L2ZoneType temp : ZoneManager.getInstance().getZones(x, y, z))
-		{
-			if (temp instanceof L2TownZone)
-				return (L2TownZone) temp;
-		}
-		return null;
+		return ZoneManager.getInstance().getZone(x, y, z, L2TownZone.class);
 	}
 	
 	private static class SingletonHolder

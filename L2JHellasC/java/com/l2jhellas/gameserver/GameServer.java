@@ -120,7 +120,6 @@ import com.l2jhellas.gameserver.scrips.loaders.ScriptLoader;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
-import com.l2jhellas.gameserver.taskmanager.KnownListUpdateTaskManager;
 import com.l2jhellas.gameserver.taskmanager.MemoryWatchOptimize;
 import com.l2jhellas.gameserver.taskmanager.TaskManager;
 import com.l2jhellas.mmocore.network.SelectorConfig;
@@ -214,7 +213,7 @@ public class GameServer
 		NpcData.getInstance();
 		if (Config.ALLOW_NPC_WALKERS)
 		{
-			NpcWalkerRoutesData.load();
+			NpcWalkerRoutesData.getInstance();
 		}
 
 		Util.printSection("Characters");
@@ -316,8 +315,6 @@ public class GameServer
 		{
 			_log.info(GameServer.class.getSimpleName() + ": Scripts are disabled by Config.");
 		}
-		
-		KnownListUpdateTaskManager.getInstance();
 		
 		Util.printSection("Customs");
 		RunCustoms();

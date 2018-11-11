@@ -180,6 +180,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 			if (activeChar.getParty() != null)
 				activeChar.getParty().broadcastToPartyMembers(activeChar, new PartyMemberPosition(activeChar.getParty()));
 			
+			
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 	}

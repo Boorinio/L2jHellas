@@ -19,6 +19,7 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.Future;
 
 import com.l2jhellas.Config;
@@ -34,6 +35,7 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2SkillType;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -220,7 +222,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 			// Check if the L2Player target has karma (=PK)
 			if (target instanceof L2PcInstance && ((L2PcInstance) target).getKarma() > 0)
 				// Los Check
-				return GeoEngine.canSeeTarget(me, target,false);
+				return  ((Config.GEODATA) ? !GeoEngine.canSeeTarget(me,target, me.isFlying()) :!GeoEngine.canSeeTarget(me,target));
 			
 			//if (target instanceof L2Summon)
 			//	return ((L2Summon)target).getKarma() > 0;
@@ -228,7 +230,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 			boolean guardsAttackAggroMobs = false;
 			// Check if the L2MonsterInstance target is aggressive
 			if (target instanceof L2MonsterInstance && guardsAttackAggroMobs)
-				return (((L2MonsterInstance) target).isAggressive() && GeoEngine.canSeeTarget(me, target,false));
+				return (((L2MonsterInstance) target).isAggressive() && ((Config.GEODATA) ? !GeoEngine.canSeeTarget(me,target, me.isFlying()) :!GeoEngine.canSeeTarget(me,target)));
 			
 			return false;
 		}
@@ -241,7 +243,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 			
 			// Check if the L2Player target has karma (=PK)
 			if (target instanceof L2PcInstance && ((L2PcInstance) target).getKarma() > 0)
-				return GeoEngine.canSeeTarget(me, target,false); // Los Check
+				return ((Config.GEODATA) ? !GeoEngine.canSeeTarget(me,target, me.isFlying()) :!GeoEngine.canSeeTarget(me,target)); // Los Check
 			else
 				return false;
 		}
@@ -333,7 +335,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 				L2Attackable npc = (L2Attackable) _actor;
 				
 				// If its _knownPlayer isn't empty set the Intention to AI_INTENTION_ACTIVE
-				if (!npc.getKnownList().getKnownPlayers().isEmpty())
+				if (!L2World.getInstance().getVisibleObjects(npc, L2PcInstance.class).isEmpty())
 					intention = AI_INTENTION_ACTIVE;
 				else
 				{
@@ -432,7 +434,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		if (_globalAggro >= 0)
 		{
 			// Get all visible objects inside its Aggro Range
-			final Collection<L2Object> objs = _actor.getKnownList().getKnownObjects().values();
+			final Collection<L2Object> objs = L2World.getInstance().getVisibleObjects(_actor, L2Object.class,2000);
 			//synchronized (npc.getKnownList().getKnownObjects())
 			{
 				for (L2Object obj : objs)
@@ -607,7 +609,9 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		    
 			//_log.info("Curent pos ("+getX()+", "+getY()+"), moving to ("+x1+", "+y1+").");
 			// Move the actor to Location (x,y,z) server side AND client side by sending Server->Client packet CharMoveToLocation (broadcast)
-			moveTo(x1, y1, z1);
+		    
+			//moveTo(x1, y1, z1);
+			setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(x1, y1, z1, 0));
 		}
 	}
 	
@@ -665,7 +669,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 			String faction_id = ((L2Npc) _actor).getFactionId();
 			
 			// Go through all L2Object that belong to its faction
-			Collection<L2Object> objs = _actor.getKnownList().getKnownObjects().values();
+			final Collection<L2Object> objs = L2World.getInstance().getVisibleObjects(_actor, L2Object.class,2000);
 			//synchronized (_actor.getKnownList().getKnownObjects())
 			try
 			{
@@ -751,8 +755,8 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		// circling around the target
 		if (!_actor.isMovementDisabled() && Rnd.nextInt(100) <= 33) // check it once per 3 seconds
 		{
-
-			for (L2Object nearby : _actor.getKnownList().getKnownMonstersInRadius(actorCollision))
+			final Collection<L2MonsterInstance> nearmons = L2World.getInstance().getVisibleObjects(_actor, L2MonsterInstance.class,actorCollision);
+			for (L2Object nearby : nearmons)
 			{
 				if(nearby==null)
 					continue;
@@ -928,10 +932,14 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 					{
 						continue;
 					}
+				
 					if (sk.getTargetType() == L2SkillTargetType.TARGET_ONE)
-						for (L2Character obj : _actor.getKnownList().getKnownCharactersInRadius(sk.getCastRange() + _actor.getTemplate().collisionRadius))
+					{
+						final List<L2Attackable> objs =L2World.getInstance().getVisibleObjects(_actor, L2Attackable.class,sk.getCastRange() + _actor.getTemplate().collisionRadius);
+					
+						for (L2Character obj :objs)
 						{
-							if (!(obj instanceof L2Attackable) || obj.isDead())
+							if (obj.isDead())
 								continue;
 							
 							L2Attackable targets = ((L2Attackable) obj);
@@ -949,6 +957,8 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 								}
 							}
 						}
+						
+				}
 					if (isParty(sk))
 					{
 						clientStopMoving(null);
@@ -993,9 +1003,12 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 						continue;
 					}
 					if (sk.getTargetType() == L2SkillTargetType.TARGET_ONE)
-						for (L2Character obj : _actor.getKnownList().getKnownCharactersInRadius(sk.getCastRange() + _actor.getTemplate().collisionRadius))
+					{
+						final List<L2Attackable> objs =L2World.getInstance().getVisibleObjects(_actor, L2Attackable.class,sk.getCastRange() + _actor.getTemplate().collisionRadius);
+
+						for (L2Character obj :objs)
 						{
-							if (!(obj instanceof L2Attackable) || !obj.isDead())
+							if (obj.isDead())
 								continue;
 							
 							L2Attackable targets = ((L2Attackable) obj);
@@ -1012,6 +1025,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 								}
 							}
 						}
+					}
 					if (isParty(sk))
 					{
 						clientStopMoving(null);
@@ -1240,9 +1254,12 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 				}
 				
 				if (sk.getTargetType() == L2SkillTargetType.TARGET_ONE)
-					for (L2Character obj : _actor.getKnownList().getKnownCharactersInRadius(sk.getCastRange() + _actor.getTemplate().collisionRadius))
-					{
-						if (!(obj instanceof L2Attackable) || obj.isDead())
+				{
+				final List<L2Attackable> objs =L2World.getInstance().getVisibleObjects(_actor, L2Attackable.class,sk.getCastRange() + _actor.getTemplate().collisionRadius);
+
+				for (L2Character obj :objs)
+				{
+						if (obj.isDead())
 							continue;
 						
 						L2Attackable targets = ((L2Attackable) obj);
@@ -1259,15 +1276,15 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 								return true;
 							}
 						}
-					}
+				}
+				}
 				if (isParty(sk))
 				{
-					for (L2Character obj : _actor.getKnownList().getKnownCharactersInRadius(sk.getSkillRadius() + _actor.getTemplate().collisionRadius))
+					final List<L2Attackable> objs =L2World.getInstance().getVisibleObjects(_actor, L2Attackable.class,sk.getSkillRadius() + _actor.getTemplate().collisionRadius);
+
+				    for (L2Character obj :objs)
 					{
-						if (!(obj instanceof L2Attackable))
-						{
-							continue;
-						}
+		
 						L2Npc targets = ((L2Npc) obj);
 						L2Npc actors = ((L2Npc) _actor);
 						if (actors.getFactionId() != null && targets.getFactionId().equals(actors.getFactionId()))
@@ -1305,9 +1322,11 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 						}
 					}
 					
-					for (L2Character obj : _actor.getKnownList().getKnownCharactersInRadius(sk.getCastRange() + _actor.getTemplate().collisionRadius))
+					final List<L2Attackable> objs =L2World.getInstance().getVisibleObjects(_actor, L2Attackable.class,sk.getCastRange() + _actor.getTemplate().collisionRadius);
+
+				    for (L2Character obj :objs)
 					{
-						if (!(obj instanceof L2Attackable) || !obj.isDead())
+						if (obj.isDead())
 							continue;
 						
 						L2Attackable targets = ((L2Attackable) obj);
@@ -1327,7 +1346,9 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 				}
 				else if (isParty(sk))
 				{
-					for (L2Character obj : _actor.getKnownList().getKnownCharactersInRadius(sk.getSkillRadius() + _actor.getTemplate().collisionRadius))
+					final List<L2Attackable> objs =L2World.getInstance().getVisibleObjects(_actor, L2Attackable.class,sk.getSkillRadius() + _actor.getTemplate().collisionRadius);
+
+				    for (L2Character obj :objs)
 					{
 						if (!(obj instanceof L2Attackable))
 						{
@@ -1874,7 +1895,10 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 				
 				//----------------------------------------------------------------------
 				//If there is nearby Target with aggro, start going on random target that is attackable
-				for (L2Character obj : _actor.getKnownList().getKnownCharactersInRadius(range))
+				
+				final List<L2Character> objs =L2World.getInstance().getVisibleObjects(_actor, L2Character.class,range);
+
+			    for (L2Character obj :objs)
 				{
 					if (obj.isDead() || !GeoEngine.canSeeTarget(_actor, obj,false))
 						continue;
@@ -1917,9 +1941,11 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 				double dist = 0;
 				double dist2 = 0;
 				int range = 0;
-				for (L2Character obj : _actor.getKnownList().getKnownCharactersInRadius(range))
+				final List<L2Attackable> objs =L2World.getInstance().getVisibleObjects(_actor, L2Attackable.class,range);
+
+			    for (L2Character obj :objs)
 				{
-					if (!(obj instanceof L2Attackable) || obj.isDead() || !GeoEngine.canSeeTarget(_actor, obj,false))
+					if (obj.isDead() || !GeoEngine.canSeeTarget(_actor, obj,false))
 						continue;
 					
 					L2Attackable targets = ((L2Attackable) obj);
@@ -1954,7 +1980,9 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 			double dist2 = 0;
 			int range = 0;
 			range = sk.getCastRange() + _actor.getTemplate().collisionRadius + getAttackTarget().getTemplate().collisionRadius;
-			for (L2Character obj : _actor.getKnownList().getKnownCharactersInRadius(range))
+			
+			final List<L2Character> objs =L2World.getInstance().getVisibleObjects(_actor, L2Character.class,range);
+		    for (L2Character obj :objs)
 			{
 				if (obj == null || obj.isDead() || !GeoEngine.canSeeTarget(_actor, obj,false))
 					continue;
@@ -2028,8 +2056,8 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		
 		if (!(_actor instanceof L2GuardInstance))
 		{
-			Collection<L2Object> objs = _actor.getKnownList().getKnownObjects().values();
-			for (L2Object target : objs)
+			final List<L2Object> objs =L2World.getInstance().getVisibleObjects(_actor, L2Object.class,2000);
+		    for (L2Object target :objs)
 			{
 				try
 				{
@@ -2116,8 +2144,8 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 			}
 		if (!(_actor instanceof L2GuardInstance))
 		{
-			Collection<L2Object> objs = _actor.getKnownList().getKnownObjects().values();
-			for (L2Object target : objs)
+			final List<L2Object> objs =L2World.getInstance().getVisibleObjects(_actor, L2Object.class,2000);
+		    for (L2Object target :objs)
 			{
 				L2Character obj = null;
 				if (target instanceof L2Character)
@@ -2213,8 +2241,8 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		
 		if (!(_actor instanceof L2GuardInstance))
 		{
-			Collection<L2Object> objs = _actor.getKnownList().getKnownObjects().values();
-			for (L2Object target : objs)
+			final List<L2Object> objs =L2World.getInstance().getVisibleObjects(_actor, L2Object.class,2000);
+		    for (L2Object target :objs)
 			{
 				L2Character obj = null;
 				if (target instanceof L2Character)

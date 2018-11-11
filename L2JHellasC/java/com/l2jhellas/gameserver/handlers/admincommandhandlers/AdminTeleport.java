@@ -118,7 +118,7 @@ public class AdminTeleport implements IAdminCommandHandler
 				L2PcInstance player = L2World.getInstance().getPlayer(targetName);
 				if (player != null)
 				{
-					Location loc = MapRegionTable.getInstance().getTeleToLocation(player, MapRegionTable.TeleportWhereType.Town);
+					Location loc = MapRegionTable.getInstance().getTeleToLocation(player, MapRegionTable.TeleportWhereType.TOWN);
 					player.setInstanceId(0);
 					player.teleToLocation(loc, true);
 					activeChar.setTarget(null);

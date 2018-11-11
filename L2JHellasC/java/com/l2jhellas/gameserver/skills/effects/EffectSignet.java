@@ -22,6 +22,7 @@ import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2Spawn;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.L2WorldRegion;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -107,7 +108,7 @@ class EffectSignet extends L2Effect
 
 		region.addZone(zone);
 
-		for (L2Character c : getEffected().getKnownList().getKnownCharacters())
+		for (L2Character c : L2World.getInstance().getVisibleObjects(getEffected(), L2Character.class))
 			zone.revalidateInZone(c);
 
 		zone.revalidateInZone(getEffected());

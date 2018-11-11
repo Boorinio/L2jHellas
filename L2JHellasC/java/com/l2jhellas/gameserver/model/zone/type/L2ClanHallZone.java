@@ -96,7 +96,7 @@ public class L2ClanHallZone extends L2SpawnZone
 			if (player.getClanId() == owningClanId)
 				continue;
 			
-			player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+			player.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 		}
 	}
 	

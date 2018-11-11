@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.group;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
@@ -62,7 +63,8 @@ public class StakatoNest extends AbstractNpcAI
 	{
 		if (npc.getCurrentHp() / npc.getMaxHp() < 0.3 && Rnd.get(100) < 5)
 		{
-			for (L2MonsterInstance follower : npc.getKnownList().getKnownTypeInRadius(L2MonsterInstance.class, 400))
+			
+			for (L2MonsterInstance follower :L2World.getInstance().getVisibleObjects(npc,L2MonsterInstance.class, 400))
 			{
 				if (follower.getNpcId() == StakatoFollower && !follower.isDead())
 				{
@@ -81,7 +83,7 @@ public class StakatoNest extends AbstractNpcAI
 		switch (npc.getNpcId())
 		{
 			case MaleSpikedStakato1:
-				for (L2MonsterInstance angryFemale : npc.getKnownList().getKnownTypeInRadius(L2MonsterInstance.class, 400))
+				for (L2MonsterInstance angryFemale :L2World.getInstance().getVisibleObjects(npc,L2MonsterInstance.class, 400))
 				{
 					if (angryFemale.getNpcId() == FemaleSpikedStakato && !angryFemale.isDead())
 					{
@@ -95,7 +97,7 @@ public class StakatoNest extends AbstractNpcAI
 				break;
 			
 			case FemaleSpikedStakato:
-				for (L2MonsterInstance morphingMale : npc.getKnownList().getKnownTypeInRadius(L2MonsterInstance.class, 400))
+				for (L2MonsterInstance morphingMale :L2World.getInstance().getVisibleObjects(npc,L2MonsterInstance.class, 400))
 				{
 					if (morphingMale.getNpcId() == MaleSpikedStakato1 && !morphingMale.isDead())
 					{
@@ -108,7 +110,7 @@ public class StakatoNest extends AbstractNpcAI
 				break;
 			
 			case SpikedStakatoNurse1:
-				for (L2MonsterInstance baby : npc.getKnownList().getKnownTypeInRadius(L2MonsterInstance.class, 400))
+				for (L2MonsterInstance baby :L2World.getInstance().getVisibleObjects(npc,L2MonsterInstance.class, 400))
 				{
 					if (baby.getNpcId() == SpikedStakatoBaby && !baby.isDead())
 					{
@@ -122,7 +124,7 @@ public class StakatoNest extends AbstractNpcAI
 				break;
 			
 			case SpikedStakatoBaby:
-				for (L2MonsterInstance morphingNurse : npc.getKnownList().getKnownTypeInRadius(L2MonsterInstance.class, 400))
+				for (L2MonsterInstance morphingNurse :L2World.getInstance().getVisibleObjects(npc,L2MonsterInstance.class, 400))
 				{
 					if (morphingNurse.getNpcId() == SpikedStakatoNurse1 && !morphingNurse.isDead())
 					{

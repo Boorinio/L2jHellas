@@ -20,11 +20,11 @@ import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.actor.knownlist.NullKnownList;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ShowTownMap;
+import com.l2jhellas.gameserver.network.serverpackets.StaticObject;
 
 /**
  * GODSON ROX!
@@ -62,7 +62,6 @@ public class L2StaticObjectInstance extends L2Object
 	public L2StaticObjectInstance(int objectId)
 	{
 		super(objectId);
-		setKnownList(new NullKnownList(this));
 	}
 
 	public int getType()
@@ -161,5 +160,11 @@ public class L2StaticObjectInstance extends L2Object
 	public void setBusy(boolean busy)
 	{
 		_isBusy = busy;
+	}
+
+	@Override
+	public void sendInfo(L2PcInstance activeChar)
+	{
+		activeChar.sendPacket(new StaticObject(this));
 	}
 }

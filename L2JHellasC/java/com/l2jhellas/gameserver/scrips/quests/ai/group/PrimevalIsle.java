@@ -18,6 +18,7 @@ import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2Spawn;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -79,9 +80,9 @@ public class PrimevalIsle extends AbstractNpcAI
 		if (event.equalsIgnoreCase("skill"))
 		{
 			int playableCounter = 0;
-			for (L2Playable playable : npc.getKnownList().getKnownTypeInRadius(L2Playable.class, npc.getAggroRange()))
+			for (L2Playable obj : L2World.getInstance().getVisibleObjects(npc, L2Playable.class, npc.getAggroRange()))
 			{
-				if (!playable.isDead())
+				if (!obj.isDead())
 					playableCounter++;
 			}
 			
@@ -134,7 +135,7 @@ public class PrimevalIsle extends AbstractNpcAI
 		final L2Character originalAttacker = (isPet ? player.getPet() : player);
 		
 		// Make all mobs found in a radius 2k aggressive towards attacker.
-		for (L2Attackable obj : player.getKnownList().getKnownTypeInRadius(L2Attackable.class, 2000))
+		for (L2Attackable obj : L2World.getInstance().getVisibleObjects(npc,L2Attackable.class, 2000))
 		{
 			if (obj.isDead() || obj == npc)
 				continue;

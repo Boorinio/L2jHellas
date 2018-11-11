@@ -15,10 +15,11 @@
 package com.l2jhellas.gameserver.model.zone;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.model.L2Object;
@@ -41,14 +42,13 @@ protected static final Logger _log = Logger.getLogger(L2ZoneType.class.getName()
 	
 	private final int _id;
 	protected L2ZoneForm _zone;
-	protected List<L2Character> _characterList;
-	
+	protected final Map<Integer, L2Character> _characterList = new ConcurrentHashMap<>();
+
 	private Map<QuestEventType, List<Quest>> _questEvents;
 	
 	protected L2ZoneType(int id)
 	{
 		_id = id;
-		_characterList = new CopyOnWriteArrayList<>();
 	}
 	
 	/**
@@ -145,53 +145,50 @@ protected static final Logger _log = Logger.getLogger(L2ZoneType.class.getName()
 			return;
 		
 		// If the object is inside the zone...
-		if (isInsideZone(character.getX(), character.getY(), character.getZ()))
+		if (isInsideZone(character))
 		{
 			// Was the character not yet inside this zone?
-			if (!_characterList.contains(character))
+			if (!_characterList.containsKey(character.getObjectId()))
 			{
-				List<Quest> quests = getQuestByEvent(QuestEventType.ON_ENTER_ZONE);
+				// Notify to scripts.
+				final List<Quest> quests = getQuestByEvent(QuestEventType.ON_ENTER_ZONE);
 				if (quests != null)
 				{
 					for (Quest quest : quests)
 						quest.notifyEnterZone(character, this);
 				}
-				_characterList.add(character);
+				
+				// Register player.
+				_characterList.put(character.getObjectId(), character);
+				
+				// Notify Zone implementation.
 				onEnter(character);
 			}
 		}
 		else
-		{
-			// Was the character inside this zone?
-			if (_characterList.contains(character))
-			{
-				List<Quest> quests = getQuestByEvent(QuestEventType.ON_EXIT_ZONE);
-				if (quests != null)
-				{
-					for (Quest quest : quests)
-						quest.notifyExitZone(character, this);
-				}
-				_characterList.remove(character);
-				onExit(character);
-			}
-		}
+			removeCharacter(character);
 	}
 	
 	/**
-	 * Force fully removes a character from the zone Should use during teleport / logoff
-	 * @param character
+	 * Removes a character from the zone.
 	 */
 	public void removeCharacter(L2Character character)
 	{
-		if (_characterList.contains(character))
+		// Was the character inside this zone?
+		if (_characterList.containsKey(character.getObjectId()))
 		{
-			List<Quest> quests = getQuestByEvent(QuestEventType.ON_EXIT_ZONE);
+			// Notify to scripts.
+			final List<Quest> quests = getQuestByEvent(QuestEventType.ON_EXIT_ZONE);
 			if (quests != null)
 			{
 				for (Quest quest : quests)
 					quest.notifyExitZone(character, this);
 			}
-			_characterList.remove(character);
+			
+			// Unregister player.
+			_characterList.remove(character.getObjectId());
+			
+			// Notify Zone implementation.
 			onExit(character);
 		}
 	}
@@ -202,7 +199,7 @@ protected static final Logger _log = Logger.getLogger(L2ZoneType.class.getName()
 	 */
 	public boolean isCharacterInZone(L2Character character)
 	{
-		return _characterList.contains(character);
+		return character!=null && _characterList.containsKey(character.getObjectId()) || isInsideZone(character.getX(), character.getY(), character.getZ());
 	}
 	
 	protected abstract void onEnter(L2Character character);
@@ -212,10 +209,10 @@ protected static final Logger _log = Logger.getLogger(L2ZoneType.class.getName()
 	public abstract void onDieInside(L2Character character);
 	
 	public abstract void onReviveInside(L2Character character);
-	
-	public List<L2Character> getCharactersInside()
+
+	public Collection<L2Character> getCharactersInside()
 	{
-		return _characterList;
+		return _characterList.values();
 	}
 	
 	/**
@@ -229,7 +226,7 @@ protected static final Logger _log = Logger.getLogger(L2ZoneType.class.getName()
 	{
 		List<A> result = new ArrayList<>();
 		
-		for (L2Object obj : _characterList)
+		for (L2Object obj : _characterList.values())
 		{
 			if (type.isAssignableFrom(obj.getClass()))
 				result.add((A) obj);
@@ -270,7 +267,7 @@ protected static final Logger _log = Logger.getLogger(L2ZoneType.class.getName()
 		if (_characterList.isEmpty())
 			return;
 		
-		for (L2Character character : _characterList)
+		for (L2Character character : _characterList.values())
 		{
 			if (character != null && character instanceof L2PcInstance)
 				character.sendPacket(packet);

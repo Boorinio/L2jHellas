@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Logger;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.TaskPriority;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -23,6 +21,7 @@ import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.geodata.geoeditorcon.GeoEditorListener;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.serverpackets.CharMoveToLocation;
 import com.l2jhellas.gameserver.network.serverpackets.PartyMemberPosition;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
@@ -30,7 +29,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ValidateLocationInVehicle;
 
 public class ValidatePosition extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(ValidatePosition.class.getName());
 	private static final String _C__48_VALIDATEPOSITION = "[C] 48 ValidatePosition";
 
 	public TaskPriority getPriority() 
@@ -77,21 +75,17 @@ public class ValidatePosition extends L2GameClientPacket
 			activeChar.setClientHeading(_heading);
 			int realX = activeChar.getX();
 			int realY = activeChar.getY();
+		
+			
 			//int realZ = activeChar.getZ();
 			double dx = _x - realX;
 			double dy = _y - realY;
 			double diffSq = Math.sqrt(dx*dx + dy*dy);
 			//double dz = realZ - _z;
 
-	        if(!activeChar.isFlying() && !activeChar.isInWater())
+	        if(!activeChar.isFlying() && !activeChar.isInsideZone(ZoneId.WATER))
             {
-
-	        	//not ready yet.
-				//if (dz >= 333 && Config.CONTROL_HEIGHT_DAMAGE)
-				//{
-					//activeChar.CalculateFalling((int)dz);
-			    //}
-
+	
 	        	//temporary fix for -> (((if))) holes found.
 				if (_z < -15000 || _z > 15000)
 				{
@@ -99,6 +93,9 @@ public class ValidatePosition extends L2GameClientPacket
 					activeChar.setTarget(activeChar);
 					tsekarepos(activeChar);
 				}
+				
+				if (activeChar.isFalling(_z))
+					return;
             }
 
 			if (diffSq > 0 && diffSq < 1000) // if too large, messes observation
@@ -149,12 +146,12 @@ public class ValidatePosition extends L2GameClientPacket
 			activeChar.setClientHeading(_heading); // No real need to validate heading.
 			int realX = activeChar.getX();
 			int realY = activeChar.getY();
-			int realZ = activeChar.getZ();
+			//int realZ = activeChar.getZ();
 			double dx = _x - realX;
 			double dy = _y - realY;
 			double diffSq = (dx*dx + dy*dy);
 			
-	        if(!activeChar.isFlying() && !activeChar.isInWater())
+	        if(!activeChar.isFlying() && !activeChar.isInsideZone(ZoneId.WATER))
             {
 	        	//temporary fix for -> (((if))) holes found.
 				if (_z < -15000 || _z > 15000)
@@ -163,39 +160,30 @@ public class ValidatePosition extends L2GameClientPacket
 					activeChar.setTarget(activeChar);
 					tsekarepos(activeChar);
 				}
+				
+				if (activeChar.isFalling(_z))
+					return;
             }
 	        
 			if (diffSq < 250000)
 			{
 				activeChar.setXYZ(realX,realY,_z);
 			}
-			if (Config.DEBUG)
+			if (diffSq > 1000)
 			{
-				_log.fine("client pos: "+ _x + " "+ _y + " "+ _z +" head "+ _heading);
-				_log.fine("server pos: "+ realX + " "+realY+ " "+realZ +" head "+activeChar.getHeading());
-			}
-			if (Config.DEVELOPER)
-			{
-				if (diffSq > 1000)
+				if (activeChar.isInBoat())
 				{
-					if (Config.DEBUG) _log.fine("client/server dist diff "+ (int)Math.sqrt(diffSq));
-					if (activeChar.isInBoat())
-					{
 						sendPacket(new ValidateLocationInVehicle(activeChar));
-					}
-					else
-					{
-						activeChar.sendPacket(new ValidateLocation(activeChar));
-					}
+				}
+				else
+				{
+					activeChar.sendPacket(new ValidateLocation(activeChar));
 				}
 			}
 		}
 
 	    if (activeChar.getParty() != null)
 			activeChar.getParty().broadcastToPartyMembers(activeChar, new PartyMemberPosition(activeChar.getParty()));
-
-		if (Config.ALLOW_WATER)
-			activeChar.checkWaterState();
 
 		if (Config.ACCEPT_GEOEDITOR_CONN)
 		{
@@ -233,7 +221,7 @@ public class ValidatePosition extends L2GameClientPacket
 			}
 			else
 			{
-				activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+				activeChar.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 			}
 		}
 		else if (activeChar.getClientX() != 0 && activeChar.getClientY() != 0 && activeChar.getClientZ() != 0)
@@ -245,12 +233,12 @@ public class ValidatePosition extends L2GameClientPacket
 			}
 			else
 			{
-				activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+				activeChar.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 			}
 		}
 		else
 		{
-			activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+			activeChar.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 		}
 	}
 }

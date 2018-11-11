@@ -40,7 +40,7 @@ public final class ChangeWaitType2 extends L2GameClientPacket
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		
+
 		player.SitStand(player.getTarget(), _typeStand);
 	}
 

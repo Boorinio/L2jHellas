@@ -497,7 +497,9 @@
 
 	<!-- ADMIN ZONE -->
 	<admin command="admin_zone_check" accessLevel="7" />
+	<admin command="admin_zone_visual" accessLevel="7" />
 	<admin command="admin_zone_reload" accessLevel="7" />
+	
 
 	<!-- ADMIN L2OFF -->
 	<admin command="admin_who" accessLevel="7" />

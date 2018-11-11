@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import com.l2jhellas.gameserver.TaskPriority;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
@@ -66,7 +67,7 @@ public class RequestRecordInfo extends L2GameClientPacket
 		//_activeChar.getKnownList().refreshInfos();
 		_activeChar.sendPacket(new UserInfo(_activeChar));
 
-		for (L2Object object : _activeChar.getKnownList().getKnownObjects().values())
+		for (L2Object  object : L2World.getInstance().getVisibleObjects(_activeChar,L2Object.class))
 		{
 			if (object == null)
 				continue;
@@ -121,16 +122,14 @@ public class RequestRecordInfo extends L2GameClientPacket
 						otherPlayer.getPosition().setWorldPosition(otherPlayer.getBoat().getPosition().getWorldPosition());
 						_activeChar.sendPacket(new CharInfo(otherPlayer));
 						int relation = otherPlayer.getRelation(_activeChar);
-						if (otherPlayer.getKnownList().getKnownRelations().get(_activeChar.getObjectId()) != null && otherPlayer.getKnownList().getKnownRelations().get(_activeChar.getObjectId()) != relation)
-							_activeChar.sendPacket(new RelationChanged(otherPlayer, relation, _activeChar.isAutoAttackable(otherPlayer)));
+						_activeChar.sendPacket(new RelationChanged(otherPlayer, relation, _activeChar.isAutoAttackable(otherPlayer)));
 						_activeChar.sendPacket(new GetOnVehicle(otherPlayer.getObjectId(), otherPlayer.getBoat().getObjectId(), otherPlayer.getInVehiclePosition()));		
 					}
 					else
 					{
 						_activeChar.sendPacket(new CharInfo(otherPlayer));
 						int relation = otherPlayer.getRelation(_activeChar);
-						if (otherPlayer.getKnownList().getKnownRelations().get(_activeChar.getObjectId()) != null && otherPlayer.getKnownList().getKnownRelations().get(_activeChar.getObjectId()) != relation)
-							_activeChar.sendPacket(new RelationChanged(otherPlayer, relation, _activeChar.isAutoAttackable(otherPlayer)));
+						_activeChar.sendPacket(new RelationChanged(otherPlayer, relation, _activeChar.isAutoAttackable(otherPlayer)));
 					}
 				}
 

@@ -26,7 +26,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.L2WorldRegion;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.actor.knownlist.GuardKnownList;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -77,19 +76,9 @@ public final class L2GuardInstance extends L2Attackable
 	public L2GuardInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-		getKnownList(); // init knownlist
 
 		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new ReturnTask(), RETURN_INTERVAL, RETURN_INTERVAL + Rnd.nextInt(60000));
 	}
-
-	@Override
-	public final GuardKnownList getKnownList()
-	{
-		if (super.getKnownList() == null || !(super.getKnownList() instanceof GuardKnownList))
-			setKnownList(new GuardKnownList(this));
-		return (GuardKnownList) super.getKnownList();
-	}
-
 	/**
 	 * Return True if the attacker is a L2MonsterInstance.<BR>
 	 * <BR>
@@ -157,7 +146,7 @@ public final class L2GuardInstance extends L2Attackable
 			_log.finer(getObjectId() + ": Home location set to" + " X:" + _homeX + " Y:" + _homeY + " Z:" + _homeZ);
 
 		// check the region where this mob is, do not activate the AI if region is inactive.
-		L2WorldRegion region = L2World.getInstance().getRegion(getX(), getY());
+		L2WorldRegion region = L2World.getInstance().getRegion(getX(), getY(),getZ());
 		if ((region != null) && (!region.isActive()))
 			((L2AttackableAI) getAI()).stopAITask();
 	}

@@ -67,7 +67,7 @@ public class L2SignetZone extends L2ZoneType
 	{
 		_region.removeZone(this);
 
-		for (L2Character member : _characterList)
+		for (L2Character member : _characterList.values())
 			member.stopSkillEffects(_skill.getId());
 
 		if (!_isOffensive)
@@ -95,13 +95,13 @@ public class L2SignetZone extends L2ZoneType
 	public L2Character[] getCharactersInZone()
 	{
 		ArrayList<L2Character> charsInZone = new ArrayList<L2Character>();
-		for (L2Character character : _characterList)
+		for (L2Character character : _characterList.values())
 		{
 			if (!_isOffensive)
 				charsInZone.add(character);
 			else if (character != _owner && !character.isInsidePeaceZone(_owner, character))
 				charsInZone.add(character);
 		}
-		return charsInZone.toArray(new L2Character[_characterList.size()]);
+		return charsInZone.toArray(new L2Character[_characterList.values().size()]);
 	}
 }

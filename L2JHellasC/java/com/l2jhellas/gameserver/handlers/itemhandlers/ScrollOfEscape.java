@@ -163,11 +163,11 @@ public class ScrollOfEscape implements IItemHandler
 			{
 				if ((_itemId == 1830 || _itemId == 5859) && CastleManager.getInstance().getCastleByOwner(_activeChar.getClan()) != null) // escape to castle if own's one
 				{
-					_activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Castle);
+					_activeChar.teleToLocation(MapRegionTable.TeleportWhereType.CASTLE);
 				}
 				else if ((_itemId == 1829 || _itemId == 5858) && _activeChar.getClan() != null && ClanHallManager.getInstance().getClanHallByOwner(_activeChar.getClan()) != null) // escape to clan hall if own's one
 				{
-					_activeChar.teleToLocation(MapRegionTable.TeleportWhereType.ClanHall);
+					_activeChar.teleToLocation(MapRegionTable.TeleportWhereType.CLAN_HALL);
 				}
 				else if (_itemId == 5858) // do nothing
 				{
@@ -181,7 +181,7 @@ public class ScrollOfEscape implements IItemHandler
 				else
 				{
 					if (_itemId < 7117)
-						_activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+						_activeChar.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 					else
 					{
 						switch (_itemId)
@@ -268,7 +268,7 @@ public class ScrollOfEscape implements IItemHandler
 								_activeChar.teleToLocation(108275, -53785, -2524, true);  // Varka Silenos Village
 							break;
 							default:
-								_activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+								_activeChar.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 							break;
 						}
 					}

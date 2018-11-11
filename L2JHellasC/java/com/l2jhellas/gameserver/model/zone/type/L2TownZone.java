@@ -20,21 +20,15 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2SpawnZone;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
 
-/**
- * A Town zone
- * @author durgus
- */
 public class L2TownZone extends L2SpawnZone
 {
 	private int _townId;
-	private int _taxById;
+	private int _castleId;
 	private boolean _isPeaceZone;
 	
 	public L2TownZone(int id)
 	{
 		super(id);
-		
-		_taxById = 0;
 		
 		// Default peace zone
 		_isPeaceZone = true;
@@ -45,8 +39,8 @@ public class L2TownZone extends L2SpawnZone
 	{
 		if (name.equals("townId"))
 			_townId = Integer.parseInt(value);
-		else if (name.equals("taxById"))
-			_taxById = Integer.parseInt(value);
+		else if (name.equals("castleId"))
+			_castleId = Integer.parseInt(value);
 		else if (name.equals("isPeaceZone"))
 			_isPeaceZone = Boolean.parseBoolean(value);
 		else
@@ -61,7 +55,7 @@ public class L2TownZone extends L2SpawnZone
 			// PVP possible during siege, now for siege participants only
 			// Could also check if this town is in siege, or if any siege is going on
 			if (((L2PcInstance) character).getSiegeState() != 0 && Config.ZONE_TOWN == 1)
-				return;
+				return;		
 		}
 		
 		if (_isPeaceZone && Config.ZONE_TOWN != 2)
@@ -73,6 +67,7 @@ public class L2TownZone extends L2SpawnZone
 	@Override
 	protected void onExit(L2Character character)
 	{
+
 		if (_isPeaceZone)
 			character.setInsideZone(ZoneId.PEACE, false);
 		
@@ -104,7 +99,7 @@ public class L2TownZone extends L2SpawnZone
 	 */
 	public final int getTaxById()
 	{
-		return _taxById;
+		return _castleId;
 	}
 	
 	public final boolean isPeaceZone()

@@ -25,6 +25,9 @@ import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
+import com.l2jhellas.gameserver.network.serverpackets.PetInfo;
+import com.l2jhellas.gameserver.network.serverpackets.PetItemList;
 import com.l2jhellas.gameserver.network.serverpackets.SetSummonRemainTime;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -341,5 +344,27 @@ public class L2SummonInstance extends L2Summon
 			sm.addNumber(damage);
 			getOwner().sendPacket(sm);
 		}
+	}
+
+	@Override
+	public void sendInfo(L2PcInstance activeChar)
+	{
+		L2Summon summon = this;
+
+		// Check if the L2PcInstance is the owner of the Pet
+		if (activeChar.equals(summon.getOwner()))
+		{
+			activeChar.sendPacket(new PetInfo(summon, 0));
+			// The PetInfo packet wipes the PartySpelled (list of active spells' icons). Re-add them
+			summon.updateEffectIcons(true);
+			
+			if (summon instanceof L2PetInstance)
+			{
+				activeChar.sendPacket(new PetItemList((L2PetInstance) summon));
+			}
+		}
+		else
+			activeChar.sendPacket(new NpcInfo(summon, activeChar));
+		
 	}
 }

@@ -21,6 +21,7 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -116,7 +117,7 @@ public class L2CabaleBufferInstance extends L2Npc
 			 * - Fighters: +25% Max Load, +25% Effect Resistance<BR>
 			 * - Mystics: +25% Magic Cancel Resist, +25% Effect Resistance<BR>
 			 */
-			for (L2PcInstance player : getKnownList().getKnownPlayers().values())
+			for (L2PcInstance player : L2World.getInstance().getVisibleObjects(_caster, L2PcInstance.class))
 			{
 				final int playerCabal = SevenSigns.getInstance().getPlayerCabal(player);
 

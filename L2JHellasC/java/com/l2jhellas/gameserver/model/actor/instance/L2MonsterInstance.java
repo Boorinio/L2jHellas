@@ -19,7 +19,6 @@ import java.util.concurrent.ScheduledFuture;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.actor.knownlist.MonsterKnownList;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.MinionList;
 
@@ -55,16 +54,7 @@ public class L2MonsterInstance extends L2Attackable
 	public L2MonsterInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-		getKnownList();	// init knownlist
 		_minionList = new MinionList(this);
-	}
-
-	@Override
-	public final MonsterKnownList getKnownList()
-	{
-		if ((super.getKnownList() == null) || !(super.getKnownList() instanceof MonsterKnownList))
-			setKnownList(new MonsterKnownList(this));
-		return (MonsterKnownList) super.getKnownList();
 	}
 
 	/**

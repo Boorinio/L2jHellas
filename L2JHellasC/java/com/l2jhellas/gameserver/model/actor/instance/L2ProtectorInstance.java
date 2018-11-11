@@ -20,6 +20,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
@@ -121,7 +122,7 @@ public class L2ProtectorInstance extends L2NpcInstance
 			 * For each known player in range, cast sleep if pvpFlag != 0 or Karma >0 Skill use is just for buff
 			 * animation
 			 */
-			for (L2PcInstance player : getKnownList().getKnownPlayers().values())
+			for (L2PcInstance player : L2World.getInstance().getVisibleObjects(_caster, L2PcInstance.class,3000))
 
 			{
 				if (player.getKarma() > 0 && Config.PROTECTOR_PLAYER_PK || player.getPvpFlag() != 0 && Config.PROTECTOR_PLAYER_PVP)

@@ -130,7 +130,7 @@ public class L2OlympiadStadiumZone extends L2SpawnZone
 		else
 			sm = SystemMessage.getSystemMessage(SystemMessageId.LEFT_COMBAT_ZONE);
 		
-		for (L2Character character : _characterList)
+		for (L2Character character : _characterList.values())
 		{
 			if (character == null)
 				continue;
@@ -181,7 +181,7 @@ public class L2OlympiadStadiumZone extends L2SpawnZone
 				if (summon != null)
 					summon.unSummon(_player);
 				
-				_player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+				_player.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 				_player = null;
 			}
 		}

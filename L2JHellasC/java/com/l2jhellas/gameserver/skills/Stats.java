@@ -87,6 +87,7 @@ public enum Stats
 	BREATH("breath"),
 	AGGRESSION("aggression"),
 	BLEED("bleed"),
+	FALL("fall"),
 	POISON("poison"),
 	STUN("stun"),
 	ROOT("root"),

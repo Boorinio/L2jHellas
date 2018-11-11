@@ -21,5 +21,25 @@ package com.l2jhellas.gameserver.model.base;
  */
 public enum Race
 {
-	human, elf, darkelf, orc, dwarf;
+	
+	human(1),
+	elf(1.5),
+	darkelf(1.5),
+	orc(0.9),
+	dwarf(0.8);
+
+	private final double _breathMultiplier;
+	
+	private Race(double breathMultiplier)
+	{
+		_breathMultiplier = breathMultiplier;
+	}
+	
+	/**
+	 * @return the breath multiplier.
+	 */
+	public double getBreathMultiplier()
+	{
+		return _breathMultiplier;
+	}
 }

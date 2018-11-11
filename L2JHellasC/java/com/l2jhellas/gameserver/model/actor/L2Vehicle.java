@@ -25,10 +25,10 @@ import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.knownlist.BoatKnownList;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
@@ -177,13 +177,6 @@ public abstract class L2Vehicle extends L2Character
 		runEngine(10);
 		return false;
 	}
-	
-	@Override
-	public void initKnownList()
-	{
-		setKnownList(new BoatKnownList(this));
-	}
-
 
 	public boolean isInDock()
 	{
@@ -207,7 +200,7 @@ public abstract class L2Vehicle extends L2Character
 	
 	public Location getOustLoc()
 	{
-		return _oustLoc != null ? _oustLoc : MapRegionTable.getInstance().getTeleToLocation(this, MapRegionTable.TeleportWhereType.Town);
+		return _oustLoc != null ? _oustLoc : MapRegionTable.getInstance().getTeleToLocation(this, MapRegionTable.TeleportWhereType.TOWN);
 	}
 	
 	public void oustPlayers()
@@ -292,7 +285,7 @@ public abstract class L2Vehicle extends L2Character
 	 */
 	public void payForRide(int itemId, int count, int oustX, int oustY, int oustZ)
 	{
-		for (L2PcInstance player : getKnownList().getKnownTypeInRadius(L2PcInstance.class, 1000))
+		for (L2PcInstance player : L2World.getInstance().getVisibleObjects(this, L2PcInstance.class, 1000))
 		{
 			if (player.isInBoat() && player.getBoat() == this)
 			{
@@ -328,7 +321,7 @@ public abstract class L2Vehicle extends L2Character
 		{
 			if (player != null && player.getVehicle() == this)
 			{
-				player.getPosition().setXYZ(getX(), getY(), getZ());
+				player.setXYZ(getX(), getY(), getZ());
 				player.revalidateZone(false);
 			}
 		}
@@ -355,7 +348,7 @@ public abstract class L2Vehicle extends L2Character
 		setXYZ(x, y, z);
 		
 		onTeleported();
-		revalidateZone();
+		revalidateZone(true);
 	}
 	
 	@Override
@@ -366,7 +359,7 @@ public abstract class L2Vehicle extends L2Character
 		{
 			setXYZ(pos.x, pos.y, pos.z);
 			setHeading(pos.heading);
-			revalidateZone();
+			revalidateZone(true);
 		}
 	}
 	

@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.MobGroup;
 import com.l2jhellas.gameserver.model.MobGroupTable;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
@@ -308,13 +308,9 @@ public class L2ControllableMobAI extends L2AttackableAI
 			{
 				String faction_id = ((L2Npc) _actor).getFactionId();
 
-				for (L2Object obj : _actor.getKnownList().getKnownObjects().values())
+				final List<L2Npc> objs = L2World.getInstance().getVisibleObjects(_actor, L2Npc.class,2000);
+			    for (L2Npc npc :objs)
 				{
-					if (!(obj instanceof L2Npc))
-						continue;
-
-					L2Npc npc = (L2Npc) obj;
-
 					if (faction_id != npc.getFactionId())
 						continue;
 
@@ -460,11 +456,9 @@ public class L2ControllableMobAI extends L2AttackableAI
 
 		List<L2Character> potentialTarget = new ArrayList<L2Character>();
 
-		for (L2Object obj : npc.getKnownList().getKnownObjects().values())
+		final List<L2Character> objs = L2World.getInstance().getVisibleObjects(_actor, L2Character.class,2000);
+	    for (L2Character obj :objs)
 		{
-			if (!(obj instanceof L2Character))
-				continue;
-
 			npcX = npc.getX();
 			npcY = npc.getY();
 			targetX = obj.getX();

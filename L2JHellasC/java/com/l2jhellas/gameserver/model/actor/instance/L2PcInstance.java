@@ -94,6 +94,7 @@ import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeReward;
+import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.FishData;
 import com.l2jhellas.gameserver.model.ForceBuff;
@@ -136,7 +137,6 @@ import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.L2Vehicle;
 import com.l2jhellas.gameserver.model.actor.appearance.PcAppearance;
-import com.l2jhellas.gameserver.model.actor.knownlist.PcKnownList;
 import com.l2jhellas.gameserver.model.actor.stat.PcStat;
 import com.l2jhellas.gameserver.model.actor.status.PcStatus;
 import com.l2jhellas.gameserver.model.base.ClassId;
@@ -184,6 +184,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ExSetCompassZoneCode;
 import com.l2jhellas.gameserver.network.serverpackets.ExStorageMaxCount;
 import com.l2jhellas.gameserver.network.serverpackets.FriendList;
 import com.l2jhellas.gameserver.network.serverpackets.GameGuardQuery;
+import com.l2jhellas.gameserver.network.serverpackets.GetOnVehicle;
 import com.l2jhellas.gameserver.network.serverpackets.HennaInfo;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
@@ -205,7 +206,10 @@ import com.l2jhellas.gameserver.network.serverpackets.PledgeSkillList;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeStatusChanged;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreListBuy;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreListSell;
+import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreMsgBuy;
+import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreMsgSell;
 import com.l2jhellas.gameserver.network.serverpackets.QuestList;
+import com.l2jhellas.gameserver.network.serverpackets.RecipeShopMsg;
 import com.l2jhellas.gameserver.network.serverpackets.RecipeShopSellList;
 import com.l2jhellas.gameserver.network.serverpackets.RelationChanged;
 import com.l2jhellas.gameserver.network.serverpackets.Ride;
@@ -224,6 +228,7 @@ import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.StopMove;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.TargetSelected;
+import com.l2jhellas.gameserver.network.serverpackets.TargetUnselected;
 import com.l2jhellas.gameserver.network.serverpackets.TitleUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.TradePressOtherOk;
 import com.l2jhellas.gameserver.network.serverpackets.TradePressOwnOk;
@@ -237,6 +242,7 @@ import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.skills.effects.EffectTemplate;
+import com.l2jhellas.gameserver.taskmanager.WaterTaskManager;
 import com.l2jhellas.gameserver.templates.L2Armor;
 import com.l2jhellas.gameserver.templates.L2ArmorType;
 import com.l2jhellas.gameserver.templates.L2EtcItemType;
@@ -358,6 +364,15 @@ public final class L2PcInstance extends L2Playable
 		@Override
 		public void doAttack(L2Character target)
 		{
+			
+			if (isInsidePeaceZone(L2PcInstance.this, target))
+			{
+				sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANT_ATK_PEACEZONE));
+				getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+				sendPacket(ActionFailed.STATIC_PACKET);
+				return;	
+			}
+			
 			super.doAttack(target);
 			
 			// cancel the recent fake-death protection instantly if the player
@@ -503,7 +518,6 @@ public final class L2PcInstance extends L2Playable
 	private int _curWeightPenalty = 0;
 	
 	private int _lastCompassZone; // the last compass zone update send to the client
-	private byte _zoneValidateCounter = 4;
 	
 	private boolean _isIn7sDungeon = false;
 	private boolean _InvullBuffs = false;
@@ -934,7 +948,6 @@ public final class L2PcInstance extends L2Playable
 	private int _fishz = 0;
 	
 	private ScheduledFuture<?> _taskRentPet;
-	private ScheduledFuture<?> _taskWater;
 	
 	/** Bypass validations */
 	private final List<String> _validBypass = new ArrayList<String>();
@@ -1275,7 +1288,6 @@ public final class L2PcInstance extends L2Playable
 	private L2PcInstance(int objectId, L2PcTemplate template, String accountName, PcAppearance app)
 	{
 		super(objectId, template);
-		getKnownList(); // init knownlist
 		getStat(); // init stats
 		getStatus(); // init status
 		super.initCharStatusUpdateValues();
@@ -1305,21 +1317,10 @@ public final class L2PcInstance extends L2Playable
 	private L2PcInstance(int objectId)
 	{
 		super(objectId, null);
-		getKnownList(); // init knownlist
 		getStat(); // init stats
 		getStatus(); // init status
 		super.initCharStatusUpdateValues();
 		initPcStatusUpdateValues();
-	}
-	
-	@Override
-	public final PcKnownList getKnownList()
-	{
-		if (super.getKnownList() == null || !(super.getKnownList() instanceof PcKnownList))
-		{
-			setKnownList(new PcKnownList(this));
-		}
-		return (PcKnownList) super.getKnownList();
 	}
 	
 	@Override
@@ -1561,12 +1562,10 @@ public final class L2PcInstance extends L2Playable
 	@Override
 	public void onActionShift(L2PcInstance player)
 	{
-		if (player.getTarget() != this)
-			player.setTarget(this);
-		else if (player.isGM())
+		if (player.isGM())
 			showCharacterInfo(player, this);
-			
-		player.sendPacket(ActionFailed.STATIC_PACKET);
+
+		super.onActionShift(player);
 	}
 		
 	/**
@@ -1916,94 +1915,83 @@ public final class L2PcInstance extends L2Playable
 
 		setPvpFlag(value);
 		sendPacket(new UserInfo(this));
-		
-		// If this player has a pet update the pets pvp flag as well
+
 		if (getPet() != null)
-		{
 			sendPacket(new RelationChanged(getPet(), getRelation(this), false));
-		}
-		
-		for (L2PcInstance target : getKnownList().getKnownPlayers().values())
+
+		L2World.getInstance().forEachVisibleObject(this, L2PcInstance.class, player ->
 		{
-			if (target == null)
+			if (!isVisibleFor(player))
 			{
-				continue;
+				return;
 			}
-			target.sendPacket(new RelationChanged(this, getRelation(this), isAutoAttackable(target)));
+			
+			final int relation = getRelation(player);
+
+			player.sendPacket(new RelationChanged(this, relation, isAutoAttackable(player)));
+				
 			if (getPet() != null)
-			{
-				target.sendPacket(new RelationChanged(getPet(), getRelation(this), isAutoAttackable(target)));
-			}
-		}
+				player.sendPacket(new RelationChanged(getPet(), relation, isAutoAttackable(player)));
+
+		});
 	}
 	
+	@Override
 	public void revalidateZone(boolean force)
 	{
-		// Cannot validate if not in a world region (happens during teleport)
-		if (getWorldRegion() == null)
-			return;
 		
-		// This function is called very often from movement code
-		if (force)
+		super.revalidateZone(force);
+
+		if (Config.ALLOW_WATER)
 		{
-			_zoneValidateCounter = 4;
-		}
-		else
-		{
-			_zoneValidateCounter--;
-			if (_zoneValidateCounter < 0)
-			{
-				_zoneValidateCounter = 4;
-			}
+			if (isInsideZone(ZoneId.WATER))
+				WaterTaskManager.getInstance().add(this);
 			else
-				return;
+				WaterTaskManager.getInstance().remove(this);
 		}
-		
-		getWorldRegion().revalidateZones(this);
 		
 		if (isInsideZone(ZoneId.SIEGE))
 		{
 			if (_lastCompassZone == ExSetCompassZoneCode.SIEGEWARZONE2)
 				return;
+			
 			_lastCompassZone = ExSetCompassZoneCode.SIEGEWARZONE2;
-			ExSetCompassZoneCode cz = new ExSetCompassZoneCode(ExSetCompassZoneCode.SIEGEWARZONE2);
-			sendPacket(cz);
+			sendPacket(new ExSetCompassZoneCode(ExSetCompassZoneCode.SIEGEWARZONE2));
 		}
 		else if (isInsideZone(ZoneId.PVP))
 		{
 			if (_lastCompassZone == ExSetCompassZoneCode.PVPZONE)
 				return;
+			
 			_lastCompassZone = ExSetCompassZoneCode.PVPZONE;
-			ExSetCompassZoneCode cz = new ExSetCompassZoneCode(ExSetCompassZoneCode.PVPZONE);
-			sendPacket(cz);
+			sendPacket(new ExSetCompassZoneCode(ExSetCompassZoneCode.PVPZONE));
 		}
 		else if (isIn7sDungeon())
 		{
 			if (_lastCompassZone == ExSetCompassZoneCode.SEVENSIGNSZONE)
 				return;
+			
 			_lastCompassZone = ExSetCompassZoneCode.SEVENSIGNSZONE;
-			ExSetCompassZoneCode cz = new ExSetCompassZoneCode(ExSetCompassZoneCode.SEVENSIGNSZONE);
-			sendPacket(cz);
+			sendPacket(new ExSetCompassZoneCode(ExSetCompassZoneCode.SEVENSIGNSZONE));
 		}
 		else if (isInsideZone(ZoneId.PEACE))
 		{
 			if (_lastCompassZone == ExSetCompassZoneCode.PEACEZONE)
 				return;
+			
 			_lastCompassZone = ExSetCompassZoneCode.PEACEZONE;
-			ExSetCompassZoneCode cz = new ExSetCompassZoneCode(ExSetCompassZoneCode.PEACEZONE);
-			sendPacket(cz);
+			sendPacket(new ExSetCompassZoneCode(ExSetCompassZoneCode.PEACEZONE));
 		}
 		else
 		{
 			if (_lastCompassZone == ExSetCompassZoneCode.GENERALZONE)
 				return;
+			
 			if (_lastCompassZone == ExSetCompassZoneCode.SIEGEWARZONE2)
-			{
 				updatePvPStatus();
-			}
+			
 			_lastCompassZone = ExSetCompassZoneCode.GENERALZONE;
-			ExSetCompassZoneCode cz = new ExSetCompassZoneCode(ExSetCompassZoneCode.GENERALZONE);
-			sendPacket(cz);
+			sendPacket(new ExSetCompassZoneCode(ExSetCompassZoneCode.GENERALZONE));
 		}
 	}
 	
@@ -2202,16 +2190,16 @@ public final class L2PcInstance extends L2Playable
 		}
 		if (_karma == 0 && karma > 0)
 		{
-			for (L2Object object : getKnownList().getKnownObjects().values())
+			for (L2GuardInstance object : L2World.getInstance().getVisibleObjects(this, L2GuardInstance.class))
 			{
-				if (object == null || !(object instanceof L2GuardInstance))
+				if (object == null)
 				{
 					continue;
 				}
 				
-				if (((L2GuardInstance) object).getAI().getIntention() == CtrlIntention.AI_INTENTION_IDLE)
+				if (object.getAI().getIntention() == CtrlIntention.AI_INTENTION_IDLE)
 				{
-					((L2GuardInstance) object).getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE, null);
+					object.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE, null);
 				}
 			}
 		}
@@ -4484,6 +4472,7 @@ public final class L2PcInstance extends L2Playable
 			}
 		}
 		
+		
 		// Check if the L2PcInstance is confused
 		if (player.isOutOfControl())
 		{
@@ -4492,20 +4481,12 @@ public final class L2PcInstance extends L2Playable
 			return;
 		}
 		
+		
 		// Check if the player already target this L2PcInstance
 		if (player.getTarget() != this)
 		{
 			// Set the target of the player
 			player.setTarget(this);
-			
-			// Send a Server->Client packet MyTargetSelected to the player
-			// The color to display in the select window is White
-			player.sendPacket(new MyTargetSelected(getObjectId(), 0));
-			
-			StatusUpdate su = new StatusUpdate(this.getObjectId());
-			su.addAttribute(StatusUpdate.CUR_HP, (int) getCurrentHp());
-			su.addAttribute(StatusUpdate.MAX_HP, getMaxHp());
-			player.sendPacket(su);
 			
 			if (player != this)
 			{
@@ -4528,6 +4509,7 @@ public final class L2PcInstance extends L2Playable
 			if (getPrivateStoreType() != 0)
 			{
 				player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
+				return;
 			}
 			else
 			{
@@ -4540,35 +4522,18 @@ public final class L2PcInstance extends L2Playable
 					{
 						player.sendPacket(ActionFailed.STATIC_PACKET);
 					}
-					else
+
+					if (((Config.GEODATA) ? GeoEngine.canSeeTarget(player,this, isFlying()) :GeoEngine.canSeeTarget(player,this)))
 					{
-						if (Config.GEODATA)
-						{
-							if (GeoEngine.canSeeTarget(player, this, player.isFlying()))
-							{
-								player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
-								player.onActionRequest();
-							}
-						}
-						else if (GeoEngine.canSeeTarget(player, this))
-						{
-							player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
-							player.onActionRequest();
-						}
+						player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
+						player.onActionRequest();
 					}
 				}
 				else
 				{
-					if (Config.GEODATA)
+					if (((Config.GEODATA) ? GeoEngine.canSeeTarget(player,this, isFlying()) :GeoEngine.canSeeTarget(player,this)))
 					{
-						if(GeoEngine.canSeeTarget(player, this, player.isFlying()))
-						{
-							player.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, this);
-						}
-					}
-					else if (GeoEngine.canSeeTarget(player, this))
-					{
-						player.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, this);
+						player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
 					}
 				}
 			}
@@ -4693,12 +4658,8 @@ public final class L2PcInstance extends L2Playable
 		if (isInOlympiadMode() && isOlympiadStart() && (needCpUpdate || needHpUpdate))
 		{
 			ExOlympiadUserInfo olyInfo = new ExOlympiadUserInfo(this,1);
-			
-			// TODO: implement new OlympiadUserInfo
-			Collection<L2PcInstance> plrs = getKnownList().getKnownPlayers().values();
-			// synchronized (getKnownList().getKnownPlayers())
-			{
-				for (L2PcInstance player : plrs)
+
+				for (L2PcInstance player : L2World.getInstance().getVisibleObjects(this,L2PcInstance.class))
 				{
 					if (player.getOlympiadGameId() == getOlympiadGameId() && player.isOlympiadStart())
 					{
@@ -4709,7 +4670,7 @@ public final class L2PcInstance extends L2Playable
 						player.sendPacket(olyInfo);
 					}
 				}
-			}
+			
 			if (isInOlympiadMode() && isOlympiadStart() && (needCpUpdate || needHpUpdate))
 			{
 				final OlympiadGameTask game = OlympiadGameManager.getInstance().getOlympiadTask(getOlympiadGameId());
@@ -4807,31 +4768,13 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public final void broadcastUserInfo()
 	{
-		// Send a Server->Client packet UserInfo to this L2PcInstance
 		sendPacket(new UserInfo(this));
-		
-		// Send a Server->Client packet CharInfo to all L2PcInstance in
-		// _KnownPlayers of the L2PcInstance
-		if (Config.DEBUG)
-		{
-			_log.fine("players to notify:" + getKnownList().getKnownPlayers().size() + " packet: [S] 03 CharInfo");
-		}
-		
 		Broadcast.toKnownPlayers(this, new CharInfo(this));
 	}
 	
 	public final void broadcastTitleInfo()
 	{
-		// Send a Server->Client packet UserInfo to this L2PcInstance
 		sendPacket(new UserInfo(this));
-		
-		// Send a Server->Client packet TitleUpdate to all L2PcInstance in
-		// _KnownPlayers of the L2PcInstance
-		if (Config.DEBUG)
-		{
-			_log.fine("players to notify:" + getKnownList().getKnownPlayers().size() + " packet: [S] cc TitleUpdate");
-		}
-		
 		Broadcast.toKnownPlayers(this, new TitleUpdate(this));
 	}
 	
@@ -5118,7 +5061,6 @@ public final class L2PcInstance extends L2Playable
 			
 			// Remove the L2ItemInstance from the world and send server->client GetItem packets
 			target.pickupMe(this);
-			getKnownList().removeKnownObject(target);
 			if (Config.SAVE_DROPPED_ITEM)
 			ItemsOnGroundManager.getInstance().removeObject(target);
 		}
@@ -5177,12 +5119,12 @@ public final class L2PcInstance extends L2Playable
 			// Target is regular item
 			else
 			{
-				addItem("Pickup", target, null, true);
-				
-				// Like L2OFF Auto-Equip arrows if player has a bow and player picks up arrows.
-				if (target.getItem() != null && target.getItem().getItemType() == L2EtcItemType.ARROW && getActiveWeaponInstance() !=null && getInventory().getPaperdollItem(Inventory.PAPERDOLL_RHAND).getItemType() == L2WeaponType.BOW)
-					checkAndEquipArrows();
+				addItem("Pickup", target, null, true);				
 			}
+			
+			// Like L2OFF Auto-Equip arrows if player has a bow and player picks up arrows.
+			if (target.getItem() != null && target.getItem().getItemType() == L2EtcItemType.ARROW && getActiveWeaponInstance() !=null && getInventory().getPaperdollItem(Inventory.PAPERDOLL_RHAND).getItemType() == L2WeaponType.BOW)
+				checkAndEquipArrows();
 		}
 	}
 	
@@ -5200,35 +5142,31 @@ public final class L2PcInstance extends L2Playable
 	@Override
 	public void setTarget(L2Object newTarget)
 	{
-		// Check if the new target is visible
 		if (newTarget != null && !newTarget.isVisible())
 		{
 			newTarget = null;
 		}
 		
-		// Prevents /target exploiting
-		if (newTarget != null && Math.abs(newTarget.getZ() - getZ()) > 1000)
+		if (newTarget != null)
 		{
-			newTarget = null;
+			boolean isParty = (((newTarget instanceof L2PcInstance) && isInParty() && this.getParty().getPartyMembers().contains(newTarget)));
+			
+			// Check if the new target is visible
+			if (!isParty && (!newTarget.isVisible() || Math.abs(newTarget.getZ() - getZ()) > 1000))
+				newTarget = null;
 		}
 		
-		if (!isGM())
+		// Can't target and attack festival monsters if not participant
+		if ((newTarget instanceof  L2FestivalMonsterInstance) && !isFestivalParticipant())
+			newTarget = null;
+		// Can't target and attack rift invaders if not in the same room
+		else if (isInParty() && getParty().isInDimensionalRift())
 		{
-			// Can't target and attack festival monsters if not participant
-			if ((newTarget instanceof L2FestivalMonsterInstance) && !isFestivalParticipant())
-			{
+			byte riftType = getParty().getDimensionalRift().getType();
+			byte riftRoom = getParty().getDimensionalRift().getCurrentRoom();
+			
+			if (newTarget != null && !DimensionalRiftManager.getInstance().getRoom(riftType, riftRoom).checkIfInZone(newTarget.getX(), newTarget.getY(), newTarget.getZ()))
 				newTarget = null;
-			}
-			else if (isInParty() && getParty().isInDimensionalRift())
-			{
-				byte riftType = getParty().getDimensionalRift().getType();
-				byte riftRoom = getParty().getDimensionalRift().getCurrentRoom();
-				
-				if (newTarget != null && !DimensionalRiftManager.getInstance().getRoom(riftType, riftRoom).checkIfInZone(newTarget.getX(), newTarget.getY(), newTarget.getZ()))
-				{
-					newTarget = null;
-				}
-			}
 		}
 		
 		// Get the current target
@@ -5239,11 +5177,9 @@ public final class L2PcInstance extends L2Playable
 			if (oldTarget.equals(newTarget))
 				return; // no target change
 				
-			// Remove the L2PcInstance from the _statusListener of the old target if it was a L2Character
+			// Remove the Player from the _statusListener of the old target if it was a Creature
 			if (oldTarget instanceof L2Character)
-			{
 				((L2Character) oldTarget).removeStatusListener(this);
-			}
 		}
 		
 		// Verify if it's a static object.
@@ -5251,17 +5187,43 @@ public final class L2PcInstance extends L2Playable
 		{
 			sendPacket(new MyTargetSelected(newTarget.getObjectId(), 0));
 			sendPacket(new StaticObject((L2StaticObjectInstance) newTarget));
-		}	
-		// Add the L2PcInstance to the _statusListener of the new target if it's a L2Character
-		else if (newTarget != null && newTarget instanceof L2Character)
+
+		}
+		// Add the Player to the _statusListener of the new target if it's a Creature
+		else if (newTarget instanceof L2Character)
 		{
-			((L2Character) newTarget).addStatusListener(this);
-			TargetSelected my = new TargetSelected(getObjectId(), newTarget.getObjectId(), getX(), getY(), getZ());
-			broadcastPacket(my);
+			final L2Character target = (L2Character) newTarget;
+			
+			// Validate location of the new target.
+			if (newTarget.getObjectId() != getObjectId())
+				sendPacket(new ValidateLocation(target));
+			
+			// Show the client his new target.
+			sendPacket(new MyTargetSelected(target.getObjectId(), (target.isAutoAttackable(this) || target instanceof L2Summon) ? getLevel() - target.getLevel() : 0));
+			
+			target.addStatusListener(this);
+			
+			// Send max/current hp.
+			final StatusUpdate su = new StatusUpdate(target.getObjectId());
+			su.addAttribute(StatusUpdate.MAX_HP, target.getMaxHp());
+			su.addAttribute(StatusUpdate.CUR_HP, (int) target.getCurrentHp());
+			sendPacket(su);
+			
+			Broadcast.toKnownPlayers(this, new TargetSelected(getObjectId(), newTarget.getObjectId(), getX(), getY(), getZ()));
 		}
 		
-		// Target the new L2Object (add the target to the L2PcInstance _target,
-		// _knownObject and L2PcInstance to _KnownObject of the L2Object)
+		if (newTarget == null && getTarget() != null)
+		{
+			broadcastPacket(new TargetUnselected(this));
+			setLastFolkNPC(null);
+		}
+		else
+		{
+			if (newTarget instanceof L2NpcInstance)
+				setLastFolkNPC((L2NpcInstance) newTarget);
+		}
+		
+		// Target the new L2Object
 		super.setTarget(newTarget);
 	}
 	
@@ -5703,7 +5665,8 @@ public final class L2PcInstance extends L2Playable
 			_forceBuff.delete();
 		}
 		
-		for (L2Character character : getKnownList().getKnownCharacters())
+		
+		for (L2Character character : L2World.getInstance().getVisibleObjects(this, L2Character.class))
 			if (character.getForceBuff() != null && character.getForceBuff().getTarget() == this)
 			{
 				character.abortCast();
@@ -5718,7 +5681,7 @@ public final class L2PcInstance extends L2Playable
 		calculateDeathPenaltyBuffLevel(killer);
 		
 		stopRentPet();
-		stopWaterTask();
+		WaterTaskManager.getInstance().remove(this);
 		return true;
 	}
 	
@@ -6288,7 +6251,7 @@ public final class L2PcInstance extends L2Playable
 	{
 		stopHpMpRegeneration();
 		stopWarnUserTakeBreak();
-		stopWaterTask();
+		WaterTaskManager.getInstance().remove(this);
 		stopRentPet();
 		stopPvpRegTask();
 		stopJailTask(true);
@@ -6971,7 +6934,7 @@ public final class L2PcInstance extends L2Playable
 	public void setKarmaFlag(int flag)
 	{
 		sendPacket(new UserInfo(this));
-		for (L2PcInstance player : getKnownList().getKnownPlayers().values())
+		for (L2PcInstance player : L2World.getInstance().getVisibleObjects(this, L2PcInstance.class))
 		{
 			player.sendPacket(new RelationChanged(this, getRelation(player), isAutoAttackable(player)));
 		}
@@ -6984,7 +6947,7 @@ public final class L2PcInstance extends L2Playable
 	public void broadcastKarma()
 	{
 		sendPacket(new UserInfo(this));
-		for (L2PcInstance player : getKnownList().getKnownPlayers().values())
+		for (L2PcInstance player : L2World.getInstance().getVisibleObjects(this, L2PcInstance.class))
 		{
 			player.sendPacket(new RelationChanged(this, getRelation(player), isAutoAttackable(player)));
 		}
@@ -9035,12 +8998,19 @@ public final class L2PcInstance extends L2Playable
 		if (skill.isOffensive())
 		{
 			/** @formatter:off **/
-			if (isInsidePeaceZone(this, target)
-					&& (skill.getId() != 3261 // Like L2OFF you can use cupid bow skills on peace zone
-					&& skill.getId() != 3260 
-					&& skill.getId() != 3262 && sklTargetType != L2SkillTargetType.TARGET_AURA)) // Like L2OFF people can use TARGET_AURE skills on peace zone)
-			{/** @formatter:on **/
+			//if (isInsidePeaceZone(this, target)
+					//&& (skill.getId() != 3261 // Like L2OFF you can use cupid bow skills on peace zone
+					//&& skill.getId() != 3260 
+					//&& skill.getId() != 3262 && sklTargetType != L2SkillTargetType.TARGET_AURA)) // Like L2OFF people can use TARGET_AURE skills on peace zone)
+			//{/** @formatter:on **/
 				// If L2Character or target is in a peace zone, send a system message TARGET_IN_PEACEZONE a Server->Client packet ActionFailed
+				//sendPacket(SystemMessageId.TARGET_IN_PEACEZONE);
+				//sendPacket(ActionFailed.STATIC_PACKET);
+				//return;
+			//}
+			
+			if (isInsidePeaceZone(this, target))
+			{
 				sendPacket(SystemMessageId.TARGET_IN_PEACEZONE);
 				sendPacket(ActionFailed.STATIC_PACKET);
 				return;
@@ -9768,26 +9738,6 @@ public final class L2PcInstance extends L2Playable
 	}
 	
 	public ScheduledFuture<?> _taskforfish;
-	
-	class WaterTask implements Runnable
-	{
-		@Override
-		public void run()
-		{
-			double reduceHp = getMaxHp() / 100.0;
-			
-			if (reduceHp < 1)
-			{
-				reduceHp = 1;
-			}
-			
-			reduceCurrentHp(reduceHp, L2PcInstance.this, false);
-			// reduced hp, becouse not rest
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.DROWN_DAMAGE_S1);
-			sm.addNumber((int) reduceHp);
-			sendPacket(sm);
-		}
-	}
 	
 	class LookingForFishTask implements Runnable
 	{
@@ -10696,7 +10646,7 @@ public final class L2PcInstance extends L2Playable
 		}
 		
 		// Stop casting for any player that may be casting a force buff on this l2pcinstance.
-		for (L2Character character : getKnownList().getKnownCharacters())
+		for (L2Character character : L2World.getInstance().getVisibleObjects(this, L2Character.class))
 		{
 			if (character.getForceBuff() != null && character.getForceBuff().getTarget() == this)
 			{
@@ -10777,7 +10727,8 @@ public final class L2PcInstance extends L2Playable
 		}
 		
 		// Stop casting for any player that may be casting a force buff on this l2pcinstance.
-		for (L2Character character : getKnownList().getKnownCharacters())
+		
+		for (L2Character character : L2World.getInstance().getVisibleObjects(this, L2Character.class))
 		{
 			if (character.getForceBuff() != null && character.getForceBuff().getTarget() == this)
 			{
@@ -10897,7 +10848,7 @@ public final class L2PcInstance extends L2Playable
 			// if the rent of a wyvern expires while over a flying zone, tp to down before unmounting
 			if (checkLandingState() && getMountType() == 2)
 			{
-				teleToLocation(MapRegionTable.TeleportWhereType.Town);
+				teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 			}
 			
 			if (setMountType(0)) // this should always be true now, since we teleported already
@@ -10927,48 +10878,18 @@ public final class L2PcInstance extends L2Playable
 		return false;
 	}
 	
-	public void stopWaterTask()
-	{
-		if (_taskWater != null)
-		{
-			_taskWater.cancel(false);
-			
-			_taskWater = null;
-			sendPacket(new SetupGauge(2, 0));
-		}
-	}
-	
-	public void startWaterTask()
-	{
-		if (!isDead() && _taskWater == null)
-		{
-			int timeinwater = 86000;
-			
-			sendPacket(new SetupGauge(2, timeinwater));
-			_taskWater = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new WaterTask(), timeinwater, 1000);
-		}
-	}
-	
-	public boolean isInWater()
-	{
-		if (_taskWater != null)
-			return true;
-		
-		return false;
-	}
-	
 	public void checkWaterState()
 	{
 		// checking if char is over base level of water (sea, rivers)
 		if (getZ() > -3793)
 		{
-			stopWaterTask();
+			WaterTaskManager.getInstance().remove(this);
 			return;
 		}
 		
 		if (isInsideZone(ZoneId.WATER))
 		{
-			startWaterTask();
+			WaterTaskManager.getInstance().add(this);
 		}
 	}
 	
@@ -10980,7 +10901,7 @@ public final class L2PcInstance extends L2Playable
 		{
 			if (!isGM() && isIn7sDungeon() && SevenSigns.getInstance().getPlayerCabal(this) != SevenSigns.getInstance().getCabalHighestScore())
 			{
-				teleToLocation(MapRegionTable.TeleportWhereType.Town);
+				teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 				setIsIn7sDungeon(false);
 				sendMessage("You have been teleported to the nearest town due to the beginning of the Seal Validation period.");
 			}
@@ -10989,7 +10910,7 @@ public final class L2PcInstance extends L2Playable
 		{
 			if (!isGM() && isIn7sDungeon() && SevenSigns.getInstance().getPlayerCabal(this) == SevenSigns.CABAL_NULL)
 			{
-				teleToLocation(MapRegionTable.TeleportWhereType.Town);
+				teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 				setIsIn7sDungeon(false);
 				sendMessage("You have been teleported to the nearest town because you have not signed for any cabal.");
 			}
@@ -11241,7 +11162,7 @@ public final class L2PcInstance extends L2Playable
 		if (getTrainedBeast() != null)
 		{
 			getTrainedBeast().getAI().stopFollow();
-			getTrainedBeast().teleToLocation(getPosition().getX() + Rnd.get(-100, 100), getPosition().getY() + Rnd.get(-100, 100), getPosition().getZ(), false);
+			getTrainedBeast().teleToLocation(getX() + Rnd.get(-100, 100), getY() + Rnd.get(-100, 100), getZ(), false);
 			getTrainedBeast().getAI().startFollow(this);
 		}
 		
@@ -11249,7 +11170,7 @@ public final class L2PcInstance extends L2Playable
 		if (getPet() != null)
 		{
 			getPet().setFollowStatus(false);
-			getPet().teleToLocation(getPosition().getX() + Rnd.get(-100, 100), getPosition().getY() + Rnd.get(-100, 100), getPosition().getZ(), false);
+			getPet().teleToLocation(getX() + Rnd.get(-100, 100), getY() + Rnd.get(-100, 100), getZ(), false);
 			getPet().setFollowStatus(true);
 		}
 		// To be sure update also the pvp flag / war tag status
@@ -11668,15 +11589,13 @@ public final class L2PcInstance extends L2Playable
 
 		
 		// Remove from world regions zones
-		if (getWorldRegion() != null)
-		{
-			getWorldRegion().removeFromZones(this);
-		}
+		ZoneManager.getInstance().getRegion(this).removeFromZones(this);
+
 			if (_forceBuff != null)
 			{
 				_forceBuff.delete();
 			}
-			for (L2Character character : getKnownList().getKnownCharacters())
+			for (L2Character character : L2World.getInstance().getVisibleObjects(this, L2Character.class))
 				if (character.getForceBuff() != null && character.getForceBuff().getTarget() == this)
 				{
 					character.abortCast();
@@ -11745,10 +11664,6 @@ public final class L2PcInstance extends L2Playable
 		
 		// Update database with items in its freight and remove them from the world
 			getFreight().deleteMe();
-		
-		// Remove all L2Object from _knownObjects and _knownPlayer of the
-		// L2Character then cancel Attak or Cast and notify AI
-			getKnownList().removeAllKnownObjects();
 
 		// remove from flood protector
 		FloodProtector.getInstance().removePlayer(getObjectId());
@@ -13737,7 +13652,7 @@ public final class L2PcInstance extends L2Playable
 				temp.getAugmentation().applyBoni(this);
 		if (Olympiad.getInstance().playerInStadia(this))
 		{
-			teleToLocation(MapRegionTable.TeleportWhereType.Town);
+			teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 			sendMessage("You have been teleported to the nearest town.");
 		}
 
@@ -13938,7 +13853,7 @@ public final class L2PcInstance extends L2Playable
 		{
 			// Attacker or spectator logging in to a siege zone. Actually should
 			// be checked for inside castle only?
-			teleToLocation(MapRegionTable.TeleportWhereType.Town);
+			teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 			sendMessage("You have been teleported to the nearest town due to you being in siege zone.");
 		}
 
@@ -14970,11 +14885,11 @@ public final class L2PcInstance extends L2Playable
 	public boolean canEnchant()
 	{
 
-		Collection<L2Character> knowns = getKnownList().getKnownCharactersInRadius(400);
+		Collection<L2WarehouseInstance> knowns = L2World.getInstance().getVisibleObjects(this, L2WarehouseInstance.class,400);
 
-		for (L2Object wh : knowns)
+		for (L2WarehouseInstance wh : knowns)
 		{
-			if (wh instanceof L2WarehouseInstance)
+			if (wh !=null)
 			{
 				sendMessage("You cannot enchant near warehouse.");
 				cancellEnchant();
@@ -15077,39 +14992,40 @@ public final class L2PcInstance extends L2Playable
 	boolean playerKill = false;
 	
 	public void SitStand(final L2Object target,boolean sitting)
-	{
+    {
 
-		final boolean isTh = target!=null && target instanceof L2StaticObjectInstance && ((L2StaticObjectInstance) target).getType() == 1;
-		final boolean ThroneIsBusy = isTh && ((L2StaticObjectInstance) target).isBusy();		
+	   final boolean isTh = target!=null && target instanceof L2StaticObjectInstance && ((L2StaticObjectInstance) target).getType() == 1;
+	   final boolean ThroneIsBusy = isTh && ((L2StaticObjectInstance) target).isBusy();		
+	
+	   if(sitting)
+	   {
+		 if (getMountObjectID() != 0)
+		 {
+			final L2Object obj = L2World.getInstance().findObject(getMountObjectID());
+			((L2StaticObjectInstance) obj).setBusy(false);				
+			setMountObjectID(0);
+		 }		
+		standUp();
+	  }
+	  else
+	  {
+		sitDown();
 		
-		if(sitting)
+		if (isTh && !ThroneIsBusy && isInsideRadius(target, L2Npc.INTERACTION_DISTANCE, false, false))
 		{
-			if (getMountObjectID() != 0)
-			{
-				final L2Object obj = L2World.getInstance().findObject(getMountObjectID());
-				((L2StaticObjectInstance) obj).setBusy(false);				
-				setMountObjectID(0);
-			}		
-			standUp();
+			((L2StaticObjectInstance) target).setBusy(true);
+			setMountObjectID(target.getObjectId());
+			broadcastPacket(new ChairSit(this, ((L2StaticObjectInstance) target).getStaticObjectId()));
 		}
-		else
-		{
-			sitDown();
-			
-			if (isTh && !ThroneIsBusy && isInsideRadius(target, L2Npc.INTERACTION_DISTANCE, false, false))
-			{
-				((L2StaticObjectInstance) target).setBusy(true);
-				setMountObjectID(target.getObjectId());
-				broadcastPacket(new ChairSit(this, ((L2StaticObjectInstance) target).getStaticObjectId()));
-			}
-		}
-	}
-    
+	  }
+    }
+	
+
 	
 	public boolean canRequestTrade(L2PcInstance target)
 	{
 		
-		if (target == null || !getKnownList().getKnownType(L2PcInstance.class).contains(target) || target.equals(this))
+		if (target == null || target.equals(this))
 		{
 			sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 			return false;
@@ -15215,22 +15131,38 @@ public final class L2PcInstance extends L2Playable
 			_log.log(Level.WARNING, "Error found in " + getName() + "'s friendlist: " + e.getMessage(), e);
 		}
 	}
-	/*public void CalculateFalling(int height)
+	
+	private static final int FALLING_VALIDATION_DELAY = 10000;
+	private volatile long _fallingTimestamp;
+	
+	public final boolean isFalling(int z)
 	{
-		if(isDead() || isFlying())
-			return;
+		if (isDead() || isFlying() || isInsideZone(ZoneId.WATER))
+			return false;
 		
-		int maxHp = getMaxHp();
-		int curHp = (int) getCurrentHp();
-		int damage = (int) calcStat(Stats.FALL_VULN, maxHp / 1000 * height, null, null);
+		if (System.currentTimeMillis() < _fallingTimestamp)
+			return true;
 		
-		if(curHp - damage < 1)
-			setCurrentHp(1);
-		else
-			setCurrentHp(curHp - damage);
+		final int deltaZ = getZ() - z;
+		if (deltaZ <= 333)
+			return false;
 		
-		sendPacket(SystemMessage.getSystemMessage(SystemMessageId.FALL_DAMAGE_S1).addNumber(damage));
-	}*/
+		final int damage = (int) Formulas.calcFallDam(this,deltaZ);
+		if (damage > 0)
+		{
+			reduceCurrentHp(Math.min(damage, getCurrentHp() - 1), null);
+			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.FALL_DAMAGE_S1).addNumber(damage));
+		}
+		
+		setFalling();
+		
+		return false;
+	}
+
+	public final void setFalling()
+	{
+		_fallingTimestamp = System.currentTimeMillis() + FALLING_VALIDATION_DELAY;
+	}
 	
 	//check for space
 	public boolean gotInvalidTitle(String title)
@@ -15239,5 +15171,54 @@ public final class L2PcInstance extends L2Playable
 	    Matcher match = pat.matcher(title);
 	   
 	    return  match.find();	
+	}
+
+	@Override
+	public void sendInfo(L2PcInstance activeChar)
+	{
+		if (inObserverMode())
+			return;
+		
+		L2PcInstance otherPlayer = this;
+		
+		if (otherPlayer.isInBoat())
+		{
+			otherPlayer.getPosition().setWorldPosition(otherPlayer.getBoat().getPosition().getWorldPosition());
+			activeChar.sendPacket(new CharInfo(otherPlayer));
+			activeChar.sendPacket(new GetOnVehicle(otherPlayer.getObjectId(), otherPlayer.getBoat().getObjectId(), otherPlayer.getInVehiclePosition()));		
+		}
+		else
+		{
+			activeChar.sendPacket(new CharInfo(otherPlayer));
+		}
+
+		int relation = getRelation(activeChar);
+		boolean isAutoAttackable = isAutoAttackable(activeChar);
+		
+		activeChar.sendPacket(new RelationChanged(this, relation, isAutoAttackable));
+		if (getPet() != null)
+			activeChar.sendPacket(new RelationChanged(getPet(), relation, isAutoAttackable));
+		
+		relation = activeChar.getRelation(this);
+		isAutoAttackable = activeChar.isAutoAttackable(this);
+		
+		sendPacket(new RelationChanged(activeChar, relation, isAutoAttackable));
+		if (activeChar.getPet() != null)
+			sendPacket(new RelationChanged(activeChar.getPet(), relation, isAutoAttackable));
+
+		if (otherPlayer.isSeated())
+		{
+			final L2Object throne = L2World.getInstance().findObject(otherPlayer.getMountObjectID());
+			if (throne instanceof L2StaticObjectInstance)
+				activeChar.sendPacket(new ChairSit(otherPlayer, ((L2StaticObjectInstance)throne).getStaticObjectId()));
+		}
+		
+		if (otherPlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL)
+			activeChar.sendPacket(new PrivateStoreMsgSell(otherPlayer));
+		else if (otherPlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_BUY)
+			activeChar.sendPacket(new PrivateStoreMsgBuy(otherPlayer));
+		else if (otherPlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_MANUFACTURE)
+			activeChar.sendPacket(new RecipeShopMsg(otherPlayer));
+		
 	}
 }

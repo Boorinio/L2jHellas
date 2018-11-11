@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -76,7 +77,7 @@ public abstract class AbstractNpcAI extends Quest
 	{
 		List<L2PcInstance> result = new ArrayList<>();
 		
-		for (L2PcInstance player : npc.getKnownList().getKnownPlayers().values())
+		for (L2PcInstance player : L2World.getInstance().getVisibleObjects(npc, L2PcInstance.class))
 		{
 			if (player.isDead())
 				continue;
@@ -101,7 +102,8 @@ public abstract class AbstractNpcAI extends Quest
 	public static int getPlayersCountInRadius(int range, L2Character npc, boolean invisible)
 	{
 		int count = 0;
-		for (L2PcInstance player : npc.getKnownList().getKnownPlayers().values())		{
+		for (L2PcInstance player : L2World.getInstance().getVisibleObjects(npc, L2PcInstance.class))
+		{
 			if (player.isDead())
 				continue;
 			
@@ -128,7 +130,7 @@ public abstract class AbstractNpcAI extends Quest
 		int backCount = 0;
 		int sideCount = 0;
 		
-		for (L2PcInstance player : npc.getKnownList().getKnownPlayers().values())
+		for (L2PcInstance player : L2World.getInstance().getVisibleObjects(npc, L2PcInstance.class))
 		{
 			if (player.isDead())
 				continue;

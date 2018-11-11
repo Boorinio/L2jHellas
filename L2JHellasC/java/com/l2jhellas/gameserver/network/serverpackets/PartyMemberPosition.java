@@ -14,7 +14,11 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.l2jhellas.gameserver.model.L2Party;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
@@ -22,28 +26,32 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
  */
 public class PartyMemberPosition extends L2GameServerPacket
 {
-	private final L2Party _party;
-
-	public PartyMemberPosition(L2Party l2Party)
+	Map<Integer, Location> _locations = new HashMap<>();
+	
+	public PartyMemberPosition(L2Party party)
 	{
-		_party = l2Party;
+		reuse(party);
 	}
-
+	public void reuse(L2Party party)
+	{
+		_locations.clear();
+		for (L2PcInstance member : party.getPartyMembers())
+			_locations.put(member.getObjectId(), new Location(member.getX(), member.getY(), member.getZ()));
+	}
+	
 	@Override
 	protected void writeImpl()
 	{
 		writeC(0xa7);
-		writeD(_party.getMemberCount());
-
-		for (L2PcInstance pm : _party.getPartyMembers())
+		writeD(_locations.size());
+		for (Map.Entry<Integer, Location> entry : _locations.entrySet())
 		{
-			if (pm == null)
-				continue;
-
-			writeD(pm.getObjectId());
-			writeD(pm.getX());
-			writeD(pm.getY());
-			writeD(pm.getZ());
+			final Location loc = entry.getValue();
+			
+			writeD(entry.getKey());
+			writeD(loc.getX());
+			writeD(loc.getY());
+			writeD(loc.getZ());
 		}
 	}
 

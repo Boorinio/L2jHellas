@@ -113,7 +113,7 @@ public class Escape implements IUserCommandHandler
 
 			try
 			{
-				_activeChar.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+				_activeChar.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 			}
 			catch (Throwable e)
 			{

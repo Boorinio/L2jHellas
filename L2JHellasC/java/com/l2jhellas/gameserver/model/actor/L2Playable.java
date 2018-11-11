@@ -15,7 +15,6 @@ package com.l2jhellas.gameserver.model.actor;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.knownlist.PlayableKnownList;
 import com.l2jhellas.gameserver.model.actor.stat.PlayableStat;
 import com.l2jhellas.gameserver.model.actor.status.PlayableStatus;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -54,18 +53,10 @@ public abstract class L2Playable extends L2Character
 	public L2Playable(int objectId, L2CharTemplate template)
 	{
 		super(objectId, template);
-		getKnownList();	// init knownlist
 		getStat(); // init stats
 		getStatus(); // init status
 	}
 
-	@Override
-	public PlayableKnownList getKnownList()
-	{
-		if (super.getKnownList() == null || !(super.getKnownList() instanceof PlayableKnownList))
-			setKnownList(new PlayableKnownList(this));
-		return (PlayableKnownList) super.getKnownList();
-	}
 
 	@Override
 	public void onActionShift(L2PcInstance player)

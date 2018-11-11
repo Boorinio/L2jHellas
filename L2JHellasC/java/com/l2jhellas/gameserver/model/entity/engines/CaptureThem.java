@@ -75,23 +75,26 @@ public class CaptureThem
 	public static void stopRegistration()
 	{
 		Announcements.getInstance().announceToAll("CaptureThem Registration is Over!");
+		String Capture_Path = "data/html/zodiac/CaptureThem.htm";
+		// TODO check this if work like that
+		/* File mainText = */new File(PackRoot.DATAPACK_ROOT, Capture_Path);
+		NpcHtmlMessage html = new NpcHtmlMessage(1);
+		html.setFile(Capture_Path);
+		
+		ZodiacMain.ZodiacRegisterActive = false;	
+		
 		for (L2PcInstance players : L2World.getInstance().getAllPlayers().values())
 		{
 			if(players == null)
-				return;
-			ZodiacMain.ZodiacRegisterActive = false;
+				continue;		
+			
 			if (players.isinZodiac)
-			{
-				String Capture_Path = "data/html/zodiac/CaptureThem.htm";
-				// TODO check this if work like that
-				/* File mainText = */new File(PackRoot.DATAPACK_ROOT, Capture_Path);
-				NpcHtmlMessage html = new NpcHtmlMessage(1);
-				html.setFile(Capture_Path);
+			{			
 				players.sendPacket(html);
-				_players.add(players);
-				
+				_players.add(players);				
 			}
-		}
+		}	
+			
 		waitSecs(20);
 		if (_players != null)
 			StartEvent();

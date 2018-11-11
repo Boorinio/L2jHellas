@@ -31,14 +31,16 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.L2WorldRegion;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.zone.L2SpawnZone;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
+import com.l2jhellas.gameserver.model.zone.ZoneRegion;
 import com.l2jhellas.gameserver.model.zone.form.ZoneCuboid;
 import com.l2jhellas.gameserver.model.zone.form.ZoneCylinder;
 import com.l2jhellas.gameserver.model.zone.form.ZoneNPoly;
 import com.l2jhellas.gameserver.model.zone.type.L2ArenaZone;
+import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
+import com.l2jhellas.gameserver.model.zone.type.L2FishingZone;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 import com.l2jhellas.util.XMLDocumentFactory;
 
@@ -54,6 +56,14 @@ public class ZoneManager
 	private int _lastDynamicId = 0;
 	private final List<L2ItemInstance> _debugItems = new ArrayList<>();
 	boolean reload = false;
+
+
+	//private static final int SHIFT_BY = 15;
+	//private static final int OFFSET_X = Math.abs(L2World.MAP_MIN_X >> SHIFT_BY);
+	//private static final int OFFSET_Y = Math.abs(L2World.MAP_MIN_Y >> SHIFT_BY);
+	//private final ZoneRegion[][] _zoneRegions = new ZoneRegion[(L2World.MAP_MAX_X >> SHIFT_BY) + OFFSET_X + 1][(L2World.MAP_MAX_Y >> SHIFT_BY) + OFFSET_Y + 1];
+	
+	private final ZoneRegion[][] _zoneRegions = new ZoneRegion[L2World.REGIONS_X + 1][L2World.REGIONS_Y + 1];
 	
 	public static final ZoneManager getInstance()
 	{
@@ -62,19 +72,27 @@ public class ZoneManager
 	
 	protected ZoneManager()
 	{
+		
+		for (int x = 0; x < _zoneRegions.length; x++)
+		{
+			for (int y = 0; y < _zoneRegions[x].length; y++)
+			{
+				_zoneRegions[x][y] = new ZoneRegion(x, y);
+			}
+		}
+		
 		load();
 	}
 	
 	public void reload()
-	{
+	{	
 		// Get the world regions
 		int count = 0;
-		L2WorldRegion[][] worldRegions = L2World.getInstance().getAllWorldRegions();
-		for (L2WorldRegion[] worldRegion : worldRegions)
+		for (ZoneRegion[] zoneRegions : _zoneRegions)
 		{
-			for (L2WorldRegion element : worldRegion)
+			for (ZoneRegion zoneRegion : zoneRegions)
 			{
-				element.getZones().clear();
+				zoneRegion.getZones().clear();
 				count++;
 			}
 		}
@@ -89,7 +107,7 @@ public class ZoneManager
 		for (L2Object o : L2World.getInstance().getAllVisibleObjects().values())
 		{
 			if (o instanceof L2Character)
-				((L2Character) o).revalidateZone();
+				((L2Character) o).revalidateZone(true);
 		}
 
 	}
@@ -98,10 +116,9 @@ public class ZoneManager
 	{
 		_log.info("Loading zones...");
 		_classZones.clear();
-		
-		// Get the world regions
-		L2WorldRegion[][] worldRegions = L2World.getInstance().getAllWorldRegions();
-		
+
+		ZoneRegion[][] worldRegions = _zoneRegions;
+				
 		// Load the zone xml
 		try
 		{
@@ -119,7 +136,7 @@ public class ZoneManager
 				{
 					// Set dynamically the ID range of next XML loading file.
 					_lastDynamicId = fileCounter++ * 1000;
-					loadFileZone(file, worldRegions);
+					loadFileZone(file,worldRegions);
 				}
 			}
 		}
@@ -134,7 +151,7 @@ public class ZoneManager
 		_log.info("ZoneManager: loaded " + _classZones.size() + " zones classes and " + getSize() + " zones.");
 	}
 	
-	private void loadFileZone(final File f, L2WorldRegion[][] worldRegions) throws Exception
+	private void loadFileZone(final File f, ZoneRegion[][] worldRegions) throws Exception
 	{
 		final Document doc = XMLDocumentFactory.getInstance().loadDocument(f);
 		for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
@@ -299,30 +316,49 @@ public class ZoneManager
 							_log.config("Caution: Zone (" + zoneId + ") from file: " + f.getName() + " overrides previos definition.");
 						
 						addZone(zoneId, temp);
-						
-						// Register the zone into any world region it
-						// intersects with...
-						// currently 11136 test for each zone :>
-						int ax, ay, bx, by;
-						for (int x = 0; x < worldRegions.length; x++)
-						{
-							for (int y = 0; y < worldRegions[x].length; y++)
-							{
-								ax = (x - L2World.OFFSET_X) << L2World.SHIFT_BY;
-								bx = ((x + 1) - L2World.OFFSET_X) << L2World.SHIFT_BY;
-								ay = (y - L2World.OFFSET_Y) << L2World.SHIFT_BY;
-								by = ((y + 1) - L2World.OFFSET_Y) << L2World.SHIFT_BY;
 
-								if (temp.getZone().intersectsRectangle(ax, bx, ay, by))
-								{
-									if (Config.DEBUG)
-									{
-										_log.info("Zone (" + zoneId + ") added to: " + x + " " + y);
-									}
+						//for (int x = 0; x < _zoneRegions.length; x++)
+						//{
+							//for (int y = 0; y < _zoneRegions[x].length; y++)
+							//{
+								
+								//int ax = (x - OFFSET_X) << SHIFT_BY;
+								//int bx = ((x + 1) - OFFSET_X) << SHIFT_BY;
+								//int ay = (y - OFFSET_Y) << SHIFT_BY;
+								//int by = ((y + 1) - OFFSET_Y) << SHIFT_BY;
+								
+								//if (temp.getZone().intersectsRectangle(ax, bx, ay, by))
+								//{
+									  //_zoneRegions[x][y].getZones().put(temp.getId(), temp);
+						          //    _zoneRegions[x][y].addZone(temp);
+								//}
+						//	}
+						//}
+
+						// Register the zone into any world region it intersects with...
+						for (int x = 0; x <  worldRegions.length; x++)
+						{
+							for (int y = 0; y <  worldRegions[x].length; y++)
+							{
+								if (temp.getZone().intersectsRectangle(L2World.getRegionX(x), L2World.getRegionX(x + 1), L2World.getRegionY(y), L2World.getRegionY(y + 1)))
 									worldRegions[x][y].addZone(temp);
-								}
 							}
 						}
+						
+                        if (temp instanceof L2OlympiadStadiumZone)
+						{
+							OlympiadStadiaManager.getInstance().addStadium((L2OlympiadStadiumZone) temp);
+						}
+						else if (temp instanceof L2BossZone)
+						{
+							GrandBossManager.getInstance().addZone((L2BossZone) temp);
+						}
+						else if (temp instanceof L2FishingZone)
+						{
+							FishingZoneManager.getInstance().addFishingZone((L2FishingZone) temp);
+						}
+						
+
 					}
 				}
 			}
@@ -434,25 +470,7 @@ public class ZoneManager
 			return null;
 		return getZone(object.getX(), object.getY(), object.getZ(), type);
 	}
-	
-	/**
-	 * Returns all zones from given coordinates (plane)
-	 * @param x
-	 * @param y
-	 * @return zones
-	 */
-	public List<L2ZoneType> getZones(int x, int y)
-	{
-		L2WorldRegion region = L2World.getInstance().getRegion(x, y);
-		List<L2ZoneType> temp = new ArrayList<>();
-		for (L2ZoneType zone : region.getZones())
-		{
-			if (zone.isInsideZone(x, y))
-				temp.add(zone);
-		}
-		return temp;
-	}
-	
+
 	/**
 	 * Returns all zones from given coordinates
 	 * @param x
@@ -462,12 +480,13 @@ public class ZoneManager
 	 */
 	public List<L2ZoneType> getZones(int x, int y, int z)
 	{
-		L2WorldRegion region = L2World.getInstance().getRegion(x, y);
-		List<L2ZoneType> temp = new ArrayList<>();
-		for (L2ZoneType zone : region.getZones())
+		final List<L2ZoneType> temp = new ArrayList<>();
+		for (L2ZoneType zone : getRegion(x, y).getZones())
 		{
 			if (zone.isInsideZone(x, y, z))
+			{
 				temp.add(zone);
+			}
 		}
 		return temp;
 	}
@@ -484,11 +503,12 @@ public class ZoneManager
 	@SuppressWarnings("unchecked")
 	public <T extends L2ZoneType> T getZone(int x, int y, int z, Class<T> type)
 	{
-		L2WorldRegion region = L2World.getInstance().getRegion(x, y);
-		for (L2ZoneType zone : region.getZones())
+		for (L2ZoneType zone : getRegion(x, y).getZones())
 		{
 			if (zone.isInsideZone(x, y, z) && type.isInstance(zone))
+			{
 				return (T) zone;
+			}
 		}
 		return null;
 	}
@@ -565,6 +585,29 @@ public class ZoneManager
 			item.decayMe();
 		
 		_debugItems.clear();
+	}
+	
+	
+	//public ZoneRegion getRegion(int x, int y)
+	//{
+		//try
+		//{
+			//return _zoneRegions[(x >> SHIFT_BY) + OFFSET_X][(y >> SHIFT_BY) + OFFSET_Y];
+		//}
+		//catch (ArrayIndexOutOfBoundsException e)
+		//{
+			//return null;
+		//}
+	//}
+	
+	public ZoneRegion getRegion(int x, int y)
+	{
+		return _zoneRegions[(x - L2World.WORLD_X_MIN) / L2World.REGION_SIZE][(y - L2World.WORLD_Y_MIN) / L2World.REGION_SIZE];
+	}
+
+	public ZoneRegion getRegion(L2Object point)
+	{
+		return getRegion(point.getX(), point.getY());
 	}
 	
 	private static class SingletonHolder

@@ -84,7 +84,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 								Util.handleIllegalPlayerAction(activeChar, "Player " + activeChar.getName() + " used respawn cheat.", IllegalPlayerAction.PUNISH_KICK);
 								return;
 							}
-							loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.ClanHall);
+							loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.CLAN_HALL);
 							
 							if (ClanHallManager.getInstance().getClanHallByOwner(activeChar.getClan()) != null && ClanHallManager.getInstance().getClanHallByOwner(activeChar.getClan()).getFunction(ClanHall.FUNC_RESTORE_EXP) != null)
 							{
@@ -108,7 +108,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 								Util.handleIllegalPlayerAction(activeChar, "Player " + activeChar.getName() + " used respawn cheat.", IllegalPlayerAction.PUNISH_KICK);
 								return;
 							}
-							loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.Castle);
+							loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.CASTLE);
 						break;
 						
 						case 3: // to siege HQ
@@ -125,7 +125,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 								Util.handleIllegalPlayerAction(activeChar, "Player " + activeChar.getName() + " used respawn cheat.", IllegalPlayerAction.PUNISH_KICK);
 								return;
 							}
-							loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.SiegeFlag);
+							loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.SIEGE_FLAG);
 						break;
 						
 						case 4: // Fixed or Player is a festival participant
@@ -149,7 +149,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 							if (Config.ALT_RESPAWN_POINT)
 								loc = new Location(Config.ALT_RESPAWN_POINT_X, Config.ALT_RESPAWN_POINT_Y, Config.ALT_RESPAWN_POINT_Z);
 							else
-								loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.Town);
+								loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.TOWN);
 						break;
 					}
 				}
@@ -177,18 +177,14 @@ public final class RequestRestartPoint extends L2GameClientPacket
 		
 		if (activeChar == null)
 			return;
-		
-		// SystemMessage sm2 = SystemMessage.getSystemMessage(SystemMessage.S1_S2);
-		// sm2.addString("type:"+requestedPointType);
-		// activeChar.sendPacket(sm2);
-		
+
 		if (activeChar.isFakeDeath())
 		{
 			activeChar.stopFakeDeath(null);
 			activeChar.broadcastPacket(new Revive(activeChar));
 			return;
 		}
-		else if (!activeChar.isAlikeDead())
+		else if (!activeChar.isDead())
 		{
 			_log.warning(RequestRestartPoint.class.getName() + ": Living player [" + activeChar.getName() + "] called RestartPointPacket! Ban this player!");
 			return;

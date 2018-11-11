@@ -40,7 +40,7 @@ public final class NpcSay extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
-		writeC(0x30);
+		writeC(0x02);
 		writeD(_objectId);
 		writeD(_textType);
 		writeD(_npcId);

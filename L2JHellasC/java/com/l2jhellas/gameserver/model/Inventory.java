@@ -71,6 +71,7 @@ public abstract class Inventory extends ItemContainer
 	
 	// Speed percentage mods
 	public static final double MAX_ARMOR_WEIGHT = 12000;
+	public static final int ADENA_ID = 57;
 
 	private final L2ItemInstance[] _paperdoll;
 	private final List<PaperdollListener> _paperdollListeners;
@@ -174,8 +175,7 @@ public abstract class Inventory extends ItemContainer
 		{
 			if (slot != PAPERDOLL_LRHAND)
 				return;
-			if (Config.ASSERT)
-				assert null == getPaperdollItem(PAPERDOLL_LRHAND);
+
 			if (item.getItemType() == L2WeaponType.BOW)
 			{
 				L2ItemInstance arrow = getPaperdollItem(PAPERDOLL_LHAND);
@@ -189,8 +189,7 @@ public abstract class Inventory extends ItemContainer
 		{
 			if (slot != PAPERDOLL_LRHAND)
 				return;
-			if (Config.ASSERT)
-				assert item == getPaperdollItem(PAPERDOLL_LRHAND);
+
 			if (item.getItemType() == L2WeaponType.BOW)
 			{
 				L2ItemInstance arrow = findArrowForBow(item.getItem());
@@ -806,8 +805,6 @@ public abstract class Inventory extends ItemContainer
 	 */
 	public synchronized void addPaperdollListener(PaperdollListener listener)
 	{
-		if (Config.ASSERT)
-			assert !_paperdollListeners.contains(listener);
 		_paperdollListeners.add(listener);
 	}
 

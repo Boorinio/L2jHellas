@@ -23,6 +23,7 @@ import com.l2jhellas.gameserver.audio.Music;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -430,7 +431,7 @@ public class Baium extends AbstractNpcAI
 		int npcId = npc.getNpcId();
 		List<L2Character> result = new ArrayList<L2Character>();
 		
-		for (L2Character obj : npc.getKnownList().getKnownCharacters())
+		for (L2Character obj : L2World.getInstance().getVisibleObjects(npc, L2Attackable.class))
 		{
 			if (obj instanceof L2PcInstance)
 			{
@@ -477,7 +478,7 @@ public class Baium extends AbstractNpcAI
 			return;
 		
 		// Pickup a target if no or dead victim. If Baium was hitting an angel, 50% luck he reconsiders his target. 10% luck he decides to reconsiders his target.
-		if (_actualVictim == null || _actualVictim.isDead() || !(npc.getKnownList().knowsObject(_actualVictim)) || (_actualVictim instanceof L2MonsterInstance && Rnd.get(10) < 5) || Rnd.get(10) == 0)
+		if (_actualVictim == null || _actualVictim.isDead()  || (_actualVictim instanceof L2MonsterInstance && Rnd.get(10) < 5) || Rnd.get(10) == 0)
 			_actualVictim = getRandomTarget(npc);
 		
 		// If result is null, return directly.
@@ -516,7 +517,8 @@ public class Baium extends AbstractNpcAI
 		final int chance = Rnd.get(100); // Remember, it's 0 to 99, not 1 to 100.
 		
 		// If Baium feels surrounded or see 2+ angels, he unleashes his wrath upon heads :).
-		if (getPlayersCountInRadius(600, npc, false) >= 20 || npc.getKnownList().getKnownTypeInRadius(L2MonsterInstance.class, 600).size() >= 2)
+
+		if (getPlayersCountInRadius(600, npc, false) >= 20 || L2World.getInstance().getVisibleObjects(npc, L2MonsterInstance.class,600).size() >= 2)
 		{
 			if (chance < 25)
 				skill = 4130;

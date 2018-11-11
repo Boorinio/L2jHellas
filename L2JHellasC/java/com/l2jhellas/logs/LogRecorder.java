@@ -81,7 +81,7 @@ public class LogRecorder
 
 	public static final void Assert(boolean exp, String cmt)
 	{
-		if (exp || !Config.ASSERT)
+		if (exp)
 			return;
 
 		System.out.println("Assertion error [" + cmt + "]");

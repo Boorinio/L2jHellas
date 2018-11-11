@@ -48,7 +48,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
-import com.l2jhellas.gameserver.model.actor.knownlist.AttackableKnownList;
 import com.l2jhellas.gameserver.model.base.SoulCrystal;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
@@ -395,7 +394,7 @@ public class L2Attackable extends L2Npc
 		
 		public final int checkHate(L2Character owner)
 		{
-			if (_attacker.isAlikeDead() || !_attacker.isVisible() || !owner.getKnownList().knowsObject(_attacker))
+			if (_attacker.isAlikeDead() || !_attacker.isVisible())
 				_hate = 0;
 			
 			return _hate;
@@ -611,21 +610,10 @@ public class L2Attackable extends L2Npc
 	public L2Attackable(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-		getKnownList(); // init knownlist
 		_mustGiveExpSp = true;
 		
 	}
-	
-	
-	@Override
-	public AttackableKnownList getKnownList()
-	{
-		if (super.getKnownList() == null || !(super.getKnownList() instanceof AttackableKnownList))
-		{
-			setKnownList(new AttackableKnownList(this));
-		}
-		return (AttackableKnownList) super.getKnownList();
-	}
+
 	/**
 	 * Return the L2Character AI of the L2Attackable and if its null create a new one.<BR>
 	 * <BR>
@@ -942,8 +930,6 @@ public class L2Attackable extends L2Npc
 					if (attackerParty == null)
 					{
 						// Calculate Exp and SP rewards
-						if (attacker.getKnownList().knowsObject(this))
-						{
 							// Calculate the difference of level between this attacker (L2PcInstance or L2SummonInstance owner) and the L2Attackable
 							// mob = 24, atk = 10, diff = -14 (full xp)
 							// mob = 24, atk = 28, diff = 4 (some xp)
@@ -987,7 +973,6 @@ public class L2Attackable extends L2Npc
 							// Distribute the Exp and SP between the L2PcInstance and its L2Summon
 							if (!attacker.isDead())
 								attacker.addExpAndSp(Math.round(exp), sp);
-						}
 					}
 					else
 					{

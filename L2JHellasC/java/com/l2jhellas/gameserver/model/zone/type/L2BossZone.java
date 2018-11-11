@@ -101,7 +101,7 @@ public class L2BossZone extends L2ZoneType
 				if (_oustLoc[0] != 0 && _oustLoc[1] != 0 && _oustLoc[2] != 0)
 					player.teleToLocation(_oustLoc[0], _oustLoc[1], _oustLoc[2], false);
 				else
-					player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+					player.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 			}
 			else if (character instanceof L2Summon)
 			{
@@ -115,7 +115,7 @@ public class L2BossZone extends L2ZoneType
 					if (_oustLoc[0] != 0 && _oustLoc[1] != 0 && _oustLoc[2] != 0)
 						player.teleToLocation(_oustLoc[0], _oustLoc[1], _oustLoc[2], false);
 					else
-						player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+						player.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 				}
 				
 				// Remove summon.
@@ -274,7 +274,7 @@ public class L2BossZone extends L2ZoneType
 				if (_oustLoc[0] != 0 && _oustLoc[1] != 0 && _oustLoc[2] != 0)
 					player.teleToLocation(_oustLoc[0], _oustLoc[1], _oustLoc[2],  false);
 				else
-					player.teleToLocation(MapRegionTable.TeleportWhereType.Town);
+					player.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 			}
 		}
 		_playerAllowEntry.clear();

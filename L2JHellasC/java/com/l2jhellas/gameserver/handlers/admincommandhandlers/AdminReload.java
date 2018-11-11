@@ -135,7 +135,6 @@ public class AdminReload implements IAdminCommandHandler
 				{
 					ZoneManager.getInstance().reload();
 					sendReloadPage(activeChar);
-					AdminData.getInstance().broadcastMessageToGMs("Zones can not be reloaded in this version.");
 					break;
 				}
 				case "htm":
@@ -182,7 +181,7 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				case "npcwalkers":
 				{
-					NpcWalkerRoutesData.reload();
+					NpcWalkerRoutesData.getInstance().reload();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("All NPC walker routes have been reloaded.");
 					break;

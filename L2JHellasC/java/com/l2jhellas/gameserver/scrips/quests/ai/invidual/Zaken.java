@@ -26,6 +26,7 @@ import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -719,7 +720,7 @@ public class Zaken extends AbstractNpcAI
     			}
     			else if( i0 < 15 )
     			{
-    				for (L2Character character : npc.getKnownList().getKnownCharactersInRadius(100))
+    			    for (L2Character character : L2World.getInstance().getVisibleObjects(npc,L2Character.class,150))
     				{
     					if (character != attacker)
     						continue;
@@ -819,7 +820,7 @@ public class Zaken extends AbstractNpcAI
         		}
         		else if( i0 < 15 )
         		{
-        			for (L2Character character : npc.getKnownList().getKnownCharactersInRadius(100))
+    			    for (L2Character character : L2World.getInstance().getVisibleObjects(npc,L2Character.class,150))
         			{
         				if (character != caster)
         					continue;
@@ -905,7 +906,7 @@ public class Zaken extends AbstractNpcAI
             		}
             		else if( i0 < 15 )
             		{
-            			for (L2Character character : npc.getKnownList().getKnownCharactersInRadius(100))
+        			    for (L2Character character : L2World.getInstance().getVisibleObjects(npc,L2Character.class,150))
             			{
             				if (character != player)
             					continue;

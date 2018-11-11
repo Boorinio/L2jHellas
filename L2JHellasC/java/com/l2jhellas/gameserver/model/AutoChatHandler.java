@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
@@ -761,20 +760,15 @@ public class AutoChatHandler implements SpawnListener
 						List<L2PcInstance> nearbyPlayers = new ArrayList<L2PcInstance>();
 						List<L2PcInstance> nearbyGMs = new ArrayList<L2PcInstance>();
 
-						for (L2Character player : chatNpc.getKnownList().getKnownCharactersInRadius(1500))
+						for (L2PcInstance player : L2World.getInstance().getVisibleObjects(chatNpc, L2PcInstance.class,1500))
 						{
-							if (!(player instanceof L2PcInstance))
+							if (player.isGM())
 							{
-								continue;
-							}
-
-							if (((L2PcInstance) player).isGM())
-							{
-								nearbyGMs.add((L2PcInstance) player);
+								nearbyGMs.add(player);
 							}
 							else
 							{
-								nearbyPlayers.add((L2PcInstance) player);
+								nearbyPlayers.add(player);
 							}
 						}
 

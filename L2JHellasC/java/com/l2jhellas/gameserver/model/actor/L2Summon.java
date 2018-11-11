@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.model.actor;
 
-import java.util.Collection;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -23,15 +22,16 @@ import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2SummonAI;
 import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
+import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.PetInventory;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.knownlist.SummonKnownList;
 import com.l2jhellas.gameserver.model.actor.stat.SummonStat;
 import com.l2jhellas.gameserver.model.actor.status.SummonStatus;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -96,7 +96,6 @@ public abstract class L2Summon extends L2Playable
 	public L2Summon(int objectId, L2NpcTemplate template, L2PcInstance owner)
 	{
 		super(objectId, template);
-		getKnownList();	// init knownlist
 		getStat(); // init stats
 		getStatus(); // init status
 
@@ -105,16 +104,6 @@ public abstract class L2Summon extends L2Playable
 		_ai = new L2SummonAI(new L2Summon.AIAccessor());
 
 		setXYZInvisible(owner.getX() + 50, owner.getY() + 100, owner.getZ() + 100);
-	}
-
-	@Override
-	public final SummonKnownList getKnownList()
-	{
-		if (super.getKnownList() == null || !(super.getKnownList() instanceof SummonKnownList))
-		{
-			setKnownList(new SummonKnownList(this));
-		}
-		return (SummonKnownList) super.getKnownList();
 	}
 
 	@Override
@@ -166,7 +155,8 @@ public abstract class L2Summon extends L2Playable
 	@Override
 	public void updateAbnormalEffect()
 	{
-		for (L2PcInstance player : getKnownList().getKnownPlayers().values())
+
+		for (L2PcInstance player : L2World.getInstance().getVisibleObjects(this, L2PcInstance.class))
 		{
 			player.sendPacket(new NpcInfo(this, player));
 		}
@@ -385,8 +375,7 @@ public abstract class L2Summon extends L2Playable
 
 	public void broadcastNpcInfo(int val)
 	{
-		Collection<L2PcInstance> plrs = getKnownList().getKnownPlayers().values();
-		for (L2PcInstance player : plrs)
+		for (L2PcInstance player : L2World.getInstance().getVisibleObjects(this, L2PcInstance.class))
 		{
 			try
 			{
@@ -422,7 +411,6 @@ public abstract class L2Summon extends L2Playable
 		// FIXME: I think it should really drop items to ground and only owner can take for a while
 		giveAllToOwner();
 		decayMe();
-		getKnownList().removeAllKnownObjects();
 		owner.setPet(null);
 	}
 
@@ -432,15 +420,12 @@ public abstract class L2Summon extends L2Playable
 		{
 			getAI().stopFollow();
 			owner.sendPacket(new PetDelete(getSummonType(), getObjectId()));
-			if (getWorldRegion() != null)
-			{
-				getWorldRegion().removeFromZones(this);
-			}
+			ZoneManager.getInstance().getRegion(this).removeFromZones(this);
+
 			store();
 
 			giveAllToOwner();
 			decayMe();
-			getKnownList().removeAllKnownObjects();
 			owner.setPet(null);
 			setTarget(null);
 		}

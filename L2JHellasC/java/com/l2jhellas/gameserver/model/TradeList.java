@@ -315,15 +315,14 @@ public class TradeList
 			_log.warning(TradeList.class.getName() + ": " + _owner.getName() + ": Attempt to modify locked TradeList!");
 			return null;
 		}
-		L2Object o = L2World.getInstance().findObject(objectId);
+		
+		L2ItemInstance item = _owner.getInventory().getItemByObjectId(objectId);
 
-		if (o == null || !(o instanceof L2ItemInstance))
+		if (item == null)
 		{
 			_log.warning(TradeList.class.getName() + ": " + _owner.getName() + ": Attempt to add invalid item to TradeList!");
 			return null;
 		}
-
-		L2ItemInstance item = (L2ItemInstance) o;
 
 		if (!item.isTradeable() || item.isQuestItem())
 			return null;
@@ -345,7 +344,7 @@ public class TradeList
 		
 		TradeItem titem = new TradeItem(item, count, price);
 		_items.add(titem);
-
+		
 		// If Player has already confirmed this trade, invalidate the confirmation
 		invalidateConfirmation();
 		return titem;
@@ -390,6 +389,7 @@ public class TradeList
 			return null;
 		
 		TradeItem titem = new TradeItem(item, count, price);
+		
 		_items.add(titem);
 
 		// If Player has already confirmed this trade, invalidate the confirmation

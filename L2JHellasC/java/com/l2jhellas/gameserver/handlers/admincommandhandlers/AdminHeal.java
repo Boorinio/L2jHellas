@@ -98,17 +98,14 @@ public class AdminHeal implements IAdminCommandHandler
 				try
 				{
 					int radius = Integer.parseInt(player);
-					for (L2Object object : activeChar.getKnownList().getKnownObjects().values())
+					for (L2Character object : L2World.getInstance().getVisibleObjects(activeChar, L2Character.class,radius))
 					{
-						if (object instanceof L2Character)
-						{
 							L2Character character = (L2Character) object;
 							character.setCurrentHpMp(character.getMaxHp(), character.getMaxMp());
 							if (object instanceof L2PcInstance)
 							{
 								character.setCurrentCp(character.getMaxCp());
 							}
-						}
 					}
 					activeChar.sendMessage("Healed within " + radius + " unit radius.");
 					return;
