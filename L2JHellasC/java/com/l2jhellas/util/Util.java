@@ -143,33 +143,33 @@ public final class Util
 
 	public static boolean checkIfInRange(int range, L2Object obj1, L2Object obj2, boolean includeZAxis)
 	{
+			
 		if (obj1 == null || obj2 == null)
 			return false;
+		
 		if (range == -1)
 			return true; // not limited
-
-		int rad = 0;
+			
+		double rad = 0;
 		if (obj1 instanceof L2Character)
-			rad += ((L2Character) obj1).getTemplate().collisionRadius;
+			rad += ((L2Character) obj1).getTemplate().getCollisionRadius();
+		
 		if (obj2 instanceof L2Character)
-			rad += ((L2Character) obj2).getTemplate().collisionRadius;
-
+			rad += ((L2Character) obj2).getTemplate().getCollisionRadius();
+		
 		double dx = obj1.getX() - obj2.getX();
 		double dy = obj1.getY() - obj2.getY();
-
+		
 		if (includeZAxis)
 		{
 			double dz = obj1.getZ() - obj2.getZ();
 			double d = dx * dx + dy * dy + dz * dz;
-
+			
 			return d <= range * range + 2 * range * rad + rad * rad;
 		}
-		else
-		{
-			double d = dx * dx + dy * dy;
-
-			return d <= range * range + 2 * range * rad + rad * rad;
-		}
+		
+		double d = dx * dx + dy * dy;
+		return d <= range * range + 2 * range * rad + rad * rad;
 	}
 
 	public static double convertHeadingToDegree(int heading)

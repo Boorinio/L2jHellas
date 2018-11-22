@@ -197,12 +197,12 @@ public class MultiSellChoose extends L2GameClientPacket
 			{
 				for (MultiSellIngredient a : entry.getProducts())
 				{
-					if (player.GetInventoryLimit() < inv.getSize() + _amount && !ItemTable.getInstance().createDummyItem(a.getItemId()).isStackable())
+					if (player.getInventoryLimit() < inv.getSize() + _amount && !ItemTable.getInstance().createDummyItem(a.getItemId()).isStackable())
 					{
 						player.sendPacket(SystemMessageId.SLOTS_FULL);
 						return;
 					}
-					if (player.GetInventoryLimit() < inv.getSize() && ItemTable.getInstance().createDummyItem(a.getItemId()).isStackable())
+					if (player.getInventoryLimit() < inv.getSize() && ItemTable.getInstance().createDummyItem(a.getItemId()).isStackable())
 					{
 						player.sendPacket(SystemMessageId.SLOTS_FULL);
 						return;

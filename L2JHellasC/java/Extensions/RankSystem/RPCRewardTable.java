@@ -115,7 +115,7 @@ public class RPCRewardTable
 			return;
 		}
 
-		if (player.getInventory().getSize() >= player.GetInventoryLimit())
+		if (player.getInventory().getSize() >= player.getInventoryLimit())
 		{
 			// Player inventory limit!!!
 			player.sendMessage("Inventory is full!");

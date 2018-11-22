@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.zone.type;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -22,6 +23,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.taskmanager.PvpFlagTaskManager;
 
 /**
  * A siege zone
@@ -100,6 +102,8 @@ public class L2SiegeZone extends L2ZoneType
 				
 				if (activeChar.getMountType() == 2)
 					activeChar.exitedNoLanding();
+				
+				PvpFlagTaskManager.getInstance().add(activeChar, Config.PVP_NORMAL_TIME);
 				
 				// Set pvp flag
 				if (activeChar.getPvpFlag() == 0)

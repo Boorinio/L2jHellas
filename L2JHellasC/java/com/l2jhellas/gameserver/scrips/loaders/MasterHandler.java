@@ -55,6 +55,7 @@ import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminEffects;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminEnchant;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminEventEngine;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminExpSp;
+import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminFence;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminFightCalculator;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminGeoEditor;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminGeodata;
@@ -365,6 +366,7 @@ public class MasterHandler
 			AdminUnblockIp.class,
 			AdminZone.class,
 			AdminWho.class,
+			AdminFence.class,
 		},
 		{
 			// Chat Handlers

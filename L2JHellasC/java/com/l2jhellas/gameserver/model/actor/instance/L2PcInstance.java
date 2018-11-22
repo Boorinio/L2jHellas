@@ -242,6 +242,8 @@ import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.skills.effects.EffectTemplate;
+import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
+import com.l2jhellas.gameserver.taskmanager.PvpFlagTaskManager;
 import com.l2jhellas.gameserver.taskmanager.WaterTaskManager;
 import com.l2jhellas.gameserver.templates.L2Armor;
 import com.l2jhellas.gameserver.templates.L2ArmorType;
@@ -1907,7 +1909,6 @@ public final class L2PcInstance extends L2Playable
 		return _pvpFlag;
 	}
 	
-	@Override
 	public void updatePvPFlag(int value)
 	{
 		if (getPvpFlag() == value)
@@ -2185,9 +2186,8 @@ public final class L2PcInstance extends L2Playable
 	public void setKarma(int karma)
 	{
 		if (karma < 0)
-		{
 			karma = 0;
-		}
+		
 		if (_karma == 0 && karma > 0)
 		{
 			for (L2GuardInstance object : L2World.getInstance().getVisibleObjects(this, L2GuardInstance.class))
@@ -2212,6 +2212,9 @@ public final class L2PcInstance extends L2Playable
 		
 		_karma = karma;
 		broadcastKarma();
+		
+		sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOUR_KARMA_HAS_BEEN_CHANGED_TO_S1).addNumber(karma));
+
 	}
 	
 	/**
@@ -4863,6 +4866,19 @@ public final class L2PcInstance extends L2Playable
 		}
 	}
 	
+
+	public void sendPacket(L2GameServerPacket... packets)
+	{
+		
+		if (_client != null)
+		{
+			for (L2GameServerPacket packet : packets)
+			{
+				_client.sendPacket(packet);
+			}
+		}
+	}
+	
 	/**
 	 * Send SystemMessage packet.<BR><BR>
 	 * @param id
@@ -5627,20 +5643,9 @@ public final class L2PcInstance extends L2Playable
 								((L2PcInstance) killer).getClan().broadcastToOnlineMembers(new PledgeShowInfoUpdate(((L2PcInstance) killer).getClan()));
 							}
 						}
-						if (Config.ALT_GAME_DELEVEL)
-						{
-							// Reduce the Experience of the L2PcInstance in
-							// function of the calculated Death Penalty
-							// NOTE: deathPenalty +- Exp will update karma
-							if (getSkillLevel(L2Skill.SKILL_LUCKY) < 0 || getStat().getLevel() > 9)
-							{
-								deathPenalty((pk != null && getClan() != null && pk.getClan() != null && pk.getClan().isAtWarWith(getClanId())));
-							}
-						}
-						else
-						{
-							onDieUpdateKarma(); // Update karma if delevel is not allowed
-						}
+						// Reduce player's xp and karma.
+						if (Config.ALT_GAME_DELEVEL && (getSkillLevel(L2Skill.SKILL_LUCKY) < 0 || getStat().getLevel() > 9))
+							deathPenalty(pk != null && getClan() != null && pk.getClan() != null && (getClan().isAtWarWith(pk.getClanId()) || pk.getClan().isAtWarWith(getClanId())), pk != null, killer instanceof L2SiegeGuardInstance);
 					}
 				}
 			}
@@ -5806,30 +5811,6 @@ public final class L2PcInstance extends L2Playable
 			}
 		}
 	}
-
-	private void onDieUpdateKarma()
-	{
-		// Karma lose for server that does not allow delevel
-		if (getKarma() > 0)
-		{
-			// this formula seems to work relatively well:
-			// baseKarma * thisLVL * (thisLVL/100)
-			// Calculate the new Karma of the attacker : newKarma =
-			// baseKarma*pkCountMulti*lvlDiffMulti
-			double karmaLost = Config.KARMA_LOST_BASE;
-			karmaLost *= getLevel(); // multiply by char lvl
-			karmaLost *= (getLevel() / 100.0); // divide by 0.charLVL
-			karmaLost = Math.round(karmaLost);
-			if (karmaLost < 0)
-			{
-				karmaLost = 1;
-			}
-			
-			// Decrease Karma of the L2PcInstance and Send it a Server->Client
-			// StatusUpdate packet with Karma and PvP Flag if necessary
-			setKarma(getKarma() - (int) karmaLost);
-		}
-	}
 	
 	public void onKillUpdatePvPKarma(L2Character target)
 	{
@@ -5894,7 +5875,7 @@ public final class L2PcInstance extends L2Playable
 			{
 				// Add PvP point to attacker.
 				increasePvpKills();
-
+				
 				if (target instanceof L2PcInstance && Config.ANNOUNCE_PVP_KILL)
 				{
 					Announcements.getInstance().announceToAll("Player " + this.getName() + " hunted Player " + target.getName());
@@ -5906,15 +5887,15 @@ public final class L2PcInstance extends L2Playable
 		{
 			// PK Points are increased only if you kill a player.
 			if (target instanceof L2PcInstance)
-			{
-				increasePkKillsAndKarma(targetPlayer.getLevel());
-				stopPvPFlag();
+				setPkKills(getPkKills() + 1);
+				
+			    increasePkKillsAndKarma(targetPlayer.getLevel() ,target instanceof L2Summon);
 				
 				if (target instanceof L2PcInstance && Config.ANNOUNCE_PK_KILL)
 				{
 					Announcements.getInstance().announceToAll("Player " + this.getName() + " has assassinated Player " + target.getName());
 				}
-			}
+			
 			
 			// Send UserInfo packet to attacker with its Karma and PK Counter
 			sendPacket(new UserInfo(this));
@@ -5971,72 +5952,20 @@ public final class L2PcInstance extends L2Playable
 	 * @param targLVL
 	 *        : level of the killed player
 	 */
-	public void increasePkKillsAndKarma(int targLVL)
+	public void increasePkKillsAndKarma(int targLV,boolean isSummon)
 	{
 		if ((TvT._started && _inEventTvT) || isinZodiac || (DM._started && _inEventDM) || (CTF._started && _inEventCTF))
 			return;
 
-		int baseKarma = Config.KARMA_MIN_KARMA;
 		
-		int newKarma = baseKarma;
-		int karmaLimit = Config.KARMA_MAX_KARMA;
+		int newKarma = Formulas.calculateKarmaGain(getPkKills(), isSummon);
 		
-		int pkLVL = getLevel();
-		int pkPKCount = getPkKills();
-		
-		int lvlDiffMulti = 0;
-		int pkCountMulti = 0;
-		
-		// Check if the attacker has a PK counter greater than 0
-		if (pkPKCount > 0)
-		{
-			pkCountMulti = pkPKCount / 2;
-		}
-		else
-		{
-			pkCountMulti = 1;
-		}
-		if (pkCountMulti < 1)
-		{
-			pkCountMulti = 1;
-		}
-		
-		// Calculate the level difference Multiplier between attacker and killed L2PcInstance
-		if (pkLVL > targLVL)
-		{
-			lvlDiffMulti = pkLVL / targLVL;
-		}
-		else
-		{
-			lvlDiffMulti = 1;
-		}
-		if (lvlDiffMulti < 1)
-		{
-			lvlDiffMulti = 1;
-		}
-		
-		// Calculate the new Karma of the attacker : newKarma =
-		// baseKarma*pkCountMulti*lvlDiffMulti
-		newKarma *= pkCountMulti;
-		newKarma *= lvlDiffMulti;
-		
-		// Make sure newKarma is less than karmaLimit and higher than baseKarma
-		if (newKarma < baseKarma)
-		{
-			newKarma = baseKarma;
-		}
-		if (newKarma > karmaLimit)
-		{
-			newKarma = karmaLimit;
-		}
-		
-		// Fix to prevent overflow (=> karma has a max value of 2 147 483 647)
+		//prevent overflow
 		if (getKarma() > (Integer.MAX_VALUE - newKarma))
 		{
 			newKarma = Integer.MAX_VALUE - getKarma();
 		}
-
-		setPkKills(getPkKills() + 1);
+		
 		setKarma(getKarma() + newKarma);
 		updatePkColor(getPkKills());
 		broadcastUserInfo();
@@ -6062,43 +5991,6 @@ public final class L2PcInstance extends L2Playable
 		sendPacket(new UserInfo(this));
 	}
 	
-	public int calculateKarmaLost(long exp)
-	{
-		// KARMA LOSS
-		// When a PKer gets killed by another player or a L2MonsterInstance, it
-		// loses a certain amount of Karma based on their level.
-		// this (with defaults) results in a level 1 losing about ~2 karma per
-		// death, and a lvl 70 loses about 11760 karma per death...
-		// You lose karma as long as you were not in a pvp zone and you did not
-		// kill urself.
-		// NOTE: exp for death (if delevel is allowed) is based on the players level
-		
-		long expGained = Math.abs(exp);
-		expGained /= Config.KARMA_XP_DIVIDER;
-		
-		// FIXME Micht : Maybe this code should be fixed and karma set to a long value
-		int karmaLost = 0;
-		if (expGained > Integer.MAX_VALUE)
-		{
-			karmaLost = Integer.MAX_VALUE;
-		}
-		else
-		{
-			karmaLost = (int) expGained;
-		}
-		
-		if (karmaLost < Config.KARMA_LOST_BASE)
-		{
-			karmaLost = Config.KARMA_LOST_BASE;
-		}
-		if (karmaLost > getKarma())
-		{
-			karmaLost = getKarma();
-		}
-		
-		return karmaLost;
-	}
-	
 	public void updatePvPStatus()
 	{
 		if ((TvT._started && _inEventTvT) || isinZodiac || (DM._started && _inEventDM) || (CTF._started && _inEventCTF))
@@ -6106,12 +5998,11 @@ public final class L2PcInstance extends L2Playable
 		
 		if (isInsideZone(ZoneId.PVP))
 			return;
-		setPvpFlagLasts(System.currentTimeMillis() + Config.PVP_NORMAL_TIME);
+		
+		PvpFlagTaskManager.getInstance().add(this, Config.PVP_NORMAL_TIME);
 		
 		if (getPvpFlag() == 0)
-		{
-			startPvPFlag();
-		}
+			updatePvPFlag(1);
 	}
 	
 	public void updatePvPStatus(L2Character target)
@@ -6133,22 +6024,15 @@ public final class L2PcInstance extends L2Playable
 		if ((TvT._started && _inEventTvT && player_target._inEventTvT) || isinZodiac || (DM._started && _inEventDM && player_target._inEventDM) || (CTF._started && _inEventCTF && player_target._inEventCTF))
 			return;
 		
-		if ((isInDuel() && player_target.getDuelId() == getDuelId()))
+		if (isInDuel() && player_target.getDuelId() == getDuelId())
 			return;
+		
 		if ((!isInsideZone(ZoneId.PVP) || !player_target.isInsideZone(ZoneId.PVP)) && player_target.getKarma() == 0)
 		{
-			if (checkIfPvP(player_target))
-			{
-				setPvpFlagLasts(System.currentTimeMillis() + Config.PVP_PVP_TIME);
-			}
-			else
-			{
-				setPvpFlagLasts(System.currentTimeMillis() + Config.PVP_NORMAL_TIME);
-			}
+			PvpFlagTaskManager.getInstance().add(this, checkIfPvP(player_target) ? Config.PVP_PVP_TIME : Config.PVP_NORMAL_TIME);
+			
 			if (getPvpFlag() == 0)
-			{
-				startPvPFlag();
-			}
+				updatePvPFlag(1);
 		}
 	}
 	
@@ -6175,9 +6059,23 @@ public final class L2PcInstance extends L2Playable
 	 * and Decrease its level if necessary Send a Server->Client
 	 * StatusUpdate packet with its new Experience
 	 */
-	public void deathPenalty(boolean atwar)
+	public void deathPenalty(boolean atWar, boolean killedByPlayable, boolean killedBySiegeNpc)
 	{
-		// TODO Need Correct Penalty Get the level of the L2PcInstance
+
+		if (isInsideZone(ZoneId.PVP))
+		{
+			// No xp loss for siege participants inside siege zone.
+			if (isInsideZone(ZoneId.SIEGE))
+			{
+				if (isInSiege() && (killedByPlayable || killedBySiegeNpc))
+					return;
+			}
+			// No xp loss for arenas participants killed by playable.
+			else if (killedByPlayable)
+				return;
+		}
+		
+		// Get the level of the Player
 		final int lvl = getLevel();
 		
 		// The death steal you some Exp
@@ -6189,35 +6087,37 @@ public final class L2PcInstance extends L2Playable
 		
 		if (getKarma() > 0)
 			percentLost *= Config.RATE_KARMA_EXP_LOST;
-		if (isFestivalParticipant() || atwar || isInsideZone(ZoneId.SIEGE))
+		
+		if (isFestivalParticipant() || atWar || isInsideZone(ZoneId.SIEGE))
 			percentLost /= 4.0;
 		
 		// Calculate the Experience loss
 		long lostExp = 0;
-		if (!atEvent && !_inEventTvT && !_inEventDM && !_inEventCTF)
-			if (lvl < ExperienceData.getInstance().getMaxLevel())
-				lostExp = Math.round((getStat().getExpForLevel(lvl + 1) - getStat().getExpForLevel(lvl)) * percentLost / 100);
-			else
-				lostExp = Math.round((getStat().getExpForLevel(ExperienceData.getInstance().getMaxLevel()) - getStat().getExpForLevel(ExperienceData.getInstance().getMaxLevel() - 1)) * percentLost / 100);
-			
+		
+		if (lvl < ExperienceData.getInstance().getMaxLevel())
+			lostExp = Math.round((getStat().getExpForLevel(lvl + 1) - getStat().getExpForLevel(lvl)) * percentLost / 100);
+		else
+			lostExp = Math.round((getStat().getExpForLevel(ExperienceData.getInstance().getMaxLevel()) - getStat().getExpForLevel(ExperienceData.getInstance().getMaxLevel() - 1)) * percentLost / 100);
+		
 		// Get the Experience before applying penalty
 		setExpBeforeDeath(getExp());
 		
-		if (getCharmOfCourage())
-			if (getSiegeState() > 0 && isInsideZone(ZoneId.SIEGE))
-				lostExp = 0;
+		// Set new karma
+		updateKarmaLoss(lostExp);
 		
-		setCharmOfCourage(false);
-		
-		if (Config.DEBUG)
-		{
-			_log.fine(getName() + " died and lost " + lostExp + " experience.");
-		}
-		
-		// Set the new Experience value of the L2PcInstance
+		// Set the new Experience value of the Player
 		getStat().addExp(-lostExp);
 	}
 	
+	public void updateKarmaLoss(long exp)
+	{
+		if (!isCursedWeaponEquiped() && getKarma() > 0)
+		{
+			int karmaLost = Formulas.calculateKarmaLost(getLevel(), exp);
+			if (karmaLost > 0)
+				setKarma(getKarma() - karmaLost);
+		}
+	}
 	/**
 	 * Manage the increase level task of a L2PcInstance (Max MP, Max MP, Recommandation, Expertise and beginner skills...).<BR>
 	 * <BR>
@@ -6251,10 +6151,14 @@ public final class L2PcInstance extends L2Playable
 	{
 		stopHpMpRegeneration();
 		stopWarnUserTakeBreak();
-		WaterTaskManager.getInstance().remove(this);
+		
 		stopRentPet();
-		stopPvpRegTask();
 		stopJailTask(true);
+		
+		
+		AttackStanceTaskManager.getInstance().remove(this);
+		PvpFlagTaskManager.getInstance().remove(this);
+		WaterTaskManager.getInstance().remove(this);
 	}
 	
 	/**
@@ -12123,94 +12027,45 @@ public final class L2PcInstance extends L2Playable
 	{
 		return _lure;
 	}
-	
-	public int GetInventoryLimit()
+
+	public int getInventoryLimit()
 	{
-		int ivlim;
-		if (isGM())
-		{
-			ivlim = Config.INVENTORY_MAXIMUM_GM;
-		}
-		else if (getRace() == Race.dwarf)
-		{
-			ivlim = Config.INVENTORY_MAXIMUM_DWARF;
-		}
-		else
-		{
-			ivlim = Config.INVENTORY_MAXIMUM_NO_DWARF;
-		}
-		ivlim += (int) getStat().calcStat(Stats.INV_LIM, 0, null, null);
-		
-		return ivlim;
+		if(isGM())
+			return Config.INVENTORY_MAXIMUM_GM;
+
+		return ((getRace() == Race.dwarf) ? Config.INVENTORY_MAXIMUM_DWARF : Config.INVENTORY_MAXIMUM_NO_DWARF) + (int) getStat().calcStat(Stats.INV_LIM, 0, null, null);
+	}
+
+	public int getWareHouseLimit()
+	{
+		return ((getRace() == Race.dwarf) ? Config.WAREHOUSE_SLOTS_DWARF : Config.WAREHOUSE_SLOTS_NO_DWARF) + (int) getStat().calcStat(Stats.WH_LIM, 0, null, null);
 	}
 	
-	public int GetWareHouseLimit()
+	public int getPrivateSellStoreLimit()
 	{
-		int whlim;
-		if (getRace() == Race.dwarf)
-		{
-			whlim = Config.WAREHOUSE_SLOTS_DWARF;
-		}
-		else
-		{
-			whlim = Config.WAREHOUSE_SLOTS_NO_DWARF;
-		}
-		whlim += (int) getStat().calcStat(Stats.WH_LIM, 0, null, null);
-		
-		return whlim;
+		return ((getRace() == Race.dwarf) ? Config.MAX_PVTSTORE_SLOTS_DWARF : Config.MAX_PVTSTORE_SLOTS_OTHER) + (int) getStat().calcStat(Stats.P_SELL_LIM, 0, null, null);
 	}
 	
-	public int GetPrivateSellStoreLimit()
+	public int getPrivateBuyStoreLimit()
 	{
-		int pslim;
-		if (getRace() == Race.dwarf)
-		{
-			pslim = Config.MAX_PVTSTORE_SLOTS_DWARF;
-		}
-		else
-		{
-			pslim = Config.MAX_PVTSTORE_SLOTS_OTHER;
-		}
-		pslim += (int) getStat().calcStat(Stats.P_SELL_LIM, 0, null, null);
-		
-		return pslim;
+		return ((getRace() == Race.dwarf) ? Config.MAX_PVTSTORE_SLOTS_DWARF : Config.MAX_PVTSTORE_SLOTS_OTHER) + (int) getStat().calcStat(Stats.P_BUY_LIM, 0, null, null);
 	}
 	
-	public int GetPrivateBuyStoreLimit()
-	{
-		int pblim;
-		if (getRace() == Race.dwarf)
-		{
-			pblim = Config.MAX_PVTSTORE_SLOTS_DWARF;
-		}
-		else
-		{
-			pblim = Config.MAX_PVTSTORE_SLOTS_OTHER;
-		}
-		pblim += (int) getStat().calcStat(Stats.P_BUY_LIM, 0, null, null);
-		
-		return pblim;
-	}
-	
-	public int GetFreightLimit()
+	public int getFreightLimit()
 	{
 		return Config.FREIGHT_SLOTS + (int) getStat().calcStat(Stats.FREIGHT_LIM, 0, null, null);
 	}
-	
-	public int GetDwarfRecipeLimit()
+
+	public int getDwarfRecipeLimit()
 	{
-		int recdlim = Config.DWARF_RECIPE_LIMIT;
-		recdlim += (int) getStat().calcStat(Stats.REC_D_LIM, 0, null, null);
-		return recdlim;
+		return Config.DWARF_RECIPE_LIMIT + (int) getStat().calcStat(Stats.REC_D_LIM, 0, null, null);
 	}
 	
-	public int GetCommonRecipeLimit()
+	public int getCommonRecipeLimit()
 	{
-		int recclim = Config.COMMON_RECIPE_LIMIT;
-		recclim += (int) getStat().calcStat(Stats.REC_C_LIM, 0, null, null);
-		return recclim;
+		return Config.COMMON_RECIPE_LIMIT + (int) getStat().calcStat(Stats.REC_C_LIM, 0, null, null);
 	}
-	
+
 	public void setMountObjectID(int newID)
 	{
 		_mountObjectID = newID;
@@ -12731,26 +12586,22 @@ public final class L2PcInstance extends L2Playable
 	@Override
 	public final void sendDamageMessage(L2Character target, int damage, boolean mcrit, boolean pcrit, boolean miss)
 	{
-		// Check if hit is missed
 		if (miss)
 		{
 			sendPacket(SystemMessageId.MISSED_TARGET);
 			return;
 		}
-		
-		// Check if hit is critical
+
 		if (pcrit)
-		{
 			sendPacket(SystemMessageId.CRITICAL_HIT);
-		}
 		if (mcrit)
-		{
 			sendPacket(SystemMessageId.CRITICAL_HIT_MAGIC);
-		}
+		else
+			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_DID_S1_DMG).addNumber(damage));
 		
-		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_DID_S1_DMG);
-		sm.addNumber(damage);
-		sendPacket(sm);
+		if (isInOlympiadMode() && target instanceof L2PcInstance && ((L2PcInstance) target).isInOlympiadMode() && ((L2PcInstance) target).getOlympiadGameId() == getOlympiadGameId())
+			OlympiadGameManager.getInstance().notifyCompetitorDamage(this, damage);
+
 	}
 	
 	/**
@@ -13880,7 +13731,7 @@ public final class L2PcInstance extends L2Playable
 	{
 		L2ItemInstance[] items = null;
 		final boolean isEquipped = item.isEquipped();
-		final int oldInvLimit = GetInventoryLimit();
+		final int oldInvLimit = getInventoryLimit();
 		SystemMessage sm = null;
 		
 		if (item.getItem() instanceof L2Weapon)
@@ -13960,7 +13811,7 @@ public final class L2PcInstance extends L2Playable
 		if (abortAttack)
 			abortAttack();
 		
-		if (GetInventoryLimit() != oldInvLimit)
+		if (getInventoryLimit() != oldInvLimit)
 			sendPacket(new ExStorageMaxCount(this));
 	}
 	

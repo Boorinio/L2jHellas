@@ -62,22 +62,15 @@ public class RequestServerList extends L2LoginClientPacket
 			_skey2 = readD(); // loginOk 2
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 
 	@Override
 	public void run()
 	{
 		if (getClient().getSessionKey().checkLoginPair(_skey1, _skey2))
-		{
 			getClient().sendPacket(new ServerList(getClient()));
-		}
 		else
-		{
 			getClient().close(LoginFailReason.REASON_ACCESS_FAILED);
-		}
 	}
 }

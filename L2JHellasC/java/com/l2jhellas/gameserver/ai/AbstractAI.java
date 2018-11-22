@@ -835,7 +835,7 @@ abstract class AbstractAI implements Ctrl
 		return _followTarget;
 	}
 
-	protected L2Object getTarget()
+	public L2Object getTarget()
 	{
 		return _target;
 	}

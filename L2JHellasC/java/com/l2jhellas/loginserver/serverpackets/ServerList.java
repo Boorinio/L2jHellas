@@ -64,8 +64,9 @@ public final class ServerList extends L2LoginServerPacket
 		protected boolean _clock;
 		protected int _status;
 		protected int _serverId;
+		private final int _ageLimit;
 
-		ServerData(String pIp, int pPort, boolean pPvp, boolean pTestServer, int pCurrentPlayers, int pMaxPlayers, boolean pBrackets, boolean pClock, int pStatus, int pServer_id)
+		ServerData(String pIp, int pPort, boolean pPvp, boolean pTestServer, int pCurrentPlayers, int pMaxPlayers, boolean pBrackets, boolean pClock, int pStatus, int pServer_id,int ageLimit)
 		{
 			_ip = pIp;
 			_port = pPort;
@@ -77,6 +78,7 @@ public final class ServerList extends L2LoginServerPacket
 			_clock = pClock;
 			_status = pStatus;
 			_serverId = pServer_id;
+			_ageLimit = ageLimit;
 		}
 	}
 
@@ -89,24 +91,24 @@ public final class ServerList extends L2LoginServerPacket
 			if (gsi.getStatus() == ServerStatus.STATUS_GM_ONLY && client.getAccessLevel() > 0)
 			{
 				// Server is GM-Only but you've got GM Status
-				addServer(client.usesInternalIP() ? gsi.getInternalHost() : gsi.getExternalHost(), gsi.getPort(), gsi.isPvp(), gsi.isTestServer(), gsi.getCurrentPlayerCount(), gsi.getMaxPlayers(), gsi.isShowingBrackets(), gsi.isShowingClock(), gsi.getStatus(), gsi.getId());
+				addServer(client.usesInternalIP() ? gsi.getInternalHost() : gsi.getExternalHost(), gsi.getPort(), gsi.isPvp(), gsi.isTestServer(), gsi.getCurrentPlayerCount(), gsi.getMaxPlayers(), gsi.isShowingBrackets(), gsi.isShowingClock(), gsi.getStatus(), gsi.getId(),gsi.getAgeLimit());
 			}
 			else if (gsi.getStatus() != ServerStatus.STATUS_GM_ONLY)
 			{
 				// Server is not GM-Only
-				addServer(client.usesInternalIP() ? gsi.getInternalHost() : gsi.getExternalHost(), gsi.getPort(), gsi.isPvp(), gsi.isTestServer(), gsi.getCurrentPlayerCount(), gsi.getMaxPlayers(), gsi.isShowingBrackets(), gsi.isShowingClock(), gsi.getStatus(), gsi.getId());
+				addServer(client.usesInternalIP() ? gsi.getInternalHost() : gsi.getExternalHost(), gsi.getPort(), gsi.isPvp(), gsi.isTestServer(), gsi.getCurrentPlayerCount(), gsi.getMaxPlayers(), gsi.isShowingBrackets(), gsi.isShowingClock(), gsi.getStatus(), gsi.getId(),gsi.getAgeLimit());
 			}
 			else
 			{
 				// Server's GM-Only and you've got no GM-Status
-				addServer(client.usesInternalIP() ? gsi.getInternalHost() : gsi.getExternalHost(), gsi.getPort(), gsi.isPvp(), gsi.isTestServer(), gsi.getCurrentPlayerCount(), gsi.getMaxPlayers(), gsi.isShowingBrackets(), gsi.isShowingClock(), ServerStatus.STATUS_DOWN, gsi.getId());
+				addServer(client.usesInternalIP() ? gsi.getInternalHost() : gsi.getExternalHost(), gsi.getPort(), gsi.isPvp(), gsi.isTestServer(), gsi.getCurrentPlayerCount(), gsi.getMaxPlayers(), gsi.isShowingBrackets(), gsi.isShowingClock(), ServerStatus.STATUS_DOWN, gsi.getId(),gsi.getAgeLimit());
 			}
 		}
 	}
 
-	public void addServer(String ip, int port, boolean pvp, boolean testServer, int currentPlayer, int maxPlayer, boolean brackets, boolean clock, int status, int server_id)
+	public void addServer(String ip, int port, boolean pvp, boolean testServer, int currentPlayer, int maxPlayer, boolean brackets, boolean clock, int status, int server_id,int agelimit)
 	{
-		_servers.add(new ServerData(ip, port, pvp, testServer, currentPlayer, maxPlayer, brackets, clock, status, server_id));
+		_servers.add(new ServerData(ip, port, pvp, testServer, currentPlayer, maxPlayer, brackets, clock, status, server_id,agelimit));
 	}
 
 	@Override
@@ -115,14 +117,14 @@ public final class ServerList extends L2LoginServerPacket
 		writeC(0x04);
 		writeC(_servers.size());
 		writeC(_lastServer);
+		
 		for (ServerData server : _servers)
 		{
-			writeC(server._serverId); // server id
-
+			writeC(server._serverId);
+			
 			try
 			{
-				InetAddress i4 = InetAddress.getByName(server._ip);
-				byte[] raw = i4.getAddress();
+				final byte[] raw = InetAddress.getByName(server._ip).getAddress();
 				writeC(raw[0] & 0xff);
 				writeC(raw[1] & 0xff);
 				writeC(raw[2] & 0xff);
@@ -136,22 +138,22 @@ public final class ServerList extends L2LoginServerPacket
 				writeC(0);
 				writeC(1);
 			}
+			
 
 			writeD(server._port);
-			writeC(0x00); // age limit
+			writeC(server._ageLimit);
 			writeC(server._pvp ? 0x01 : 0x00);
 			writeH(server._currentPlayers);
 			writeH(server._maxPlayers);
 			writeC(server._status == ServerStatus.STATUS_DOWN ? 0x00 : 0x01);
+			
 			int bits = 0;
 			if (server._testServer)
-			{
 				bits |= 0x04;
-			}
+			
 			if (server._clock)
-			{
 				bits |= 0x02;
-			}
+			
 			writeD(bits);
 			writeC(server._brackets ? 0x01 : 0x00);
 		}

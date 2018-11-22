@@ -404,10 +404,6 @@ public final class Config
 	public static boolean ALLOW_PK_REWARD;
 	public static int PK_REWARD_ITEM;
 	public static int PK_REWARD_COUNT;
-	public static int KARMA_MIN_KARMA;
-	public static int KARMA_MAX_KARMA;
-	public static int KARMA_XP_DIVIDER;
-	public static int KARMA_LOST_BASE;
 	public static boolean KARMA_DROP_GM;
 	public static String KARMA_NONDROPPABLE_PET_ITEMS;
 	public static List<Integer> KARMA_LIST_NONDROPPABLE_PET_ITEMS = new ArrayList<Integer>();
@@ -1637,10 +1633,6 @@ public final class Config
 			ALLOW_PK_REWARD = Boolean.parseBoolean(PvPSettings.getProperty("AllowPkRewardSystem", "False"));
 			PK_REWARD_ITEM = Integer.parseInt(PvPSettings.getProperty("PkRewardItem", "57"));
 			PK_REWARD_COUNT = Integer.parseInt(PvPSettings.getProperty("PkRewardAmount", "1"));
-			KARMA_MIN_KARMA = Integer.parseInt(PvPSettings.getProperty("MinKarma", "240"));
-			KARMA_MAX_KARMA = Integer.parseInt(PvPSettings.getProperty("MaxKarma", "10000"));
-			KARMA_XP_DIVIDER = Integer.parseInt(PvPSettings.getProperty("XPDivider", "260"));
-			KARMA_LOST_BASE = Integer.parseInt(PvPSettings.getProperty("BaseKarmaLost", "0"));
 			KARMA_DROP_GM = Boolean.parseBoolean(PvPSettings.getProperty("CanGMDropEquipment", "False"));
 			KARMA_NONDROPPABLE_PET_ITEMS = PvPSettings.getProperty("ListOfPetItems", "2375,3500,3501,3502,4422,4423,4424,4425,6648,6649,6650");
 			KARMA_LIST_NONDROPPABLE_PET_ITEMS = new ArrayList<Integer>();
@@ -4032,18 +4024,6 @@ public final class Config
 			break;
 			case "EnchantSafeMaxFull":
 				ENCHANT_SAFE_MAX_FULL = Integer.parseInt(pValue);
-			break;
-			case "MinKarma":
-				KARMA_MIN_KARMA = Integer.parseInt(pValue);
-			break;
-			case "MaxKarma":
-				KARMA_MAX_KARMA = Integer.parseInt(pValue);
-			break;
-			case "XPDivider":
-				KARMA_XP_DIVIDER = Integer.parseInt(pValue);
-			break;
-			case "BaseKarmaLost":
-				KARMA_LOST_BASE = Integer.parseInt(pValue);
 			break;
 			case "CanGMDropEquipment":
 				KARMA_DROP_GM = Boolean.valueOf(pValue);

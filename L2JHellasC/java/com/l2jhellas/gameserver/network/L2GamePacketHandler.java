@@ -36,7 +36,7 @@ import com.l2jhellas.mmocore.network.ReceivablePacket;
  * Clients sends a RequestAuthLogin being already authed. (Potential exploit).
  * Note: If for a given exception a packet needs to be handled on more then one state, then it should be added to all these states.
  * 
- * @author KenM
+ * @author KenM Rework AbsolutePower
  */
 public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, IClientFactory<L2GameClient>, IMMOExecutor<L2GameClient>
 {

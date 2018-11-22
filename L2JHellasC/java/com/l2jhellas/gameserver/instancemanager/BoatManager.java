@@ -28,7 +28,7 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 
 public class BoatManager
 {
-	private final Map<Integer, L2BoatInstance> _boats = new HashMap<>();
+	public final Map<Integer, L2BoatInstance> _boats = new HashMap<>();
 	private final boolean[] _docksBusy = new boolean[3];
 	
 	public static final int TALKING_ISLAND = 0;
@@ -46,7 +46,10 @@ public class BoatManager
 
 	public BoatManager()
 	{
-
+		for (int i = 0; i < _docksBusy.length; i++)
+		{
+			_docksBusy[i] = false;
+		}
 	}
 	
 	/**
@@ -150,17 +153,11 @@ public class BoatManager
 	{
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
-			double dx = (double) player.getX() - point1.x;
-			double dy = (double) player.getY() - point1.y;
-			
-			if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
-				player.sendPacket(packet);
+			if (Math.hypot(player.getX() - point1.x, player.getY() - point1.y) < BOAT_BROADCAST_RADIUS)
+				   player.sendPacket(packet);
 			else
 			{
-				dx = (double) player.getX() - point2.x;
-				dy = (double) player.getY() - point2.y;
-				
-				if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
+				if (Math.hypot(player.getX() - point2.x, player.getY() - point2.y) < BOAT_BROADCAST_RADIUS)
 					player.sendPacket(packet);
 			}
 		}
@@ -173,25 +170,21 @@ public class BoatManager
 	 * @param packets The packets to broadcast.
 	 */
 	public void broadcastPackets(VehiclePathPoint point1, VehiclePathPoint point2, L2GameServerPacket... packets)
-	{
+	{	
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
-			double dx = (double) player.getX() - point1.x;
-			double dy = (double) player.getY() - point1.y;
-			
-			if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
+			if (Math.hypot(player.getX() - point1.x, player.getY() - point1.y) < BOAT_BROADCAST_RADIUS)
 			{
 				for (L2GameServerPacket p : packets)
 					player.sendPacket(p);
 			}
 			else
 			{
-				dx = (double) player.getX() - point2.x;
-				dy = (double) player.getY() - point2.y;
-				
-				if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
+				if (Math.hypot(player.getX() - point2.x, player.getY() - point2.y) < BOAT_BROADCAST_RADIUS)
+				{
 					for (L2GameServerPacket p : packets)
 						player.sendPacket(p);
+				}
 			}
 		}
 	}

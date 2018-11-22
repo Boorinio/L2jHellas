@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.gameserver.model.actor;
 
-import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ACTIVE;
-
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -97,6 +95,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.taskmanager.DecayTaskManager;
+import com.l2jhellas.gameserver.taskmanager.RandomAnimationTaskManager;
 import com.l2jhellas.gameserver.templates.L2HelperBuff;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -153,45 +152,11 @@ public class L2Npc extends L2Character
 
 	private final L2MaxPolyModel _mxcModel;
 
-	protected RandomAnimationTask _rAniTask = null;
 	private int _currentLHandId;  // normally this shouldn't change from the template, but there exist exceptions
 	private int _currentRHandId;  // normally this shouldn't change from the template, but there exist exceptions
 	private int _currentCollisionHeight; // used for npc grow effect skills
 	private int _currentCollisionRadius; // used for npc grow effect skills
 	private int _scriptValue = 0;
-	
-	/** Task launching the function onRandomAnimation() */
-	protected class RandomAnimationTask implements Runnable
-	{
-		@Override
-		public void run()
-		{
-			try
-			{
-				if (this != _rAniTask)
-					return; // Shouldn't happen, but who knows... just to make sure every active npc has only one timer.
-				if (isMob())
-				{
-					// Cancel further animation timers until intention is changed to ACTIVE again.
-					if (getAI().getIntention() != AI_INTENTION_ACTIVE)
-						return;
-				}
-				else
-				{
-					if (!isInActiveRegion()) // NPCs in inactive region don't run this task
-						return;
-				}
-
-				if (!(isDead() || isStunned() || isSleeping() || isParalyzed()))
-					onRandomAnimation();
-
-				startRandomAnimationTimer();
-			}
-			catch (Throwable t)
-			{
-			}
-		}
-	}
 
 	/**
 	 * Send a packet SocialAction to all L2PcInstance in the _KnownPlayers of the L2NpcInstance and create a new RandomAnimation Task.<BR>
@@ -211,16 +176,9 @@ public class L2Npc extends L2Character
 	{
 		if (!hasRandomAnimation())
 			return;
-
-		int minWait = isMob() ? Config.MIN_MONSTER_ANIMATION : Config.MIN_NPC_ANIMATION;
-		int maxWait = isMob() ? Config.MAX_MONSTER_ANIMATION : Config.MAX_NPC_ANIMATION;
-
-		// Calculate the delay before the next animation
-		int interval = Rnd.get(minWait, maxWait) * 1000;
-
-		// Create a RandomAnimation Task that will be launched after the calculated delay
-		_rAniTask = new RandomAnimationTask();
-		ThreadPoolManager.getInstance().scheduleGeneral(_rAniTask, interval);
+		
+		final int timer = (isMob()) ? Rnd.get(Config.MIN_MONSTER_ANIMATION, Config.MAX_MONSTER_ANIMATION) : Rnd.get(Config.MIN_NPC_ANIMATION, Config.MAX_NPC_ANIMATION);
+		RandomAnimationTaskManager.getInstance().add(this, timer);
 	}
 
 	/**
@@ -1433,7 +1391,7 @@ public class L2Npc extends L2Character
 		}
 		else
 		{
-			if ((q.getQuestId() >= 1 && q.getQuestId() < 1000) && (player.getWeightPenalty() >= 3 || player.GetInventoryLimit() * 0.8 <= player.getInventory().getSize()))
+			if ((q.getQuestId() >= 1 && q.getQuestId() < 1000) && (player.getWeightPenalty() >= 3 || player.getInventoryLimit() * 0.8 <= player.getInventory().getSize()))
 			{
 				player.sendPacket(SystemMessageId.INVENTORY_LESS_THAN_80_PERCENT);
 				return;

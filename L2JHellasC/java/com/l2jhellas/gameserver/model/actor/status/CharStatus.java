@@ -486,7 +486,7 @@ public class CharStatus
 
 				// Modify the current CP of the L2Character and broadcast Server->Client packet StatusUpdate
 				if (getCurrentCp() < charstat.getMaxCp())
-					setCurrentCp(getCurrentCp() + Formulas.getInstance().calcCpRegen(getActiveChar()), false);
+					setCurrentCp(getCurrentCp() + Formulas.getInstance().calcCpRegen((L2PcInstance)getActiveChar()), false);
 
 				// Modify the current HP of the L2Character and broadcast Server->Client packet StatusUpdate
 				if (getCurrentHp() < charstat.getMaxHp())

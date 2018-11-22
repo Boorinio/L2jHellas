@@ -602,4 +602,13 @@
 	<admin command="admin_dmevent_dump" accessLevel="7" />
 	<admin command="admin_dmevent_save" accessLevel="7" />
 	<admin command="admin_dmevent_load" accessLevel="7" />
+
+    <!-- ADMIN Fence -->
+    <admin command="admin_fence" accessLevel="7" />
+	<admin command="admin_addfence" accessLevel="7" />
+	<admin command="admin_setfencestate" accessLevel="7" />
+	<admin command="admin_removefence" accessLevel="7" />
+	<admin command="admin_listfence" accessLevel="7" />
+	<admin command="admin_gofence" accessLevel="7" />
+	<admin command="admin_fence_page" accessLevel="7" />	
 </list>

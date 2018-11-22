@@ -30,6 +30,11 @@ public class DeleteObject extends L2GameServerPacket
 	{
 		_objectId = obj.getObjectId();
 	}
+	
+	public DeleteObject(int obj)
+	{
+		_objectId = obj;
+	}
 
 	@Override
 	protected final void writeImpl()

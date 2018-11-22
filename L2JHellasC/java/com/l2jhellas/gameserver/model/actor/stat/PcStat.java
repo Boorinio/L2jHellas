@@ -28,7 +28,6 @@ import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
@@ -64,16 +63,6 @@ public class PcStat extends PlayableStat
 		// Player is Gm and access level is below or equal to GM_DONT_TAKE_EXPSP and is in party, don't give Xp
 		if (getActiveChar().isGM() && !getActiveChar().getAccessLevel().canGainExp() && getActiveChar().isInParty())
 			return false;
-
-		// Set new karma
-		if (!activeChar.isCursedWeaponEquiped() && (activeChar.getKarma() > 0) && (activeChar.isGM() || !activeChar.isInsideZone(ZoneId.PVP)))
-		{
-			int karmaLost = activeChar.calculateKarmaLost(value);
-			if (karmaLost > 0)
-			{
-				activeChar.setKarma(activeChar.getKarma() - karmaLost);
-			}
-		}
 
 		activeChar.sendPacket(new UserInfo(activeChar));
 		return true;
@@ -129,10 +118,15 @@ public class PcStat extends PlayableStat
 		if (!super.addExpAndSp(addToExp, addToSp))
 			return false;
 
-		// Send a Server->Client System Message to the L2PcInstance
-		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_EARNED_S1_EXP_AND_S2_SP);
-		sm.addNumber((int) addToExp);
-		sm.addNumber(addToSp);
+		SystemMessage sm;
+		
+		if (addToExp == 0 && addToSp > 0)
+			sm = SystemMessage.getSystemMessage(SystemMessageId.ACQUIRED_S1_SP).addNumber(addToSp);
+		else if (addToExp > 0 && addToSp == 0)
+			sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S1_EXPERIENCE).addNumber((int) addToExp);
+		else
+			sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_EARNED_S1_EXP_AND_S2_SP).addNumber((int) addToExp).addNumber(addToSp);
+		
 		getActiveChar().sendPacket(sm);
 
 		return true;
@@ -145,17 +139,15 @@ public class PcStat extends PlayableStat
 		if (!super.removeExpAndSp(addToExp, addToSp))
 			return false;
 
-		// Send a Server->Client System Message to the L2PcInstance
-		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.EXP_DECREASED_BY_S1);
-		sm.addNumber((int) addToExp);
-		getActiveChar().sendPacket(sm);
-		sm = SystemMessage.getSystemMessage(SystemMessageId.SP_DECREASED_S1);
-		sm.addNumber(addToSp);
-		getActiveChar().sendPacket(sm);
+		if (addToExp > 0)
+			getActiveChar().sendPacket(SystemMessage.getSystemMessage(SystemMessageId.EXP_DECREASED_BY_S1).addNumber((int) addToExp));
+			
+		if (addToSp > 0)
+			getActiveChar().sendPacket(SystemMessage.getSystemMessage(SystemMessageId.SP_DECREASED_S1).addNumber(addToSp));
+			
 		if (getLevel() < level)
-		{
 			getActiveChar().broadcastStatusUpdate();
-		}
+		
 		return true;
 	}
 
@@ -189,14 +181,7 @@ public class PcStat extends PlayableStat
 			QuestState qs = getActiveChar().getQuestState("255_Tutorial");
 			if (qs != null)
 				qs.getQuest().notifyEvent("CE40", null, getActiveChar());
-			/**
-			 * If there are no characters on the server, the bonuses will be applied to the first character that becomes level 6
-			 * and end if this character reaches level 25 or above.
-			 * If the first character that becomes level 6 is deleted, the rest of the characters may not receive the new character bonus
-			 * If the first character to become level 6 loses a level, and the player makes another character level 6,
-			 * the bonus will be applied to only the first character to achieve level 6.
-			 * If the character loses a level after reaching level 25, the character may not receive the bonus.
-			 */
+
 			if (!Config.ALT_GAME_NEW_CHAR_ALWAYS_IS_NEWBIE)
 			{
 				if (getActiveChar().getLevel() >= 25 && getActiveChar().isNewbie())
@@ -421,5 +406,9 @@ public class PcStat extends PlayableStat
 		{
 			super.setSp(value);
 		}
+		
+		StatusUpdate su = new StatusUpdate(getActiveChar().getObjectId());
+		su.addAttribute(StatusUpdate.SP, getSp());
+		getActiveChar().sendPacket(su);
 	}
 }

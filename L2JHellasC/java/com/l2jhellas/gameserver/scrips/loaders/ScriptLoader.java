@@ -21,7 +21,6 @@ package com.l2jhellas.gameserver.scrips.loaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.l2jhellas.gameserver.instancemanager.BoatManager;
 import com.l2jhellas.gameserver.scrips.quests.*;
 import com.l2jhellas.gameserver.scrips.quests.ai.custom.EchoCrystals;
 import com.l2jhellas.gameserver.scrips.quests.ai.custom.HeroCirclet;
@@ -496,13 +495,11 @@ public class ScriptLoader
 		VanHalter.class,
 		Zaken.class,
 
-		BoatManager.class,
 		BoatGiranTalking.class,
 		BoatGludinRune.class,
 		BoatInnadrilTour.class,
 		BoatRunePrimeval.class,
-		BoatTalkingGludin.class
-
+		BoatTalkingGludin.class	
 	};
 	
 	private static void teleiwne()

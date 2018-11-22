@@ -32,7 +32,7 @@ public class HennaRemoveList extends L2GameServerPacket
 		writeC(0xe5);
 		writeD(_player.getAdena());
 		writeD(_player.getHennaEmptySlots());
-		writeD(Math.abs(3 - _player.getHennaEmptySlots()));
+		writeD(Math.abs(_player.getHennaEmptySlots() - 3));
 		
 		for (L2Henna henna : _player.getHennaList())
 		{

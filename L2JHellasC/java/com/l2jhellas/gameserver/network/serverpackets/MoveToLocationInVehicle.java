@@ -47,13 +47,8 @@ public class MoveToLocationInVehicle extends L2GameServerPacket
 		_boatId = player.getBoat().getObjectId();
 		_destination = destination;
 		_origin = origin;
-		/*
-		 * _pci.sendMessage("_destination : x " + x +" y " + y + " z " + z);
-		 * _pci.sendMessage("_boat : x " + _pci.getBoat().getX() +" y " + _pci.getBoat().getY() + " z " + _pci.getBoat().getZ());
-		 * _pci.sendMessage("-----------");
-		 */
 	}
-
+	
 	@Override
 	protected void writeImpl()
 	{

@@ -19,8 +19,10 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.SevenSignsFestival;
+import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
+import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2SiegeClan;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -34,6 +36,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
 import com.l2jhellas.gameserver.model.entity.Siege;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
+import com.l2jhellas.gameserver.model.zone.type.L2MotherTreeZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.conditions.ConditionPlayerState;
@@ -963,10 +966,14 @@ public final class Formulas
 							hpRegenMultiplier *= 1 + (double) clansHall.getFunction(ClanHall.FUNC_RESTORE_HP).getLvl() / 100;
 				}
 			}
-
+			
 			// Mother Tree effect is calculated at last
 			if (player.isInsideZone(ZoneId.MOTHER_TREE))
-				hpRegenBonus += 2;
+			{
+				L2MotherTreeZone zone = ZoneManager.getInstance().getZone(player, L2MotherTreeZone.class);
+				int hpBonus = zone == null ? 0 : zone.getHpRegenBonus();
+				hpRegenBonus += hpBonus;
+			}
 
 			// Calculate Movement bonus
 			if (player.isSitting())
@@ -1011,7 +1018,11 @@ public final class Formulas
 
 			// Mother Tree effect is calculated at last
 			if (player.isInsideZone(ZoneId.MOTHER_TREE))
-				mpRegenBonus += 1;
+			{
+				L2MotherTreeZone zone = ZoneManager.getInstance().getZone(player, L2MotherTreeZone.class);
+				int mpBonus = zone == null ? 0 : zone.getMpRegenBonus();
+				mpRegenBonus += mpBonus;
+			}
 
 			if (player.isInsideZone(ZoneId.CLAN_HALL) && player.getClan() != null)
 			{
@@ -1049,42 +1060,27 @@ public final class Formulas
 	 * Calculate the CP regen rate (base + modifiers).<BR>
 	 * <BR>
 	 */
-	public final double calcCpRegen(L2Character cha)
+	public final double calcCpRegen(L2PcInstance player)
 	{
-		double init = cha.getTemplate().baseHpReg;
+		double init = player.getTemplate().baseHpReg + ((player.getLevel() > 10) ? ((player.getLevel() - 1) / 10.0) : 0.5);
 		double cpRegenMultiplier = Config.CP_REGEN_MULTIPLIER;
-		double cpRegenBonus = 0;
-
-		if (cha instanceof L2PcInstance)
-		{
-			L2PcInstance player = (L2PcInstance) cha;
-
-			// Calculate correct baseHpReg value for certain level of PC
-			init += (player.getLevel() > 10) ? ((player.getLevel() - 1) / 10.0) : 0.5;
-
-			// Calculate Movement bonus
-			if (player.isSitting())
-				cpRegenMultiplier *= 1.5; // Sitting
-			else if (!player.isMoving())
-				cpRegenMultiplier *= 1.1; // Staying
-			else if (player.isRunning())
-				cpRegenMultiplier *= 0.7; // Running
-		}
-		else
-		{
-			// Calculate Movement bonus
-			if (!cha.isMoving())
-				cpRegenMultiplier *= 1.1; // Staying
-			else if (cha.isRunning())
-				cpRegenMultiplier *= 0.7; // Running
-		}
-
+		
+		// Calculate Movement bonus
+		if (player.isSitting())
+			cpRegenMultiplier *= 1.5; // Sitting
+		else if (!player.isMoving())
+			cpRegenMultiplier *= 1.1; // Staying
+		else if (player.isRunning())
+			cpRegenMultiplier *= 0.7; // Running
+			
 		// Apply CON bonus
-		init *= cha.getLevelMod() * CONbonus[cha.getCON()];
+		init *= player.getLevelMod() * CONbonus[player.getCON()];
+		
 		if (init < 1)
 			init = 1;
+		
+		return player.calcStat(Stats.REGENERATE_CP_RATE, init, null, null) * cpRegenMultiplier;
 
-		return cha.calcStat(Stats.REGENERATE_CP_RATE, init, null, null) * cpRegenMultiplier + cpRegenBonus;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -1550,12 +1546,36 @@ public final class Formulas
 	public static boolean calcHitMiss(L2Character attacker, L2Character target)
 	{
 		// accuracy+dexterity => probability to hit in percents
-		int acc_attacker;
-		int evas_target;
-		acc_attacker = attacker.getAccuracy();
-		evas_target = target.getEvasionRate(attacker);
-		int d = 85 + acc_attacker - evas_target;
-		return d < Rnd.get(100);
+		//int acc_attacker;
+		//int evas_target;
+		//acc_attacker = attacker.getAccuracy();
+		//evas_target = target.getEvasionRate(attacker);
+		//int d = 85 + acc_attacker - evas_target;
+		//return d < Rnd.get(100);
+		
+		int chance = (80 + (2 * (attacker.getAccuracy() - target.getEvasionRate(attacker)))) * 10;
+		
+		double modifier = 100;
+		
+		// Get high or low Z bonus.
+		if (attacker.getZ() - target.getZ() > 50)
+			modifier += 3;
+		else if (attacker.getZ() - target.getZ() < -50)
+			modifier -= 3;
+		
+		// Get weather bonus. TODO: rain support (-3%).
+		if (GameTimeController.getInstance().isNight())
+			modifier -= 10;
+		
+		// Get position bonus.
+		if (attacker.isBehindTarget())
+			modifier += 10;
+		else if (!attacker.isInFrontOfTarget())
+			modifier += 5;
+		
+		chance *= modifier / 100;
+
+		return Math.max(Math.min(chance, 980), 200) < Rnd.get(1000);
 	}
 
 	/**
@@ -1998,5 +2018,109 @@ public final class Formulas
 			return 0;
 		
 		return cha.calcStat(Stats.FALL, fallHeight * cha.getMaxHp() / 1000, null, null);
+	}
+	
+	private static final double[] karma =
+	{
+		0,
+		0.772184315,
+		2.069377971,
+		2.315085083,
+		2.467800843,
+		2.514219611,
+		2.510075822,
+		2.532083418,
+		2.473028945,
+		2.377178509,
+		2.285526643,
+		2.654635163,
+		2.963434737,
+		3.266100461,
+		3.561112664,
+		3.847320291,
+		4.123878064,
+		4.390194136,
+		4.645886341,
+		4.890745518,
+		5.124704707,
+		6.97914069,
+		7.270620642,
+		7.548951721,
+		7.81438302,
+		8.067235867,
+		8.307889422,
+		8.536768399,
+		8.754332624,
+		8.961068152,
+		9.157479758,
+		11.41901707,
+		11.64989746,
+		11.87007991,
+		12.08015809,
+		12.28072687,
+		12.47237891,
+		12.65570177,
+		12.83127553,
+		12.99967093,
+		13.16144786,
+		15.6563607,
+		15.84513182,
+		16.02782135,
+		16.20501182,
+		16.37727218,
+		16.54515749,
+		16.70920885,
+		16.86995336,
+		17.02790439,
+		17.18356182,
+		19.85792061,
+		20.04235517,
+		20.22556446,
+		20.40806338,
+		20.59035551,
+		20.77293378,
+		20.95628115,
+		21.1408714,
+		21.3271699,
+		21.51563446,
+		24.3895427,
+		24.61486587,
+		24.84389213,
+		25.07711247,
+		25.31501442,
+		25.55808296,
+		25.80680152,
+		26.06165297,
+		26.32312062,
+		26.59168923,
+		26.86784604,
+		27.15208178,
+		27.44489172,
+		27.74677676,
+		28.05824444,
+		28.37981005,
+		28.71199773,
+		29.05534154,
+		29.41038662,
+		29.77769028
+	};
+	
+	public static int calculateKarmaLost(int playerLevel, long exp)
+	{
+		return (int) (exp / karma[playerLevel] / 15);
+	}
+	
+	public static int calculateKarmaGain(int pkCount, boolean isSummon)
+	{
+		int result = 14400;
+		if (pkCount < 100)
+			result = (int) (((((pkCount - 1) * 0.5) + 1) * 60) * 4);
+		else if (pkCount < 180)
+			result = (int) (((((pkCount + 1) * 0.125) + 37.5) * 60) * 4);
+		
+		if (isSummon)
+			result = ((pkCount & 3) + result) >> 2;
+		
+		return result;
 	}
 }

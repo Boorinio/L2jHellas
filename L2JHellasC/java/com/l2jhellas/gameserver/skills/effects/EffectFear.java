@@ -17,16 +17,12 @@ package com.l2jhellas.gameserver.skills.effects;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Effect;
-import com.l2jhellas.gameserver.model.actor.L2Npc;
-import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeFlagInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import com.l2jhellas.gameserver.skills.Env;
-import com.l2jhellas.gameserver.skills.Formulas;
-import com.l2jhellas.util.Rnd;
 
 /**
  * @author littlecrow
@@ -81,18 +77,6 @@ public final class EffectFear extends L2Effect
 				signy = 1;
 			posX += signx * FEAR_RANGE;
 			posY += signy * FEAR_RANGE;
-
-			if (!getEffected().isRaid() && !(getEffected() instanceof L2DoorInstance) && !(getEffected() instanceof L2Npc && ((L2Npc) getEffected()).getNpcId() == 35062))
-			{
-				int chance = Rnd.get(100);
-				if (getSkill().getLethalChance2() > 0 && chance < Formulas.getInstance().calcLethal(getEffector(), getEffected(), getSkill().getLethalChance2()))
-				{
-					if (getEffected() instanceof L2Npc)
-					{
-						getEffected().reduceCurrentHp(getEffected().getCurrentHp() - 1, getEffector());
-					}
-				}
-			}
 
 			getEffected().setRunning();
 			getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(posX, posY, posZ, 0));

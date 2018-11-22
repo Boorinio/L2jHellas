@@ -121,6 +121,8 @@ import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.taskmanager.MemoryWatchOptimize;
+import com.l2jhellas.gameserver.taskmanager.PvpFlagTaskManager;
+import com.l2jhellas.gameserver.taskmanager.RandomAnimationTaskManager;
 import com.l2jhellas.gameserver.taskmanager.TaskManager;
 import com.l2jhellas.mmocore.network.SelectorConfig;
 import com.l2jhellas.mmocore.network.SelectorThread;
@@ -268,6 +270,7 @@ public class GameServer
 		CursedWeaponsManager.getInstance();
 		FourSepulchersManager.getInstance().init();
 		PetData.getInstance().loadPetsData();
+		
 		if (Config.ACCEPT_GEOEDITOR_CONN)
 		{
 			GeoEditorListener.getInstance();
@@ -280,6 +283,7 @@ public class GameServer
 		{
 			ItemsAutoDestroy.getInstance();
 		}
+		
 		DoorData.getInstance();
 
 		if (Config.ALLOW_BOAT)
@@ -289,6 +293,8 @@ public class GameServer
 		
 		Util.printSection("Tasks");
 		TaskManager.getInstance();
+		PvpFlagTaskManager.getInstance();
+		RandomAnimationTaskManager.getInstance();
 
 		Util.printSection("Manor");
 		L2Manor.getInstance();

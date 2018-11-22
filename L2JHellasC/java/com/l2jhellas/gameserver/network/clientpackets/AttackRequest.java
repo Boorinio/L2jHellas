@@ -20,7 +20,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public final class AttackRequest extends L2GameClientPacket
 {
@@ -81,13 +80,13 @@ public final class AttackRequest extends L2GameClientPacket
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-
+		
+		// Checking if target has moved to peace zone
 		if (activeChar.isInsidePeaceZone(activeChar, target))
 		{
-			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.TARGET_IN_PEACEZONE));
-			activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+			activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			return;	
+			return;
 		}
 		
 		if (activeChar.getTarget() != target)

@@ -291,7 +291,8 @@ public class GameServerTable
 		private int _port;
 
 		// config
-		private final boolean _isPvp = true;
+		private boolean _isPvp = true;
+		private int _ageLimit;
 		private boolean _isTestServer;
 		private boolean _isShowingClock;
 		private boolean _isShowingBrackets;
@@ -412,11 +413,6 @@ public class GameServerTable
 			return _maxPlayers;
 		}
 
-		public boolean isPvp()
-		{
-			return _isPvp;
-		}
-
 		public void setTestServer(boolean val)
 		{
 			_isTestServer = val;
@@ -447,6 +443,26 @@ public class GameServerTable
 			return _isShowingBrackets;
 		}
 
+		public int getAgeLimit()
+		{
+			return _ageLimit;
+		}
+		
+		public void setAgeLimit(int ageLimit)
+		{
+			_ageLimit = ageLimit;
+		}
+		
+		public boolean isPvp()
+		{
+			return _isPvp;
+		}
+		
+		public void setPvp(boolean isPvp)
+		{
+			_isPvp = isPvp;
+		}
+		
 		public void setDown()
 		{
 			setAuthed(false);

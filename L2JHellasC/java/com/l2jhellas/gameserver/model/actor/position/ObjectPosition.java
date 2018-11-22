@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.model.actor.position;
 
-
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.L2WorldRegion;
@@ -57,7 +56,8 @@ public class ObjectPosition
 			L2World.getInstance().switchRegion(getActiveObject(), newRegion);
 			setWorldRegion(newRegion);
 		}
-		
+				
+		//ZoneManager.getInstance().getRegion(getActiveObject()).revalidateZones(((L2Character)getActiveObject()));	
 	}
 
 	/**

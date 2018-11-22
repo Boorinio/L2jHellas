@@ -33,6 +33,7 @@ import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
+import com.l2jhellas.gameserver.network.serverpackets.VehicleInfo;
 import com.l2jhellas.gameserver.templates.L2CharTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.util.Util;
@@ -417,6 +418,12 @@ public abstract class L2Vehicle extends L2Character
 		public void detachAI()
 		{
 		}
+	}
+	
+	@Override
+	public void sendInfo(L2PcInstance activeChar)
+	{
+		activeChar.sendPacket(new VehicleInfo(this));
 	}
 	
 }

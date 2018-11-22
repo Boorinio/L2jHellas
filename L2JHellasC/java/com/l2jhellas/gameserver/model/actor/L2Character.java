@@ -105,6 +105,7 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.skills.effects.EffectCharge;
 import com.l2jhellas.gameserver.skills.funcs.Func;
+import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 import com.l2jhellas.gameserver.templates.L2CharTemplate;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
@@ -464,8 +465,10 @@ public abstract class L2Character extends L2Object
 		setIsTeleporting(true);
 		setTarget(null);
 		
+		getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+		
 		// Remove from world regions zones
-		//ZoneManager.getInstance().getRegion(this).removeFromZones(this);
+		ZoneManager.getInstance().getRegion(this).removeFromZones(this);
 		
 		getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 		
@@ -483,12 +486,12 @@ public abstract class L2Character extends L2Object
 		// Send a Server->Client packet TeleportToLocationt to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
 		broadcastPacket(new TeleportToLocation(this, x, y, z));
 		
-		// Set the x,y,z position of the L2Object and if necessary modify its _worldRegion
-		setXYZ(x, y, z);
-		
 		decayMe();
 		
-		if (!(this instanceof L2PcInstance))
+		// Set the x,y,z position of the L2Object and if necessary modify its _worldRegion
+		setXYZ(x, y, z);
+			
+		if (!(this instanceof L2PcInstance) || (((L2PcInstance) this).getClient() != null && ((L2PcInstance) this).getClient().isDetached()))
 			onTeleported();
 		
 		revalidateZone(true);
@@ -793,7 +796,10 @@ public abstract class L2Character extends L2Object
 			player = ((L2Summon) this).getOwner();
 		
 		if (player != null)
-			player.updatePvPStatus(target);
+		{
+			AttackStanceTaskManager.getInstance().add(player);
+			player.updatePvPStatus(target);				
+		}
 		
 		// Check if hit isn't missed
 		if (!hitted)
@@ -2225,7 +2231,10 @@ public abstract class L2Character extends L2Object
 			}
 			catch (Throwable e)
 			{
-				_log.severe(e.toString());
+				_log.severe(HitTask.class.getName() +e.getMessage()+"nikos");
+				
+				if (Config.DEVELOPER)
+					e.printStackTrace();
 			}
 		}
 	}
@@ -2329,47 +2338,6 @@ public abstract class L2Character extends L2Object
 			catch (Throwable t)
 			{
 				_log.warning(L2Character.class.getSimpleName() + ": ");
-			}
-		}
-	}
-	
-	/** Task launching the function stopPvPFlag() */
-	class PvPFlag implements Runnable
-	{
-		public PvPFlag()
-		{
-			
-		}
-		
-		@Override
-		public void run()
-		{
-			try
-			{
-				// _log.fine("Checking pvp time: " + getlastPvpAttack());
-				// "lastattack: " _lastAttackTime "currenttime: "
-				// System.currentTimeMillis());
-				if (System.currentTimeMillis() > getPvpFlagLasts())
-				{
-					// _log.fine("Stopping PvP");
-					stopPvPFlag();
-				}
-				else if (System.currentTimeMillis() > (getPvpFlagLasts() - 5000))
-				{
-					updatePvPFlag(2);
-				}
-				else
-				{
-					updatePvPFlag(1);
-					// Start a new PvP timer check
-					// checkPvPFlag();
-				}
-			}
-			catch (Exception e)
-			{
-				_log.warning(L2Character.class.getName() + ": error in pvp flag task:");
-				if (Config.DEVELOPER)
-					e.printStackTrace();
 			}
 		}
 	}
@@ -5099,35 +5067,6 @@ public abstract class L2Character extends L2Object
 			if (activeWeapon != null)
 				activeWeapon.getSkillEffects(this, target, crit);
 			
-			/*
-			 * COMMENTED OUT BY nexus - 2006-08-17
-			 * We must not discharge the soulshouts at the onHitTimer method,
-			 * as this can cause unwanted soulshout consumption if the attacker
-			 * recharges the soulshot right after an attack request but before
-			 * his hit actually lands on the target.
-			 * The soulshot discharging has been moved to the doAttack method:
-			 * As soon as we know that we didn't missed the hit there, then we
-			 * must discharge any charged soulshots.
-			 */
-			/*
-			 * L2ItemInstance weapon = getActiveWeaponInstance();
-			 * if (!miss)
-			 * {
-			 * if (this instanceof L2Summon && !(this instanceof L2PetInstance))
-			 * {
-			 * if (((L2Summon)this).getChargedSoulShot() !=
-			 * L2ItemInstance.CHARGED_NONE)
-			 * ((L2Summon)this).setChargedSoulShot(L2ItemInstance.CHARGED_NONE);
-			 * }
-			 * else
-			 * {
-			 * if (weapon != null && weapon.getChargedSoulshot() !=
-			 * L2ItemInstance.CHARGED_NONE)
-			 * weapon.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
-			 * }
-			 * }
-			 */
-			
 			return;
 		}
 		
@@ -6424,60 +6363,8 @@ public abstract class L2Character extends L2Object
 		_castInterruptTime = newSkillCastEndTime - 12;
 	}
 	
-	private boolean _isMinion = false;
-	
-	private Future<?> _PvPRegTask;
-	
-	private long _pvpFlagLasts;
-	
+	private boolean _isMinion = false;	
 	private boolean _AIdisabled = false;
-	
-	public void setPvpFlagLasts(long time)
-	{
-		_pvpFlagLasts = time;
-	}
-	
-	public long getPvpFlagLasts()
-	{
-		return _pvpFlagLasts;
-	}
-	
-	public void startPvPFlag()
-	{
-		updatePvPFlag(1);
-		
-		_PvPRegTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new PvPFlag(), 1000, 1000);
-	}
-	
-	public void stopPvpRegTask()
-	{
-		if (_PvPRegTask != null)
-			_PvPRegTask.cancel(true);
-	}
-	
-	public void stopPvPFlag()
-	{
-		stopPvpRegTask();
-		
-		updatePvPFlag(0);
-		
-		_PvPRegTask = null;
-	}
-	
-	public void updatePvPFlag(int value)
-	{
-		// Overridden in L2PcInstance
-	}
-	
-	// public void checkPvPFlag()
-	// {
-	// if (Config.DEBUG) _log.fine("Checking PvpFlag");
-	// _PvPRegTask = ThreadPoolManager.getInstance().scheduleLowAtFixedRate(
-	// new PvPFlag(), 1000, 5000);
-	// _PvPRegActive = true;
-	// // _log.fine("PvP recheck");
-	// }
-	//
 	
 	/**
 	 * Return a Random Damage in function of the weapon.<BR>

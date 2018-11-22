@@ -239,7 +239,7 @@ public class L2VillageMasterInstance extends L2NpcInstance
 					}
 					
 					// Subclasses may not be added while you are over your weight limit.
-					if (player.GetInventoryLimit() * 0.8 <= player.getInventory().getSize() || player.getWeightPenalty() > 0)
+					if (player.getInventoryLimit() * 0.8 <= player.getInventory().getSize() || player.getWeightPenalty() > 0)
 					{
 						player.sendPacket(SystemMessageId.NOT_SUBCLASS_WHILE_OVERWEIGHT);
 						return;
@@ -280,7 +280,7 @@ public class L2VillageMasterInstance extends L2NpcInstance
 					}
 					
 					// Subclasses may not be changed while a you are over your weight limit.
-					if (player.GetInventoryLimit() * 0.8 <= player.getInventory().getSize() || player.getWeightPenalty() > 0)
+					if (player.getInventoryLimit() * 0.8 <= player.getInventory().getSize() || player.getWeightPenalty() > 0)
 					{
 						player.sendPacket(SystemMessageId.NOT_SUBCLASS_WHILE_OVERWEIGHT);
 						return;
@@ -727,7 +727,7 @@ public class L2VillageMasterInstance extends L2NpcInstance
 		ClanTable.getInstance().scheduleRemoveClan(clan.getClanId());
 
 		// The clan leader should take the XP penalty of a full death.
-		player.deathPenalty(false);
+		player.deathPenalty(false, false, false);
 	}
 
 	public void recoverClan(L2PcInstance player, int clanId)

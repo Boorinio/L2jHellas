@@ -2183,7 +2183,7 @@ public class L2Clan
 		updateClanInDB();
 
 		// The clan leader should take the XP penalty of a full death.
-		player.deathPenalty(false);
+		player.deathPenalty(false, false, false);
 	}
 
 	public void levelUpClan(L2PcInstance player)
