@@ -17,12 +17,11 @@ package com.l2jhellas.gameserver.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ExAutoSoulShot;
 import com.l2jhellas.gameserver.network.serverpackets.ShortCutInit;
@@ -32,24 +31,27 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 public class ShortCuts
 {
 	private static Logger _log = Logger.getLogger(ShortCuts.class.getName());
-
+	
+	private static final int MAX_SHORTCUTS_PER_BAR = 12;
 	private final L2PcInstance _owner;
-	private final Map<Integer, L2ShortCut> _shortCuts = new TreeMap<Integer, L2ShortCut>();
+	
+	private final Map<Integer, L2ShortCut> _shortCuts = new TreeMap<>();
 
 	public ShortCuts(L2PcInstance owner)
 	{
 		_owner = owner;
 	}
-
+	
 	public L2ShortCut[] getAllShortCuts()
 	{
+	
 		return _shortCuts.values().toArray(new L2ShortCut[_shortCuts.values().size()]);
 	}
-
+	
 	public L2ShortCut getShortCut(int slot, int page)
 	{
-		L2ShortCut sc = _shortCuts.get(slot + page * 12);
-
+		L2ShortCut sc = _shortCuts.get(slot + (page * MAX_SHORTCUTS_PER_BAR));
+		
 		// verify shortcut
 		if (sc != null && sc.getType() == L2ShortCut.TYPE_ITEM)
 		{
@@ -59,13 +61,22 @@ public class ShortCuts
 				sc = null;
 			}
 		}
-
 		return sc;
 	}
-
+	
 	public synchronized void registerShortCut(L2ShortCut shortcut)
 	{
-		L2ShortCut oldShortCut = _shortCuts.put(shortcut.getSlot() + 12 * shortcut.getPage(), shortcut);
+		
+		// Verify shortcut
+		if (shortcut.getType() == L2ShortCut.TYPE_ITEM)
+		{
+			final L2ItemInstance item = _owner.getInventory().getItemByObjectId(shortcut.getId());
+			
+			if (item == null)
+				return;
+		}
+		
+	    final L2ShortCut oldShortCut = _shortCuts.put(shortcut.getSlot() + (shortcut.getPage() * MAX_SHORTCUTS_PER_BAR), shortcut);
 		registerShortCutInDb(shortcut, oldShortCut);
 	}
 
@@ -73,7 +84,7 @@ public class ShortCuts
 	{
 		if (oldShortCut != null)
 			deleteShortCutFromDb(oldShortCut);
-
+		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("REPLACE INTO character_shortcuts (char_obj_id,slot,page,type,shortcut_id,level,class_index) values(?,?,?,?,?,?,?)");
@@ -87,27 +98,26 @@ public class ShortCuts
 			statement.execute();
 			statement.close();
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
-			_log.warning(ShortCuts.class.getName() + ": Could not store character shortcut: ");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
+			_log.log(Level.WARNING, "Could not store character shortcut: " + e.getMessage(), e);
 		}
 	}
-
+	
 	/**
 	 * @param slot
+	 * @param page
 	 */
 	public synchronized void deleteShortCut(int slot, int page)
 	{
-		L2ShortCut old = _shortCuts.remove(slot + page * 12);
-
+		final L2ShortCut old = _shortCuts.remove(slot + page * 12);
 		if (old == null || _owner == null)
 			return;
+		
 		deleteShortCutFromDb(old);
 		if (old.getType() == L2ShortCut.TYPE_ITEM)
 		{
-			L2ItemInstance item = _owner.getInventory().getItemByObjectId(old.getId());
+			final L2ItemInstance item = _owner.getInventory().getItemByObjectId(old.getId());
 
 			if ((item != null) && (item.getItemType() == L2EtcItemType.SHOT))
 			{
@@ -115,30 +125,25 @@ public class ShortCuts
 				_owner.sendPacket(new ExAutoSoulShot(item.getItemId(), 0));
 			}
 		}
-
+		
 		_owner.sendPacket(new ShortCutInit(_owner));
-
+		
 		for (int shotId : _owner.getAutoSoulShot().values())
 			_owner.sendPacket(new ExAutoSoulShot(shotId, 1));
 	}
-
+	
 	public synchronized void deleteShortCutByObjectId(int objectId)
 	{
-		L2ShortCut toRemove = null;
-
 		for (L2ShortCut shortcut : _shortCuts.values())
 		{
 			if (shortcut.getType() == L2ShortCut.TYPE_ITEM && shortcut.getId() == objectId)
 			{
-				toRemove = shortcut;
+				deleteShortCut(shortcut.getSlot(), shortcut.getPage());
 				break;
 			}
 		}
-
-		if (toRemove != null)
-			deleteShortCut(toRemove.getSlot(), toRemove.getPage());
 	}
-
+	
 	/**
 	 * @param shortcut
 	 */
@@ -154,14 +159,12 @@ public class ShortCuts
 			statement.execute();
 			statement.close();
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
-			_log.warning(ShortCuts.class.getName() + ": Could not delete character shortcut: ");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
+			_log.log(Level.WARNING, "Could not delete character shortcut: " + e.getMessage(), e);
 		}
 	}
-
+	
 	public void restore()
 	{
 		_shortCuts.clear();
@@ -170,8 +173,9 @@ public class ShortCuts
 			PreparedStatement statement = con.prepareStatement("SELECT char_obj_id, slot, page, type, shortcut_id, level FROM character_shortcuts WHERE char_obj_id=? AND class_index=?");
 			statement.setInt(1, _owner.getObjectId());
 			statement.setInt(2, _owner.getClassIndex());
+			
 			ResultSet rset = statement.executeQuery();
-
+			
 			while (rset.next())
 			{
 				int slot = rset.getInt("slot");
@@ -179,26 +183,26 @@ public class ShortCuts
 				int type = rset.getInt("type");
 				int id = rset.getInt("shortcut_id");
 				int level = rset.getInt("level");
-
+				
 				L2ShortCut sc = new L2ShortCut(slot, page, type, id, level, 1);
-				_shortCuts.put(slot + page * 12, sc);
+				_shortCuts.put(slot + (page * MAX_SHORTCUTS_PER_BAR), sc);
 			}
-
+			
 			rset.close();
 			statement.close();
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
-			_log.warning(ShortCuts.class.getName() + ": Could not restore character shortcuts: ");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
+			_log.log(Level.WARNING, "Could not restore character shortcuts: " + e.getMessage(), e);
 		}
+		
 		// verify shortcuts
 		for (L2ShortCut sc : getAllShortCuts())
 		{
 			if (sc.getType() == L2ShortCut.TYPE_ITEM)
 			{
-				if (_owner.getInventory().getItemByObjectId(sc.getId()) == null)
+				final L2ItemInstance item = _owner.getInventory().getItemByObjectId(sc.getId());
+				if (item == null)
 					deleteShortCut(sc.getSlot(), sc.getPage());
 			}
 		}

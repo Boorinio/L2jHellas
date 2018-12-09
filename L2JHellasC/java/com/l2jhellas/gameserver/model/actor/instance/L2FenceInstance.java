@@ -65,43 +65,6 @@ public final class L2FenceInstance extends L2Object
 		return getObjectId();
 	}
 	
-	@Override
-	public boolean isAutoAttackable(L2Character attacker)
-	{
-		return false;
-	}
-	
-	@Override
-	public void sendInfo(L2PcInstance activeChar)
-	{
-		activeChar.sendPacket(new ExColosseumFenceInfo(getId(),this));
-		
-		if (_heightFences != null)
-		{
-			for (int objId : _heightFences)
-			{
-				activeChar.sendPacket(new ExColosseumFenceInfo(objId, this));
-			}
-		}
-	}
-	
-	@Override
-	public void decayMe()
-	{
-		if (_heightFences != null)
-		{
-			final DeleteObject[] deleteObjects = new DeleteObject[_heightFences.length];
-			for (int i = 0; i < _heightFences.length; i++)
-			{
-				deleteObjects[i] = new DeleteObject(_heightFences[i]);
-			}
-			
-			L2World.getInstance().forEachVisibleObject(this,L2PcInstance.class, player -> player.sendPacket(deleteObjects));
-		}
-		
-		super.decayMe();
-	}
-	
 	public boolean deleteMe()
 	{
 		decayMe();
@@ -158,4 +121,42 @@ public final class L2FenceInstance extends L2Object
 	{
 		return _yMax;
 	}
+	
+	@Override
+	public boolean isAutoAttackable(L2Character attacker)
+	{
+		return false;
+	}
+	
+	@Override
+	public void sendInfo(L2PcInstance activeChar)
+	{
+		activeChar.sendPacket(new ExColosseumFenceInfo(getId(),this));
+		
+		if (_heightFences != null)
+		{
+			for (int objId : _heightFences)
+			{
+				activeChar.sendPacket(new ExColosseumFenceInfo(objId, this));
+			}
+		}
+	}
+	
+	@Override
+	public void decayMe()
+	{
+		if (_heightFences != null)
+		{
+			final DeleteObject[] deleteObjects = new DeleteObject[_heightFences.length];
+			for (int i = 0; i < _heightFences.length; i++)
+			{
+				deleteObjects[i] = new DeleteObject(_heightFences[i]);
+			}
+			
+			L2World.getInstance().forEachVisibleObject(this,L2PcInstance.class, player -> player.sendPacket(deleteObjects));
+		}
+		
+		super.decayMe();
+	}
+	
 }

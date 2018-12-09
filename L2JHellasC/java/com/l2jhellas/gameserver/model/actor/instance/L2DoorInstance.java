@@ -308,6 +308,7 @@ public class L2DoorInstance extends L2Character
 		}
 		if (_castleIndex < 0)
 			return null;
+		
 		return CastleManager.getInstance().getCastles().get(_castleIndex);
 	}
 
@@ -471,12 +472,6 @@ public class L2DoorInstance extends L2Character
 			MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel());
 			player.sendPacket(my);
 
-			if (isAutoAttackable(player))
-			{
-				DoorStatusUpdate su = new DoorStatusUpdate(this);
-				player.sendPacket(su);
-			}
-
 			NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 			StringBuilder html1 = new StringBuilder("<html><title>Door Edit</title><body><table border=0>");
 			html1.append("<tr><td>Door Stats:</td></tr>");
@@ -508,14 +503,18 @@ public class L2DoorInstance extends L2Character
 			html.setHtml(html1.toString());
 			player.sendPacket(html);
 		}
-		else
+		
+		if (player.getTarget() != this)
 		{
-			// ATTACK the mob without moving?
+			player.setTarget(this);
+			
+			if (isAutoAttackable(player))
+				player.sendPacket(new DoorStatusUpdate(this));
 		}
-
-		player.sendPacket(ActionFailed.STATIC_PACKET);
+		else
+			player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-
+	
 	@Override
 	public void broadcastStatusUpdate()
 	{
@@ -672,12 +671,17 @@ public class L2DoorInstance extends L2Character
 	{
 		return _D;
 	}
+	
+ 	@Override
+	public void onForcedAttack(L2PcInstance player)
+	{
+		onAction(player);
+	}
 
 	@Override
 	public void sendInfo(L2PcInstance activeChar)
 	{
-		activeChar.sendPacket(new DoorInfo((L2DoorInstance) this, false));
-		activeChar.sendPacket(new DoorStatusUpdate((L2DoorInstance) this));
-		
+		activeChar.sendPacket(new DoorInfo(this));
+		activeChar.sendPacket(new DoorStatusUpdate(this));	
 	}
 }

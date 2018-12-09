@@ -55,6 +55,20 @@ public final class RequestAnswerFriendInvite extends L2GameClientPacket
 			if (requestor == null)
 				return;
 
+			if (player == requestor)
+			{
+				player.sendPacket(SystemMessageId.YOU_CANNOT_ADD_YOURSELF_TO_YOUR_OWN_FRIENDS_LIST);
+				return;
+			}
+			
+			if (player.getFriendList().contains(requestor.getObjectId()) || requestor.getFriendList().contains(player.getObjectId()))
+			{
+				final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_ALREADY_IN_FRIENDS_LIST);
+				sm.addCharName(player);
+				requestor.sendPacket(sm);
+				return;
+			}
+			
 			if (_response == 1)
 			{
 				try (Connection con = L2DatabaseFactory.getInstance().getConnection())

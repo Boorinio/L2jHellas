@@ -29,10 +29,10 @@ public final class L2World
 {
 		
 	// Geodata min/max tiles
-	public static final int TILE_X_MIN = 16;
+	public static final int TILE_X_MIN = 15;
 	public static final int TILE_X_MAX = 26;
 	public static final int TILE_Y_MIN = 10;
-	public static final int TILE_Y_MAX = 25;
+	public static final int TILE_Y_MAX = 26;
 	
 	// Map dimensions
 	public static final int TILE_SIZE = 32768;

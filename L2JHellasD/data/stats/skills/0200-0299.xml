@@ -2206,6 +2206,7 @@
 		<set name="castRange" val="-1" />
 		<set name="effectRange" val="-1" />
 		<set name="aggroPoints" val="624" />
+		<set name="weaponsAllowed" val="1024"/>
 		<for>
 			<effect name="Buff" time="120" count="1" val="0" stackOrder="1" stackType="possession">
 				<add order="0x40" stat="accCombat" val="6">

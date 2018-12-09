@@ -122,7 +122,7 @@ public class L2ProtectorInstance extends L2NpcInstance
 			 * For each known player in range, cast sleep if pvpFlag != 0 or Karma >0 Skill use is just for buff
 			 * animation
 			 */
-			for (L2PcInstance player : L2World.getInstance().getVisibleObjects(_caster, L2PcInstance.class,3000))
+			for (L2PcInstance player : L2World.getInstance().getVisibleObjects(_caster, L2PcInstance.class,2000))
 
 			{
 				if (player.getKarma() > 0 && Config.PROTECTOR_PLAYER_PK || player.getPvpFlag() != 0 && Config.PROTECTOR_PLAYER_PVP)

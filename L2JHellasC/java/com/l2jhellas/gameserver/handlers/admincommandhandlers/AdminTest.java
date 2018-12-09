@@ -98,14 +98,6 @@ public class AdminTest implements IAdminCommandHandler
 			//.dumpPacketHistory();
 			activeChar.sendMessage("command not working");
 		}
-		else if (command.equals("admin_known on"))
-		{
-			Config.CHECK_KNOWN = true;
-		}
-		else if (command.equals("admin_known off"))
-		{
-			Config.CHECK_KNOWN = false;
-		}
 		else if (command.equals("admin_test"))
 		{
 			activeChar.sendMessage("Now the server will send a packet that client cannot read correctly");

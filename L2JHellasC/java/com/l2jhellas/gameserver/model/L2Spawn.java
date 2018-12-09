@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.Territory;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
@@ -492,36 +491,15 @@ public class L2Spawn
 	 */
 	private L2Npc intializeNpcInstance(L2Npc mob)
 	{
-		int newlocx, newlocy, newlocz;
 
-		// If Locx=0 and Locy=0, the L2NpcInstance must be spawned in an area defined by location
-		if (getLocx() == 0 && getLocy() == 0)
-		{
-			if (getLocation() == 0)
-				return mob;
-
-			// Calculate the random position in the location area
-			int p[] = Territory.getInstance().getRandomPoint(getLocation());
-
-			// Set the calculated position of the L2NpcInstance
-			newlocx = p[0];
-			newlocy = p[1];
+			int newlocx = getLocx();
+			int newlocy = getLocy();
+			int newlocz = 0;
+			
 			if (Config.GEODATA )
 				newlocz = GeoEngine.getHeight(newlocx,newlocy,getLocz());
 			else
 				newlocz = getLocz();
-						
-		}
-		else
-		{
-			// The L2NpcInstance is spawned at the exact position (Lox, Locy, Locz)
-			newlocx = getLocx();
-			newlocy = getLocy();
-			if (Config.GEODATA )
-				newlocz = GeoEngine.getHeight(newlocx,newlocy,getLocz());
-			else
-				newlocz = getLocz();
-		}
 
 		if (Math.abs(newlocz - getLocz()) > 200)
 			newlocz = getLocz();

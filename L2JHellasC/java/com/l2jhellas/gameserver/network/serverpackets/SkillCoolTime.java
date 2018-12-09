@@ -14,25 +14,19 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance.TimeStamp;
 
 public class SkillCoolTime extends L2GameServerPacket
 {
-	public Collection<TimeStamp> _reuseTimeStamps;
+	public List<TimeStamp> _reuseTimeStamps;
 	
     public SkillCoolTime(L2PcInstance cha)
     {
-        _reuseTimeStamps = cha.getReuseTimeStamps();
-		Iterator<TimeStamp> iter = _reuseTimeStamps.iterator();
-		while (iter.hasNext())
-		{
-			if (!iter.next().hasNotPassed()) // remove expired timestamps
-				iter.remove();
-		}
+		_reuseTimeStamps = cha.getReuseTimeStamps().stream().filter(r -> r.hasNotPassed()).collect(Collectors.toList());
 	}
     
 	@Override

@@ -50,33 +50,31 @@ public class ShortCutRegister extends L2GameServerPacket
 	protected final void writeImpl()
 	{
 		writeC(0x44);
-
+		
 		writeD(_shortcut.getType());
 		writeD(_shortcut.getSlot() + _shortcut.getPage() * 12); // C4 Client
-		switch (_shortcut.getType())
+		
+		if(_shortcut.getType() ==L2ShortCut.TYPE_ITEM)
 		{
-			case L2ShortCut.TYPE_ITEM: // 1
-				writeD(_shortcut.getId());
-			break;
-			case L2ShortCut.TYPE_SKILL: // 2
-				writeD(_shortcut.getId());
-				writeD(_shortcut.getLevel());
-				writeC(0x00); // C5
-			break;
-			case L2ShortCut.TYPE_ACTION: // 3
-				writeD(_shortcut.getId());
-			break;
-			case L2ShortCut.TYPE_MACRO: // 4
-				writeD(_shortcut.getId());
-			break;
-			case L2ShortCut.TYPE_RECIPE: // 5
-				writeD(_shortcut.getId());
-			break;
-			default:
-				writeD(_shortcut.getId());
+			writeD(_shortcut.getId());
+			writeD(_shortcut.getCharacterType());
+			writeD(0x00); //SharedReuseGroup
+			writeD(0x00); // Remaining time
+			writeD(0x00); // Cooldown time
+			writeD(0x00); // Augmentation
 		}
-
-		writeD(1);// ??
+		else if(_shortcut.getType() == L2ShortCut.TYPE_SKILL)
+		{
+			writeD(_shortcut.getId());
+			writeD(_shortcut.getLevel());
+			writeC(0x00); // C5
+			writeD(_shortcut.getCharacterType());
+		}
+		else
+		{
+			writeD(_shortcut.getId());
+			writeD(_shortcut.getCharacterType());
+		}
 	}
 
 	@Override

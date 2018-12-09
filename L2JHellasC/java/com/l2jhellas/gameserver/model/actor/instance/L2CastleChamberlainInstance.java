@@ -568,17 +568,16 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 	 * player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.CLAN)); //Or Castle ??
 	 * }
 	 */
+	
 	protected int validateCondition(L2PcInstance player)
 	{
-		if (getCastle() != null && getCastle().getCastleId() > 0)
+		if (getCastle() != null && player.getClan() != null)
 		{
-			if (player.getClan() != null)
-			{
 				if (getCastle().getSiege().getIsInProgress())
 					return COND_BUSY_BECAUSE_OF_SIEGE; // Busy because of siege
-				else if (getCastle().getOwnerId() == player.getClanId()) // Clan owns castle
+				
+				if (getCastle().getOwnerId() == player.getClanId()) // Clan owns castle
 					return COND_OWNER; // Owner
-			}
 		}
 
 		return COND_ALL_FALSE;

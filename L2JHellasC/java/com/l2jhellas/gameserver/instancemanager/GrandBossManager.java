@@ -20,8 +20,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -316,7 +316,7 @@ public class GrandBossManager
 				if (zone == null)
 					continue;
 				Integer id = zone.getId();
-				List<Integer> list = zone.getAllowedPlayers();
+				Set<Integer> list = zone.getAllowedPlayers();
 				if (list == null || list.isEmpty())
 					continue;
 				for (Integer player : list)

@@ -253,8 +253,6 @@ public final class Config
 	public static byte DEBUFFS_MAX_AMOUNT;
 	public static boolean ALT_GAME_VIEWNPC;
 	public static boolean PLAYER_ALT_GAME_VIEWNPC;
-	public static boolean USE_3D_MAP;
-	public static boolean CHECK_KNOWN;
 	public static boolean ALLOW_HIT_OWNER;
 	public static int FRONT_BLOW_SUCCESS;
 	public static int BACK_BLOW_SUCCESS;
@@ -1419,8 +1417,6 @@ public final class Config
 			SIDE_BLOW_SUCCESS = Integer.parseInt(altSettings.getProperty("SideBlow", "50"));
 			ALT_GAME_VIEWNPC = Boolean.parseBoolean(altSettings.getProperty("AltGameViewNpc", "False"));
 			PLAYER_ALT_GAME_VIEWNPC = Boolean.parseBoolean(altSettings.getProperty("PlayerAltGameViewNpc", "False"));
-			USE_3D_MAP = Boolean.valueOf(altSettings.getProperty("Use3DMap", "False"));
-			CHECK_KNOWN = Boolean.valueOf(altSettings.getProperty("CheckKnownList", "False"));
 			ALLOW_HIT_OWNER = Boolean.valueOf(altSettings.getProperty("AllowHitOwner", "True"));
 
 			// Load FloodProtector L2Properties file
@@ -3579,9 +3575,6 @@ public final class Config
 			break;
 			case "ZoneTown":
 				ZONE_TOWN = Integer.parseInt(pValue);
-			break;
-			case "CheckKnownList":
-				CHECK_KNOWN = Boolean.valueOf(pValue);
 			break;
 			case "ReputationScorePerKill":
 				ALT_REPUTATION_SCORE_PER_KILL = Integer.parseInt(pValue);

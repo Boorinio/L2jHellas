@@ -14,19 +14,14 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Logger;
-
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.QuestList;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public final class RequestQuestAbort extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(RequestQuestAbort.class.getName());
 	private static final String _C__64_REQUESTQUESTABORT = "[C] 64 RequestQuestAbort";
 
 	private int _questId;
@@ -40,32 +35,22 @@ public final class RequestQuestAbort extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		
 		if (activeChar == null)
 			return;
-
-		Quest qe = QuestManager.getInstance().getQuest(_questId);
-		if (qe != null)
+		
+		final Quest qe = QuestManager.getInstance().getQuest(_questId);
+		
+		if (qe == null)
+			return;
+		
+		final QuestState qs = activeChar.getQuestState(qe.getName());
+		
+		if (qs != null)
 		{
-			QuestState qs = activeChar.getQuestState(qe.getName());
-			if (qs != null)
-			{
-				qs.exitQuest(true);
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-				sm.addString("Quest aborted.");
-				activeChar.sendPacket(sm);
-				sm = null;
-				QuestList ql = new QuestList(activeChar);
-				activeChar.sendPacket(ql);
-			}
-			else
-			{
-				_log.warning(RequestQuestAbort.class.getName() + ": Player '" + activeChar.getName() + "' try to abort quest " + qe.getName() + " but he didn't have it started.");
-			}
-		}
-		else
-		{
-			_log.warning(RequestQuestAbort.class.getName() + ": Quest (id='" + _questId + "') not found.");
+			qs.exitQuest(true);
+			activeChar.sendPacket(new QuestList(activeChar));
 		}
 	}
 

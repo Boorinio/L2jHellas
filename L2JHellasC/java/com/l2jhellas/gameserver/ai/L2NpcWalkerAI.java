@@ -105,8 +105,14 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 			getActor().setWalking();
 		
 		_walkingToNextPoint = true;
-		
+
 		setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(_currentNode.getMoveX(), _currentNode.getMoveY(), _currentNode.getMoveZ(), 0));
+		
+		NextAction nextAction = new NextAction(CtrlEvent.EVT_ARRIVED, CtrlIntention.AI_INTENTION_MOVE_TO, () ->
+		{
+			moveTo(_currentNode.getMoveX(), _currentNode.getMoveY(), _currentNode.getMoveZ());
+		});
+		setNextAction(nextAction);
 	}
 
 	@Override

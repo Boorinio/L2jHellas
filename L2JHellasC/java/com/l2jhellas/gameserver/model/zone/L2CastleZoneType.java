@@ -24,7 +24,7 @@ public abstract class L2CastleZoneType extends L2ZoneType
 	private int _castleId;
 	private Castle _castle;
 	
-	private boolean _enabled;
+	protected boolean _enabled;
 	
 	protected L2CastleZoneType(int id)
 	{

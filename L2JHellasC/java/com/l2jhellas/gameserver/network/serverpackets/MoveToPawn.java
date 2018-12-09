@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.L2Object;
 
 /**
  * 0000: 75 7a 07 80 49 63 27 00 4a ea 01 00 00 c1 37 fe uz..Ic'.J.....7.
@@ -34,6 +35,16 @@ public class MoveToPawn extends L2GameServerPacket
 	private final int _x, _y, _z;
 
 	public MoveToPawn(L2Character cha, L2Character target, int distance)
+	{
+		_charObjId = cha.getObjectId();
+		_targetId = target.getObjectId();
+		_distance = distance;
+		_x = cha.getX();
+		_y = cha.getY();
+		_z = cha.getZ();
+	}
+
+	public MoveToPawn(L2Character cha, L2Object target, int distance)
 	{
 		_charObjId = cha.getObjectId();
 		_targetId = target.getObjectId();

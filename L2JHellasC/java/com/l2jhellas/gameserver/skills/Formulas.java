@@ -1518,12 +1518,10 @@ public final class Formulas
 	/** Calculate delay (in milliseconds) before next ATTACK */
 	public final int calcPAtkSpd(L2Character attacker, L2Character target, double rate)
 	{
-		// measured Oct 2006 by Tank6585, formula by Sami
-		// attack speed 312 equals 1500 ms delay... (or 300 + 40 ms delay?)
 		if (rate < 2)
-			return (int)Math.max(0,2700);
-		else
-			return (int)Math.max(0, (470000 / rate));
+			return 2700;
+		
+		return (int) (470000 / rate);
 	}
 
 	/** Calculate delay (in milliseconds) for skills cast */
@@ -2122,5 +2120,59 @@ public final class Formulas
 			result = ((pkCount & 3) + result) >> 2;
 		
 		return result;
+	}
+
+	/**
+	 * Calculate skill reflection according to these three possibilities:
+	 * <ul>
+	 * <li>Reflect failed</li>
+	 * <li>Normal reflect (just effects).</li>
+	 * <li>Vengeance reflect (100% damage reflected but damage is also dealt to actor).</li>
+	 * </ul>
+	 * @param target : The skill's target.
+	 * @param skill : The skill to test.
+	 * @return SKILL_REFLECTED_FAILED, SKILL_REFLECT_SUCCEED or SKILL_REFLECT_VENGEANCE
+	 */
+	@SuppressWarnings("incomplete-switch")
+	public static byte calcSkillReflect(L2Character target, L2Skill skill)
+	{
+
+		// Only magic and melee skills can be reflected.
+		if (!skill.isMagic() && (skill.getCastRange() == -1 || skill.getCastRange() > 40))
+			return 0;
+		
+		byte reflect = 0;
+		
+		// Check for non-reflected skilltypes, need additional retail check.
+		switch (skill.getSkillType())
+		{
+			case BUFF:
+			case REFLECT:
+			case HEAL_PERCENT:
+			case MANAHEAL_PERCENT:
+			case HOT:
+			case CPHOT:
+			case MPHOT:
+			case UNDEAD_DEFENSE:
+			case AGGDEBUFF:
+			case CONT:
+				return 0;
+			
+			case PDAM:
+			case BLOW:
+			case MDAM:
+			case DEATHLINK:
+			case CHARGEDAM:
+				final double venganceChance = target.getStat().calcStat((skill.isMagic()) ? Stats.REFLECT_SKILL_MAGIC : Stats.REFLECT_SKILL_PHYSIC, 0, target, skill);
+				if (venganceChance > Rnd.get(100))
+					reflect |= 2;
+				break;
+		}
+		
+		final double reflectChance = target.calcStat((skill.isMagic()) ? Stats.REFLECT_SKILL_MAGIC : Stats.REFLECT_SKILL_PHYSIC, 0, null, skill);
+		if (Rnd.get(100) < reflectChance)
+			reflect |= 1;
+		
+		return reflect;
 	}
 }

@@ -712,67 +712,36 @@ public class L2CharacterAI extends AbstractAI
 	 */
 	@Override
 	protected void onEvtForgetObject(L2Object object)
-	{
-		// If the object was targeted  and the Intention was AI_INTENTION_INTERACT or AI_INTENTION_PICK_UP, set the Intention to AI_INTENTION_ACTIVE
-		if (getTarget() == object)
-		{
-			setTarget(null);
-			
-			if (getIntention() == AI_INTENTION_INTERACT)
-				setIntention(AI_INTENTION_ACTIVE);
-			else if (getIntention() == AI_INTENTION_PICK_UP)
-				setIntention(AI_INTENTION_ACTIVE);
-		}
-		
-		// Check if the object was targeted to attack
-		if (getAttackTarget() == object)
-		{
-			// Cancel attack target
-			setAttackTarget(null);
-			
-			// Set the Intention of this AbstractAI to AI_INTENTION_ACTIVE
-			setIntention(AI_INTENTION_ACTIVE);
-		}
-		
-		// Check if the object was targeted to cast
+	{		
+		final L2Object target = getTarget();
+
 		if (getCastTarget() == object)
 		{
-			// Cancel cast target
 			setCastTarget(null);
-			
-			// Set the Intention of this AbstractAI to AI_INTENTION_ACTIVE
-			setIntention(AI_INTENTION_ACTIVE);
+			getActor().abortCast();
+			setIntention(AI_INTENTION_IDLE);
 		}
-		
-		// Check if the object was targeted to follow
-		if (getFollowTarget() == object)
+
+		if (target == object)
 		{
-			// Stop the actor movement server side AND client side by sending Server->Client packet StopMove/StopRotation (broadcast)
-			clientStopMoving(null);
+			setTarget(null);
 			
-			// Stop an AI Follow Task
-			stopFollow();
+			if (isFollowing())
+			{
+				clientStopMoving(null);		
+				stopFollow();
+			}
 			
-			// Set the Intention of this AbstractAI to AI_INTENTION_ACTIVE
-			setIntention(AI_INTENTION_ACTIVE);
+			if (getIntention() != AI_INTENTION_MOVE_TO)
+				setIntention(AI_INTENTION_ACTIVE);
 		}
 		
-		// Check if the targeted object was the actor
 		if (_actor == object)
 		{
-			// Cancel AI target
 			setTarget(null);
-			setAttackTarget(null);
-			setCastTarget(null);
-			
-			// Stop an AI Follow Task
 			stopFollow();
-			
-			// Stop the actor movement server side AND client side by sending Server->Client packet StopMove/StopRotation (broadcast)
-			clientStopMoving(null);
-			
-			// Set the Intention of this AbstractAI to AI_INTENTION_IDLE
-			changeIntention(AI_INTENTION_IDLE, null, null);
+			clientStopMoving(null);		
+			setIntention(AI_INTENTION_IDLE);
 		}
 	}
 	
@@ -787,6 +756,8 @@ public class L2CharacterAI extends AbstractAI
 	@Override
 	protected void onEvtCancel()
 	{
+		_actor.abortCast();
+		
 		// Stop an AI Follow Task
 		stopFollow();
 		
@@ -1449,13 +1420,6 @@ public class L2CharacterAI extends AbstractAI
 			clientActionFailed();
 			return;
 		}
-
-		// Set the Intention of this AbstractAI to AI_INTENTION_MOVE_TO
-		//
-		// changeIntention(AI_INTENTION_MOVE_TO, new L2CharPosition(((L2PcInstance)_actor).getBoat().getX() - destination.x, ((L2PcInstance)_actor).getBoat().getY() -
-		// destination.y, ((L2PcInstance)_actor).getBoat().getZ() - destination.z, 0) , null);
-
-		// Stop the actor auto-attack client side by sending Server->Client packet AutoAttackStop (broadcast)
 		clientStopAutoAttack();
 
 		// Abort the attack of the L2Character and send Server->Client ActionFailed packet
@@ -1525,6 +1489,5 @@ public class L2CharacterAI extends AbstractAI
 	public void stopAITask()
 	{
 		stopFollow();
-	}
-	
+	}	
 }

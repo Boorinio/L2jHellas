@@ -14,10 +14,9 @@
  */
 package com.l2jhellas.gameserver.model.zone.type;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
@@ -38,7 +37,7 @@ public class L2BossZone extends L2ZoneType
 	private final Map<Integer, Long> _playerAllowEntry = new ConcurrentHashMap<>();
 	
 	// Track players admitted to the zone who should be allowed back in after reboot/server downtime, within 30min of server restart
-	private final List<Integer> _playerAllowed = new CopyOnWriteArrayList<>();
+	private final Set<Integer> _playerAllowed = ConcurrentHashMap.newKeySet();
 	
 	private int _timeInvade;
 	private boolean _enabled = true;
@@ -235,11 +234,11 @@ public class L2BossZone extends L2ZoneType
 	/**
 	 * @return the list of all allowed players object ids.
 	 */
-	public List<Integer> getAllowedPlayers()
+	public Set<Integer> getAllowedPlayers()
 	{
 		return _playerAllowed;
 	}
-	
+
 	/**
 	 * Some GrandBosses send all players in zone to a specific part of the zone, rather than just removing them all. If this is the case, this command should be used. If this is no the case, then use oustAllPlayers().
 	 * @param x

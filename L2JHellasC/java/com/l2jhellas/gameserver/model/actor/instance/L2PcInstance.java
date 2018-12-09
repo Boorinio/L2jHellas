@@ -55,9 +55,11 @@ import com.l2jhellas.gameserver.LoginServerThread;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2PlayerAI;
+import com.l2jhellas.gameserver.ai.NextAction;
 import com.l2jhellas.gameserver.audio.Music;
 import com.l2jhellas.gameserver.audio.Sound;
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -1945,10 +1947,7 @@ public final class L2PcInstance extends L2Playable
 
 		if (Config.ALLOW_WATER)
 		{
-			if (isInsideZone(ZoneId.WATER))
-				WaterTaskManager.getInstance().add(this);
-			else
-				WaterTaskManager.getInstance().remove(this);
+			checkWaterState();
 		}
 		
 		if (isInsideZone(ZoneId.SIEGE))
@@ -6465,10 +6464,7 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public boolean isClanLeader()
 	{
-		if (getClan() == null)
-			return false;
-		else
-			return getObjectId() == getClan().getLeaderId();
+		return getClan() != null && getObjectId() == getClan().getLeaderId();
 	}
 	
 	/**
@@ -8901,17 +8897,6 @@ public final class L2PcInstance extends L2Playable
 		// Check if this is offensive magic skill
 		if (skill.isOffensive())
 		{
-			/** @formatter:off **/
-			//if (isInsidePeaceZone(this, target)
-					//&& (skill.getId() != 3261 // Like L2OFF you can use cupid bow skills on peace zone
-					//&& skill.getId() != 3260 
-					//&& skill.getId() != 3262 && sklTargetType != L2SkillTargetType.TARGET_AURA)) // Like L2OFF people can use TARGET_AURE skills on peace zone)
-			//{/** @formatter:on **/
-				// If L2Character or target is in a peace zone, send a system message TARGET_IN_PEACEZONE a Server->Client packet ActionFailed
-				//sendPacket(SystemMessageId.TARGET_IN_PEACEZONE);
-				//sendPacket(ActionFailed.STATIC_PACKET);
-				//return;
-			//}
 			
 			if (isInsidePeaceZone(this, target))
 			{
@@ -9165,10 +9150,7 @@ public final class L2PcInstance extends L2Playable
 		// If all conditions are checked, create a new SkillDat object and set the player _currentSkill
 		setCurrentSkill(skill, forceUse, dontMove);
 		
-		// Check if the active L2Skill can be casted (ex : not sleeping...),
-		// Check if the target is correct and Notify the AI with AI_INTENTION_CAST and target
-		super.useMagic(skill);
-		
+		super.useMagic(skill);	
 	}
 	
 	public boolean isInLooterParty(int LooterId)
@@ -10783,17 +10765,20 @@ public final class L2PcInstance extends L2Playable
 	}
 	
 	public void checkWaterState()
-	{
-		// checking if char is over base level of water (sea, rivers)
-		if (getZ() > -3793)
-		{
-			WaterTaskManager.getInstance().remove(this);
-			return;
-		}
-		
+	{	
 		if (isInsideZone(ZoneId.WATER))
 		{
+			if (getZ() > -3820)
+			{
+				WaterTaskManager.getInstance().remove(this);
+				return;
+			}	
 			WaterTaskManager.getInstance().add(this);
+		}
+		else
+		{
+			WaterTaskManager.getInstance().remove(this);	
+			return;
 		}
 	}
 	
@@ -13610,6 +13595,7 @@ public final class L2PcInstance extends L2Playable
 
 		if (Hero.getInstance().getHeroes() != null && Hero.getInstance().getHeroes().containsKey(getObjectId()))
 			setHero(true);
+		
 		onPlayerEnter();
 		
 		// Send Macro List
@@ -13652,7 +13638,6 @@ public final class L2PcInstance extends L2Playable
 		ExStorageMaxCount esmc = new ExStorageMaxCount(this);
 		sendPacket(esmc);
 
-		Quest.playerEnter(this);
 		// check player skills
 		if (Config.CHECK_SKILLS_ON_ENTER && !Config.ALT_GAME_SKILL_LEARN && !Config.ALT_SUBCLASS_SKILLS)
 			checkAllowedSkills();
@@ -14672,20 +14657,17 @@ public final class L2PcInstance extends L2Playable
 		}
 	}
 	
-	public boolean dismount()
+	public void dismount()
 	{
 		
 		if(getActiveTradeList() !=null)
 			cancelActiveTrade();
 		
-		final Ride dismount = new Ride(getObjectId(), Ride.ACTION_DISMOUNT, 0);
-		sendPacket(new SetupGauge(3, 0, 0));
-		setMountType(0);
+	    final Ride dismount = new Ride(getObjectId(), Ride.ACTION_DISMOUNT, 0);
+	    sendPacket(new SetupGauge(3, 0, 0));
+	    setMountType(0);
 	   broadcastPacket(dismount);
 	   broadcastUserInfo();
-
-			return true;
-
 	}
 	
 	boolean _isInSiege =false;
@@ -14821,9 +14803,26 @@ public final class L2PcInstance extends L2Playable
 			// If Alternate rule Karma punishment is set to true, forbid skill Return to player with Karma
 			if (skill.getSkillType() == L2SkillType.RECALL && !Config.ALT_GAME_KARMA_PLAYER_CAN_TELEPORT && getKarma() > 0)
 				return;
-			
-			// activeChar.stopMove();
-			useMagic(skill, ctrlPressed, shiftPressed);
+
+			if (isAttackingNow())
+			{
+				if (skill.isToggle())
+				{
+					sendPacket(ActionFailed.STATIC_PACKET);
+					return;
+				}
+				
+				getAI().setNextAction(new NextAction(CtrlEvent.EVT_READY_TO_ACT, CtrlIntention.AI_INTENTION_CAST, new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						useMagic(skill,ctrlPressed, shiftPressed);
+					}
+				}));
+			}
+			else
+				useMagic(skill,ctrlPressed,shiftPressed);
 			
 			if(Config.DEBUG)
 			{
@@ -15072,4 +15071,31 @@ public final class L2PcInstance extends L2Playable
 			activeChar.sendPacket(new RecipeShopMsg(otherPlayer));
 		
 	}
+	
+		
+		public void mount(int RideId)
+		{
+			
+			if (!disarmWeapons())
+				return;
+			
+			if (getPet() != null)
+				getPet().unSummon(this);
+				
+			setRunning();
+			stopAllToggles();
+			
+			final Ride RideMount = new Ride(getObjectId(), Ride.ACTION_MOUNT, RideId);
+			broadcastPacket(RideMount);
+			setMountType(RideMount.getMountType());
+			broadcastUserInfo();
+		}
+		
+		/**
+		 * Stop all toggle-type effects
+		 */
+		public final void stopAllToggles()
+		{
+			_effects.stopAllToggles();
+		}		
 }

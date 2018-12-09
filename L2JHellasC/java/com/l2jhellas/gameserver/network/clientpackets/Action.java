@@ -70,6 +70,12 @@ public final class Action extends L2GameClientPacket
 			return;
 		}
 			
+	    if (activeChar.isOutOfControl())
+	    {
+	    	activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+	        return;
+	    }
+	    
 		// If requested object doesn't exist
 		final L2Object obj = (activeChar.getTargetId() == _objectId) ? activeChar.getTarget() : L2World.getInstance().findObject(_objectId);
 		if (obj == null)
@@ -78,22 +84,12 @@ public final class Action extends L2GameClientPacket
 			return;
 		}
 
-		switch (_actionId)
-		{
-			case 0:
-				obj.onAction(activeChar);
-				break;
-			
-			case 1:
-				obj.onActionShift(activeChar);
-				break;
-			
-			default:
-				// Invalid action detected (probably client cheating), log this
-				_log.warning(Action.class.getName() + ": " + activeChar.getName() + " requested invalid action: " + _actionId);
-				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-				break;
-		}
+        if(_actionId == 0)
+        	obj.onAction(activeChar);
+        else if(_actionId ==1)
+        	obj.onActionShift(activeChar);
+        else
+        	activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 	@Override
 	public String getType()

@@ -22,22 +22,22 @@ public class L2ShortCut
 	public final static int TYPE_MACRO = 4;
 	public final static int TYPE_RECIPE = 5;
 
-	private final int _slot;
-	private final int _page;
+	private int _slot;
+	private int _page;
 	private final int _type;
 	private final int _id;
 	private final int _level;
-	/** Augmented Item */
-	private L2Augmentation _augmentation = null;
+	private final int _getCharacterType;
 
-	public L2ShortCut(int slotId, int pageId, int shortcutType, int shortcutId, int shortcutLevel, int unknown)
+	public L2ShortCut(int slotId, int pageId, int shortcutType, int shortcutId, int shortcutLevel, int getCharacterType)
 	{
 		_slot = slotId;
 		_page = pageId;
 		_type = shortcutType;
 		_id = shortcutId;
 		_level = shortcutLevel;
-		//_unk = unknown;
+		_getCharacterType = getCharacterType;
+		//_augmentationId = augmentationId;
 	}
 
 	public int getId()
@@ -65,23 +65,8 @@ public class L2ShortCut
 		return _type;
 	}
 	
-	/**
-	 * Returns whether this item is augmented or not
-	 *
-	 * @return true if augmented
-	 */
-	public boolean isAugmented()
+	public int getCharacterType()
 	{
-		return _augmentation == null ? false : true;
-	}
-	
-	/**
-	 * Returns the augmentation object for this item
-	 *
-	 * @return augmentation
-	 */
-	public L2Augmentation getAugmentation()
-	{
-		return _augmentation;
+		return _getCharacterType;
 	}
 }

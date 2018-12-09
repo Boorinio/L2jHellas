@@ -53,12 +53,15 @@ public final class RequestMakeMacro extends L2GameClientPacket
 		String _acronym = readS();
 		int _icon = readC();
 		int _count = readC();
+		
 		if (_count > MAX_MACRO_LENGTH)
 			_count = MAX_MACRO_LENGTH;
 
 		L2MacroCmd[] commands = new L2MacroCmd[_count];
+		
 		if (Config.DEBUG)
 			_log.config(RequestMakeMacro.class.getName() + ": Make macro id:" + _id + "\tname:" + _name + "\tdesc:" + _desc + "\tacronym:" + _acronym + "\ticon:" + _icon + "\tcount:" + _count);
+		
 		for (int i = 0; i < _count; i++)
 		{
 			int entry = readC();
@@ -66,11 +69,14 @@ public final class RequestMakeMacro extends L2GameClientPacket
 			int d1 = readD(); // skill or page number for shortcuts
 			int d2 = readC();
 			String command = readS();
+			
 			_commandsLenght += command.length();
 			commands[i] = new L2MacroCmd(entry, type, d1, d2, command);
+			
 			if (Config.DEBUG)
 				_log.config(RequestMakeMacro.class.getName() + ": entry:" + entry + "\ttype:" + type + "\td1:" + d1 + "\td2:" + d2 + "\tcommand:" + command);
 		}
+		
 		_macro = new L2Macro(_id, _icon, _name, _desc, _acronym, commands);
 	}
 

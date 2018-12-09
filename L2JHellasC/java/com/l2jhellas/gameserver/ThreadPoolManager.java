@@ -28,43 +28,6 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.mmocore.network.ReceivablePacket;
 
-/**
- * <p>
- * This class is made to handle all the ThreadPools used in L2j.
- * </p>
- * <p>
- * Scheduled Tasks can either be sent to a {@link #_generalScheduledThreadPool "general"} or {@link #_effectsScheduledThreadPool "effects"} {@link ScheduledThreadPoolExecutor
- * ScheduledThreadPool}: The "effects" one is used for every effects (skills, hp/mp regen ...) while the "general" one is used for everything else that needs to be scheduled.<br>
- * There also is an {@link #_aiScheduledThreadPool "ai"} {@link ScheduledThreadPoolExecutor ScheduledThreadPool} used for AI Tasks.
- * </p>
- * <p>
- * Tasks can be sent to {@link ScheduledThreadPoolExecutor ScheduledThreadPool} either with:
- * <ul>
- * <li>{@link #scheduleEffect(Runnable, long)} : for effects Tasks that needs to be executed only once.</li>
- * <li>{@link #scheduleGeneral(Runnable, long)} : for scheduled Tasks that needs to be executed once.</li>
- * <li>{@link #scheduleAi(Runnable, long)} : for AI Tasks that needs to be executed once</li>
- * </ul>
- * or
- * <ul>
- * <li>{@link #scheduleEffectAtFixedRate(Runnable, long, long)(Runnable, long)} : for effects Tasks that needs to be executed periodically.</li>
- * <li>{@link #scheduleGeneralAtFixedRate(Runnable, long, long)(Runnable, long)} : for scheduled Tasks that needs to be executed periodically.</li>
- * <li>{@link #scheduleAiAtFixedRate(Runnable, long, long)(Runnable, long)} : for AI Tasks that needs to be executed periodically</li>
- * </ul>
- * </p>
- * <p>
- * For all Tasks that should be executed with no delay asynchronously in a ThreadPool there also are usual {@link ThreadPoolExecutor ThreadPools} that can grow/shrink according to
- * their load.:
- * <ul>
- * <li>{@link #_generalPacketsThreadPool GeneralPackets} where most packets handler are executed.</li>
- * <li>{@link #_ioPacketsThreadPool I/O Packets} where all the i/o packets are executed.</li>
- * <li>There will be an AI ThreadPool where AI events should be executed</li>
- * <li>A general ThreadPool where everything else that needs to run asynchronously with no delay should be executed ({@link com.l2jhellas.gameserver.model.actor.knownlist
- * KnownList} updates, SQL updates/inserts...)?</li>
- * </ul>
- * </p>
- * 
- * @author -Wooden-
- */
 public class ThreadPoolManager
 {
 	protected static final Logger _log = Logger.getLogger(ThreadPoolManager.class.getName());

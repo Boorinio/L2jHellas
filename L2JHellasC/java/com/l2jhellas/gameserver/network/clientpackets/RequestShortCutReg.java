@@ -58,7 +58,7 @@ public final class RequestShortCutReg extends L2GameClientPacket
 			case 0x04:// macro
 			case 0x05:// recipe
 			{
-				L2ShortCut sc = new L2ShortCut(_slot, _page, _type, _id, -1, _unk);
+								L2ShortCut sc = new L2ShortCut(_slot, _page, _type, _id, -1, _unk);
 				sendPacket(new ShortCutRegister(sc));
 				activeChar.registerShortCut(sc);
 				break;

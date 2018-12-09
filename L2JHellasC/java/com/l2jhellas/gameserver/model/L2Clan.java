@@ -317,6 +317,7 @@ public class L2Clan
 		player.sendPacket(new PledgeShowMemberListUpdate(player));
 		player.sendPacket(new UserInfo(player));
 		player.rewardSkills();
+		broadcastClanStatus();
 	}
 
 	public void updateClanMember(L2PcInstance player)

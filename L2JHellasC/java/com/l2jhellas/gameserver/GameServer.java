@@ -492,8 +492,6 @@ public class GameServer
 		Util.printSection("Configs");
 		Config.load();
 
-		Util.printSection("Script Engine");
-
 		Util.printSection("General Info");
 		Util.printGeneralSystemInfo();
 

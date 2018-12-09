@@ -40,7 +40,7 @@ import com.l2jhellas.util.Rnd;
  * It inherits all methods from L2Attackable and adds some more such as tracking PK and aggressive L2MonsterInstance.<BR>
  * <BR>
  */
-public final class L2GuardInstance extends L2Attackable
+public final class L2GuardInstance extends L2Attackable 
 {
 	private static Logger _log = Logger.getLogger(L2GuardInstance.class.getName());
 

@@ -264,14 +264,13 @@ protected static final Logger _log = Logger.getLogger(L2ZoneType.class.getName()
 	 */
 	public void broadcastPacket(L2GameServerPacket packet)
 	{
-		if (_characterList.isEmpty())
-			return;
-		
-		for (L2Character character : _characterList.values())
-		{
-			if (character != null && character instanceof L2PcInstance)
-				character.sendPacket(packet);
-		}
+		   if(!getKnownTypeInside(L2PcInstance.class).isEmpty())
+		   {
+			   for(L2PcInstance players: getKnownTypeInside(L2PcInstance.class))
+			   {
+				   players.sendPacket(packet);
+			   }
+		   }
 	}
 	
 	@Override

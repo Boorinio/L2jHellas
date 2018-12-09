@@ -1369,4 +1369,25 @@ public final class L2ItemInstance extends L2Object
          if(isVisible())
 			activeChar.sendPacket(new SpawnItem((L2ItemInstance) this));
 	}
+
+	/**
+	 * Returns true if item is an EtcItem
+	 * @return boolean
+	 */
+	public boolean isEtcItem()
+	{
+		return (_item instanceof L2EtcItem);
+	}
+
+	/**
+	 * Returns the characteristics of the L2EtcItem
+	 * @return EtcItem
+	 */
+	public L2EtcItem getEtcItem()
+	{
+		if (_item instanceof L2EtcItem)
+			return (L2EtcItem) _item;
+		
+		return null;
+	}
 }

@@ -161,13 +161,13 @@ public class L2CastleZone extends L2SpawnZone
 	//test
 	//public boolean isActive()
 	//{
-	//	return true;
+		//return true;
 	//}
 	
 	//only in siege
 	//public boolean isActive()
 	//{
-		//return getCastle().getSiege().getIsInProgress();
-	//}
+		//return getCastle() != null && getCastle().getSiege().getIsInProgress();
+//	}
 
 }

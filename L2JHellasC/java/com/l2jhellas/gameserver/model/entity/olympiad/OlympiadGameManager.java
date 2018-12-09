@@ -151,6 +151,11 @@ public class OlympiadGameManager implements Runnable
 		return _tasks[id];
 	}
 	
+	public OlympiadGameTask[] getOlympiadTasks()
+	{
+		return _tasks;
+	}
+	
 	public final int getNumberOfStadiums()
 	{
 		return _tasks.length;

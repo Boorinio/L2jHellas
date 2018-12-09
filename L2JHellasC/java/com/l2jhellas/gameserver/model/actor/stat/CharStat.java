@@ -18,6 +18,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.skills.Calculator;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.Stats;
@@ -487,8 +488,16 @@ public class CharStat
 	 */
 	public int getWalkSpeed()
 	{
+		int walkspd = (getRunSpeed() * 70) / 100;
+		
 		if (_activeChar instanceof L2PcInstance)
-			return (getRunSpeed() * 70) / 100;
+		{
+
+			if(_activeChar.isInsideZone(ZoneId.SWAMP))
+				walkspd /= 1;
+			
+			return walkspd;
+		}
 		else
 			return (int) calcStat(Stats.WALK_SPEED, _activeChar.getTemplate().baseWalkSpd, null, null);
 	}
@@ -507,7 +516,13 @@ public class CharStat
 			return val += Config.WYVERN_SPEED;
 		if (_activeChar.isRiding())
 			return val += Config.STRIDER_SPEED;
+		
 		val /= _activeChar.getArmourExpertisePenalty();
+		
+		// swamp zone -50% speed
+		if(_activeChar.isInsideZone(ZoneId.SWAMP))
+			val /= 2;
+		
 		// Apply max run speed cap.
 		if (val > Config.MAX_RUN_SPEED)
 			val = Config.MAX_RUN_SPEED;

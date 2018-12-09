@@ -60,6 +60,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2FestivalGuideInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2FishermanInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MerchantInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2NpcWalkerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2TeleporterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2WarehouseInstance;
@@ -552,13 +553,25 @@ public class L2Npc extends L2Character
 	}
 
 	protected boolean canInteract(L2PcInstance player)
-	{
-		// TODO: NPC busy check etc...
-
-		//if (!canTarget(player))
-		//    return false;
-
-		if (!isInsideRadius(player, INTERACTION_DISTANCE, false, false))
+	{	
+		// Can't interact while casting a spell.
+		if (player.isCastingNow())
+			return false;
+		
+		// Can't interact while died.
+		if (player.isDead() || player.isFakeDeath())
+			return false;
+		
+		// Can't interact sitted.
+		if (player.isSitting())
+			return false;
+		
+		// Can't interact in shop mode, or during a transaction or a request.
+		if (player.isInStoreMode() || player.isProcessingTransaction())
+			return false;
+		
+		// Can't interact if regular distance doesn't match.
+		if (!isInsideRadius(player, INTERACTION_DISTANCE, true, false))
 			return false;
 
 		return true;
@@ -666,8 +679,10 @@ public class L2Npc extends L2Character
 				{
 					// Send a Server->Client packet SocialAction to the all L2PcInstance on the _knownPlayer of the L2NpcInstance
 					// to display a social action of the L2NpcInstance on their client
-					SocialAction sa = new SocialAction(getObjectId(), Rnd.get(8));
-					broadcastPacket(sa,1200);
+					if (hasRandomAnimation() && !isWalker())
+					{
+						onRandomAnimation();
+					}
 
 					/// Open a chat window on client with the text of the L2NpcInstance
 					if (isEventMob)
@@ -684,12 +699,15 @@ public class L2Npc extends L2Character
 						CTF.CheckRestoreFlags();
 					else
 					{
-						List<Quest> qlst = getTemplate().getEventQuests(QuestEventType.ON_FIRST_TALK);
-						if (qlst != null && qlst.size() == 1)
-							qlst.get(0).notifyFirstTalk(this, player);
-
+						List<Quest> scripts = getTemplate().getEventQuests(QuestEventType.QUEST_START);
+						if (scripts != null && !scripts.isEmpty())
+							player.setLastQuestNpcObject(getObjectId());
+						
+						scripts = getTemplate().getEventQuests(QuestEventType.ON_FIRST_TALK);
+						if (scripts != null && scripts.size() == 1)
+							scripts.get(0).notifyFirstTalk(this, player);
 						else
-							showChatWindow(player, 0);
+							showChatWindow(player);
 					}
 				}
 			}
@@ -697,7 +715,6 @@ public class L2Npc extends L2Character
 				player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 	}
-
 	/**
 	 * Manage and Display the GM console to modify the L2NpcInstance (GM only).<BR>
 	 * <BR>
@@ -2765,6 +2782,12 @@ public class L2Npc extends L2Character
 	public boolean isScriptValue(int val)
 	{
 		return _scriptValue == val;
+	}
+	
+
+	private boolean isWalker()
+	{
+		return this instanceof L2NpcWalkerInstance;
 	}
 	
 	/**

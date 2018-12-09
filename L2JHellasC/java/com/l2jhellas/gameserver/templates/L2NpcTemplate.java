@@ -144,6 +144,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	
 	private List<ClassId> _teachInfo;
 	private Map<Integer, L2Skill> _skills;
+
 	private Map<Stats, Double> _vulnerabilities;
 	// contains a list of quests for each event type (questStart, questAttack, questKill, etc)
 	private final Map<QuestEventType, List<Quest>> _questEvents = new HashMap<QuestEventType, List<Quest>>();

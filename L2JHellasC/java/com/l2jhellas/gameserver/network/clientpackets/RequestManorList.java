@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.ArrayList;
-
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ExSendManorList;
 
@@ -38,20 +36,12 @@ public class RequestManorList extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance player = getClient().getActiveChar();
-		ArrayList<String> manorsName = new ArrayList<String>();
-		manorsName.add("gludio");
-		manorsName.add("dion");
-		manorsName.add("giran");
-		manorsName.add("oren");
-		manorsName.add("aden");
-		manorsName.add("innadril");
-		manorsName.add("goddard");
-		manorsName.add("rune");
-		manorsName.add("schuttgart");
-		ExSendManorList manorlist = new ExSendManorList(manorsName);
-		if (manorlist != null && player != null)
-			player.sendPacket(manorlist);
+		final L2PcInstance player = getClient().getActiveChar();
+		
+		if (player == null)
+			return;
+		
+		player.sendPacket(ExSendManorList.STATIC_PACKET);
 	}
 
 	@Override

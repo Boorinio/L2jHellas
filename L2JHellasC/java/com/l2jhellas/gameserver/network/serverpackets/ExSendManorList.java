@@ -14,8 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import java.util.ArrayList;
-
 /**
  * Format : (h) d [dS]<BR>
  * h sub id<BR>
@@ -32,26 +30,38 @@ public class ExSendManorList extends L2GameServerPacket
 {
 	private static final String _S__FE_1B_EXSENDMANORLIST = "[S] FE:1B ExSendManorList";
 
-	private final ArrayList<String> _manors;
-
-	public ExSendManorList(ArrayList<String> manorsName)
+	public static final ExSendManorList STATIC_PACKET = new ExSendManorList();
+	
+	private ExSendManorList()
 	{
-		_manors = manorsName;
+		
 	}
-
+	
+	private static final String[] _manorList =
+	{
+		"gludio",
+		"dion",
+		"giran",
+		"oren",
+		"aden",
+		"innadril",
+		"goddard",
+		"rune",
+		"schuttgart"
+	};
+	
 	@Override
 	protected void writeImpl()
 	{
 		writeC(0xFE);
 		writeH(0x1B);
-		writeD(_manors.size());
-		for (int i = 0; i < _manors.size(); i++)
+		writeD(_manorList.length);
+		
+		for (int i = 0; i < _manorList.length; i++)
 		{
-			int j = i + 1;
-			writeD(j);
-			writeS(_manors.get(i));
+			writeD(i + 1);
+			writeS(_manorList[i]);
 		}
-
 	}
 
 	@Override
