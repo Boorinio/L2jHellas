@@ -18,13 +18,11 @@ import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.Dice;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Broadcast;
-import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Rnd;
 
 public class RollingDice implements IItemHandler
@@ -41,48 +39,29 @@ public class RollingDice implements IItemHandler
 			return;
 
 		L2PcInstance activeChar = (L2PcInstance) playable;
-		int itemId = item.getItemId();
+		
+		if (!activeChar.getAntiFlood().getRollDice().tryPerformAction("roll dice"))		
+		{
+			activeChar.sendPacket(SystemMessageId.YOU_MAY_NOT_THROW_THE_DICE_AT_THIS_TIME_TRY_AGAIN_LATER);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
 
 		if (activeChar.isInOlympiadMode())
 		{
 			activeChar.sendPacket(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT);
 			return;
 		}
+		
+		int itemId = item.getItemId();
 
 		if (itemId == 4625 || itemId == 4626 || itemId == 4627 || itemId == 4628)
 		{
-			int number = rollDice(activeChar);
-			if (number == 0)
-			{
-				activeChar.sendPacket(SystemMessageId.YOU_MAY_NOT_THROW_THE_DICE_AT_THIS_TIME_TRY_AGAIN_LATER);
-				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-				return;
-			}
+			final int number = Rnd.get(1, 6);
+			Broadcast.toSelfAndKnownPlayers(activeChar, new Dice(activeChar.getObjectId(), item.getItemId(), number, activeChar.getX() - 30, activeChar.getY() - 30, activeChar.getZ()));
+			Broadcast.toSelfAndKnownPlayers(activeChar, SystemMessage.getSystemMessage(SystemMessageId.S1_ROLLED_S2).addCharName(activeChar).addNumber(number));
 
-			Dice d = new Dice(activeChar.getObjectId(), item.getItemId(), number, activeChar.getX() - 30, activeChar.getY() - 30, activeChar.getZ());
-			Broadcast.toSelfAndKnownPlayers(activeChar, d);
-
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_ROLLED_S2);
-			sm.addString(activeChar.getName());
-			sm.addNumber(number);
-
-			activeChar.sendPacket(sm);
-			if (activeChar.isInsideZone(ZoneId.PEACE))
-				Broadcast.toKnownPlayers(activeChar, sm);
-			else if (activeChar.isInParty())
-				activeChar.getParty().broadcastToPartyMembers(activeChar, sm);
 		}
-	}
-
-	private int rollDice(L2PcInstance player)
-	{
-		if (!player.getAntiFlood().getRollDice().tryPerformAction("roll dice"))
-			return 0;
-
-		if (!FloodProtector.getInstance().tryPerformAction(player.getObjectId(), FloodProtector.PROTECTED_ROLLDICE))
-			return 0;
-
-		return Rnd.get(1, 6);
 	}
 
 	@Override

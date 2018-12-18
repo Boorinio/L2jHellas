@@ -14,9 +14,7 @@
  */
 package com.l2jhellas.loginserver;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.File;
 import java.math.BigInteger;
 import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
@@ -34,14 +32,14 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-import javolution.io.UTF8StreamReader;
-import javolution.xml.stream.XMLStreamConstants;
-import javolution.xml.stream.XMLStreamException;
-import javolution.xml.stream.XMLStreamReaderImpl;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
 import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.XMLDocumentFactory;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
@@ -113,41 +111,33 @@ public class GameServerTable
 
 	private void loadServerNames()
 	{
-		XMLStreamReaderImpl xpp = new XMLStreamReaderImpl();
-		UTF8StreamReader reader = new UTF8StreamReader();
-
 		try
 		{
-			InputStream in = new FileInputStream("./config/Network/ServerName.xml");
-			xpp.setInput(reader.setInput(in));
-			for (int e = xpp.getEventType(); e != XMLStreamConstants.END_DOCUMENT; e = xpp.next())
+			final File f = new File("./config/Network/ServerName.xml");
+			final Document doc = XMLDocumentFactory.getInstance().loadDocument(f);
+			
+			Node n = doc.getFirstChild();
+			for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
 			{
-				if (e == XMLStreamConstants.START_ELEMENT)
+				if (d.getNodeName().equalsIgnoreCase("server"))
 				{
-					if (xpp.getLocalName().toString().equals("server"))
-					{
-						Integer id = new Integer(xpp.getAttributeValue(null, "id").toString());
-						String name = xpp.getAttributeValue(null, "name").toString();
-						_serverNames.put(id, name);
-
-						id = null;
-						name = null;
-					}
+					NamedNodeMap attrs = d.getAttributes();
+					
+					int id = Integer.parseInt(attrs.getNamedItem("id").getNodeValue());
+					String name = attrs.getNamedItem("name").getNodeValue();
+					
+					_serverNames.put(id, name);
 				}
 			}
 		}
-		catch (FileNotFoundException e)
+		catch (Exception e)
 		{
-			_log.warning(GameServerTable.class.getName() + " ServerName.xml could not be loaded: file not found");
+			_log.warning(GameServerTable.class.getName() + " ServerName.xml could not be loaded.");
 			if (Config.DEVELOPER)
 				e.printStackTrace();
 		}
-		catch (XMLStreamException xppe)
-		{
-			xppe.printStackTrace();
-		}
 	}
-
+	
 	private void loadRegisteredGameServers() throws SQLException
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())

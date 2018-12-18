@@ -21,11 +21,6 @@ import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.util.StringUtil;
 
-/**
- * Flood protector implementation.
- * 
- * @author fordfrog
- */
 public final class FloodProtectorAction
 {
 	/**

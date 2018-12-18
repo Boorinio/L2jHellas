@@ -128,7 +128,6 @@ import com.l2jhellas.mmocore.network.SelectorConfig;
 import com.l2jhellas.mmocore.network.SelectorThread;
 import com.l2jhellas.shield.antibot.AntiAfk;
 import com.l2jhellas.shield.antibot.AntiBot;
-import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 import com.l2jhellas.util.hexid.HexId;
@@ -138,7 +137,6 @@ import com.l2jhellas.util.ip.IPConfigData;
 public class GameServer
 {
 	private static final Logger _log = Logger.getLogger(GameServer.class.getName());
-	public static boolean Loaded = false;
 	private final SelectorThread<L2GameClient> _selectorThread;
 	public static boolean _instanceOk = false;
 	public static GameServer gameServer;
@@ -180,7 +178,6 @@ public class GameServer
 		AutoSpawnHandler.getInstance();
 		DayNightSpawnManager.getInstance();
 		AutoChatHandler.getInstance();
-		FloodProtector.getInstance();
 		StaticObjData.load();
 		TeleportLocationData.getInstance();	
 		CharNameTable.getInstance();

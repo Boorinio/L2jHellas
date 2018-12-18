@@ -40,7 +40,7 @@ public class GMViewQuestList extends L2GameServerPacket
 		writeC(0x93);
 		writeS(_activeChar.getName());
 
-		Quest[] questList = _activeChar.getAllActiveQuests();
+		Quest[] questList = _activeChar.getAllActiveQuests(true);
 
 		if (questList.length == 0)
 		{

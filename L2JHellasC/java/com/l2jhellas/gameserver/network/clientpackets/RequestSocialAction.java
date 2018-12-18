@@ -39,7 +39,8 @@ public class RequestSocialAction extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		
 		if (activeChar == null)
 			return;
 
@@ -63,35 +64,12 @@ public class RequestSocialAction extends L2GameClientPacket
 			return;
 		}
 
-		if ((activeChar.getPrivateStoreType() == 0) && (activeChar.getActiveRequester() == null) && !activeChar.isAlikeDead() && (!activeChar.isAllSkillsDisabled() || activeChar.isInDuel()) && activeChar.getAI().getIntention() == CtrlIntention.AI_INTENTION_IDLE)
-		{
-			if (Config.DEBUG)
-				_log.fine("Social Action:" + _actionId);
+		if (activeChar.isInStoreMode() || activeChar.getActiveRequester() != null || activeChar.isAlikeDead() || activeChar.getAI().getIntention() != CtrlIntention.AI_INTENTION_IDLE)
+			return;
 
-			SocialAction atk = new SocialAction(activeChar.getObjectId(), _actionId);
-			activeChar.broadcastPacket(atk,2000);
-			/*
-			 * // Schedule a social task to wait for the animation to finish
-			 * ThreadPoolManager.getInstance().scheduleGeneral(new SocialTask(this), 2600);
-			 * activeChar.setIsParalyzed(true);
-			 */
-		}
+		activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), _actionId));
+
 	}
-
-	/*
-	 * class SocialTask implements Runnable
-	 * {
-	 * L2PcInstance _player;
-	 * SocialTask(RequestSocialAction action)
-	 * {
-	 * _player = getClient().getActiveChar();
-	 * }
-	 * public void run()
-	 * {
-	 * _player.setIsParalyzed(false);
-	 * }
-	 * }
-	 */
 
 	@Override
 	public String getType()

@@ -36,7 +36,6 @@ import com.l2jhellas.gameserver.templates.L2ArmorType;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
-import com.l2jhellas.util.FloodProtector;
 
 public final class UseItem extends L2GameClientPacket
 {
@@ -82,9 +81,11 @@ public final class UseItem extends L2GameClientPacket
 		if (activeChar == null)
 			return
 			;
+		
 		// Flood protect UseItem
-		if (!FloodProtector.getInstance().tryPerformAction(activeChar.getObjectId(), FloodProtector.PROTECTED_USEITEM))
+		if (!activeChar.getAntiFlood().getUseItem().tryPerformAction("use item"))
 			return;
+
 
 		if (activeChar.getPrivateStoreType() != 0)
 		{

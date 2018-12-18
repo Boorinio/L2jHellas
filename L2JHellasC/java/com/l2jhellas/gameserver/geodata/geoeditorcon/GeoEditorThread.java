@@ -22,9 +22,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
-
-import javolution.util.FastList;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
@@ -45,13 +45,13 @@ public class GeoEditorThread extends Thread
 
 	private OutputStream _out;
 
-	private FastList<L2PcInstance> _gms;
+	private List<L2PcInstance> _gms;
 
 	public GeoEditorThread(Socket ge)
 	{
 		_geSocket = ge;
 		_working = true;
-		_gms = new FastList<L2PcInstance>();
+		_gms = new ArrayList<L2PcInstance>();
 	}
 
 	public void interrupt()

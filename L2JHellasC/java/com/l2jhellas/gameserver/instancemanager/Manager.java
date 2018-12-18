@@ -18,9 +18,10 @@ public class Manager
 {
 	public static void reloadAll()
 	{
+		FishingZoneManager.getInstance().clearFishingZone();
+		OlympiadStadiaManager.getInstance().clearStadium();
 		ZoneManager.getInstance().reload();
-		ItemsOnGroundManager.getInstance().reload();
-		FishingZoneManager.getInstance();	
+		ItemsOnGroundManager.getInstance().reload();		
 		AuctionManager.getInstance().reload();
 		BoatManager.getInstance();
 		CastleManager.getInstance().reload();
@@ -31,8 +32,7 @@ public class Manager
 		DuelManager.getInstance();	
 		FourSepulchersManager.getInstance();
 		GrandBossManager.getInstance().reload();	
-		MercTicketManager.getInstance().reload();
-		OlympiadStadiaManager.getInstance();
+		MercTicketManager.getInstance().reload();		
 		PetitionManager.getInstance();
 		RaidBossSpawnManager.getInstance().reloadBosses();
 		SiegeManager.getInstance();

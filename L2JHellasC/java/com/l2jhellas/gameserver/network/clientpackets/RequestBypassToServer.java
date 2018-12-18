@@ -69,9 +69,12 @@ public final class RequestBypassToServer extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		if (_command.isEmpty())
+			return;
 
-		if (activeChar == null || _command.isEmpty())
+		final L2PcInstance activeChar = getClient().getActiveChar();
+
+		if (activeChar == null)
 			return;
 
 		if (!activeChar.getAntiFlood().getServerBypass().tryPerformAction(_command) && !activeChar.isGM())

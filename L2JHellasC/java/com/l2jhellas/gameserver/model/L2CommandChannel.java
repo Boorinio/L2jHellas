@@ -25,7 +25,6 @@ import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.ExCloseMPCC;
 import com.l2jhellas.gameserver.network.serverpackets.ExOpenMPCC;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * @author chris_00
@@ -58,9 +57,14 @@ public class L2CommandChannel
 	 */
 	public void addParty(L2Party party)
 	{
+		if (party == null || _partys.contains(party))
+			return;
+		
 		_partys.add(party);
+		
 		if (party.getLevel() > _channelLvl)
 			_channelLvl = party.getLevel();
+		
 		party.setCommandChannel(this);
 		party.broadcastToPartyMembers(new ExOpenMPCC());
 	}
@@ -70,23 +74,30 @@ public class L2CommandChannel
 	 * 
 	 * @param Party
 	 */
-	public void removeParty(L2Party party)
+	public boolean removeParty(L2Party party)
 	{
-		_partys.remove(party);
-		_channelLvl = 0;
-		for (L2Party pty : _partys)
+		if (party == null || !_partys.contains(party))
+			return false;
+		
+		if (_partys.size() == 2)
+		     disbandChannel();
+		else
 		{
-			if (pty.getLevel() > _channelLvl)
-				_channelLvl = pty.getLevel();
+			_partys.remove(party);
+			
+			party.setCommandChannel(null);
+			party.broadcastToPartyMembers(new ExCloseMPCC());
+			
+			_channelLvl = 0;
+			
+			for (L2Party pty : _partys)
+			{
+				if (pty.getLevel() > _channelLvl)
+					_channelLvl = pty.getLevel();
+			}
+			
 		}
-		party.setCommandChannel(null);
-		party.broadcastToPartyMembers(new ExCloseMPCC());
-		if (_partys.size() < 2)
-		{
-			SystemMessage sm = SystemMessage.sendString("The Command Channel was disbanded.");
-			broadcastToChannelMembers(sm);
-			disbandChannel();
-		}
+		return true;
 	}
 
 	/**
@@ -222,5 +233,14 @@ public class L2CommandChannel
 			default: // normal Raidboss
 				return (getMemberCount() > 18);
 		}
+	}
+	/**
+	 * Check if a given player is the leader of this group.
+	 * @param player : the player to check.
+	 * @return {@code true} if the specified player is the leader of this group, {@code false} otherwise.
+	 */
+	public boolean isLeader(L2PcInstance player)
+	{
+		return getChannelLeader().getObjectId() == player.getObjectId();
 	}
 }

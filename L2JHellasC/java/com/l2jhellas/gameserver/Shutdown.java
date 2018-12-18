@@ -508,30 +508,24 @@ public class Shutdown extends Thread
 	private static void disconnectAllCharacters()
 	{
 		final Collection<L2PcInstance> pls = L2World.getInstance().getAllPlayers().values();
+		
 		for (L2PcInstance player : pls)
 		{
-			if (player == null)
-				continue;
+			final L2GameClient client = player.getClient();
 			
-			// Logout Character
-			try
+			if (client != null)
 			{
-				final L2GameClient client = player.getClient();
-				if (client != null)
-				{
-					player.store();
-					client.close(ServerClose.STATIC_PACKET);
-					client.setActiveChar(null);
-					player.setClient(null);
-				}
-				player.deleteMe();
+				player.store();
+				client.close(ServerClose.STATIC_PACKET);
+				client.setActiveChar(null);
+				player.setClient(null);
 			}
-			catch (Throwable t)
-			{
-				_log.warning(Shutdown.class.getSimpleName() + ": Failed to logout chararacter: " + player);
-			}
+			
+			player.deleteMe();
 		}
+
 	}
+	
 	
 	private static class SingletonHolder
 	{

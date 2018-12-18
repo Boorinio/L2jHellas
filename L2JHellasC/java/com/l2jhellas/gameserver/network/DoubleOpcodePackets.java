@@ -133,7 +133,6 @@ public enum DoubleOpcodePackets implements IPacket
 	}
 
 
-	
 	public boolean isInRightState(GameClientState state) 
 	{
 	    for (Iterator<GameClientState> it = _connectionStates.iterator(); it.hasNext(); ) 

@@ -3,8 +3,6 @@ package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import javolution.text.TextBuilder;
-
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.FenceManager;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -234,7 +232,7 @@ public class AdminFence implements IAdminCommandHandler
 	public void MainFence(L2PcInstance player)
 	{
 		NpcHtmlMessage html = new NpcHtmlMessage(5);
-		TextBuilder sb = new TextBuilder();
+		final StringBuilder sb = new StringBuilder();
 		
 		sb.append("<html><title>L2JHellas's Fence Builder</title><body>");
 		sb.append("<table width=270>");

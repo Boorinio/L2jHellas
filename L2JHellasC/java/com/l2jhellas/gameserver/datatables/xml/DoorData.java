@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -43,38 +44,21 @@ public class DoorData
 {
 	protected static Logger _log = Logger.getLogger(DoorData.class.getName());
 
-	private Map<Integer, L2DoorInstance> _staticItems;
-
-	private static DoorData _instance;
-
-	public static DoorData getInstance()
-	{
-		if (_instance == null)
-		{
-			_instance = new DoorData();
-		}
-
-		return _instance;
-	}
+	private final Map<Integer, L2DoorInstance> _doors = new HashMap<>();
 
 	public DoorData()
 	{
-		_staticItems = new HashMap<Integer, L2DoorInstance>();
 		parseData();
 		onStart();
 	}
 
 	public void reloadAll()
 	{
-		respawn();
+		_doors.clear();
+		parseData();
+		onStart();
 	}
 
-	public void respawn()
-	{
-		_staticItems = null;
-		_instance = null;
-		_instance = new DoorData();
-	}
 
 	private void parseData()
 	{
@@ -191,7 +175,7 @@ public class DoorData
 				}
 			}
 
-			_log.info("DoorTable: Loaded " + _staticItems.size() + " door templates.");
+			_log.info("DoorTable: Loaded " + _doors.size() + " door templates.");
 		}
 		catch (SAXException e)
 		{
@@ -337,20 +321,19 @@ public class DoorData
 
 	public L2DoorInstance getDoor(Integer id)
 	{
-		return _staticItems.get(id);
+		return _doors.get(id);
 	}
 
 	public void putDoor(L2DoorInstance door)
 	{
-		_staticItems.put(door.getDoorId(), door);
+		_doors.put(door.getDoorId(), door);
 	}
 
-	public L2DoorInstance[] getDoors()
+	public Collection<L2DoorInstance> getDoors()
 	{
-		L2DoorInstance[] _allTemplates = _staticItems.values().toArray(new L2DoorInstance[_staticItems.size()]);
-		return _allTemplates;
+		return _doors.values();
 	}
-
+	
 	public void checkAutoOpen()
 	{
 		for (L2DoorInstance doorInst : getDoors())
@@ -469,4 +452,13 @@ public class DoorData
 		return 0;
 	}
 
+	public static DoorData getInstance()
+	{
+		return SingletonHolder.INSTANCE;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final DoorData INSTANCE = new DoorData();
+	}
 }

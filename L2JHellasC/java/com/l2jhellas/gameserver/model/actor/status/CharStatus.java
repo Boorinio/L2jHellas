@@ -29,7 +29,7 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.model.actor.stat.CharStat;
-import com.l2jhellas.gameserver.model.entity.Duel;
+import com.l2jhellas.gameserver.model.entity.Duel.DuelState;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.util.Rnd;
@@ -120,15 +120,15 @@ public class CharStatus
 			if (((L2PcInstance) getActiveChar()).isInDuel())
 			{
 				// the duel is finishing - players do not receive damage
-				if (((L2PcInstance) getActiveChar()).getDuelState() == Duel.DUELSTATE_DEAD)
+				if (((L2PcInstance) getActiveChar()).getDuelState() == DuelState.DEAD)
 					return;
-				else if (((L2PcInstance) getActiveChar()).getDuelState() == Duel.DUELSTATE_WINNER)
+				else if (((L2PcInstance) getActiveChar()).getDuelState() == DuelState.WINNER)
 					return;
 
 				// cancel duel if player got hit by another player, that is not part of the duel or a monster
 				if (!(attacker instanceof L2SummonInstance) && !(attacker instanceof L2PcInstance && ((L2PcInstance) attacker).getDuelId() == ((L2PcInstance) getActiveChar()).getDuelId()))
 				{
-					((L2PcInstance) getActiveChar()).setDuelState(Duel.DUELSTATE_INTERRUPTED);
+					((L2PcInstance) getActiveChar()).setDuelState(DuelState.INTERRUPTED);
 				}
 			}
 			if (getActiveChar().isDead() && !getActiveChar().isFakeDeath())
@@ -147,7 +147,7 @@ public class CharStatus
 				// Duelling player attacks mob
 			/** @formatter:on */
 			{
-				((L2PcInstance) attacker).setDuelState(Duel.DUELSTATE_INTERRUPTED);
+				((L2PcInstance) attacker).setDuelState(DuelState.INTERRUPTED);
 			}
 		}
 		if (awake && getActiveChar().isSleeping())

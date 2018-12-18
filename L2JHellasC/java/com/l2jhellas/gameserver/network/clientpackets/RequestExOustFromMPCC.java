@@ -14,8 +14,11 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.gameserver.model.L2CommandChannel;
+import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
@@ -36,27 +39,56 @@ public final class RequestExOustFromMPCC extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance target = L2World.getInstance().getPlayer(_name);
-		L2PcInstance activeChar = getClient().getActiveChar();
 
-		if ((target != null)
-/** @formatter:off */
-				&& target.isInParty()
-				&& activeChar.isInParty()
-				&& activeChar.getParty().isInCommandChannel()
-				&& target.getParty().isInCommandChannel()
-				&& activeChar.getParty().getCommandChannel().getChannelLeader().equals(activeChar))
-				/** @formatter:on */
+		if(_name.isEmpty())
+			return;
+		
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		
+		if (activeChar == null)
+			return;
+		
+		final L2PcInstance target = L2World.getInstance().getPlayer(_name);
+		
+		if (target == null)
 		{
-			target.getParty().getCommandChannel().removeParty(target.getParty());
-			SystemMessage sm = SystemMessage.sendString("Your party was dismissed from the CommandChannel.");
-			target.getParty().broadcastToPartyMembers(sm);
-			sm = SystemMessage.sendString(target.getParty().getPartyMembers().get(0).getName() + "'s party was dismissed from the CommandChannel.");
+			activeChar.sendPacket(SystemMessageId.TARGET_CANT_FOUND);
+			return;
 		}
-		else
+		
+		if (activeChar.equals(target))
 		{
-			activeChar.sendMessage("Incorrect Target");
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+			return;
 		}
+		
+		final L2Party reqpart = activeChar.getParty();
+		final L2Party targetParty = target.getParty();
+		
+		if (reqpart == null || targetParty == null)
+		{
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+			return;
+		}
+		
+		final L2CommandChannel requestorChannel = reqpart.getCommandChannel();
+		
+		if (requestorChannel == null || !requestorChannel.isLeader(activeChar))
+		{
+			activeChar.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+			return;
+		}
+		
+		if (!requestorChannel.removeParty(targetParty))
+		{
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+			return;
+		}
+		
+		targetParty.getCommandChannel().broadcastToChannelMembers(SystemMessage.getSystemMessage(SystemMessageId.DISMISSED_FROM_COMMAND_CHANNEL));
+		
+		if (reqpart.isInCommandChannel())
+			reqpart.getCommandChannel().broadcastToChannelMembers(SystemMessage.getSystemMessage(SystemMessageId.S1_PARTY_DISMISSED_FROM_COMMAND_CHANNEL).addCharName(targetParty.getLeader()));
 	}
 
 	@Override

@@ -98,9 +98,7 @@ public class GameTimeController extends Thread
 	public final void registerMovingObject(final L2Character cha)
 	{
 		if (cha == null)
-		{
 			return;
-		}
 		
 		_movingObjects.add(cha);
 	}
@@ -152,6 +150,7 @@ public class GameTimeController extends Thread
 			}
 			
 			sleepTime = nextTickTime - System.currentTimeMillis();
+			
 			if (sleepTime > 0)
 			{
 				try

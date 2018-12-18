@@ -69,12 +69,6 @@ public final class Action extends L2GameClientPacket
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-			
-	    if (activeChar.isOutOfControl())
-	    {
-	    	activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-	        return;
-	    }
 	    
 		// If requested object doesn't exist
 		final L2Object obj = (activeChar.getTargetId() == _objectId) ? activeChar.getTarget() : L2World.getInstance().findObject(_objectId);

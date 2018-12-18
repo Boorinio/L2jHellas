@@ -14,14 +14,10 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.instancemanager.DuelManager;
 
-/**
- * Format:(ch)<BR>
- * just a trigger
- * 
- * @author -Wooden-
- */
+import com.l2jhellas.gameserver.instancemanager.DuelManager;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+
 public final class RequestDuelSurrender extends L2GameClientPacket
 {
 	private static final String _C__D0_30_REQUESTDUELSURRENDER = "[C] D0:30 RequestDuelSurrender";
@@ -29,13 +25,18 @@ public final class RequestDuelSurrender extends L2GameClientPacket
 	@Override
 	protected void readImpl()
 	{
-		// trigger
+
 	}
 
 	@Override
 	protected void runImpl()
 	{
-		DuelManager.getInstance().doSurrender(getClient().getActiveChar());
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		
+		if(activeChar==null)
+			return;
+		
+		DuelManager.getInstance().doSurrender(activeChar);
 	}
 
 	@Override

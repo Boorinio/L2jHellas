@@ -41,6 +41,12 @@ public class ChatAll implements IChatHandler
 	@Override
 	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
 	{
+		if (!activeChar.getAntiFlood().getGlobalChat().tryPerformAction("global chat") && !activeChar.isGM())
+		{
+			activeChar.sendMessage("dont spam! otherwise you will get chat ban!");
+			return;
+		}
+	
 		if (text.startsWith(".") && !text.startsWith(".."))
 		{
 			StringTokenizer st = new StringTokenizer(text);

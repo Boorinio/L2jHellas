@@ -43,6 +43,13 @@ public class L2BoatInstance extends L2Vehicle
 	{
 		return true;
 	}
+	
+	@Override
+	public boolean isFlying()
+	{
+		return true;
+	}
+	
 	@Override
 	public boolean moveToNextRoutePoint()
 	{
@@ -83,13 +90,10 @@ public class L2BoatInstance extends L2Vehicle
 	@Override
 	public void sendInfo(L2PcInstance activeChar)
 	{
-		if (!activeChar.isInBoat())
-			if (this != activeChar.getBoat())
-			{
-				activeChar.sendPacket(new VehicleInfo((L2BoatInstance) this));
-				activeChar.sendPacket(new VehicleDeparture((L2BoatInstance)this));
-			}
+		activeChar.sendPacket(new VehicleInfo((L2BoatInstance) this));
 		
+		if(isMoving())
+		    activeChar.sendPacket(new VehicleDeparture((L2BoatInstance)this));
 	}
 
 }

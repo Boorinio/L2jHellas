@@ -31,7 +31,6 @@ import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
-import com.l2jhellas.gameserver.model.L2Augmentation;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -62,6 +61,7 @@ public class Quest
 	
 	private static final String HTML_NONE_AVAILABLE = "<html><body>You are either not on a quest that involves this NPC, or you don't meet this NPC's minimum quest requirements.</body></html>";
 	private static final String HTML_ALREADY_COMPLETED = "<html><body>This quest has already been completed.</body></html>";
+	private static final String HTML_TOO_MUCH_QUESTS = "<html><body>You have already accepted the maximum number of quests. No more than 25 quests may be undertaken simultaneously.<br>For quest information, enter Alt+U.</body></html>";
 	
 	public static final byte STATE_CREATED = 0;
 	public static final byte STATE_STARTED = 1;
@@ -654,19 +654,9 @@ public class Quest
 		L2Npc result = null;
 		try
 		{
-			L2NpcTemplate template = NpcData.getInstance().getTemplate(npcId);
+			final L2NpcTemplate template = NpcData.getInstance().getTemplate(npcId);
 			if (template != null)
 			{
-				// Sometimes, even if the quest script specifies some xyz (for example npc.getX() etc) by the time the code
-				// reaches here, xyz have become 0! Also, a questdev might have purposely set xy to 0,0...however,
-				// the spawn code is coded such that if x=y=0, it looks into location for the spawn loc! This will NOT work
-				// with quest spawns! For both of the above cases, we need a fail-safe spawn. For this, we use the
-				// default spawn location, which is at the player's loc.
-				if ((x == 0) && (y == 0))
-				{
-					_log.severe(L2Augmentation.class.getName() + ": Failed to adjust bad locks for quest spawn!  Spawn aborted!");
-					return null;
-				}
 				
 				if (randomOffset)
 				{
@@ -674,7 +664,7 @@ public class Quest
 					y += Rnd.get(-100, 100);
 				}
 				
-				L2Spawn spawn = new L2Spawn(template);
+				final L2Spawn spawn = new L2Spawn(template);
 				spawn.setHeading(heading);
 				spawn.setLocx(x);
 				spawn.setLocy(y);
@@ -710,6 +700,11 @@ public class Quest
 	public static String getAlreadyCompletedMsg()
 	{
 		return HTML_ALREADY_COMPLETED;
+	}
+	
+	public static String getTooMuchQuestsMsg()
+	{
+		return HTML_TOO_MUCH_QUESTS;
 	}
 	
 	/**
@@ -1450,4 +1445,5 @@ public class Quest
 		
 		return true;
 	}
+	
 }

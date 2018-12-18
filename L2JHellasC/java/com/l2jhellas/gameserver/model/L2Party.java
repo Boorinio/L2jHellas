@@ -361,8 +361,8 @@ public class L2Party
 			if (player.isFestivalParticipant())
 				SevenSignsFestival.getInstance().updateParticipants(player, this);
 			
-			if (player.isInDuel())
-				DuelManager.getInstance().onRemoveFromParty(player);
+
+			DuelManager.getInstance().onPartyEdit(player);
 
 			if (sendMessage)
 			{
@@ -402,7 +402,7 @@ public class L2Party
 				{
 					getLeader().setParty(null);
 					if (getLeader().isInDuel())
-						DuelManager.getInstance().onRemoveFromParty(getLeader());
+						DuelManager.getInstance().onPartyEdit(getLeader());
 				}
 				
 				if (_positionBroadcastTask != null)
@@ -859,5 +859,10 @@ public class L2Party
 	public void setLastMob(L2Attackable m)
 	{
 		_mob = m;
+	}
+	
+	public boolean containsPlayer(L2PcInstance player)
+	{
+		return _members.contains(player);
 	}
 }

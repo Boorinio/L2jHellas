@@ -706,19 +706,15 @@ abstract class AbstractAI implements Ctrl
 	 */
 	public void describeStateToPlayer(L2PcInstance player)
 	{
-		if (player != null && getActor().isVisibleFor(player) && _clientMoving)
+		if (_clientMoving)
 		{
-				if ((_clientMovingToPawnOffset != 0) && _followTarget != null)
-				{
-					// Send a Server->Client packet MoveToPawn to the actor and all L2PcInstance in its _knownPlayers
-					player.sendPacket(new MoveToPawn(_actor, _followTarget, _clientMovingToPawnOffset));
-				}
-				else
-				{
-					// Send a Server->Client packet CharMoveToLocation to the actor and all L2PcInstance in its _knownPlayers
-					player.sendPacket(new MoveToLocation(_actor));
-				}
-			}		
+		    if ((_clientMovingToPawnOffset != 0) && _followTarget != null)
+			   // Send a Server->Client packet MoveToPawn to the actor and all L2PcInstance in its _knownPlayers
+			   player.sendPacket(new MoveToPawn(_actor, _followTarget, _clientMovingToPawnOffset));
+		    else
+			   // Send a Server->Client packet CharMoveToLocation to the actor and all L2PcInstance in its _knownPlayers
+			   player.sendPacket(new MoveToLocation(_actor));
+		}
 	}
 
 	

@@ -15,7 +15,10 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.model.L2CommandChannel;
+import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * @author -Wooden-
@@ -38,28 +41,47 @@ public final class RequestExAcceptJoinMPCC extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance player = getClient().getActiveChar();
-		if (player != null)
+		final L2PcInstance player = getClient().getActiveChar();
+		
+		if (player == null)
+			return;
+		
+		final L2PcInstance requestor = player.getActiveRequester();
+		
+		if (requestor == null)
+			return;
+				
+		final L2Party PartyRequestor = requestor.getParty();
+		
+		if (PartyRequestor == null)
+			return;
+		
+		final L2Party targetParty = player.getParty();
+		
+		if (targetParty == null)
+			return;
+		
+		if (_response == 1)
 		{
-			L2PcInstance requestor = player.getActiveRequester();
-			if (requestor == null)
-				return;
-
-			if (_response == 1)
+			L2CommandChannel channel = PartyRequestor.getCommandChannel();
+			
+			if (channel == null)
 			{
-				if (!requestor.getParty().isInCommandChannel())
-				{
-					new L2CommandChannel(requestor); // Create new CC
-				}
-				requestor.getParty().getCommandChannel().addParty(player.getParty());
+				if (!requestor.destroyItemByItemId("CCCreation", 8871, 1, player, true))
+					return;
+				
+				channel = new L2CommandChannel(requestor);
 			}
 			else
-				requestor.sendMessage("The player declined to join your Command Channel.");
-
-			player.setActiveRequester(null);
-			requestor.onTransactionResponse();
+				channel.addParty(targetParty);
 		}
-
+		else
+		{
+			requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_DECLINED_CHANNEL_INVITATION).addCharName(player));
+		}
+		
+		player.setActiveRequester(null);
+		requestor.onTransactionResponse();
 	}
 
 	@Override

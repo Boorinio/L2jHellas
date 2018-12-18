@@ -14,12 +14,15 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.gameserver.model.L2Clan;
+import com.l2jhellas.gameserver.model.L2CommandChannel;
 import com.l2jhellas.gameserver.model.L2Party;
-import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ExAskJoinMPCC;
+import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 /**
  * Format: (ch) S
@@ -41,101 +44,77 @@ public final class RequestExAskJoinMPCC extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		if(_name.isEmpty())
+			return;
+		
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		
 		if (activeChar == null)
 			return;
-
-		L2PcInstance player = L2World.getInstance().getPlayer(_name);
-		if (player == null)
-			return;
-		// invite yourself? ;)
-		if (activeChar.isInParty() && player.isInParty() && activeChar.getParty().equals(player.getParty()))
-			return;
-
-		// activeChar is in a Party?
-		if (activeChar.isInParty())
+		
+		if(activeChar.isOutOfControl())
 		{
-			L2Party activeParty = activeChar.getParty();
-			// activeChar is PartyLeader? && activeChars Party is already in a CommandChannel?
-			if (activeParty.getPartyMembers().get(0).equals(activeChar))
-			{
-				// if activeChars Party is in CC, is activeChar CCLeader?
-				if (activeParty.isInCommandChannel() && activeParty.getCommandChannel().getChannelLeader().equals(activeChar))
-				{
-					// in CC and the CCLeader
-					// target in a party?
-					if (player.isInParty())
-					{
-						// targets party already in a CChannel?
-						if (player.getParty().isInCommandChannel())
-							activeChar.sendMessage("Your target is already in a CommandChannel");
-						else
-							// ready to open a new CC
-							// send request to targets Party's PartyLeader
-							askJoinMPCC(activeChar, player);
-					}
-					else
-						activeChar.sendMessage("Your target has no Party.");
-
-				}
-				else if (activeParty.isInCommandChannel() && !activeParty.getCommandChannel().getChannelLeader().equals(activeChar))
-					// in CC, but not the CCLeader
-					activeChar.sendMessage("Only the CommandChannelLeader can give out an invite.");
-
-				else
-				{
-					// target in a party?
-					if (player.isInParty())
-					{
-						// targets party already in a CChannel?
-						if (player.getParty().isInCommandChannel())
-							activeChar.sendMessage("Your target is already in a CommandChannel");
-						else
-							// ready to open a new CC
-							// send request to targets Party's PartyLeader
-							askJoinMPCC(activeChar, player);
-					}
-					else
-						activeChar.sendMessage("Your target has no Party.");
-				}
-			}
-			else
-				activeChar.sendMessage("Only the Partyleader can give out an invite.");
-		}
-	}
-
-	private void askJoinMPCC(L2PcInstance requestor, L2PcInstance target)
-	{
-		boolean hasRight = false;
-		if (requestor.getClan() != null && requestor.getClan().getLeaderId() == requestor.getObjectId()) // Clanleader
-			hasRight = true;
-		else if (requestor.getInventory().getItemByItemId(8871) != null) // 8871 Strategy Guide. Should destroyed after sucessfull invite?
-			hasRight = true;
-		else
-		{
-			for (L2Skill skill : requestor.getAllSkills())
-			{
-				// Skill Clan Imperium
-				if (skill.getId() == 391)
-				{
-					hasRight = true;
-					break;
-				}
-			}
-		}
-		if (!hasRight && !requestor.getParty().isInCommandChannel())
-		{
-			requestor.sendMessage("You dont have the rights to open a Command Channel!");
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		if (!target.isProcessingRequest())
+		
+		final L2PcInstance target = L2World.getInstance().getPlayer(_name);
+		
+		if (target == null)
+			return;
+		
+		final L2Party requestorParty = activeChar.getParty();
+		
+		if (requestorParty == null)
+			return;
+		
+		final L2Party targetParty = target.getParty();
+		
+		if (targetParty == null || requestorParty.equals(targetParty))
+			return;
+						
+		
+		if (!requestorParty.isLeader(activeChar))
 		{
-			requestor.onTransactionRequest(target);
-			target.getParty().getPartyMembers().get(0).sendPacket(new ExAskJoinMPCC(requestor.getName()));
-			requestor.sendMessage("You invited " + target.getName() + " to your Command Channel.");
+			activeChar.sendPacket(SystemMessageId.CANNOT_INVITE_TO_COMMAND_CHANNEL);
+			return;
+		}
+		
+		final L2CommandChannel requestorChannel = requestorParty.getCommandChannel();
+		
+		if (requestorChannel != null && !requestorChannel.isLeader(activeChar))
+		{
+			activeChar.sendPacket(SystemMessageId.CANNOT_INVITE_TO_COMMAND_CHANNEL);
+			return;
+		}
+		
+		final L2CommandChannel targetChannel = targetParty.getCommandChannel();
+		
+		if (targetChannel != null)
+		{
+			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_ALREADY_MEMBER_OF_COMMAND_CHANNEL).addCharName(target));
+			return;
+		}
+		
+		final L2Clan requestorClan = activeChar.getClan();
+		
+		if (requestorClan == null || requestorClan.getLeaderId() != activeChar.getObjectId() || requestorClan.getLevel() < 5 || activeChar.getSkill(391) == null)
+		{
+			activeChar.sendPacket(SystemMessageId.COMMAND_CHANNEL_ONLY_BY_LEVEL_5_CLAN_LEADER_PARTY_LEADER);
+			return;
+		}
+
+		final L2PcInstance targetLeader = targetParty.getLeader();
+		
+		if (!targetLeader.isProcessingRequest())
+		{
+			activeChar.onTransactionRequest(targetLeader);
+			targetLeader.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.COMMAND_CHANNEL_CONFIRM_FROM_S1).addCharName(activeChar));
+			targetLeader.sendPacket(new ExAskJoinMPCC(activeChar.getName()));
 		}
 		else
-			requestor.sendPacket(SystemMessageId.S1_IS_BUSY_TRY_LATER);
+			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER).addCharName(targetLeader));
+
 	}
 
 	@Override

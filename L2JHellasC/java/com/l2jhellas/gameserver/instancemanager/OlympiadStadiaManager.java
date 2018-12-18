@@ -15,24 +15,15 @@
 package com.l2jhellas.gameserver.instancemanager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 
 public class OlympiadStadiaManager
 {
-	private static OlympiadStadiaManager _instance;
 
-	public static final OlympiadStadiaManager getInstance()
-	{
-		if (_instance == null)
-		{
-			_instance = new OlympiadStadiaManager();
-		}
-		return _instance;
-	}
-
-	private ArrayList<L2OlympiadStadiumZone> _olympiadStadias;
+	private List<L2OlympiadStadiumZone> _olympiadStadias = new ArrayList<L2OlympiadStadiumZone>();
 
 	public OlympiadStadiaManager()
 	{
@@ -40,10 +31,12 @@ public class OlympiadStadiaManager
 
 	public void addStadium(L2OlympiadStadiumZone arena)
 	{
-		if (_olympiadStadias == null)
-			_olympiadStadias = new ArrayList<L2OlympiadStadiumZone>();
-
 		_olympiadStadias.add(arena);
+	}
+	
+	public void clearStadium()
+	{
+		_olympiadStadias.clear();;
 	}
 
 	public final L2OlympiadStadiumZone getStadium(L2Character character)
@@ -62,5 +55,16 @@ public class OlympiadStadiaManager
 			if (temp.getStadiumId() == olympiadStadiumId)
 				return temp;
 		return null;
+	}
+	
+	private static OlympiadStadiaManager _instance;
+
+	public static final OlympiadStadiaManager getInstance()
+	{
+		if (_instance == null)
+		{
+			_instance = new OlympiadStadiaManager();
+		}
+		return _instance;
 	}
 }

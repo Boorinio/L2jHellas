@@ -22,7 +22,7 @@ import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
-import com.l2jhellas.gameserver.model.entity.Duel;
+import com.l2jhellas.gameserver.model.entity.Duel.DuelState;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Stats;
@@ -52,14 +52,14 @@ public class PcStatus extends PlayableStatus
 			if (getActiveChar().isInDuel())
 			{
 				// the duel is finishing - players do not receive damage
-				if (getActiveChar().getDuelState() == Duel.DUELSTATE_DEAD)
+				if (getActiveChar().getDuelState() == DuelState.DEAD)
 					return;
-				else if (getActiveChar().getDuelState() == Duel.DUELSTATE_WINNER)
+				else if (getActiveChar().getDuelState() == DuelState.WINNER)
 					return;
 
 				// cancel duel if player got hit by another player, that is not part of the duel
 				if (((L2PcInstance) attacker).getDuelId() != getActiveChar().getDuelId())
-					getActiveChar().setDuelState(Duel.DUELSTATE_INTERRUPTED);
+					getActiveChar().setDuelState(DuelState.INTERRUPTED);
 			}
 
 			if (getActiveChar().isDead() && !getActiveChar().isFakeDeath())
@@ -69,7 +69,7 @@ public class PcStatus extends PlayableStatus
 		{
 			// if attacked by a non L2PcInstance & non L2SummonInstance the duel gets canceled
 			if (getActiveChar().isInDuel() && !(attacker instanceof L2SummonInstance))
-				getActiveChar().setDuelState(Duel.DUELSTATE_INTERRUPTED);
+				getActiveChar().setDuelState(DuelState.INTERRUPTED);
 			if (getActiveChar().isDead())
 				return;
 		}

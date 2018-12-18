@@ -35,6 +35,18 @@ public class L2BoatAI extends L2CharacterAI
 	}
 	
 	@Override
+	protected void onEvtArrived()
+	{
+		final L2BoatInstance actor = (L2BoatInstance) getActor();
+		
+		if(actor == null)
+			return;
+
+	    if(actor.getAI()!=null)
+		   actor.getAI().onEvtArrived();
+	}
+	
+	@Override
 	protected void moveTo(int x, int y, int z)
 	{
 		if (!_actor.isMovementDisabled())

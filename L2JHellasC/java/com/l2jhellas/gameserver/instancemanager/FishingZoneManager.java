@@ -15,49 +15,45 @@
 package com.l2jhellas.gameserver.instancemanager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.l2jhellas.gameserver.model.zone.type.L2FishingZone;
 
 public class FishingZoneManager
 {
-	private static FishingZoneManager _instance;
-
-	public static final FishingZoneManager getInstance()
-	{
-		if (_instance == null)
-		{
-			_instance = new FishingZoneManager();
-		}
-		return _instance;
-	}
-
-	private ArrayList<L2FishingZone> _fishingZones;
+	private List<L2FishingZone> _fishingZones = new ArrayList<L2FishingZone>();
 
 	public FishingZoneManager()
 	{
+		
 	}
 
 	public void addFishingZone(L2FishingZone fishingZone)
 	{
-		if (_fishingZones == null)
-			_fishingZones = new ArrayList<L2FishingZone>();
-
 		_fishingZones.add(fishingZone);
 	}
 
-	/*
-	 * isInsideFishingZone() - This function was modified to check the coordinates without caring for Z.
-	 * This allows for the player to fish off bridges, into the water, or from other similar high places. One
-	 * should be able to cast the line from up into the water, not only fishing whith one's feet wet. :)
-	 * 
-	 * TODO: Consider in the future, limiting the maximum height one can be above water, if we start getting
-	 * "orbital fishing" players... xD
-	 */
+	public void clearFishingZone()
+	{
+		_fishingZones.clear();
+	}
+	
 	public final L2FishingZone isInsideFishingZone(int x, int y, int z)
 	{
 		for (L2FishingZone temp : _fishingZones)
 			if (temp.isInsideZone(x, y, temp.getWaterZ() - 10))
 				return temp;
+		
 		return null;
+	}
+	
+	private static FishingZoneManager _instance;
+
+	public static final FishingZoneManager getInstance()
+	{
+		if (_instance == null)
+			_instance = new FishingZoneManager();
+		
+		return _instance;
 	}
 }

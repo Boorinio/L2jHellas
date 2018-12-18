@@ -650,7 +650,16 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 								{
 									L2PcInstance player = (originalAttackTarget instanceof L2PcInstance) ? (L2PcInstance) originalAttackTarget : ((L2Summon) originalAttackTarget).getOwner();
 									for (Quest quest : npc.getTemplate().getEventQuests(QuestEventType.ON_FACTION_CALL))
-										quest.notifyFactionCall(npc, (L2Npc) _actor, player, (originalAttackTarget instanceof L2Summon));
+									{
+										if(player!=null)
+										{
+										   quest.notifyFactionCall(npc, (L2Npc) _actor, player, (originalAttackTarget instanceof L2Summon));
+										}
+										else
+										{
+											setIntention(AI_INTENTION_ACTIVE);
+										}
+									}
 								}
 							}
 							if (getAttackTarget() instanceof L2PcInstance && getAttackTarget().isInParty() && getAttackTarget().getParty().isInDimensionalRift())

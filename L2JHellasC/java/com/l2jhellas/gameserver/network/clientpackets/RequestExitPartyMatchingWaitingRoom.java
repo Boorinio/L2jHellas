@@ -14,14 +14,10 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.Config;
 
-/**
- * Format: (ch)
- * this is just a trigger : no data
- * 
- * @author -Wooden-
- */
+import com.l2jhellas.gameserver.model.PartyMatchWaitingList;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+
 public final class RequestExitPartyMatchingWaitingRoom extends L2GameClientPacket
 {
 	private static final String _C__D0_17_REQUESTEXITPARTYMATCHINGWAITINGROOM = "[C] D0:17 RequestExitPartyMatchingWaitingRoom";
@@ -35,9 +31,12 @@ public final class RequestExitPartyMatchingWaitingRoom extends L2GameClientPacke
 	@Override
 	protected void runImpl()
 	{
-		// TODO
-		if (Config.DEBUG)
-			_log.config(RequestExitPartyMatchingWaitingRoom.class.getName() + ": C5: RequestExitPartyMatchingWaitingRoom");
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		
+		if (activeChar == null)
+			return;
+		
+		PartyMatchWaitingList.getInstance().removePlayer(activeChar);	
 	}
 
 	@Override

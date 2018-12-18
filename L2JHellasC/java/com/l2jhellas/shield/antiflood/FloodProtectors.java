@@ -15,11 +15,6 @@ package com.l2jhellas.shield.antiflood;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- * Collection of flood protectors for single player.
- * 
- * @author fordfrog
- */
 public final class FloodProtectors
 {
 	/**

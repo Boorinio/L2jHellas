@@ -149,7 +149,7 @@ import com.l2jhellas.gameserver.model.base.SubClass;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
 import com.l2jhellas.gameserver.model.entity.Couple;
-import com.l2jhellas.gameserver.model.entity.Duel;
+import com.l2jhellas.gameserver.model.entity.Duel.DuelState;
 import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.model.entity.L2Event;
 import com.l2jhellas.gameserver.model.entity.Siege;
@@ -259,7 +259,6 @@ import com.l2jhellas.logs.LogRecorder;
 import com.l2jhellas.shield.antibot.AntiBot;
 import com.l2jhellas.shield.antiflood.FloodProtectors;
 import com.l2jhellas.util.Broadcast;
-import com.l2jhellas.util.FloodProtector;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
@@ -569,7 +568,7 @@ public final class L2PcInstance extends L2Playable
 	
 	/** Duel */
 	private boolean _isInDuel = false;
-	private int _duelState = Duel.DUELSTATE_NODUEL;
+	private DuelState _duelState = DuelState.NO_DUEL;
 	private int _duelId = 0;
 	private SystemMessageId _noDuelReason = SystemMessageId.THERE_IS_NO_OPPONENT_TO_RECEIVE_YOUR_CHALLENGE_FOR_A_DUEL;
 	
@@ -770,8 +769,8 @@ public final class L2PcInstance extends L2Playable
 	private int _questNpcObject = 0;
 	
 	/** The table containing all Quests began by the L2PcInstance */
-	private final Map<String, QuestState> _quests = new HashMap<String, QuestState>();
-	
+	//private final Map<String, QuestState> _quests = new HashMap<String, QuestState>();
+	private final List<QuestState> _quests = new ArrayList<>();
 	/** List of all QuestState instance that needs to be notified of this L2PcInstance's or its pet's death */
 	private final List<QuestState> _notifyQuestOfDeathList = new ArrayList<>();
 
@@ -1551,17 +1550,7 @@ public final class L2PcInstance extends L2Playable
 	{
 		_questNpcObject = npcId;
 	}
-	
-	/**
-	 * Return the QuestState object corresponding to the quest name.
-	 * 
-	 * @param quest
-	 *        The name of the quest
-	 */
-	public QuestState getQuestState(String quest)
-	{
-		return _quests.get(quest);
-	}
+
 	
 	@Override
 	public void onActionShift(L2PcInstance player)
@@ -1571,29 +1560,7 @@ public final class L2PcInstance extends L2Playable
 
 		super.onActionShift(player);
 	}
-		
-	/**
-	 * Add a QuestState to the table _quest containing all quests began by the L2PcInstance.
-	 * 
-	 * @param qs
-	 *        The QuestState to add to _quest
-	 */
-	public void setQuestState(QuestState qs)
-	{
-		_quests.put(qs.getQuest().getName(), qs);
-	}
-	
-	/**
-	 * Remove a QuestState from the table _quest containing all quests began by the L2PcInstance.
-	 * 
-	 * @param quest
-	 *        The name of the quest
-	 */
-	public void delQuestState(String quest)
-	{
-		_quests.remove(quest);
-	}
-	
+
 	private QuestState[] addToQuestStateArray(QuestState[] questStateArray, QuestState state)
 	{
 		int len = questStateArray.length;
@@ -1609,24 +1576,21 @@ public final class L2PcInstance extends L2Playable
 	/**
 	 * Return a table containing all Quest in progress from the table _quests.
 	 */
-	public Quest[] getAllActiveQuests()
+	public Quest[] getAllActiveQuests(boolean completed)
 	{
 		ArrayList<Quest> quests = new ArrayList<Quest>();
-		
-		for (QuestState qs : _quests.values())
+
+		for (QuestState qs : _quests)
 		{
-			int questId = qs.getQuest().getQuestId();
-			if ((questId > 999) || (questId < 1))
-			{
+			if (qs == null || completed && qs.isCreated() || !completed && !qs.isStarted())
 				continue;
-			}
 			
-			if (!qs.isStarted() && !Config.DEVELOPER)
-			{
+			Quest quest = qs.getQuest();
+			
+			if (quest == null || !quest.isRealQuest())
 				continue;
-			}
 			
-			quests.add(qs.getQuest());
+			quests.add(quest);
 		}
 		
 		return quests.toArray(new Quest[quests.size()]);
@@ -1747,76 +1711,35 @@ public final class L2PcInstance extends L2Playable
 		return states;
 	}
 	
-	public QuestState processQuestEvent(String quest, String event)
+	public void processQuestEvent(String questName, String event)
 	{
-		QuestState retval = null;
-		if (event == null)
-		{
-			event = "";
-		}
-		if (!_quests.containsKey(quest))
-			return retval;
-		QuestState qs = getQuestState(quest);
-		if (qs == null && event.length() == 0)
-			return retval;
+		Quest quest = QuestManager.getInstance().getQuest(questName);
+
+		if (quest == null)
+			return;
+		
+		QuestState qs = getQuestState(questName);
 		if (qs == null)
+			return;
+		
+		L2Object object = L2World.getInstance().findObject(getLastQuestNpcObject());
+		if (!(object instanceof L2Npc) || !isInsideRadius(object, L2Npc.INTERACTION_DISTANCE, false, false))
+			return;
+		
+		final L2Npc npc = (L2Npc) object;
+		
+		final List<Quest> scripts = npc.getTemplate().getEventQuests(QuestEventType.ON_TALK);
+		if (scripts != null)
 		{
-			Quest q = QuestManager.getInstance().getQuest(quest);
-			if (q == null)
-				return retval;
-			qs = q.newQuestState(this);
-		}
-		if (qs != null)
-		{
-			if (getLastQuestNpcObject() > 0)
+			for (Quest script : scripts)
 			{
-				L2Object object = L2World.getInstance().findObject(getLastQuestNpcObject());
-				if (object instanceof L2Npc && isInsideRadius(object, L2Npc.INTERACTION_DISTANCE, false, false))
-				{
-					L2Npc npc = (L2Npc) object;
-					QuestState[] states = getQuestsForTalk(npc.getNpcId());
-					
-					if (states != null)
-					{
-						for (QuestState state : states)
-						{
-							if ((state.getQuest().getQuestId() == qs.getQuest().getQuestId()))
-							{
-								if (qs.getQuest().notifyEvent(event, npc, this))
-								{
-									showQuestWindow(quest, state.getQuest().getName());									
-								}
-								
-								retval = qs;
-							}
-						}
-						sendPacket(new QuestList(this));
-					}
-				}
+				if (script == null || !script.equals(quest))
+					continue;
+				
+				quest.notifyEvent(event, npc, this);
+				break;
 			}
 		}
-		
-		return retval;
-	}
-	
-	private void showQuestWindow(String questId, String stateId)
-	{
-		String path = "data/scripts/quests/" + questId + "/" + stateId + ".htm";
-		String content = HtmCache.getInstance().getHtm(path); // TODO path for quests html
-		
-		if (content != null)
-		{
-			if (Config.DEBUG)
-			{
-				_log.fine("Showing quest window for quest " + questId + " state " + stateId + " html path: " + path);
-			}
-			
-			NpcHtmlMessage npcReply = new NpcHtmlMessage(5);
-			npcReply.setHtml(content);
-			sendPacket(npcReply);
-		}
-		
-		sendPacket(ActionFailed.STATIC_PACKET);
 	}
 	
 	/**
@@ -8488,7 +8411,7 @@ public final class L2PcInstance extends L2Playable
 			return true;
 		
 		// Check if the attacker is not in the same party, excluding duels like L2OFF
-		if (getParty() != null && getParty().getPartyMembers().contains(attacker) && !(getDuelState() == Duel.DUELSTATE_DUELLING && getDuelId() == ((L2PcInstance) attacker).getDuelId()))
+		if (getParty() != null && getParty().getPartyMembers().contains(attacker) && !(getDuelState() == DuelState.DUELLING && getDuelId() == ((L2PcInstance) attacker).getDuelId()))
 			return false;
 		
 		// Check if the attacker is in olympia and olympia start
@@ -8501,7 +8424,7 @@ public final class L2PcInstance extends L2Playable
 		}
 		
 		// Check if the attacker is not in the same clan, excluding duels like L2OFF
-		if ((getClan() != null) && (attacker != null) && (getClan().isMember(attacker.getName())) && !(getDuelState() == Duel.DUELSTATE_DUELLING && getDuelId() == ((L2PcInstance) attacker).getDuelId()))
+		if ((getClan() != null) && (attacker != null) && (getClan().isMember(attacker.getName())) && !(getDuelState() == DuelState.DUELLING && getDuelId() == ((L2PcInstance) attacker).getDuelId()))
 			return false;
 		
 		if (attacker instanceof L2Playable && isInsideZone(ZoneId.PEACE))
@@ -8516,7 +8439,7 @@ public final class L2PcInstance extends L2Playable
 		{
 			// is AutoAttackable if both players are in the same duel and the
 			// duel is still going on
-			if (getDuelState() == Duel.DUELSTATE_DUELLING && getDuelId() == ((L2PcInstance) attacker).getDuelId())
+			if (getDuelState() == DuelState.DUELLING && getDuelId() == ((L2PcInstance) attacker).getDuelId())
 				return true;
 			// Check if the L2PcInstance is in an arena or a siege area
 			if (isInsideZone(ZoneId.PVP) && ((L2PcInstance) attacker).isInsideZone(ZoneId.PVP))
@@ -10047,12 +9970,12 @@ public final class L2PcInstance extends L2Playable
 		return _duelId;
 	}
 	
-	public void setDuelState(int mode)
+	public void setDuelState(DuelState state)
 	{
-		_duelState = mode;
+		_duelState = state;
 	}
 	
-	public int getDuelState()
+	public DuelState getDuelState()
 	{
 		return _duelState;
 	}
@@ -10068,18 +9991,18 @@ public final class L2PcInstance extends L2Playable
 		if (duelId > 0)
 		{
 			_isInDuel = true;
-			_duelState = Duel.DUELSTATE_DUELLING;
+			_duelState = DuelState.ON_COUNTDOWN;
 			_duelId = duelId;
 		}
 		else
 		{
-			if (_duelState == Duel.DUELSTATE_DEAD)
+			if (_duelState == DuelState.DEAD)
 			{
 				enableAllSkills();
 				getStatus().startHpMpRegeneration();
 			}
 			_isInDuel = false;
-			_duelState = Duel.DUELSTATE_NODUEL;
+			_duelState = DuelState.NO_DUEL;
 			_duelId = 0;
 		}
 	}
@@ -11554,8 +11477,6 @@ public final class L2PcInstance extends L2Playable
 		// Update database with items in its freight and remove them from the world
 			getFreight().deleteMe();
 
-		// remove from flood protector
-		FloodProtector.getInstance().removePlayer(getObjectId());
 		
 		if (getClanId() > 0)
 		{
@@ -13253,8 +13174,8 @@ public final class L2PcInstance extends L2Playable
 	
 	public void endDuel()
 	{
-		if (isInDuel() && getDuelState() == Duel.DUELSTATE_DUELLING)
-			setDuelState(Duel.DUELSTATE_INTERRUPTED);
+		if (isInDuel() && getDuelState() == DuelState.DUELLING)
+			setDuelState(DuelState.INTERRUPTED);
 	}
     /**
 	 * EnterWorld checks
@@ -13604,8 +13525,7 @@ public final class L2PcInstance extends L2Playable
 		sendPacket(new ItemList(this, false));
 		// Send gg check (even if we are not going to check for reply)
 		queryGameGuard();
-		// Register in flood protector
-		FloodProtector.getInstance().registerNewPlayer(getObjectId());
+
 
 		Quest.playerEnter(this);
 		loadTutorial();
@@ -14390,6 +14310,17 @@ public final class L2PcInstance extends L2Playable
 		}
 	}
 	
+    /**
+    * Add a QuestState to the table _quest containing all quests began by the L2PcInstance.
+    * 
+    * @param qs
+    *        The QuestState to add to _quest
+    */
+    public void setQuestState(QuestState qs)
+    {
+    	_quests.add(qs);
+    }
+	
 	/**
 	 * Remove a QuestState from the table _quest containing all quests began by the L2PcInstance.
 	 * 
@@ -14401,6 +14332,23 @@ public final class L2PcInstance extends L2Playable
 		_quests.remove(qs);
 	}
 
+	
+	/**
+	 * Return the QuestState object corresponding to the quest name.
+	 * 
+	 * @param quest
+	 *        The name of the quest
+	 */
+	public QuestState getQuestState(String quest)
+	{
+		for (QuestState qs : _quests)
+		{
+			if (quest.equals(qs.getQuest().getName()))
+				return qs;
+		}
+		return null;
+	}
+	
 	/**
 	 * @param completed
 	 *        : If true, include completed quests to the list.
@@ -14410,7 +14358,7 @@ public final class L2PcInstance extends L2Playable
 	{
 		List<Quest> quests = new ArrayList<>();
 
-		for (QuestState qs : _quests.values())
+		for (QuestState qs : _quests)
 		{
 			if (qs == null || completed && qs.isCreated() || !completed && !qs.isStarted())
 				continue;
@@ -15097,5 +15045,26 @@ public final class L2PcInstance extends L2Playable
 		public final void stopAllToggles()
 		{
 			_effects.stopAllToggles();
-		}		
+		}
+
+		/**
+		 * @param skillId : The skill identifier to check.
+		 * @return the {@link L2Skill} reference if known by this {@link Creature}, or null.
+		 */
+		public L2Skill getSkill(int skillId)
+		{
+			return _skills.get(skillId);
+		}	
+		
+
+		public void removeMeFromPartyMatch()
+		{
+			PartyMatchWaitingList.getInstance().removePlayer(this);
+			if (_partyroom != 0)
+			{
+				PartyMatchRoom room = PartyMatchRoomList.getInstance().getRoom(_partyroom);
+				if (room != null)
+					room.deleteMember(this);
+			}
+		}
 }

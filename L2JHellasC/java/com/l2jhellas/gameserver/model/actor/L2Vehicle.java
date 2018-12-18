@@ -28,11 +28,13 @@ import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
+import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
+import com.l2jhellas.gameserver.network.serverpackets.VehicleDeparture;
 import com.l2jhellas.gameserver.network.serverpackets.VehicleInfo;
 import com.l2jhellas.gameserver.templates.L2CharTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
@@ -167,6 +169,7 @@ public abstract class L2Vehicle extends L2Character
 						_move = m;
 						
 						GameTimeController.getInstance().registerMovingObject(this);
+						broadcastPacket(new VehicleDeparture((L2BoatInstance)this));
 						return true;
 					}
 				}

@@ -35,7 +35,12 @@ public class Firework implements IItemHandler
 	{
 		if (!(playable instanceof L2PcInstance))
 			return; // prevent Class cast exception
+		
 		L2PcInstance activeChar = (L2PcInstance) playable;
+		
+		if (!activeChar.getAntiFlood().getFirework().tryPerformAction("firework"))
+			return;
+		
 		int itemId = item.getItemId();
 		/** @formatter:off */
 		if (activeChar.isInOlympiadMode()

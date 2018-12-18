@@ -74,7 +74,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2RiftInvaderInstance;
 import com.l2jhellas.gameserver.model.actor.stat.CharStat;
 import com.l2jhellas.gameserver.model.actor.status.CharStatus;
 import com.l2jhellas.gameserver.model.entity.Castle;
-import com.l2jhellas.gameserver.model.entity.Duel;
+import com.l2jhellas.gameserver.model.entity.Duel.DuelState;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
@@ -549,7 +549,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public void doAttack(L2Character target)
 	{
-		if (isAlikeDead() || target == null || (this instanceof L2Npc && target.isAlikeDead()) || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath()) || (this instanceof L2PcInstance && isDead()) || (target instanceof L2PcInstance && ((L2PcInstance) target).getDuelState() == Duel.DUELSTATE_DEAD))
+		if (isAlikeDead() || target == null || (this instanceof L2Npc && target.isAlikeDead()) || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath()) || (this instanceof L2PcInstance && isDead()) || (target instanceof L2PcInstance && ((L2PcInstance) target).getDuelState() == DuelState.DEAD))
 		{
 			// If L2PcInstance is dead or the target is dead, the action is stopped
 			getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
@@ -3731,6 +3731,12 @@ public abstract class L2Character extends L2Object
 		}
 	}
 	
+	public final void abortAllAttacks()
+	{
+		abortAttack();
+	    abortCast();
+	}
+	
 	/**
 	 * Returns body part (paperdoll slot) we are targeting right now
 	 */
@@ -4159,16 +4165,6 @@ public abstract class L2Character extends L2Object
     		distance = Math.sqrt(dx*dx + dy*dy);
         }
 
-		// Define movement angles needed
-		// ^
-		// |     X (x,y)
-		// |   /
-		// |  /distance
-		// | /
-		// |/ angle
-		// X ---------->
-		// (curx,cury)
-
 		double cos;
 		double sin;
 
@@ -4178,7 +4174,8 @@ public abstract class L2Character extends L2Object
 			// approximation for moving closer when z coordinates are different
 			// TODO: handle Z axis movement better
 			offset -= Math.abs(dz);
-			if (offset < 5) offset = 5;
+			if (offset < 5) 
+				offset = 5;
 
 			// If no distance to go through, the movement is canceled
 			if (distance < 1 || distance - offset  <= 0)
@@ -4355,7 +4352,7 @@ public abstract class L2Character extends L2Object
 		// Create a task to notify the AI that L2Character arrives at a check point of the movement
 		if (ticksToMove*GameTimeController.MILLIS_IN_TICK > 3000)
 			ThreadPoolManager.getInstance().scheduleAi( new NotifyAITask(CtrlEvent.EVT_ARRIVED_REVALIDATE), 2000);
-
+		
 		// the CtrlEvent.EVT_ARRIVED will be sent when the character will actually arrive
 		// to destination by GameTimeController
 	}
