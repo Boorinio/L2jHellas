@@ -26,7 +26,6 @@ import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
-import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 
@@ -74,7 +73,6 @@ public class L2CharNoblesInstance extends L2Npc
 		{
 			player.setTarget(this);
 			player.sendPacket(new MyTargetSelected(getObjectId(), player.getLevel() - getLevel()));
-			player.sendPacket(new ValidateLocation(this));
 		}
 		else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
 		{

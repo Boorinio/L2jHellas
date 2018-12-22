@@ -23,7 +23,6 @@ import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.controllers.TradeController;
-import com.l2jhellas.gameserver.datatables.csv.ExtractableItemsData;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
@@ -58,7 +57,7 @@ import com.l2jhellas.util.Util;
  */
 public class AdminReload implements IAdminCommandHandler
 {
-	private static final String RELOAD_USAGE = "Usage: //reload <multisell|doors|teleport|npc|respawn_npcs|zone|htm|crest|fix_crest|items|access|instancemanager|npcwalkers|configs|tradelist|pccolor|cw|levelupdata|summonitems|balancer|skill|nobleskill|heroskill|sktrees|spellbooks|extitems|augment>";
+	private static final String RELOAD_USAGE = "Usage: //reload <multisell|doors|teleport|npc|respawn_npcs|zone|htm|crest|fix_crest|items|access|instancemanager|npcwalkers|configs|tradelist|pccolor|cw|levelupdata|summonitems|balancer|skill|nobleskill|heroskill|sktrees|spellbooks|augment>";
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_reload"
@@ -268,13 +267,6 @@ public class AdminReload implements IAdminCommandHandler
 					SkillSpellbookData.reload();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Spellbooks Table has been reloaded.");
-					break;
-				}
-				case "extitems":
-				{
-					ExtractableItemsData.reload();
-					sendReloadPage(activeChar);
-					activeChar.sendMessage("Extractable Items has been reloaded.");
 					break;
 				}
 				case "augment":

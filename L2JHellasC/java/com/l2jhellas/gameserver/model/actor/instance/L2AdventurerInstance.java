@@ -46,7 +46,7 @@ public class L2AdventurerInstance extends L2NpcInstance
 						player.sendPacket(new RadarControl(0, 1, spawn.getLocx(), spawn.getLocy(), spawn.getLocz()));
 					break;
 					case UNDEFINED:
-						player.sendMessage("This Boss isn't in game - notify L2J Datapack Dev Team");
+						player.sendMessage("Boss with id: "+bossId+" isn't in game, notify L2JHellas Team");
 					break;
 				}
 			}
@@ -55,15 +55,19 @@ public class L2AdventurerInstance extends L2NpcInstance
 				_log.warning(L2AdventurerInstance.class.getName() + ": Invalid Bypass to Server command parameter.");
 			}
 		}
+
 		else if (command.startsWith("raidInfo"))
 		{
 			int bossLevel = Integer.parseInt(command.substring(9).trim());
+			
 			String filename = "data/html/adventurer_guildsman/raid_info/info.htm";
+			
 			if (bossLevel != 0)
 			{
 				filename = "data/html/adventurer_guildsman/raid_info/level" + bossLevel + ".htm";
 			}
-			showChatWindow(player, bossLevel, filename);
+			
+			showChatWindow(player, filename);
 		}
 		else if (command.equalsIgnoreCase("questlist"))
 		{
@@ -86,10 +90,5 @@ public class L2AdventurerInstance extends L2NpcInstance
 			pom = npcId + "-" + val;
 
 		return "data/html/adventurer_guildsman/" + pom + ".htm";
-	}
-
-	private void showChatWindow(L2PcInstance player, int bossLevel, String filename)
-	{
-		showChatWindow(player, filename);
 	}
 }

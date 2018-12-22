@@ -26,6 +26,7 @@ import java.util.Stack;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -143,6 +144,27 @@ public class L2PlayerAI extends L2CharacterAI
 		}
 	}
 
+	/**
+	 * Launch actions corresponding to the Event ReadyToAct.<BR>
+	 * <BR>
+	 * <B><U> Actions</U> :</B><BR>
+	 * <BR>
+	 * <li>Launch actions corresponding to the Event Think</li><BR>
+	 * <BR>
+	 */
+	@Override
+	protected void onEvtReadyToAct()
+	{
+
+		super.onEvtReadyToAct();
+	}
+	
+	@Override
+	protected void onEvtCancel()
+	{
+		super.onEvtCancel();
+	}
+	
 	@Override
 	protected void onIntentionRest()
 	{
@@ -176,8 +198,14 @@ public class L2PlayerAI extends L2CharacterAI
 	private void thinkAttack()
 	{
 		L2Character target = getAttackTarget();
+
 		if (target == null)
+		{
+			setTarget(null);
+			setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 			return;
+		}
+		
 		if (checkTargetLostOrDead(target))
 		{
 			if (target != null)
@@ -191,9 +219,8 @@ public class L2PlayerAI extends L2CharacterAI
 			return;
 
 		clientStopMoving(null);
-		_accessor.doAttack(target);
+		_actor.doAttack(target);
 		
-		return;
 	}
 
 	private void thinkCast()
@@ -246,6 +273,38 @@ public class L2PlayerAI extends L2CharacterAI
 		return;
 	}
 
+
+	
+	/**
+	 * Manage the Move To Intention : Stop current Attack and Launch a Move to Location Task.<BR>
+	 * <BR>
+	 * <B><U> Actions</U> : </B><BR>
+	 * <BR>
+	 * <li>Stop the actor auto-attack server side AND client side by sending Server->Client packet AutoAttackStop (broadcast)</li>
+	 * <li>Set the Intention of this AI to MOVE_TO</li>
+	 * <li>Move the actor to Location (x,y,z) server side AND client side by sending Server->Client packet MoveToLocation (broadcast)</li><BR>
+	 * <BR>
+	 */
+	@Override
+	protected void onIntentionMoveTo(L2CharPosition loc)
+	{
+		if (getIntention() == CtrlIntention.AI_INTENTION_REST)
+		{
+			clientActionFailed();
+			return;
+		}
+
+		if (_actor.isAllSkillsDisabled() || _actor.isCastingNow() || _actor.isAttackingNow())
+		{
+			clientActionFailed();
+			return;
+		}
+		
+		changeIntention(CtrlIntention.AI_INTENTION_MOVE_TO, loc, null);
+		
+		moveTo(loc.x, loc.y, loc.z);
+	}
+	
 	private void thinkPickUp()
 	{
 		if (_actor.isAllSkillsDisabled())
@@ -260,6 +319,28 @@ public class L2PlayerAI extends L2CharacterAI
 		return;
 	}
 
+	@Override
+	protected void onIntentionInteract(L2Object object)
+	{
+		if (getIntention() == CtrlIntention.AI_INTENTION_REST)
+		{
+			clientActionFailed();
+			return;
+		}
+		
+		if (_actor.isAllSkillsDisabled() || _actor.isCastingNow())
+		{
+			clientActionFailed();
+			return;
+		}
+		
+		changeIntention(CtrlIntention.AI_INTENTION_INTERACT, object, null);
+		
+		setTarget(object);
+		
+		moveToPawn(object, 60);
+	}
+	
 	private void thinkInteract()
 	{
 		if (_actor.isAllSkillsDisabled())
@@ -272,15 +353,15 @@ public class L2PlayerAI extends L2CharacterAI
 		if (!(target instanceof L2StaticObjectInstance))
 			((L2PcInstance.AIAccessor) _accessor).doInteract((L2Character) target);
 		setIntention(AI_INTENTION_IDLE);
-		return;
 	}
 
 	@Override
 	protected void onEvtThink()
 	{
-		if (_thinking || _actor.isAllSkillsDisabled())
-			return;
 
+		if (_thinking || _actor.isCastingNow() || _actor.isAllSkillsDisabled())
+			return;
+		
 		if (Config.DEBUG)
 			_log.warning(L2PlayerAI.class.getName() + ": onEvtThink -> Check intention");
 

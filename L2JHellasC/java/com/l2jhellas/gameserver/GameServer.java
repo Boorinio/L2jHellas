@@ -44,7 +44,6 @@ import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.controllers.RecipeController;
 import com.l2jhellas.gameserver.controllers.TradeController;
 import com.l2jhellas.gameserver.datatables.EventDroplist;
-import com.l2jhellas.gameserver.datatables.csv.ExtractableItemsData;
 import com.l2jhellas.gameserver.datatables.sql.BuffTemplateTable;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
@@ -200,7 +199,6 @@ public class GameServer
 			_log.warning(GameServer.class.getSimpleName() + ": Could not find the extraced files. Please Check Your Data.");
 		}
 		ArmorSetsData.getInstance();
-		ExtractableItemsData.getInstance();
 		SummonItemsData.getInstance();
 		if (Config.ALLOWFISHING)
 		{

@@ -20,6 +20,8 @@ import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.geodata.geoeditorcon.GeoEditorListener;
+import com.l2jhellas.gameserver.instancemanager.BoatManager;
+import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.serverpackets.CharMoveToLocation;
@@ -40,7 +42,6 @@ public class ValidatePosition extends L2GameClientPacket
 	private int _y;
 	private int _z;
 	private int _heading;
-	@SuppressWarnings("unused")
 	private int _boatObjId;
 
 	@Override
@@ -58,7 +59,7 @@ public class ValidatePosition extends L2GameClientPacket
 	{
 		L2PcInstance activeChar = getClient().getActiveChar();
 		
-		if (activeChar == null || activeChar.isTeleporting()) 
+		if (activeChar == null || activeChar.isTeleporting() || activeChar.inObserverMode()) 
 			return;
 
 		if ((activeChar.getX() == 0) && (activeChar.getY() == 0) && (activeChar.getZ() == 0))
@@ -66,6 +67,7 @@ public class ValidatePosition extends L2GameClientPacket
 			tsekarepos(activeChar);
 			return;
 		}
+
 		
 		if (Config.COORD_SYNCHRONIZE > 0)
 		{
@@ -115,20 +117,28 @@ public class ValidatePosition extends L2GameClientPacket
 				}
 				else if ((Config.COORD_SYNCHRONIZE & 2) == 2 && diffSq > activeChar.getStat().getMoveSpeed()) // more than can be considered to be result of latency
 				{
-					if (Config.DEVELOPER) System.out.println(activeChar.getName() + ": Synchronizing position Server --> Client");
-					if (activeChar.isInBoat())
+					if (Config.DEVELOPER)
+						System.out.println(activeChar.getName() + ": Synchronizing position Server --> Client");
+					
+					if (_boatObjId > 0)
 					{
-						sendPacket(new ValidateLocationInVehicle(activeChar));
+						final L2BoatInstance boat = BoatManager.getInstance().getBoat(_boatObjId);
+						
+						if ((boat != null) && (activeChar.getBoat() == boat))
+						{
+							activeChar.setHeading(_heading);
+							activeChar.sendPacket(new ValidateLocationInVehicle(activeChar,_boatObjId));
+						}
+						
+						activeChar.setLastClientPosition(_x, _y, _z);
+						activeChar.setLastServerPosition(activeChar.getX(), activeChar.getY(), activeChar.getZ());
+						return;
 					}
 					else
 					{
 						if (activeChar.isRunning())
 						{
 							activeChar.broadcastPacket(new CharMoveToLocation(activeChar));
-						}
-						else
-						{
-							activeChar.broadcastPacket(new ValidateLocation(activeChar));
 						}
 					}
 				}
@@ -171,13 +181,9 @@ public class ValidatePosition extends L2GameClientPacket
 			}
 			if (diffSq > 1000)
 			{
-				if (activeChar.isInBoat())
+				if (_boatObjId > 0 && activeChar.isInBoat())
 				{
-						sendPacket(new ValidateLocationInVehicle(activeChar));
-				}
-				else
-				{
-					activeChar.sendPacket(new ValidateLocation(activeChar));
+					activeChar.sendPacket(new ValidateLocationInVehicle(activeChar,_boatObjId));
 				}
 			}
 		}

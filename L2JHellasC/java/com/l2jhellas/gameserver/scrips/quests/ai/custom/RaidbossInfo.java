@@ -167,10 +167,7 @@ public class RaidbossInfo extends Quest
 			for (L2Spawn spawn : SpawnTable.getInstance().getSpawnTable().values())
 			{
 				if (spawn.getNpcid() == raid.getNpcId())
-				{
 					RADARS.put(raid.getNpcId(), new Location(spawn.getLocx(), spawn.getLocy(), spawn.getLocz()));
-					break;
-				}
 			}
 		}
 	}

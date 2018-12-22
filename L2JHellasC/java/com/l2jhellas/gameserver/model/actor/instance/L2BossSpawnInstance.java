@@ -23,7 +23,6 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
@@ -53,8 +52,6 @@ public class L2BossSpawnInstance extends L2Npc
 			player.setTarget(this);
 
 			player.sendPacket(new MyTargetSelected(getObjectId(), 0));
-
-			player.sendPacket(new ValidateLocation(this));
 		}
 		else if (!canInteract(player))
 		{

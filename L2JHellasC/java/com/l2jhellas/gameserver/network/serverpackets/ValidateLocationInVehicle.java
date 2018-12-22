@@ -20,15 +20,17 @@ public class ValidateLocationInVehicle extends L2GameServerPacket
 {
 	private static final String _S__73_ValidateLocationInVehicle = "[S] 73 ValidateLocationInVehicle";
 	private final L2Character _activeChar;
+	private final int _boatId;
 
 	/**
 	 * 0x73 ValidateLocationInVehicle hdd
 	 * 
 	 * @param _characters
 	 */
-	public ValidateLocationInVehicle(L2Character player)
+	public ValidateLocationInVehicle(L2Character player,int boatId)
 	{
 		_activeChar = player;
+		_boatId = boatId;
 	}
 
 	@Override
@@ -36,7 +38,7 @@ public class ValidateLocationInVehicle extends L2GameServerPacket
 	{
 		writeC(0x73);
 		writeD(_activeChar.getObjectId());
-		writeD(1343225858); // TODO verify vehicle object id ??
+		writeD(_boatId);
 		writeD(_activeChar.getX());
 		writeD(_activeChar.getY());
 		writeD(_activeChar.getZ());

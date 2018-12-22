@@ -14,33 +14,30 @@
  */
 package com.l2jhellas.gameserver.model;
 
+import java.util.List;
+
+import com.l2jhellas.gameserver.holder.IntIntHolder;
+
 /**
  * @author -Nemesiss-
  */
 public class L2ExtractableProductItem
 {
-	private final int _id;
-	private final int _ammount;
-	private final int _chance;
-
-	public L2ExtractableProductItem(int id, int ammount, int chance)
+	private final List<IntIntHolder> _items;
+	private final double _chance;
+	
+	public L2ExtractableProductItem(List<IntIntHolder> items, double chance)
 	{
-		_id = id;
-		_ammount = ammount;
+		_items = items;
 		_chance = chance;
 	}
-
-	public int getId()
+	
+	public List<IntIntHolder> getItems()
 	{
-		return _id;
+		return _items;
 	}
-
-	public int getAmmount()
-	{
-		return _ammount;
-	}
-
-	public int getChance()
+	
+	public double getChance()
 	{
 		return _chance;
 	}

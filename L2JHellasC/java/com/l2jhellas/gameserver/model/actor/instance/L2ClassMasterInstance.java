@@ -30,7 +30,6 @@ import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 public final class L2ClassMasterInstance extends L2NpcInstance
@@ -60,7 +59,6 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 		{
 			player.setTarget(this);
 			player.sendPacket(new MyTargetSelected(getObjectId(), player.getLevel() - getLevel()));
-			player.sendPacket(new ValidateLocation(this));
 		}
 		else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false) || Config.ALLOW_REMOTE_CLASS_MASTER)
 		{

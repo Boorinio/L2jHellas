@@ -42,7 +42,6 @@ import com.l2jhellas.gameserver.network.serverpackets.DoorInfo;
 import com.l2jhellas.gameserver.network.serverpackets.DoorStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2CharTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 
@@ -420,8 +419,6 @@ public class L2DoorInstance extends L2Character
 			player.sendPacket(su);
 			// }
 
-			// Send a Server->Client packet ValidateLocation to correct the L2NpcInstance position and heading on the client
-			player.sendPacket(new ValidateLocation(this));
 		}
 		else
 		{

@@ -21,7 +21,6 @@ package com.l2jhellas.gameserver.model.zone;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.zone.type.L2DerbyTrackZone;

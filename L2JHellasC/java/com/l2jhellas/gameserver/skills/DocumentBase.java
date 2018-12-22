@@ -42,11 +42,13 @@ import com.l2jhellas.gameserver.skills.conditions.ConditionLogicNot;
 import com.l2jhellas.gameserver.skills.conditions.ConditionLogicOr;
 import com.l2jhellas.gameserver.skills.conditions.ConditionPlayerHp;
 import com.l2jhellas.gameserver.skills.conditions.ConditionPlayerHpPercentage;
+import com.l2jhellas.gameserver.skills.conditions.ConditionPlayerInvSize;
 import com.l2jhellas.gameserver.skills.conditions.ConditionPlayerLevel;
 import com.l2jhellas.gameserver.skills.conditions.ConditionPlayerMp;
 import com.l2jhellas.gameserver.skills.conditions.ConditionPlayerRace;
 import com.l2jhellas.gameserver.skills.conditions.ConditionPlayerState;
 import com.l2jhellas.gameserver.skills.conditions.ConditionPlayerState.CheckPlayerState;
+import com.l2jhellas.gameserver.skills.conditions.ConditionPlayerWeight;
 import com.l2jhellas.gameserver.skills.conditions.ConditionSkillStats;
 import com.l2jhellas.gameserver.skills.conditions.ConditionSlotItemId;
 import com.l2jhellas.gameserver.skills.conditions.ConditionTargetAggro;
@@ -466,6 +468,16 @@ abstract class DocumentBase
 			else if ("seed_any".equalsIgnoreCase(a.getNodeName()))
 			{
 				ElementSeeds[6] = Integer.decode(getValue(a.getNodeValue(), null));
+			}
+			else if ("weight".equalsIgnoreCase(a.getNodeName()))
+			{
+				int weight = Integer.decode(getValue(a.getNodeValue(), null));
+				cond = joinAnd(cond, new ConditionPlayerWeight(weight));
+			}
+			else if ("invSize".equalsIgnoreCase(a.getNodeName()))
+			{
+				int size = Integer.decode(getValue(a.getNodeValue(), null));
+				cond = joinAnd(cond, new ConditionPlayerInvSize(size));
 			}
 		}
 

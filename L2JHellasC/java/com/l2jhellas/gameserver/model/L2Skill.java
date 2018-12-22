@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
+import com.l2jhellas.gameserver.holder.IntIntHolder;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -300,6 +301,7 @@ public abstract class L2Skill
 	protected FuncTemplate[] _funcTemplates;
 	protected EffectTemplate[] _effectTemplates;
 	protected EffectTemplate[] _effectTemplatesSelf;
+	private L2ExtractableSkill _extractableItems = null;
 
 	protected L2Skill(StatsSet set)
 	{
@@ -443,6 +445,15 @@ public abstract class L2Skill
 						t.printStackTrace();
 				}
 			}
+		}
+		
+		String capsuled_items = set.getString("capsuled_items_skill", null);
+		if (capsuled_items != null)
+		{
+			if (capsuled_items.isEmpty())
+				_log.warning("Empty extractable data for skill: " + _id);
+					
+			_extractableItems = parseExtractableSkill(_id, _level, capsuled_items);
 		}
 	}
 
@@ -2264,7 +2275,66 @@ public abstract class L2Skill
 
 		return effects.toArray(new L2Effect[effects.size()]);
 	}
-
+		
+		/**
+		 * @param skillId
+		 * @param skillLvl
+		 * @param values
+		 * @return L2ExtractableSkill
+		 * @author Zoey76
+		 */
+		private L2ExtractableSkill parseExtractableSkill(int skillId, int skillLvl, String values)
+		{
+			final String[] prodLists = values.split(";");
+			final List<L2ExtractableProductItem> products = new ArrayList<>();
+			
+			for (String prodList : prodLists)
+			{
+				final String[] prodData = prodList.split(",");
+				
+				if (prodData.length < 3)
+					_log.warning("Extractable skills data: Error in Skill Id: " + skillId + " Level: " + skillLvl + " -> wrong seperator!");
+				
+				final int lenght = prodData.length - 1;
+				
+				List<IntIntHolder> items = null;
+				double chance = 0;
+				int prodId = 0;
+				int quantity = 0;
+				
+				try
+				{
+					items = new ArrayList<>(lenght / 2);
+					for (int j = 0; j < lenght; j++)
+					{
+						prodId = Integer.parseInt(prodData[j]);
+						quantity = Integer.parseInt(prodData[j += 1]);
+						
+						if (prodId <= 0 || quantity <= 0)
+							_log.warning("Extractable skills data: Error in Skill Id: " + skillId + " Level: " + skillLvl + " wrong production Id: " + prodId + " or wrond quantity: " + quantity + "!");
+						
+						items.add(new IntIntHolder(prodId, quantity));
+					}
+					chance = Double.parseDouble(prodData[lenght]);
+				}
+				catch (Exception e)
+				{
+					_log.warning("Extractable skills data: Error in Skill Id: " + skillId + " Level: " + skillLvl + " -> incomplete/invalid production data or wrong seperator!");
+				}
+				products.add(new L2ExtractableProductItem(items, chance));
+			}
+			
+			if (products.isEmpty())
+				_log.warning("Extractable skills data: Error in Skill Id: " + skillId + " Level: " + skillLvl + " -> There are no production items!");
+			
+			return new L2ExtractableSkill(SkillTable.getSkillHashCode(this), products);
+		}
+		
+		public L2ExtractableSkill getExtractableSkill()
+		{
+			return _extractableItems;
+		}
+		
 	public final void attach(FuncTemplate f)
 	{
 		if (_funcTemplates == null)

@@ -875,36 +875,34 @@
 		</enchant2for>
 	</skill>
 	<skill id="323" levels="1" name="Quiver of Arrow: Grade A">
-		<set name="mpConsume" val="366" />
-		<set name="target" val="TARGET_SELF" />
-		<set name="hitTime" val="3000" />
-		<set name="skillType" val="CREATE_ITEM" />
-		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
-		<set name="itemConsumeId" val="1461" />
-		<set name="itemConsumeCount" val="1" />
-		<set name="create_item_id" val="1344" />
-		<set name="create_item_count" val="700" />
-		<set name="random_count" val="4" />
-		<for>
-		</for>
+		<table name="#extractableItems">
+			1344,700,30;1344,1400,50;1344,2800,20
+		</table>
+		<set name="capsuled_items_skill" val="#extractableItems" />
+		<set name="mpConsume" val="366"/>
+		<set name="target" val="TARGET_SELF"/>
+		<set name="hitTime" val="3000"/>
+		<set name="skillType" val="EXTRACTABLE" />
+		<set name="operateType" val="OP_ACTIVE"/>
+		<set name="isMagic" val="true" />
+		<set name="itemConsumeId" val="1461"/>
+		<set name="itemConsumeCount" val="1"/>
+		<set name="reuseDelay" val="600000" />
 	</skill>
 	<skill id="324" levels="1" name="Quiver of Arrow: Grade S">
-		<set name="mpConsume" val="398" />
-		<set name="target" val="TARGET_SELF" />
-		<set name="hitTime" val="3000" />
-		<set name="skillType" val="CREATE_ITEM" />
-		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
-		<set name="itemConsumeId" val="1462" />
-		<set name="itemConsumeCount" val="1" />
-		<set name="create_item_id" val="1345" />
-		<set name="create_item_count" val="900" />
-		<set name="random_count" val="4" />
-		<for>
-		</for>
+		<table name="#extractableItems">
+			1345,900,30;1345,1800,50;1345,3600,20
+		</table>
+		<set name="capsuled_items_skill" val="#extractableItems" />
+		<set name="mpConsume" val="398"/>
+		<set name="target" val="TARGET_SELF"/>
+		<set name="hitTime" val="3000"/>
+		<set name="skillType" val="EXTRACTABLE" />
+		<set name="operateType" val="OP_ACTIVE"/>
+		<set name="isMagic" val="true" />
+		<set name="itemConsumeId" val="1462"/>
+		<set name="itemConsumeCount" val="1"/>
+		<set name="reuseDelay" val="1800000" />
 	</skill>
 	<skill id="325" levels="1" name="Strider Siege Assault">
 		<!-- SHOULD WORK ONLY DURING SIEGE -->

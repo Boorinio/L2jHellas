@@ -4415,7 +4415,6 @@ public final class L2PcInstance extends L2Playable
 			
 			if (player != this)
 			{
-				player.sendPacket(new ValidateLocation(this));
 				// To be sure update also the pvp flag / war tag status
 				if (!player.inObserverMode())
 					this.broadcastUserInfo();
@@ -4425,7 +4424,6 @@ public final class L2PcInstance extends L2Playable
 		{
 			if (player != this)
 			{
-				player.sendPacket(new ValidateLocation(this));
 				// To be sure update also the pvp flag / war tag status
 				if (!player.inObserverMode())
 					this.broadcastUserInfo();

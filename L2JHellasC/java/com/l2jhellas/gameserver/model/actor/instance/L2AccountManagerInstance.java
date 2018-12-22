@@ -30,7 +30,6 @@ import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -602,10 +601,7 @@ public class L2AccountManagerInstance extends L2NpcInstance
 		if (this != player.getTarget())
 		{
 			player.setTarget(this);
-
 			player.sendPacket(new MyTargetSelected(getObjectId(), 0));
-
-			player.sendPacket(new ValidateLocation(this));
 		}
 		else if (!canInteract(player))
 		{

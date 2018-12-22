@@ -124,7 +124,6 @@ import com.l2jhellas.gameserver.handlers.itemhandlers.CrystalCarol;
 import com.l2jhellas.gameserver.handlers.itemhandlers.Crystals;
 import com.l2jhellas.gameserver.handlers.itemhandlers.EnchantScrolls;
 import com.l2jhellas.gameserver.handlers.itemhandlers.EnergyStone;
-import com.l2jhellas.gameserver.handlers.itemhandlers.ExtractableItems;
 import com.l2jhellas.gameserver.handlers.itemhandlers.Firework;
 import com.l2jhellas.gameserver.handlers.itemhandlers.FishShots;
 import com.l2jhellas.gameserver.handlers.itemhandlers.Harvester;
@@ -163,6 +162,7 @@ import com.l2jhellas.gameserver.handlers.skillhandlers.Craft;
 import com.l2jhellas.gameserver.handlers.skillhandlers.DeluxeKey;
 import com.l2jhellas.gameserver.handlers.skillhandlers.Disablers;
 import com.l2jhellas.gameserver.handlers.skillhandlers.DrainSoul;
+import com.l2jhellas.gameserver.handlers.skillhandlers.Extractable;
 import com.l2jhellas.gameserver.handlers.skillhandlers.Fishing;
 import com.l2jhellas.gameserver.handlers.skillhandlers.FishingSkill;
 import com.l2jhellas.gameserver.handlers.skillhandlers.GetPlayer;
@@ -402,7 +402,6 @@ public class MasterHandler
 			Crystals.class,
 			EnchantScrolls.class,
 			EnergyStone.class,
-			ExtractableItems.class,
 			Firework.class,
 			FishShots.class,
 			Harvester.class,
@@ -432,6 +431,7 @@ public class MasterHandler
 		},
 		{
 			// Skill Handlers
+			Extractable.class,
 			BalanceLife.class,
 			BeastFeed.class,
 			Blow.class,

@@ -92,7 +92,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ServerObjectInfo;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.taskmanager.DecayTaskManager;
@@ -159,15 +158,23 @@ public class L2Npc extends L2Character
 	private int _currentCollisionHeight; // used for npc grow effect skills
 	private int _currentCollisionRadius; // used for npc grow effect skills
 	private int _scriptValue = 0;
+	private long lastSocialBroadcast = 0;
 
 	/**
-	 * Send a packet SocialAction to all L2PcInstance in the _KnownPlayers of the L2NpcInstance and create a new RandomAnimation Task.<BR>
+	 * Send a packet SocialAction to all L2PcInstance after the calculated delay.<BR>
 	 * <BR>
 	 */
 	public void onRandomAnimation()
 	{
-		// Send a packet SocialAction to all L2PcInstance in the _KnownPlayers of the L2NpcInstance
-		broadcastPacket(new SocialAction(getObjectId(), Rnd.get(2, 3)),800);
+		long current = System.currentTimeMillis();
+		
+		if (current - lastSocialBroadcast > 4000) 
+		{
+			lastSocialBroadcast = current;
+			// Send a packet SocialAction to all L2PcInstance in the _KnownPlayers of the L2NpcInstance
+			broadcastPacket(new SocialAction(getObjectId(), Rnd.get(2, 3)),800);
+		}
+
 	}
 
 	/**
@@ -647,11 +654,11 @@ public class L2Npc extends L2Character
 			}
 
 			// Send a Server->Client packet ValidateLocation to correct the L2NpcInstance position and heading on the client
-			player.sendPacket(new ValidateLocation(this));
+			//player.sendPacket(new ValidateLocation(this));
 		}
 		else
 		{
-			player.sendPacket(new ValidateLocation(this));
+			//player.sendPacket(new ValidateLocation(this));
 			// Check if the player is attackable (without a forced attack) and isn't dead
 			if (isAutoAttackable(player) && !isAlikeDead())
 			{

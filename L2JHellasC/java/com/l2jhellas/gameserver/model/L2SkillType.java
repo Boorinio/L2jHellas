@@ -102,6 +102,7 @@ public enum L2SkillType
     HARVEST,
     GET_PLAYER,
     EXTRACTABLE,
+    EXTRACTABLE_FISH,
 
 	// Creation
 	COMMON_CRAFT,
