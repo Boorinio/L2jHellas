@@ -79,6 +79,25 @@ public class L2CharacterAI extends AbstractAI
 		super(accessor);
 	}
 	
+	
+	public static class IntentionCommand
+	{
+		protected final CtrlIntention _crtlIntention;
+		protected final Object _arg0, _arg1;
+		
+		protected IntentionCommand(CtrlIntention pIntention, Object pArg0, Object pArg1)
+		{
+			_crtlIntention = pIntention;
+			_arg0 = pArg0;
+			_arg1 = pArg1;
+		}
+		
+		public CtrlIntention getCtrlIntention()
+		{
+			return _crtlIntention;
+		}
+	}
+	
 	/**
 	 * Manage the Idle Intention : Stop Attack, Movement and Stand Up the actor.<BR><BR>
 	 *
@@ -282,17 +301,6 @@ public class L2CharacterAI extends AbstractAI
 		
 		// Set the AI cast target
 		setCastTarget((L2Character) target);
-		
-		// Stop actions client-side to cast the skill
-		if (skill.getHitTime() > 50)
-		{
-			// Abort the attack of the L2Character and send Server->Client ActionFailed packet
-			_actor.abortAttack();
-			
-			// Cancel action client side by sending Server->Client packet ActionFailed to the L2PcInstance actor
-			// no need for second ActionFailed packet, abortAttack() already sent it
-			//clientActionFailed();
-		}
 		
 		// Set the AI skill used by INTENTION_CAST
 		_skill = skill;

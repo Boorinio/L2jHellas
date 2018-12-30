@@ -35,10 +35,8 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 
 /**
@@ -167,12 +165,6 @@ public class L2SepulcherNpcInstance extends L2Npc
 				}
 				else
 				{
-					// Send a Server->Client packet SocialAction to the all
-					// L2PcInstance on the _knownPlayer of the L2NpcInstance
-					// to display a social action of the L2NpcInstance on their client
-					SocialAction sa = new SocialAction(getObjectId(), Rnd.get(8));
-					broadcastPacket(sa,1200);
-
 					doAction(player);
 				}
 			}

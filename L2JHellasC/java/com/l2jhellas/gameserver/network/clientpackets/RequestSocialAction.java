@@ -18,8 +18,6 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Util;
 
 public class RequestSocialAction extends L2GameClientPacket
@@ -44,19 +42,17 @@ public class RequestSocialAction extends L2GameClientPacket
 		if (activeChar == null)
 			return;
 
+		// Flood protect
+		if (!activeChar.getAntiFlood().getSocial().tryPerformAction("Social"))
+			return;
+		
 		// You cannot do anything else while fishing
 		if (activeChar.isFishing())
 		{
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_DO_WHILE_FISHING_3);
-			activeChar.sendPacket(sm);
-			sm = null;
+			activeChar.sendPacket(SystemMessageId.CANNOT_DO_WHILE_FISHING_3);
 			return;
 		}
-		if(activeChar.isDead())
-		{
-			activeChar.sendMessage("You can't perform social actions while dead");
-			return;
-		}
+		
 		// check if its the actionId is allowed
 		if (_actionId < 2 || _actionId > 13)
 		{
@@ -67,7 +63,7 @@ public class RequestSocialAction extends L2GameClientPacket
 		if (activeChar.isInStoreMode() || activeChar.getActiveRequester() != null || activeChar.isAlikeDead() || activeChar.getAI().getIntention() != CtrlIntention.AI_INTENTION_IDLE)
 			return;
 
-		activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), _actionId));
+		activeChar.broadcastSocialActionInRadius(_actionId);
 
 	}
 

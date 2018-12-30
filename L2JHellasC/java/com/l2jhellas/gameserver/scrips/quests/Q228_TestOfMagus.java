@@ -19,7 +19,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 
 public class Q228_TestOfMagus extends Quest
 {
@@ -189,7 +188,7 @@ public class Q228_TestOfMagus extends Quest
 							st.takeItems(TONE_OF_WIND, 1);
 							st.giveItems(MARK_OF_MAGUS, 1);
 							st.rewardExpAndSp(139039, 40000);
-							player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+							player.broadcastSocialActionInRadius(3);
 							st.playSound(QuestState.SOUND_FINISH);
 							st.exitQuest(false);
 						}

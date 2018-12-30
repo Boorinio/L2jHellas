@@ -18,7 +18,6 @@ import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.util.Rnd;
 
 public class Q233_TestOfTheWarSpirit extends Quest
@@ -142,7 +141,7 @@ public class Q233_TestOfTheWarSpirit extends Quest
 			st.takeItems(TONAR_REMAINS_2, -1);
 			st.giveItems(MARK_OF_WARSPIRIT, 1);
 			st.rewardExpAndSp(63483, 17500);
-			player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+			player.broadcastSocialActionInRadius(3);
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(false);
 		}

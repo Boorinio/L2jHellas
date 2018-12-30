@@ -41,7 +41,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.Revive;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 
 /**
@@ -643,9 +642,7 @@ public class AdminEventEngine implements IAdminCommandHandler
 				character.setCurrentHpMp(character.getMaxHp(), character.getMaxMp());
 				character.setCurrentCp(character.getMaxCp());
 				Revive revive = new Revive(character);
-				SocialAction sa = new SocialAction(character.getObjectId(), 15);
-				character.broadcastPacket(sa);
-				character.sendPacket(sa);
+				character.broadcastSocialActionInRadius(15);
 				character.sendPacket(revive);
 				character.broadcastPacket(revive);
 			}

@@ -17,7 +17,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 
 public class Q220_TestimonyOfGlory extends Quest
 {
@@ -618,7 +617,7 @@ public class Q220_TestimonyOfGlory extends Quest
 							st.takeItems(RITUAL_BOX, 1);
 							st.giveItems(MARK_OF_GLORY, 1);
 							st.rewardExpAndSp(91457, 2500);
-							player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+							player.broadcastSocialActionInRadius(3);
 							st.playSound(QuestState.SOUND_FINISH);
 							st.exitQuest(false);
 						}

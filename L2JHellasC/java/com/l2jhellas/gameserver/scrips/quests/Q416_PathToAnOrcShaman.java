@@ -19,7 +19,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.util.Rnd;
 
 public class Q416_PathToAnOrcShaman extends Quest
@@ -153,7 +152,7 @@ public class Q416_PathToAnOrcShaman extends Quest
 			st.takeItems(TOTEM_SPIRIT_BLOOD, -1);
 			st.giveItems(MASK_OF_MEDIUM, 1);
 			st.rewardExpAndSp(3200, 2600);
-			player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+			player.broadcastSocialActionInRadius(3);
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
 		}
@@ -257,7 +256,7 @@ public class Q416_PathToAnOrcShaman extends Quest
 							htmltext = "31979-03.htm";
 							st.giveItems(MASK_OF_MEDIUM, 1);
 							st.rewardExpAndSp(3200, 3250);
-							player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+							player.broadcastSocialActionInRadius(3);
 							st.playSound(QuestState.SOUND_FINISH);
 							st.exitQuest(true);
 						}

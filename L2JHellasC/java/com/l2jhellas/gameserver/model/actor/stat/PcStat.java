@@ -30,7 +30,6 @@ import com.l2jhellas.gameserver.model.entity.engines.TvT;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListUpdate;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
@@ -194,7 +193,7 @@ public class PcStat extends PlayableStat
 				}
 			}
 			getActiveChar().setCurrentCp(getMaxCp());
-			getActiveChar().broadcastPacket(new SocialAction(getActiveChar().getObjectId(), 15),1200);
+			getActiveChar().broadcastSocialActionInRadius(15);
 			getActiveChar().sendPacket(SystemMessageId.YOU_INCREASED_YOUR_LEVEL);
 
 			if (getActiveChar().isInFunEvent())

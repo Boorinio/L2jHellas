@@ -25,10 +25,8 @@ import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.util.Rnd;
 
 /**
  * This class represents all guards in the world. It inherits all methods from
@@ -174,9 +172,6 @@ public final class L2SiegeGuardInstance extends L2Attackable
 				}
 				else
 				{
-					SocialAction sa = new SocialAction(getObjectId(), Rnd.nextInt(8));
-					broadcastPacket(sa,1200);
-					sendPacket(sa);
 					showChatWindow(player, 0);
 				}
 			}

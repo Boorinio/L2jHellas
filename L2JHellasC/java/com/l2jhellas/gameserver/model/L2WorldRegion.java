@@ -55,34 +55,15 @@ public final class L2WorldRegion
 		
 		@Override
 		public void run()
-		{
-			if (_isActivating)
+		{			
+			forEachSurroundingRegion(w ->
 			{
-				// for each neighbor, if it's not active, activate.
-				forEachSurroundingRegion(w ->
+				if (_isActivating || w.areNeighborsEmpty())
 				{
-					w.setActive(true);
-					return true;
-				});
-			}
-			else
-			{
-				if (areNeighborsEmpty())
-				{
-					setActive(false);
+					w.setActive(_isActivating);
 				}
-				
-				// check and deactivate
-				forEachSurroundingRegion(w ->
-				{
-					if (w.areNeighborsEmpty())
-					{
-						w.setActive(false);
-					}
-					return true;
-				});
-				
-			}
+				return true;
+			});									
 		}
 	}
 	
@@ -137,7 +118,7 @@ public final class L2WorldRegion
 				{
 					((L2Npc) o).startRandomAnimationTimer();
 				}
-			}		
+			}
 		}
 		
 	}
@@ -149,10 +130,7 @@ public final class L2WorldRegion
 	
 	public boolean areNeighborsEmpty()
 	{
-		return !forEachSurroundingRegion(w ->
-		{
-			return !(w.isActive() && w.getVisibleObjects().values().stream().anyMatch(L2Object::isPlayable));
-		});
+		return forEachSurroundingRegion(w -> !(w.isActive() && w.getVisibleObjects().values().stream().anyMatch(L2Object::isPlayable)));
 	}
 	
 	/**
@@ -208,10 +186,7 @@ public final class L2WorldRegion
 			{
 				_neighborsTask.cancel(true);
 				_neighborsTask = null;
-			}
-			
-			// start a timer to "suggest" a deactivate to self and neighbors.
-			// suggest means: first check if a neighbor has L2PcInstances in it. If not, deactivate.
+			}			
 			_neighborsTask = ThreadPoolManager.getInstance().scheduleGeneral(new NeighborsTask(false), 1000 * Config.GRID_NEIGHBOR_TURNOFF_TIME);
 		}
 	}
@@ -344,7 +319,7 @@ public final class L2WorldRegion
 
 	public boolean isSurroundingRegion(L2WorldRegion region)
 	{
-		return (region != null) && (getRegionX() >= (region.getRegionX() - 1)) && (getRegionX() <= (region.getRegionX() + 1)) && (getRegionY() >= (region.getRegionY() - 1)) && (getRegionY() <= (region.getRegionY() + 1)) && (getRegionZ() >= (region.getRegionZ() - 1)) && (getRegionZ() <= (region.getRegionZ() + 1));
+		return (region != null) && (getRegionX() >= (region.getRegionX() - 1)) && (getRegionX() <= (region.getRegionX() + 1)) && (getRegionY() >= (region.getRegionY() - 1)) && (getRegionY() <= (region.getRegionY() + 1)) && (getRegionZ() >= (region.getRegionZ() - 1)) && (getRegionZ() <= (region.getRegionZ() + 1));	
 	}
 	
 	public List<L2ZoneType> getZones()

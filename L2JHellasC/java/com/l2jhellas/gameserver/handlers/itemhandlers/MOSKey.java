@@ -23,7 +23,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class MOSKey implements IItemHandler
@@ -99,7 +98,7 @@ public class MOSKey implements IItemHandler
 				DoorData.getInstance().getDoor(23150004).openMe();
 				DoorData.getInstance().getDoor(23150003).onOpen();
 				DoorData.getInstance().getDoor(23150004).onOpen();
-				activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 3));
+				activeChar.broadcastSocialActionInRadius(3);
 				LAST_OPEN = System.currentTimeMillis();
 			}
 		}

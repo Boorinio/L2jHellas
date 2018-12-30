@@ -22,10 +22,8 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.StringUtil;
 
 public final class L2BufferInstance extends L2NpcInstance
@@ -80,9 +78,8 @@ public final class L2BufferInstance extends L2NpcInstance
 			player.setTarget(this);
 			player.sendPacket(new MyTargetSelected(getObjectId(), player.getLevel() - getLevel()));
 		}
-		else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false)) {
-			SocialAction sa = new SocialAction(this.getObjectId(), Rnd.get(8));
-			broadcastPacket(sa,1200);
+		else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
+		{
 			player.setLastFolkNPC(this);
 			showMessageWindow(player);
 			player.sendPacket(ActionFailed.STATIC_PACKET);

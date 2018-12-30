@@ -17,7 +17,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 
 public class Q222_TestOfTheDuelist extends Quest
 {
@@ -177,7 +176,7 @@ public class Q222_TestOfTheDuelist extends Quest
 					st.takeItems(LAKIN_MACE, -1);
 					st.giveItems(MARK_OF_DUELIST, 1);
 					st.rewardExpAndSp(47015, 20000);
-					player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+					player.broadcastSocialActionInRadius(3);
 					st.playSound(QuestState.SOUND_FINISH);
 					st.exitQuest(false);
 				}

@@ -24,7 +24,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.util.Rnd;
 
 /**
@@ -84,14 +83,14 @@ public class PaganKeys implements IItemHandler
 						activeChar.sendMessage("You opened Anterooms Door.");
 						door.openMe();
 						door.onOpen(); // Closes the door after 60sec
-						activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 3),900);
+						activeChar.broadcastSocialActionInRadius(3);
 					}
 					else
 					{
 						// test with: activeChar.sendPacket(new
 						// SystemMessage(SystemMessage.FAILED_TO_UNLOCK_DOOR));
 						activeChar.sendMessage("You failed to open Anterooms Door.");
-						activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 13),900);
+						activeChar.broadcastSocialActionInRadius(13);
 						
 						PlaySound _snd = Sound.INTERFACESOUND_CHARSTAT_CLOSE.getPacket();
 						activeChar.sendPacket(_snd);
@@ -110,12 +109,12 @@ public class PaganKeys implements IItemHandler
 						activeChar.sendMessage("You opened Altar Entrance.");
 						door.openMe();
 						door.onOpen();
-						activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 3));
+						activeChar.broadcastSocialActionInRadius(3);
 					}
 					else
 					{
 						activeChar.sendMessage("You failed to open Altar Entrance.");
-						activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 13));
+						activeChar.broadcastSocialActionInRadius(13);
 						PlaySound _snd = Sound.INTERFACESOUND_CHARSTAT_CLOSE.getPacket();
 						activeChar.sendPacket(_snd);
 					}
@@ -133,12 +132,12 @@ public class PaganKeys implements IItemHandler
 						activeChar.sendMessage("You opened Door of Darkness.");
 						door.openMe();
 						door.onOpen();
-						activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 3));
+						activeChar.broadcastSocialActionInRadius(3);
 					}
 					else
 					{
 						activeChar.sendMessage("You failed to open Door of Darkness.");
-						activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 13));
+						activeChar.broadcastSocialActionInRadius(13);
 						PlaySound _snd = Sound.INTERFACESOUND_CHARSTAT_CLOSE.getPacket();
 						activeChar.sendPacket(_snd);
 					}

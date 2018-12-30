@@ -30,8 +30,15 @@ public class MagicSkillUse extends L2GameServerPacket
 	private final int _skillLevel;
 	private final int _hitTime;
 	private final int _reuseDelay;
-	private final int _charObjId, _x, _y, _z;
-
+	private final int _charObjId, _x, _y, _z, _targetx, _targety, _targetz;
+	private boolean _success = false;
+	
+	public MagicSkillUse(L2Character cha, L2Character target, int skillId, int skillLevel, int hitTime, int reuseDelay, boolean crit)
+	{
+		this(cha, target, skillId, skillLevel, hitTime, reuseDelay);
+		_success = crit;
+	}
+	
 	public MagicSkillUse(L2Character cha, L2Character target, int skillId, int skillLevel, int hitTime, int reuseDelay)
 	{
 		_charObjId = cha.getObjectId();
@@ -43,6 +50,9 @@ public class MagicSkillUse extends L2GameServerPacket
 		_x = cha.getX();
 		_y = cha.getY();
 		_z = cha.getZ();
+		_targetx = target.getX();
+		_targety = target.getY();
+		_targetz = target.getZ();
 	}
 
 	public MagicSkillUse(L2Character cha, int skillId, int skillLevel, int hitTime, int reuseDelay)
@@ -56,6 +66,9 @@ public class MagicSkillUse extends L2GameServerPacket
 		_x = cha.getX();
 		_y = cha.getY();
 		_z = cha.getZ();
+		_targetx = cha.getX();
+		_targety = cha.getY();
+		_targetz = cha.getZ();
 	}
 
 	@Override
@@ -71,13 +84,18 @@ public class MagicSkillUse extends L2GameServerPacket
 		writeD(_x);
 		writeD(_y);
 		writeD(_z);
-		writeH(0x00); // unknown loop but not AoE
-		// for()
-		// {
-		writeH(0x00);
-		writeH(0x00);
-		writeH(0x00);
-		// }
+		
+		if (_success)
+		{
+			writeD(0x01);
+			writeH(0x00);
+		}
+		else
+			writeD(0x00);
+		
+		writeD(_targetx);
+		writeD(_targety);
+		writeD(_targetz);
 	}
 
 	@Override

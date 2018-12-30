@@ -612,9 +612,7 @@ public final class L2PcInstance extends L2Playable
 	private boolean _relax;
 	
 	/** Location before entering Observer Mode */
-	private int _obsX;
-	private int _obsY;
-	private int _obsZ;
+	private final Location _obsLocation = new Location(0, 0, 0);
 	private boolean _observerMode = false;
 	
 	/** Stored from last ValidatePosition **/
@@ -7422,9 +7420,9 @@ public final class L2PcInstance extends L2Playable
 			statement.setInt(15, getAppearance().getHairStyle());
 			statement.setInt(16, getAppearance().getHairColor());
 			statement.setInt(17, getHeading());
-			statement.setInt(18, _observerMode ? _obsX : getX());
-			statement.setInt(19, _observerMode ? _obsY : getY());
-			statement.setInt(20, _observerMode ? _obsZ : getZ());
+			statement.setInt(18, _observerMode ? _obsLocation.getX() : getX());
+			statement.setInt(19, _observerMode ? _obsLocation.getY() : getY());
+			statement.setInt(20, _observerMode ? _obsLocation.getZ() : getZ());
 			statement.setLong(21, exp);
 			statement.setLong(22, getExpBeforeDeath());
 			statement.setInt(23, sp);
@@ -9647,32 +9645,15 @@ public final class L2PcInstance extends L2Playable
 		sendPacket(SystemMessage.sendString(message));
 	}
 	
-	public void enterObserverMode(int x, int y, int z)
+	public void dropAllSummons()
 	{
-		_obsX = getX();
-		_obsY = getY();
-		_obsZ = getZ();
-		
-		setTarget(null);
-		stopMove(null);
-		setIsParalyzed(true);
-		setIsInvul(true);
-		getAppearance().setInvisible();
-		sendPacket(new ObservationMode(x, y, z));
-		setXYZ(x, y, z);
-		
-		_observerMode = true;
-		broadcastUserInfo();
-	}
-
-	public void enterOlympiadObserverMode(int x, int y, int z, int id)
-	{
+		// Delete summons and pets
 		if (getPet() != null)
-		{
 			getPet().unSummon(this);
-		}
-		if (getParty() != null)
-			getParty().removePartyMember(this);
+		
+		// Delete trained beasts
+		if (getTrainedBeast() != null)
+			getTrainedBeast().deleteMe();
 		
 		if (getCubics().size() > 0)
 		{
@@ -9684,29 +9665,58 @@ public final class L2PcInstance extends L2Playable
 			
 			getCubics().clear();
 		}
+	}
+
+	public void enterObserverMode(int x, int y, int z)
+	{
+		dropAllSummons();
 		
+		if (getParty() != null)
+			getParty().removePartyMember(this);
+		
+		standUp();
+		
+		_obsLocation.set(getPosition().getWorldPosition());
+		
+		setTarget(null);
+		stopMove(null);
+		setIsParalyzed(true);
+		setIsInvul(true);
+		getAppearance().setInvisible();	
+		teleToLocation(x, y, z, false);
+		sendPacket(new ObservationMode(x, y, z));	
+		_observerMode = true;
+	}
+
+	public void enterOlympiadObserverMode(int x, int y, int z, int id)
+	{
+		dropAllSummons();
+		
+		if (getParty() != null)
+			getParty().removePartyMember(this);
+			
 		_olympiadGameId = id;
-		_obsX = getX();
-		if (isSitting())
-		{
-			standUp();
-		}
-		_obsY = getY();
-		_obsZ = getZ();
+		
+		 standUp();
+		 
+		if (!inObserverMode())
+			_obsLocation.set(getPosition().getWorldPosition());
+			
 		setTarget(null);
 		setIsInvul(true);
+		
 		getAppearance().setInvisible();
+		
 		teleToLocation(x,y,z, true);
 		sendPacket(new ExOlympiadMode(3));
 		_observerMode = true;
-		broadcastUserInfo();
 	}
 	
 	public void leaveObserverMode()
 	{
 		setTarget(null);
-		setXYZ(_obsX, _obsY, _obsZ);
 		setIsParalyzed(false);
+		
 		if (!isGM())
 		{
 			getAppearance().setVisible();
@@ -9718,16 +9728,19 @@ public final class L2PcInstance extends L2Playable
 			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		}
 		
-		_observerMode = false;
 		sendPacket(new ObservationReturn(this));
+		teleToLocation(_obsLocation.getX(),_obsLocation.getY(),_obsLocation.getZ(), false);
+		
 		broadcastUserInfo();
+		
+		_observerMode = false;
+		_obsLocation.clean();
 	}
 	
 	public void leaveOlympiadObserverMode()
 	{
 		setTarget(null);
-		sendPacket(new ExOlympiadMode(0));
-		teleToLocation(_obsX, _obsY, _obsZ, true);
+
 		if (!isGM())
 		{
 			getAppearance().setVisible();
@@ -9738,8 +9751,15 @@ public final class L2PcInstance extends L2Playable
 			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		}
 		_olympiadGameId = -1;
-		_observerMode = false;
+	
+		sendPacket(new ExOlympiadMode(0));
+		
+		teleToLocation(_obsLocation.getX(),_obsLocation.getY(),_obsLocation.getZ(), false);
+		
 		broadcastUserInfo();
+		
+		_obsLocation.clean();
+		_observerMode = false;
 	}
 	
 	public void updateNameTitleColor()
@@ -9775,17 +9795,17 @@ public final class L2PcInstance extends L2Playable
 	
 	public int getObsX()
 	{
-		return _obsX;
+		return _obsLocation.getX();
 	}
 	
 	public int getObsY()
 	{
-		return _obsY;
+		return _obsLocation.getY();
 	}
 	
 	public int getObsZ()
 	{
-		return _obsZ;
+		return _obsLocation.getZ();
 	}
 	
 	public boolean inObserverMode()
@@ -10622,7 +10642,7 @@ public final class L2PcInstance extends L2Playable
 		_shortCuts.restore();
 		sendPacket(new ShortCutInit(this));
 		
-		broadcastPacket(new SocialAction(getObjectId(), 15),1200);
+		broadcastSocialActionInRadius(15);
 		sendPacket(new SkillCoolTime(this));
 		
 		// decayMe();
@@ -11367,7 +11387,7 @@ public final class L2PcInstance extends L2Playable
 		// its position before entering in observer mode
 		if (inObserverMode())
 		{
-			setXYZ(_obsX, _obsY, _obsZ);
+			setXYZ(_obsLocation.getX(),_obsLocation.getY(),_obsLocation.getZ());
 		}
 		
 		PartyMatchWaitingList.getInstance().removePlayer(this);
@@ -14791,8 +14811,14 @@ public final class L2PcInstance extends L2Playable
     {
 
 	   final boolean isTh = target!=null && target instanceof L2StaticObjectInstance && ((L2StaticObjectInstance) target).getType() == 1;
-	   final boolean ThroneIsBusy = isTh && ((L2StaticObjectInstance) target).isBusy();		
+	   final boolean ThroneIsBusy = isTh && ((L2StaticObjectInstance) target).isBusy();	
 	
+		if (isFakeDeath())
+		{
+			stopFakeDeath(null);
+			return;
+		}
+		
 	   if(sitting)
 	   {
 		 if (getMountObjectID() != 0)
@@ -14800,23 +14826,47 @@ public final class L2PcInstance extends L2Playable
 			final L2Object obj = L2World.getInstance().findObject(getMountObjectID());
 			((L2StaticObjectInstance) obj).setBusy(false);				
 			setMountObjectID(0);
-		 }		
-		standUp();
+		 }	
+		 
+		 standUp();
 	  }
 	  else
-	  {
-		sitDown();
-		
-		if (isTh && !ThroneIsBusy && isInsideRadius(target, L2Npc.INTERACTION_DISTANCE, false, false))
-		{
-			((L2StaticObjectInstance) target).setBusy(true);
-			setMountObjectID(target.getObjectId());
-			broadcastPacket(new ChairSit(this, ((L2StaticObjectInstance) target).getStaticObjectId()));
-		}
+	  {	  
+		  if(isMoving())
+		  {
+				NextAction nextAction = new NextAction(CtrlEvent.EVT_ARRIVED, CtrlIntention.AI_INTENTION_MOVE_TO, () ->
+				{
+					if (getMountType() != 0)
+						return;
+
+						sitDown();
+						
+						if (!ThroneIsBusy && isInsideRadius(target, L2Npc.INTERACTION_DISTANCE, false, false))
+						{
+							((L2StaticObjectInstance) target).setBusy(true);
+							setMountObjectID(target.getObjectId());
+							broadcastPacket(new ChairSit(this, ((L2StaticObjectInstance) target).getStaticObjectId()));
+
+						}
+					
+				});
+				
+				getAI().setNextAction(nextAction);
+		  }
+		  else
+		  {
+				sitDown();
+				
+				if (isTh && !ThroneIsBusy && isInsideRadius(target, L2Npc.INTERACTION_DISTANCE, false, false))
+				{
+					((L2StaticObjectInstance) target).setBusy(true);
+					setMountObjectID(target.getObjectId());
+					broadcastPacket(new ChairSit(this, ((L2StaticObjectInstance) target).getStaticObjectId()));
+
+				}
+		  }
 	  }
     }
-	
-
 	
 	public boolean canRequestTrade(L2PcInstance target)
 	{
@@ -15064,5 +15114,10 @@ public final class L2PcInstance extends L2Playable
 				if (room != null)
 					room.deleteMember(this);
 			}
+		}
+
+		public void broadcastSocialActionInRadius(int socialId)
+		{
+			broadcastPacket(new SocialAction(getObjectId(), socialId),1250);
 		}
 }

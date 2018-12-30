@@ -20,8 +20,9 @@ import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.serverpackets.FlyToLocation;
+import com.l2jhellas.gameserver.network.serverpackets.FlyToLocation.FlyType;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
-import com.l2jhellas.util.Rnd;
 
 /**
  * Mobs can teleport players to them
@@ -43,12 +44,16 @@ public class GetPlayer implements ISkillHandler
 			if (target instanceof L2PcInstance)
 			{
 				L2PcInstance trg = (L2PcInstance) target;
-				if (trg.isAlikeDead())
+				if (trg == null || trg.isAlikeDead())
 					continue;
-				// trg.teleToLocation(activeChar.getX(), activeChar.getY(),
-				// activeChar.getZ(), true);
-				trg.setXYZ(activeChar.getX() + Rnd.get(-10, 10), activeChar.getY() + Rnd.get(-10, 10), activeChar.getZ());
-				trg.sendPacket(new ValidateLocation(trg));
+				
+				trg.stopMove(null);
+				trg.abortAttack();
+				trg.abortCast();
+
+				trg.broadcastPacket(new FlyToLocation(trg, activeChar, FlyType.DUMMY));
+				trg.setXYZ(activeChar.getX(), activeChar.getY(), activeChar.getZ());
+				trg.broadcastPacket(new ValidateLocation(trg));
 			}
 		}
 	}

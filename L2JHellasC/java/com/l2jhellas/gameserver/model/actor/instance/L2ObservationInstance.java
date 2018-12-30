@@ -119,10 +119,8 @@ public final class L2ObservationInstance extends L2NpcInstance
 		int z = Integer.parseInt(st.nextToken());
 		if (player.reduceAdena("Broadcast", cost, this, true))
 		{
-			// enter mode
 			player.enterObserverMode(x, y, z);
-			ItemList il = new ItemList(player, false);
-			player.sendPacket(il);
+			player.sendPacket(new ItemList(player, false));
 		}
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}

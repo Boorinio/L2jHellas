@@ -19,7 +19,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.util.Rnd;
 
 public class Q417_PathToBecomeAScavenger extends Quest
@@ -184,7 +183,7 @@ public class Q417_PathToBecomeAScavenger extends Quest
 			st.takeItems(BEAD_PARCEL_2, 1);
 			st.giveItems(RING_OF_RAVEN, 1);
 			st.rewardExpAndSp(3200, 7080);
-			player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+			player.broadcastSocialActionInRadius(3);
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
 		}
@@ -353,7 +352,7 @@ public class Q417_PathToBecomeAScavenger extends Quest
 							st.takeItems(SUCCUBUS_UNDIES, 1);
 							st.giveItems(RING_OF_RAVEN, 1);
 							st.rewardExpAndSp(3200, 7080);
-							player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+							player.broadcastSocialActionInRadius(3);
 							st.playSound(QuestState.SOUND_FINISH);
 							st.exitQuest(true);
 						}

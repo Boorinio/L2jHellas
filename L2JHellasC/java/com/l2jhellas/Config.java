@@ -1207,6 +1207,7 @@ public final class Config
 	public static FloodProtectorConfig FLOOD_PROTECTOR_SERVER_BYPASS;
 	public static FloodProtectorConfig FLOOD_PROTECTOR_MULTISELL;
 	public static FloodProtectorConfig FLOOD_PROTECTOR_TRANSACTION;
+	public static FloodProtectorConfig FLOOD_PROTECTOR_SOCIALACTION;
 
 	public static enum IdFactoryType
 	{
@@ -1243,6 +1244,7 @@ public final class Config
 			FLOOD_PROTECTOR_SERVER_BYPASS = new FloodProtectorConfig("ServerBypassFloodProtector");
 			FLOOD_PROTECTOR_MULTISELL = new FloodProtectorConfig("MultiSellFloodProtector");
 			FLOOD_PROTECTOR_TRANSACTION = new FloodProtectorConfig("TransactionFloodProtector");
+			FLOOD_PROTECTOR_SOCIALACTION = new FloodProtectorConfig("SocialActionFloodProtector");
 
 			/**
 			 * AltSettings
@@ -4124,6 +4126,8 @@ public final class Config
 		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_SERVER_BYPASS, "ServerBypass", "5");
 		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_MULTISELL, "MultiSell", "1");
 		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_TRANSACTION, "Transaction", "10");
+		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_SOCIALACTION, "SocialAction", "40");
+		
 	}
 
 	private static void loadFloodProtectorConfig(final Properties properties, final FloodProtectorConfig config, final String configString, final String defaultInterval)

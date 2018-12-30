@@ -30,13 +30,11 @@ import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SkillList;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
-import com.l2jhellas.util.Rnd;
 
 
 /**
@@ -348,8 +346,6 @@ public final class L2FastAugByAbsoInstance extends L2NpcInstance
 		}
 		else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false)) 
 		{
-			SocialAction sa = new SocialAction(this.getObjectId(), Rnd.get(8));
-			broadcastPacket(sa);
 			player.setLastFolkNPC(this);
 			showListWindow(player);
 			player.sendPacket(ActionFailed.STATIC_PACKET);

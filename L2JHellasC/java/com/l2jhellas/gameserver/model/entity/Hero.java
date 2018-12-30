@@ -47,7 +47,6 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowInfoUpdate;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
@@ -972,7 +971,7 @@ public class Hero
 		_heroes.put(player.getObjectId(), hero);
 		
 		player.setHero(true);
-		player.broadcastPacket(new SocialAction(player.getObjectId(), 16),2000);
+		player.broadcastSocialActionInRadius(16);
 		player.broadcastUserInfo();
 		
 		L2Clan clan = player.getClan();

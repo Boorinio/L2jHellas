@@ -108,6 +108,13 @@ public final class Location
 		this._z = z;
 	}
 	
+	public void set(Location loc)
+	{
+		_x = loc.getX();
+		_y = loc.getY();
+		_z = loc.getZ();
+	}
+	
 	@Override
 	public boolean equals(Object o)
 	{
@@ -138,5 +145,12 @@ public final class Location
 		double dz = location.getZ() - getZ();
 
 		return Math.sqrt(dx * dx + dy * dy + dz * dz);
+	}
+	
+	public void clean()
+	{
+		_x = 0;
+		_y = 0;
+		_z = 0;
 	}
 }

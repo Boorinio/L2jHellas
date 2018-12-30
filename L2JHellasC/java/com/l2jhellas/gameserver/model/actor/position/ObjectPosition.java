@@ -55,9 +55,7 @@ public class ObjectPosition
 			newRegion.addVisibleObject(getActiveObject());
 			L2World.getInstance().switchRegion(getActiveObject(), newRegion);
 			setWorldRegion(newRegion);
-		}
-				
-		//ZoneManager.getInstance().getRegion(getActiveObject()).revalidateZones(((L2Character)getActiveObject()));	
+		}			
 	}
 
 	/**

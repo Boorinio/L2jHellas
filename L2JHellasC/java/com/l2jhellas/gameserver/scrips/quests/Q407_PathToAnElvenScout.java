@@ -19,7 +19,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 
 public class Q407_PathToAnElvenScout extends Quest
 {
@@ -132,7 +131,7 @@ public class Q407_PathToAnElvenScout extends Quest
 							st.takeItems(HonoraryGuard, -1);
 							st.giveItems(ReisasRecommendation, 1);
 							st.rewardExpAndSp(3200, 1000);
-							player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+							player.broadcastSocialActionInRadius(3);
 							st.playSound(QuestState.SOUND_FINISH);
 							st.exitQuest(true);
 						}

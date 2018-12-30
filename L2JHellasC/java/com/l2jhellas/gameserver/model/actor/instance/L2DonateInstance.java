@@ -27,9 +27,7 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.util.Rnd;
 
 /**
  * @author Autos! 1-0
@@ -128,8 +126,6 @@ public class L2DonateInstance extends L2NpcInstance
 		}
 		else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
 		{
-			SocialAction sa = new SocialAction(getObjectId(), Rnd.get(8));
-			broadcastPacket(sa,1200);
 			player.setLastFolkNPC(this);
 			showHtmlWindow(player);
 			player.sendPacket(ActionFailed.STATIC_PACKET);

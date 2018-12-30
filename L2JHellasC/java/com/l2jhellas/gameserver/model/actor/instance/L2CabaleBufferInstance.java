@@ -28,11 +28,9 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.util.Rnd;
 
 /**
  * @author Layane
@@ -62,13 +60,6 @@ public class L2CabaleBufferInstance extends L2Npc
 			{
 				// Notify the L2PcInstance AI with AI_INTENTION_INTERACT
 				player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
-			}
-			else
-			{
-				// Send a Server->Client packet SocialAction to the all L2PcInstance on the _knownPlayer of the L2NpcInstance
-				// to display a social action of the L2NpcInstance on their client
-				SocialAction sa = new SocialAction(getObjectId(), Rnd.get(8));
-				broadcastPacket(sa,1200);
 			}
 		}
 		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet

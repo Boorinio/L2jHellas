@@ -21,7 +21,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 
 public class Q231_TestOfTheMaestro extends Quest
 {
@@ -173,7 +172,7 @@ public class Q231_TestOfTheMaestro extends Quest
 							st.takeItems(RECOMMENDATION_OF_FILAUR, 1);
 							st.giveItems(MARK_OF_MAESTRO, 1);
 							st.rewardExpAndSp(46000, 5900);
-							player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+							player.broadcastSocialActionInRadius(3);
 							st.playSound(QuestState.SOUND_FINISH);
 							st.exitQuest(false);
 						}

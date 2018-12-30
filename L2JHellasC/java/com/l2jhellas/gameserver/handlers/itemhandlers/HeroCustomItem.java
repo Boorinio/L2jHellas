@@ -18,7 +18,6 @@ import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 
 public class HeroCustomItem implements IItemHandler
 {
@@ -41,7 +40,7 @@ public class HeroCustomItem implements IItemHandler
 			activeChar.sendMessage("You are already Hero!.");
 		else
 		{
-			activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 16));
+			activeChar.broadcastSocialActionInRadius(16);
 			activeChar.setHero(true);
 			activeChar.sendMessage("Now you're Hero and just received Hero status and skills.");
 			activeChar.broadcastUserInfo();

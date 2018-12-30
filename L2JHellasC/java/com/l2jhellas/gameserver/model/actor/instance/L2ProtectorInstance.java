@@ -27,10 +27,8 @@ import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.util.Rnd;
 
 /**
  * @author Ederik
@@ -61,8 +59,6 @@ public class L2ProtectorInstance extends L2NpcInstance
 		}
 		else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
 		{
-			SocialAction sa = new SocialAction(getObjectId(), Rnd.get(8));
-			broadcastPacket(sa,1200);
 			player.setLastFolkNPC(this);
 			showHtmlWindow(player);
 			player.sendPacket(ActionFailed.STATIC_PACKET);

@@ -19,7 +19,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.util.Rnd;
 
 public class Q216_TrialOfTheGuildsman extends Quest
@@ -125,7 +124,7 @@ public class Q216_TrialOfTheGuildsman extends Quest
 			st.takeItems(JOURNEYMAN_RING, -1);
 			st.giveItems(MARK_OF_GUILDSMAN, 1);
 			st.rewardExpAndSp(80993, 12250);
-			player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+			player.broadcastSocialActionInRadius(3);
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(false);
 		}

@@ -20,7 +20,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.util.Rnd;
 
 public class Q223_TestOfTheChampion extends Quest
@@ -193,7 +192,7 @@ public class Q223_TestOfTheChampion extends Quest
 							st.takeItems(MOUEN_LETTER, 1);
 							st.giveItems(MARK_OF_CHAMPION, 1);
 							st.rewardExpAndSp(117454, 25000);
-							player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+							player.broadcastSocialActionInRadius(3);
 							st.playSound(QuestState.SOUND_FINISH);
 							st.exitQuest(false);
 						}

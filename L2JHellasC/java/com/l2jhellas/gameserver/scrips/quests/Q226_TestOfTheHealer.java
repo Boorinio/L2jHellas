@@ -17,7 +17,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.util.Rnd;
 
 public class Q226_TestOfTheHealer extends Quest
@@ -107,7 +106,7 @@ public class Q226_TestOfTheHealer extends Quest
 			st.takeItems(GOLDEN_STATUE, 1);
 			st.giveItems(MARK_OF_HEALER, 1);
 			st.rewardExpAndSp(134839, 50000);
-			player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+			player.broadcastSocialActionInRadius(3);
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(false);
 		}
@@ -225,7 +224,7 @@ public class Q226_TestOfTheHealer extends Quest
 								htmltext = "30473-06.htm";
 								st.giveItems(MARK_OF_HEALER, 1);
 								st.rewardExpAndSp(118304, 26250);
-								player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+								player.broadcastSocialActionInRadius(3);
 								st.playSound(QuestState.SOUND_FINISH);
 								st.exitQuest(false);
 							}

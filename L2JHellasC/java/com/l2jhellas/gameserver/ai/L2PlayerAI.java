@@ -17,12 +17,11 @@ package com.l2jhellas.gameserver.ai;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_CAST;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
+import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ACTIVE;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_INTERACT;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_PICK_UP;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_REST;
 
-import java.util.EmptyStackException;
-import java.util.Stack;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -33,6 +32,9 @@ import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Character.AIAccessor;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
+import com.l2jhellas.gameserver.model.entity.Duel.DuelState;
+import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 
 public class L2PlayerAI extends L2CharacterAI
@@ -40,21 +42,13 @@ public class L2PlayerAI extends L2CharacterAI
 	protected static final Logger _log = Logger.getLogger(L2PlayerAI.class.getName());
 
 	private boolean _thinking; // to prevent recursive thinking
-
-	class IntentionCommand
+	
+	private IntentionCommand _nextIntention = null;
+	
+	void saveNextIntention(CtrlIntention intention, Object arg0, Object arg1)
 	{
-		protected CtrlIntention _crtlIntention;
-		protected Object _arg0, _arg1;
-
-		protected IntentionCommand(CtrlIntention pIntention, Object pArg0, Object pArg1)
-		{
-			_crtlIntention = pIntention;
-			_arg0 = pArg0;
-			_arg1 = pArg1;
-		}
+		_nextIntention = new IntentionCommand(intention, arg0, arg1);
 	}
-
-	private final Stack<IntentionCommand> _interuptedIntentions = new Stack<IntentionCommand>();
 
 	public L2PlayerAI(AIAccessor accessor)
 	{
@@ -75,25 +69,20 @@ public class L2PlayerAI extends L2CharacterAI
 	@Override
 	synchronized void changeIntention(CtrlIntention intention, Object arg0, Object arg1)
 	{
-		if (Config.DEBUG)
-			_log.warning(L2PlayerAI.class.getName() + ": changeIntention -> " + intention + " " + arg0 + " " + arg1);
-
-		// nothing to do if it does not CAST intention
-		if (intention != AI_INTENTION_CAST)
+		if (intention != AI_INTENTION_CAST || (arg0 != null &&  _skill.isOffensive()))
 		{
+			_nextIntention = null;
 			super.changeIntention(intention, arg0, arg1);
 			return;
-		}
-
+		}	
 		// do nothing if next intention is same as current one.
-		if (intention == _intention && arg0 == _intentionArg0 && arg1 == _intentionArg1)
+		if ((intention == _intention) && (arg0 == _intentionArg0) && (arg1 == _intentionArg1))
 		{
 			super.changeIntention(intention, arg0, arg1);
 			return;
-		}
-
-		// push current intention to stack
-		_interuptedIntentions.push(new IntentionCommand(_intention, _intentionArg0, _intentionArg1));
+		}					
+		// save current intention so it can be used after cast
+		saveNextIntention(_intention, _intentionArg0, _intentionArg1);
 		super.changeIntention(intention, arg0, arg1);
 	}
 
@@ -107,40 +96,12 @@ public class L2PlayerAI extends L2CharacterAI
 	@Override
 	protected void onEvtFinishCasting()
 	{
-		// forget interupted actions after offensive skill
-		if (_skill != null && _skill.isOffensive())
-			_interuptedIntentions.clear();
-
-		if (getIntention() == AI_INTENTION_CAST)
+		if (getIntention() == CtrlIntention.AI_INTENTION_CAST)
 		{
-			// run interupted intention if it remain.
-			if (!_interuptedIntentions.isEmpty())
-			{
-				IntentionCommand cmd = null;
-				try
-				{
-					cmd = _interuptedIntentions.pop();
-				}
-				catch (EmptyStackException ese)
-				{
-				}
-
-				if (cmd != null && cmd._crtlIntention != AI_INTENTION_CAST) // previous state shouldn't be casting
-				{
-					setIntention(cmd._crtlIntention, cmd._arg0, cmd._arg1);
-				}
-				else
-					setIntention(AI_INTENTION_IDLE);
-			}
+			if (_nextIntention !=null && _nextIntention.getCtrlIntention() != CtrlIntention.AI_INTENTION_CAST) 
+				setIntention(_nextIntention.getCtrlIntention(), _nextIntention._arg0, _nextIntention._arg1);
 			else
-			{
-
-				if (Config.DEBUG)
-					_log.config(L2PlayerAI.class.getName() + ": no previous intention set... Setting it to IDLE");
-
-				// set intention to idle if skill doesn't change intention.
-				setIntention(AI_INTENTION_IDLE);
-			}
+				setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		}
 	}
 
@@ -155,13 +116,19 @@ public class L2PlayerAI extends L2CharacterAI
 	@Override
 	protected void onEvtReadyToAct()
 	{
-
+		if (_nextIntention != null)
+		{
+			setIntention(_nextIntention._crtlIntention, _nextIntention._arg0, _nextIntention._arg1);
+			_nextIntention = null;
+		}
+		
 		super.onEvtReadyToAct();
 	}
 	
 	@Override
 	protected void onEvtCancel()
 	{
+		_nextIntention = null;
 		super.onEvtCancel();
 	}
 	
@@ -183,7 +150,19 @@ public class L2PlayerAI extends L2CharacterAI
 	@Override
 	protected void onIntentionActive()
 	{
-		setIntention(AI_INTENTION_IDLE);
+		if (getIntention() != AI_INTENTION_ACTIVE)
+		{
+			final IntentionCommand nextIntention = _nextIntention;
+			if (nextIntention != null)
+			{
+				_nextIntention = null;
+				setIntention(nextIntention._crtlIntention, nextIntention._arg0, nextIntention._arg1);
+			}
+			else
+			{
+				changeIntention(AI_INTENTION_ACTIVE, null, null);
+			}
+		}
 	}
 
 	@Override
@@ -288,20 +267,35 @@ public class L2PlayerAI extends L2CharacterAI
 	@Override
 	protected void onIntentionMoveTo(L2CharPosition loc)
 	{
-		if (getIntention() == CtrlIntention.AI_INTENTION_REST)
+		if (getIntention() == AI_INTENTION_REST)
 		{
+			// Cancel action client side by sending Server->Client packet ActionFailed to the L2PcInstance actor
 			clientActionFailed();
 			return;
 		}
-
+		if (_actor.getActingPlayer().getDuelState() == DuelState.DEAD)
+		{
+			clientActionFailed();
+			_actor.getActingPlayer().sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_MOVE_FROZEN));
+			return;
+		}
 		if (_actor.isAllSkillsDisabled() || _actor.isCastingNow() || _actor.isAttackingNow())
 		{
 			clientActionFailed();
+			saveNextIntention(CtrlIntention.AI_INTENTION_MOVE_TO, loc, null);
 			return;
 		}
 		
+		// Set the Intention of this AbstractAI to AI_INTENTION_MOVE_TO
 		changeIntention(CtrlIntention.AI_INTENTION_MOVE_TO, loc, null);
 		
+		// Stop the actor auto-attack client side by sending Server->Client packet AutoAttackStop (broadcast)
+		clientStopAutoAttack();
+		
+		// Abort the attack of the L2Character and send Server->Client ActionFailed packet
+		_actor.abortAttack();
+		
+		// Move the actor to Location (x,y,z) server side AND client side by sending Server->Client packet CharMoveToLocation (broadcast)
 		moveTo(loc.x, loc.y, loc.z);
 	}
 	

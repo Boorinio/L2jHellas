@@ -34,7 +34,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ExRedSky;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.Ride;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.util.Rnd;
@@ -419,9 +418,7 @@ public class CursedWeapon
 		// Refresh player stats
 		_player.broadcastUserInfo();
 
-		SocialAction atk = new SocialAction(_player.getObjectId(), 17);
-
-		_player.broadcastPacket(atk);
+		_player.broadcastSocialActionInRadius(17);
 
 		sm = SystemMessage.getSystemMessage(SystemMessageId.THE_OWNER_OF_S2_HAS_APPEARED_IN_THE_S1_REGION);
 		sm.addZoneName(_player.getX(), _player.getY(), _player.getZ()); // Region Name

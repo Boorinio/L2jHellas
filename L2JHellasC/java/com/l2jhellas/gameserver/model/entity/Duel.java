@@ -21,7 +21,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ExDuelStart;
 import com.l2jhellas.gameserver.network.serverpackets.ExDuelUpdateUserInfo;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class Duel
@@ -519,7 +518,7 @@ public class Duel
 		
 		for (L2PcInstance partyPlayer : _playerB.getParty().getPartyMembers())
 		{
-			partyPlayer.teleToLocation(x + offset - 180, y + 150, z,false);
+			partyPlayer.teleToLocation(x + offset - 180, y + 150, z);
 			offset += 40;
 		}
 	}
@@ -567,20 +566,20 @@ public class Duel
 				if (_partyDuel && _playerA.getParty() != null)
 				{
 					for (L2PcInstance partyPlayer : _playerA.getParty().getPartyMembers())
-						partyPlayer.broadcastPacket(new SocialAction(partyPlayer.getObjectId(), 3));
+						partyPlayer.broadcastSocialActionInRadius(3);
 				}
 				else
-					_playerA.broadcastPacket(new SocialAction(_playerA.getObjectId(), 3));
+					_playerA.broadcastSocialActionInRadius(3);
 			}
 			else if (_playerA.getDuelState() == DuelState.DEAD)
 			{
 				if (_partyDuel && _playerA.getParty() != null)
 				{
 					for (L2PcInstance partyPlayer : _playerA.getParty().getPartyMembers())
-						partyPlayer.broadcastPacket(new SocialAction(partyPlayer.getObjectId(), 7));
+						partyPlayer.broadcastSocialActionInRadius(7);
 				}
 				else
-					_playerA.broadcastPacket(new SocialAction(_playerA.getObjectId(), 7));
+					_playerA.broadcastSocialActionInRadius(7);
 			}
 		}
 		
@@ -591,20 +590,20 @@ public class Duel
 				if (_partyDuel && _playerB.getParty() != null)
 				{
 					for (L2PcInstance partyPlayer : _playerB.getParty().getPartyMembers())
-						partyPlayer.broadcastPacket(new SocialAction(partyPlayer.getObjectId(), 3));
+						partyPlayer.broadcastSocialActionInRadius(3);
 				}
 				else
-					_playerB.broadcastPacket(new SocialAction(_playerB.getObjectId(), 3));
+					_playerB.broadcastSocialActionInRadius(3);
 			}
 			else if (_playerB.getDuelState() == DuelState.DEAD)
 			{
 				if (_partyDuel && _playerB.getParty() != null)
 				{
 					for (L2PcInstance partyPlayer : _playerB.getParty().getPartyMembers())
-						partyPlayer.broadcastPacket(new SocialAction(partyPlayer.getObjectId(), 7));
+						partyPlayer.broadcastSocialActionInRadius(7);
 				}
 				else
-					_playerB.broadcastPacket(new SocialAction(_playerB.getObjectId(), 7));
+					_playerB.broadcastSocialActionInRadius(7);
 			}
 		}
 	}

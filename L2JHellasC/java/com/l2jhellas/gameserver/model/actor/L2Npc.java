@@ -161,7 +161,7 @@ public class L2Npc extends L2Character
 	private long lastSocialBroadcast = 0;
 
 	/**
-	 * Send a packet SocialAction to all L2PcInstance after the calculated delay.<BR>
+	 * Send a packet SocialAction to L2PcInstance after the calculated delay in radius.<BR>
 	 * <BR>
 	 */
 	public void onRandomAnimation()
@@ -172,7 +172,7 @@ public class L2Npc extends L2Character
 		{
 			lastSocialBroadcast = current;
 			// Send a packet SocialAction to all L2PcInstance in the _KnownPlayers of the L2NpcInstance
-			broadcastPacket(new SocialAction(getObjectId(), Rnd.get(2, 3)),800);
+			broadcastPacket(new SocialAction(getObjectId(), Rnd.get(2, 3)),700);
 		}
 
 	}

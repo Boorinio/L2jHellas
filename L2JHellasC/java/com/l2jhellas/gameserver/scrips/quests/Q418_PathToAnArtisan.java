@@ -19,7 +19,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 
 public class Q418_PathToAnArtisan extends Quest
 {
@@ -125,7 +124,7 @@ public class Q418_PathToAnArtisan extends Quest
 			st.takeItems(SecretBox, 1);
 			st.giveItems(FinalPassCertificate, 1);
 			st.rewardExpAndSp(3200, 6980);
-			player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+			player.broadcastSocialActionInRadius(3);
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
 		}
@@ -136,7 +135,7 @@ public class Q418_PathToAnArtisan extends Quest
 			st.takeItems(SecretBox, 1);
 			st.giveItems(FinalPassCertificate, 1);
 			st.rewardExpAndSp(3200, 3490);
-			player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+			player.broadcastSocialActionInRadius(3);
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
 		}

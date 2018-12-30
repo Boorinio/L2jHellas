@@ -18,7 +18,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.util.Rnd;
 
 public class Q212_TrialOfDuty extends Quest
@@ -121,7 +120,7 @@ public class Q212_TrialOfDuty extends Quest
 							st.takeItems(LETTER_OF_DUSTIN, 1);
 							st.giveItems(MARK_OF_DUTY, 1);
 							st.rewardExpAndSp(79832, 3750);
-							player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+							player.broadcastSocialActionInRadius(3);
 							st.playSound(QuestState.SOUND_FINISH);
 							st.exitQuest(false);
 						}

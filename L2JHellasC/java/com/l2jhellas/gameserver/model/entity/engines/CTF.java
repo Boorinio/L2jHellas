@@ -46,7 +46,6 @@ import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.RadarControl;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -275,7 +274,7 @@ public class CTF
 		}
 		// add the flag in his hands
 		_player.getInventory().equipItem(ItemTable.getInstance().createItem("", CTF._FLAG_IN_HAND_ITEM_ID, 1, _player, null));
-		_player.broadcastPacket(new SocialAction(_player.getObjectId(), 16),2000); // amazing glow
+		_player.broadcastSocialActionInRadius(16); // amazing glow
 		_player._haveFlagCTF = true;
 		_player.broadcastUserInfo();
 		CreatureSay cs = new CreatureSay(_player.getObjectId(), 15, ":", "You got it! Run back! ::"); // 8D
@@ -508,9 +507,9 @@ public class CTF
 						_flagsTaken.set(indexEnemy, false);
 						spawnFlag(_player._teamNameHaveFlagCTF);
 						// remove the flag from this player
-						_player.broadcastPacket(new SocialAction(_player.getObjectId(), 16),2000); // amazing glow
+						_player.broadcastSocialActionInRadius(16); // amazing glow
 						_player.broadcastUserInfo();
-						_player.broadcastPacket(new SocialAction(_player.getObjectId(), 3),2000); // Victory
+						_player.broadcastSocialActionInRadius(3); // Victory
 						_player.broadcastUserInfo();
 						removeFlagFromPlayer(_player);
 						_teamPointsCount.set(indexOwn, teamPointsCount(team) + 1);
@@ -1327,11 +1326,11 @@ public class CTF
 			{
 				if (!player._teamNameCTF.equals(teamName))
 				{
-					player.broadcastPacket(new SocialAction(player.getObjectId(), 7),2000);
+					player.broadcastSocialActionInRadius(7);
 				}
 				else if (player._teamNameCTF.equals(teamName))
 				{
-					player.broadcastPacket(new SocialAction(player.getObjectId(), 3),2000);
+					player.broadcastSocialActionInRadius(3);
 				}
 			}
 		}

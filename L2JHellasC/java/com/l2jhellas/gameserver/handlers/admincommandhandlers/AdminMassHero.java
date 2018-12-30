@@ -17,7 +17,6 @@ package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 
 public class AdminMassHero implements IAdminCommandHandler
 {
@@ -43,7 +42,7 @@ public class AdminMassHero implements IAdminCommandHandler
 					{
 						player.setHero(true);
 						player.sendMessage("Admin is rewarding all online players with Hero Status.");
-						player.broadcastPacket(new SocialAction(player.getObjectId(), 16));
+						player.broadcastSocialActionInRadius(16);
 						player.broadcastUserInfo();
 					}
 					player = null;

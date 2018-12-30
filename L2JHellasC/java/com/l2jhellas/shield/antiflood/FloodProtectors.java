@@ -61,6 +61,10 @@ public final class FloodProtectors
 	 * Transaction flood protector.
 	 */
 	private final FloodProtectorAction _transaction;
+	/**
+	 * Social flood protector.
+	 */
+	private final FloodProtectorAction _social;
 
 	/**
 	 * Creates new instance of FloodProtectors.
@@ -82,6 +86,7 @@ public final class FloodProtectors
 		_serverBypass = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_SERVER_BYPASS);
 		_multiSell = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_MULTISELL);
 		_transaction = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_TRANSACTION);
+		_social = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_SOCIALACTION);
 	}
 
 	/**
@@ -192,5 +197,15 @@ public final class FloodProtectors
 	public FloodProtectorAction getTransaction()
 	{
 		return _transaction;
+	}
+	
+	/**
+	 * Returns {@link #_social}.
+	 * 
+	 * @return {@link #_social}
+	 */
+	public FloodProtectorAction getSocial()
+	{
+		return _social;
 	}
 }

@@ -45,7 +45,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -840,9 +839,9 @@ public class TvT
 			if (player != null)
 			{
 				if (!player._teamNameTvT.equals(teamName))
-					player.broadcastPacket(new SocialAction(player.getObjectId(), 7),2000);
+					player.broadcastSocialActionInRadius(7);
 				else if (player._teamNameTvT.equals(teamName))
-					player.broadcastPacket(new SocialAction(player.getObjectId(), 3),2000);
+					player.broadcastSocialActionInRadius(3);
 			}
 		}
 	}

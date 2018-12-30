@@ -725,7 +725,7 @@ public class FeedableBeasts extends AbstractNpcAI
 			food = CRYSTAL_SPICE;
 		
 		// Display the social action of the beast eating the food.
-		npc.broadcastPacket(new SocialAction(npc.getObjectId(), 2));
+		npc.broadcastPacket(new SocialAction(npc.getObjectId(), 2),1200);
 		
 		// If the pet can grow
 		if (_GrowthCapableMobs.containsKey(npcId))

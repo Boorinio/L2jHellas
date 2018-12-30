@@ -19,7 +19,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 
 public class Q402_PathToAHumanKnight extends Quest
 {
@@ -150,7 +149,7 @@ public class Q402_PathToAHumanKnight extends Quest
 			st.takeItems(MarkOfEsquire, 1);
 			st.giveItems(SwordOfRitual, 1);
 			st.rewardExpAndSp(3200, 1500 + (1920 * (coinCount - 3)));
-			player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+			player.broadcastSocialActionInRadius(3);
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(true);
 		}
@@ -195,7 +194,7 @@ public class Q402_PathToAHumanKnight extends Quest
 							st.takeItems(MarkOfEsquire, 1);
 							st.giveItems(SwordOfRitual, 1);
 							st.rewardExpAndSp(3200, 7260);
-							player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+							player.broadcastSocialActionInRadius(3);
 							st.playSound(QuestState.SOUND_FINISH);
 							st.exitQuest(true);
 						}

@@ -18,7 +18,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.util.Rnd;
 
 public class Q224_TestOfSagittarius extends Quest
@@ -203,7 +202,7 @@ public class Q224_TestOfSagittarius extends Quest
 							st.takeItems(TALISMAN_OF_KADESH, 1);
 							st.giveItems(MARK_OF_SAGITTARIUS, 1);
 							st.rewardExpAndSp(54726, 20250);
-							player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
+							player.broadcastSocialActionInRadius(3);
 							st.playSound(QuestState.SOUND_FINISH);
 							st.exitQuest(false);
 						}

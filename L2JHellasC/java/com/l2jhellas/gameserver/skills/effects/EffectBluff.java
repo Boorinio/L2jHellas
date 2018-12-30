@@ -21,7 +21,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import com.l2jhellas.gameserver.network.serverpackets.StartRotation;
 import com.l2jhellas.gameserver.network.serverpackets.StopRotation;
 import com.l2jhellas.gameserver.skills.Env;
-import com.l2jhellas.util.Rnd;
 
 /**
  * @author decad
@@ -54,17 +53,12 @@ public final class EffectBluff extends L2Effect
 		if (getEffected() instanceof L2SiegeSummonInstance)
 			return false;
 
-		if (Rnd.get(95) <= 55)
-		{
 			getEffected().setTarget(null);
 			getEffected().abortAttack();
 			getEffected().abortCast();
 			getEffected().broadcastPacket(new StartRotation(getEffected().getObjectId(), getEffected().getHeading(), 1, 65535));
-			getEffected().broadcastPacket(new StopRotation(getEffected().getObjectId(), getEffector().getHeading(), 65535));
 			getEffected().setHeading(getEffector().getHeading());
 			return true;
-		}
-		return false;
 	}
 
 	@Override

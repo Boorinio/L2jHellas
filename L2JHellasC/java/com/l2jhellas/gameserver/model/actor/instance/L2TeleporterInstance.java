@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.TeleportLocationData;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -56,48 +57,89 @@ public final class L2TeleporterInstance extends L2NpcInstance
 		StringTokenizer st = new StringTokenizer(command, " ");
 		String actualCommand = st.nextToken(); // Get actual command
 
-		if (actualCommand.equalsIgnoreCase("goto"))
+		final int sealAvariceOwner = SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_AVARICE);
+		final int sealGnosisOwner = SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_GNOSIS);
+		final int playerCabal = SevenSigns.getInstance().getPlayerCabal(player);
+		final int winningCabal = SevenSigns.getInstance().getCabalHighestScore();
+		
+		if (actualCommand.startsWith("necro"))
 		{
-			int npcId = getTemplate().npcId;
-
-			switch (npcId)
+			boolean canPort = true;
+			if (SevenSigns.getInstance().isSealValidationPeriod())
 			{
-				case 31095: //
-				case 31096: //
-				case 31097: //
-				case 31098: // Enter Necropolises
-				case 31099: //
-				case 31100: //
-				case 31101: //
-				case 31102: //
-
-				case 31114: //
-				case 31115: //
-				case 31116: // Enter Catacombs
-				case 31117: //
-				case 31118: //
-				case 31119: //
-					player.setIsIn7sDungeon(true);
-				break;
-				case 31103: //
-				case 31104: //
-				case 31105: //
-				case 31106: // Exit Necropolises
-				case 31107: //
-				case 31108: //
-				case 31109: //
-				case 31110: //
-
-				case 31120: //
-				case 31121: //
-				case 31122: // Exit Catacombs
-				case 31123: //
-				case 31124: //
-				case 31125: //
-					player.setIsIn7sDungeon(false);
-				break;
+				if (winningCabal == SevenSigns.CABAL_DAWN && (playerCabal != SevenSigns.CABAL_DAWN || sealAvariceOwner != SevenSigns.CABAL_DAWN))
+				{
+					player.sendPacket(SystemMessageId.CAN_BE_USED_BY_DAWN);
+					canPort = false;
+				}
+				else if (winningCabal == SevenSigns.CABAL_DUSK && (playerCabal != SevenSigns.CABAL_DUSK || sealAvariceOwner != SevenSigns.CABAL_DUSK))
+				{
+					player.sendPacket(SystemMessageId.CAN_BE_USED_BY_DUSK);
+					canPort = false;
+				}
+				else if (winningCabal == SevenSigns.CABAL_NULL && playerCabal != SevenSigns.CABAL_NULL)
+					canPort = true;
+				else if (playerCabal == SevenSigns.CABAL_NULL)
+					canPort = false;
 			}
-
+			else
+			{
+				if (playerCabal == SevenSigns.CABAL_NULL)
+					canPort = false;
+			}
+			
+			if (!canPort)
+			{
+				final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+				html.setFile(SevenSigns.SEVEN_SIGNS_HTML_PATH + "necro_no.htm");
+				player.sendPacket(html);
+			}
+			else
+			{
+				doTeleport(player, Integer.parseInt(st.nextToken()));
+				player.setIsIn7sDungeon(true);
+			}
+		}
+		else if (actualCommand.startsWith("cata"))
+		{
+			boolean canPort = true;
+			if (SevenSigns.getInstance().isSealValidationPeriod())
+			{
+				if (winningCabal == SevenSigns.CABAL_DAWN && (playerCabal != SevenSigns.CABAL_DAWN || sealGnosisOwner != SevenSigns.CABAL_DAWN))
+				{
+					player.sendPacket(SystemMessageId.CAN_BE_USED_BY_DAWN);
+					canPort = false;
+				}
+				else if (winningCabal == SevenSigns.CABAL_DUSK && (playerCabal != SevenSigns.CABAL_DUSK || sealGnosisOwner != SevenSigns.CABAL_DUSK))
+				{
+					player.sendPacket(SystemMessageId.CAN_BE_USED_BY_DUSK);
+					canPort = false;
+				}
+				else if (winningCabal == SevenSigns.CABAL_NULL && playerCabal != SevenSigns.CABAL_NULL)
+					canPort = true;
+				else if (playerCabal == SevenSigns.CABAL_NULL)
+					canPort = false;
+			}
+			else
+			{
+				if (playerCabal == SevenSigns.CABAL_NULL)
+					canPort = false;
+			}
+			
+			if (!canPort)
+			{
+				final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+				html.setFile(SevenSigns.SEVEN_SIGNS_HTML_PATH + "cata_no.htm");
+				player.sendPacket(html);
+			}
+			else
+			{
+				doTeleport(player, Integer.parseInt(st.nextToken()));
+				player.setIsIn7sDungeon(true);
+			}
+		}
+		else if (actualCommand.equalsIgnoreCase("goto"))
+		{
 			if (st.countTokens() <= 0)
 			{
 				return;
@@ -121,6 +163,11 @@ public final class L2TeleporterInstance extends L2NpcInstance
 					player.sendMessage("You don't have the sufficient access level to teleport there.");
 				return;
 			}
+		}
+		else if (actualCommand.startsWith("exit"))
+		{
+			doTeleport(player, Integer.parseInt(st.nextToken()));
+			player.setIsIn7sDungeon(false);
 		}
 
 		super.onBypassFeedback(player, command);

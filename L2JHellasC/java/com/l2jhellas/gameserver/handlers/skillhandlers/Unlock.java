@@ -24,7 +24,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2ChestInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.util.Rnd;
@@ -169,7 +168,7 @@ public class Unlock implements ISkillHandler
 				}
 				if (Rnd.get(100) <= chestChance)
 				{
-					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 3));
+					activeChar.getActingPlayer().broadcastSocialActionInRadius(3);
 					chest.setSpecialDrop();
 					chest.setMustRewardExpSp(false);
 					chest.setInteracted();
@@ -177,7 +176,7 @@ public class Unlock implements ISkillHandler
 				}
 				else
 				{
-					activeChar.broadcastPacket(new SocialAction(activeChar.getObjectId(), 13));
+					activeChar.getActingPlayer().broadcastSocialActionInRadius(13);
 					if (Rnd.get(100) < chestTrapLimit)
 						chest.chestTrap(activeChar);
 					chest.setInteracted();

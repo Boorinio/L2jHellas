@@ -197,6 +197,7 @@ public class Blow implements ISkillHandler
 						}
 					}
 					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LETHAL_STRIKE));
+					
 				}
 				else if (skill.getLethalChance1() > 0 && chance < Formulas.getInstance().calcLethal(activeChar, target, skill.getLethalChance1()))
 				{
@@ -208,7 +209,9 @@ public class Blow implements ISkillHandler
 					}
 					else if (target instanceof L2Npc) // If is a monster remove first damage and after 50% of current hp
 						target.reduceCurrentHp(target.getCurrentHp() / 2, activeChar);
-					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LETHAL_STRIKE));
+					
+					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LETHAL_STRIKE));		
+
 				}
 			}
 			L2Effect effect = activeChar.getFirstEffect(skill.getId());

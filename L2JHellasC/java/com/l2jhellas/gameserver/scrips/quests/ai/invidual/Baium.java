@@ -183,7 +183,7 @@ public class Baium extends AbstractNpcAI
 			}
 			else if (event.equalsIgnoreCase("baium_neck"))
 			{
-				npc.broadcastPacket(new SocialAction(npc.getObjectId(), 3));
+				npc.broadcastPacket(new SocialAction(npc.getObjectId(), 3),1200);
 			}
 			else if (event.equalsIgnoreCase("sacrifice_waker"))
 			{
@@ -201,7 +201,7 @@ public class Baium extends AbstractNpcAI
 			else if (event.equalsIgnoreCase("baium_roar"))
 			{
 				// Roar animation
-				npc.broadcastPacket(new SocialAction(npc.getObjectId(), 1));
+				npc.broadcastPacket(new SocialAction(npc.getObjectId(), 1),1200);
 				
 				// Spawn angels
 				for (int[] element : ANGEL_LOCATION)
@@ -331,7 +331,7 @@ public class Baium extends AbstractNpcAI
 				GrandBossManager.addBoss((L2GrandBossInstance) baium);
 				
 				// First animation
-				baium.broadcastPacket(new SocialAction(baium.getObjectId(), 2));
+				baium.broadcastPacket(new SocialAction(baium.getObjectId(), 2),1200);
 				baium.broadcastPacket(new Earthquake(baium.getX(), baium.getY(), baium.getZ(), 40, 10));
 				
 				// Second animation, waker sacrifice, followed by angels spawn, third animation and finally movement.
