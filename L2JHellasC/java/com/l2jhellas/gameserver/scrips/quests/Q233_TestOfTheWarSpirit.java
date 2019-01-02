@@ -12,10 +12,10 @@
  */
 package com.l2jhellas.gameserver.scrips.quests;
 
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
-import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.util.Rnd;
@@ -160,10 +160,10 @@ public class Q233_TestOfTheWarSpirit extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getClassId() == ClassId.orcShaman)
+				if (player.getClassId() == ClassId.ORC_SHAMAN)
 					htmltext = (player.getLevel() < 39) ? "30510-03.htm" : "30510-04.htm";
 				else
-					htmltext = (player.getRace() == Race.orc) ? "30510-02.htm" : "30510-01.htm";
+					htmltext = (player.getRace() == ClassRace.ORC) ? "30510-02.htm" : "30510-01.htm";
 				break;
 			
 			case STATE_STARTED:

@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -48,7 +34,7 @@ public class Q414_PathToAnOrcRaider extends Quest
 	
 	public Q414_PathToAnOrcRaider()
 	{
-		super(414, qn, "Path To An Orc Raider");
+		super(414, qn,"Path To An Orc Raider");
 		
 		setItemsIds(GREEN_BLOOD, GOBLIN_DWELLING_MAP, KURUKA_RATMAN_TOOTH, BETRAYER_REPORT_1, BETRAYER_REPORT_2, HEAD_OF_BETRAYER, TIMORA_ORC_HEAD);
 		
@@ -69,8 +55,8 @@ public class Q414_PathToAnOrcRaider extends Quest
 		// KARUKIA
 		if (event.equalsIgnoreCase("30570-05.htm"))
 		{
-			if (player.getClassId() != ClassId.orcFighter)
-				htmltext = (player.getClassId() == ClassId.orcRaider) ? "30570-02a.htm" : "30570-03.htm";
+			if (player.getClassId() != ClassId.ORC_FIGHTER)
+				htmltext = (player.getClassId() == ClassId.ORC_RAIDER) ? "30570-02a.htm" : "30570-03.htm";
 			else if (player.getLevel() < 19)
 				htmltext = "30570-02.htm";
 			else if (st.hasQuestItems(MARK_OF_RAIDER))
@@ -233,5 +219,10 @@ public class Q414_PathToAnOrcRaider extends Quest
 		}
 		
 		return null;
+	}
+	
+	public static void main(String[] args)
+	{
+		new Q414_PathToAnOrcRaider();
 	}
 }

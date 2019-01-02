@@ -19,7 +19,7 @@ import java.util.List;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.audio.Music;
+import com.l2jhellas.gameserver.emum.Music;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.holder.SkillHolder;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;

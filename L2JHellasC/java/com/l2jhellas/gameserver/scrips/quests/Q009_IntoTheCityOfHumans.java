@@ -12,9 +12,9 @@
  */
 package com.l2jhellas.gameserver.scrips.quests;
 
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 
@@ -80,7 +80,7 @@ public class Q009_IntoTheCityOfHumans extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 3 && player.getRace() == Race.orc)
+				if (player.getLevel() >= 3 && player.getRace() == ClassRace.ORC)
 					htmltext = "30583-00.htm";
 				else
 					htmltext = "30583-00a.htm";

@@ -12,9 +12,9 @@
  */
 package com.l2jhellas.gameserver.templates;
 
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
 /**
@@ -205,15 +205,15 @@ public class L2BuffTemplate
 		boolean cond = false;
 		if (_race == 0 || _race == 31)
 			return true;
-		if ((player.getRace() == Race.human) && (_race & 16) != 0)
+		if ((player.getRace() == ClassRace.HUMAN) && (_race & 16) != 0)
 			cond = true;
-		if ((player.getRace() == Race.elf) && (_race & 8) != 0)
+		if ((player.getRace() == ClassRace.ELF) && (_race & 8) != 0)
 			cond = true;
-		if ((player.getRace() == Race.darkelf) && (_race & 4) != 0)
+		if ((player.getRace() == ClassRace.DARK_ELF) && (_race & 4) != 0)
 			cond = true;
-		if ((player.getRace() == Race.orc) && (_race & 2) != 0)
+		if ((player.getRace() == ClassRace.ORC) && (_race & 2) != 0)
 			cond = true;
-		if ((player.getRace() == Race.dwarf) && (_race & 1) != 0)
+		if ((player.getRace() == ClassRace.DWARF) && (_race & 1) != 0)
 			cond = true;
 		return cond;
 	}

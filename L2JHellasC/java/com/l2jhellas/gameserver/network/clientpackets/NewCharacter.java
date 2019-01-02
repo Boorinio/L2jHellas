@@ -31,17 +31,19 @@ public final class NewCharacter extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		final CharTemplates ct = new CharTemplates();
+		CharTemplates ct = new CharTemplates();
+		
 		ct.addChar(CharTemplateData.getInstance().getTemplate(0));
-		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.fighter)); 
-		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.mage));
-		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.elvenFighter));
-		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.elvenMage)); 
-		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.darkFighter)); 
-		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.darkMage));
-		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.orcFighter)); 
-		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.orcMage)); 
-		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.dwarvenFighter)); 
+		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.HUMAN_FIGHTER));
+		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.HUMAN_MYSTIC));
+		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.ELVEN_FIGHTER));
+		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.ELVEN_MYSTIC));
+		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.DARK_FIGHTER));
+		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.DARK_MYSTIC));
+		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.ORC_FIGHTER));
+		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.ORC_MYSTIC));
+		ct.addChar(CharTemplateData.getInstance().getTemplate(ClassId.DWARVEN_FIGHTER));
+		
 		sendPacket(ct);
 	}
 

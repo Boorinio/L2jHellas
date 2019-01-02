@@ -176,13 +176,9 @@ public final class RequestActionUse extends L2GameClientPacket
 				{
 					// returns pet to control item
 					if (pet.isDead())
-					{
 						activeChar.sendPacket(SystemMessageId.DEAD_PET_CANNOT_BE_RETURNED);
-					}
 					else if (pet.isAttackingNow() || pet.isRooted() || pet.getOwner().isAttackingNow())
-					{
 						activeChar.sendPacket(SystemMessageId.PET_CANNOT_SENT_BACK_DURING_BATTLE);
-					}
 					else
 					{
 						// if it is a pet and not a summon

@@ -12,9 +12,9 @@
  */
 package com.l2jhellas.gameserver.scrips.quests;
 
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 
@@ -111,7 +111,7 @@ public class Q293_TheHiddenVeins extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getRace() != Race.dwarf)
+				if (player.getRace() != ClassRace.DWARF)
 					htmltext = "30535-00.htm";
 				else if (player.getLevel() < 6)
 					htmltext = "30535-01.htm";

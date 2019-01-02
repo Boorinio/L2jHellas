@@ -12,9 +12,15 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver.model.base;
+package com.l2jhellas.gameserver.emum;
 
-public enum ClassLevel
+public enum DuelResult
 {
-	First, Second, Third, Fourth
+	CONTINUE,
+	TEAM_1_WIN,
+	TEAM_2_WIN,
+	TEAM_1_SURRENDER,
+	TEAM_2_SURRENDER,
+	CANCELED,
+	TIMEOUT;
 }

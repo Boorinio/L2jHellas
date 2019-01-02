@@ -12,9 +12,9 @@
  */
 package com.l2jhellas.gameserver.scrips.quests;
 
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 
@@ -106,7 +106,7 @@ public class Q107_MercilessPunishment extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getRace() != Race.orc)
+				if (player.getRace() != ClassRace.ORC)
 					htmltext = "30568-00.htm";
 				else if (player.getLevel() < 12)
 					htmltext = "30568-01.htm";

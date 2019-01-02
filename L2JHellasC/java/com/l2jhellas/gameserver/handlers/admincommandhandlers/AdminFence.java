@@ -3,13 +3,13 @@ package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
+import com.l2jhellas.gameserver.emum.FenceState;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.FenceManager;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2FenceInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.fence.FenceState;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
 /**

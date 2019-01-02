@@ -1,4 +1,4 @@
-package com.l2jhellas.gameserver.model.base;
+package com.l2jhellas.gameserver.emum;
 
 /**
  * This class defines all races that a player can choose.

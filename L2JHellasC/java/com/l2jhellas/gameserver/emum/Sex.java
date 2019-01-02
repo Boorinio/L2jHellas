@@ -12,10 +12,11 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver.model.base;
+package com.l2jhellas.gameserver.emum;
 
-public class Sex
+public enum Sex
 {
-	public static final int MALE = 0;
-	public static final int FEMALE = 1;
+	MALE,
+	FEMALE,
+	ETC;
 }

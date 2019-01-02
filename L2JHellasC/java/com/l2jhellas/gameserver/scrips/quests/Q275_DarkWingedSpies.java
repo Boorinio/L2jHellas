@@ -12,9 +12,9 @@
  */
 package com.l2jhellas.gameserver.scrips.quests;
 
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.util.Rnd;
@@ -72,7 +72,7 @@ public class Q275_DarkWingedSpies extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getRace() != Race.orc)
+				if (player.getRace() != ClassRace.ORC)
 					htmltext = "30567-00.htm";
 				else if (player.getLevel() < 11)
 					htmltext = "30567-01.htm";

@@ -12,9 +12,9 @@
  */
 package com.l2jhellas.gameserver.scrips.quests;
 
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 
@@ -71,7 +71,7 @@ public class Q003_WillTheSealBeBroken extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getRace() != Race.darkelf)
+				if (player.getRace() != ClassRace.DARK_ELF)
 					htmltext = "30141-00.htm";
 				else if (player.getLevel() < 16)
 					htmltext = "30141-01.htm";

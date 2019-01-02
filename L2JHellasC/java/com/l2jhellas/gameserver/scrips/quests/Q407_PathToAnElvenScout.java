@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -25,38 +11,38 @@ public class Q407_PathToAnElvenScout extends Quest
 	private static final String qn = "Q407_PathToAnElvenScout";
 	
 	// Items
-	private static final int ReisasLetter = 1207;
-	private static final int PriasLetter1 = 1208;
-	private static final int PriasLetter2 = 1209;
-	private static final int PriasLetter3 = 1210;
-	private static final int PriasLetter4 = 1211;
-	private static final int MorettisHerb = 1212;
-	private static final int MorettisLetter = 1214;
-	private static final int PriasLetter = 1215;
-	private static final int HonoraryGuard = 1216;
-	private static final int ReisasRecommendation = 1217;
-	private static final int RustedKey = 1293;
+	private static final int REISA_LETTER = 1207;
+	private static final int PRIAS_TORN_LETTER_1 = 1208;
+	private static final int PRIAS_TORN_LETTER_2 = 1209;
+	private static final int PRIAS_TORN_LETTER_3 = 1210;
+	private static final int PRIAS_TORN_LETTER_4 = 1211;
+	private static final int MORETTI_HERB = 1212;
+	private static final int MORETTI_LETTER = 1214;
+	private static final int PRIAS_LETTER = 1215;
+	private static final int HONORARY_GUARD = 1216;
+	private static final int REISA_RECOMMENDATION = 1217;
+	private static final int RUSTED_KEY = 1293;
 	
 	// NPCs
-	private static final int Reisa = 30328;
-	private static final int Babenco = 30334;
-	private static final int Moretti = 30337;
-	private static final int Prias = 30426;
+	private static final int REISA = 30328;
+	private static final int BABENCO = 30334;
+	private static final int MORETTI = 30337;
+	private static final int PRIAS = 30426;
 	
 	public Q407_PathToAnElvenScout()
 	{
-		super(407, qn, "Path to an Elven Scout");
+		super(407,qn, "Path to an Elven Scout");
 		
-		setItemsIds(ReisasLetter, PriasLetter1, PriasLetter2, PriasLetter3, PriasLetter4, MorettisHerb, MorettisLetter, PriasLetter, HonoraryGuard, RustedKey);
+		setItemsIds(REISA_LETTER, PRIAS_TORN_LETTER_1, PRIAS_TORN_LETTER_2, PRIAS_TORN_LETTER_3, PRIAS_TORN_LETTER_4, MORETTI_HERB, MORETTI_LETTER, PRIAS_LETTER, HONORARY_GUARD, RUSTED_KEY);
 		
-		addStartNpc(Reisa);
-		addTalkId(Reisa, Moretti, Babenco, Prias);
+		addStartNpc(REISA);
+		addTalkId(REISA, MORETTI, BABENCO, PRIAS);
 		
 		addKillId(20053, 27031);
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
+	public String onAdvEvent(String event, L2Npc npc,L2PcInstance player)
 	{
 		String htmltext = event;
 		QuestState st = player.getQuestState(qn);
@@ -65,45 +51,32 @@ public class Q407_PathToAnElvenScout extends Quest
 		
 		if (event.equalsIgnoreCase("30328-05.htm"))
 		{
-			if (player.getClassId() != ClassId.elvenFighter)
-			{
-				if (player.getClassId() == ClassId.elvenScout)
-					htmltext = "30328-02a.htm";
-				else
-					htmltext = "30328-02.htm";
-				
-				st.exitQuest(true);
-			}
+			if (player.getClassId() != ClassId.ELVEN_FIGHTER)
+				htmltext = (player.getClassId() == ClassId.ELVEN_SCOUT) ? "30328-02a.htm" : "30328-02.htm";
 			else if (player.getLevel() < 19)
-			{
 				htmltext = "30328-03.htm";
-				st.exitQuest(true);
-			}
-			else if (st.hasQuestItems(ReisasRecommendation))
-			{
+			else if (st.hasQuestItems(REISA_RECOMMENDATION))
 				htmltext = "30328-04.htm";
-				st.exitQuest(true);
-			}
 			else
 			{
-				st.set("cond", "1");
 				st.setState(STATE_STARTED);
-				st.giveItems(ReisasLetter, 1);
+				st.set("cond", "1");
 				st.playSound(QuestState.SOUND_ACCEPT);
+				st.giveItems(REISA_LETTER, 1);
 			}
 		}
 		else if (event.equalsIgnoreCase("30337-03.htm"))
 		{
-			st.takeItems(ReisasLetter, -1);
 			st.set("cond", "2");
 			st.playSound(QuestState.SOUND_MIDDLE);
+			st.takeItems(REISA_LETTER, -1);
 		}
 		
 		return htmltext;
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc, L2PcInstance player)
+	public String onTalk(L2Npc npc,L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg();
 		QuestState st = player.getQuestState(qn);
@@ -117,19 +90,19 @@ public class Q407_PathToAnElvenScout extends Quest
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
-					case Reisa:
+					case REISA:
 						if (cond == 1)
 							htmltext = "30328-06.htm";
-						else if (cond >= 2 && cond <= 7)
+						else if (cond > 1 && cond < 8)
 							htmltext = "30328-08.htm";
 						else if (cond == 8)
 						{
 							htmltext = "30328-07.htm";
-							st.takeItems(HonoraryGuard, -1);
-							st.giveItems(ReisasRecommendation, 1);
+							st.takeItems(HONORARY_GUARD, -1);
+							st.giveItems(REISA_RECOMMENDATION, 1);
 							st.rewardExpAndSp(3200, 1000);
 							player.broadcastSocialActionInRadius(3);
 							st.playSound(QuestState.SOUND_FINISH);
@@ -137,48 +110,43 @@ public class Q407_PathToAnElvenScout extends Quest
 						}
 						break;
 					
-					case Moretti:
+					case MORETTI:
 						if (cond == 1)
 							htmltext = "30337-01.htm";
 						else if (cond == 2)
-						{
-							if (!st.hasQuestItems(PriasLetter1))
-								htmltext = "30337-04.htm";
-							else
-								htmltext = "30337-05.htm";
-						}
+							htmltext = (!st.hasQuestItems(PRIAS_TORN_LETTER_1)) ? "30337-04.htm" : "30337-05.htm";
 						else if (cond == 3)
 						{
 							htmltext = "30337-06.htm";
 							st.set("cond", "4");
 							st.playSound(QuestState.SOUND_MIDDLE);
-							st.takeItems(PriasLetter1, -1);
-							st.takeItems(PriasLetter2, -1);
-							st.takeItems(PriasLetter3, -1);
-							st.takeItems(PriasLetter4, -1);
-							st.giveItems(MorettisHerb, 1);
-							st.giveItems(MorettisLetter, 1);
+							st.takeItems(PRIAS_TORN_LETTER_1, -1);
+							st.takeItems(PRIAS_TORN_LETTER_2, -1);
+							st.takeItems(PRIAS_TORN_LETTER_3, -1);
+							st.takeItems(PRIAS_TORN_LETTER_4, -1);
+							st.giveItems(MORETTI_HERB, 1);
+							st.giveItems(MORETTI_LETTER, 1);
 						}
-						else if (cond >= 4 && cond <= 6)
+						else if (cond > 3 && cond < 7)
 							htmltext = "30337-09.htm";
-						else if (cond == 7 && st.hasQuestItems(PriasLetter))
+						else if (cond == 7 && st.hasQuestItems(PRIAS_LETTER))
 						{
 							htmltext = "30337-07.htm";
 							st.set("cond", "8");
 							st.playSound(QuestState.SOUND_MIDDLE);
-							st.takeItems(PriasLetter, -1);
-							st.giveItems(HonoraryGuard, 1);
+							st.takeItems(PRIAS_LETTER, -1);
+							st.giveItems(HONORARY_GUARD, 1);
 						}
 						else if (cond == 8)
 							htmltext = "30337-08.htm";
 						break;
 					
-					case Babenco:
+					case BABENCO:
 						if (cond == 2)
 							htmltext = "30334-01.htm";
 						break;
 					
-					case Prias:
+					case PRIAS:
 						if (cond == 4)
 						{
 							htmltext = "30426-01.htm";
@@ -192,10 +160,10 @@ public class Q407_PathToAnElvenScout extends Quest
 							htmltext = "30426-02.htm";
 							st.set("cond", "7");
 							st.playSound(QuestState.SOUND_MIDDLE);
-							st.takeItems(RustedKey, -1);
-							st.takeItems(MorettisHerb, -1);
-							st.takeItems(MorettisLetter, -1);
-							st.giveItems(PriasLetter, 1);
+							st.takeItems(RUSTED_KEY, -1);
+							st.takeItems(MORETTI_HERB, -1);
+							st.takeItems(MORETTI_LETTER, -1);
+							st.giveItems(PRIAS_LETTER, 1);
 						}
 						else if (cond == 7)
 							htmltext = "30426-04.htm";
@@ -208,42 +176,42 @@ public class Q407_PathToAnElvenScout extends Quest
 	}
 	
 	@Override
-	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(L2Npc npc,L2PcInstance player, boolean isPet)
 	{
+		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
+		if (st == null)
+			return null;
+		
+		final int cond = st.getInt("cond");
 		if (npc.getNpcId() == 20053)
 		{
-			QuestState st = checkPlayerCondition(player, npc, "cond", "2");
-			if (st != null)
+			if (cond == 2)
 			{
-				if (!st.hasQuestItems(PriasLetter1))
+				if (!st.hasQuestItems(PRIAS_TORN_LETTER_1))
 				{
-					st.giveItems(PriasLetter1, 1);
 					st.playSound(QuestState.SOUND_ITEMGET);
+					st.giveItems(PRIAS_TORN_LETTER_1, 1);
 				}
-				else if (!st.hasQuestItems(PriasLetter2))
+				else if (!st.hasQuestItems(PRIAS_TORN_LETTER_2))
 				{
-					st.giveItems(PriasLetter2, 1);
 					st.playSound(QuestState.SOUND_ITEMGET);
+					st.giveItems(PRIAS_TORN_LETTER_2, 1);
 				}
-				else if (!st.hasQuestItems(PriasLetter3))
+				else if (!st.hasQuestItems(PRIAS_TORN_LETTER_3))
 				{
-					st.giveItems(PriasLetter3, 1);
 					st.playSound(QuestState.SOUND_ITEMGET);
+					st.giveItems(PRIAS_TORN_LETTER_3, 1);
 				}
-				else if (!st.hasQuestItems(PriasLetter4))
+				else if (!st.hasQuestItems(PRIAS_TORN_LETTER_4))
 				{
-					st.giveItems(PriasLetter4, 1);
-					st.playSound(QuestState.SOUND_MIDDLE);
 					st.set("cond", "3");
+					st.playSound(QuestState.SOUND_MIDDLE);
+					st.giveItems(PRIAS_TORN_LETTER_4, 1);
 				}
 			}
 		}
-		else
-		{
-			QuestState st = checkPlayerCondition(player, npc, "cond", "5");
-			if (st != null && st.dropItems(RustedKey, 1, 1, 500000))
-				st.set("cond", "6");
-		}
+		else if ((cond == 4 || cond == 5) && st.dropItems(RUSTED_KEY, 1, 1, 600000))
+			st.set("cond", "6");
 		
 		return null;
 	}

@@ -14,10 +14,10 @@
  */
 package com.l2jhellas.gameserver.ai;
 
+import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ACTIVE;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_CAST;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
-import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ACTIVE;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_INTERACT;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_PICK_UP;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_REST;
@@ -25,6 +25,7 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_REST;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.DuelState;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
@@ -32,7 +33,6 @@ import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Character.AIAccessor;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
-import com.l2jhellas.gameserver.model.entity.Duel.DuelState;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
@@ -85,7 +85,19 @@ public class L2PlayerAI extends L2CharacterAI
 		saveNextIntention(_intention, _intentionArg0, _intentionArg1);
 		super.changeIntention(intention, arg0, arg1);
 	}
+	
+	@Override
+	protected void onEvtAttacked(L2Character target)
+	{		
+		if(target == null || _actor.isDead())
+			return;
 
+		if (_actor.getActingPlayer().getPet()!=null)
+		{
+			_actor.getActingPlayer().getPet().getAI().clientStartAutoAttack();
+		}
+	}
+	
 	/**
 	 * Finalize the casting of a skill. This method overrides L2CharacterAI method.<BR>
 	 * <BR>

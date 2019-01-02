@@ -12,34 +12,14 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver.model.base;
+package com.l2jhellas.gameserver.emum;
 
 /**
- * This class defines all races<BR>
- * (human, elf, darkelf, orc, dwarf)<BR>
- * that a player can chose.
+ * ClassType Enum
+ * 
+ * @author Tempy
  */
-public enum Race
+public enum ClassType
 {
-	
-	human(1),
-	elf(1.5),
-	darkelf(1.5),
-	orc(0.9),
-	dwarf(0.8);
-
-	private final double _breathMultiplier;
-	
-	private Race(double breathMultiplier)
-	{
-		_breathMultiplier = breathMultiplier;
-	}
-	
-	/**
-	 * @return the breath multiplier.
-	 */
-	public double getBreathMultiplier()
-	{
-		return _breathMultiplier;
-	}
+	FIGHTER, MYSTIC, PRIEST
 }

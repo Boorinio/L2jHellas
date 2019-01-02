@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -63,7 +49,7 @@ public class Q417_PathToBecomeAScavenger extends Quest
 	
 	public Q417_PathToBecomeAScavenger()
 	{
-		super(417, qn, "Path To Become A Scavenger");
+		super(417, qn,"Path To Become A Scavenger");
 		
 		setItemsIds(PIPPI_LETTER, RAUT_TELEPORT_SCROLL, SUCCUBUS_UNDIES, MION_LETTER, BRONK_INGOT, SHARI_AXE, ZIMENF_POTION, BRONK_PAY, SHARI_PAY, ZIMENF_PAY, BEAR_PICTURE, TARANTULA_PICTURE, HONEY_JAR, BEAD, BEAD_PARCEL_1, BEAD_PARCEL_2);
 		
@@ -84,8 +70,8 @@ public class Q417_PathToBecomeAScavenger extends Quest
 		// PIPPI
 		if (event.equalsIgnoreCase("30524-05.htm"))
 		{
-			if (player.getClassId() != ClassId.dwarvenFighter)
-				htmltext = (player.getClassId() == ClassId.scavenger) ? "30524-02a.htm" : "30524-08.htm";
+			if (player.getClassId() != ClassId.DWARVEN_FIGHTER)
+				htmltext = (player.getClassId() == ClassId.SCAVENGER) ? "30524-02a.htm" : "30524-08.htm";
 			else if (player.getLevel() < 19)
 				htmltext = "30524-02.htm";
 			else if (st.hasQuestItems(RING_OF_RAVEN))
@@ -415,5 +401,10 @@ public class Q417_PathToBecomeAScavenger extends Quest
 		}
 		
 		return null;
+	}
+	
+	public static void main(String[] args)
+	{
+		new Q417_PathToBecomeAScavenger();
 	}
 }

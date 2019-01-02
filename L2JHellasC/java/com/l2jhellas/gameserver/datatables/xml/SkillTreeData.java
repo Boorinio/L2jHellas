@@ -85,7 +85,7 @@ public class SkillTreeData
 			return 0;
 
 		// since expertise comes at same level for all classes we use paladin for now
-		Map<Integer, L2SkillLearn> learnMap = getSkillTrees().get(ClassId.paladin);
+		Map<Integer, L2SkillLearn> learnMap = getSkillTrees().get(ClassId.PALADIN);
 
 		int skillHashCode = SkillTable.getSkillHashCode(239, grade);
 
@@ -728,7 +728,7 @@ public class SkillTreeData
 					skillCost *= skill.getCrossLearnRace();
 				}
 
-				if (classId.isMage() != player.getClassId().isMage())
+				if (classId.getType() != player.getClassId().getType())
 				{
 					skillCost *= skill.getCrossLearnProf();
 				}

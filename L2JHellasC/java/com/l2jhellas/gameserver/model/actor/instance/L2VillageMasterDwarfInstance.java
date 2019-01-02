@@ -14,8 +14,8 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import com.l2jhellas.gameserver.model.base.PlayerClass;
-import com.l2jhellas.gameserver.model.base.PlayerRace;
+import com.l2jhellas.gameserver.emum.ClassRace;
+import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 public final class L2VillageMasterDwarfInstance extends L2VillageMasterInstance
@@ -26,11 +26,11 @@ public final class L2VillageMasterDwarfInstance extends L2VillageMasterInstance
 	}
 	
 	@Override
-	protected final boolean checkVillageMasterRace(PlayerClass pclass)
+	protected final boolean checkVillageMasterRace(ClassId pclass)
 	{
 		if (pclass == null)
 			return false;
 		
-		return pclass.isOfRace(PlayerRace.Dwarf);
+		return pclass.getRace() == ClassRace.DWARF;
 	}
 }

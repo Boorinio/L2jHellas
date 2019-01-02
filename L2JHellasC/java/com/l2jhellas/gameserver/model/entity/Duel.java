@@ -7,7 +7,9 @@ import java.util.concurrent.Future;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.audio.Music;
+import com.l2jhellas.gameserver.emum.DuelResult;
+import com.l2jhellas.gameserver.emum.DuelState;
+import com.l2jhellas.gameserver.emum.Music;
 import com.l2jhellas.gameserver.instancemanager.DuelManager;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
@@ -868,24 +870,4 @@ public class Duel
 		}
 	}
 	
-	public static enum DuelState
-	{
-		NO_DUEL,
-		ON_COUNTDOWN,
-		DUELLING,
-		DEAD,
-		WINNER,
-		INTERRUPTED
-	}
-		
-	private static enum DuelResult
-	{
-		CONTINUE,
-		TEAM_1_WIN,
-		TEAM_2_WIN,
-		TEAM_1_SURRENDER,
-		TEAM_2_SURRENDER,
-		CANCELED,
-		TIMEOUT
-	}
 }

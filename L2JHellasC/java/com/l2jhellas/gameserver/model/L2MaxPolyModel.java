@@ -18,7 +18,7 @@ import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.xml.ArmorSetsData;
 import com.l2jhellas.gameserver.datatables.xml.ArmorSetsData.ArmorDummy;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
-import com.l2jhellas.gameserver.model.base.Race;
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
 /**
@@ -29,7 +29,7 @@ public class L2MaxPolyModel
 	// Base
 	private String _name;
 	private String _title;
-	private final Race _race;
+	private final ClassRace _race;
 	private int _sex;
 	private int _hair;
 	private int _hairColor;
@@ -95,7 +95,7 @@ public class L2MaxPolyModel
 		if (data.getInteger("titleColor") > 0)
 			_titleColor = data.getInteger("titleColor");
 
-		_race = CharTemplateData.getInstance().getTemplate(_classId).race;
+		_race = CharTemplateData.getInstance().getTemplate(_classId).getRace();
 
 		ArmorDummy armor = ArmorSetsData.getInstance().getCusArmorSets(_armorId);
 
@@ -581,7 +581,7 @@ public class L2MaxPolyModel
 		return _npcId;
 	}
 
-	public Race getRace()
+	public ClassRace getRace()
 	{
 		return _race;
 	}

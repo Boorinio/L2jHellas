@@ -155,7 +155,7 @@ public class Q228_TestOfMagus extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getClassId() != ClassId.wizard && player.getClassId() != ClassId.elvenWizard && player.getClassId() != ClassId.darkWizard)
+				if (player.getClassId() != ClassId.HUMAN_WIZARD && player.getClassId() != ClassId.ELVEN_WIZARD && player.getClassId() != ClassId.DARK_WIZARD)
 					htmltext = "30629-01.htm";
 				else if (player.getLevel() < 39)
 					htmltext = "30629-02.htm";

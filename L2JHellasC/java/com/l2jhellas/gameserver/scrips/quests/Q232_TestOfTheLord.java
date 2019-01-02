@@ -12,10 +12,10 @@
  */
 package com.l2jhellas.gameserver.scrips.quests;
 
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
-import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 
@@ -184,9 +184,9 @@ public class Q232_TestOfTheLord extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getRace() != Race.orc)
+				if (player.getRace() != ClassRace.ORC)
 					htmltext = "30565-01.htm";
-				else if (player.getClassId() != ClassId.orcShaman)
+				else if (player.getClassId() != ClassId.ORC_SHAMAN)
 					htmltext = "30565-02.htm";
 				else if (player.getLevel() < 39)
 					htmltext = "30565-03.htm";

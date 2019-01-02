@@ -29,7 +29,6 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.AutoAttackStart;
@@ -635,11 +634,6 @@ abstract class AbstractAI implements Ctrl
 	 */
 	public void clientStartAutoAttack()
 	{
-		if (_actor instanceof L2Summon)
-		{
-			_actor.getActingPlayer().getAI().clientStartAutoAttack();
-			return;
-		}
 		if (!isAutoAttacking())
 		{
 			if (_actor instanceof L2PcInstance && ((L2PcInstance) _actor).getPet() != null)

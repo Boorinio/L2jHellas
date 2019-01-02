@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.audio.Music;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
+import com.l2jhellas.gameserver.emum.Music;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2CommandChannel;
 import com.l2jhellas.gameserver.model.L2Party;

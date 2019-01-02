@@ -15,9 +15,9 @@ package com.l2jhellas.gameserver.scrips.quests;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 
@@ -74,7 +74,7 @@ public class Q004_LongliveThePaagrioLord extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getRace() != Race.orc)
+				if (player.getRace() != ClassRace.ORC)
 					htmltext = "30578-00.htm";
 				else if (player.getLevel() < 2)
 					htmltext = "30578-01.htm";

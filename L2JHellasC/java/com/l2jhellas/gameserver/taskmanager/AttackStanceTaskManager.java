@@ -53,9 +53,12 @@ public class AttackStanceTaskManager implements Runnable
 	{
 		if (character instanceof L2Playable)
 		{
-			for (L2CubicInstance cubic : character.getActingPlayer().getCubics().values())
-				if (cubic.getId() != L2CubicInstance.LIFE_CUBIC)
-					cubic.doAction(character.getActingPlayer());
+			if(character.getActingPlayer()!=null && !character.getActingPlayer().getCubics().isEmpty())
+			{
+			   for (L2CubicInstance cubic : character.getActingPlayer().getCubics().values())
+				    if (cubic!=null && cubic.getId() != L2CubicInstance.LIFE_CUBIC)
+					    cubic.doAction(character.getActingPlayer());
+			}
 		}
 		
 		_characters.put(character, System.currentTimeMillis() + ATTACK_STANCE_PERIOD);

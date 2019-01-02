@@ -29,9 +29,9 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.skills.conditions.Condition;
 import com.l2jhellas.gameserver.skills.conditions.ConditionElementSeed;
 import com.l2jhellas.gameserver.skills.conditions.ConditionGameChance;
@@ -383,7 +383,7 @@ abstract class DocumentBase
 			Node a = attrs.item(i);
 			if ("race".equalsIgnoreCase(a.getNodeName()))
 			{
-				Race race = Race.valueOf(a.getNodeValue());
+				ClassRace race = ClassRace.valueOf(a.getNodeValue());
 				cond = joinAnd(cond, new ConditionPlayerRace(race));
 			}
 			else if ("level".equalsIgnoreCase(a.getNodeName()))

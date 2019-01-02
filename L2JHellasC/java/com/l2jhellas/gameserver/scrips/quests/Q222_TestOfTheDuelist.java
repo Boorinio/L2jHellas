@@ -12,9 +12,9 @@
  */
 package com.l2jhellas.gameserver.scrips.quests;
 
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 
@@ -90,7 +90,7 @@ public class Q222_TestOfTheDuelist extends Quest
 		
 		if (event.equalsIgnoreCase("30623-04.htm"))
 		{
-			if (player.getRace() == Race.orc)
+			if (player.getRace() == ClassRace.ORC)
 				htmltext = "30623-05.htm";
 		}
 		else if (event.equalsIgnoreCase("30623-07.htm"))

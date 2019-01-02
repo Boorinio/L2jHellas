@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -25,29 +11,29 @@ public class Q409_PathToAnElvenOracle extends Quest
 	private static final String qn = "Q409_PathToAnElvenOracle";
 	
 	// Items
-	private static final int CrystalMedallion = 1231;
-	private static final int SwindlersMoney = 1232;
-	private static final int AllanasDiary = 1233;
-	private static final int LizardCaptainOrder = 1234;
-	private static final int LeafofOracle = 1235;
-	private static final int HalfofDiary = 1236;
-	private static final int TamilsNecklace = 1275;
+	private static final int CRYSTAL_MEDALLION = 1231;
+	private static final int SWINDLER_MONEY = 1232;
+	private static final int ALLANA_DIARY = 1233;
+	private static final int LIZARD_CAPTAIN_ORDER = 1234;
+	private static final int LEAF_OF_ORACLE = 1235;
+	private static final int HALF_OF_DIARY = 1236;
+	private static final int TAMIL_NECKLACE = 1275;
 	
 	// NPCs
-	private static final int Manuel = 30293;
-	private static final int Allana = 30424;
-	private static final int Perrin = 30428;
+	private static final int MANUEL = 30293;
+	private static final int ALLANA = 30424;
+	private static final int PERRIN = 30428;
 	
 	public Q409_PathToAnElvenOracle()
 	{
-		super(409, qn, "Path to an Elven Oracle");
+		super(409,qn, "Path to an Elven Oracle");
 		
-		setItemsIds(CrystalMedallion, SwindlersMoney, AllanasDiary, LizardCaptainOrder, HalfofDiary, TamilsNecklace);
+		setItemsIds(CRYSTAL_MEDALLION, SWINDLER_MONEY, ALLANA_DIARY, LIZARD_CAPTAIN_ORDER, HALF_OF_DIARY, TAMIL_NECKLACE);
 		
-		addStartNpc(Manuel);
-		addTalkId(Manuel, Allana, Perrin);
+		addStartNpc(MANUEL);
+		addTalkId(MANUEL, ALLANA, PERRIN);
 		
-		addKillId(27032, 27035);
+		addKillId(27032, 27033, 27034, 27035);
 	}
 	
 	@Override
@@ -60,17 +46,18 @@ public class Q409_PathToAnElvenOracle extends Quest
 		
 		if (event.equalsIgnoreCase("30293-05.htm"))
 		{
-			st.set("cond", "1");
 			st.setState(STATE_STARTED);
+			st.set("cond", "1");
 			st.playSound(QuestState.SOUND_ACCEPT);
-			st.giveItems(CrystalMedallion, 1);
+			st.giveItems(CRYSTAL_MEDALLION, 1);
 		}
 		else if (event.equalsIgnoreCase("spawn_lizards"))
 		{
+			st.set("cond", "2");
+			st.playSound(QuestState.SOUND_MIDDLE);
 			addSpawn(27032, -92319, 154235, -3284, 2000, false, 0, false);
 			addSpawn(27033, -92361, 154190, -3284, 2000, false, 0, false);
 			addSpawn(27034, -92375, 154278, -3278, 2000, false, 0, false);
-			st.set("cond", "2");
 			return null;
 		}
 		else if (event.equalsIgnoreCase("30428-06.htm"))
@@ -90,48 +77,35 @@ public class Q409_PathToAnElvenOracle extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getClassId() != ClassId.elvenMage)
-				{
-					if (player.getClassId() == ClassId.oracle)
-						htmltext = "30293-02a.htm";
-					else
-						htmltext = "30293-02.htm";
-					
-					st.exitQuest(true);
-				}
+				if (player.getClassId() != ClassId.ELVEN_MYSTIC)
+					htmltext = (player.getClassId() == ClassId.ELVEN_ORACLE) ? "30293-02a.htm" : "30293-02.htm";
 				else if (player.getLevel() < 19)
-				{
 					htmltext = "30293-03.htm";
-					st.exitQuest(true);
-				}
-				else if (st.hasQuestItems(LeafofOracle))
-				{
+				else if (st.hasQuestItems(LEAF_OF_ORACLE))
 					htmltext = "30293-04.htm";
-					st.exitQuest(true);
-				}
 				else
 					htmltext = "30293-01.htm";
 				break;
 			
 			case STATE_STARTED:
-				int cond = st.getInt("cond");
+				final int cond = st.getInt("cond");
 				switch (npc.getNpcId())
 				{
-					case Manuel:
+					case MANUEL:
 						if (cond == 1)
 							htmltext = "30293-06.htm";
 						else if (cond == 2 || cond == 3)
 							htmltext = "30293-09.htm";
-						else if (cond >= 4 && cond <= 6)
+						else if (cond > 3 && cond < 7)
 							htmltext = "30293-07.htm";
 						else if (cond == 7)
 						{
 							htmltext = "30293-08.htm";
-							st.takeItems(CrystalMedallion, 1);
-							st.takeItems(SwindlersMoney, 1);
-							st.takeItems(AllanasDiary, 1);
-							st.takeItems(LizardCaptainOrder, 1);
-							st.giveItems(LeafofOracle, 1);
+							st.takeItems(ALLANA_DIARY, 1);
+							st.takeItems(CRYSTAL_MEDALLION, 1);
+							st.takeItems(LIZARD_CAPTAIN_ORDER, 1);
+							st.takeItems(SWINDLER_MONEY, 1);
+							st.giveItems(LEAF_OF_ORACLE, 1);
 							st.rewardExpAndSp(3200, 1130);
 							player.broadcastSocialActionInRadius(3);
 							st.playSound(QuestState.SOUND_FINISH);
@@ -139,7 +113,7 @@ public class Q409_PathToAnElvenOracle extends Quest
 						}
 						break;
 					
-					case Allana:
+					case ALLANA:
 						if (cond == 1)
 							htmltext = "30424-01.htm";
 						else if (cond == 3)
@@ -147,7 +121,7 @@ public class Q409_PathToAnElvenOracle extends Quest
 							htmltext = "30424-02.htm";
 							st.set("cond", "4");
 							st.playSound(QuestState.SOUND_MIDDLE);
-							st.giveItems(HalfofDiary, 1);
+							st.giveItems(HALF_OF_DIARY, 1);
 						}
 						else if (cond == 4)
 							htmltext = "30424-03.htm";
@@ -158,14 +132,14 @@ public class Q409_PathToAnElvenOracle extends Quest
 							htmltext = "30424-04.htm";
 							st.set("cond", "7");
 							st.playSound(QuestState.SOUND_MIDDLE);
-							st.takeItems(HalfofDiary, -1);
-							st.giveItems(AllanasDiary, 1);
+							st.takeItems(HALF_OF_DIARY, -1);
+							st.giveItems(ALLANA_DIARY, 1);
 						}
 						else if (cond == 7)
 							htmltext = "30424-05.htm";
 						break;
 					
-					case Perrin:
+					case PERRIN:
 						if (cond == 4)
 							htmltext = "30428-01.htm";
 						else if (cond == 5)
@@ -173,8 +147,8 @@ public class Q409_PathToAnElvenOracle extends Quest
 							htmltext = "30428-04.htm";
 							st.set("cond", "6");
 							st.playSound(QuestState.SOUND_MIDDLE);
-							st.takeItems(TamilsNecklace, -1);
-							st.giveItems(SwindlersMoney, 1);
+							st.takeItems(TAMIL_NECKLACE, -1);
+							st.giveItems(SWINDLER_MONEY, 1);
 						}
 						else if (cond > 5)
 							htmltext = "30428-05.htm";
@@ -193,23 +167,20 @@ public class Q409_PathToAnElvenOracle extends Quest
 		if (st == null)
 			return null;
 		
-		if (npc.getNpcId() == 27032)
-		{
-			if (st.getInt("cond") == 2)
-			{
-				st.set("cond", "3");
-				st.playSound(QuestState.SOUND_MIDDLE);
-				st.giveItems(LizardCaptainOrder, 1);
-			}
-		}
-		else
+		if (npc.getNpcId() == 27035)
 		{
 			if (st.getInt("cond") == 4)
 			{
 				st.set("cond", "5");
 				st.playSound(QuestState.SOUND_MIDDLE);
-				st.giveItems(TamilsNecklace, 1);
+				st.giveItems(TAMIL_NECKLACE, 1);
 			}
+		}
+		else if (st.getInt("cond") == 2)
+		{
+			st.set("cond", "3");
+			st.playSound(QuestState.SOUND_MIDDLE);
+			st.giveItems(LIZARD_CAPTAIN_ORDER, 1);
 		}
 		
 		return null;

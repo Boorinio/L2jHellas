@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.base.ClassId;
-import com.l2jhellas.gameserver.model.base.Race;
 
 /**
  * @author mkizub
@@ -29,7 +29,7 @@ public class L2PcTemplate extends L2CharTemplate
 
 	/** The Class object of the L2PcInstance */
 	public final ClassId classId;
-	public final Race race;
+	public final ClassRace race;
 	public final String className;
 	public final int _currentCollisionRadius;
 	public final int _currentCollisionHeight;
@@ -52,7 +52,7 @@ public class L2PcTemplate extends L2CharTemplate
 	{
 		super(set);
 		classId = ClassId.values()[set.getInteger("classId")];
-		race = Race.values()[set.getInteger("raceId")];
+		race = ClassRace.values()[set.getInteger("raceId")];
 		className = set.getString("className");
 		_currentCollisionRadius = set.getInteger("collision_radiusf");
 		_currentCollisionHeight = set.getInteger("collision_heightf");
@@ -82,6 +82,10 @@ public class L2PcTemplate extends L2CharTemplate
 			_items.add(item);
 	}
 
+	public final ClassRace getRace()
+	{
+		return classId.getRace();
+	}
 	@Override
 	public int getCollisionRadius(boolean sex)
 	{

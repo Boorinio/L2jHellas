@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver.audio;
+package com.l2jhellas.gameserver.emum;
 
+import com.l2jhellas.gameserver.audio.IAudio;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 

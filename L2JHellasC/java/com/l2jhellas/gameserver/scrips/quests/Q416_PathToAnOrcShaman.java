@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -64,7 +50,7 @@ public class Q416_PathToAnOrcShaman extends Quest
 	
 	public Q416_PathToAnOrcShaman()
 	{
-		super(416, qn, "Path To An Orc Shaman");
+		super(416,qn, "Path To An Orc Shaman");
 		
 		setItemsIds(FIRE_CHARM, KASHA_BEAR_PELT, KASHA_BLADE_SPIDER_HUSK, FIERY_EGG_1, HESTUI_MASK, FIERY_EGG_2, TOTEM_SPIRIT_CLAW, TATARU_LETTER, FLAME_CHARM, GRIZZLY_BLOOD, BLOOD_CAULDRON, SPIRIT_NET, BOUND_DURKA_SPIRIT, DURKA_PARASITE, TOTEM_SPIRIT_BLOOD);
 		
@@ -85,8 +71,8 @@ public class Q416_PathToAnOrcShaman extends Quest
 		// TATARU ZU HESTUI
 		if (event.equalsIgnoreCase("30585-05.htm"))
 		{
-			if (player.getClassId() != ClassId.orcMage)
-				htmltext = (player.getClassId() == ClassId.orcShaman) ? "30585-02a.htm" : "30585-02.htm";
+			if (player.getClassId() != ClassId.ORC_MYSTIC)
+				htmltext = (player.getClassId() == ClassId.ORC_SHAMAN) ? "30585-02a.htm" : "30585-02.htm";
 			else if (player.getLevel() < 19)
 				htmltext = "30585-03.htm";
 			else if (st.hasQuestItems(MASK_OF_MEDIUM))
@@ -434,5 +420,10 @@ public class Q416_PathToAnOrcShaman extends Quest
 		}
 		
 		return null;
+	}
+	
+	public static void main(String[] args)
+	{
+		new Q416_PathToAnOrcShaman();
 	}
 }

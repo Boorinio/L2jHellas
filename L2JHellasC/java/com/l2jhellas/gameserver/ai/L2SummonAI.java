@@ -21,6 +21,10 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_INTERACT;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_PICK_UP;
 
+import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.L2SkillType;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Character.AIAccessor;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
 
@@ -104,6 +108,35 @@ public class L2SummonAI extends L2CharacterAI
 			return;
 		
 		setIntention(AI_INTENTION_IDLE);
+	}
+ 
+	@Override
+	protected void onEvtAttacked(L2Character attacker)
+	{
+		final L2Summon summon = (L2Summon) _actor;
+		
+		if(summon!=null)
+		   summon.getOwner().getAI().clientStartAutoAttack();
+	}
+	
+	@Override
+	protected void onEvtFinishCasting()
+	{
+		final L2Summon summon = (L2Summon) _actor;
+		
+		if (_skill.isOffensive() && !(_skill.getSkillType() == L2SkillType.UNLOCK) && !(_skill.getSkillType() == L2SkillType.DELUXE_KEY_UNLOCK))
+		    summon.getOwner().getAI().clientStartAutoAttack();	      
+		
+		if (getCastTarget() == null)
+			summon.setFollowStatus(((L2Summon) _actor).getFollowStatus());
+		else
+			setIntention(CtrlIntention.AI_INTENTION_ATTACK,getCastTarget());		
+	}
+	
+	@Override
+	protected void onIntentionCast(L2Skill skill, L2Object target)
+	{
+		super.onIntentionCast(skill, target);
 	}
 
 	@Override

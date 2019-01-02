@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
@@ -22,12 +23,9 @@ import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.base.ClassId;
-import com.l2jhellas.gameserver.model.base.ClassLevel;
-import com.l2jhellas.gameserver.model.base.PlayerClass;
-import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
+import com.l2jhellas.gameserver.network.serverpackets.HennaInfo;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
-import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -68,16 +66,15 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 			ClassId classId = player.getClassId();
 			int jobLevel = 0;
 			int level = player.getLevel();
-			ClassLevel lvl = PlayerClass.values()[classId.getId()].getLevel();
-			switch (lvl)
+			switch (player.getClassId().level())
 			{
-				case First:
+				case 0:
 					jobLevel = 1;
 				break;
-				case Second:
+				case 1:
 					jobLevel = 2;
 				break;
-				case Third:
+				case 2:
 					jobLevel = 3;
 				break;
 				default:
@@ -115,21 +112,21 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 				StringBuilder sb = new StringBuilder();
 				sb.append("<html><body>");
-				switch (jobLevel)
+				switch (player.getClassId().level())
 				{
-					case 1:
+					case 0:
 						sb.append("Come back here when you reach level 20 to change your class.<br>");
 					break;
-					case 2:
+					case 1:
 						sb.append("Come back here when you reach level 40 to change your class.<br>");
+					break;
+					case 2:
+						sb.append("Come back here when you reach level 76 to change your class.<br>");
 					break;
 					case 3:
 						sb.append("There are no more class changes for you.<br>");
 					break;
 				}
-
-				//for (Quest q : Quest.findAllEvents())
-					//sb.append("Event: <a action=\"bypass -h Quest " + q.getName() + "\">" + q.getDescr() + "</a><br>");
 
 				sb.append("</body></html>");
 				html.setHtml(sb.toString());
@@ -184,96 +181,15 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 		else if (command.startsWith("change_class"))
 		{
 			int val = Integer.parseInt(command.substring(13));
-
-			// Exploit prevention
-			ClassId classId = player.getClassId();
-			int level = player.getLevel();
-			int jobLevel = 0;
-			int newJobLevel = 0;
-
-			ClassLevel lvlnow = PlayerClass.values()[classId.getId()].getLevel();
-
-			if (player.isGM())
+			
+			if (ChangeClass(player, val))
 			{
-				changeClass(player, val);
-				player.rewardSkills();
-
-				if (val >= 88)
-					player.sendPacket(SystemMessageId.THIRD_CLASS_TRANSFER); // system sound 3rd occupation
-				else
-					player.sendPacket(SystemMessageId.CLASS_TRANSFER);    // system sound for 1st and 2nd occupation
-
-				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-				StringBuilder sb = new StringBuilder();
-				sb.append("<html><body>");
-				sb.append("You have now become a <font color=\"LEVEL\">" + CharTemplateData.getInstance().getClassNameById(player.getClassId().getId()) + "</font>.");
-				sb.append("</body></html>");
-
-				html.setHtml(sb.toString());
+				final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+				html.setFile("data/html/classmaster/ok.htm");
+				html.replace("%name%", CharTemplateData.getInstance().getClassNameById(val));
 				player.sendPacket(html);
-				return;
-			}
-			switch (lvlnow)
-			{
-				case First:
-					jobLevel = 1;
-				break;
-				case Second:
-					jobLevel = 2;
-				break;
-				case Third:
-					jobLevel = 3;
-				break;
-				default:
-					jobLevel = 4;
-			}
-
-			if (jobLevel == 4)
-				return; // no more job changes
-
-			ClassLevel lvlnext = PlayerClass.values()[val].getLevel();
-			switch (lvlnext)
-			{
-				case First:
-					newJobLevel = 1;
-				break;
-				case Second:
-					newJobLevel = 2;
-				break;
-				case Third:
-					newJobLevel = 3;
-				break;
-				default:
-					newJobLevel = 4;
-			}
-
-			// prevents changing between same level jobs
-			if (newJobLevel != jobLevel + 1)
-				return;
-
-			if (level < 20 && newJobLevel > 1)
-				return;
-			if (level < 40 && newJobLevel > 2)
-				return;
-			if (level < 75 && newJobLevel > 3)
-				return;
-			// -- prevention ends
-
-			changeClass(player, val);
-			player.rewardSkills();
-
-			if (val >= 88)
-				player.sendPacket(SystemMessageId.THIRD_CLASS_TRANSFER); // system sound 3rd occupation
-			else
-				player.sendPacket(SystemMessageId.CLASS_TRANSFER); // system sound for 1st and 2nd occupation
-
-			player.broadcastPacket(new MagicSkillUse(player, player, 5103, 1, 1000, 0));
-
-			HtmlShow(player);						
+			}						
 			
-			checkAutoEq(player,newJobLevel);
-			
-			checks(player);
 		}
 		else
 		{
@@ -460,17 +376,20 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 		return;
 	}
 
-	private void changeClass(L2PcInstance player, int val)
+	private final boolean ChangeClass(L2PcInstance player, int val)
 	{
 		final ClassId currentClassId = player.getClassId();
 		if (getMinLevel(currentClassId.level()) > player.getLevel())
-			return;
+			return false;
 		
 		if (!validateClassId(currentClassId, val))
-			return;
+			return false;
+		
+		int newJobLevel = currentClassId.level() + 1;
+		
 		
 		player.setClassId(val);
-
+		
 		if (player.isSubClassActive())
 			player.getSubClasses().get(player.getClassIndex()).setClassId(player.getActiveClass());
 		else
@@ -489,21 +408,16 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 
             // player.setBaseClass(player.getActiveClass());
 		}
+		
+		checkAutoEq(player,newJobLevel);
+		
+		checks(player);
+		
+		player.sendPacket(new HennaInfo(player));
 		player.broadcastUserInfo();
+		return true;
 	}
-	
-	private final void HtmlShow(L2PcInstance player)
-	{
-		final NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-		StringBuilder sb = new StringBuilder();
-		sb.append("<html><body>");
-		sb.append("You have now become a <font color=\"LEVEL\">" + CharTemplateData.getInstance().getClassNameById(player.getClassId().getId()) + "</font>.");
-		sb.append("</body></html>");
 
-		html.setHtml(sb.toString());
-		player.sendPacket(html);
-	}
-	
 	private final void checks(L2PcInstance player)
 	{
 		if (!Config.ALLOW_ARCHERS_WEAR_HEAVY)
@@ -569,7 +483,7 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 	
 	private final void checkAutoEq(L2PcInstance player,int newJobLevel)
 	{	
-		if(Config.CLASS_AUTO_EQUIP_AW && newJobLevel == 4 && !player.isSubClassActive())
+		if(Config.CLASS_AUTO_EQUIP_AW && newJobLevel >= 3 && !player.isSubClassActive())
 			player.giveClassItems(player.getClassId());
 	}
 	
@@ -581,10 +495,13 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 	 */
 	private static final boolean validateClassId(ClassId oldCID, ClassId newCID)
 	{
-		if (newCID == null || newCID.getRace() == null)
+		if (newCID == null)
 			return false;
 		
-		if (oldCID.equals(newCID.getParent()))
+		if (oldCID == newCID.getParent())
+			return true;
+		
+		if (newCID.childOf(oldCID))
 			return true;
 		
 		return false;
@@ -619,7 +536,7 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 	{
 		try
 		{
-			return validateClassId(oldCID, ClassId.values()[val]);
+			return validateClassId(oldCID, ClassId.VALUES[val]);
 		}
 		catch (Exception e)
 		{

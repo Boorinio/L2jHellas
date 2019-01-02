@@ -12,9 +12,9 @@
  */
 package com.l2jhellas.gameserver.scrips.quests;
 
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 
@@ -97,7 +97,7 @@ public class Q006_StepIntoTheFuture extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getRace() != Race.human || player.getLevel() < 3)
+				if (player.getRace() != ClassRace.HUMAN || player.getLevel() < 3)
 					htmltext = "30006-01.htm";
 				else
 					htmltext = "30006-02.htm";

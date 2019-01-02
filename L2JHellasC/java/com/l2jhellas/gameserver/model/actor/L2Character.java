@@ -37,6 +37,7 @@ import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable.TeleportWhereType;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData.FrequentSkill;
+import com.l2jhellas.gameserver.emum.DuelState;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.geodata.GeoMove;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
@@ -64,6 +65,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2ArtefactInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2GuardInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MinionInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcWalkerInstance;
@@ -74,7 +76,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2RiftInvaderInstance;
 import com.l2jhellas.gameserver.model.actor.stat.CharStat;
 import com.l2jhellas.gameserver.model.actor.status.CharStatus;
 import com.l2jhellas.gameserver.model.entity.Castle;
-import com.l2jhellas.gameserver.model.entity.Duel.DuelState;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
@@ -105,7 +106,6 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.skills.effects.EffectCharge;
 import com.l2jhellas.gameserver.skills.funcs.Func;
-import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 import com.l2jhellas.gameserver.templates.L2CharTemplate;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
@@ -796,7 +796,7 @@ public abstract class L2Character extends L2Object
 		
 		if (player != null)
 		{
-			AttackStanceTaskManager.getInstance().add(player);
+			player.getAI().clientStartAutoAttack();;
 			player.updatePvPStatus(target);				
 		}
 		
@@ -2267,8 +2267,7 @@ public abstract class L2Character extends L2Object
 			catch (Throwable e)
 			{
 				_log.severe(MagicUseTask.class.getName() + ": Throwable: EnableSkill");
-				if (Config.DEVELOPER)
-					e.printStackTrace();
+				e.printStackTrace();
 				enableAllSkills();
 			}
 		}
@@ -5202,6 +5201,9 @@ public abstract class L2Character extends L2Object
 		
 		if (attacker instanceof L2MonsterInstance)
 			return false;
+		
+		if (attacker instanceof L2GuardInstance)
+			return false;
 
 		
 		// Summon or player check.
@@ -5900,11 +5902,29 @@ public abstract class L2Character extends L2Object
 		}
 		
 		if (skill.isOffensive() && !(skill.getSkillType() == L2SkillType.UNLOCK) && !(skill.getSkillType() == L2SkillType.DELUXE_KEY_UNLOCK))
+		{
 			getAI().clientStartAutoAttack();
+			
+			if(target instanceof L2PcInstance)
+			{
+				((L2PcInstance) target).getAI().clientStartAutoAttack();
+				
+				// Flag the attacker if it's a L2PcInstance outside a PvP area
+				L2PcInstance player = null;
+				
+				if (this instanceof L2PcInstance)
+					player = (L2PcInstance) this;
+				else if (this instanceof L2Summon)
+					player = ((L2Summon) this).getOwner();
+				
+				if (player != null)
+					player.updatePvPStatus((L2PcInstance)target);				
+			}
+		}
 		
 		// Notify the AI of the L2Character with EVT_FINISH_CASTING
 		getAI().notifyEvent(CtrlEvent.EVT_FINISH_CASTING);
-		
+	
 		/*
 		 * If character is a player, then wipe their current cast state and
 		 * check if a skill is queued.

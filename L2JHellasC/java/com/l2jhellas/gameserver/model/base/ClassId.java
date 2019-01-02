@@ -1,519 +1,372 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.base;
 
+import java.util.EnumSet;
+
+import com.l2jhellas.gameserver.emum.ClassRace;
+import com.l2jhellas.gameserver.emum.ClassType;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+
+
 /**
- * This class defines all classes (ex : human fighter, darkFighter...) that a player can chose.<BR>
- * <BR>
- * Data :<BR>
+ * This class defines all classes (ex : human fighter, darkFighter...) that a player can chose.
+ * <ul>
  * <li>id : The Identifier of the class</li>
  * <li>isMage : True if the class is a mage class</li>
  * <li>race : The race of this class</li>
  * <li>parent : The parent ClassId or null if this class is the root</li>
+ * </ul>
  */
 public enum ClassId
 {
-
-    /** The fighter. */
-    fighter(0x00, false, Race.human, null),
-
-    /** The warrior. */
-    warrior(0x01, false, Race.human, fighter),
-
-    /** The gladiator. */
-    gladiator(0x02, false, Race.human, warrior),
-
-    /** The warlord. */
-    warlord(0x03, false, Race.human, warrior),
-
-    /** The knight. */
-    knight(0x04, false, Race.human, fighter),
-
-    /** The paladin. */
-    paladin(0x05, false, Race.human, knight),
-
-    /** The dark avenger. */
-    darkAvenger(0x06, false, Race.human, knight),
-
-    /** The rogue. */
-    rogue(0x07, false, Race.human, fighter),
-
-    /** The treasure hunter. */
-    treasureHunter(0x08, false, Race.human, rogue),
-
-    /** The hawkeye. */
-    hawkeye(0x09, false, Race.human, rogue),
-
-    /** The mage. */
-    mage(0x0a, true, Race.human, null),
-
-    /** The wizard. */
-    wizard(0x0b, true, Race.human, mage),
-
-    /** The sorceror. */
-    sorceror(0x0c, true, Race.human, wizard),
-
-    /** The necromancer. */
-    necromancer(0x0d, true, Race.human, wizard),
-
-    /** The warlock. */
-    warlock(0x0e, true, Race.human, wizard),
-
-    /** The cleric. */
-    cleric(0x0f, true, Race.human, mage),
-
-    /** The bishop. */
-    bishop(0x10, true, Race.human, cleric),
-
-    /** The prophet. */
-    prophet(0x11, true, Race.human, cleric),
-
-    /** The elven fighter. */
-    elvenFighter(0x12, false, Race.elf, null),
-
-    /** The elven knight. */
-    elvenKnight(0x13, false, Race.elf, elvenFighter),
-
-    /** The temple knight. */
-    templeKnight(0x14, false, Race.elf, elvenKnight),
-
-    /** The sword singer. */
-    swordSinger(0x15, false, Race.elf, elvenKnight),
-
-    /** The elven scout. */
-    elvenScout(0x16, false, Race.elf, elvenFighter),
-
-    /** The plains walker. */
-    plainsWalker(0x17, false, Race.elf, elvenScout),
-
-    /** The silver ranger. */
-    silverRanger(0x18, false, Race.elf, elvenScout),
-
-    /** The elven mage. */
-    elvenMage(0x19, true, Race.elf, null),
-
-    /** The elven wizard. */
-    elvenWizard(0x1a, true, Race.elf, elvenMage),
-
-    /** The spellsinger. */
-    spellsinger(0x1b, true, Race.elf, elvenWizard),
-
-    /** The elemental summoner. */
-    elementalSummoner(0x1c, true, Race.elf, elvenWizard),
-
-    /** The oracle. */
-    oracle(0x1d, true, Race.elf, elvenMage),
-
-    /** The elder. */
-    elder(0x1e, true, Race.elf, oracle),
-
-    /** The dark fighter. */
-    darkFighter(0x1f, false, Race.darkelf, null),
-
-    /** The palus knight. */
-    palusKnight(0x20, false, Race.darkelf, darkFighter),
-
-    /** The shillien knight. */
-    shillienKnight(0x21, false, Race.darkelf, palusKnight),
-
-    /** The bladedancer. */
-    bladedancer(0x22, false, Race.darkelf, palusKnight),
-
-    /** The assassin. */
-    assassin(0x23, false, Race.darkelf, darkFighter),
-
-    /** The abyss walker. */
-    abyssWalker(0x24, false, Race.darkelf, assassin),
-
-    /** The phantom ranger. */
-    phantomRanger(0x25, false, Race.darkelf, assassin),
-
-    /** The dark mage. */
-    darkMage(0x26, true, Race.darkelf, null),
-
-    /** The dark wizard. */
-    darkWizard(0x27, true, Race.darkelf, darkMage),
-
-    /** The spellhowler. */
-    spellhowler(0x28, true, Race.darkelf, darkWizard),
-
-    /** The phantom summoner. */
-    phantomSummoner(0x29, true, Race.darkelf, darkWizard),
-
-    /** The shillien oracle. */
-    shillienOracle(0x2a, true, Race.darkelf, darkMage),
-
-    /** The shillen elder. */
-    shillenElder(0x2b, true, Race.darkelf, shillienOracle),
-
-    /** The orc fighter. */
-    orcFighter(0x2c, false, Race.orc, null),
-
-    /** The orc raider. */
-    orcRaider(0x2d, false, Race.orc, orcFighter),
-
-    /** The destroyer. */
-    destroyer(0x2e, false, Race.orc, orcRaider),
-
-    /** The orc monk. */
-    orcMonk(0x2f, false, Race.orc, orcFighter),
-
-    /** The tyrant. */
-    tyrant(0x30, false, Race.orc, orcMonk),
-
-    /** The orc mage. */
-    orcMage(0x31, true, Race.orc, null),
-
-    /** The orc shaman. */
-    orcShaman(0x32, true, Race.orc, orcMage),
-
-    /** The overlord. */
-    overlord(0x33, true, Race.orc, orcShaman),
-
-    /** The warcryer. */
-    warcryer(0x34, true, Race.orc, orcShaman),
-
-    /** The dwarven fighter. */
-    dwarvenFighter(0x35, false, Race.dwarf, null),
-
-    /** The scavenger. */
-    scavenger(0x36, false, Race.dwarf, dwarvenFighter),
-
-    /** The bounty hunter. */
-    bountyHunter(0x37, false, Race.dwarf, scavenger),
-
-    /** The artisan. */
-    artisan(0x38, false, Race.dwarf, dwarvenFighter),
-
-    /** The warsmith. */
-    warsmith(0x39, false, Race.dwarf, artisan),
-
-    /*
-     * Dummy Entries (id's already in decimal format)
-     * btw FU NCSoft for the amount of work you put me
-     * through to do this!!
-     * <START>
-     */
-    /** The dummy entry1. */
-    dummyEntry1(58, false, null, null),
-
-    /** The dummy entry2. */
-    dummyEntry2(59, false, null, null),
-
-    /** The dummy entry3. */
-    dummyEntry3(60, false, null, null),
-
-    /** The dummy entry4. */
-    dummyEntry4(61, false, null, null),
-
-    /** The dummy entry5. */
-    dummyEntry5(62, false, null, null),
-
-    /** The dummy entry6. */
-    dummyEntry6(63, false, null, null),
-
-    /** The dummy entry7. */
-    dummyEntry7(64, false, null, null),
-
-    /** The dummy entry8. */
-    dummyEntry8(65, false, null, null),
-
-    /** The dummy entry9. */
-    dummyEntry9(66, false, null, null),
-
-    /** The dummy entry10. */
-    dummyEntry10(67, false, null, null),
-
-    /** The dummy entry11. */
-    dummyEntry11(68, false, null, null),
-
-    /** The dummy entry12. */
-    dummyEntry12(69, false, null, null),
-
-    /** The dummy entry13. */
-    dummyEntry13(70, false, null, null),
-
-    /** The dummy entry14. */
-    dummyEntry14(71, false, null, null),
-
-    /** The dummy entry15. */
-    dummyEntry15(72, false, null, null),
-
-    /** The dummy entry16. */
-    dummyEntry16(73, false, null, null),
-
-    /** The dummy entry17. */
-    dummyEntry17(74, false, null, null),
-
-    /** The dummy entry18. */
-    dummyEntry18(75, false, null, null),
-
-    /** The dummy entry19. */
-    dummyEntry19(76, false, null, null),
-
-    /** The dummy entry20. */
-    dummyEntry20(77, false, null, null),
-
-    /** The dummy entry21. */
-    dummyEntry21(78, false, null, null),
-
-    /** The dummy entry22. */
-    dummyEntry22(79, false, null, null),
-
-    /** The dummy entry23. */
-    dummyEntry23(80, false, null, null),
-
-    /** The dummy entry24. */
-    dummyEntry24(81, false, null, null),
-
-    /** The dummy entry25. */
-    dummyEntry25(82, false, null, null),
-
-    /** The dummy entry26. */
-    dummyEntry26(83, false, null, null),
-
-    /** The dummy entry27. */
-    dummyEntry27(84, false, null, null),
-
-    /** The dummy entry28. */
-    dummyEntry28(85, false, null, null),
-
-    /** The dummy entry29. */
-    dummyEntry29(86, false, null, null),
-
-    /** The dummy entry30. */
-    dummyEntry30(87, false, null, null),
-    /*
-     * <END>
-     * Of Dummy entries
-     */
-
-    /*
-     * Now the bad boys! new class ids :)) (3rd classes)
-     */
-    /** The duelist. */
-    duelist(0x58, false, Race.human, gladiator),
-
-    /** The dreadnought. */
-    dreadnought(0x59, false, Race.human, warlord),
-
-    /** The phoenix knight. */
-    phoenixKnight(0x5a, false, Race.human, paladin),
-
-    /** The hell knight. */
-    hellKnight(0x5b, false, Race.human, darkAvenger),
-
-    /** The sagittarius. */
-    sagittarius(0x5c, false, Race.human, hawkeye),
-
-    /** The adventurer. */
-    adventurer(0x5d, false, Race.human, treasureHunter),
-
-    /** The archmage. */
-    archmage(0x5e, true, Race.human, sorceror),
-
-    /** The soultaker. */
-    soultaker(0x5f, true, Race.human, necromancer),
-
-    /** The arcana lord. */
-    arcanaLord(0x60, true, Race.human, warlock),
-
-    /** The cardinal. */
-    cardinal(0x61, true, Race.human, bishop),
-
-    /** The hierophant. */
-    hierophant(0x62, true, Race.human, prophet),
-
-    /** The eva templar. */
-    evaTemplar(0x63, false, Race.elf, templeKnight),
-
-    /** The sword muse. */
-    swordMuse(0x64, false, Race.elf, swordSinger),
-
-    /** The wind rider. */
-    windRider(0x65, false, Race.elf, plainsWalker),
-
-    /** The moonlight sentinel. */
-    moonlightSentinel(0x66, false, Race.elf, silverRanger),
-
-    /** The mystic muse. */
-    mysticMuse(0x67, true, Race.elf, spellsinger),
-
-    /** The elemental master. */
-    elementalMaster(0x68, true, Race.elf, elementalSummoner),
-
-    /** The eva saint. */
-    evaSaint(0x69, true, Race.elf, elder),
-
-    /** The shillien templar. */
-    shillienTemplar(0x6a, false, Race.darkelf, shillienKnight),
-
-    /** The spectral dancer. */
-    spectralDancer(0x6b, false, Race.darkelf, bladedancer),
-
-    /** The ghost hunter. */
-    ghostHunter(0x6c, false, Race.darkelf, abyssWalker),
-
-    /** The ghost sentinel. */
-    ghostSentinel(0x6d, false, Race.darkelf, phantomRanger),
-
-    /** The storm screamer. */
-    stormScreamer(0x6e, true, Race.darkelf, spellhowler),
-
-    /** The spectral master. */
-    spectralMaster(0x6f, true, Race.darkelf, phantomSummoner),
-
-    /** The shillien saint. */
-    shillienSaint(0x70, true, Race.darkelf, shillenElder),
-
-    /** The titan. */
-    titan(0x71, false, Race.orc, destroyer),
-
-    /** The grand khauatari. */
-    grandKhauatari(0x72, false, Race.orc, tyrant),
-
-    /** The dominator. */
-    dominator(0x73, true, Race.orc, overlord),
-
-    /** The doomcryer. */
-    doomcryer(0x74, true, Race.orc, warcryer),
-
-    /** The fortune seeker. */
-    fortuneSeeker(0x75, false, Race.dwarf, bountyHunter),
-
-    /** The maestro. */
-    maestro(0x76, false, Race.dwarf, warsmith);
-
-    /** The Identifier of the Class. */
-    private final int _id;
-
-    /** True if the class is a mage class. */
-    private final boolean _isMage;
-
-    /** The Race object of the class. */
-    private final Race _race;
-
-    /** The parent ClassId or null if this class is a root. */
-    private final ClassId _parent;
-
-    /**
-     * Constructor of ClassId.<BR>
-     * <BR>
-     *
-     * @param pId the id
-     * @param pIsMage the is mage
-     * @param pRace the race
-     * @param pParent the parent
-     */
-    private ClassId(int pId, boolean pIsMage, Race pRace, ClassId pParent)
-    {
-        _id = pId;
-        _isMage = pIsMage;
-        _race = pRace;
-        _parent = pParent;
-    }
-
-    /**
-     * Return the Identifier of the Class.<BR>
-     * <BR>
-     *
-     * @return the id
-     */
-    public final int getId()
-    {
-        return _id;
-    }
-
-    /**
-     * Return True if the class is a mage class.<BR>
-     * <BR>
-     *
-     * @return true, if is mage
-     */
-    public final boolean isMage()
-    {
-        return _isMage;
-    }
-
-    /**
-     * Return the Race object of the class.<BR>
-     * <BR>
-     *
-     * @return the race
-     */
-    public final Race getRace()
-    {
-        return _race;
-    }
-
-    /**
-     * Return True if this Class is a child of the selected ClassId.<BR>
-     * <BR>
-     *
-     * @param cid The parent ClassId to check
-     * @return true, if successful
-     */
-    public final boolean childOf(ClassId cid)
-    {
-        if(_parent == null)
-            return false;
-
-        if(_parent == cid)
-            return true;
-
-        return _parent.childOf(cid);
-
-    }
-
-    /**
-     * Return True if this Class is equal to the selected ClassId or a child of the selected ClassId.<BR>
-     * <BR>
-     *
-     * @param cid The parent ClassId to check
-     * @return true, if successful
-     */
-    public final boolean equalsOrChildOf(ClassId cid)
-    {
-        return this == cid || childOf(cid);
-    }
-
-    /**
-     * Return the child level of this Class (0=root, 1=child leve 1...).<BR>
-     * <BR>
-     *
-     * @return the int
-     */
-    public final int level()
-    {
-        if(_parent == null)
-            return 0;
-
-        return 1 + _parent.level();
-    }
-
-    /**
-     * Return its parent ClassId<BR>
-     * <BR>.
-     *
-     * @return the parent
-     */
-    public final ClassId getParent()
-    {
-        return _parent;
-    }
-
+	HUMAN_FIGHTER(ClassRace.HUMAN, ClassType.FIGHTER, 0, "Human Fighter", null),
+	WARRIOR(ClassRace.HUMAN, ClassType.FIGHTER, 1, "Warrior", HUMAN_FIGHTER),
+	GLADIATOR(ClassRace.HUMAN, ClassType.FIGHTER, 2, "Gladiator", WARRIOR),
+	WARLORD(ClassRace.HUMAN, ClassType.FIGHTER, 2, "Warlord", WARRIOR),
+	KNIGHT(ClassRace.HUMAN, ClassType.FIGHTER, 1, "Human Knight", HUMAN_FIGHTER),
+	PALADIN(ClassRace.HUMAN, ClassType.FIGHTER, 2, "Paladin", KNIGHT),
+	DARK_AVENGER(ClassRace.HUMAN, ClassType.FIGHTER, 2, "Dark Avenger", KNIGHT),
+	ROGUE(ClassRace.HUMAN, ClassType.FIGHTER, 1, "Rogue", HUMAN_FIGHTER),
+	TREASURE_HUNTER(ClassRace.HUMAN, ClassType.FIGHTER, 2, "Treasure Hunter", ROGUE),
+	HAWKEYE(ClassRace.HUMAN, ClassType.FIGHTER, 2, "Hawkeye", ROGUE),
+	
+	HUMAN_MYSTIC(ClassRace.HUMAN, ClassType.MYSTIC, 0, "Human Mystic", null),
+	HUMAN_WIZARD(ClassRace.HUMAN, ClassType.MYSTIC, 1, "Human Wizard", HUMAN_MYSTIC),
+	SORCERER(ClassRace.HUMAN, ClassType.MYSTIC, 2, "Sorcerer", HUMAN_WIZARD),
+	NECROMANCER(ClassRace.HUMAN, ClassType.MYSTIC, 2, "Necromancer", HUMAN_WIZARD),
+	WARLOCK(ClassRace.HUMAN, ClassType.MYSTIC, 2, "Warlock", HUMAN_WIZARD),
+	CLERIC(ClassRace.HUMAN, ClassType.PRIEST, 1, "Cleric", HUMAN_MYSTIC),
+	BISHOP(ClassRace.HUMAN, ClassType.PRIEST, 2, "Bishop", CLERIC),
+	PROPHET(ClassRace.HUMAN, ClassType.PRIEST, 2, "Prophet", CLERIC),
+	
+	ELVEN_FIGHTER(ClassRace.ELF, ClassType.FIGHTER, 0, "Elven Fighter", null),
+	ELVEN_KNIGHT(ClassRace.ELF, ClassType.FIGHTER, 1, "Elven Knight", ELVEN_FIGHTER),
+	TEMPLE_KNIGHT(ClassRace.ELF, ClassType.FIGHTER, 2, "Temple Knight", ELVEN_KNIGHT),
+	SWORD_SINGER(ClassRace.ELF, ClassType.FIGHTER, 2, "Sword Singer", ELVEN_KNIGHT),
+	ELVEN_SCOUT(ClassRace.ELF, ClassType.FIGHTER, 1, "Elven Scout", ELVEN_FIGHTER),
+	PLAINS_WALKER(ClassRace.ELF, ClassType.FIGHTER, 2, "Plains Walker", ELVEN_SCOUT),
+	SILVER_RANGER(ClassRace.ELF, ClassType.FIGHTER, 2, "Silver Ranger", ELVEN_SCOUT),
+	
+	ELVEN_MYSTIC(ClassRace.ELF, ClassType.MYSTIC, 0, "Elven Mystic", null),
+	ELVEN_WIZARD(ClassRace.ELF, ClassType.MYSTIC, 1, "Elven Wizard", ELVEN_MYSTIC),
+	SPELLSINGER(ClassRace.ELF, ClassType.MYSTIC, 2, "Spellsinger", ELVEN_WIZARD),
+	ELEMENTAL_SUMMONER(ClassRace.ELF, ClassType.MYSTIC, 2, "Elemental Summoner", ELVEN_WIZARD),
+	ELVEN_ORACLE(ClassRace.ELF, ClassType.PRIEST, 1, "Elven Oracle", ELVEN_MYSTIC),
+	ELVEN_ELDER(ClassRace.ELF, ClassType.PRIEST, 2, "Elven Elder", ELVEN_ORACLE),
+	
+	DARK_FIGHTER(ClassRace.DARK_ELF, ClassType.FIGHTER, 0, "Dark Fighter", null),
+	PALUS_KNIGHT(ClassRace.DARK_ELF, ClassType.FIGHTER, 1, "Palus Knight", DARK_FIGHTER),
+	SHILLIEN_KNIGHT(ClassRace.DARK_ELF, ClassType.FIGHTER, 2, "Shillien Knight", PALUS_KNIGHT),
+	BLADEDANCER(ClassRace.DARK_ELF, ClassType.FIGHTER, 2, "Bladedancer", PALUS_KNIGHT),
+	ASSASSIN(ClassRace.DARK_ELF, ClassType.FIGHTER, 1, "Assassin", DARK_FIGHTER),
+	ABYSS_WALKER(ClassRace.DARK_ELF, ClassType.FIGHTER, 2, "Abyss Walker", ASSASSIN),
+	PHANTOM_RANGER(ClassRace.DARK_ELF, ClassType.FIGHTER, 2, "Phantom Ranger", ASSASSIN),
+	
+	DARK_MYSTIC(ClassRace.DARK_ELF, ClassType.MYSTIC, 0, "Dark Mystic", null),
+	DARK_WIZARD(ClassRace.DARK_ELF, ClassType.MYSTIC, 1, "Dark Wizard", DARK_MYSTIC),
+	SPELLHOWLER(ClassRace.DARK_ELF, ClassType.MYSTIC, 2, "Spellhowler", DARK_WIZARD),
+	PHANTOM_SUMMONER(ClassRace.DARK_ELF, ClassType.MYSTIC, 2, "Phantom Summoner", DARK_WIZARD),
+	SHILLIEN_ORACLE(ClassRace.DARK_ELF, ClassType.PRIEST, 1, "Shillien Oracle", DARK_MYSTIC),
+	SHILLIEN_ELDER(ClassRace.DARK_ELF, ClassType.PRIEST, 2, "Shillien Elder", SHILLIEN_ORACLE),
+	
+	ORC_FIGHTER(ClassRace.ORC, ClassType.FIGHTER, 0, "Orc Fighter", null),
+	ORC_RAIDER(ClassRace.ORC, ClassType.FIGHTER, 1, "Orc Raider", ORC_FIGHTER),
+	DESTROYER(ClassRace.ORC, ClassType.FIGHTER, 2, "Destroyer", ORC_RAIDER),
+	MONK(ClassRace.ORC, ClassType.FIGHTER, 1, "Monk", ORC_FIGHTER),
+	TYRANT(ClassRace.ORC, ClassType.FIGHTER, 2, "Tyrant", MONK),
+	
+	ORC_MYSTIC(ClassRace.ORC, ClassType.MYSTIC, 0, "Orc Mystic", null),
+	ORC_SHAMAN(ClassRace.ORC, ClassType.MYSTIC, 1, "Orc Shaman", ORC_MYSTIC),
+	OVERLORD(ClassRace.ORC, ClassType.MYSTIC, 2, "Overlord", ORC_SHAMAN),
+	WARCRYER(ClassRace.ORC, ClassType.MYSTIC, 2, "Warcryer", ORC_SHAMAN),
+	
+	DWARVEN_FIGHTER(ClassRace.DWARF, ClassType.FIGHTER, 0, "Dwarven Fighter", null),
+	SCAVENGER(ClassRace.DWARF, ClassType.FIGHTER, 1, "Scavenger", DWARVEN_FIGHTER),
+	BOUNTY_HUNTER(ClassRace.DWARF, ClassType.FIGHTER, 2, "Bounty Hunter", SCAVENGER),
+	ARTISAN(ClassRace.DWARF, ClassType.FIGHTER, 1, "Artisan", DWARVEN_FIGHTER),
+	WARSMITH(ClassRace.DWARF, ClassType.FIGHTER, 2, "Warsmith", ARTISAN),
+	
+	DUMMY_1(null, null, -1, "dummy 1", null),
+	DUMMY_2(null, null, -1, "dummy 2", null),
+	DUMMY_3(null, null, -1, "dummy 3", null),
+	DUMMY_4(null, null, -1, "dummy 4", null),
+	DUMMY_5(null, null, -1, "dummy 5", null),
+	DUMMY_6(null, null, -1, "dummy 6", null),
+	DUMMY_7(null, null, -1, "dummy 7", null),
+	DUMMY_8(null, null, -1, "dummy 8", null),
+	DUMMY_9(null, null, -1, "dummy 9", null),
+	DUMMY_10(null, null, -1, "dummy 10", null),
+	DUMMY_11(null, null, -1, "dummy 11", null),
+	DUMMY_12(null, null, -1, "dummy 12", null),
+	DUMMY_13(null, null, -1, "dummy 13", null),
+	DUMMY_14(null, null, -1, "dummy 14", null),
+	DUMMY_15(null, null, -1, "dummy 15", null),
+	DUMMY_16(null, null, -1, "dummy 16", null),
+	DUMMY_17(null, null, -1, "dummy 17", null),
+	DUMMY_18(null, null, -1, "dummy 18", null),
+	DUMMY_19(null, null, -1, "dummy 19", null),
+	DUMMY_20(null, null, -1, "dummy 20", null),
+	DUMMY_21(null, null, -1, "dummy 21", null),
+	DUMMY_22(null, null, -1, "dummy 22", null),
+	DUMMY_23(null, null, -1, "dummy 23", null),
+	DUMMY_24(null, null, -1, "dummy 24", null),
+	DUMMY_25(null, null, -1, "dummy 25", null),
+	DUMMY_26(null, null, -1, "dummy 26", null),
+	DUMMY_27(null, null, -1, "dummy 27", null),
+	DUMMY_28(null, null, -1, "dummy 28", null),
+	DUMMY_29(null, null, -1, "dummy 29", null),
+	DUMMY_30(null, null, -1, "dummy 30", null),
+	
+	DUELIST(ClassRace.HUMAN, ClassType.FIGHTER, 3, "Duelist", GLADIATOR),
+	DREADNOUGHT(ClassRace.HUMAN, ClassType.FIGHTER, 3, "Dreadnought", WARLORD),
+	PHOENIX_KNIGHT(ClassRace.HUMAN, ClassType.FIGHTER, 3, "Phoenix Knight", PALADIN),
+	HELL_KNIGHT(ClassRace.HUMAN, ClassType.FIGHTER, 3, "Hell Knight", DARK_AVENGER),
+	SAGGITARIUS(ClassRace.HUMAN, ClassType.FIGHTER, 3, "Sagittarius", HAWKEYE),
+	ADVENTURER(ClassRace.HUMAN, ClassType.FIGHTER, 3, "Adventurer", TREASURE_HUNTER),
+	ARCHMAGE(ClassRace.HUMAN, ClassType.MYSTIC, 3, "Archmage", SORCERER),
+	SOULTAKER(ClassRace.HUMAN, ClassType.MYSTIC, 3, "Soultaker", NECROMANCER),
+	ARCANA_LORD(ClassRace.HUMAN, ClassType.MYSTIC, 3, "Arcana Lord", WARLOCK),
+	CARDINAL(ClassRace.HUMAN, ClassType.PRIEST, 3, "Cardinal", BISHOP),
+	HIEROPHANT(ClassRace.HUMAN, ClassType.PRIEST, 3, "Hierophant", PROPHET),
+	
+	EVAS_TEMPLAR(ClassRace.ELF, ClassType.FIGHTER, 3, "Eva's Templar", TEMPLE_KNIGHT),
+	SWORD_MUSE(ClassRace.ELF, ClassType.FIGHTER, 3, "Sword Muse", SWORD_SINGER),
+	WIND_RIDER(ClassRace.ELF, ClassType.FIGHTER, 3, "Wind Rider", PLAINS_WALKER),
+	MOONLIGHT_SENTINEL(ClassRace.ELF, ClassType.FIGHTER, 3, "Moonlight Sentinel", SILVER_RANGER),
+	MYSTIC_MUSE(ClassRace.ELF, ClassType.MYSTIC, 3, "Mystic Muse", SPELLSINGER),
+	ELEMENTAL_MASTER(ClassRace.ELF, ClassType.MYSTIC, 3, "Elemental Master", ELEMENTAL_SUMMONER),
+	EVAS_SAINT(ClassRace.ELF, ClassType.PRIEST, 3, "Eva's Saint", ELVEN_ELDER),
+	
+	SHILLIEN_TEMPLAR(ClassRace.DARK_ELF, ClassType.FIGHTER, 3, "Shillien Templar", SHILLIEN_KNIGHT),
+	SPECTRAL_DANCER(ClassRace.DARK_ELF, ClassType.FIGHTER, 3, "Spectral Dancer", BLADEDANCER),
+	GHOST_HUNTER(ClassRace.DARK_ELF, ClassType.FIGHTER, 3, "Ghost Hunter", ABYSS_WALKER),
+	GHOST_SENTINEL(ClassRace.DARK_ELF, ClassType.FIGHTER, 3, "Ghost Sentinel", PHANTOM_RANGER),
+	STORM_SCREAMER(ClassRace.DARK_ELF, ClassType.MYSTIC, 3, "Storm Screamer", SPELLHOWLER),
+	SPECTRAL_MASTER(ClassRace.DARK_ELF, ClassType.MYSTIC, 3, "Spectral Master", PHANTOM_SUMMONER),
+	SHILLIEN_SAINT(ClassRace.DARK_ELF, ClassType.PRIEST, 3, "Shillien Saint", SHILLIEN_ELDER),
+	
+	TITAN(ClassRace.ORC, ClassType.FIGHTER, 3, "Titan", DESTROYER),
+	GRAND_KHAVATARI(ClassRace.ORC, ClassType.FIGHTER, 3, "Grand Khavatari", TYRANT),
+	DOMINATOR(ClassRace.ORC, ClassType.MYSTIC, 3, "Dominator", OVERLORD),
+	DOOMCRYER(ClassRace.ORC, ClassType.MYSTIC, 3, "Doom Cryer", WARCRYER),
+	
+	FORTUNE_SEEKER(ClassRace.DWARF, ClassType.FIGHTER, 3, "Fortune Seeker", BOUNTY_HUNTER),
+	MAESTRO(ClassRace.DWARF, ClassType.FIGHTER, 3, "Maestro", WARSMITH);
+	
+	public static final ClassId[] VALUES = values();
+	
+	/** The ID of the class */
+	private final int _id;
+	
+	/** The ClassRace object of the class */
+	private final ClassRace _race;
+	
+	/** The ClassType of the class */
+	private final ClassType _type;
+	
+	/** The level of the class */
+	private final int _level;
+	
+	/** The name of the class */
+	private final String _name;
+	
+	/** The parent ClassId of the class */
+	private final ClassId _parent;
+	
+	/** The set of subclasses available for the class */
+	private EnumSet<ClassId> _subclasses;
+	
+	/**
+	 * Implicit constructor.
+	 * @param race : Class race.
+	 * @param type : Class type.
+	 * @param level : Class level.
+	 * @param name : Class name.
+	 * @param parent : Class parent.
+	 */
+	private ClassId(ClassRace race, ClassType type, int level, String name, ClassId parent)
+	{
+		_id = ordinal();
+		_race = race;
+		_type = type;
+		_level = level;
+		_name = name;
+		_parent = parent;
+	}
+	
+	/**
+	 * Returns the ID of the {@link ClassId}.
+	 * @return int : The ID.
+	 */
+	public final int getId()
+	{
+		return _id;
+	}
+	
+	/**
+	 * Returns the {@link ClassRace} of the {@link ClassId}.
+	 * @return {@link ClassRace} : The race.
+	 */
+	public final ClassRace getRace()
+	{
+		return _race;
+	}
+	
+	/**
+	 * Returns the {@link ClassType} of the {@link ClassId}.
+	 * @return {@link ClassType} : The type.
+	 */
+	public final ClassType getType()
+	{
+		return _type;
+	}
+	
+	/**
+	 * Returns the level of the {@link ClassId}.
+	 * @return int : The level (-1=dummy, 0=base, 1=1st class, 2=2nd class, 3=3rd class)
+	 */
+	public final int level()
+	{
+		return _level;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return _name;
+	}
+	
+	/**
+	 * Returns the parent {@link ClassId} of the {@link ClassId}.
+	 * @return {@link ClassId} : The parent.
+	 */
+	public final ClassId getParent()
+	{
+		return _parent;
+	}
+	
+	/**
+	 * @param classId The parent ClassId to check
+	 * @return True if this Class is a child of the selected ClassId.
+	 */
+	public final boolean childOf(ClassId classId)
+	{
+		if (_parent == null)
+			return false;
+		
+		if (_parent == classId)
+			return true;
+		
+		return _parent.childOf(classId);
+	}
+	
+	/**
+	 * @param classId the parent ClassId to check.
+	 * @return true if this Class is equal to the selected ClassId or a child of the selected ClassId.
+	 */
+	public final boolean equalsOrChildOf(ClassId classId)
+	{
+		return this == classId || childOf(classId);
+	}
+	
+	@SuppressWarnings("incomplete-switch")
+	private final void createSubclasses()
+	{
+		// only 2nd class level can have subclasses
+		if (_level != 2)
+		{
+			_subclasses = null;
+			return;
+		}
+		
+		_subclasses = EnumSet.noneOf(ClassId.class);
+		
+		for (ClassId classId : VALUES)
+		{
+			// only second classes may be taken as subclass
+			if (classId._level != 2)
+				continue;
+			
+			// Overlord, Warsmith or self class may never be taken as subclass
+			if (classId == OVERLORD || classId == WARSMITH || classId == this)
+				continue;
+			
+			// Elves may not sub Dark Elves and vice versa
+			if ((_race == ClassRace.ELF && classId._race == ClassRace.DARK_ELF) || (_race == ClassRace.DARK_ELF && classId._race == ClassRace.ELF))
+				continue;
+			
+			_subclasses.add(classId);
+		}
+		
+		// remove class restricted classes
+		switch (this)
+		{
+			case DARK_AVENGER:
+			case PALADIN:
+			case TEMPLE_KNIGHT:
+			case SHILLIEN_KNIGHT:
+				// remove restricted classes for tanks
+				_subclasses.removeAll(EnumSet.of(DARK_AVENGER, PALADIN, TEMPLE_KNIGHT, SHILLIEN_KNIGHT));
+				break;
+			
+			case TREASURE_HUNTER:
+			case ABYSS_WALKER:
+			case PLAINS_WALKER:
+				// remove restricted classes for assassins
+				_subclasses.removeAll(EnumSet.of(TREASURE_HUNTER, ABYSS_WALKER, PLAINS_WALKER));
+				break;
+			
+			case HAWKEYE:
+			case SILVER_RANGER:
+			case PHANTOM_RANGER:
+				// remove restricted classes for archers
+				_subclasses.removeAll(EnumSet.of(HAWKEYE, SILVER_RANGER, PHANTOM_RANGER));
+				break;
+			
+			case WARLOCK:
+			case ELEMENTAL_SUMMONER:
+			case PHANTOM_SUMMONER:
+				// remove restricted classes for summoners
+				_subclasses.removeAll(EnumSet.of(WARLOCK, ELEMENTAL_SUMMONER, PHANTOM_SUMMONER));
+				break;
+			
+			case SORCERER:
+			case SPELLSINGER:
+			case SPELLHOWLER:
+				// remove restricted classes for wizards
+				_subclasses.removeAll(EnumSet.of(SORCERER, SPELLSINGER, SPELLHOWLER));
+				break;
+		}
+	}
+	
+	/**
+	 * Returns set of subclasses available for given {@link Player}.<br>
+	 * 1) If the race of your main class is Elf or Dark Elf, you may not select each class as a subclass to the other class.<br>
+	 * 2) You may not select Overlord and Warsmith class as a subclass.<br>
+	 * 3) You may not select a similar class as the subclass. The occupations classified as similar classes are as follows:<br>
+	 * Paladin, Dark Avenger, Temple Knight and Shillien Knight Treasure Hunter, Plainswalker and Abyss Walker Hawkeye, Silver Ranger and Phantom Ranger Warlock, Elemental Summoner and Phantom Summoner Sorcerer, Spellsinger and Spellhowler
+	 * @param player : The {@link Player} to make checks on.
+	 * @return EnumSet<ClassId> : Available subclasses for given player.
+	 */
+	public static final EnumSet<ClassId> getAvailableSubclasses(L2PcInstance player)
+	{
+		ClassId classId = VALUES[player.getBaseClass()];
+		if (classId._level < 2)
+			return null;
+		
+		// handle 3rd level class
+		if (classId._level == 3)
+			classId = classId._parent;
+		
+		return EnumSet.copyOf(classId._subclasses);
+	}
+	
+	static
+	{
+		// create subclass lists
+		for (ClassId classId : VALUES)
+			classId.createSubclasses();
+	}
+	
     public static ClassId getClassIdByOrdinal(int id)
     {
         for(ClassId current:values())

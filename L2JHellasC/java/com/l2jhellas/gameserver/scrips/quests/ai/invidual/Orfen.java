@@ -16,7 +16,7 @@ package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.audio.Music;
+import com.l2jhellas.gameserver.emum.Music;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;

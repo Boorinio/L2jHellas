@@ -252,7 +252,7 @@ public class L2NpcInstance extends L2Npc
 					/** @formatter:off */
 					if (!own_class)
                     {
-						String mages = player.getClassId().isMage() ? "fighters" : "mages";
+						String mages = player.isMageClass() ? "fighters" : "mages";
 						text +=
 							"Skills of your class are the easiest to learn.<br>"+
 							"Skills of another class are harder.<br>"+

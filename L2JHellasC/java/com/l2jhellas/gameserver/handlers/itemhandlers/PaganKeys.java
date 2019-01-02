@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.handlers.itemhandlers;
 
-import com.l2jhellas.gameserver.audio.Sound;
+import com.l2jhellas.gameserver.emum.Sound;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;

@@ -22,8 +22,6 @@ import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2ClassMasterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
-import com.l2jhellas.gameserver.model.base.ClassLevel;
-import com.l2jhellas.gameserver.model.base.PlayerClass;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
@@ -160,16 +158,16 @@ public class PcStat extends PlayableStat
 
 		if (Config.ALLOW_REMOTE_CLASS_MASTER)
 		{
-			ClassLevel lvlnow = PlayerClass.values()[getActiveChar().getClassId().getId()].getLevel();
-			if (getLevel() >= 20 && lvlnow == ClassLevel.First)
+			int lvlnow = getActiveChar().getClassId().level();
+			if (getLevel() >= 20 && lvlnow == 0)
 			{
 				L2ClassMasterInstance.ClassMaster.onAction(getActiveChar());
 			}
-			else if (getLevel() >= 40 && lvlnow == ClassLevel.Second)
+			else if (getLevel() >= 40 && lvlnow == 1)
 			{
 				L2ClassMasterInstance.ClassMaster.onAction(getActiveChar());
 			}
-			else if (getLevel() >= 76 && lvlnow == ClassLevel.Third)
+			else if (getLevel() >= 76 && lvlnow == 2)
 			{
 				L2ClassMasterInstance.ClassMaster.onAction(getActiveChar());
 			}

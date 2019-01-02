@@ -32,6 +32,7 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.PetInventory;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.stat.SummonStat;
 import com.l2jhellas.gameserver.model.actor.status.SummonStatus;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -40,6 +41,7 @@ import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
 import com.l2jhellas.gameserver.network.serverpackets.PetDelete;
 import com.l2jhellas.gameserver.network.serverpackets.PetInfo;
+import com.l2jhellas.gameserver.network.serverpackets.PetItemList;
 import com.l2jhellas.gameserver.network.serverpackets.PetStatusShow;
 import com.l2jhellas.gameserver.network.serverpackets.PetStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
@@ -800,7 +802,7 @@ public abstract class L2Summon extends L2Playable
 		}
 
 		L2Skill skillToCast = SkillTable.getInstance().getInfo(skill.getId(), skillLevel);
-
+		
 		if (skillToCast != null)
 		{
 			super.doCast(skillToCast);
@@ -814,5 +816,23 @@ public abstract class L2Summon extends L2Playable
 	public int getPetSpeed()
 	{
 		return getTemplate().baseRunSpd;
+	}
+	
+	@Override
+	public void sendInfo(L2PcInstance activeChar)
+	{
+		// Check if the Player is the owner of the Pet
+		if (activeChar == getOwner())
+		{
+			activeChar.sendPacket(new PetInfo(this, 0));
+			
+			// The PetInfo packet wipes the PartySpelled (list of active spells' icons). Re-add them
+			updateEffectIcons(true);
+			
+			if (this instanceof L2PetInstance)
+				activeChar.sendPacket(new PetItemList((L2PetInstance) this));
+		}
+		else
+		    activeChar.sendPacket(new NpcInfo(this, activeChar));
 	}
 }

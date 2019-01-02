@@ -14,9 +14,9 @@
  */
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import com.l2jhellas.gameserver.model.base.ClassType;
-import com.l2jhellas.gameserver.model.base.PlayerClass;
-import com.l2jhellas.gameserver.model.base.PlayerRace;
+import com.l2jhellas.gameserver.emum.ClassRace;
+import com.l2jhellas.gameserver.emum.ClassType;
+import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 public final class L2VillageMasterMysticInstance extends L2VillageMasterInstance
@@ -27,20 +27,20 @@ public final class L2VillageMasterMysticInstance extends L2VillageMasterInstance
 	}
 	
 	@Override
-	protected final boolean checkVillageMasterRace(PlayerClass pclass)
+	protected final boolean checkVillageMasterRace(ClassId pclass)
 	{
 		if (pclass == null)
 			return false;
 		
-		return pclass.isOfRace(PlayerRace.Human) || pclass.isOfRace(PlayerRace.LightElf);
+		return pclass.getRace() == ClassRace.HUMAN || pclass.getRace() == ClassRace.ELF;
 	}
 	
 	@Override
-	protected final boolean checkVillageMasterTeachType(PlayerClass pclass)
+	protected final boolean checkVillageMasterTeachType(ClassId pclass)
 	{
 		if (pclass == null)
 			return false;
 		
-		return pclass.isOfType(ClassType.Mystic);
+		return pclass.getType() == ClassType.MYSTIC;
 	}
 }

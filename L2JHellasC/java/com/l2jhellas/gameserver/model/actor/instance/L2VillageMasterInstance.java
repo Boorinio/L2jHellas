@@ -29,9 +29,6 @@ import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2PledgeSkillLearn;
 import com.l2jhellas.gameserver.model.base.ClassId;
-import com.l2jhellas.gameserver.model.base.ClassType;
-import com.l2jhellas.gameserver.model.base.PlayerClass;
-import com.l2jhellas.gameserver.model.base.PlayerRace;
 import com.l2jhellas.gameserver.model.base.SubClass;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.quest.QuestState;
@@ -202,8 +199,8 @@ public class L2VillageMasterInstance extends L2NpcInstance
 
 			
 			StringBuilder content = new StringBuilder("<html><body>");
-			Set<PlayerClass> subsAvailable;
-
+			Set<ClassId> subsAvailable;
+			
 			int paramOne = 0;
 			int paramTwo = 0;
 			
@@ -257,9 +254,8 @@ public class L2VillageMasterInstance extends L2NpcInstance
 					if ((subsAvailable != null) && !subsAvailable.isEmpty())
 					{
 						content.append("Add Subclass:<br>Which sub class do you wish to add?<br>");
-
-						for (PlayerClass subClass : subsAvailable)
-							content.append("<a action=\"bypass -h npc_" + getObjectId() + "_Subclass 4 " + subClass.ordinal() + "\" msg=\"1268;" + formatClassForDisplay(subClass) + "\">" + formatClassForDisplay(subClass) + "</a><br>");
+						for (ClassId subClass : subsAvailable)
+							content.append("<a action=\"bypass -h npc_" + getObjectId() + "_Subclass 4 " + subClass.getId() + "\" msg=\"1268;" + formatClassForDisplay(subClass) + "\">" + formatClassForDisplay(subClass) + "</a><br>");
 					}
 					else
 					{
@@ -521,7 +517,7 @@ public class L2VillageMasterInstance extends L2NpcInstance
 					}
 					else if (subsAvailable != null && !subsAvailable.isEmpty())
 					{
-						for (PlayerClass subClass : subsAvailable)
+							for (ClassId subClass : subsAvailable)
 							content.append("<a action=\"bypass -h npc_" + getObjectId() + "_Subclass 7 " + paramOne + " " + subClass.ordinal() + "\">" + formatClassForDisplay(subClass) + "</a><br>");
 					}
 					else
@@ -613,35 +609,21 @@ public class L2VillageMasterInstance extends L2NpcInstance
 		if (!checkVillageMaster(classId))
 			return false;
 		
-		final ClassId cid = ClassId.values()[classId];
-		for (Iterator<SubClass> subList = iterSubClasses(player); subList.hasNext();)
+		final ClassId cid = ClassId.VALUES[classId];
+		for (SubClass subclass : player.getSubClasses().values())
 		{
-			SubClass sub = subList.next();
-			ClassId subClassId = ClassId.values()[sub.getClassId()];
-			
-			if (subClassId.equalsOrChildOf(cid))
+			if (subclass.getClassDefinition().equalsOrChildOf(cid))
 				return false;
 		}
 		
-		// get player base class
-		final int currentBaseId = player.getBaseClass();
-		final ClassId baseCID = ClassId.values()[currentBaseId];
-		
-		// we need 2nd occupation ID
-		final int baseClassId;
-		if (baseCID.level() > 2)
-			baseClassId = baseCID.getParent().ordinal();
-		else
-			baseClassId = currentBaseId;
-		
-		Set<PlayerClass> availSubs = PlayerClass.values()[baseClassId].getAvailableSubclasses(player);
+		final Set<ClassId> availSubs = ClassId.getAvailableSubclasses(player);
 		if (availSubs == null || availSubs.isEmpty())
 			return false;
 		
 		boolean found = false;
-		for (PlayerClass pclass : availSubs)
+		for (ClassId pclass : availSubs)
 		{
-			if (pclass.ordinal() == classId)
+			if (pclass.getId() == classId)
 			{
 				found = true;
 				break;
@@ -938,71 +920,35 @@ public class L2VillageMasterInstance extends L2NpcInstance
 		sm = null;
 	}
 
-	private final Set<PlayerClass> getAvailableSubClasses(L2PcInstance player)
+	private final Set<ClassId> getAvailableSubClasses(L2PcInstance player)
 	{
-		int charClassId = player.getBaseClass();
-
-		if (charClassId >= 88)
-			charClassId = ClassId.values()[charClassId].getParent().getId();
-
-		final PlayerRace npcRace = getVillageMasterRace();
-		final ClassType npcTeachType = getVillageMasterTeachType();
-
-		PlayerClass currClass = PlayerClass.values()[charClassId];
-
-		/**
-		 * If the race of your main class is Elf or Dark Elf,
-		 * you may not select each class as a subclass to the other class,
-		 * and you may not select Overlord and Warsmith class as a subclass.
-		 * You may not select a similar class as the subclass.
-		 * The occupations classified as similar classes are as follows:
-		 * Treasure Hunter, Plainswalker and Abyss Walker
-		 * Hawkeye, Silver Ranger and Phantom Ranger
-		 * Paladin, Dark Avenger, Temple Knight and Shillien Knight
-		 * Warlocks, Elemental Summoner and Phantom Summoner
-		 * Elder and Shillien Elder
-		 * Swordsinger and Bladedancer
-		 * Sorcerer, Spellsinger and Spellhowler
-		 */
-		Set<PlayerClass> availSubs = currClass.getAvailableSubclasses(player);
-
-		if (availSubs != null)
+		Set<ClassId> availSubs = ClassId.getAvailableSubclasses(player);
+		
+		if (availSubs != null && !availSubs.isEmpty())
 		{
-			for (PlayerClass availSub : availSubs)
+			for (Iterator<ClassId> availSub = availSubs.iterator(); availSub.hasNext();)
 			{
-				for (Iterator<SubClass> subList = iterSubClasses(player); subList.hasNext();)
+				ClassId classId = availSub.next();
+				
+				// check for the village master
+				if (!checkVillageMaster(classId))
 				{
-					SubClass prevSubClass = subList.next();
-					int subClassId = prevSubClass.getClassId();
-					if (subClassId >= 88)
-						subClassId = ClassId.values()[subClassId].getParent().getId();
-
-					if (availSub.ordinal() == subClassId || availSub.ordinal() == charClassId)
-						availSubs.remove(PlayerClass.values()[availSub.ordinal()]);
+					availSub.remove();
+					continue;
 				}
-
-				if ((npcRace == PlayerRace.Human || npcRace == PlayerRace.LightElf))
+				
+				// scan for already used subclasses
+				for (SubClass subclass : player.getSubClasses().values())
 				{
-					// If the master is human or light elf, ensure that fighter-type
-					// masters only teach fighter classes, and priest-type masters
-					// only teach priest classes etc.
-					if (!availSub.isOfType(npcTeachType))
-						availSubs.remove(availSub);
-
-					// Remove any non-human or light elf classes.
-					else if (!availSub.isOfRace(PlayerRace.Human) && !availSub.isOfRace(PlayerRace.LightElf))
-						availSubs.remove(availSub);
-				}
-				else
-				{
-					// If the master is not human and not light elf,
-					// then remove any classes not of the same race as the master.
-					if ((npcRace != PlayerRace.Human && npcRace != PlayerRace.LightElf) && !availSub.isOfRace(npcRace))
-						availSubs.remove(availSub);
+					if (subclass.getClassDefinition().equalsOrChildOf(classId))
+					{
+						availSub.remove();
+						break;
+					}
 				}
 			}
 		}
-
+		
 		return availSubs;
 	}
 
@@ -1059,7 +1005,7 @@ public class L2VillageMasterInstance extends L2NpcInstance
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 
-	private final String formatClassForDisplay(PlayerClass className)
+	private final String formatClassForDisplay(ClassId className)
 	{
 		String classNameStr = className.toString();
 		char[] charArray = classNameStr.toCharArray();
@@ -1070,39 +1016,6 @@ public class L2VillageMasterInstance extends L2NpcInstance
 
 		return classNameStr;
 	}
-
-	private final PlayerRace getVillageMasterRace()
-	{
-		String npcClass = getTemplate().getStatsSet().getString("jClass").toLowerCase();
-
-		if (npcClass.indexOf("human") > -1)
-			return PlayerRace.Human;
-
-		if (npcClass.indexOf("darkelf") > -1)
-			return PlayerRace.DarkElf;
-
-		if (npcClass.indexOf("elf") > -1)
-			return PlayerRace.LightElf;
-
-		if (npcClass.indexOf("orc") > -1)
-			return PlayerRace.Orc;
-
-		return PlayerRace.Dwarf;
-	}
-
-	private final ClassType getVillageMasterTeachType()
-	{
-		String npcClass = getTemplate().getStatsSet().getString("jClass");
-
-		if (npcClass.indexOf("sanctuary") > -1 || npcClass.indexOf("clergyman") > -1)
-			return ClassType.Priest;
-
-		if (npcClass.indexOf("mageguild") > -1 || npcClass.indexOf("patriarch") > -1)
-			return ClassType.Mystic;
-
-		return ClassType.Fighter;
-	}
-
 	private boolean ItemRestriction(L2PcInstance player)
 	{
 		if (player.getActiveWeaponInstance() != null || player.getActiveChestArmorItem() != null)
@@ -1126,29 +1039,21 @@ public class L2VillageMasterInstance extends L2NpcInstance
 	{
 		return player.getSubClasses().values().iterator();
 	}
-	
-	protected boolean checkVillageMasterRace(PlayerClass pclass)
+	protected boolean checkVillageMasterRace(ClassId pclass)
+	{
+		return true;
+	}
+	protected boolean checkVillageMasterTeachType(ClassId pclass)
 	{
 		return true;
 	}
 	
-	protected boolean checkVillageMasterTeachType(PlayerClass pclass)
-	{
-		return true;
-	}
-	
-	/*
-	 * Returns true if this classId allowed for master
-	 */
 	public final boolean checkVillageMaster(int classId)
 	{
-		return checkVillageMaster(PlayerClass.values()[classId]);
+		return checkVillageMaster(ClassId.VALUES[classId]);
 	}
 	
-	/*
-	 * Returns true if this PlayerClass is allowed for master
-	 */
-	public final boolean checkVillageMaster(PlayerClass pclass)
+	public final boolean checkVillageMaster(ClassId pclass)
 	{
 		return checkVillageMasterRace(pclass) && checkVillageMasterTeachType(pclass);
 	}

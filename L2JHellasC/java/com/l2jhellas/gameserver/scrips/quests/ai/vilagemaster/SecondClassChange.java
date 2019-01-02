@@ -17,10 +17,10 @@ package com.l2jhellas.gameserver.scrips.quests.ai.vilagemaster;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.ClassId;
-import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.serverpackets.HennaInfo;
@@ -651,17 +651,17 @@ public class SecondClassChange extends Quest
 			case 31334:
 			case 31974:
 			case 32096:
-				if (player.getRace() == Race.darkelf)
+				if (player.getRace() == ClassRace.DARK_ELF)
 				{
 					if (player.getClassId().level() == 1)
 					{
-						if (player.getClassId() == ClassId.palusKnight)
+						if (player.getClassId() == ClassId.PALUS_KNIGHT)
 							htmltext = "master_de-01.htm";
-						else if (player.getClassId() == ClassId.shillienOracle)
+						else if (player.getClassId() == ClassId.SHILLIEN_ORACLE)
 							htmltext = "master_de-08.htm";
-						else if (player.getClassId() == ClassId.assassin)
+						else if (player.getClassId() == ClassId.ASSASSIN)
 							htmltext = "master_de-12.htm";
-						else if (player.getClassId() == ClassId.darkWizard)
+						else if (player.getClassId() == ClassId.DARK_WIZARD)
 							htmltext = "master_de-19.htm";
 					}
 					else
@@ -679,15 +679,15 @@ public class SecondClassChange extends Quest
 			case 31288:
 			case 31326:
 			case 31977:
-				if (player.getRace() == Race.orc)
+				if (player.getRace() == ClassRace.ORC)
 				{
 					if (player.getClassId().level() == 1)
 					{
-						if (player.getClassId() == ClassId.orcMonk)
+						if (player.getClassId() == ClassId.MONK)
 							htmltext = "master_orc-01.htm";
-						else if (player.getClassId() == ClassId.orcRaider)
+						else if (player.getClassId() == ClassId.ORC_RAIDER)
 							htmltext = "master_orc-05.htm";
-						else if (player.getClassId() == ClassId.orcShaman)
+						else if (player.getClassId() == ClassId.ORC_SHAMAN)
 							htmltext = "master_orc-09.htm";
 					}
 					else
@@ -705,13 +705,13 @@ public class SecondClassChange extends Quest
 			case 31269:
 			case 31314:
 			case 31958:
-				if (player.getRace() == Race.dwarf)
+				if (player.getRace() == ClassRace.DWARF)
 				{
 					if (player.getClassId().level() == 1)
 					{
-						if (player.getClassId() == ClassId.scavenger)
+						if (player.getClassId() == ClassId.SCAVENGER)
 							htmltext = "master_dwarf-01.htm";
-						else if (player.getClassId() == ClassId.artisan)
+						else if (player.getClassId() == ClassId.ARTISAN)
 							htmltext = "master_dwarf-15.htm";
 					}
 					else
@@ -729,13 +729,13 @@ public class SecondClassChange extends Quest
 			case 31272:
 			case 31317:
 			case 31961:
-				if (player.getRace() == Race.dwarf)
+				if (player.getRace() == ClassRace.DWARF)
 				{
 					if (player.getClassId().level() == 1)
 					{
-						if (player.getClassId() == ClassId.scavenger)
+						if (player.getClassId() == ClassId.SCAVENGER)
 							htmltext = "master_dwarf-22.htm";
-						else if (player.getClassId() == ClassId.artisan)
+						else if (player.getClassId() == ClassId.ARTISAN)
 							htmltext = "master_dwarf-05.htm";
 					}
 					else
@@ -752,19 +752,19 @@ public class SecondClassChange extends Quest
 			case 30900:
 			case 31965:
 			case 32094:
-				if (player.getRace() == Race.human || player.getRace() == Race.elf)
+				if (player.getRace() == ClassRace.HUMAN || player.getRace() == ClassRace.ELF)
 				{
 					if (player.getClassId().level() == 1)
 					{
-						if (player.getClassId() == ClassId.elvenKnight)
+						if (player.getClassId() == ClassId.ELVEN_KNIGHT)
 							htmltext = "master_human_elf_fighter-01.htm";
-						else if (player.getClassId() == ClassId.knight)
+						else if (player.getClassId() == ClassId.KNIGHT)
 							htmltext = "master_human_elf_fighter-08.htm";
-						else if (player.getClassId() == ClassId.rogue)
+						else if (player.getClassId() == ClassId.ROGUE)
 							htmltext = "master_human_elf_fighter-15.htm";
-						else if (player.getClassId() == ClassId.elvenScout)
+						else if (player.getClassId() == ClassId.ELVEN_SCOUT)
 							htmltext = "master_human_elf_fighter-22.htm";
-						else if (player.getClassId() == ClassId.warrior)
+						else if (player.getClassId() == ClassId.WARRIOR)
 							htmltext = "master_human_elf_fighter-29.htm";
 						else
 							htmltext = "master_human_elf_fighter-78.htm";
@@ -782,13 +782,13 @@ public class SecondClassChange extends Quest
 			case 30694:
 			case 30854:
 			case 31996:
-				if (player.getRace() == Race.elf || player.getRace() == Race.human)
+				if (player.getRace() == ClassRace.ELF || player.getRace() == ClassRace.HUMAN)
 				{
 					if (player.getClassId().level() == 1)
 					{
-						if (player.getClassId() == ClassId.elvenWizard)
+						if (player.getClassId() == ClassId.ELVEN_WIZARD)
 							htmltext = "master_human_elf_mystic-01.htm";
-						else if (player.getClassId() == ClassId.wizard)
+						else if (player.getClassId() == ClassId.HUMAN_WIZARD)
 							htmltext = "master_human_elf_mystic-08.htm";
 						else
 							htmltext = "master_human_elf_mystic-40.htm";
@@ -811,13 +811,13 @@ public class SecondClassChange extends Quest
 			case 31968:
 			case 32095:
 			case 31336:
-				if (player.getRace() == Race.human || player.getRace() == Race.elf)
+				if (player.getRace() == ClassRace.HUMAN || player.getRace() == ClassRace.ELF)
 				{
 					if (player.getClassId().level() == 1)
 					{
-						if (player.getClassId() == ClassId.oracle)
+						if (player.getClassId() == ClassId.ELVEN_ORACLE)
 							htmltext = "master_human_elf_buffer-01.htm";
-						else if (player.getClassId() == ClassId.cleric)
+						else if (player.getClassId() == ClassId.CLERIC)
 							htmltext = "master_human_elf_buffer-05.htm";
 						else
 							htmltext = "master_human_elf_buffer-26.htm";
@@ -844,22 +844,22 @@ public class SecondClassChange extends Quest
 		
 		switch (player.getRace())
 		{
-			case darkelf:
+			case DARK_ELF:
 				change = "master_de";
 				break;
 			
-			case dwarf:
+			case DWARF:
 				change = "master_dwarf";
 				break;
 			
-			case orc:
+			case ORC:
 				change = "master_orc";
 				break;
 			
-			case human:
-			case elf:
+			case HUMAN:
+			case ELF:
 				if (player.isMageClass())
-					change = (player.getClassId() == ClassId.wizard || player.getClassId() == ClassId.elvenWizard) ? "master_human_elf_mystic" : "master_human_elf_buffer";
+					change = (player.getClassId() == ClassId.HUMAN_WIZARD || player.getClassId() == ClassId.ELVEN_WIZARD) ? "master_human_elf_mystic" : "master_human_elf_buffer";
 				else
 					change = "master_human_elf_fighter";
 				break;

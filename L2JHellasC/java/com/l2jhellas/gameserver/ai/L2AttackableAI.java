@@ -425,7 +425,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		// A L2Attackable isn't aggressive during 10s after its spawn because _globalAggro is set to -10
 		if (_globalAggro >= 0)
 		{
-			final int range = npc instanceof L2GuardInstance ? 600 : npc.getAggroRange();
+			final int range = npc instanceof L2GuardInstance ? 800 : npc.getAggroRange();
 			
 			L2World.getInstance().forEachVisibleObjectInRange(npc, L2Character.class, range, obj ->
 				{

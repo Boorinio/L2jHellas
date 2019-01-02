@@ -60,8 +60,6 @@ import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2PlayerAI;
 import com.l2jhellas.gameserver.ai.NextAction;
-import com.l2jhellas.gameserver.audio.Music;
-import com.l2jhellas.gameserver.audio.Sound;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.cache.WarehouseCache;
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
@@ -81,6 +79,11 @@ import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.datatables.xml.RecipeData;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
+import com.l2jhellas.gameserver.emum.ClassRace;
+import com.l2jhellas.gameserver.emum.ClassType;
+import com.l2jhellas.gameserver.emum.DuelState;
+import com.l2jhellas.gameserver.emum.Music;
+import com.l2jhellas.gameserver.emum.Sound;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.handler.ItemHandler;
@@ -142,14 +145,10 @@ import com.l2jhellas.gameserver.model.actor.appearance.PcAppearance;
 import com.l2jhellas.gameserver.model.actor.stat.PcStat;
 import com.l2jhellas.gameserver.model.actor.status.PcStatus;
 import com.l2jhellas.gameserver.model.base.ClassId;
-import com.l2jhellas.gameserver.model.base.ClassLevel;
-import com.l2jhellas.gameserver.model.base.PlayerClass;
-import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.base.SubClass;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
 import com.l2jhellas.gameserver.model.entity.Couple;
-import com.l2jhellas.gameserver.model.entity.Duel.DuelState;
 import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.model.entity.L2Event;
 import com.l2jhellas.gameserver.model.entity.Siege;
@@ -193,6 +192,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.LeaveWorld;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillCanceld;
+import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ObservationMode;
@@ -2356,7 +2356,7 @@ public final class L2PcInstance extends L2Playable
 	public void setClassId(int Id)
 	{
 		
-		if (getLvlJoinedAcademy() != 0 && _clan != null && PlayerClass.values()[Id].getLevel() == ClassLevel.Third)
+		if (getLvlJoinedAcademy() != 0 && _clan != null && ClassId.VALUES[Id].level() == 2)
 		{
 			if (getLvlJoinedAcademy() <= 16)
 			{
@@ -2388,7 +2388,24 @@ public final class L2PcInstance extends L2Playable
 		{
 			getSubClasses().get(_classIndex).setClassId(Id);
 		}
+		
+		broadcastPacket(new MagicSkillUse(this, this, 5103, 1, 1000, 0));
 		setClassTemplate(Id);
+		
+		if (getClassId().level() == 3)
+			sendPacket(SystemMessageId.THIRD_CLASS_TRANSFER);
+		else
+			sendPacket(SystemMessageId.CLASS_TRANSFER);
+		
+		// Update class icon in party and clan
+		if (_party != null)
+		    _party.broadcastToPartyMembers(new PartySmallWindowUpdate(this));
+		
+		if (_clan != null)
+			_clan.broadcastToOnlineMembers(new PledgeShowMemberListUpdate(this));
+		
+		if (Config.AUTO_LEARN_SKILLS)
+			rewardSkills();
 	}
 	
 	/**
@@ -2565,7 +2582,7 @@ public final class L2PcInstance extends L2Playable
 		
 		// Active skill dwarven craft
 		
-		if (getSkillLevel(1321) < 1 && getRace() == Race.dwarf)
+		if (getSkillLevel(1321) < 1 && getRace() == ClassRace.DWARF)
 		{
 			L2Skill skill = SkillTable.getInstance().getInfo(1321, 1);
 			addSkill(skill, true);
@@ -2659,15 +2676,11 @@ public final class L2PcInstance extends L2Playable
 	}
 	
 	/**
-	 * Return the Race object of the L2PcInstance.
+	 * @return The Race object of the Player.
 	 */
-	public Race getRace()
+	public ClassRace getRace()
 	{
-		if (!isSubClassActive())
-			return getTemplate().race;
-		
-		L2PcTemplate charTemp = CharTemplateData.getInstance().getTemplate(_baseClass);
-		return charTemp.race;
+		return (isSubClassActive()) ? getBaseTemplate().getRace() : getTemplate().getRace();
 	}
 	
 	public L2Radar getRadar()
@@ -7221,14 +7234,7 @@ public final class L2PcInstance extends L2Playable
 			
 			while (rset.next())
 			{
-				SubClass subClass = new SubClass();
-				subClass.setClassId(rset.getInt("class_id"));
-				subClass.setLevel(rset.getByte("level"));
-				subClass.setExp(rset.getLong("exp"));
-				subClass.setSp(rset.getInt("sp"));
-				subClass.setClassIndex(rset.getInt("class_index"));
-				
-				// Enforce the correct indexing of _subClasses against their class indexes.
+				final SubClass subClass = new SubClass(rset.getInt("class_id"), rset.getInt("class_index"), rset.getLong("exp"), rset.getInt("sp"),rset.getByte("level"));
 				player.getSubClasses().put(subClass.getClassIndex(), subClass);
 			}
 						
@@ -9170,7 +9176,7 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public boolean isMageClass()
 	{
-		return getClassId().isMage();
+		return getClassId().getType() != ClassType.FIGHTER;
 	}
 	
 	public boolean isMounted()
@@ -10254,11 +10260,7 @@ public final class L2PcInstance extends L2Playable
 		if (getSubClasses().containsKey(classIndex))
 			return false;
 		
-		// Note: Never change _classIndex in any method other than setActiveClass().
-		
-		SubClass newClass = new SubClass();
-		newClass.setClassId(classId);
-		newClass.setClassIndex(classIndex);
+		final SubClass newClass = new SubClass(classId, classIndex);
 		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -11957,22 +11959,22 @@ public final class L2PcInstance extends L2Playable
 		if(isGM())
 			return Config.INVENTORY_MAXIMUM_GM;
 
-		return ((getRace() == Race.dwarf) ? Config.INVENTORY_MAXIMUM_DWARF : Config.INVENTORY_MAXIMUM_NO_DWARF) + (int) getStat().calcStat(Stats.INV_LIM, 0, null, null);
+		return ((getRace() == ClassRace.DWARF) ? Config.INVENTORY_MAXIMUM_DWARF : Config.INVENTORY_MAXIMUM_NO_DWARF) + (int) getStat().calcStat(Stats.INV_LIM, 0, null, null);
 	}
 
 	public int getWareHouseLimit()
 	{
-		return ((getRace() == Race.dwarf) ? Config.WAREHOUSE_SLOTS_DWARF : Config.WAREHOUSE_SLOTS_NO_DWARF) + (int) getStat().calcStat(Stats.WH_LIM, 0, null, null);
+		return ((getRace() == ClassRace.DWARF) ? Config.WAREHOUSE_SLOTS_DWARF : Config.WAREHOUSE_SLOTS_NO_DWARF) + (int) getStat().calcStat(Stats.WH_LIM, 0, null, null);
 	}
 	
 	public int getPrivateSellStoreLimit()
 	{
-		return ((getRace() == Race.dwarf) ? Config.MAX_PVTSTORE_SLOTS_DWARF : Config.MAX_PVTSTORE_SLOTS_OTHER) + (int) getStat().calcStat(Stats.P_SELL_LIM, 0, null, null);
+		return ((getRace() == ClassRace.DWARF) ? Config.MAX_PVTSTORE_SLOTS_DWARF : Config.MAX_PVTSTORE_SLOTS_OTHER) + (int) getStat().calcStat(Stats.P_SELL_LIM, 0, null, null);
 	}
 	
 	public int getPrivateBuyStoreLimit()
 	{
-		return ((getRace() == Race.dwarf) ? Config.MAX_PVTSTORE_SLOTS_DWARF : Config.MAX_PVTSTORE_SLOTS_OTHER) + (int) getStat().calcStat(Stats.P_BUY_LIM, 0, null, null);
+		return ((getRace() == ClassRace.DWARF) ? Config.MAX_PVTSTORE_SLOTS_DWARF : Config.MAX_PVTSTORE_SLOTS_OTHER) + (int) getStat().calcStat(Stats.P_BUY_LIM, 0, null, null);
 	}
 	
 	public int getFreightLimit()
@@ -13515,12 +13517,12 @@ public final class L2PcInstance extends L2Playable
 		}
 		if (Config.ALLOW_REMOTE_CLASS_MASTER)
 		{
-			ClassLevel lvlnow = PlayerClass.values()[getClassId().getId()].getLevel();
-			if (getLevel() >= 20 && lvlnow == ClassLevel.First)
+			int lvlnow = getClassId().level();
+			if (getLevel() >= 20 && lvlnow == 0)
 				L2ClassMasterInstance.ClassMaster.onAction(this);
-			else if (getLevel() >= 40 && lvlnow == ClassLevel.Second)
+			else if (getLevel() >= 40 && lvlnow == 1)
 				L2ClassMasterInstance.ClassMaster.onAction(this);
-			else if (getLevel() >= 76 && lvlnow == ClassLevel.Third)
+			else if (getLevel() >= 76 && lvlnow == 2)
 				L2ClassMasterInstance.ClassMaster.onAction(this);
 		}
 		
@@ -13761,280 +13763,148 @@ public final class L2PcInstance extends L2Playable
 		final int[] armorIdhellKnight ={6581, 6373, 6374, 6375, 6376, 6377, 6378, 920, 858, 858, 889, 889};
 		final int[] armorIdswordMuse ={6581, 6379, 6380, 6381, 6382, 920, 858, 858, 889, 889, 6377};
 		final int[] armorIdDancer ={6580, 6379, 6380, 6381, 6382, 920, 858, 858, 889, 889};	
-		L2ItemInstance items = null;
 		
 		switch (classId)
 		{			
-			case adventurer:			
+			case ADVENTURER:			
 				for (int id : armorIdDagger)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				}			
                 break;
-			case sagittarius:
+			case SAGGITARIUS:
 				for (int id : armorIdSagi)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				} 
 				break;
-			case duelist:
+			case DUELIST:
 				for (int id : armorIdDuelist)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				}
 				break;
-			case titan:	
+			case TITAN:	
 				for (int id : armorIdTit)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				}
                 break;
-			case grandKhauatari:
+			case GRAND_KHAVATARI:
 				for (int id : armorIdNixas)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
-				}                break;
-			case phoenixKnight:
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
+				}                
+				break;
+			case PHOENIX_KNIGHT:
 				for (int id : armorIdPaladin)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				}
                 break;
-			case moonlightSentinel:
+			case MOONLIGHT_SENTINEL:
 				for (int id : armorIdSagi)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				}        
                 break;
-			case fortuneSeeker:
+			case FORTUNE_SEEKER:
 				for (int id : armorIdFSeeker)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				}
                 break;
-			case maestro:
+			case MAESTRO:
 				for (int id : armorIdFSeeker)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				}
                 break;
-			case dreadnought:
+			case DREADNOUGHT:
 				for (int id : armorIddreadnought)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				}
                 break;
-			case hellKnight:
+			case HELL_KNIGHT:
 				for (int id : armorIdhellKnight)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				}
                 break;
-			case evaTemplar:
+			case EVAS_TEMPLAR:
 				for (int id : armorIdhellKnight)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				}                break;
-			case swordMuse:
+			case SWORD_MUSE:
 				for (int id : armorIdswordMuse)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				}
                 break;
-			case windRider:
+			case WIND_RIDER:
 				for (int id : armorIdDagger)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				}	
 			    break;
-			case shillienTemplar:
+			case SHILLIEN_TEMPLAR:
 				for (int id : armorIdFSeeker)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				}
 			    break;
-			case spectralDancer:
+			case SPECTRAL_DANCER:
 				for (int id : armorIdDancer)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();				
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				}
 			    break;
-			case ghostHunter:
+			case GHOST_HUNTER:
 				for (int id : armorIdDagger)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				}	
 			    break;
-			case ghostSentinel:
+			case GHOST_SENTINEL:
 				for (int id : armorIdSagi)
 				{
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				} 
 			     break;
 			default:
-				if(classId.isMage())
+				if(isMageClass())
 				{
 				 for (int id : armorIdMage)
 				 {
 					getInventory().addItem("Armors", id, 1, this, null);
-					items = getInventory().getItemByItemId(id);
-					getInventory().equipItemAndRecord(items);
-					getInventory().reloadEquippedItems();
-					final InventoryUpdate iu = new InventoryUpdate();			
-					iu.addModifiedItem(items);
-					sendPacket(iu);
-					sendPacket(new ItemList(this, false));
-					sendPacket(new StatusUpdate(getObjectId()));
+					getInventory().equipItemAndRecord(getInventory().getItemByItemId(id));
 				 }
 				}
 				break;
 		}	
 		
-		items = null;
+		sendPacket(new ItemList(this, false));
+		sendPacket(new StatusUpdate(getObjectId()));
 		sendPacket(new ActionFailed());
 	}
 	

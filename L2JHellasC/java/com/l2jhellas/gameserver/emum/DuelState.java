@@ -12,14 +12,14 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.l2jhellas.gameserver.model.base;
+package com.l2jhellas.gameserver.emum;
 
-/**
- * ClassType Enum
- * 
- * @author Tempy
- */
-public enum ClassType
+public enum DuelState
 {
-	Fighter, Mystic, Priest
+	NO_DUEL,
+	ON_COUNTDOWN,
+	DUELLING,
+	DEAD,
+	WINNER,
+	INTERRUPTED;
 }

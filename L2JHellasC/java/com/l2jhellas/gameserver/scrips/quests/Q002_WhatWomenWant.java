@@ -12,9 +12,9 @@
  */
 package com.l2jhellas.gameserver.scrips.quests;
 
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 
@@ -92,7 +92,7 @@ public class Q002_WhatWomenWant extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getRace() != Race.elf && player.getRace() != Race.human)
+				if (player.getRace() != ClassRace.ELF && player.getRace() != ClassRace.HUMAN)
 					htmltext = "30223-00.htm";
 				else if (player.getLevel() < 2)
 					htmltext = "30223-01.htm";

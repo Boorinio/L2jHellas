@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import com.l2jhellas.gameserver.emum.FenceState;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.FenceManager;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.fence.FenceState;
 import com.l2jhellas.gameserver.network.serverpackets.DeleteObject;
 import com.l2jhellas.gameserver.network.serverpackets.ExColosseumFenceInfo;
 

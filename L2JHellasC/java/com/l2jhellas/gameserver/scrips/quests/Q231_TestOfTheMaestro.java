@@ -149,7 +149,7 @@ public class Q231_TestOfTheMaestro extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getClassId() != ClassId.artisan)
+				if (player.getClassId() != ClassId.ARTISAN)
 					htmltext = "30531-01.htm";
 				else if (player.getLevel() < 39)
 					htmltext = "30531-02.htm";

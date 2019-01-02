@@ -829,44 +829,59 @@ public abstract class Inventory extends ItemContainer
 	 *        : L2ItemInstance pointing out the item to add in slot
 	 * @return L2ItemInstance designating the item placed in the slot before
 	 */
-	public L2ItemInstance setPaperdollItem(int slot, L2ItemInstance item)
+	public synchronized L2ItemInstance setPaperdollItem(int slot, L2ItemInstance item)
 	{
 		L2ItemInstance old = _paperdoll[slot];
+		
 		if (old != item)
 		{
 			if (old != null)
 			{
 				_paperdoll[slot] = null;
-				// Put old item from paperdoll slot to base location
 				old.setLocation(getBaseLocation());
 				old.setLastChange(L2ItemInstance.MODIFIED);
-				// Get the mask for paperdoll
-				int mask = 0;
-				for (int i = 0; i < PAPERDOLL_LRHAND; i++)
-				{
-					L2ItemInstance pi = _paperdoll[i];
-					if (pi != null)
-						mask |= pi.getItem().getItemMask();
-				}
-				_wearedMask = mask;
-				// Notify all paperdoll listener in order to unequip old item in slot
+				
+				_wearedMask &= ~old.getItem().getItemMask();
+				
 				for (PaperdollListener listener : _paperdollListeners)
 				{
 					if (listener == null)
 						continue;
+					
 					listener.notifyUnequiped(slot, old);
 				}
 				old.updateDatabase();
 			}
 			if (item != null)
 			{
-				// Add new item in slot of paperdoll
 				_paperdoll[slot] = item;
 				item.setLocation(getEquipLocation(), slot);
 				item.setLastChange(L2ItemInstance.MODIFIED);
-				_wearedMask |= item.getItem().getItemMask();
+				
+				L2Item armor = item.getItem();
+				
+				if (armor.getBodyPart() == L2Item.SLOT_CHEST)
+				{
+					L2ItemInstance legs = _paperdoll[PAPERDOLL_LEGS];
+					if (legs != null && legs.getItem().getItemMask() == armor.getItemMask())
+						_wearedMask |= armor.getItemMask();
+				}
+				else if (armor.getBodyPart() == L2Item.SLOT_LEGS)
+				{
+					L2ItemInstance legs = _paperdoll[PAPERDOLL_CHEST];
+					if (legs != null && legs.getItem().getItemMask() == armor.getItemMask())
+						_wearedMask |= armor.getItemMask();
+				}
+				else
+					_wearedMask |= armor.getItemMask();
+				
 				for (PaperdollListener listener : _paperdollListeners)
+				{
+					if (listener == null)
+						continue;
+					
 					listener.notifyEquiped(slot, item);
+				}
 				item.updateDatabase();
 			}
 		}
@@ -1205,11 +1220,19 @@ public abstract class Inventory extends ItemContainer
 				}
 				else
 				{
-					setPaperdollItem(PAPERDOLL_LEAR, null);
-					setPaperdollItem(PAPERDOLL_LEAR, item);
+					if (_paperdoll[PAPERDOLL_REAR].getItemId() == item.getItemId())
+					{
+						setPaperdollItem(PAPERDOLL_LEAR, item);
+					}
+					else if (_paperdoll[PAPERDOLL_LEAR].getItemId() == item.getItemId())
+					{
+						setPaperdollItem(PAPERDOLL_REAR, item);
+					}
+					else
+						setPaperdollItem(PAPERDOLL_LEAR, item);
 				}
-
 				break;
+			
 			}
 			case L2Item.SLOT_L_FINGER:
 			case L2Item.SLOT_R_FINGER:
@@ -1225,10 +1248,17 @@ public abstract class Inventory extends ItemContainer
 				}
 				else
 				{
-					setPaperdollItem(PAPERDOLL_LFINGER, null);
-					setPaperdollItem(PAPERDOLL_LFINGER, item);
+					if (_paperdoll[PAPERDOLL_RFINGER].getItemId() == item.getItemId())
+					{
+						setPaperdollItem(PAPERDOLL_LFINGER, item);
+					}
+					else if (_paperdoll[PAPERDOLL_LFINGER].getItemId() == item.getItemId())
+					{
+						setPaperdollItem(PAPERDOLL_RFINGER, item);
+					}
+					else
+						setPaperdollItem(PAPERDOLL_LFINGER, item);
 				}
-
 				break;
 			}
 			case L2Item.SLOT_NECK:

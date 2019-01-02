@@ -12,9 +12,9 @@
  */
 package com.l2jhellas.gameserver.scrips.quests;
 
+import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.base.Race;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 
@@ -92,7 +92,7 @@ public class Q008_AnAdventureBegins extends Quest
 		switch (st.getState())
 		{
 			case STATE_CREATED:
-				if (player.getLevel() >= 3 && player.getRace() == Race.darkelf)
+				if (player.getLevel() >= 3 && player.getRace() == ClassRace.DARK_ELF)
 					htmltext = "30134-02.htm";
 				else
 					htmltext = "30134-01.htm";
