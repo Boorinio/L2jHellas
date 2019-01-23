@@ -1429,21 +1429,25 @@ public abstract class Inventory extends ItemContainer
 				item = L2ItemInstance.restoreFromDb(objectId);
 				if (item == null)
 					continue;
-				
+					
 				if (L2World.getInstance().findObject(inv.getInt("object_id")) != null)
-				{
+				{			
 					_log.warning(Inventory.class.getSimpleName() + ": Item: " + item.getObjectId() + " Has duplied on world and cannot be load");
 					L2World.getInstance().removeObject(item);
+					if (getOwner() instanceof L2PcInstance)
+					{
+						final L2PcInstance player = (L2PcInstance) getOwner();
+						player.closeNetConnection(false);
+					}
 					continue;				
 				}
 				
 				if (getOwner() instanceof L2PcInstance)
 				{
-					L2PcInstance player = (L2PcInstance) getOwner();
-
-					
+					final L2PcInstance player = (L2PcInstance) getOwner();
+									
 					if (!player.isGM())
-					{
+					{				
 						if (!player.isHero())
 						{
 							int itemId = item.getItemId();

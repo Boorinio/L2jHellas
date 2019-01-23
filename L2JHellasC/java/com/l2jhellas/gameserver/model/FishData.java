@@ -14,127 +14,256 @@
  */
 package com.l2jhellas.gameserver.model;
 
-import com.l2jhellas.gameserver.controllers.GameTimeController;
+import com.l2jhellas.gameserver.templates.StatsSet;
 
 
-public class FishData
+public class FishData implements Cloneable
 {
-	private final int _id;
-	private final int _level;
-	private final String _name;
-	private final int _hp;
-	private final int _hpRegen;
-	private int _type;
-	private final int _group;
-	private final int _fishGuts;
+	private final int _fishId;
+	private final int _itemId;
+	private final String _itemName;
+	private int _fishGroup;
+	private final int _fishLevel;
+	private final double _fishBiteRate;
+	private final double _fishGuts;
+	private final int _fishHp;
+	private final int _fishMaxLength;
+	private final double _fishLengthRate;
+	private final double _hpRegen;
+	private final int _startCombatTime;
+	private final int _combatDuration;
 	private final int _gutsCheckTime;
-	private final int _waitTime;
-	private final int _combatTime;
+	private final double _gutsCheckProbability;
+	private final double _cheatingProb;
+	private final int _fishGrade;
 
-	public FishData(int id, int lvl, String name, int HP, int HpRegen, int type, int group, int fish_guts, int guts_check_time, int wait_time, int combat_time)
+	public FishData(StatsSet set)
 	{
-		_id = id;
-		_level = lvl;
-		_name = name.intern();
-		_hp = HP;
-		_hpRegen = HpRegen;
-		_type = type;
-		_group = group;
-		_fishGuts = fish_guts;
-		_gutsCheckTime = guts_check_time;
-		_waitTime = wait_time;
-		_combatTime = combat_time;
+		_fishId = set.getInteger("fishId");
+		_itemId = set.getInteger("itemId");
+		_itemName = set.getString("itemName");
+		_fishGroup = getGroupId(set.getString("fishGroup"));
+		_fishLevel = set.getInteger("fishLevel");
+		_fishBiteRate = set.getDouble("fishBiteRate");
+		_fishGuts = set.getDouble("fishGuts");
+		_fishHp = set.getInteger("fishHp");
+		_fishMaxLength = set.getInteger("fishMaxLength"); 
+		_fishLengthRate = set.getDouble("fishLengthRate");
+		_hpRegen = set.getDouble("hpRegen");
+		_startCombatTime = set.getInteger("startCombatTime");
+		_combatDuration = set.getInteger("combatDuration");
+		_gutsCheckTime = set.getInteger("gutsCheckTime");
+		_gutsCheckProbability = set.getDouble("gutsCheckProbability"); 
+		_cheatingProb = set.getDouble("cheatingProb");
+		_fishGrade = getGradeId(set.getString("fishGrade"));
 	}
 
-	public FishData(FishData copyOf)
+	@Override
+	public FishData clone()
 	{
-		_id = copyOf.getId();
-		_level = copyOf.getLevel();
-		_name = copyOf.getName();
-		_hp = copyOf.getHP();
-		_hpRegen = copyOf.getHpRegen();
-		_type = copyOf.getType();
-		_group = copyOf.getGroup();
-		_fishGuts = copyOf.getFishGuts();
-		_gutsCheckTime = copyOf.getGutsCheckTime();
-		_waitTime = copyOf.getWaitTime();
-		_combatTime = copyOf.getCombatTime();
+		try
+		{
+			return (FishData) super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			return null;
+		}
 	}
-
 	/**
-	 * @return Returns the id.
+	 * @return the fish Id.
 	 */
-	public int getId()
+	public int getFishId()
 	{
-		return _id;
-	}
-
-	/**
-	 * @return Returns the level.
-	 */
-	public int getLevel()
-	{
-		return _level;
-	}
-
-	/**
-	 * @return Returns the name.
-	 */
-	public String getName()
-	{
-		return _name;
-	}
-
-	public int getHP()
-	{
-		return _hp;
-	}
-
-	public int getHpRegen()
-	{
-		return _hpRegen;
-	}
-
-	public int getType()
-	{
-		return _type;
-	}
-
-	public int getType(boolean isLureNight)
-	{
-		if (!GameTimeController.getInstance().isNight() && isLureNight)
-			return -1;
-		
-		return _type;
+		return _fishId;
 	}
 	
-	public int getGroup()
+	/**
+	 * @return the fish Item Id.
+	 */
+	public int getItemId()
 	{
-		return _group;
+		return _itemId;
 	}
-
-	public int getFishGuts()
+	
+	/**
+	 * @return the fish Item name Id.
+	 */
+	public String getItemName()
+	{
+		return _itemName;
+	}
+	
+	/**
+	 * @return the fish Group.
+	 */
+	public int getFishGroup()
+	{
+		return _fishGroup;
+	}
+	
+	/**
+	 * @return the fish Level.
+	 */
+	public int getFishLevel()
+	{
+		return _fishLevel;
+	}
+	
+	/**
+	 * @return the fish Bite Rate.
+	 */
+	public double getFishBiteRate()
+	{
+		return _fishBiteRate;
+	}
+	
+	/**
+	 * @return the fish Guts.
+	 */
+	public double getFishGuts()
 	{
 		return _fishGuts;
 	}
-
+	
+	/**
+	 * @return the fish Hp.
+	 */
+	public int getFishHp()
+	{
+		return _fishHp;
+	}
+	
+	/**
+	 * @return the fish Max length.
+	 */
+	public int getFishMaxLength()
+	{
+		return _fishMaxLength;
+	}
+	
+	/**
+	 * @return the fish Length rate.
+	 */
+	public double getFishLengthRate()
+	{
+		return _fishLengthRate;
+	}
+	
+	/**
+	 * @return the fish Hp regen.
+	 */
+	public double getHpRegen()
+	{
+		return _hpRegen;
+	}
+	
+	/**
+	 * @return the fish start Combat time.
+	 */
+	public int getStartCombatTime()
+	{
+		return _startCombatTime;
+	}
+	
+	/**
+	 * @return the fish Combat duration.
+	 */
+	public int getCombatDuration()
+	{
+		return _combatDuration;
+	}
+	
+	/**
+	 * @return the fish Guts check time.
+	 */
 	public int getGutsCheckTime()
 	{
 		return _gutsCheckTime;
 	}
-
-	public int getWaitTime()
+	
+	/**
+	 * @return the fish Guts Check probability.
+	 */
+	public double getGutsCheckProbability()
 	{
-		return _waitTime;
+		return _gutsCheckProbability;
 	}
-
-	public int getCombatTime()
+	
+	/**
+	 * @return the fish Cheating prob.
+	 */
+	public double getCheatingProb()
 	{
-		return _combatTime;
+		return _cheatingProb;
 	}
-
-	public void setType(int type)
+	
+	/**
+	 * @return the fish Grade.
+	 */
+	public int getFishGrade()
 	{
-		_type = type;
+		return _fishGrade;
+	}
+	
+	/**
+	 * @param fg the fish Group.
+	 */
+	public void setFishGroup(int fg)
+	{
+		_fishGroup = fg;
+	}
+	
+	
+	/**
+	 * @param name the Group Name.
+	 * @return the fish Group Id.
+	 */
+	private int getGroupId(String name)
+	{
+		switch (name)
+		{
+			case "swift":
+				return 1;
+			case "ugly":
+				return 2;
+			case "fish_box":
+				return 3;
+			case "easy_wide":
+				return 4;
+			case "easy_swift":
+				return 5;
+			case "easy_ugly":
+				return 6;
+			case "hard_wide":
+				return 7;
+			case "hard_swift":
+				return 8;
+			case "hard_ugly":
+				return 9;
+			case "hs_fish":
+				return 10;
+			case "wide":
+			default:
+				return 0;
+		}
+	}
+	
+	/**
+	 * @param name the Grade Name.
+	 * @return the fish Grade Id.
+	 */
+	private int getGradeId(String name)
+	{
+		switch (name)
+		{
+			case "fish_easy":
+				return 0;
+			case "fish_hard":
+				return 2;
+			case "fish_normal":
+			default:
+				return 1;
+		}
 	}
 }

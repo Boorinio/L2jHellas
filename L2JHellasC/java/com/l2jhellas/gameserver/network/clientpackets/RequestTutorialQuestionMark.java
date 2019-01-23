@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 
@@ -38,11 +39,16 @@ public class RequestTutorialQuestionMark extends L2GameClientPacket
 		if (player == null)
 			return;
 		
-		QuestState qs = player.getQuestState("255_Tutorial");
-		if (qs != null)
-			qs.getQuest().notifyEvent("QM" + _number + "", null, player);
+		if(Config.ALLOWFISHING && _number== 1994)
+			player.showFishingHelp();
+		else		
+	    {	
+		  QuestState qs = player.getQuestState("255_Tutorial");
+		  if (qs != null)
+			  qs.getQuest().notifyEvent("QM" + _number + "", null, player);
+	    }
 	}
-	
+
 	@Override
 	public String getType()
 	{

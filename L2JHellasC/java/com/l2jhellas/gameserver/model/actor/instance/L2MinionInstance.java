@@ -26,45 +26,10 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
  */
 public final class L2MinionInstance extends L2MonsterInstance
 {
-	/** The master L2Character whose depends this L2MinionInstance on */
-	private L2MonsterInstance _master;
 
-	/**
-	 * Constructor of L2MinionInstance (use L2Character and L2NpcInstance constructor).<BR>
-	 * <BR>
-	 * <B><U> Actions</U> :</B><BR>
-	 * <BR>
-	 * <li>Call the L2Character constructor to set the _template of the L2MinionInstance (copy skills from template to object and link _calculators to NPC_STD_CALCULATOR)</li> <li>
-	 * Set the name of the L2MinionInstance</li> <li>Create a RandomAnimation Task that will be launched after the calculated delay if the server allow it</li><BR>
-	 * <BR>
-	 * 
-	 * @param objectId
-	 *        Identifier of the object to initialized
-	 * @param L2NpcTemplate
-	 *        Template to apply to the NPC
-	 */
 	public L2MinionInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-	}
-
-	/**
-	 * Return True if the L2Character is minion of RaidBoss.
-	 * 
-	 * @Override
-	 *           public boolean isRaid()
-	 *           {
-	 *           return (getLeader() instanceof L2RaidBossInstance);
-	 *           }
-	 */
-
-	/**
-	 * Return the master of this L2MinionInstance.<BR>
-	 * <BR>
-	 */
-	public L2MonsterInstance getLeader()
-	{
-		return _master;
 	}
 
 	@Override
@@ -80,39 +45,26 @@ public final class L2MinionInstance extends L2MonsterInstance
 		}
 
 		// check the region where this mob is, do not activate the AI if region is inactive.
-		L2WorldRegion region = L2World.getInstance().getRegion(getX(), getY(),getZ());
+		final L2WorldRegion region = L2World.getInstance().getRegion(getX(), getY(),getZ());
 		if ((region != null) && (!region.isActive()))
 			((L2AttackableAI) getAI()).stopAITask();
 	}
 
-	/**
-	 * Set the master of this L2MinionInstance.<BR>
-	 * <BR>
-	 * 
-	 * @param leader
-	 *        The L2Character that leads this L2MinionInstance
-	 */
-	public void setLeader(L2MonsterInstance leader)
+
+	@Override
+	public L2MonsterInstance getLeader()
 	{
-		_master = leader;
+		return super.getLeader();
 	}
 
-	/**
-	 * Manages the doDie event for this L2MinionInstance.<BR>
-	 * <BR>
-	 * 
-	 * @param killer
-	 *        The L2Character that killed this L2MinionInstance.<BR>
-	 * <BR>
-	 */
 	@Override
 	public boolean doDie(L2Character killer)
 	{
 		if (!super.doDie(killer))
 			return false;
 		
-		if (_master != null)
-			_master.getMinionList().onMinionDie(this, _master.getSpawn().getRespawnDelay() / 2);
+		if (getLeader() != null)
+			getLeader().getMinionList().onMinionDie(this,getLeader().getSpawn().getRespawnDelay() / 2);
 		
 		return true;
 	}

@@ -103,6 +103,15 @@ public class L2MonsterInstance extends L2Attackable
 	}	
 
 	/**
+	 * Return home.
+	 */
+	@Override
+	public boolean returnHome()
+	{
+        return super.returnHome();
+	}
+	
+	/**
 	 * Spawn all minions at a regular interval
 	 */
 	protected void manageMinions()

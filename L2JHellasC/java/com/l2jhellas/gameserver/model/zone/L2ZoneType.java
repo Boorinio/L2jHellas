@@ -148,7 +148,7 @@ protected static final Logger _log = Logger.getLogger(L2ZoneType.class.getName()
 		if (isInsideZone(character))
 		{
 			// Was the character not yet inside this zone?
-			if (!_characterList.containsKey(character.getObjectId()))
+			if (_characterList.putIfAbsent(character.getObjectId(), character) == null)
 			{
 				// Notify to scripts.
 				final List<Quest> quests = getQuestByEvent(QuestEventType.ON_ENTER_ZONE);
@@ -157,9 +157,6 @@ protected static final Logger _log = Logger.getLogger(L2ZoneType.class.getName()
 					for (Quest quest : quests)
 						quest.notifyEnterZone(character, this);
 				}
-				
-				// Register player.
-				_characterList.put(character.getObjectId(), character);
 				
 				// Notify Zone implementation.
 				onEnter(character);
@@ -272,6 +269,11 @@ protected static final Logger _log = Logger.getLogger(L2ZoneType.class.getName()
 			   }
 		   }
 	}
+	
+	//public void oustAllPlayers()
+	//{
+		//_characterList.values().stream().filter(Objects::nonNull).filter(L2Object::isPlayer).map(L2Object::getActingPlayer).filter(L2PcInstance::isbOnline).forEach(player -> player.teleToLocation(TeleportWhereType.TOWN));
+	//}
 	
 	@Override
 	public String toString()

@@ -125,8 +125,7 @@ public final class Config
     public static boolean COMPACT_GEO;
 	public static int COORD_SYNCHRONIZE;
 	public static int GEOEDITOR_PORT;
-    
-    
+	
 	//===============================================================================
 	//================================
 	// GameServer LoginServer Configs
@@ -1184,14 +1183,22 @@ public final class Config
 	public static int MAX_CONNECTION_PER_IP;
 	public static boolean RESERVE_HOST_ON_LOGIN = false;
 
-	/**
-	 * MMocore Config File
-	 */
+	/** MMO settings */
 	public static int MMO_SELECTOR_SLEEP_TIME = 20; // default 20
-	public static int MMO_MAX_SEND_PER_PASS = 12; // default 12
-	public static int MMO_MAX_READ_PER_PASS = 12; // default 12
+	public static int MMO_MAX_SEND_PER_PASS = 80; // default 80
+	public static int MMO_MAX_READ_PER_PASS = 80; // default 80
 	public static int MMO_HELPER_BUFFER_COUNT = 20; // default 20
-	public static int MMO_IO_SELECTOR_THREAD_COUNT = 2;
+	
+	/** Client Packets Queue settings */
+	public static int CLIENT_PACKET_QUEUE_SIZE = MMO_MAX_READ_PER_PASS + 2; // default MMO_MAX_READ_PER_PASS + 2
+	public static int CLIENT_PACKET_QUEUE_MAX_BURST_SIZE = MMO_MAX_READ_PER_PASS + 1; // default MMO_MAX_READ_PER_PASS + 1
+	public static int CLIENT_PACKET_QUEUE_MAX_PACKETS_PER_SECOND = 160; // default 160
+	public static int CLIENT_PACKET_QUEUE_MEASURE_INTERVAL = 5; // default 5
+	public static int CLIENT_PACKET_QUEUE_MAX_AVERAGE_PACKETS_PER_SECOND = 80; // default 80
+	public static int CLIENT_PACKET_QUEUE_MAX_FLOODS_PER_MIN = 2; // default 2
+	public static int CLIENT_PACKET_QUEUE_MAX_OVERFLOWS_PER_MIN = 1; // default 1
+	public static int CLIENT_PACKET_QUEUE_MAX_UNDERFLOWS_PER_MIN = 1; // default 1
+	public static int CLIENT_PACKET_QUEUE_MAX_UNKNOWN_PER_MIN = 5; // default 5
 
 	/**
 	 * AntiFlood Config File

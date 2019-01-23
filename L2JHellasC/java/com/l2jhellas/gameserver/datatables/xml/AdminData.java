@@ -20,8 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -39,14 +41,13 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 /**
  * @author UnAfraid
  */
-public class AdminData extends DocumentParser
+public class AdminData implements DocumentParser
 {
 	private static final Logger _log = Logger.getLogger(AdminData.class.getName());
 
-	private final Map<Integer, L2AccessLevel> _accessLevels;
-	private final Map<String, L2AdminCommandAccessRight> _adminCommandAccessRights;
-	private final Map<L2PcInstance, Boolean> _gmList;
-	//private final FastMap<L2PcInstance, Boolean> _gmList;
+	private final Map<Integer, L2AccessLevel> _accessLevels = new HashMap<>();
+	private final Map<String, L2AdminCommandAccessRight> _adminCommandAccessRights = new HashMap<>();
+	private final Map<L2PcInstance, Boolean> _gmList = new ConcurrentHashMap<>();
 	private int _highestLevel = 0;
 	
 	/** 
@@ -54,21 +55,28 @@ public class AdminData extends DocumentParser
 	 */ 
 	protected AdminData()
 	{
-		_accessLevels = new HashMap<>();
-		_adminCommandAccessRights = new HashMap<>();
-		_gmList = new HashMap<L2PcInstance, Boolean>();
 		load();
 	}
 
+
 	@Override
-	protected void parseDocument()
+	public void load()
+	{
+		_accessLevels.clear();
+		_adminCommandAccessRights.clear();
+		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/accessLevels.xml"));
+		_log.info(AdminData.class.getSimpleName() + ": Loaded: " + _accessLevels.size() + " Access Levels.");
+		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/adminCommands.xml"));
+		_log.info(AdminData.class.getSimpleName() + ": Loaded: " + _adminCommandAccessRights.size() + " Access Commands.");
+	}
+
+	@Override
+	public void parseDocument(Document doc)
 	{
 		NamedNodeMap attrs;
 		Node attr;
 		StatsSet set;
-		L2AccessLevel level;
-		L2AdminCommandAccessRight command;
-		for (Node n = getCurrentDocument().getFirstChild(); n != null; n = n.getNextSibling())
+		for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
 		{
 			if ("list".equalsIgnoreCase(n.getNodeName()))
 			{
@@ -83,7 +91,7 @@ public class AdminData extends DocumentParser
 							attr = attrs.item(i);
 							set.set(attr.getNodeName(), attr.getNodeValue());
 						}
-						level = new L2AccessLevel(set);
+						final L2AccessLevel level = new L2AccessLevel(set);
 						if (level.getLevel() >  _highestLevel)
 						{
 							_highestLevel = level.getLevel();
@@ -99,36 +107,19 @@ public class AdminData extends DocumentParser
 							attr = attrs.item(i);
 							set.set(attr.getNodeName(), attr.getNodeValue());
 						}
-						command = new L2AdminCommandAccessRight(set);
+						final L2AdminCommandAccessRight command = new L2AdminCommandAccessRight(set);
 						_adminCommandAccessRights.put(command.getAdminCommand(), command);
 					}
 				}
 			}
 		}
 	}
-
-	@Override
-	public void load()
-	{
-		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/accessLevels.xml"));
-		_log.info(AdminData.class.getSimpleName() + ": Loaded: " + _accessLevels.size() + " Access Levels.");
-		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/adminCommands.xml"));
-		_log.info(AdminData.class.getSimpleName() + ": Loaded: " + _adminCommandAccessRights.size() + " Access Commands.");
-	}
-
+	
 	public void reload()
 	{
 		_accessLevels.clear();
 		_adminCommandAccessRights.clear();
 		load();
-	}
-
-	/**
-	 * @return AccessLevels: the one and only instance of this class<br>
-	 */
-	public static AdminData getInstance()
-	{
-		return SingletonHolder._instance;
 	}
 
 
@@ -310,7 +301,7 @@ public class AdminData extends DocumentParser
 
 	public void broadcastToGMs(L2GameServerPacket packet)
 	{
-		for (L2PcInstance gm : getInstance().getAllGms(true))
+		for (L2PcInstance gm : getAllGms(true))
 		{
 			gm.sendPacket(packet);
 		}
@@ -318,12 +309,19 @@ public class AdminData extends DocumentParser
 
 	public void broadcastMessageToGMs(String message)
 	{
-		for (L2PcInstance gm : getInstance().getAllGms(true))
+		for (L2PcInstance gm : getAllGms(true))
 		{
 			gm.sendMessage(message);
 		}
 	}
 
+	/**
+	 * @return AccessLevels: the one and only instance of this class<br>
+	 */
+	public static AdminData getInstance()
+	{
+		return SingletonHolder._instance;
+	}
 	
 	private static class SingletonHolder
 	{

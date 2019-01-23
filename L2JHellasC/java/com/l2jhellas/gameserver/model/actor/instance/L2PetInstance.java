@@ -534,9 +534,7 @@ public class L2PetInstance extends L2Summon
 		}
 
 		getInventory().addItem("Pickup", target, getOwner(), this);
-		// FIXME Just send the updates if possible (old way wasn't working though)
-		PetItemList iu = new PetItemList(this);
-		getOwner().sendPacket(iu);
+		getOwner().sendPacket(new PetItemList(this));
 
 		getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 

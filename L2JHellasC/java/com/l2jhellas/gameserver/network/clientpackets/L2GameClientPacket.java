@@ -14,9 +14,11 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.nio.BufferUnderflowException;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.mmocore.network.ReceivablePacket;
@@ -46,9 +48,13 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 			readImpl();
 			return true;
 		}
-		catch (Throwable t)
+		catch (Exception t)
 		{
 			_log.warning(L2GameClientPacket.class.getName() + ": Client: " + getClient().toString() + " - Failed reading: " + getType() + " packet - l2jhellas Server Version: " + Config.SERVER_VERSION);
+			
+			if (t instanceof BufferUnderflowException)
+				getClient().onBufferUnderflow();
+			
 			if (Config.DEVELOPER)
 				t.printStackTrace();
 		}
@@ -63,13 +69,11 @@ public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 		try
 		{
 			runImpl();
-			// TODO Seth: enhance
 			if (this instanceof MoveBackwardToLocation || this instanceof AttackRequest || this instanceof RequestMagicSkillUse)
-			// could include pickup and talk too, but less is better
 			{
-				// Removes onspawn protection - player has faster computer than average
-				if (getClient().getActiveChar() != null)
-					getClient().getActiveChar().onActionRequest();
+				final L2PcInstance player = getClient().getActiveChar();
+				if (player != null && player.isSpawnProtected())
+					player.onActionRequest();
 			}
 		}
 		catch (Throwable t)

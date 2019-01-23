@@ -46,9 +46,6 @@ public class ShortCutInit extends L2GameServerPacket
 		
 		for (L2ShortCut sc : _shortCuts)
 		{
-			if(sc==null)
-				continue;
-			
 			writeD(sc.getType());
 			writeD(sc.getSlot() + sc.getPage() * 12);
 			
@@ -58,9 +55,8 @@ public class ShortCutInit extends L2GameServerPacket
 				writeD(sc.getCharacterType());
 				writeD(0x00); //SharedReuseGroup
 				writeD(0x00); // Remaining time
-				writeD(0x00); // Cooldown time
-				writeD(0x00); // Augmentation
-				
+				writeD(0x00); // Cooldown time			
+				writeD(_activeChar.WriteAugmentation(sc));
 			}
 			else if(sc.getType() == L2ShortCut.TYPE_SKILL)
 			{

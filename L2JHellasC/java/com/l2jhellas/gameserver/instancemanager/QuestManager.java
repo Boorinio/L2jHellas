@@ -23,12 +23,7 @@ import com.l2jhellas.gameserver.model.quest.Quest;
 public class QuestManager
 {
 	protected static final Logger _log = Logger.getLogger(QuestManager.class.getName());
-
-	public static final QuestManager getInstance()
-	{
-		return SingletonHolder._instance;
-	}
-
+	
 	private final List<Quest> _quests = new ArrayList<>();
 
 	public QuestManager()
@@ -43,20 +38,12 @@ public class QuestManager
 
 	public final Quest getQuest(String name)
 	{
-		for (Quest q : _quests)
-			if (q.getName().equalsIgnoreCase(name))
-				return q;
-		
-		return null;
+		return _quests.stream().filter(q -> q.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
 	}
 
 	public final Quest getQuest(int questId)
 	{
-		for (Quest q : _quests)
-			if (q.getQuestId() == questId)
-				return q;
-
-		return null;
+		return _quests.stream().filter(q -> q.getQuestId() == questId).findFirst().orElse(null);
 	}
 
 	public void cleanQuests()
@@ -74,6 +61,11 @@ public class QuestManager
 		_log.info(QuestManager.class.getSimpleName() + ": Loaded: " + _quests.size() + " quests.");
 	}
 
+	public static final QuestManager getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
 	private static class SingletonHolder
 	{
 		protected static final QuestManager _instance = new QuestManager();

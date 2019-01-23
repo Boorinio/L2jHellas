@@ -106,7 +106,10 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.skills.effects.EffectCharge;
 import com.l2jhellas.gameserver.skills.funcs.Func;
+import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
+import com.l2jhellas.gameserver.templates.L2Armor;
 import com.l2jhellas.gameserver.templates.L2CharTemplate;
+import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
@@ -549,11 +552,9 @@ public abstract class L2Character extends L2Object
 	 */
 	public void doAttack(L2Character target)
 	{
-		if (isAlikeDead() || target == null || (this instanceof L2Npc && target.isAlikeDead()) || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath()) || (this instanceof L2PcInstance && isDead()) || (target instanceof L2PcInstance && ((L2PcInstance) target).getDuelState() == DuelState.DEAD))
+		if (isAlikeDead() || target == null || !target.isVisible() ||(this instanceof L2Npc && target.isAlikeDead()) || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath()) || (this instanceof L2PcInstance && isDead()) || (target instanceof L2PcInstance && ((L2PcInstance) target).getDuelState() == DuelState.DEAD))
 		{
-			// If L2PcInstance is dead or the target is dead, the action is stopped
 			getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-			
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
@@ -775,16 +776,44 @@ public abstract class L2Character extends L2Object
 		int reuse = calculateReuseTime(target, weaponItem);
 		
 		// Select the type of attack to start
-		if (weaponItem == null)
+		if(weaponItem == null)
+		{
 			hitted = doAttackHitSimple(attack, target, timeToHit);
-		else if (weaponItem.getItemType() == L2WeaponType.BOW)
-			hitted = doAttackHitByBow(attack, target, timeAtk, reuse);
-		else if (weaponItem.getItemType() == L2WeaponType.POLE)
-			hitted = doAttackHitByPole(attack, timeToHit);
-		else if (isUsingDualWeapon())
-			hitted = doAttackHitByDual(attack, target, timeToHit);
+		}
 		else
-			hitted = doAttackHitSimple(attack, target, timeToHit);
+		{
+			switch(weaponItem.getItemType())
+			{
+				case BOW:
+				{
+					hitted = doAttackHitByBow(attack, target, timeAtk, reuse);
+					break;
+				}
+				case POLE:
+				{
+					hitted = doAttackHitByPole(attack, timeToHit);
+					break;
+				}
+				case DUAL:
+				case DUALFIST:
+				{
+					hitted = doAttackHitByDual(attack, target, timeToHit);
+					break;
+				}
+				case FIST:
+				{
+					if (getSecondaryWeaponItem() != null && getSecondaryWeaponItem() instanceof L2Armor)
+						hitted = doAttackHitSimple(attack, target, timeAtk / 2);
+					else
+						hitted = doAttackHitByDual(attack, target, timeAtk / 2);
+					break;
+				}
+				default:
+				{
+					hitted = doAttackHitSimple(attack, target, timeToHit);
+				}
+			}
+		}
 		
 		// Flag the attacker if it's a L2PcInstance outside a PvP area
 		L2PcInstance player = null;
@@ -803,7 +832,6 @@ public abstract class L2Character extends L2Object
 		// Check if hit isn't missed
 		if (!hitted)
 		{
-			this.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.MISSED_TARGET));
 			// Abort the attack of the L2Character and send Server->Client ActionFailed packet
 			abortAttack();
 		}
@@ -1467,7 +1495,7 @@ public abstract class L2Character extends L2Object
 				}
 				_skillCast = null;
 			}
-			
+
 			// Create a task MagicUseTask to launch the MagicSkill at the end of the casting time (hitTime)
 			// For client animation reasons (party buffs especially) 200 ms before!
 			if (hasEffectDelay)
@@ -3646,7 +3674,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public final boolean isInCombat()
 	{
-		return hasAI() && (getAI().getAttackTarget() != null || getAI().isAutoAttacking());
+		return hasAI() && AttackStanceTaskManager.getInstance().isInAttackStance(this);
 	}
 	
 	/**
@@ -4845,7 +4873,7 @@ public abstract class L2Character extends L2Object
 	 * <li>L2PcInstance</li><BR>
 	 * <BR>
 	 */
-	public abstract L2Weapon getSecondaryWeaponItem();
+	public abstract L2Item getSecondaryWeaponItem();
 	
 	/**
 	 * Manage hit process (called by Hit Task).<BR>

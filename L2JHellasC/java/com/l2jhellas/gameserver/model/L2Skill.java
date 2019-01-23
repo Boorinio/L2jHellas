@@ -53,6 +53,9 @@ import com.l2jhellas.gameserver.skills.effects.EffectCharge;
 import com.l2jhellas.gameserver.skills.effects.EffectTemplate;
 import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.gameserver.skills.funcs.FuncTemplate;
+import com.l2jhellas.gameserver.templates.L2Armor;
+import com.l2jhellas.gameserver.templates.L2ArmorType;
+import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Util;
 
@@ -1079,18 +1082,25 @@ public abstract class L2Skill
 
 	public final boolean getWeaponDependancy(L2Character activeChar)
 	{
-		int weaponsAllowed = getWeaponsAllowed();
-		//check to see if skill has a weapon dependency.
+		// check to see if skill has a weapon dependency.
+		final int weaponsAllowed = getWeaponsAllowed();
+		
 		if (weaponsAllowed == 0)
 			return true;
+		
 		int mask = 0;
+		
 		if (activeChar.getActiveWeaponItem() != null)
-			mask |= activeChar.getActiveWeaponItem().getItemType().mask();
-		if (activeChar.getSecondaryWeaponItem() != null)
-			mask |= activeChar.getSecondaryWeaponItem().getItemType().mask();
+		    mask |= activeChar.getActiveWeaponItem().getItemType().mask();
+		
+		final L2Item shield = activeChar.getSecondaryWeaponItem();
+		if (shield != null && shield instanceof L2Armor)
+			mask |= ((L2ArmorType) shield.getItemType()).mask();
+		
 		if ((mask & weaponsAllowed) != 0)
 			return true;
-
+		
+		activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_CANNOT_BE_USED).addSkillName(this));
 		return false;
 	}
 

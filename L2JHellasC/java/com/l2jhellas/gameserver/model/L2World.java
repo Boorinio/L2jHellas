@@ -56,24 +56,10 @@ public final class L2World
 	public static final int SHIFT_BY = 11;
 	public static final int SHIFT_BY_Z = 10;
 
-	/** Map dimensions */
-	//public static final int MAP_MIN_X = 15 - 20 << 15;
-	//public static final int MAP_MAX_X = (26 - 19 << 15) - 1;
-	//public static final int MAP_MIN_Y = 10 - 18 << 15;
-	//public static final int MAP_MAX_Y = (26 - 17 << 15) - 1;
-
 
 	public static final int WORLD_SIZE_X = Config.GEO_X_LAST - Config.GEO_X_FIRST + 1;
 	public static final int WORLD_SIZE_Y = Config.GEO_Y_LAST - Config.GEO_Y_FIRST + 1;
-	/** calculated offset used so top left region is 0,0 */
-	//public static final int OFFSET_X = Math.abs(MAP_MIN_X >> SHIFT_BY);
-	//public static final int OFFSET_Y = Math.abs(MAP_MIN_Y >> SHIFT_BY);
-	
-	
-	/** number of regions */
-	//public static final int REGIONS_X = (MAP_MAX_X >> SHIFT_BY) + OFFSET_X;
-	//public static final int REGIONS_Y = (MAP_MAX_Y >> SHIFT_BY) + OFFSET_Y;
-	
+
 	
 	public static final int REGION_MIN_DIMENSION = Math.min(32768 / (32768 >> SHIFT_BY), 32768 / (32768>> SHIFT_BY));
 	
@@ -121,7 +107,7 @@ public final class L2World
 	{
 		return _worldRegions[(x - WORLD_X_MIN) / REGION_SIZE][(y - WORLD_Y_MIN) / REGION_SIZE][(z - WORLD_Z_MIN) / REGION_SIZE];
 	}
-	
+
 	public static int getRegionX(int regionX)
 	{
 		return (regionX - REGION_X_OFFSET) * REGION_SIZE;
@@ -234,7 +220,6 @@ public final class L2World
 
 	private void initRegions()
 	{	
-
 		for (int x = 0; x <= REGIONS_X; x++)
 		{
 			for (int y = 0; y <= REGIONS_Y; y++)
@@ -246,12 +231,13 @@ public final class L2World
 			}
 		}
 
-		_log.info("L2World: WorldRegion grid (" + REGIONS_X + " by " + REGIONS_Y + ") is now setted up.");
+		_log.info("L2World: WorldRegion grid (" + REGIONS_X + " by " + REGIONS_Y +  " by " + REGIONS_Z + ") is now setted up.");
 	}
 
 	public void deleteVisibleNpcSpawns()
 	{
 		_log.info("Deleting all visible NPC's.");
+		
 		for (int x = 0; x <= REGIONS_X; x++)
 		{
 			for (int y = 0; y <= REGIONS_Y; y++)
@@ -262,6 +248,7 @@ public final class L2World
 				}
 			}
 		}
+		
 		_log.info("All visible NPC's deleted.");
 	}
 	

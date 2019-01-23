@@ -25,7 +25,7 @@ import java.util.concurrent.Future;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
-import com.l2jhellas.gameserver.datatables.xml.NpcData;
+import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
 import com.l2jhellas.gameserver.model.L2Effect;
@@ -541,38 +541,37 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 			}
 		}
 		// Order to the L2MonsterInstance to random walk (1/100)
-		else if (npc.getSpawn() != null && Rnd.nextInt(RANDOM_WALK_RATE) == 0)
+		else 
 		{
-			int x1, y1, z1;
-			final int range = Config.MAX_DRIFT_RANGE;
+			//Return to home if too far from spawn point
+			if (npc.returnHome())
+				return;
 			
-			if (_skillrender.hasBuffSkill())
-				for (L2Skill sk : _skillrender._buffskills)
-					if (Cast(sk))
-						return;
-
-				// If NPC with fixed coord
-				x1 = npc.getSpawn().getLocx();
-				y1 = npc.getSpawn().getLocy();
-				z1 = npc.getSpawn().getLocz();
-				
-				if (!_actor.isInsideRadius(x1, y1, z1, range + range, true, false))
-				{
-					npc.setIsReturningToSpawnPoint(true);
-					return;
-				}
-
-				x1 += Rnd.nextInt(range * 2) - range;
-				y1 += Rnd.nextInt(range * 2) - range;
-				z1 = npc.getZ();
-
+	        if (npc.getSpawn() != null && Rnd.nextInt(RANDOM_WALK_RATE) == 0)
+		    {
+			      int x1, y1, z1;
+			      final int range = Config.MAX_DRIFT_RANGE;
 			
-			// Orfen After teleporting should not respawn to the spawn point
-		    if (npc.getNpcId() == 29014 && npc instanceof L2GrandBossInstance && ((L2GrandBossInstance) npc).getTeleported())
-			return;
+			     if (_skillrender.hasBuffSkill())
+				     for (L2Skill sk : _skillrender._buffskills)
+					    if (Cast(sk))
+						   return;
 
-			 moveTo(x1, y1, z1);
-		}
+				  // If NPC with fixed coord
+				  x1 = npc.getSpawn().getLocx();
+				  y1 = npc.getSpawn().getLocy();
+				  z1 = npc.getSpawn().getLocz();
+				  x1 += Rnd.nextInt(range * 2) - range;
+				  y1 += Rnd.nextInt(range * 2) - range;
+				  z1 = npc.getZ();
+	
+			     // Orfen After teleporting should not respawn to the spawn point
+		         if (npc.getNpcId() == 29014 && npc instanceof L2GrandBossInstance && ((L2GrandBossInstance) npc).getTeleported())
+			         return;
+
+			     moveTo(x1, y1, z1);
+		    }
+	    }
 	}
 	
 	/**

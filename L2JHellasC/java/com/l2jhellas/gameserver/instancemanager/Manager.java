@@ -18,7 +18,6 @@ public class Manager
 {
 	public static void reloadAll()
 	{
-		FishingZoneManager.getInstance().clearFishingZone();
 		OlympiadStadiaManager.getInstance().clearStadium();
 		ZoneManager.getInstance().reload();
 		ItemsOnGroundManager.getInstance().reload();		

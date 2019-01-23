@@ -17,7 +17,7 @@ package com.l2jhellas.gameserver.scrips.quests.ai.group;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.l2jhellas.gameserver.datatables.xml.NpcData;
+import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;

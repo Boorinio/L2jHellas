@@ -24,6 +24,7 @@ import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.controllers.TradeController;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
@@ -31,7 +32,6 @@ import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.datatables.xml.LevelUpData;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
-import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.datatables.xml.NpcWalkerRoutesData;
 import com.l2jhellas.gameserver.datatables.xml.SkillSpellbookData;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
@@ -96,7 +96,7 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				case "teleport":
 				{
-					TeleportLocationData.getInstance().reload();
+					TeleportLocationData.getInstance().load();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Teleport locations has been reloaded.");
 					break;
@@ -180,7 +180,7 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				case "npcwalkers":
 				{
-					NpcWalkerRoutesData.getInstance().reload();
+					NpcWalkerRoutesData.getInstance();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("All NPC walker routes have been reloaded.");
 					break;
@@ -215,14 +215,14 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				case "levelupdata":
 				{
-					LevelUpData.reload();
+					LevelUpData.getInstance();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Level up Data has been reloaded.");
 					break;
 				}
 				case "summonitems":
 				{
-					SummonItemsData.reload();
+					SummonItemsData.getInstance();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Summon Items has been reloaded.");
 					break;
@@ -257,21 +257,21 @@ public class AdminReload implements IAdminCommandHandler
 				}
 				case "sktrees":
 				{
-					SkillTreeData.reload();
+					SkillTreeData.getInstance();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Skill Tree table has been reloaded.");
 					break;
 				}
 				case "spellbooks":
 				{
-					SkillSpellbookData.reload();
+					SkillSpellbookData.getInstance();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Spellbooks Table has been reloaded.");
 					break;
 				}
 				case "augment":
 				{
-					AugmentationData.reload();
+					AugmentationData.getInstance().reload();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("Augmentation Data has been reloaded.");
 					break;

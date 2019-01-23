@@ -117,11 +117,11 @@ public final class CharacterCreate extends L2GameClientPacket
 			return;
 		}
 
-		if (_face > 2 || _face < 0)
+		if (_face > 2 || _face < 0 || _race > 4 || _race < 0)
 		{
 			sendPacket(new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED));
 			return;
-		}
+		}	
 		
 		if (_hairStyle < 0 || (_sex == 0 && _hairStyle > 4) || (_sex != 0 && _hairStyle > 6))
 		{

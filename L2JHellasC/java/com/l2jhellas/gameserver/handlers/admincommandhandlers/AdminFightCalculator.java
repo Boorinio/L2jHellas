@@ -16,7 +16,7 @@ package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
 import java.util.StringTokenizer;
 
-import com.l2jhellas.gameserver.datatables.xml.NpcData;
+import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.L2Character;

@@ -14,7 +14,9 @@
  */
 package com.l2jhellas.gameserver.model;
 
-public final class Location
+import com.l2jhellas.gameserver.templates.StatsSet;
+
+public class Location
 {
 	public volatile int _x, _y, _z;
 	private int _heading;
@@ -32,6 +34,13 @@ public final class Location
 		_y = y;
 		_z = z;
 		_heading = heading;
+	}
+	
+	public Location(StatsSet loc)
+	{
+		_x = loc.getInteger("x");
+		_y = loc.getInteger("y");
+		_z = loc.getInteger("z");
 	}
 
 	public int getX()

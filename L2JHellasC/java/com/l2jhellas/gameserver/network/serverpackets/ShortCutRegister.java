@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.L2ShortCut;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * sample
@@ -31,6 +32,7 @@ public class ShortCutRegister extends L2GameServerPacket
 	private static final String _S__56_SHORTCUTREGISTER = "[S] 44 ShortCutRegister";
 
 	private final L2ShortCut _shortcut;
+	private final L2PcInstance _player;
 
 	/**
 	 * Register new skill shortcut
@@ -41,9 +43,10 @@ public class ShortCutRegister extends L2GameServerPacket
 	 * @param level
 	 * @param dat2
 	 */
-	public ShortCutRegister(L2ShortCut shortcut)
+	public ShortCutRegister(L2PcInstance player, L2ShortCut sc)
 	{
-		_shortcut = shortcut;
+		_shortcut = sc;
+		_player = player;
 	}
 
 	@Override
@@ -61,7 +64,7 @@ public class ShortCutRegister extends L2GameServerPacket
 			writeD(0x00); //SharedReuseGroup
 			writeD(0x00); // Remaining time
 			writeD(0x00); // Cooldown time
-			writeD(0x00); // Augmentation
+			writeD(_player.WriteAugmentation(_shortcut)); // Augmentation	
 		}
 		else if(_shortcut.getType() == L2ShortCut.TYPE_SKILL)
 		{

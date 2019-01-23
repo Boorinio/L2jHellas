@@ -17,43 +17,42 @@ package com.l2jhellas.gameserver.instancemanager;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.l2jhellas.gameserver.model.zone.type.L2FishingZone;
+import com.l2jhellas.gameserver.model.zone.type.L2WaterZone;
 
-public class FishingZoneManager
+/**
+ * Author AbsolutePower
+ */
+public class WaterZoneManager
 {
-	private List<L2FishingZone> _fishingZones = new ArrayList<L2FishingZone>();
+	private List<L2WaterZone> _waterZones = new ArrayList<L2WaterZone>();
 
-	public FishingZoneManager()
+	public WaterZoneManager()
 	{
 		
 	}
 
-	public void addFishingZone(L2FishingZone fishingZone)
+	public void addWaterZone(L2WaterZone fishingZone)
 	{
-		_fishingZones.add(fishingZone);
+		_waterZones.add(fishingZone);
 	}
 
-	public void clearFishingZone()
+	public void clearWaterZone()
 	{
-		_fishingZones.clear();
+		_waterZones.clear();
 	}
 	
-	public final L2FishingZone isInsideFishingZone(int x, int y, int z)
+	public List<L2WaterZone> getAllWaterZones()
 	{
-		for (L2FishingZone temp : _fishingZones)
-			if (temp.isInsideZone(x, y, temp.getWaterZ() - 10))
-				return temp;
-		
-		return null;
+		return _waterZones;
+	}
+
+	public static WaterZoneManager getInstance()
+	{
+		return SingletonHolder._instance;
 	}
 	
-	private static FishingZoneManager _instance;
-
-	public static final FishingZoneManager getInstance()
+	private static class SingletonHolder
 	{
-		if (_instance == null)
-			_instance = new FishingZoneManager();
-		
-		return _instance;
+		protected static final WaterZoneManager _instance = new WaterZoneManager();
 	}
 }

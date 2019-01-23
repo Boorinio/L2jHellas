@@ -455,6 +455,11 @@ public abstract class L2Object
 	{
 		return this instanceof L2Playable;
 	}
+	
+	public boolean isPlayer()
+	{
+		return this instanceof L2PcInstance;
+	}
 
 	public abstract void sendInfo(L2PcInstance activeChar);
 	

@@ -17,7 +17,8 @@ package com.l2jhellas.gameserver.model;
 import java.util.concurrent.Future;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.xml.NpcData;
+import com.l2jhellas.gameserver.datatables.sql.NpcData;
+import com.l2jhellas.gameserver.emum.Music;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PenaltyMonsterInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -44,7 +45,6 @@ public class L2Fishing implements Runnable
 	private int _fishCurHp;
 	private final double _regenHp;
 	private final boolean _isUpperGrade;
-	private int _lureType;
 
 	@Override
 	public void run()
@@ -52,7 +52,7 @@ public class L2Fishing implements Runnable
 		if (_fisher == null)
 			return;
 
-		if (_fishCurHp >= _fishMaxHp * 2)
+		if (_fishCurHp >= (_fishMaxHp * 2))
 		{
 			// The fish got away
 			_fisher.sendPacket(SystemMessageId.BAIT_STOLEN_BY_FISH);
@@ -71,30 +71,30 @@ public class L2Fishing implements Runnable
 	public L2Fishing(L2PcInstance Fisher, FishData fish, boolean isNoob, boolean isUpperGrade)
 	{
 		_fisher = Fisher;
-		_fishMaxHp = fish.getHP();
+		_fishMaxHp = fish.getFishHp();
 		_fishCurHp = _fishMaxHp;
 		_regenHp = fish.getHpRegen();
-		_fishId = fish.getId();
-		_time = fish.getCombatTime() / 1000;
+		_fishId = fish.getItemId();
+		_time = fish.getCombatDuration();
 		_isUpperGrade = isUpperGrade;
+		final int lureType;
 		if (isUpperGrade)
 		{
-			_deceptiveMode = Rnd.get(100) >= 90 ? 1 : 0;
-			_lureType = 2;
+			_deceptiveMode = ((Rnd.get(100) >= 90) ? 1 : 0);
+			lureType = 2;
 		}
 		else
 		{
 			_deceptiveMode = 0;
-			_lureType = isNoob ? 0 : 1;
+			lureType = (isNoob ? 0 : 1);
 		}
-		_mode = Rnd.get(100) >= 80 ? 1 : 0;
-
-		ExFishingStartCombat efsc = new ExFishingStartCombat(_fisher, _time, _fishMaxHp, _mode, _lureType, _deceptiveMode);
-		_fisher.broadcastPacket(efsc);
-
-		// Succeeded in getting a bite
+		_mode = ((Rnd.get(100) >= 80) ? 1 : 0);
+		
+		_fisher.broadcastPacket(new ExFishingStartCombat(_fisher, _time, _fishMaxHp, _mode, lureType, _deceptiveMode));
+		_fisher.sendPacket(Music.SF_S_01.getPacket());
+		
 		_fisher.sendPacket(SystemMessageId.GOT_A_BITE);
-
+		
 		if (_fishAiTask == null)
 		{
 			_fishAiTask = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(this, 1000, 1000);
@@ -104,13 +104,14 @@ public class L2Fishing implements Runnable
 	public void changeHp(int hp, int pen)
 	{
 		_fishCurHp -= hp;
+		
 		if (_fishCurHp < 0)
 			_fishCurHp = 0;
-
-		ExFishingHpRegen efhr = new ExFishingHpRegen(_fisher, _time, _fishCurHp, _mode, _goodUse, _anim, pen, _deceptiveMode);
-		_fisher.broadcastPacket(efhr);
+		
+		_fisher.broadcastPacket(new ExFishingHpRegen(_fisher, _time, _fishCurHp, _mode, _goodUse, _anim, pen, _deceptiveMode));
 		_anim = 0;
-		if (_fishCurHp > _fishMaxHp * 2)
+		
+		if (_fishCurHp > (_fishMaxHp * 2))
 		{
 			_fishCurHp = _fishMaxHp * 2;
 			doDie(false);
@@ -122,7 +123,6 @@ public class L2Fishing implements Runnable
 			return;
 		}
 	}
-
 	public synchronized void doDie(boolean win)
 	{
 		_fishAiTask.cancel(false);

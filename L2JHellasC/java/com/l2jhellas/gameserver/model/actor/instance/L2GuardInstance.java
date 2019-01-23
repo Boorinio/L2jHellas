@@ -116,17 +116,15 @@ public final class L2GuardInstance extends L2Attackable
 	 * <BR>
 	 */
 	@Override
-	public void returnHome()
+	public boolean returnHome()
 	{
-		if (!isInsideRadius(_homeX, _homeY, 150, false))
+		if(!isInsideRadius(_homeX, _homeY, 150, false))
 		{
-			if (Config.DEBUG)
-				_log.fine(getObjectId() + ": moving hometo" + " X:" + _homeX + " Y:" + _homeY + " Z:" + _homeZ);
-
 			clearAggroList();
-
 			getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(_homeX, _homeY, _homeZ, 0));
+			return true;
 		}
+		return false;
 	}
 
 	/**

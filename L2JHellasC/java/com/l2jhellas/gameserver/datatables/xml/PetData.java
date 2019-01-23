@@ -14,135 +14,91 @@
  */
 package com.l2jhellas.gameserver.datatables.xml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import com.PackRoot;
+import com.l2jhellas.gameserver.engines.DocumentParser;
 import com.l2jhellas.gameserver.model.L2PetData;
 
-public class PetData
+public class PetData implements DocumentParser
 {
 	protected static final Logger _log = Logger.getLogger(PetData.class.getName());
 
-	private static PetData _instance;
-
-	private static Map<Integer, Map<Integer, L2PetData>> _petTable;
-
-	public static PetData getInstance()
-	{
-		if (_instance == null)
-		{
-			_instance = new PetData();
-		}
-
-		return _instance;
-	}
+	private static Map<Integer, Map<Integer, L2PetData>> _petTable = new HashMap<>();
 
 	private PetData()
 	{
-		_petTable = new HashMap<Integer, Map<Integer, L2PetData>>();
+		load();
 	}
 
-	public void loadPetsData()
+	@Override
+	public void load()
 	{
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setValidating(false);
-		factory.setIgnoringComments(true);
-		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/pet_stats.xml");
-		if (!f.exists())
+		_petTable.clear();
+		parseDatapackFile("data/xml/pet_stats.xml");
+		_log.info("PetStatsTable: Loaded " + _petTable.size() + " pets");
+	}
+	
+	@Override
+	public void parseDocument(Document doc)
+	{
+		for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
 		{
-			_log.warning(PetData.class.getName() + ": pet_stats.xml could not be loaded: file not found");
-			return;
-		}
-		int k = 0;
-		try
-		{
-			InputSource in = new InputSource(new InputStreamReader(new FileInputStream(f), "UTF-8"));
-			in.setEncoding("UTF-8");
-			Document doc = factory.newDocumentBuilder().parse(in);
-			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
+			if (n.getNodeName().equalsIgnoreCase("list"))
 			{
-				if (n.getNodeName().equalsIgnoreCase("list"))
+				for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
 				{
-					for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
+					if (d.getNodeName().equalsIgnoreCase("pet"))
 					{
-						if (d.getNodeName().equalsIgnoreCase("pet"))
+						int petId, petLevel;
+
+						petId = Integer.valueOf(d.getAttributes().getNamedItem("typeID").getNodeValue());;
+						petLevel = Integer.valueOf(d.getAttributes().getNamedItem("level").getNodeValue());
+
+						//build the petdata for this level
+						L2PetData petData = new L2PetData();
+
+						petData.setPetID(petId);
+						petData.setPetLevel(petLevel);
+						petData.setPetMaxExp(Integer.valueOf(d.getAttributes().getNamedItem("expMax").getNodeValue()));
+						petData.setPetMaxHP(Integer.valueOf(d.getAttributes().getNamedItem("hpMax").getNodeValue()));
+						petData.setPetMaxMP(Integer.valueOf(d.getAttributes().getNamedItem("mpMax").getNodeValue()));
+						petData.setPetPAtk(Integer.valueOf(d.getAttributes().getNamedItem("patk").getNodeValue()));
+						petData.setPetPDef(Integer.valueOf(d.getAttributes().getNamedItem("pdef").getNodeValue()));
+						petData.setPetMAtk(Integer.valueOf(d.getAttributes().getNamedItem("matk").getNodeValue()));
+						petData.setPetMDef(Integer.valueOf(d.getAttributes().getNamedItem("mdef").getNodeValue()));
+						petData.setPetAccuracy(Integer.valueOf(d.getAttributes().getNamedItem("acc").getNodeValue()));
+						petData.setPetEvasion(Integer.valueOf(d.getAttributes().getNamedItem("evasion").getNodeValue()));
+						petData.setPetCritical(Integer.valueOf(d.getAttributes().getNamedItem("crit").getNodeValue()));
+						petData.setPetSpeed(Integer.valueOf(d.getAttributes().getNamedItem("speed").getNodeValue()));
+						petData.setPetAtkSpeed(Integer.valueOf(d.getAttributes().getNamedItem("atk_speed").getNodeValue()));
+						petData.setPetCastSpeed(Integer.valueOf(d.getAttributes().getNamedItem("cast_speed").getNodeValue()));
+						petData.setPetMaxFeed(Integer.valueOf(d.getAttributes().getNamedItem("feedMax").getNodeValue()));
+						petData.setPetFeedNormal(Integer.valueOf(d.getAttributes().getNamedItem("feednormal").getNodeValue()));
+						petData.setPetFeedBattle(Integer.valueOf(d.getAttributes().getNamedItem("feedbattle").getNodeValue()));
+						petData.setPetMaxLoad(Integer.valueOf(d.getAttributes().getNamedItem("loadMax").getNodeValue()));
+						petData.setPetRegenHP(Integer.valueOf(d.getAttributes().getNamedItem("hpregen").getNodeValue()));
+						petData.setPetRegenMP(Integer.valueOf(d.getAttributes().getNamedItem("mpregen").getNodeValue()));
+						petData.setPetRegenMP(Integer.valueOf(d.getAttributes().getNamedItem("mpregen").getNodeValue()));
+						petData.setOwnerExpTaken(Float.valueOf(d.getAttributes().getNamedItem("owner_exp_taken").getNodeValue()));
+
+						// if its the first data for this petid, we initialize its level HashMap
+						if (!_petTable.containsKey(petId))
 						{
-							int petId, petLevel;
-							k++;
-
-							petId = Integer.valueOf(d.getAttributes().getNamedItem("typeID").getNodeValue());;
-							petLevel = Integer.valueOf(d.getAttributes().getNamedItem("level").getNodeValue());
-
-							//build the petdata for this level
-							L2PetData petData = new L2PetData();
-
-							petData.setPetID(petId);
-							petData.setPetLevel(petLevel);
-							petData.setPetMaxExp(Integer.valueOf(d.getAttributes().getNamedItem("expMax").getNodeValue()));
-							petData.setPetMaxHP(Integer.valueOf(d.getAttributes().getNamedItem("hpMax").getNodeValue()));
-							petData.setPetMaxMP(Integer.valueOf(d.getAttributes().getNamedItem("mpMax").getNodeValue()));
-							petData.setPetPAtk(Integer.valueOf(d.getAttributes().getNamedItem("patk").getNodeValue()));
-							petData.setPetPDef(Integer.valueOf(d.getAttributes().getNamedItem("pdef").getNodeValue()));
-							petData.setPetMAtk(Integer.valueOf(d.getAttributes().getNamedItem("matk").getNodeValue()));
-							petData.setPetMDef(Integer.valueOf(d.getAttributes().getNamedItem("mdef").getNodeValue()));
-							petData.setPetAccuracy(Integer.valueOf(d.getAttributes().getNamedItem("acc").getNodeValue()));
-							petData.setPetEvasion(Integer.valueOf(d.getAttributes().getNamedItem("evasion").getNodeValue()));
-							petData.setPetCritical(Integer.valueOf(d.getAttributes().getNamedItem("crit").getNodeValue()));
-							petData.setPetSpeed(Integer.valueOf(d.getAttributes().getNamedItem("speed").getNodeValue()));
-							petData.setPetAtkSpeed(Integer.valueOf(d.getAttributes().getNamedItem("atk_speed").getNodeValue()));
-							petData.setPetCastSpeed(Integer.valueOf(d.getAttributes().getNamedItem("cast_speed").getNodeValue()));
-							petData.setPetMaxFeed(Integer.valueOf(d.getAttributes().getNamedItem("feedMax").getNodeValue()));
-							petData.setPetFeedNormal(Integer.valueOf(d.getAttributes().getNamedItem("feednormal").getNodeValue()));
-							petData.setPetFeedBattle(Integer.valueOf(d.getAttributes().getNamedItem("feedbattle").getNodeValue()));
-							petData.setPetMaxLoad(Integer.valueOf(d.getAttributes().getNamedItem("loadMax").getNodeValue()));
-							petData.setPetRegenHP(Integer.valueOf(d.getAttributes().getNamedItem("hpregen").getNodeValue()));
-							petData.setPetRegenMP(Integer.valueOf(d.getAttributes().getNamedItem("mpregen").getNodeValue()));
-							petData.setPetRegenMP(Integer.valueOf(d.getAttributes().getNamedItem("mpregen").getNodeValue()));
-							petData.setOwnerExpTaken(Float.valueOf(d.getAttributes().getNamedItem("owner_exp_taken").getNodeValue()));
-
-							// if its the first data for this petid, we initialize its level HashMap
-							if (!_petTable.containsKey(petId))
-							{
-								_petTable.put(petId, new HashMap<Integer, L2PetData>());
-							}
-
-							_petTable.get(petId).put(petLevel, petData);
-							petData = null;
+							_petTable.put(petId, new HashMap<Integer, L2PetData>());
 						}
+
+						_petTable.get(petId).put(petLevel, petData);
+						petData = null;
 					}
 				}
 			}
-		}
-		catch (SAXException e)
-		{
-			_log.warning(PetData.class.getName() + ": Error while creating table");
-		}
-		catch (IOException e)
-		{
-			_log.warning(PetData.class.getName() + ": Error while creating table");
-		}
-		catch (ParserConfigurationException e)
-		{
-			_log.warning(PetData.class.getName() + ": Error while creating table");
-		}
-
-		_log.info("PetStatsTable: Loaded " + _petTable.size() + " pets with " + k + " stats.");
+		}		
 	}
-
 	public void addPetData(L2PetData petData)
 	{
 		Map<Integer, L2PetData> h = _petTable.get(petData.getPetID());
@@ -426,5 +382,15 @@ public class PetData
 				|| npcId == 12527 // star strider
 				|| npcId == 12528 // twilight strider
 				|| npcId == 12621; // wyvern
+	}
+	
+	public static PetData getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final PetData _instance = new PetData();
 	}
 }

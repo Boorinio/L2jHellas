@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -90,7 +91,7 @@ public class GrandBossManager
 
 	private static Map<Integer, Integer> _bossStatus;
 
-	private static ArrayList<L2BossZone> _zones;
+	private static List<L2BossZone> _zones;
 
 	public static GrandBossManager getInstance()
 	{
@@ -405,7 +406,7 @@ public class GrandBossManager
 		_zones.clear();
 	}
 
-	public ArrayList<L2BossZone> getZones()
+	public List<L2BossZone> getZones()
 	{
 		return _zones;
 	}

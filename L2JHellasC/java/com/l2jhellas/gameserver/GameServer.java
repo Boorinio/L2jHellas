@@ -49,6 +49,7 @@ import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcBufferSkillIdsTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.datatables.sql.PolymporphTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
@@ -64,7 +65,6 @@ import com.l2jhellas.gameserver.datatables.xml.HennaData;
 import com.l2jhellas.gameserver.datatables.xml.LevelUpData;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
-import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.datatables.xml.NpcWalkerRoutesData;
 import com.l2jhellas.gameserver.datatables.xml.PetData;
 import com.l2jhellas.gameserver.datatables.xml.RecipeData;
@@ -177,7 +177,7 @@ public class GameServer
 		AutoSpawnHandler.getInstance();
 		DayNightSpawnManager.getInstance();
 		AutoChatHandler.getInstance();
-		StaticObjData.load();
+		StaticObjData.getInstance();
 		TeleportLocationData.getInstance();	
 		CharNameTable.getInstance();
 		DuelManager.getInstance();
@@ -200,18 +200,17 @@ public class GameServer
 		}
 		ArmorSetsData.getInstance();
 		SummonItemsData.getInstance();
+		
 		if (Config.ALLOWFISHING)
-		{
 			FishTable.getInstance();
-		}
-		SoulCrystalsTable.load();
+		
+		SoulCrystalsTable.getInstance();
 
 		Util.printSection("Npc");
 		NpcData.getInstance();
+		
 		if (Config.ALLOW_NPC_WALKERS)
-		{
 			NpcWalkerRoutesData.getInstance();
-		}
 
 		Util.printSection("Characters");
 		if (Config.COMMUNITY_TYPE.equals("Full"))
@@ -264,7 +263,7 @@ public class GameServer
 		PetitionManager.getInstance();
 		CursedWeaponsManager.getInstance();
 		FourSepulchersManager.getInstance().init();
-		PetData.getInstance().loadPetsData();
+		PetData.getInstance();
 		
 		if (Config.ACCEPT_GEOEDITOR_CONN)
 		{

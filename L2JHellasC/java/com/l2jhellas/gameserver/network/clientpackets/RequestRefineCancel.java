@@ -20,6 +20,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ExVariationCancelResult;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
+import com.l2jhellas.gameserver.network.serverpackets.ShortCutInit;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.util.Util;
@@ -120,6 +121,7 @@ public final class RequestRefineCancel extends L2GameClientPacket
 		
 		// remove the augmentation
 		targetItem.removeAugmentation();
+
 		
 		// send ExVariationCancelResult
 		activeChar.sendPacket(new ExVariationCancelResult(1));
@@ -133,6 +135,7 @@ public final class RequestRefineCancel extends L2GameClientPacket
 		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.AUGMENTATION_HAS_BEEN_SUCCESSFULLY_REMOVED_FROM_YOUR_S1);
 		sm.addItemName(targetItem);
 		activeChar.sendPacket(sm);
+		activeChar.sendPacket(new ShortCutInit(activeChar));
 	}
 
 	@Override

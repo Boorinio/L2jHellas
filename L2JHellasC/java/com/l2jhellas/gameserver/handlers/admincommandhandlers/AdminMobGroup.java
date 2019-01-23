@@ -14,7 +14,7 @@
  */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
-import com.l2jhellas.gameserver.datatables.xml.NpcData;
+import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.MobGroup;

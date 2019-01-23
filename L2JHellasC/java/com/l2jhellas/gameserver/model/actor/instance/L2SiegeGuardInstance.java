@@ -106,7 +106,7 @@ public final class L2SiegeGuardInstance extends L2Attackable
 	 * This method forces guard to return to home location previously set
 	 */
 	@Override
-	public void returnHome()
+	public boolean returnHome()
 	{
 		if (!isInsideRadius(_homeX, _homeY, 40, false))
 		{
@@ -117,7 +117,10 @@ public final class L2SiegeGuardInstance extends L2Attackable
 
 			if (hasAI())
 				getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(_homeX, _homeY, _homeZ, 0));
+			
+			return true;
 		}
+		return false;
 	}
 
 	/**

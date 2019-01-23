@@ -30,6 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -70,13 +71,13 @@ import com.l2jhellas.gameserver.controllers.RecipeController;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
 import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.datatables.xml.FishTable;
 import com.l2jhellas.gameserver.datatables.xml.HennaData;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
-import com.l2jhellas.gameserver.datatables.xml.NpcData;
 import com.l2jhellas.gameserver.datatables.xml.RecipeData;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.emum.ClassRace;
@@ -535,7 +536,11 @@ public final class L2PcInstance extends L2Playable
 	
 	public enum PunishLevel
 	{
-		NONE(0, ""), CHAT(1, "chat banned"), JAIL(2, "jailed"), CHAR(3, "banned"), ACC(4, "banned");
+		NONE(0, ""), 
+		CHAT(1, "chat banned"), 
+		JAIL(2, "jailed"), 
+		CHAR(3, "banned"),
+		ACC(4, "banned");
 		
 		private int punValue;
 		private String punString;
@@ -7556,9 +7561,9 @@ public final class L2PcInstance extends L2Playable
 					statement.setInt(4, effect.getCount());
 					statement.setInt(5, effect.getTime());
 					
-					if (ReuseTimeStamps.containsKey(skillId))
+					if (_reuseTimeStamps.containsKey(skillId))
 					{
-						TimeStamp t = ReuseTimeStamps.remove(skillId);
+						TimeStamp t = _reuseTimeStamps.remove(skillId);
 						statement.setLong(6, t.hasNotPassed() ? t.getReuse() : 0);
 						statement.setLong(7, t.hasNotPassed() ? t.getStamp() : 0);
 					}
@@ -7578,7 +7583,7 @@ public final class L2PcInstance extends L2Playable
 			
 			// Store the reuse delays of remaining skills which
 			// lost effect but still under reuse delay. 'restore_type' 1.
-			for (TimeStamp t : ReuseTimeStamps.values())
+			for (TimeStamp t : _reuseTimeStamps.values())
 			{
 				if (t.hasNotPassed())
 				{
@@ -7598,7 +7603,7 @@ public final class L2PcInstance extends L2Playable
 				}
 			}
 			statement.close();
-			ReuseTimeStamps.clear();
+			_reuseTimeStamps.clear();
 		}
 		catch (SQLException e)
 		{
@@ -7629,6 +7634,14 @@ public final class L2PcInstance extends L2Playable
 	public int isOnline()
 	{
 		return (_isOnline ? 1 : 0);
+	}
+	
+	/**
+	 * Return True if the L2PcInstance is on line.
+	 */
+	public boolean isbOnline()
+	{
+		return (_isOnline ? true : false);
 	}
 	
 	public boolean isIn7sDungeon()
@@ -9057,14 +9070,14 @@ public final class L2PcInstance extends L2Playable
 			
 			if (sklTargetType == L2SkillTargetType.TARGET_GROUND)
 			{
-				if (!GeoEngine.canSeeCoord(this.getX(), this.getY(), this.getZ(), worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), isFlying()))
+				if (((Config.GEODATA) ? !GeoEngine.canSeeCoord(this.getX(), this.getY(), this.getZ(), worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), isFlying()) :!GeoEngine.canSeeTarget(this,target)))
 				{
 					sendPacket(new SystemMessage(SystemMessageId.CANT_SEE_TARGET));
 					sendPacket(ActionFailed.STATIC_PACKET);
 					return;
 				}
-			}
-			else if (!GeoEngine.canSeeTarget(this, target, isFlying()))
+			}		
+			else if (((Config.GEODATA) ? !GeoEngine.canSeeTarget(this, target, isFlying()) :!GeoEngine.canSeeTarget(this,target)))
 			{
 				sendPacket(new SystemMessage(SystemMessageId.CANT_SEE_TARGET));
 				sendPacket(ActionFailed.STATIC_PACKET);
@@ -9552,15 +9565,16 @@ public final class L2PcInstance extends L2Playable
 	
 	class LookingForFishTask implements Runnable
 	{
-		boolean _isNoob, _isUpperGrade;
-		int _fishType, _fishGutsCheck, _gutsCheckTime;
-		long _endTaskTime;
+		private final boolean _isNoob, _isUpperGrade;
+		private final int _fishGroup;
+		private final double _fishGutsCheck;
+		private final long _endTaskTime;
 		
-		protected LookingForFishTask(int fishWaitTime, int fishGutsCheck, int fishType, boolean isNoob, boolean isUpperGrade)
+		protected LookingForFishTask(int startCombatTime, double fishGutsCheck, int fishGroup, boolean isNoob, boolean isUpperGrade)
 		{
 			_fishGutsCheck = fishGutsCheck;
-			_endTaskTime = System.currentTimeMillis() + fishWaitTime + 10000;
-			_fishType = fishType;
+			_endTaskTime = System.currentTimeMillis() + (startCombatTime * 1000) + 10000;
+			_fishGroup = fishGroup;
 			_isNoob = isNoob;
 			_isUpperGrade = isUpperGrade;
 		}
@@ -9573,7 +9587,7 @@ public final class L2PcInstance extends L2Playable
 				EndFishing(false);
 				return;
 			}
-			if (_fishType == -1)
+			if (_fishGroup == -1)
 				return;
 			int check = Rnd.get(1000);
 			if (_fishGutsCheck > check)
@@ -10235,7 +10249,7 @@ public final class L2PcInstance extends L2Playable
 					if (sc.getId() == s.getId() && sc.getType() == L2ShortCut.TYPE_SKILL)
 					 {
 						L2ShortCut Nsc = new L2ShortCut(sc.getSlot(), sc.getPage(), L2ShortCut.TYPE_SKILL, s.getId(), s.getLevel(), 1);
-						sendPacket(new ShortCutRegister(Nsc));
+						sendPacket(new ShortCutRegister(this,Nsc));
 						registerShortCut(Nsc);
 					 }
 				}
@@ -11536,18 +11550,6 @@ public final class L2PcInstance extends L2Playable
 	
 	private FishData _fish;
 
-	
-	/*
-	 * startFishing() was stripped of any pre-fishing related checks, namely the
-	 * fishing zone check. Also worthy of note is the fact the code to find the
-	 * hook landing position was also striped. The stripped code was moved into
-	 * fishing.java. In my opinion it makes more sense for it to be there since
-	 * all other skill related checks were also there. Last but not least,
-	 * moving the zone check there, fixed a bug where baits would always be
-	 * consumed no matter if fishing actualy took place. startFishing() now
-	 * takes up 3 arguments, wich are acurately described as being the hook
-	 * landing coordinates.
-	 */
 	public void startFishing(Location loc)
 	{
 		stopMove(null);
@@ -11556,20 +11558,23 @@ public final class L2PcInstance extends L2Playable
 			
 		// Starts fishing
 		int group = GetRandomGroup();
-		
-		_fish = FishTable.getFish(GetRandomFishLvl(), GetRandomFishType(group), group);
-		if (_fish == null)
+
+		List<FishData> fish = FishTable.getInstance().getFish(GetRandomFishLvl(), GetRandomFishType(group), group);
+
+		if (fish == null)
 		{
 			EndFishing(false);
 			return;
 		}
-		
+		_fish = (FishData) fish.get(Rnd.get(fish.size())).clone();
+		fish.clear();
 		sendPacket(SystemMessageId.CAST_LINE_AND_START_FISHING);
 		
-		broadcastPacket(new ExFishingStart(this, _fish.getType(_lure.isNightLure()), loc, _lure.isNightLure()));
-
-		PlaySound ps = Music.SF_P_01.getPacket();
-		sendPacket(ps);
+		if (!GameTimeController.getInstance().isNight() && _lure.isNightLure())
+			_fish.setFishGroup(-1);
+		
+		broadcastPacket(new ExFishingStart(this, _fish.getFishGroup(),loc, _lure.isNightLure()));
+		sendPacket(Music.SF_P_01.getPacket());
 		
 		StartLookingForFishTask();
 	}
@@ -11594,25 +11599,18 @@ public final class L2PcInstance extends L2Playable
 			if (_lure != null)
 			{
 				int lureid = _lure.getItemId();
-				isNoob = _fish.getGroup() == 0;
-				isUpperGrade = _fish.getGroup() == 2;
+				isNoob = _fish.getFishGroup() == 0;
+				isUpperGrade = _fish.getFishGroup() == 2;
+				
 				if (lureid == 6519 || lureid == 6522 || lureid == 6525 || lureid == 8505 || lureid == 8508 || lureid == 8511)
-				{
-					// grade
-					checkDelay = Math.round((float) (_fish.getGutsCheckTime() * (1.33)));
-				}
+					checkDelay = _fish.getGutsCheckTime() * 133;
 				else if (lureid == 6520 || lureid == 6523 || lureid == 6526 || (lureid >= 8505 && lureid <= 8513) || (lureid >= 7610 && lureid <= 7613) || (lureid >= 7807 && lureid <= 7809) || (lureid >= 8484 && lureid <= 8486))
-				{
-					// grade, beginner, prize-winning & quest special bait
-					checkDelay = Math.round((float) (_fish.getGutsCheckTime() * (1.00)));
-				}
+					checkDelay = _fish.getGutsCheckTime() * 100;
 				else if (lureid == 6521 || lureid == 6524 || lureid == 6527 || lureid == 8507 || lureid == 8510 || lureid == 8513)
-				{
-					// grade
-					checkDelay = Math.round((float) (_fish.getGutsCheckTime() * (0.66)));
-				}
+					checkDelay = _fish.getGutsCheckTime() * 66;
+				
 			}
-			_taskforfish = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new LookingForFishTask(_fish.getWaitTime(), _fish.getFishGuts(), _fish.getType(), isNoob, isUpperGrade), 10000, checkDelay);
+			_taskforfish = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new LookingForFishTask(_fish.getStartCombatTime(), _fish.getFishGuts(), _fish.getFishGroup(), isNoob, isUpperGrade), 10000, checkDelay);
 		}
 	}
 	
@@ -12381,8 +12379,7 @@ public final class L2PcInstance extends L2Playable
 		_gatesRequest.setTarget(null);
 	}
 	
-	private final HashMap<Integer, TimeStamp> ReuseTimeStamps = new HashMap<Integer, TimeStamp>();
-	
+	private final Map<Integer, TimeStamp> _reuseTimeStamps = new ConcurrentHashMap<>();
 	/**
 	 * Simple class containing all neccessary information to maintain valid
 	 * timestamps and reuse for skills upon relog. Filter this carefully as it
@@ -12446,7 +12443,7 @@ public final class L2PcInstance extends L2Playable
 	@Override
 	public void addTimeStamp(int s, int r)
 	{
-		ReuseTimeStamps.put(s, new TimeStamp(s, r));
+		_reuseTimeStamps.put(s, new TimeStamp(s, r));
 	}
 	
 	/**
@@ -12457,7 +12454,7 @@ public final class L2PcInstance extends L2Playable
 
 	public void addTimeStamp(L2Skill skill, long reuse)
 	{
-		ReuseTimeStamps.put(skill.getId(), new TimeStamp(skill.getId(), reuse));
+		_reuseTimeStamps.put(skill.getId(), new TimeStamp(skill.getId(), reuse));
 	}
 	
 	/**
@@ -12468,7 +12465,7 @@ public final class L2PcInstance extends L2Playable
 	 */
 	public void addTimeStamp(L2Skill skill, long reuse, long systime)
 	{
-		ReuseTimeStamps.put(skill.getId(), new TimeStamp(skill.getId(), reuse, systime));
+		_reuseTimeStamps.put(skill.getId(), new TimeStamp(skill.getId(), reuse, systime));
 	}
 	
 	/**
@@ -12479,12 +12476,17 @@ public final class L2PcInstance extends L2Playable
 	@Override
 	public void removeTimeStamp(int s)
 	{
-		ReuseTimeStamps.remove(s);
+		_reuseTimeStamps.remove(s);
 	}
 	
 	public Collection<TimeStamp> getReuseTimeStamps()
 	{
-		return ReuseTimeStamps.values();
+		return _reuseTimeStamps.values();
+	}
+	
+	public Map<Integer, TimeStamp> getReuseTimeStamp()
+	{
+		return _reuseTimeStamps;
 	}
 	
 	public void resetSkillTime(boolean ssl)
@@ -12653,7 +12655,6 @@ public final class L2PcInstance extends L2Playable
 	/**
 	 * @return True if player is jailed
 	 */
-	@Deprecated
 	public boolean isInJail_()
 	{
 		return _punishLevel == PunishLevel.JAIL;
@@ -12662,7 +12663,6 @@ public final class L2PcInstance extends L2Playable
 	/**
 	 * @return True if player is chat banned
 	 */
-	@Deprecated
 	public boolean isChatBanned_()
 	{
 		return _punishLevel == PunishLevel.CHAT;
@@ -14989,5 +14989,29 @@ public final class L2PcInstance extends L2Playable
 		public void broadcastSocialActionInRadius(int socialId)
 		{
 			broadcastPacket(new SocialAction(getObjectId(), socialId),1250);
+		}
+		
+		public final int WriteAugmentation(L2ShortCut sc)
+		{	
+			if(sc==null)
+				return 0;
+			
+			final L2ItemInstance item = getInventory().getItemByObjectId(sc.getId());
+			
+			int augmentationId = 0;	
+			
+			if (item != null && item.isAugmented())		
+				augmentationId = item.getAugmentation().getAugmentationId();
+
+			return augmentationId;
+		}
+		
+		public void showFishingHelp()
+		{
+			String htmFile = "data/html/help/fishing/7561-1.htm";
+			String htmContent = HtmCache.getInstance().getHtmForce(htmFile);
+			NpcHtmlMessage infoHtml = new NpcHtmlMessage(1);
+			infoHtml.setHtml(htmContent);
+			sendPacket(infoHtml);	
 		}
 }

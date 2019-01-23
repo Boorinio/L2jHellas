@@ -14,101 +14,58 @@
  */
 package com.l2jhellas.gameserver.datatables.xml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import com.PackRoot;
+import com.l2jhellas.gameserver.engines.DocumentParser;
 import com.l2jhellas.gameserver.model.L2SummonItem;
 
-public class SummonItemsData
+public class SummonItemsData implements DocumentParser
 {
 	protected static final Logger _log = Logger.getLogger(SummonItemsData.class.getName());
 
-	private HashMap<Integer, L2SummonItem> _summonitems;
-
-	private static SummonItemsData _instance;
-
-	public static SummonItemsData getInstance()
-	{
-		if (_instance == null)
-		{
-			_instance = new SummonItemsData();
-		}
-
-		return _instance;
-	}
-
-	public static void reload()
-	{
-		_instance = null;
-		getInstance();
-	}
+	private HashMap<Integer, L2SummonItem> _summonitems = new HashMap<>();
 	
 	public SummonItemsData()
 	{
-		_summonitems = new HashMap<Integer, L2SummonItem>();
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setValidating(false);
-		factory.setIgnoringComments(true);
-		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/summon_items.xml");
-		if (!f.exists())
-		{
-			_log.warning(SummonItemsData.class.getName() + ": summon_items.xml could not be loaded: file not found");
-			return;
-		}
+       load();
+	}
+
+	@Override
+	public void load()
+	{
+		_summonitems.clear();
+		parseDatapackFile("data/xml/summon_items.xml");
+		_log.info("SummonItems Loaded: " + _summonitems.size() + " items.");
+	}
+	
+	@Override
+	public void parseDocument(Document doc)
+	{
 		int itemID = 0, npcID = 0;
 		byte summonType = 0;
-		try
+		
+		for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
 		{
-			InputSource in = new InputSource(new InputStreamReader(new FileInputStream(f), "UTF-8"));
-			in.setEncoding("UTF-8");
-			Document doc = factory.newDocumentBuilder().parse(in);
-			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
+			if (n.getNodeName().equalsIgnoreCase("list"))
 			{
-				if (n.getNodeName().equalsIgnoreCase("list"))
+				for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
 				{
-					for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
+					if (d.getNodeName().equalsIgnoreCase("summon_item"))
 					{
-						if (d.getNodeName().equalsIgnoreCase("summon_item"))
-						{
-							itemID = Integer.valueOf(d.getAttributes().getNamedItem("itemID").getNodeValue());
-							npcID = Integer.valueOf(d.getAttributes().getNamedItem("npcID").getNodeValue());
-							summonType = Byte.valueOf(d.getAttributes().getNamedItem("summonType").getNodeValue());
-							L2SummonItem summonitem = new L2SummonItem(itemID, npcID, summonType);
-							_summonitems.put(itemID, summonitem);
-						}
+						itemID = Integer.valueOf(d.getAttributes().getNamedItem("itemID").getNodeValue());
+						npcID = Integer.valueOf(d.getAttributes().getNamedItem("npcID").getNodeValue());
+						summonType = Byte.valueOf(d.getAttributes().getNamedItem("summonType").getNodeValue());
+						L2SummonItem summonitem = new L2SummonItem(itemID, npcID, summonType);
+						_summonitems.put(itemID, summonitem);
 					}
 				}
 			}
-		}
-		catch (SAXException e)
-		{
-			_log.warning(SummonItemsData.class.getName() + ": Error while creating table");
-		}
-		catch (IOException e)
-		{
-			_log.warning(SummonItemsData.class.getName() + ": Error while creating table");
-		}
-		catch (ParserConfigurationException e)
-		{
-			_log.warning(SummonItemsData.class.getName() + ": Error while creating table");
-		}
-
-		_log.info("Summon: Loaded " + _summonitems.size() + " summon items.");
+		}		
 	}
-
 	public L2SummonItem getSummonItem(int itemId)
 	{
 		return _summonitems.get(itemId);
@@ -126,5 +83,15 @@ public class SummonItemsData
 			i++;
 		}
 		return result;
+	}
+	
+	public static SummonItemsData getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final SummonItemsData _instance = new SummonItemsData();
 	}
 }

@@ -14,90 +14,136 @@
  */
 package com.l2jhellas.gameserver.datatables.xml;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.engines.DocumentParser;
 import com.l2jhellas.gameserver.model.FishData;
-import com.l2jhellas.util.Rnd;
-import com.l2jhellas.util.XMLDocumentFactory;
+import com.l2jhellas.gameserver.templates.StatsSet;
 
-public class FishTable
+public class FishTable implements DocumentParser
 {
 	private static final Logger _log = Logger.getLogger(FishTable.class.getName());
 	
-	private static final List<FishData> _fishes = new ArrayList<>();
-	
-	public static FishTable getInstance()
-	{
-		return SingletonHolder._instance;
-	}
+	private final Map<Integer, FishData> _fishNormal = new HashMap<>();
+	private final Map<Integer, FishData> _fishEasy = new HashMap<>();
+	private final Map<Integer, FishData> _fishHard = new HashMap<>();
+
 	
 	protected FishTable()
 	{
-		try
+      load();
+	}
+	
+	@Override
+	public void load()
+	{
+		_fishEasy.clear();
+		_fishNormal.clear();
+		_fishHard.clear();
+		parseDatapackFile("data/xml/fishes.xml");
+		_log.info(FishTable.class.getSimpleName() + ": Loaded " +(_fishEasy.size() + _fishNormal.size() + _fishHard.size())+ " fishes.");
+	}
+	
+	@Override
+	public void parseDocument(Document doc)
+	{
+		for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
 		{
-			final File f = new File("./data/xml/fishes.xml");
-			final Document doc = XMLDocumentFactory.getInstance().loadDocument(f);
-			
-			final Node n = doc.getFirstChild();
-			for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
+			if ("list".equalsIgnoreCase(n.getNodeName()))
 			{
-				if (d.getNodeName().equalsIgnoreCase("fish"))
+				for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
 				{
-					NamedNodeMap attrs = d.getAttributes();
-					
-					int id = Integer.parseInt(attrs.getNamedItem("id").getNodeValue());
-					int lvl = Integer.parseInt(attrs.getNamedItem("level").getNodeValue());
-					String name = attrs.getNamedItem("name").getNodeValue();
-					int hp = Integer.parseInt(attrs.getNamedItem("hp").getNodeValue());
-					int hpreg = Integer.parseInt(attrs.getNamedItem("hpregen").getNodeValue());
-					int type = Integer.parseInt(attrs.getNamedItem("fish_type").getNodeValue());
-					int group = Integer.parseInt(attrs.getNamedItem("fish_group").getNodeValue());
-					int fish_guts = Integer.parseInt(attrs.getNamedItem("fish_guts").getNodeValue());
-					int guts_check_time = Integer.parseInt(attrs.getNamedItem("guts_check_time").getNodeValue());
-					int wait_time = Integer.parseInt(attrs.getNamedItem("wait_time").getNodeValue());
-					int combat_time = Integer.parseInt(attrs.getNamedItem("combat_time").getNodeValue());
-					
-					_fishes.add(new FishData(id, lvl, name, hp, hpreg, type, group, fish_guts, guts_check_time, wait_time, combat_time));
+					if ("fish".equalsIgnoreCase(d.getNodeName()))
+					{
+						final NamedNodeMap attrs = d.getAttributes();
+						
+						final StatsSet set = new StatsSet();
+						for (int i = 0; i < attrs.getLength(); i++)
+						{
+							final Node att = attrs.item(i);
+							set.set(att.getNodeName(), att.getNodeValue());
+						}
+
+						final FishData fish = new FishData(set);
+						switch (fish.getFishGrade())
+						{
+							case 0:
+							{
+								_fishEasy.put(fish.getFishId(), fish);
+								break;
+							}
+							case 1:
+							{
+								_fishNormal.put(fish.getFishId(), fish);
+								break;
+							}
+							case 2:
+							{
+								_fishHard.put(fish.getFishId(), fish);
+								break;
+							}
+						}
+					}
 				}
 			}
 		}
-		catch (Exception e)
-		{
-			_log.warning(FishTable.class.getName() + ": Error while creating table");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
-		}
-		
-		_log.info(FishTable.class.getName() + ": Loaded " + _fishes.size() + " fishes.");
 	}
-	
-	public static FishData getFish(int lvl, int type, int group)
+	public List<FishData> getFish(int level, int group, int grade)
 	{
 		final List<FishData> result = new ArrayList<>();
-		
-		for (FishData fish : _fishes)
+		Map<Integer, FishData> fish = null;
+		switch (grade)
 		{
-			if (fish.getLevel() != lvl || fish.getType() != type || fish.getGroup() != group)
+			case 0:
+			{
+				fish = _fishEasy;
+				break;
+			}
+			case 1:
+			{
+				fish = _fishNormal;
+				break;
+			}
+			case 2:
+			{
+				fish = _fishHard;
+				break;
+			}
+			default:
+			{
+				LOG.warn("{}: Unmanaged fish grade!", getClass().getSimpleName());
+				return result;
+			}
+		}
+		
+		for (FishData f : fish.values())
+		{
+			if ((f.getFishLevel() != level) || (f.getFishGroup() != group))
+			{
 				continue;
-			
-			result.add(fish);
+			}
+			result.add(f);
 		}
 		
 		if (result.isEmpty())
 		{
-			_log.warning(FishTable.class.getSimpleName() + ": FishTable: Couldn't find any fish with lvl: " + lvl + " and type: " + type);
-			return null;
+			LOG.warn("{}: Cannot find any fish for level: {} group: {} and grade: {}!", getClass().getSimpleName(), level, group, grade);
 		}
-		
-		return Rnd.get(result);
+		return result;
+	}
+	
+	
+	public static FishTable getInstance()
+	{
+		return SingletonHolder._instance;
 	}
 	
 	private static class SingletonHolder

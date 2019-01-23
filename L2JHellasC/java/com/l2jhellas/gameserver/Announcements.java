@@ -40,23 +40,12 @@ public class Announcements
 {
 	private static Logger _log = Logger.getLogger(Announcements.class.getName());
 
-	private static Announcements _instance;
 	private final List<String> _announcements = new ArrayList<String>();
 	private final List<List<Object>> _eventAnnouncements = new ArrayList<List<Object>>();
 
 	public Announcements()
 	{
 		loadAnnouncements();
-	}
-
-	public static Announcements getInstance()
-	{
-		if (_instance == null)
-		{
-			_instance = new Announcements();
-		}
-
-		return _instance;
 	}
 
 	public void loadAnnouncements()
@@ -118,10 +107,15 @@ public class Announcements
 		activeChar.sendPacket(adminReply);
 	}
 
-	public void addAnnouncement(String text)
+	public boolean addAnnouncement(String text)
 	{
+		if (text == null || text.isEmpty())
+			return false;
+		
 		_announcements.add(text);
+		
 		saveToDisk();
+		return true;
 	}
 
 	public void delAnnouncement(int line)
@@ -206,5 +200,15 @@ public class Announcements
 		{
 			// empty message.. ignore
 		}
+	}
+	
+	public static Announcements getInstance()
+	{
+		return SingletonHolder.INSTANCE;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final Announcements INSTANCE = new Announcements();
 	}
 }

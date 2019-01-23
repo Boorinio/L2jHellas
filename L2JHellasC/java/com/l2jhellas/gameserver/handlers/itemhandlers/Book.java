@@ -55,7 +55,7 @@ public class Book implements IItemHandler
 			activeChar.sendPacket(new RadarControl(0, 1, 51995, -51265, -3104));
 		}
 
-		NpcHtmlMessage itemReply = new NpcHtmlMessage(5);
+		NpcHtmlMessage itemReply = new NpcHtmlMessage(0);
 		itemReply.setHtml(content);
 		activeChar.sendPacket(itemReply);
 

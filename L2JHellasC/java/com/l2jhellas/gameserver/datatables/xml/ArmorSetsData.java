@@ -13,65 +13,46 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import com.PackRoot;
-import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.engines.DocumentParser;
 import com.l2jhellas.gameserver.model.L2ArmorSet;
 
 /**
  * @author Luno
  */
-public class ArmorSetsData
+public class ArmorSetsData implements DocumentParser
 {
 	private static Logger _log = Logger.getLogger(ArmorSetsData.class.getName());
-	private static ArmorSetsData _instance;
 
-	private final HashMap<Integer, L2ArmorSet> _armorSets;
-	private final HashMap<Integer, ArmorDummy> _cusArmorSets;
-
-	public static ArmorSetsData getInstance()
-	{
-		if (_instance == null)
-			_instance = new ArmorSetsData();
-		return _instance;
-	}
+	private final Map<Integer, L2ArmorSet> _armorSets = new HashMap<>();
+	private final Map<Integer, ArmorDummy> _cusArmorSets = new HashMap<>();
 
 	private ArmorSetsData()
 	{
-		_armorSets = new HashMap<Integer, L2ArmorSet>();
-		_cusArmorSets = new HashMap<Integer, ArmorDummy>();
-		loadData();
+		load();
 	}
 
-	private void loadData()
+	@Override
+	public void load()
 	{
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setValidating(false);
-		factory.setIgnoringComments(true);
-		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/armor_sets.xml");
-		if (!f.exists())
-		{
-			_log.warning(ArmorSetsData.class.getName() + ": armorsets.xml could not be loaded: file not found");
-			return;
-		}
-		try
-		{
-			InputSource in = new InputSource(new InputStreamReader(new FileInputStream(f), "UTF-8"));
-			in.setEncoding("UTF-8");
-			Document doc = factory.newDocumentBuilder().parse(in);
+		_armorSets.clear();
+		_cusArmorSets.clear();
+		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/armor_sets.xml"));
+		_log.info(ArmorSetsData.class.getSimpleName() + ": Loaded " + _armorSets.size() + " armor sets.");
+		_log.info(ArmorSetsData.class.getSimpleName() + ": Loaded " + _cusArmorSets.size() + " custom armor sets.");
+
+	}
+	
+	@Override
+	public void parseDocument(Document doc)
+	{
 			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
 			{
 				if (n.getNodeName().equalsIgnoreCase("list"))
@@ -96,34 +77,6 @@ public class ArmorSetsData
 					}
 				}
 			}
-
-		}
-		catch (SAXException e)
-		{
-			_log.warning(ArmorSetsData.class.getName() + ": Error while creating table SAX ");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			_log.warning(ArmorSetsData.class.getName() + ": Error while creating table IO ");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
-		}
-		catch (ParserConfigurationException e)
-		{
-			_log.warning(ArmorSetsData.class.getName() + ": Error while creating table Parser ");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
-		}
-		catch (Exception e)
-		{
-			_log.warning(ArmorSetsData.class.getName() + ": Error reading ArmorSets table: ");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
-		}
-		_log.info(ArmorSetsData.class.getSimpleName() + ": Loaded " + _armorSets.size() + " armor sets.");
-		_log.info(ArmorSetsData.class.getSimpleName() + ": Loaded " + _cusArmorSets.size() + " custom armor sets.");
 	}
 
 	public boolean setExists(int chestId)
@@ -199,5 +152,15 @@ public class ArmorSetsData
 		{
 			return _shield;
 		}
+	}
+	
+	public static ArmorSetsData getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final ArmorSetsData _instance = new ArmorSetsData();
 	}
 }

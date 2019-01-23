@@ -37,7 +37,6 @@ public class L2ShortCut
 		_id = shortcutId;
 		_level = shortcutLevel;
 		_getCharacterType = getCharacterType;
-		//_augmentationId = augmentationId;
 	}
 
 	public int getId()

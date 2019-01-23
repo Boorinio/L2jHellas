@@ -71,14 +71,15 @@ public class AdminAnnouncements implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_add_announcement"))
 		{
-			// FIXME the player can send only 16 chars (if you try to send more
-			// it sends null), remove this function or not?
 			if (!command.equals("admin_add_announcement"))
 			{
 				try
 				{
 					String val = command.substring(23);
-					Announcements.getInstance().addAnnouncement(val);
+					
+					if (!Announcements.getInstance().addAnnouncement(val))
+						activeChar.sendMessage("Invalid //announce message content,can't be empty.");
+					
 					Announcements.getInstance().listAnnouncements(activeChar);
 				}
 				catch (StringIndexOutOfBoundsException e)

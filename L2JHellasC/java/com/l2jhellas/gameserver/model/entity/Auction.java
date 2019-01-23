@@ -38,7 +38,7 @@ public class Auction
 {
 	protected static final Logger _log = Logger.getLogger(Auction.class.getName());
 	private int _id = 0;
-	private final int _adenaId = 57;
+	private static final int _adenaId = 57;
 	private long _endDate;
 	private int _highestBidderId = 0;
 	private String _highestBidderName = "";
@@ -266,7 +266,7 @@ public class Auction
 			requiredAdena = bid - getHighestBidderMaxBid();
 		if ((getHighestBidderId() > 0 && bid > getHighestBidderMaxBid()) || (getHighestBidderId() == 0 && bid >= getStartingBid()))
 		{
-			if (takeItem(bidder, 57, requiredAdena))
+			if (takeItem(bidder,requiredAdena))
 			{
 				updateInDB(bidder, bid);
 				bidder.getClan().setAuctionBiddedAt(_id, true);
@@ -285,7 +285,7 @@ public class Auction
 	}
 
 	/** Take Item in WHC */
-	private boolean takeItem(L2PcInstance bidder, int itemId, int quantity)
+	public static boolean takeItem(L2PcInstance bidder, int quantity)
 	{
 		if (bidder.getClan() != null && bidder.getClan().getWarehouse().getAdena() >= quantity)
 		{

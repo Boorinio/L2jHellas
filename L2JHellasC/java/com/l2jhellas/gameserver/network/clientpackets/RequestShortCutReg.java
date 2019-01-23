@@ -44,37 +44,18 @@ public final class RequestShortCutReg extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
 		
-		if (_page > 10 || _page < 0)
+		if (_page > 11 || _page < 0)
 			return;
 		
-		switch (_type)
-		{
-			case 0x01:// item
-			case 0x03:// action
-			case 0x04:// macro
-			case 0x05:// recipe
-			{
-								L2ShortCut sc = new L2ShortCut(_slot, _page, _type, _id, -1, _unk);
-				sendPacket(new ShortCutRegister(sc));
-				activeChar.registerShortCut(sc);
-				break;
-			}
-			case 0x02:// skill
-			{
-				int level = activeChar.getSkillLevel(_id);
-				if (level > 0)
-				{
-					L2ShortCut sc = new L2ShortCut(_slot, _page, _type, _id, level, _unk);
-					sendPacket(new ShortCutRegister(sc));
-					activeChar.registerShortCut(sc);
-				}
-				break;
-			}
-		}
+		final int level = activeChar.getSkillLevel(_id);
+		
+		final L2ShortCut sc = new L2ShortCut(_slot, _page, _type, _id, level, _unk);
+		activeChar.registerShortCut(sc);
+		activeChar.sendPacket(new ShortCutRegister(activeChar,sc));	
 	}
 
 	@Override

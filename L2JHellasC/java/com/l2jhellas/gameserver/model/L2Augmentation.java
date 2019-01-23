@@ -16,11 +16,12 @@ package com.l2jhellas.gameserver.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
+import com.l2jhellas.gameserver.datatables.xml.AugmentationData.AugStat;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.SkillTable;
@@ -69,13 +70,14 @@ public final class L2Augmentation
 		public augmentationStatBoni(int augmentationId)
 		{
 			_active = false;
-			ArrayList<AugmentationData.AugStat> as = AugmentationData.getInstance().getAugStatsById(augmentationId);
+			
+			List<AugStat> as = AugmentationData.getInstance().getAugStatsById(augmentationId);
 
 			_stats = new Stats[as.size()];
 			_values = new float[as.size()];
 
 			int i = 0;
-			for (AugmentationData.AugStat aStat : as)
+			for (AugStat aStat : as)
 			{
 				_stats[i] = aStat.getStat();
 				_values[i] = aStat.getValue();
@@ -166,7 +168,7 @@ public final class L2Augmentation
 	{
 		return _effectsId;
 	}
-
+	
 	public L2Skill getSkill()
 	{
 		return _skill;

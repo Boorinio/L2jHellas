@@ -18,7 +18,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,16 +35,15 @@ public class ShortCuts
 	private static final int MAX_SHORTCUTS_PER_BAR = 12;
 	private final L2PcInstance _owner;
 	
-	private final Map<Integer, L2ShortCut> _shortCuts = new TreeMap<>();
+	private Map<Integer, L2ShortCut> _shortCuts = new ConcurrentHashMap<Integer,L2ShortCut>();
 
 	public ShortCuts(L2PcInstance owner)
 	{
 		_owner = owner;
 	}
-	
+
 	public L2ShortCut[] getAllShortCuts()
 	{
-	
 		return _shortCuts.values().toArray(new L2ShortCut[_shortCuts.values().size()]);
 	}
 	
@@ -75,8 +74,8 @@ public class ShortCuts
 			if (item == null)
 				return;
 		}
-		
-	    final L2ShortCut oldShortCut = _shortCuts.put(shortcut.getSlot() + (shortcut.getPage() * MAX_SHORTCUTS_PER_BAR), shortcut);
+
+		final L2ShortCut oldShortCut = _shortCuts.put(shortcut.getSlot() + (shortcut.getPage() * MAX_SHORTCUTS_PER_BAR), shortcut);
 		registerShortCutInDb(shortcut, oldShortCut);
 	}
 

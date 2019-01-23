@@ -14,100 +14,56 @@
  */
 package com.l2jhellas.gameserver.datatables.xml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import com.PackRoot;
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.engines.DocumentParser;
 import com.l2jhellas.gameserver.model.L2Skill;
 
-public class SkillSpellbookData
+public class SkillSpellbookData implements DocumentParser
 {
 	protected static final Logger _log = Logger.getLogger(FishTable.class.getName());
 
-	private static SkillSpellbookData _instance;
+	private static Map<Integer, Integer> _skillSpellbooks = new HashMap<>();
 
-	private static Map<Integer, Integer> _skillSpellbooks;
-
-	public static SkillSpellbookData getInstance()
-	{
-		if (_instance == null)
-		{
-			_instance = new SkillSpellbookData();
-		}
-
-		return _instance;
-	}
-	
-	public static void reload()
-	{
-		_instance = null;
-		getInstance();
-	}
-	
 	private SkillSpellbookData()
 	{
 		if (!Config.SP_BOOK_NEEDED)
 			return;
 
-		_skillSpellbooks = new HashMap<Integer, Integer>();
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setValidating(false);
-		factory.setIgnoringComments(true);
-		File f = new File(PackRoot.DATAPACK_ROOT, "data/xml/skill_spellbooks.xml");
-		if (!f.exists())
+         load();
+	}
+
+	@Override
+	public void load()
+	{
+		_skillSpellbooks.clear();
+		parseDatapackFile("data/xml/skill_spellbooks.xml");
+		_log.info("SkillSpellbookTable: Loaded " + _skillSpellbooks.size() + " spellbooks.");
+	}
+	
+	@Override
+	public void parseDocument(Document doc)
+	{
+		for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
 		{
-			_log.warning(SkillSpellbookData.class.getName() + ": skill_spellbooks.xml could not be loaded: file not found");
-			return;
-		}
-		try
-		{
-			InputSource in = new InputSource(new InputStreamReader(new FileInputStream(f), "UTF-8"));
-			in.setEncoding("UTF-8");
-			Document doc = factory.newDocumentBuilder().parse(in);
-			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
+			if (n.getNodeName().equalsIgnoreCase("list"))
 			{
-				if (n.getNodeName().equalsIgnoreCase("list"))
+				for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
 				{
-					for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
+					if (d.getNodeName().equalsIgnoreCase("skill_spellbook"))
 					{
-						if (d.getNodeName().equalsIgnoreCase("skill_spellbook"))
-						{
-							_skillSpellbooks.put(Integer.valueOf(d.getAttributes().getNamedItem("skill_id").getNodeValue()), Integer.valueOf(d.getAttributes().getNamedItem("item_id").getNodeValue()));
-						}
+						_skillSpellbooks.put(Integer.valueOf(d.getAttributes().getNamedItem("skill_id").getNodeValue()), Integer.valueOf(d.getAttributes().getNamedItem("item_id").getNodeValue()));
 					}
 				}
 			}
-		}
-		catch (SAXException e)
-		{
-			_log.warning(SkillSpellbookData.class.getName() + ": Error while creating table");
-		}
-		catch (IOException e)
-		{
-			_log.warning(SkillSpellbookData.class.getName() + ": Error while creating table");
-		}
-		catch (ParserConfigurationException e)
-		{
-			_log.warning(SkillSpellbookData.class.getName() + ": Error while creating table");
-		}
-
-		_log.info("SkillSpellbookTable: Loaded " + _skillSpellbooks.size() + " spellbooks.");
+		}		
 	}
-
 	public int getBookForSkill(int skillId, int level)
 	{
 		if (skillId == L2Skill.SKILL_DIVINE_INSPIRATION && level != -1)
@@ -141,5 +97,15 @@ public class SkillSpellbookData
 	public int getBookForSkill(L2Skill skill, int level)
 	{
 		return getBookForSkill(skill.getId(), level);
+	}
+	
+	public static SkillSpellbookData getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final SkillSpellbookData _instance = new SkillSpellbookData();
 	}
 }

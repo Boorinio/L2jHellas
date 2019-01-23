@@ -22,6 +22,7 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ExVariationResult;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
+import com.l2jhellas.gameserver.network.serverpackets.ShortCutInit;
 import com.l2jhellas.gameserver.network.serverpackets.SkillList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 
@@ -146,6 +147,7 @@ public final class RequestRefine extends AbstractRefinePacket
 		su.addAttribute(StatusUpdate.CUR_LOAD, activeChar.getCurrentLoad());
 		activeChar.sendPacket(su);
 		activeChar.sendPacket(new SkillList());
+		activeChar.sendPacket(new ShortCutInit(activeChar));
 	}
 
 	@Override

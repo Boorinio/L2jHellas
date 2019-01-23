@@ -210,7 +210,7 @@ public class L2CharacterAI extends AbstractAI
 	@Override
 	protected void onIntentionAttack(L2Character target)
 	{
-		if (target == null)
+		if (target == null || !target.isVisible())
 		{
 			clientActionFailed();
 			return;

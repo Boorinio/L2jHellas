@@ -191,7 +191,7 @@ public final class RequestExEnchantSkill extends L2GameClientPacket
 			if (sc.getId() == _skillId && sc.getType() == L2ShortCut.TYPE_SKILL)
 			{
 				L2ShortCut newsc = new L2ShortCut(sc.getSlot(), sc.getPage(), sc.getType(), sc.getId(), _skillLvl, 1);
-				player.sendPacket(new ShortCutRegister(newsc));
+				player.sendPacket(new ShortCutRegister(player,newsc));
 				player.registerShortCut(newsc);
 			}
 		}

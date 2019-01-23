@@ -457,7 +457,7 @@
 		<set name="power" val="0.0" />
 		<set name="target" val="TARGET_SELF" />
 		<set name="skillRadius" val="0" />
-		<set name="reuseDelay" val="0" />
+		<set name="reuseDelay" val="1000" />
 		<set name="hitTime" val="0" />
 		<set name="skillType" val="FISHING" />
 		<set name="isMagic" val="true" />

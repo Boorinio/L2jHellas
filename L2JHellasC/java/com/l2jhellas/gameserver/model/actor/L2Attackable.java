@@ -2245,13 +2245,20 @@ public class L2Attackable extends L2Npc
 				ThreadPoolManager.getInstance().scheduleGeneral(this, 10000); // 10sec
 		}
 	}
-
-	public void returnHome()
+	
+	public boolean returnHome()
 	{
-		clearAggroList();
-		
-		if (hasAI() && getSpawn() != null)
+
+		if (hasAI() && !isDead() && !isInCombat()  && getMoveSpeed() > 0 && getSpawn() != null && !isInsideRadius(getSpawn().getLocx(), getSpawn().getLocy(), Config.MAX_DRIFT_RANGE, false))
+		{
+			clearAggroList();
+			setIsReturningToSpawnPoint(true);
+			setWalking();
 			getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(getSpawn().getLocx(), getSpawn().getLocy(), getSpawn().getLocz(), 0));
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/** Return True if the L2Character is RaidBoss or his minion. */

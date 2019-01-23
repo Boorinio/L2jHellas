@@ -17,20 +17,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.PackRoot;
+import com.l2jhellas.gameserver.engines.DocumentParser;
 
-/**
- * Based on mrTJO's implementation.
- *
- * @author Zoey76
- */
-public class ExperienceData
+public class ExperienceData implements DocumentParser
 {
 	private static Logger _log = Logger.getLogger(ExperienceData.class.getName());
 
@@ -41,32 +35,21 @@ public class ExperienceData
 
 	private ExperienceData()
 	{
-		loadData();
+		load();
 	}
 
-	private void loadData()
+	@Override
+	public void load()
 	{
-		final File xml = new File(PackRoot.DATAPACK_ROOT, "data/xml/experience.xml");
-		if (!xml.exists())
-		{
-			_log.warning(ExperienceData.class.getName() + ": experience.xml not found!");
-			return;
-		}
-
-		Document doc = null;
-		final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setValidating(false);
-		factory.setIgnoringComments(true);
-		try
-		{
-			doc = factory.newDocumentBuilder().parse(xml);
-		}
-		catch (Exception e)
-		{
-			_log.warning(ExperienceData.class.getName() + ": Could not parse experience.xml: ");
-			return;
-		}
-
+		_expTable.clear();
+		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/experience.xml"));
+		_log.info(getClass().getSimpleName() + ": Loaded " + _expTable.size() + " levels");
+		_log.info(getClass().getSimpleName() + ": Max Player Level is: " + (MAX_LEVEL - 1));
+		_log.info(getClass().getSimpleName() + ": Max Pet Level is: " + (MAX_PET_LEVEL - 1));	}
+	
+	@Override
+	public void parseDocument(Document doc)
+	{
 		final Node table = doc.getFirstChild();
 		final NamedNodeMap tableAttr = table.getAttributes();
 
@@ -89,11 +72,7 @@ public class ExperienceData
 			}
 		}
 
-		_log.info(getClass().getSimpleName() + ": Loaded " + _expTable.size() + " levels");
-		_log.info(getClass().getSimpleName() + ": Max Player Level is: " + (MAX_LEVEL - 1));
-		_log.info(getClass().getSimpleName() + ": Max Pet Level is: " + (MAX_PET_LEVEL - 1));
 	}
-
 	public long getExpForLevel(int level)
 	{
 		return _expTable.get(level);

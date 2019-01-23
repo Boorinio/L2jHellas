@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.datatables.xml.NpcData;
+import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2MinionData;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -106,7 +106,7 @@ public class MinionList
 	 */
 	public void onMinionSpawn(L2MonsterInstance minion)
 	{
-		_minionReferences.add(minion);
+		   _minionReferences.add(minion);
 	}
 	
 	/**
@@ -244,7 +244,7 @@ public class MinionList
 		// Set the Minion HP, MP and Heading
 		minion.setCurrentHpMp(minion.getMaxHp(), minion.getMaxMp());
 		minion.setHeading(master.getHeading());
-		
+
 		// Set the Minion leader to this RaidBoss
 		minion.setLeader(master);
 		
@@ -274,12 +274,6 @@ public class MinionList
 	
 	private final int countSpawnedMinionsById(int minionId)
 	{
-		int count = 0;
-		for (L2MonsterInstance minion : _minionReferences)
-		{
-			if (minion != null && minion.getNpcId() == minionId)
-				count++;
-		}
-		return count;
+		return (int) _minionReferences.stream().filter(minion -> minion.getNpcId() == minionId).count();
 	}
 }

@@ -28,7 +28,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.datatables.xml.NpcData;
+import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.L2Clan;
@@ -87,11 +87,7 @@ public class Quest
 		_name = name;
 		_descr = descr;
 		_onEnterWorld = false;
-		
-		//if(isRealQuest())
-		//{
-		   QuestManager.getInstance().addQuest(Quest.this);
-		//}
+		QuestManager.getInstance().addQuest(Quest.this);
 	}
 	
 	/**

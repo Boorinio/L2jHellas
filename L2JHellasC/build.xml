@@ -250,13 +250,7 @@ L2jHellas Project details:
 
 	<!-- Requirements -->
 	<target name="Requirements" description="Check Requirements.">
-		<fail message="Ant 1.9.1 is required But your version is ${ant.version} and if you are using Eclipse probably is outdated.">
-			<condition>
-				<not>
-					<antversion atleast="1.9.1" />
-				</not>
-			</condition>
-		</fail>
+	    <echo message="Checking your JDK version."/>
 		<available classname="java.util.stream.Stream" property="JDK8.present" />
 		<fail unless="JDK8.present" message="Java 1.8 is required. But your version is Java ${ant.java.version} and probably JDK is not installed." />
 	</target>

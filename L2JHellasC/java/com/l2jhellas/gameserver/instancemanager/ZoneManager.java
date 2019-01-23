@@ -40,8 +40,8 @@ import com.l2jhellas.gameserver.model.zone.form.ZoneCylinder;
 import com.l2jhellas.gameserver.model.zone.form.ZoneNPoly;
 import com.l2jhellas.gameserver.model.zone.type.L2ArenaZone;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
-import com.l2jhellas.gameserver.model.zone.type.L2FishingZone;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
+import com.l2jhellas.gameserver.model.zone.type.L2WaterZone;
 import com.l2jhellas.util.XMLDocumentFactory;
 
 /**
@@ -57,12 +57,6 @@ public class ZoneManager
 	private final List<L2ItemInstance> _debugItems = new ArrayList<>();
 	boolean reload = false;
 
-
-	//private static final int SHIFT_BY = 15;
-	//private static final int OFFSET_X = Math.abs(L2World.MAP_MIN_X >> SHIFT_BY);
-	//private static final int OFFSET_Y = Math.abs(L2World.MAP_MIN_Y >> SHIFT_BY);
-	//private final ZoneRegion[][] _zoneRegions = new ZoneRegion[(L2World.MAP_MAX_X >> SHIFT_BY) + OFFSET_X + 1][(L2World.MAP_MAX_Y >> SHIFT_BY) + OFFSET_Y + 1];
-	
 	private final ZoneRegion[][] _zoneRegions = new ZoneRegion[L2World.REGIONS_X + 1][L2World.REGIONS_Y + 1];
 	
 	public static final ZoneManager getInstance()
@@ -81,6 +75,8 @@ public class ZoneManager
 			}
 		}
 		
+		_lastDynamicId = 0;
+		
 		load();
 	}
 	
@@ -96,10 +92,16 @@ public class ZoneManager
 				count++;
 			}
 		}
+		
+		OlympiadStadiaManager.getInstance().clearStadium();
 		GrandBossManager.getInstance().getZones().clear();
+		WaterZoneManager.getInstance().clearWaterZone();
+		
 		_log.info("Removed zones in " + count + " regions.");
 		
 		reload = true;
+		
+		_lastDynamicId =0;
 		
 		// Load the zones
 		load();
@@ -116,8 +118,6 @@ public class ZoneManager
 	{
 		_log.info("Loading zones...");
 		_classZones.clear();
-
-		ZoneRegion[][] worldRegions = _zoneRegions;
 				
 		// Load the zone xml
 		try
@@ -136,7 +136,7 @@ public class ZoneManager
 				{
 					// Set dynamically the ID range of next XML loading file.
 					_lastDynamicId = fileCounter++ * 1000;
-					loadFileZone(file,worldRegions);
+					loadFileZone(file);
 				}
 			}
 		}
@@ -151,7 +151,7 @@ public class ZoneManager
 		_log.info("ZoneManager: loaded " + _classZones.size() + " zones classes and " + getSize() + " zones.");
 	}
 	
-	private void loadFileZone(final File f, ZoneRegion[][] worldRegions) throws Exception
+	private void loadFileZone(final File f) throws Exception
 	{
 		final Document doc = XMLDocumentFactory.getInstance().loadDocument(f);
 		for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
@@ -197,7 +197,6 @@ public class ZoneManager
 						Constructor<?> zoneConstructor = newZone.getConstructor(int.class);
 						L2ZoneType temp = (L2ZoneType) zoneConstructor.newInstance(zoneId);
 						
-						// Get the zone shape from sql
 						try
 						{
 							List<int[]> rs = new ArrayList<>();
@@ -309,7 +308,7 @@ public class ZoneManager
 								if (val != null && Boolean.parseBoolean(val.getNodeValue()))
 									((L2SpawnZone) temp).addChaoticSpawn(spawnX, spawnY, spawnZ);
 								else
-									((L2SpawnZone) temp).addSpawn(spawnX, spawnY, spawnZ);
+									((L2SpawnZone) temp).addSpawn(spawnX, spawnY, spawnZ);								
 							}
 						}
 						if (checkId(zoneId))
@@ -317,31 +316,13 @@ public class ZoneManager
 						
 						addZone(zoneId, temp);
 
-						//for (int x = 0; x < _zoneRegions.length; x++)
-						//{
-							//for (int y = 0; y < _zoneRegions[x].length; y++)
-							//{
-								
-								//int ax = (x - OFFSET_X) << SHIFT_BY;
-								//int bx = ((x + 1) - OFFSET_X) << SHIFT_BY;
-								//int ay = (y - OFFSET_Y) << SHIFT_BY;
-								//int by = ((y + 1) - OFFSET_Y) << SHIFT_BY;
-								
-								//if (temp.getZone().intersectsRectangle(ax, bx, ay, by))
-								//{
-									  //_zoneRegions[x][y].getZones().put(temp.getId(), temp);
-						          //    _zoneRegions[x][y].addZone(temp);
-								//}
-						//	}
-						//}
-
 						// Register the zone into any world region it intersects with...
-						for (int x = 0; x <  worldRegions.length; x++)
+						for (int x = 0; x <  _zoneRegions.length; x++)
 						{
-							for (int y = 0; y <  worldRegions[x].length; y++)
+							for (int y = 0; y <  _zoneRegions[x].length; y++)
 							{
 								if (temp.getZone().intersectsRectangle(L2World.getRegionX(x), L2World.getRegionX(x + 1), L2World.getRegionY(y), L2World.getRegionY(y + 1)))
-									worldRegions[x][y].addZone(temp);
+									_zoneRegions[x][y].addZone(temp);
 							}
 						}
 						
@@ -353,12 +334,10 @@ public class ZoneManager
 						{
 							GrandBossManager.getInstance().addZone((L2BossZone) temp);
 						}
-						else if (temp instanceof L2FishingZone)
+						else if (Config.ALLOWFISHING && temp instanceof L2WaterZone)
 						{
-							FishingZoneManager.getInstance().addFishingZone((L2FishingZone) temp);
+							WaterZoneManager.getInstance().addWaterZone((L2WaterZone) temp);
 						}
-						
-
 					}
 				}
 			}
@@ -566,6 +545,30 @@ public class ZoneManager
 		}
 		return zone;
 	}
+
+	public <T extends L2ZoneType> L2WaterZone getClosestWaterZone(L2Object obj)
+	{
+		L2WaterZone zone = getZone(obj, L2WaterZone.class);
+		
+		if (zone == null)
+		{
+			double closestdis = 2000;
+			
+			for (L2WaterZone temp : WaterZoneManager.getInstance().getAllWaterZones())
+			{
+				double distance = temp.getDistanceToZone(obj);
+				
+				if (distance < closestdis)
+				{
+					closestdis = distance;
+					zone = temp;
+					break;
+				}
+			}
+		}
+		
+		return zone;
+	}
 	
 	/**
 	 * General storage for debug items used for visualizing zones.
@@ -604,7 +607,7 @@ public class ZoneManager
 	{
 		return _zoneRegions[(x - L2World.WORLD_X_MIN) / L2World.REGION_SIZE][(y - L2World.WORLD_Y_MIN) / L2World.REGION_SIZE];
 	}
-
+	
 	public ZoneRegion getRegion(L2Object point)
 	{
 		return getRegion(point.getX(), point.getY());

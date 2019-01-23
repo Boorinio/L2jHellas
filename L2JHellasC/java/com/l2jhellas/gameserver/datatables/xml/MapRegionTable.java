@@ -79,12 +79,7 @@ public class MapRegionTable
 		SIEGE_FLAG,
 		TOWN
 	}
-	
-	public static MapRegionTable getInstance()
-	{
-		return SingletonHolder._instance;
-	}
-	
+
 	protected MapRegionTable()
 	{
 		int count = 0;
@@ -628,6 +623,12 @@ public class MapRegionTable
 	public static final L2TownZone getTown(int x, int y, int z)
 	{
 		return ZoneManager.getInstance().getZone(x, y, z, L2TownZone.class);
+	}
+	
+	
+	public static MapRegionTable getInstance()
+	{
+		return SingletonHolder._instance;
 	}
 	
 	private static class SingletonHolder

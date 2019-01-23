@@ -140,10 +140,8 @@ public final class L2WorldRegion
 	public void setActive(boolean value)
 	{
 		if (_active == value)
-		{
 			return;
-		}
-		
+
 		_active = value;
 		
 		// turn the AI on or off to match the region's activation.
