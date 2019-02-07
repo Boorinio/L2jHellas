@@ -21,7 +21,6 @@ import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
-import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2CubicInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -215,7 +214,6 @@ public class L2SkillSummon extends L2Skill
 		summon.setRunning();
 		activeChar.setPet(summon);
 
-		L2World.getInstance().storeObject(summon);
 		summon.spawnMe(activeChar.getX() + 50, activeChar.getY() + 100, activeChar.getZ());
 
 		summon.setFollowStatus(true);

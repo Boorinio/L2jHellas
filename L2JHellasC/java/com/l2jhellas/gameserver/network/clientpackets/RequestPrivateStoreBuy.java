@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.ItemRequest;
-import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.TradeList;
 import com.l2jhellas.gameserver.model.TradeList.TradeItem;
@@ -60,7 +59,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance player = getClient().getActiveChar();
+		final L2PcInstance player = getClient().getActiveChar();
 
 		if (player == null)
 			return;
@@ -77,15 +76,16 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		L2Object object = L2World.getInstance().findObject(_storePlayerId);
-		if ((object == null) || !(object instanceof L2PcInstance))
+		
+		final L2PcInstance storePlayer = L2World.getInstance().getPlayer(_storePlayerId);
+		
+		if (storePlayer == null)
 			return;
-
-		L2PcInstance storePlayer = (L2PcInstance) object;
+		
 		if (!(storePlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL || storePlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_PACKAGE_SELL))
 			return;
 
-		TradeList storeList = storePlayer.getSellList();
+		final TradeList storeList = storePlayer.getSellList();
 		if (storeList == null)
 		{
 			player.sendPacket(ActionFailed.STATIC_PACKET);

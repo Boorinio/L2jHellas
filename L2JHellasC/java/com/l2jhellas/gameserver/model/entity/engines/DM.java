@@ -46,8 +46,8 @@ public class DM
 {
 	private final static Logger _log = Logger.getLogger(DM.class.getName());
 	public static String _eventName = new String(), _eventDesc = new String(), _joiningLocationName = new String();
-	public static List<String> _savePlayers = new ArrayList<String>();
-	public static List<L2PcInstance> _players = new ArrayList<L2PcInstance>();
+	public static List<String> _savePlayers = new ArrayList<>();
+	public static List<L2PcInstance> _players = new ArrayList<>();
 	public static boolean _joining = false, _teleport = false, _started = false, _sitForced = false;
 	public static L2Spawn _npcSpawn;
 	public static L2PcInstance _topPlayer;
@@ -431,8 +431,8 @@ public class DM
 		_eventName = new String();
 		_eventDesc = new String();
 		_joiningLocationName = new String();
-		_savePlayers = new ArrayList<String>();
-		_players = new ArrayList<L2PcInstance>();
+		_savePlayers = new ArrayList<>();
+		_players = new ArrayList<>();
 		_topPlayer = null;
 		_npcSpawn = null;
 		_joining = false;
@@ -659,7 +659,7 @@ public class DM
 			removePlayer(player);
 		}
 
-		_savePlayers = new ArrayList<String>();
+		_savePlayers = new ArrayList<>();
 		_topPlayer = null;
 		_npcSpawn = null;
 		_joining = false;
@@ -667,7 +667,7 @@ public class DM
 		_started = false;
 		_sitForced = false;
 		_topKills = 0;
-		_players = new ArrayList<L2PcInstance>();
+		_players = new ArrayList<>();
 
 	}
 

@@ -14,8 +14,8 @@
  */
 package com.l2jhellas.gameserver.skills.effects;
 
+import com.l2jhellas.gameserver.emum.AbnormalEffect;
 import com.l2jhellas.gameserver.model.L2Effect;
-import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.skills.Env;
 
 /**
@@ -31,7 +31,7 @@ public class EffectClanGate extends L2Effect
 	@Override
 	public boolean onStart()
 	{
-		getEffected().startAbnormalEffect(L2Character.ABNORMAL_EFFECT_MAGIC_CIRCLE);
+		getEffected().startAbnormalEffect(AbnormalEffect.MAGIC_CIRCLE.getMask());
 		return true;
 	}
 
@@ -44,7 +44,7 @@ public class EffectClanGate extends L2Effect
 	@Override
 	public void onExit()
 	{
-		getEffected().stopAbnormalEffect(L2Character.ABNORMAL_EFFECT_MAGIC_CIRCLE);
+		getEffected().stopAbnormalEffect(AbnormalEffect.MAGIC_CIRCLE.getMask());
 	}
 
 	@Override

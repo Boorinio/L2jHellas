@@ -16,9 +16,7 @@ package com.l2jhellas.gameserver.model.entity.engines;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.PackRoot;
 import com.l2jhellas.Config;
@@ -43,8 +41,8 @@ public class CaptureThem
 {
 	public static boolean CaptureThemRunning = false;
 	private static int i;
-	private static List<L2PcInstance> _players = new ArrayList<L2PcInstance>();
-	private static Set<L2Npc> _flags = new HashSet<L2Npc>();
+	private static List<L2PcInstance> _players = new ArrayList<>();
+	private static List<L2Npc> _flags = new ArrayList<>();
 	private static int flagId = 36006;
 	private static int MostPoints = 0;
 	public static L2PcInstance MostPointsPlayer;

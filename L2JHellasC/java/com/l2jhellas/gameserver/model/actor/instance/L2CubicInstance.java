@@ -23,11 +23,13 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
+import com.l2jhellas.gameserver.instancemanager.DuelManager;
 import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 import com.l2jhellas.util.Rnd;
 
 public class L2CubicInstance
@@ -49,8 +51,9 @@ public class L2CubicInstance
 
 	protected int _id;
 	protected int _level = 1;
+	protected long _lifetime = 1200000; // disappear in 20 mins
 
-	protected List<Integer> _skills = new ArrayList<Integer>();
+	protected List<Integer> _skills = new ArrayList<>();
 
 	private Future<?> _disappearTask;
 	private Future<?> _actionTask;
@@ -71,7 +74,7 @@ public class L2CubicInstance
 			break;
 			case LIFE_CUBIC:
 				_skills.add(4051);
-				_disappearTask = ThreadPoolManager.getInstance().scheduleGeneral(new Disappear(), 3600000); // disappear in 60 mins
+				_lifetime = 3600000; // disappear in 60 mins
 				doAction(_owner);
 			break;
 			case VIPER_CUBIC:
@@ -96,16 +99,20 @@ public class L2CubicInstance
 				_skills.add(5116);
 			break;
 		}
-		if (_disappearTask == null)
-			_disappearTask = ThreadPoolManager.getInstance().scheduleGeneral(new Disappear(), 1200000); // disappear in 20 mins
+
+		if(_disappearTask==null)
+		   _disappearTask = ThreadPoolManager.getInstance().scheduleGeneral(new Disappear(),_lifetime); 
 	}
 
 	public void doAction(L2Character target)
 	{
 		if (_target == target)
 			return;
+		
 		stopAction();
+		
 		_target = target;
+		
 		switch (_id)
 		{
 			case STORM_CUBIC:
@@ -176,39 +183,41 @@ public class L2CubicInstance
 		@Override
 		public void run()
 		{
-			if (_owner.isDead() || _target.isDead() || _owner.getTarget() != _target)
+			if (_owner.isDead() || !_owner.isbOnline())
 			{
-				stopAction();
-				if (_owner.isDead())
-				{
-					_owner.delCubic(_id);
-					_owner.broadcastUserInfo();
-					cancelDisappear();
-				}
+				_owner.delCubic(_id);
+				_owner.broadcastUserInfo();
+				cancelDisappear();
 				return;
 			}
+			
+			if (!AttackStanceTaskManager.getInstance().isInAttackStance(_owner))
+			{
+				stopAction();
+				return;
+			}
+			
 			if (_target != null)
 			{
 				try
 				{
 					if (Rnd.get(1, 100) < _chance)
 					{
-						L2Skill skill = SkillTable.getInstance().getInfo(_skills.get(Rnd.get(_skills.size())), _level);
+						final L2Skill skill = SkillTable.getInstance().getInfo(_skills.get(Rnd.get(_skills.size())), _level);
 						if (skill != null)
 						{
-							L2Character[] targets =
-							{
-								_target
-							};
-							ISkillHandler handler = SkillHandler.getInstance().getHandler(skill.getSkillType());
+							final L2Character[] targets ={_target};
+							final ISkillHandler handler = SkillHandler.getInstance().getHandler(skill.getSkillType());
 
 							int x, y, z;
-							// temporary range check until real behavior of cubics is known/coded
-							int range = _target.getTemplate().collisionRadius + 400; //skill.getCastRange();
+							
+							//range for cubic skills
+							final int range = 900;
 
 							x = (_owner.getX() - _target.getX());
 							y = (_owner.getY() - _target.getY());
 							z = (_owner.getZ() - _target.getZ());
+							
 							if ((x * x) + (y * y) + (z * z) <= (range * range))
 							{
 								if (handler != null)
@@ -261,7 +270,7 @@ public class L2CubicInstance
 			{
 				if (Rnd.get(1, 100) < _chance)
 				{
-					L2Skill skill = SkillTable.getInstance().getInfo(_skills.get(Rnd.get(_skills.size())), _level);
+					final L2Skill skill = SkillTable.getInstance().getInfo(_skills.get(Rnd.get(_skills.size())), _level);
 					if (skill != null)
 					{
 						L2Character target, caster;
@@ -272,15 +281,21 @@ public class L2CubicInstance
 							L2PcInstance player = _owner;
 							L2Party party = player.getParty();
 							double percentleft = 100.0;
-							if (party != null)
+							
+							if (_owner.isInDuel() && !DuelManager.getInstance().getDuel(_owner.getDuelId()).isPartyDuel())
+								party = null;
+							
+							if (party != null && !_owner.isInOlympiadMode())
 							{
 								// Get all visible objects in a spheric area near the L2Character
 								// Get a list of Party Members
 								List<L2PcInstance> partyList = party.getPartyMembers();
 								L2Character partyMember = null;
 								int x, y, z;
-								// temporary range check until real behavior of cubics is known/coded
-								int range = 400; //skill.getCastRange();
+								
+								//range for cubic skills
+								int range = 900; 
+								
 								for (int i = 0; i < partyList.size(); i++)
 								{
 									partyMember = partyList.get(i);

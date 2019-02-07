@@ -30,14 +30,7 @@ import com.l2jhellas.gameserver.network.serverpackets.RelationChanged;
 public final class Broadcast
 {
 	/**
-	 * Send a packet to all L2PcInstance in the _KnownPlayers of the L2Character that have the Character targetted.<BR>
-	 * <BR>
-	 * <B><U> Concept</U> :</B><BR>
-	 * L2PcInstance in the detection area of the L2Character are identified in <B>_knownPlayers</B>.<BR>
-	 * In order to inform other players of state modification on the L2Character, server just need to go through _knownPlayers to send Server->Client Packet<BR>
-	 * <BR>
-	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : This method DOESN'T SEND Server->Client packet to this L2Character (to do this use method toSelfAndKnownPlayers)</B></FONT><BR>
-	 * <BR>
+	 * Send a packet to all L2PcInstance in the KnownPlayers of the L2Character that have the Character targetted.<BR>
 	 * @param character The character to make checks on.
 	 * @param mov The packet to send.
 	 */
@@ -53,14 +46,7 @@ public final class Broadcast
 	}
 	
 	/**
-	 * Send a packet to all L2PcInstance in the _KnownPlayers of the L2Character.<BR>
-	 * <BR>
-	 * <B><U> Concept</U> :</B><BR>
-	 * L2PcInstance in the detection area of the L2Character are identified in <B>_knownPlayers</B>.<BR>
-	 * In order to inform other players of state modification on the L2Character, server just need to go through _knownPlayers to send Server->Client Packet<BR>
-	 * <BR>
-	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : This method DOESN'T SEND Server->Client packet to this L2Character (to do this use method toSelfAndKnownPlayers)</B></FONT><BR>
-	 * <BR>
+	 * Send a packet to all L2PcInstance in the KnownPlayers of the L2Character.<BR>
 	 * @param character The character to make checks on.
 	 * @param mov The packet to send.
 	 */
@@ -82,14 +68,7 @@ public final class Broadcast
 	}
 	
 	/**
-	 * Send a packet to all L2PcInstance in the _KnownPlayers (in the specified radius) of the L2Character.<BR>
-	 * <BR>
-	 * <B><U> Concept</U> :</B><BR>
-	 * L2PcInstance in the detection area of the L2Character are identified in <B>_knownPlayers</B>.<BR>
-	 * In order to inform other players of state modification on the L2Character, server just needs to go through _knownPlayers to send Server->Client Packet and check the distance between the targets.<BR>
-	 * <BR>
-	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : This method DOESN'T SEND Server->Client packet to this L2Character (to do this use method toSelfAndKnownPlayers)</B></FONT><BR>
-	 * <BR>
+	 * Send a packet to all L2PcInstance in the KnownPlayers (in the specified radius) of the L2Character.<BR>
 	 * @param character The character to make checks on.
 	 * @param mov The packet to send.
 	 * @param radius The given radius.
@@ -107,12 +86,7 @@ public final class Broadcast
 	}
 	
 	/**
-	 * Send a packet to all L2PcInstance in the _KnownPlayers of the L2Character and to the specified character.<BR>
-	 * <BR>
-	 * <B><U> Concept</U> :</B><BR>
-	 * L2PcInstance in the detection area of the L2Character are identified in <B>_knownPlayers</B>.<BR>
-	 * In order to inform other players of state modification on the L2Character, server just need to go through _knownPlayers to send Server->Client Packet<BR>
-	 * <BR>
+	 * Send a packet to all L2PcInstance in the KnownPlayers of the L2Character and to the specified character.<BR>
 	 * @param character The character to make checks on.
 	 * @param mov The packet to send.
 	 */
@@ -155,13 +129,7 @@ public final class Broadcast
 	}
 	
 	/**
-	 * Send a packet to all L2PcInstance present in the world.<BR>
-	 * <BR>
-	 * <B><U> Concept</U> :</B><BR>
-	 * In order to inform other players of state modification on the L2Character, server just need to go through _allPlayers to send Server->Client Packet<BR>
-	 * <BR>
-	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : This method DOESN'T SEND Server->Client packet to this L2Character (to do this use method toSelfAndKnownPlayers)</B></FONT><BR>
-	 * <BR>
+	 * Send a packet to all online L2PcInstance present in the world.<BR>
 	 * @param mov The packet to send.
 	 */
 	public static void toAllOnlinePlayers(L2GameServerPacket mov)

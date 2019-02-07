@@ -29,8 +29,8 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 public class AuctionManager
 {
 	protected static final Logger _log = Logger.getLogger(AuctionManager.class.getName());
-	private static AuctionManager _instance;
-	private final List<Auction> _auctions;
+	private final List<Auction> _auctions = new ArrayList<Auction>();
+	
 	private static final String[] ITEM_INIT_DATA =
 	{/** @formatter:off */
 		"(23, 0, 'NPC', 'NPC Clan', 'ClanHall', 23, 0, 'Onyx Hall', 1, 20000000, 0, 1164841200000)",
@@ -71,23 +71,14 @@ public class AuctionManager
 		"(60, 0, 'NPC', 'NPC Clan', 'ClanHall', 60, 0, 'Molten Ore Hall', 1, 50000000, 0, 1164841200000)",
 		"(61, 0, 'NPC', 'NPC Clan', 'ClanHall', 61, 0, 'Titan Hall', 1, 50000000, 0, 1164841200000)"
 	};
+	
 	private static final Integer[] ItemInitDataId =
 	{
 	23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61
 	};/** @formatter:on */
 
-	public static final AuctionManager getInstance()
-	{
-		if (_instance == null)
-		{
-			_instance = new AuctionManager();
-		}
-		return _instance;
-	}
-
 	public AuctionManager()
 	{
-		_auctions = new ArrayList<Auction>();
 		load();
 	}
 
@@ -168,5 +159,15 @@ public class AuctionManager
 			if (Config.DEVELOPER)
 				e.printStackTrace();
 		}
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final AuctionManager _instance = new AuctionManager();
+	}
+	
+	public static final AuctionManager getInstance()
+	{
+		return SingletonHolder._instance;
 	}
 }

@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.ItemRequest;
-import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.TradeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -92,14 +91,15 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 			player.sendMessage("You selling items too fast");
 			return;
 		}
-		L2Object object = L2World.getInstance().findObject(_storePlayerId);
-		if (object == null || !(object instanceof L2PcInstance))
+		
+		final L2PcInstance storePlayer = L2World.getInstance().getPlayer(_storePlayerId);
+		
+		if (storePlayer == null)
 		{
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		
-		L2PcInstance storePlayer = (L2PcInstance) object;
 		if (storePlayer.getPrivateStoreType() != L2PcInstance.STORE_PRIVATE_BUY)
 		{
 			player.sendPacket(ActionFailed.STATIC_PACKET);

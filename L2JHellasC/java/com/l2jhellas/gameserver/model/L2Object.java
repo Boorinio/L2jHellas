@@ -264,25 +264,19 @@ public abstract class L2Object
 	{
 		synchronized (this)
 		{
-			// Set the x,y,z position of the L2Object spawn and update its _worldregion
-
 			if (x > L2World.WORLD_X_MAX)
-			{
 				x = L2World.WORLD_X_MAX - 5000;
-			}
 			if (x < L2World.WORLD_X_MIN)
-			{
 				x = L2World.WORLD_X_MIN + 5000;
-			}
 			if (y > L2World.WORLD_Y_MAX)
-			{
 				y = L2World.WORLD_Y_MAX - 5000;
-			}
 			if (y < L2World.WORLD_Y_MIN)
-			{
 				y = L2World.WORLD_Y_MIN + 5000;
-			}
-			
+			if (z > L2World.WORLD_Z_MAX)
+				z = L2World.WORLD_Z_MAX - 1000;
+			if (z < L2World.WORLD_Z_MIN)
+				z = L2World.WORLD_Z_MIN + 1000;
+
 			setXYZ(x, y, z);
 		}
 		
@@ -300,6 +294,24 @@ public abstract class L2Object
 			spawnMe();
 	}
 
+	public boolean isInSurroundingRegion(L2Object worldObject)
+	{
+		if (worldObject == null)
+			return false;
+
+		final L2WorldRegion worldRegion1 = worldObject.getWorldRegion();
+		
+		if (worldRegion1 == null)
+			return false;
+		
+		final L2WorldRegion worldRegion2 = getWorldRegion();
+		
+		if (worldRegion2 == null)
+			return false;
+		
+		return worldRegion1.isSurroundingRegion(worldRegion2);
+	}
+	
 	public boolean isAttackable()
 	{
 		return false;
@@ -401,21 +413,11 @@ public abstract class L2Object
 	public void setInstanceId(int instanceId)
 	{
 		_instanceId = instanceId;
-
-		// If we change it for visible objects, me must clear & revalidate knownlists
-		if (_isVisible)
+		
+		if (_isVisible && !(this instanceof L2PcInstance))
 		{
-			if (this instanceof L2PcInstance)
-			{
-				// We don't want some ugly looking disappear/appear effects, so don't update
-				// the knownlist here, but players usually enter instancezones through teleporting
-				// and the teleport will do the revalidation for us.
-			}
-			else
-			{
-				decayMe();
-				spawnMe();
-			}
+			decayMe();
+			spawnMe();
 		}
 	}
 	

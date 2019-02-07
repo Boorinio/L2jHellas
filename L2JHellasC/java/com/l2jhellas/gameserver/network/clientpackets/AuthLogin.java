@@ -14,18 +14,13 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Logger;
-
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.LoginServerThread;
 import com.l2jhellas.gameserver.LoginServerThread.SessionKey;
 import com.l2jhellas.gameserver.network.L2GameClient;
-import com.l2jhellas.gameserver.network.serverpackets.LeaveWorld;
 
 public final class AuthLogin extends L2GameClientPacket
 {
 	private static final String _C__08_AUTHLOGIN = "[C] 08 AuthLogin";
-	private static Logger _log = Logger.getLogger(AuthLogin.class.getName());
 
 	// loginName + keys must match what the loginserver used.
 	private String _loginName;
@@ -51,29 +46,16 @@ public final class AuthLogin extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		SessionKey key = new SessionKey(_loginKey1, _loginKey2, _playKey1, _playKey2);
-		if (Config.DEBUG)
-		{
-			_log.info("user:" + _loginName);
-			_log.info("key:" + key);
-		}
+		final L2GameClient client = getClient();
+		
+		if(client==null)
+			return;
 
-		L2GameClient client = getClient();
-
-		// avoid potential exploits
 		if (client.getAccountName() == null)
 		{		
-			if (LoginServerThread.getInstance().addGameServerLogin(_loginName, client))
-			{
-				client.setAccountName(_loginName);
-				LoginServerThread.getInstance().addWaitingClientAndSendRequest(_loginName, client, key);
-			}
-			else
-			{
-
-				client.closeNow();
-				client.close(new LeaveWorld());
-			}
+			getClient().setAccountName(_loginName);
+			getClient().setSessionId(new SessionKey(_loginKey1, _loginKey2, _playKey1, _playKey2));
+			LoginServerThread.getInstance().addWaitingClientAndSendRequest(_loginName, client);
 		}
 	}
 

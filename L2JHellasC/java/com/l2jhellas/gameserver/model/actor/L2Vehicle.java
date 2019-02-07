@@ -23,6 +23,7 @@ import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
+import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
@@ -31,6 +32,7 @@ import com.l2jhellas.gameserver.model.VehiclePathPoint;
 import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
+import com.l2jhellas.gameserver.model.zone.ZoneRegion;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
@@ -289,7 +291,7 @@ public abstract class L2Vehicle extends L2Character
 	 */
 	public void payForRide(int itemId, int count, int oustX, int oustY, int oustZ)
 	{
-		for (L2PcInstance player : L2World.getInstance().getVisibleObjects(this, L2PcInstance.class, 1000))
+		L2World.getInstance().forEachVisibleObjectInRange(this, L2PcInstance.class,1000, player ->
 		{
 			if (player.isInBoat() && player.getBoat() == this)
 			{
@@ -300,7 +302,7 @@ public abstract class L2Vehicle extends L2Character
 					{
 						player.sendPacket(SystemMessageId.NOT_CORRECT_BOAT_TICKET);
 						player.teleToLocation(oustX, oustY, oustZ, true);
-						continue;
+						return;
 					}
 					
 					final InventoryUpdate iu = new InventoryUpdate();
@@ -313,7 +315,7 @@ public abstract class L2Vehicle extends L2Character
 				}
 				addPassenger(player);
 			}
-		}
+		});
 	}
 	
 	@Override
@@ -368,6 +370,24 @@ public abstract class L2Vehicle extends L2Character
 	}
 	
 	@Override
+	public void deleteMe()
+	{
+		_engine = null;
+
+		if (isMoving())
+			stopMove(null);	
+
+		oustPlayers();
+
+		final ZoneRegion oldZoneRegion = ZoneManager.getInstance().getRegion(this);
+
+		decayMe();
+	
+		oldZoneRegion.removeFromZones(this);
+		
+		super.deleteMe();
+	}
+	@Override
 	public void updateAbnormalEffect()
 	{
 	}
@@ -414,14 +434,25 @@ public abstract class L2Vehicle extends L2Character
 		if (_ai == null)
 			_ai = newAI;
 	}
-	
+
 	public class AIAccessor extends L2Character.AIAccessor
 	{
+		public AIAccessor()
+		{
+		}
+
 		@Override
 		public void detachAI()
 		{
+			
 		}
-	}
+		
+		public L2Vehicle getVehicle()
+		{
+			return L2Vehicle.this;
+		}
+
+	}	
 	
 	@Override
 	public void sendInfo(L2PcInstance activeChar)

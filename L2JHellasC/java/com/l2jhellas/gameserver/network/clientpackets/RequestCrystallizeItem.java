@@ -50,7 +50,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
 
 		if (activeChar == null)
 		{
@@ -70,7 +70,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 			return;
 		}
 
-		int skillLevel = activeChar.getSkillLevel(L2Skill.SKILL_CRYSTALLIZE);
+		final int skillLevel = activeChar.getSkillLevel(L2Skill.SKILL_CRYSTALLIZE);
 		if (skillLevel <= 0)
 		{
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CRYSTALLIZE_LEVEL_TOO_LOW);
@@ -80,17 +80,17 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 			return;
 		}
 
-		PcInventory inventory = activeChar.getInventory();
+		final PcInventory inventory = activeChar.getInventory();
 		if (inventory != null)
 		{
-			L2ItemInstance item = inventory.getItemByObjectId(_objectId);
+			final L2ItemInstance item = inventory.getItemByObjectId(_objectId);
 			if ((item == null) || item.isWear())
 			{
 				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 				return;
 			}
 
-			int itemId = item.getItemId();
+			final int itemId = item.getItemId();
 			if (((itemId >= 6611) && (itemId <= 6621)) || (itemId == 6842))
 				return;
 
@@ -100,7 +100,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 			}
 		}
 
-		L2ItemInstance itemToRemove = activeChar.getInventory().getItemByObjectId(_objectId);
+		final L2ItemInstance itemToRemove = activeChar.getInventory().getItemByObjectId(_objectId);
 		if ((itemToRemove == null) || itemToRemove.isWear())
 		{
 			return;
@@ -156,8 +156,8 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 		// unequip if needed
 		if (itemToRemove.isEquipped())
 		{
-			L2ItemInstance[] unequiped = activeChar.getInventory().unEquipItemInSlotAndRecord(itemToRemove.getEquipSlot());
-			InventoryUpdate iu = new InventoryUpdate();
+			final L2ItemInstance[] unequiped = activeChar.getInventory().unEquipItemInSlotAndRecord(itemToRemove.getEquipSlot());
+			final InventoryUpdate iu = new InventoryUpdate();
 			for (int i = 0; i < unequiped.length; i++)
 			{
 				iu.addModifiedItem(unequiped[i]);
@@ -172,12 +172,12 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 		}
 
 		// remove from inventory
-		L2ItemInstance removedItem = activeChar.getInventory().destroyItem("Crystalize", _objectId, _count, activeChar, null);
+		final L2ItemInstance removedItem = activeChar.getInventory().destroyItem("Crystalize", _objectId, _count, activeChar, null);
 
 		// add crystals
 		int crystalId = itemToRemove.getItem().getCrystalItemId();
 		int crystalAmount = itemToRemove.getCrystalCount();
-		L2ItemInstance createditem = activeChar.getInventory().addItem("Crystalize", crystalId, crystalAmount, activeChar, itemToRemove);
+		final L2ItemInstance createditem = activeChar.getInventory().addItem("Crystalize", crystalId, crystalAmount, activeChar, itemToRemove);
 
 		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
 		sm.addItemName(crystalId);

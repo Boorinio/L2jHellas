@@ -35,10 +35,10 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 public class ZodiacMain
 {
 	private static final Logger _log = Logger.getLogger(ZodiacMain.class.getName());
-	public static List<String> Ips = new ArrayList<String>();
+	public static List<String> Ips = new ArrayList<>();
 	public static boolean ZodiacRegisterActive;
 	public static int i, max;
-	public static List<String> VotedPlayers = new ArrayList<String>();
+	public static List<String> VotedPlayers = new ArrayList<>();
 	public static int[] count =
 	{
 	0, 0, 0, 0, 0, 0, 0

@@ -265,15 +265,17 @@ public final class CharacterCreate extends L2GameClientPacket
 				_log.fine("adding starter skill:" + startSkills[i].getId() + " / " + startSkills[i].getLevel());
 			}
 		}
+		
 		startTutorialQuest(newChar);
-		L2GameClient.saveCharToDisk(newChar);
+		newChar.store();
 		newChar.deleteMe(); // release the world of this character and it's inventory
 		L2World.getInstance().removeObject(newChar);
 
 		// send char list
 		CharSelectInfo cl = new CharSelectInfo(client.getAccountName(), client.getSessionId().playOkID1);
 		client.getConnection().sendPacket(cl);
-		client.setCharSelection(cl.getCharInfo());
+		getClient().setCharSelectSlot(cl.getCharacterSlots());
+
 		if (Config.DEBUG)
 		{
 			_log.fine("Character init end");

@@ -384,7 +384,7 @@ public class L2SiegeGuardAI extends L2CharacterAI implements Runnable
 				}
 
 			// Check if the L2SiegeGuardInstance is attacking, knows the target and can't run
-			if (!(_actor.isAttackingNow()) && (_actor.getRunSpeed() == 0))
+			if (!(_actor.isAttackingNow()) && (_actor.getRunSpeed() == 0) && (_actor.isInSurroundingRegion(_attackTarget)))
 			{
 				// Cancel the target
 				_actor.setTarget(null);

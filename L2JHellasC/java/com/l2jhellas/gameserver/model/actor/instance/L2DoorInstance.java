@@ -325,7 +325,7 @@ public class L2DoorInstance extends L2Character
 	{
 		return true;
 	}
-
+	
 	@Override
 	public boolean isAutoAttackable(L2Character attacker)
 	{
@@ -681,4 +681,28 @@ public class L2DoorInstance extends L2Character
 		activeChar.sendPacket(new DoorInfo(this));
 		activeChar.sendPacket(new DoorStatusUpdate(this));	
 	}
+
+	//protected boolean setGeoOpen(boolean open)
+	//{
+		//if(_geoOpen == open)
+		//{
+		//	return false;
+		//}
+
+		//_geoOpen = open;
+
+		//if(Config.GEODATA)
+		//{
+			//if(open)
+			//{
+			//	GeoEngine.returnGeoAtControl(this);
+			//}
+			//else
+			//{
+				//GeoEngine.applyControl(this);
+			//}
+		//}
+
+		//return true;
+	//}
 }

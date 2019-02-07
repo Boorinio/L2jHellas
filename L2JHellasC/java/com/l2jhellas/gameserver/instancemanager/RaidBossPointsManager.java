@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -171,7 +172,7 @@ public class RaidBossPointsManager
 			if (totalPoints != 0)
 				tmpPoints.put(ownerId, totalPoints);
 		}
-		ArrayList<Entry<Integer, Integer>> list = new ArrayList<>(tmpPoints.entrySet());
+		List<Entry<Integer, Integer>> list = new ArrayList<>(tmpPoints.entrySet());
 		
 		Collections.sort(list, _comparator);
 		

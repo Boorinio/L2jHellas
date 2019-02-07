@@ -51,7 +51,7 @@ public class CharacterSelected extends L2GameClientPacket
 	protected void runImpl()
 	{
 		final L2GameClient client = getClient();
-		
+
 		if (client.getActiveCharLock().tryLock())
 		{
 			try

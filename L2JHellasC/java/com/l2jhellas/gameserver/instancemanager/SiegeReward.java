@@ -21,6 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,13 +44,13 @@ public class SiegeReward
 	public static boolean ACTIVATED_SYSTEM;
 	public static boolean REWARD_ACTIVE_MEMBERS_ONLY;
 
-	private final ArrayList<RewardInfoz> _list;
-	private final HashMap<Integer, ArrayList<ToReward>> _toReward; // Offline players that didn't get rewarded. =( poor guys, But they'll have a surprise
+	private final List<RewardInfoz> _list;
+	private final HashMap<Integer, List<ToReward>> _toReward; // Offline players that didn't get rewarded. =( poor guys, But they'll have a surprise
 
 	public SiegeReward()
 	{
 		_list = new ArrayList<RewardInfoz>();
-		_toReward = new HashMap<Integer, ArrayList<ToReward>>();
+		_toReward = new HashMap<Integer, List<ToReward>>();
 		_log.info(SiegeReward.class.getSimpleName() + ": Activated.");
 	}
 

@@ -48,17 +48,17 @@ public class RequestAquireSkillInfo extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
 
 		if (activeChar == null)
 			return;
 
-		L2NpcInstance trainer = activeChar.getLastFolkNPC();
+		final L2NpcInstance trainer = activeChar.getLastFolkNPC();
 
 		if (((trainer == null) || !activeChar.isInsideRadius(trainer, L2Npc.INTERACTION_DISTANCE, false, false)) && !activeChar.isGM())
 			return;
 
-		L2Skill skill = SkillTable.getInstance().getInfo(_id, _level);
+		final L2Skill skill = SkillTable.getInstance().getInfo(_id, _level);
 
 		boolean canteach = false;
 
@@ -74,7 +74,7 @@ public class RequestAquireSkillInfo extends L2GameClientPacket
 			if (!trainer.getTemplate().canTeach(activeChar.getSkillLearningClassId()))
 				return; // cheater
 
-			L2SkillLearn[] skills = SkillTreeData.getInstance().getAvailableSkills(activeChar, activeChar.getSkillLearningClassId());
+			final L2SkillLearn[] skills = SkillTreeData.getInstance().getAvailableSkills(activeChar, activeChar.getSkillLearningClassId());
 
 			for (L2SkillLearn s : skills)
 			{
@@ -88,12 +88,12 @@ public class RequestAquireSkillInfo extends L2GameClientPacket
 			if (!canteach)
 				return; // cheater
 
-			int requiredSp = SkillTreeData.getInstance().getSkillCost(activeChar, skill);
-			AquireSkillInfo asi = new AquireSkillInfo(skill.getId(), skill.getLevel(), requiredSp, 0);
+			final int requiredSp = SkillTreeData.getInstance().getSkillCost(activeChar, skill);
+			final AquireSkillInfo asi = new AquireSkillInfo(skill.getId(), skill.getLevel(), requiredSp, 0);
 
 			if (Config.SP_BOOK_NEEDED)
 			{
-				int spbId = SkillSpellbookData.getInstance().getBookForSkill(skill);
+				final int spbId = SkillSpellbookData.getInstance().getBookForSkill(skill);
 
 				if (skill.getLevel() == 1 && spbId > -1)
 					asi.addRequirement(99, spbId, 1, 50);
@@ -105,7 +105,7 @@ public class RequestAquireSkillInfo extends L2GameClientPacket
 		{
 			int requiredRep = 0;
 			int itemId = 0;
-			L2PledgeSkillLearn[] skills = SkillTreeData.getInstance().getAvailablePledgeSkills(activeChar);
+			final L2PledgeSkillLearn[] skills = SkillTreeData.getInstance().getAvailablePledgeSkills(activeChar);
 
 			for (L2PledgeSkillLearn s : skills)
 			{
@@ -121,7 +121,7 @@ public class RequestAquireSkillInfo extends L2GameClientPacket
 			if (!canteach)
 				return; // cheater
 
-			AquireSkillInfo asi = new AquireSkillInfo(skill.getId(), skill.getLevel(), requiredRep, 2);
+			final AquireSkillInfo asi = new AquireSkillInfo(skill.getId(), skill.getLevel(), requiredRep, 2);
 
 			if (Config.LIFE_CRYSTAL_NEEDED)
 			{
@@ -137,11 +137,11 @@ public class RequestAquireSkillInfo extends L2GameClientPacket
 			int costcount = 0;
 			int spcost = 0;
 
-			L2SkillLearn[] skillsc = SkillTreeData.getInstance().getAvailableSkills(activeChar);
+			final L2SkillLearn[] skillsc = SkillTreeData.getInstance().getAvailableSkills(activeChar);
 
 			for (L2SkillLearn s : skillsc)
 			{
-				L2Skill sk = SkillTable.getInstance().getInfo(s.getId(), s.getLevel());
+				final L2Skill sk = SkillTable.getInstance().getInfo(s.getId(), s.getLevel());
 
 				if (sk == null || sk != skill)
 					continue;
@@ -152,7 +152,7 @@ public class RequestAquireSkillInfo extends L2GameClientPacket
 				spcost = s.getSpCost();
 			}
 
-			AquireSkillInfo asi = new AquireSkillInfo(skill.getId(), skill.getLevel(), spcost, 1);
+			final AquireSkillInfo asi = new AquireSkillInfo(skill.getId(), skill.getLevel(), spcost, 1);
 			asi.addRequirement(4, costid, costcount, 0);
 			sendPacket(asi);
 		}

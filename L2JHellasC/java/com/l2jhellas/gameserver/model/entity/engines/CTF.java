@@ -56,25 +56,24 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 public class CTF
 {
 	private final static Logger _log = Logger.getLogger(CTF.class.getName());
-	private static int _FlagNPC = 35062, _FLAG_IN_HAND_ITEM_ID = 6718;
-	public static String _eventName = new String(), _eventDesc = new String(), _topTeam = new String(),
-	_joiningLocationName = new String();
-	public static List<String> _teams = new ArrayList<String>(), _savePlayers = new ArrayList<String>(),
-			_savePlayerTeams = new ArrayList<String>();
-	public static List<L2PcInstance> _players = new ArrayList<L2PcInstance>(),
-			_playersShuffle = new ArrayList<L2PcInstance>();
-	public static List<Integer> _teamPlayersCount = new ArrayList<Integer>(), _teamColors = new ArrayList<Integer>(),
-			_teamsX = new ArrayList<Integer>(), _teamsY = new ArrayList<Integer>(), _teamsZ = new ArrayList<Integer>();
+	
+	public static List<String> _teams = new ArrayList<>(), _savePlayers = new ArrayList<>(),_savePlayerTeams = new ArrayList<>();	
+	public static List<L2PcInstance> _players = new ArrayList<>(),_playersShuffle = new ArrayList<>();	
+	public static List<Integer> _teamPlayersCount = new ArrayList<>(), _teamColors = new ArrayList<>(),_teamsX = new ArrayList<>(), _teamsY = new ArrayList<>(), _teamsZ = new ArrayList<>();
+	public static List<Integer> _teamPointsCount = new ArrayList<>();
+	public static List<Integer> _flagIds = new ArrayList<>(), _flagsX = new ArrayList<>(),_flagsY = new ArrayList<>(), _flagsZ = new ArrayList<>();
+	public static List<L2Spawn> _flagSpawns = new ArrayList<>(), _throneSpawns = new ArrayList<>();
+	public static List<Boolean> _flagsTaken = new ArrayList<>();
+	
+	public static String _eventName = new String(), _eventDesc = new String(), _topTeam = new String(),_joiningLocationName = new String();	
+	
 	public static boolean _joining = false, _teleport = false, _started = false, _sitForced = false;
+	
 	public static L2Spawn _npcSpawn;
-	public static int _npcId = 0, _npcX = 0, _npcY = 0, _npcZ = 0, _npcHeading = 0, _rewardId = 0, _rewardAmount = 0,
-			_minlvl = 0, _maxlvl = 0, _joinTime = 0, _eventTime = 0, _minPlayers = 0, _maxPlayers = 0;
-	public static List<Integer> _teamPointsCount = new ArrayList<Integer>();
-	public static List<Integer> _flagIds = new ArrayList<Integer>(), _flagsX = new ArrayList<Integer>(),
-			_flagsY = new ArrayList<Integer>(), _flagsZ = new ArrayList<Integer>();
-	public static List<L2Spawn> _flagSpawns = new ArrayList<L2Spawn>(), _throneSpawns = new ArrayList<L2Spawn>();
-	public static List<Boolean> _flagsTaken = new ArrayList<Boolean>();
+	
+	public static int _npcId = 0, _npcX = 0, _npcY = 0, _npcZ = 0, _npcHeading = 0, _rewardId = 0, _rewardAmount = 0,_minlvl = 0, _maxlvl = 0, _joinTime = 0, _eventTime = 0, _minPlayers = 0, _maxPlayers = 0;
 	public static int _topScore = 0, eventCenterX = 0, eventCenterY = 0, eventCenterZ = 0, eventOffset = 0;
+	private static int _FlagNPC = 35062, _FLAG_IN_HAND_ITEM_ID = 6718;
 
 	public static void showFlagHtml(L2PcInstance eventPlayer, String objectId, String teamName)
 	{
@@ -110,12 +109,11 @@ public class CTF
 
 	public static void CheckRestoreFlags()
 	{
-		List<Integer> teamsTakenFlag = new ArrayList<Integer>();
+		List<Integer> teamsTakenFlag = new ArrayList<>();
 		try
 		{
 			for (L2PcInstance player : _players)
-			{ // if there's a player with a flag
-				// add the index of the team who's FLAG WAS TAKEN to the list
+			{
 				if (player != null)
 				{
 					if (player.isOnline() == 0 && player._haveFlagCTF)// logged off with a flag in his hands
@@ -1225,7 +1223,7 @@ public class CTF
 		}
 		else if (Config.CTF_EVEN_TEAMS.equals("SHUFFLE"))
 		{
-			List<L2PcInstance> playersShuffleTemp = new ArrayList<L2PcInstance>();
+			List<L2PcInstance> playersShuffleTemp = new ArrayList<>();
 			int loopCount = 0;
 
 			loopCount = _playersShuffle.size();
@@ -1516,25 +1514,25 @@ public class CTF
 		_eventDesc = new String();
 		_topTeam = new String();
 		_joiningLocationName = new String();
-		_teams = new ArrayList<String>();
-		_savePlayers = new ArrayList<String>();
-		_savePlayerTeams = new ArrayList<String>();
-		_players = new ArrayList<L2PcInstance>();
-		_playersShuffle = new ArrayList<L2PcInstance>();
-		_teamPlayersCount = new ArrayList<Integer>();
-		_teamPointsCount = new ArrayList<Integer>();
-		_teamColors = new ArrayList<Integer>();
-		_teamsX = new ArrayList<Integer>();
-		_teamsY = new ArrayList<Integer>();
-		_teamsZ = new ArrayList<Integer>();
+		_teams = new ArrayList<>();
+		_savePlayers = new ArrayList<>();
+		_savePlayerTeams = new ArrayList<>();
+		_players = new ArrayList<>();
+		_playersShuffle = new ArrayList<>();
+		_teamPlayersCount = new ArrayList<>();
+		_teamPointsCount = new ArrayList<>();
+		_teamColors = new ArrayList<>();
+		_teamsX = new ArrayList<>();
+		_teamsY = new ArrayList<>();
+		_teamsZ = new ArrayList<>();
 
-		_throneSpawns = new ArrayList<L2Spawn>();
-		_flagSpawns = new ArrayList<L2Spawn>();
-		_flagsTaken = new ArrayList<Boolean>();
-		_flagIds = new ArrayList<Integer>();
-		_flagsX = new ArrayList<Integer>();
-		_flagsY = new ArrayList<Integer>();
-		_flagsZ = new ArrayList<Integer>();
+		_throneSpawns = new ArrayList<>();
+		_flagSpawns = new ArrayList<>();
+		_flagsTaken = new ArrayList<>();
+		_flagIds = new ArrayList<>();
+		_flagsX = new ArrayList<>();
+		_flagsY = new ArrayList<>();
+		_flagsZ = new ArrayList<>();
 
 		_joining = false;
 		_teleport = false;
@@ -1946,7 +1944,7 @@ public class CTF
 					countBefore = teamPlayerCount;
 			}
 
-			List<String> joinableTeams = new ArrayList<String>();
+			List<String> joinableTeams = new ArrayList<>();
 
 			for (String team : _teams)
 			{

@@ -1,9 +1,7 @@
 package com.l2jhellas.gameserver.model.entity.engines;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -21,8 +19,8 @@ public class TreasureChest
 {
 	public static boolean TreasureRunning = false;
 	private static int LuckyChest=0,Counter=0;
-	private static List<L2PcInstance> _players = new ArrayList<L2PcInstance>();
-	public static Set<L2Npc> _Npcs = new HashSet<L2Npc>();
+	private static List<L2PcInstance> _players = new ArrayList<>();
+	public static List<L2Npc> _Npcs = new ArrayList<>();
 	private static int x = 87377, y = 20459, z = -5270, i;
 
 	public static void registration()

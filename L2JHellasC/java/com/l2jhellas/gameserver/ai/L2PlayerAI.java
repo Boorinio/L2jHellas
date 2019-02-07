@@ -395,4 +395,16 @@ public class L2PlayerAI extends L2CharacterAI
 		//_actor.getKnownList().refreshInfos();
 		super.onEvtArrivedRevalidate();
 	}
+	
+	@Override
+	protected void onEvtArrived()
+	{
+		if (_nextIntention != null)
+		{
+			setIntention(_nextIntention._crtlIntention, _nextIntention._arg0, _nextIntention._arg1);
+			_nextIntention = null;
+		}
+
+		super.onEvtArrived();
+	}
 }

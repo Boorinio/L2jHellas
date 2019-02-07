@@ -14,8 +14,8 @@
  */
 package com.l2jhellas.gameserver.skills.effects;
 
+import com.l2jhellas.gameserver.emum.AbnormalEffect;
 import com.l2jhellas.gameserver.model.L2Effect;
-import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.skills.Env;
 
@@ -40,8 +40,7 @@ public class EffectGrow extends L2Effect
 			L2Npc npc = (L2Npc) getEffected();
 			npc.setCollisionHeight((int) (npc.getCollisionHeight() * 1.24));
 			npc.setCollisionRadius((int) (npc.getCollisionRadius() * 1.19));
-
-			getEffected().startAbnormalEffect(L2Character.ABNORMAL_EFFECT_GROW);
+			getEffected().startAbnormalEffect(AbnormalEffect.GROW.getMask());
 			return true;
 		}
 		return false;
@@ -56,7 +55,7 @@ public class EffectGrow extends L2Effect
 			npc.setCollisionHeight(npc.getTemplate().collisionHeight);
 			npc.setCollisionRadius(npc.getTemplate().collisionRadius);
 
-			getEffected().stopAbnormalEffect(L2Character.ABNORMAL_EFFECT_GROW);
+			getEffected().stopAbnormalEffect(AbnormalEffect.GROW.getMask());
 		}
 		return false;
 	}
@@ -70,7 +69,7 @@ public class EffectGrow extends L2Effect
 			npc.setCollisionHeight(npc.getTemplate().collisionHeight);
 			npc.setCollisionRadius(npc.getTemplate().collisionRadius);
 
-			getEffected().stopAbnormalEffect(L2Character.ABNORMAL_EFFECT_GROW);
+			getEffected().stopAbnormalEffect(AbnormalEffect.GROW.getMask());
 		}
 	}
 }

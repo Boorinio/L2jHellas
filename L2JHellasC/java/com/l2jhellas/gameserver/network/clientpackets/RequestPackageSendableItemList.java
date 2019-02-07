@@ -57,7 +57,7 @@ public final class RequestPackageSendableItemList extends L2GameClientPacket
 			return;
 		}
 	
-		L2ItemInstance[] items = getClient().getActiveChar().getInventory().getAvailableItems(true);
+		final L2ItemInstance[] items = getClient().getActiveChar().getInventory().getAvailableItems(true);
 		// build list...
 		sendPacket(new PackageSendableList(items, _objectID));
 	}

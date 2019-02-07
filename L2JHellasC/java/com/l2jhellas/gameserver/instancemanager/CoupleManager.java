@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -45,7 +46,7 @@ public class CoupleManager
 		return _instance;
 	}
 
-	private ArrayList<Couple> _couples;
+	private List<Couple> _couples;
 
 	public void reload()
 	{
@@ -113,8 +114,8 @@ public class CoupleManager
 		Couple couple = getCouples().get(index);
 		if (couple != null)
 		{
-			L2PcInstance player1 = (L2PcInstance) L2World.getInstance().findObject(couple.getPlayer1Id());
-			L2PcInstance player2 = (L2PcInstance) L2World.getInstance().findObject(couple.getPlayer2Id());
+			L2PcInstance player1 = (L2PcInstance) L2World.getInstance().getPlayer(couple.getPlayer1Id());
+			L2PcInstance player2 = (L2PcInstance) L2World.getInstance().getPlayer(couple.getPlayer2Id());
 			if (player1 != null)
 			{
 				player1.setPartnerId(0);
@@ -146,7 +147,7 @@ public class CoupleManager
 		return -1;
 	}
 
-	public final ArrayList<Couple> getCouples()
+	public final List<Couple> getCouples()
 	{
 		if (_couples == null)
 			_couples = new ArrayList<Couple>();

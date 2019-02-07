@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager.CropProcure;
 import com.l2jhellas.gameserver.model.L2Manor;
@@ -47,10 +48,10 @@ import com.l2jhellas.gameserver.model.L2Manor;
 public class ExShowCropInfo extends L2GameServerPacket
 {
 	private static final String _S__FE_1C_EXSHOWSEEDINFO = "[S] FE:1D ExShowCropInfo";
-	private ArrayList<CropProcure> _crops;
+	private List<CropProcure> _crops;
 	private final int _manorId;
 
-	public ExShowCropInfo(int manorId, ArrayList<CropProcure> arrayList)
+	public ExShowCropInfo(int manorId, List<CropProcure> arrayList)
 	{
 		_manorId = manorId;
 		_crops = arrayList;

@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
@@ -28,12 +27,11 @@ import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
-import com.l2jhellas.gameserver.model.zone.type.L2FishingZone;
 import com.l2jhellas.gameserver.model.zone.type.L2WaterZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.templates.L2WeaponType;
+import com.l2jhellas.util.MathUtil;
 import com.l2jhellas.util.Rnd;
-import com.l2jhellas.util.Util;
 
 public class Fishing implements ISkillHandler
 {
@@ -41,7 +39,7 @@ public class Fishing implements ISkillHandler
 	{
 		L2SkillType.FISHING
 	};
-
+		
 	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
@@ -100,45 +98,44 @@ public class Fishing implements ISkillHandler
 			player.sendPacket(SystemMessageId.CANNOT_FISH_UNDER_WATER);
 			return;
 		}
-
-		int distance = Rnd.get(90, 250);
-		final double angle = Util.convertHeadingToDegree(player.getHeading());
-		final double radian = Math.toRadians(angle);
-		final double sin = Math.sin(radian);
-		final double cos = Math.cos(radian);
-		int x = (int) (player.getX() + (cos * distance));
-		int y = (int) (player.getY() + (sin * distance));
+		
+		int x = 0;
+		int y = 0;	
 		int z = 0;
+		
 		boolean allowFish = false;
-		 
-		L2FishingZone aimingTo = null;
-		L2WaterZone water = null;
-		
-		//Avoid using expensive operation
-		if(player.isInsideZone(ZoneId.FISHING))
+
+		if (player.isInsideZone(ZoneId.FISHING))
 		{
-			aimingTo  = ZoneManager.getInstance().getZone(player.getX(), player.getY(),player.getZ(), L2FishingZone.class);						
-		    water = ZoneManager.getInstance().getClosestWaterZone(player);
-		}
-		
-		if (aimingTo != null && water!=null) 
-		{
-			z = water.getWaterZ();
+			if (!player.destroyItem("Consume", lure.getObjectId(), 1, player, false))
+			{
+				player.sendPacket(SystemMessageId.NOT_ENOUGH_BAIT);
+				return;
+			}
 			
-			if( GeoEngine.canSeeTarget(player.getZ(),z))
-			    allowFish = true;
+			final int distance = Rnd.get(50) + 150;
+			double convdeg = MathUtil.convertHeadingToDegree(player.getHeading());
+			double radian = Math.toRadians(convdeg);
+			
+			x = player.getX() + (int) (Math.cos(radian) * distance);
+			y = player.getY() + (int) (Math.sin(radian) * distance);
+			z = 0;
+
+			final L2WaterZone zone = ZoneManager.getInstance().getZone(x, y, L2WaterZone.class);
+			
+			if(zone!=null)
+			{
+			   z = zone.getWaterZ();
+				
+			   if( GeoEngine.canSeeTarget(player.getZ(),z))
+				    allowFish = true;
+			}		
 		}
-		
-		if (!player.destroyItem("Consume", lure.getObjectId(), 1, player, false))
-		{
-			player.sendPacket(SystemMessageId.NOT_ENOUGH_BAIT);
-			return;
-		}
-		
+			
 		if (allowFish)
 			player.startFishing(new Location(x, y, z));
 		else
-			player.sendPacket(SystemMessageId.CANNOT_FISH_HERE);				
+			player.sendPacket(SystemMessageId.CANNOT_FISH_HERE);
 	}
 	
 	

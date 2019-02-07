@@ -42,18 +42,8 @@ public class ClanTable
 {
 	private static Logger _log = Logger.getLogger(ClanTable.class.getName());
 
-	private static ClanTable _instance;
+	private final Map<Integer, L2Clan> _clans = new HashMap<>();
 
-	private final Map<Integer, L2Clan> _clans;
-
-	public static ClanTable getInstance()
-	{
-		if (_instance == null)
-		{
-			_instance = new ClanTable();
-		}
-		return _instance;
-	}
 
 	public L2Clan[] getClans()
 	{
@@ -62,7 +52,6 @@ public class ClanTable
 
 	private ClanTable()
 	{
-		_clans = new HashMap<Integer, L2Clan>();
 		L2Clan clan;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -437,5 +426,15 @@ public class ClanTable
 			if (Config.DEVELOPER)
 				e.printStackTrace();
 		}
+	}
+	
+	public static ClanTable getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final ClanTable _instance = new ClanTable();
 	}
 }

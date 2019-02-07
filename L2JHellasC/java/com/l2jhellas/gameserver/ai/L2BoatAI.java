@@ -15,37 +15,19 @@
 package com.l2jhellas.gameserver.ai;
 
 import com.l2jhellas.gameserver.model.L2CharPosition;
-import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.VehicleDeparture;
 import com.l2jhellas.gameserver.network.serverpackets.VehicleInfo;
 import com.l2jhellas.gameserver.network.serverpackets.VehicleStarted;
 
-/**
- * @author DS
- */
 public class L2BoatAI extends L2CharacterAI
 {
 	public L2BoatAI(L2BoatInstance.AIAccessor accessor)
 	{
 		super(accessor);
 	}
-	
-	@Override
-	protected void onEvtArrived()
-	{
-		final L2BoatInstance actor = (L2BoatInstance) getActor();
-		
-		if(actor == null)
-			return;
 
-	    if(actor.getAI()!=null)
-		   actor.getAI().onEvtArrived();
-	}
-	
 	@Override
 	protected void moveTo(int x, int y, int z)
 	{
@@ -55,7 +37,7 @@ public class L2BoatAI extends L2CharacterAI
 				_actor.broadcastPacket(new VehicleStarted(getActor(), 1));
 			
 			_clientMoving = true;
-			_accessor.moveTo(x, y, z);
+			_actor.moveToLocation(x, y, z, 0);
 			_actor.broadcastPacket(new VehicleDeparture(getActor()));
 		}
 	}
@@ -85,95 +67,5 @@ public class L2BoatAI extends L2CharacterAI
 	public L2BoatInstance getActor()
 	{
 		return (L2BoatInstance) _actor;
-	}
-	
-	@Override
-	protected void onIntentionAttack(L2Character target)
-	{
-	}
-	
-	@Override
-	protected void onIntentionCast(L2Skill skill, L2Object target)
-	{
-	}
-	
-	@Override
-	protected void onIntentionFollow(L2Character target)
-	{
-	}
-	
-	@Override
-	protected void onIntentionPickUp(L2Object item)
-	{
-	}
-	
-	@Override
-	protected void onIntentionInteract(L2Object object)
-	{
-	}
-	
-	@Override
-	protected void onEvtAttacked(L2Character attacker)
-	{
-	}
-	
-	@Override
-	protected void onEvtAggression(L2Character target, int aggro)
-	{
-	}
-	
-	@Override
-	protected void onEvtStunned(L2Character attacker)
-	{
-	}
-	
-	@Override
-	protected void onEvtSleeping(L2Character attacker)
-	{
-	}
-	
-	@Override
-	protected void onEvtRooted(L2Character attacker)
-	{
-	}
-	
-	@Override
-	protected void onEvtForgetObject(L2Object object)
-	{
-	}
-	
-	@Override
-	protected void onEvtCancel()
-	{
-	}
-	
-	@Override
-	protected void onEvtDead()
-	{
-	}
-	
-	@Override
-	protected void onEvtFakeDeath()
-	{
-	}
-	
-	@Override
-	protected void onEvtFinishCasting()
-	{
-	}
-	
-	@Override
-	protected void clientActionFailed()
-	{
-	}
-	
-	@Override
-	protected void moveToPawn(L2Object pawn, int offset)
-	{
-	}
-	
-	@Override
-	protected void clientStoppedMoving()
-	{
 	}
 }

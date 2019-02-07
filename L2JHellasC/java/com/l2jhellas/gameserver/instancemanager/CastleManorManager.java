@@ -207,10 +207,10 @@ public class CastleManorManager
 		{
 			for (Castle castle : CastleManager.getInstance().getCastles())
 			{
-				ArrayList<SeedProduction> production = new ArrayList<SeedProduction>();
-				ArrayList<SeedProduction> productionNext = new ArrayList<SeedProduction>();
-				ArrayList<CropProcure> procure = new ArrayList<CropProcure>();
-				ArrayList<CropProcure> procureNext = new ArrayList<CropProcure>();
+				List<SeedProduction> production = new ArrayList<SeedProduction>();
+				List<SeedProduction> productionNext = new ArrayList<SeedProduction>();
+				List<CropProcure> procure = new ArrayList<CropProcure>();
+				List<CropProcure> procureNext = new ArrayList<CropProcure>();
 
 				// restore seed production info
 				statement = con.prepareStatement(CASTLE_MANOR_LOAD_PRODUCTION);

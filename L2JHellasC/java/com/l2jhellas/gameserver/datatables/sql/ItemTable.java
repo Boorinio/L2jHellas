@@ -53,16 +53,17 @@ public class ItemTable
 {
 	private static Logger _log = Logger.getLogger(ItemTable.class.getName());
 
-	private static final Map<String, Integer> _materials = new HashMap<String, Integer>();
-	private static final Map<String, Integer> _crystalTypes = new HashMap<String, Integer>();
-	private static final Map<String, L2WeaponType> _weaponTypes = new HashMap<String, L2WeaponType>();
-	private static final Map<String, L2ArmorType> _armorTypes = new HashMap<String, L2ArmorType>();
-	private static final Map<String, Integer> _slots = new HashMap<String, Integer>();
+	private static final Map<String, Integer> _materials = new HashMap<>();
+	private static final Map<String, Integer> _crystalTypes = new HashMap<>();
+	private static final Map<String, L2WeaponType> _weaponTypes = new HashMap<>();
+	private static final Map<String, L2ArmorType> _armorTypes = new HashMap<>();
+	private static final Map<String, Integer> _slots = new HashMap<>();
+
+	private final Map<Integer, L2EtcItem> _etcItems = new HashMap<>();
+	private final Map<Integer, L2Armor> _armors = new HashMap<>();
+	private final Map<Integer, L2Weapon> _weapons = new HashMap<>();
 
 	private L2Item[] _allTemplates;
-	private final Map<Integer, L2EtcItem> _etcItems;
-	private final Map<Integer, L2Armor> _armors;
-	private final Map<Integer, L2Weapon> _weapons;
 
 	private final boolean _initialized = true;
 
@@ -202,9 +203,6 @@ public class ItemTable
 	 */
 	public ItemTable()
 	{
-		_etcItems = new HashMap<Integer, L2EtcItem>();
-		_armors = new HashMap<Integer, L2Armor>();
-		_weapons = new HashMap<Integer, L2Weapon>();
 
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{

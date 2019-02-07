@@ -49,10 +49,10 @@ public class Castle
 {
 	protected static Logger _log = Logger.getLogger(Castle.class.getName());
 
-	private ArrayList<CropProcure> _procure = new ArrayList<CropProcure>();
-	private ArrayList<SeedProduction> _production = new ArrayList<SeedProduction>();
-	private ArrayList<CropProcure> _procureNext = new ArrayList<CropProcure>();
-	private ArrayList<SeedProduction> _productionNext = new ArrayList<SeedProduction>();
+	private List<CropProcure> _procure = new ArrayList<>();
+	private List<SeedProduction> _production = new ArrayList<>();
+	private List<CropProcure> _procureNext = new ArrayList<>();
+	private List<SeedProduction> _productionNext = new ArrayList<>();
 	private boolean _isNextPeriodApproved = false;
 
 	private static final String CASTLE_MANOR_DELETE_PRODUCTION = "DELETE FROM castle_manor_production WHERE castle_id=?;";
@@ -63,8 +63,8 @@ public class Castle
 	private static final String CASTLE_UPDATE_SEED = "UPDATE castle_manor_production SET can_produce=? WHERE seed_id=? AND castle_id=? AND period=?";
 
 	private int _castleId = 0;
-	private final List<L2DoorInstance> _doors = new ArrayList<L2DoorInstance>();
-	private final List<String> _doorDefault = new ArrayList<String>();
+	private final List<L2DoorInstance> _doors = new ArrayList<>();
+	private final List<String> _doorDefault = new ArrayList<>();
 	private String _name = "";
 	private int _ownerId = 0;
 	private Siege _siege = null;
@@ -707,17 +707,17 @@ public class Castle
 		}
 	}
 
-	public ArrayList<SeedProduction> getSeedProduction(int period)
+	public List<SeedProduction> getSeedProduction(int period)
 	{
 		return (period == CastleManorManager.PERIOD_CURRENT ? _production : _productionNext);
 	}
 
-	public ArrayList<CropProcure> getCropProcure(int period)
+	public List<CropProcure> getCropProcure(int period)
 	{
 		return (period == CastleManorManager.PERIOD_CURRENT ? _procure : _procureNext);
 	}
 
-	public void setSeedProduction(ArrayList<SeedProduction> production, int period)
+	public void setSeedProduction(List<SeedProduction> production, int period)
 	{
 		if (period == CastleManorManager.PERIOD_CURRENT)
 			_production = production;
@@ -725,7 +725,7 @@ public class Castle
 			_productionNext = production;
 	}
 
-	public void setCropProcure(ArrayList<CropProcure> crop, int period)
+	public void setCropProcure(List<CropProcure> crop, int period)
 	{
 		if (period == CastleManorManager.PERIOD_CURRENT)
 			_procure = crop;
@@ -759,8 +759,8 @@ public class Castle
 
 	public int getManorCost(int period)
 	{
-		ArrayList<CropProcure> procure;
-		ArrayList<SeedProduction> production;
+		List<CropProcure> procure;
+		List<SeedProduction> production;
 
 		if (period == CastleManorManager.PERIOD_CURRENT)
 		{
@@ -865,7 +865,7 @@ public class Castle
 			statement.execute();
 			statement.close();
 
-			ArrayList<SeedProduction> prod = null;
+			List<SeedProduction> prod = null;
 			prod = getSeedProduction(period);
 
 			if (prod != null)
@@ -972,7 +972,7 @@ public class Castle
 			statement.execute();
 			statement.close();
 
-			ArrayList<CropProcure> proc = null;
+			List<CropProcure> proc = null;
 			proc = getCropProcure(period);
 
 			if (proc != null)

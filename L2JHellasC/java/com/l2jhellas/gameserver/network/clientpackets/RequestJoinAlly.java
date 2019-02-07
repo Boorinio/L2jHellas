@@ -36,23 +36,27 @@ public final class RequestJoinAlly extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		
 		if (activeChar == null)
-		{
 			return;
-		}
-		if (!(L2World.getInstance().findObject(_id) instanceof L2PcInstance))
-		{
-			activeChar.sendPacket(SystemMessageId.YOU_HAVE_INVITED_THE_WRONG_TARGET);
-			return;
-		}
+		
 		if (activeChar.getClan() == null)
 		{
 			activeChar.sendPacket(SystemMessageId.YOU_ARE_NOT_A_CLAN_MEMBER);
 			return;
 		}
-		L2PcInstance target = (L2PcInstance) L2World.getInstance().findObject(_id);
-		L2Clan clan = activeChar.getClan();
+		
+		final L2PcInstance target = L2World.getInstance().getPlayer(_id);
+		
+		if(target==null)
+		{
+			activeChar.sendPacket(SystemMessageId.TARGET_CANT_FOUND);
+			return;
+		}
+		
+		final L2Clan clan = activeChar.getClan();
+		
 		if (!clan.checkAllyJoinCondition(activeChar, target))
 			return;
 		if (!activeChar.getRequest().setRequest(target, this))

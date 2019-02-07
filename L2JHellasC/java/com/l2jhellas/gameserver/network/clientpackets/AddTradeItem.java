@@ -47,16 +47,17 @@ public final class AddTradeItem extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance player = getClient().getActiveChar();
+		final L2PcInstance player = getClient().getActiveChar();
+		
 		if (player == null)
 			return;
 
-		TradeList trade = player.getActiveTradeList();
+		final TradeList trade = player.getActiveTradeList();
 		
 		if (trade == null)
 			return;
 	
-		if ((trade.getPartner() == null) || (L2World.getInstance().findObject(trade.getPartner().getObjectId()) == null))
+		if ((trade.getPartner() == null) || (L2World.getInstance().getPlayer(trade.getPartner().getObjectId()) == null))
 		{
 			player.sendPacket(SystemMessageId.TARGET_IS_NOT_FOUND_IN_THE_GAME);
 			player.cancelActiveTrade();

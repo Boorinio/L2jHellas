@@ -44,14 +44,14 @@ public final class RequestAnswerJoinParty extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance player = getClient().getActiveChar();
+		final L2PcInstance player = getClient().getActiveChar();
 		if (player != null)
 		{
-			L2PcInstance requestor = player.getActiveRequester();
+			final L2PcInstance requestor = player.getActiveRequester();
 			if (requestor == null)
 				return;
 
-			JoinParty join = new JoinParty(_response);
+			final JoinParty join = new JoinParty(_response);
 			requestor.sendPacket(join);
 
 			if (_response == 1)

@@ -40,7 +40,7 @@ public final class RequestConfirmSiegeWaitingList extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
 
@@ -48,7 +48,7 @@ public final class RequestConfirmSiegeWaitingList extends L2GameClientPacket
 		if (activeChar.getClan() == null)
 			return;
 
-		Castle castle = CastleManager.getInstance().getCastleById(_castleId);
+		final Castle castle = CastleManager.getInstance().getCastleById(_castleId);
 		if (castle == null)
 			return;
 
@@ -56,7 +56,7 @@ public final class RequestConfirmSiegeWaitingList extends L2GameClientPacket
 		if ((castle.getOwnerId() != activeChar.getClanId()) || (!activeChar.isClanLeader()))
 			return;
 
-		L2Clan clan = ClanTable.getInstance().getClan(_clanId);
+		final L2Clan clan = ClanTable.getInstance().getClan(_clanId);
 		if (clan == null)
 			return;
 

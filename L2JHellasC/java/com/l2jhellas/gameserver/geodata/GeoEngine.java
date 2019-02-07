@@ -15,8 +15,9 @@ import com.l2jhellas.gameserver.geodata.GeoOptimizer.BlockLink;
 import com.l2jhellas.gameserver.geodata.loader.GeoFileInfo;
 import com.l2jhellas.gameserver.geodata.loader.GeoLoader;
 import com.l2jhellas.gameserver.geodata.loader.GeoLoaderFactory;
+import com.l2jhellas.gameserver.geometry.Polygon;
+import com.l2jhellas.gameserver.instancemanager.FenceManager;
 import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.L2Territory;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.taskmanager.MemoryWatchOptimize;
@@ -165,6 +166,9 @@ public class GeoEngine
 			return false;
 
 		if (DoorData.getInstance().checkIfDoorsBetween(actor.getX(), actor.getY(), actor.getZ(), target.getX(), target.getY(), target.getZ())>0)
+			return false;
+		
+		if (FenceManager.getInstance().checkIfFenceBetween(actor.getX(), actor.getY(), actor.getZ(), target.getX(), target.getY(), target.getZ()))
 			return false;
 		
 		if(target instanceof GeoControl || actor.equals(target))
@@ -1711,7 +1715,7 @@ public class GeoEngine
 		return Math.abs((minZ + maxZ) / 2 - geoZ) <= Door_MaxZDiff;
 	}
 
-	private static boolean check_cell_in_door(int geoX, int geoY, L2Territory pos)
+	private static boolean check_cell_in_door(int geoX, int geoY, Polygon pos)
 	{
 		geoX = (geoX << 4) + L2World.WORLD_X_MIN + 8;
 		geoY = (geoY << 4) + L2World.WORLD_Y_MIN + 8;
@@ -1724,7 +1728,7 @@ public class GeoEngine
 
 	public static void returnGeoAtControl(GeoControl control)
 	{
-		L2Territory pos = control.getGeoPos();
+		Polygon pos = control.getGeoPos();
 		HashMap<Long, Byte> around = control.getGeoAround();
 
 		if(around == null)
@@ -1841,7 +1845,7 @@ public class GeoEngine
 
 	public static void applyControl(GeoControl control)
 	{
-		L2Territory pos = control.getGeoPos();
+		Polygon pos = control.getGeoPos();
 		HashMap<Long, Byte> around = control.getGeoAround();
 
 		boolean first_time = around == null;

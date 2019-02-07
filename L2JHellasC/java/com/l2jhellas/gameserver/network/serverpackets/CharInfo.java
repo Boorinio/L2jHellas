@@ -20,9 +20,9 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
+import com.l2jhellas.gameserver.emum.AbnormalEffect;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.Inventory;
-import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2CubicInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -174,9 +174,8 @@ public class CharInfo extends L2GameServerPacket
 				writeD(0000); // hmm karma ??
 
 				if (_activeChar.getAppearance().getInvisible())
-				//if(gmSeeInvis)
 				{
-					writeD((_activeChar.getAbnormalEffect() | L2Character.ABNORMAL_EFFECT_STEALTH));
+					writeD((_activeChar.getAbnormalEffect() | AbnormalEffect.STEALTH.getMask()));
 				}
 				else
 				{
@@ -328,9 +327,8 @@ public class CharInfo extends L2GameServerPacket
 			//writeC(0x00); // find party members
 
 			if (_activeChar.getAppearance().getInvisible())
-			//if(gmSeeInvis)
 			{
-				writeD((_activeChar.getAbnormalEffect() | L2Character.ABNORMAL_EFFECT_STEALTH));
+				writeD((_activeChar.getAbnormalEffect() | AbnormalEffect.STEALTH.getMask()));
 			}
 			else
 			{
@@ -369,23 +367,20 @@ public class CharInfo extends L2GameServerPacket
 
 			writeD(_activeChar.getAppearance().getNameColor());
 
-			writeD(0x00); // isRunning() as in UserInfo?
+			writeD(_heading);
 
 			writeD(_activeChar.getPledgeClass());
-			writeD(0x00); // ??
-
+			writeD(_activeChar.getPledgeType());
+			
 			writeD(_activeChar.getAppearance().getTitleColor());
 
-			//writeD(0x00); // ??
-
 			if (_activeChar.isCursedWeaponEquiped())
-			{
 				writeD(CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()));
-			}
 			else
-			{
 				writeD(0x00);
-			}
+			
+			writeD(_activeChar.getClanId() > 0 && _activeChar.getClan() != null ? _activeChar.getClan().getReputationScore() : 0);
+
 		}
 	}
 

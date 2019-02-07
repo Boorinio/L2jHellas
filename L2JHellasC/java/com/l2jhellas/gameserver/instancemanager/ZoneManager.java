@@ -41,7 +41,6 @@ import com.l2jhellas.gameserver.model.zone.form.ZoneNPoly;
 import com.l2jhellas.gameserver.model.zone.type.L2ArenaZone;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
-import com.l2jhellas.gameserver.model.zone.type.L2WaterZone;
 import com.l2jhellas.util.XMLDocumentFactory;
 
 /**
@@ -95,7 +94,6 @@ public class ZoneManager
 		
 		OlympiadStadiaManager.getInstance().clearStadium();
 		GrandBossManager.getInstance().getZones().clear();
-		WaterZoneManager.getInstance().clearWaterZone();
 		
 		_log.info("Removed zones in " + count + " regions.");
 		
@@ -334,10 +332,6 @@ public class ZoneManager
 						{
 							GrandBossManager.getInstance().addZone((L2BossZone) temp);
 						}
-						else if (Config.ALLOWFISHING && temp instanceof L2WaterZone)
-						{
-							WaterZoneManager.getInstance().addWaterZone((L2WaterZone) temp);
-						}
 					}
 				}
 			}
@@ -492,6 +486,17 @@ public class ZoneManager
 		return null;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public <T extends L2ZoneType> T getZone(int x, int y, Class<T> type)
+	{
+		for (L2ZoneType zone : getRegion(x, y).getZones())
+		{
+			if (zone.isInsideZone(x, y) && type.isInstance(zone))
+				return (T) zone;
+		}
+		return null;
+	}
+	
 	public final static L2ArenaZone getArena(L2Character character)
 	{
 		if (character == null)
@@ -543,30 +548,6 @@ public class ZoneManager
 				}
 			}
 		}
-		return zone;
-	}
-
-	public <T extends L2ZoneType> L2WaterZone getClosestWaterZone(L2Object obj)
-	{
-		L2WaterZone zone = getZone(obj, L2WaterZone.class);
-		
-		if (zone == null)
-		{
-			double closestdis = 2000;
-			
-			for (L2WaterZone temp : WaterZoneManager.getInstance().getAllWaterZones())
-			{
-				double distance = temp.getDistanceToZone(obj);
-				
-				if (distance < closestdis)
-				{
-					closestdis = distance;
-					zone = temp;
-					break;
-				}
-			}
-		}
-		
 		return zone;
 	}
 	

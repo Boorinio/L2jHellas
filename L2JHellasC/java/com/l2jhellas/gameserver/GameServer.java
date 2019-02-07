@@ -141,6 +141,7 @@ public class GameServer
 	public static GameServer gameServer;
 	private final LoginServerThread _loginThread;
 	public static final Calendar dateTimeServerStarted = Calendar.getInstance();
+
 	public Gui gui;
 	long freeMemBefore = 0;
 	private String optimizer = "";
@@ -439,8 +440,9 @@ public class GameServer
 			CoupleManager.getInstance();
 		}
 		
-		IpCatcher.ipsLoad();
+		IpCatcher.ipsLoad();			
 	}
+	
 	public static void main(String[] args) throws Exception
 	{
 		Server.serverMode = Server.MODE_GAMESERVER;

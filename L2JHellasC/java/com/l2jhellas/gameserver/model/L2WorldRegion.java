@@ -39,7 +39,6 @@ public final class L2WorldRegion
 		_regionY = regionY;
 		_regionZ = regionZ;
 		
-		// default a newly initialized region to inactive, unless always on is specified
 		_active = Config.GRIDS_ALWAYS_ON;
 	}
 	
@@ -59,9 +58,8 @@ public final class L2WorldRegion
 			forEachSurroundingRegion(w ->
 			{
 				if (_isActivating || w.areNeighborsEmpty())
-				{
 					w.setActive(_isActivating);
-				}
+				
 				return true;
 			});									
 		}
@@ -70,59 +68,45 @@ public final class L2WorldRegion
 	private void switchAI(boolean isOn)
 	{
 		if (_visibleObjects == null)
-		{
 			return;
-		}
 
 		if (!isOn)
 		{
-			Collection<L2Object> vObj = _visibleObjects.values();
-			for (L2Object o : vObj)
-			{
-				if (o instanceof L2Attackable)
+			Collection<L2Object> vObj = _visibleObjects.values();				
+			for (L2Object ob: vObj)
+			{		
+				if (ob instanceof L2Attackable)
 				{
-					L2Attackable mob = (L2Attackable) o;
-					
-					// Set target to null and cancel Attack or Cast
-					mob.setTarget(null);
-					
-					// Stop movement
-					mob.stopMove(null);
-					
-					// Stop all active skills effects in progress on the L2Character
-					mob.stopAllEffects();
-					
-					mob.clearAggroList();
-					mob.getAttackByList().clear();
-					
-					// stop the ai tasks
-					if (mob.hasAI())
-					{
-						mob.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-						mob.getAI().stopAITask();
-					}
+					L2Attackable mob = (L2Attackable) ob;
+				    mob.setTarget(null);				
+				    mob.stopMove(null);					
+				    mob.stopAllEffects();				
+				    mob.clearAggroList();
+				    mob.getAttackByList().clear();	
+				
+				   if (mob.hasAI())
+				   {
+					 mob.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+					 mob.getAI().stopAITask();
+				   }	
 				}
 			}
 		}
 		else
 		{
-			Collection<L2Object> vObj = _visibleObjects.values();
-			
+			Collection<L2Object> vObj = _visibleObjects.values();		
 			for (L2Object o : vObj)
 			{
 				if (o instanceof L2Attackable)
-				{
 					((L2Attackable) o).getStatus().startHpMpRegeneration();
-				}
 				else if (o instanceof L2Npc)
-				{
 					((L2Npc) o).startRandomAnimationTimer();
-				}
 			}
 		}
 		
 	}
-	
+
+
 	public boolean isActive()
 	{
 		return _active;
@@ -201,14 +185,12 @@ public final class L2WorldRegion
 			return;
 		
 		_visibleObjects.put(object.getObjectId(), object);
-
+		
 		if (object instanceof L2Playable)
 		{
 			// if this is the first player to enter the region, activate self & neighbors
 			if (!isActive() && (!Config.GRIDS_ALWAYS_ON))
-			{
 				startActivation();
-			}
 		}
 	}
 	
@@ -227,9 +209,7 @@ public final class L2WorldRegion
 		if (object instanceof L2Playable)
 		{
 			if (areNeighborsEmpty() && !Config.GRIDS_ALWAYS_ON)
-			{
 				startDeactivation();
-			}
 		}
 	}
 	

@@ -43,10 +43,13 @@ public final class RequestRecipeShopMakeItem extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		
 		if (activeChar == null)
 			return;
-		L2PcInstance manufacturer = (L2PcInstance) L2World.getInstance().findObject(_id);
+		
+		final L2PcInstance manufacturer = L2World.getInstance().getPlayer(_id);
+		
 		if (manufacturer == null)
 			return;
 

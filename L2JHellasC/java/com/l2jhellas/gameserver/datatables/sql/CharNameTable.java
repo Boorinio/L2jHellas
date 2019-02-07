@@ -32,13 +32,12 @@ public class CharNameTable
 {
 	private static Logger _log = Logger.getLogger(CharNameTable.class.getName());
 
-	private final Map<Integer, String> _chars;
-	private final Map<Integer, Integer> _accessLevels;
+	private final Map<Integer, String> _chars = new HashMap<>();
+	private final Map<Integer, Integer> _accessLevels = new HashMap<>();
 
 	private CharNameTable()
 	{
-		_chars = new HashMap<>();
-		_accessLevels = new HashMap<>();
+
 	}
 
 	public static CharNameTable getInstance()

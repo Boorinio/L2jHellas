@@ -39,7 +39,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.L2GameClient.GameClientState;
-import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.gameserverpackets.AuthRequest;
 import com.l2jhellas.gameserver.network.gameserverpackets.BlowFishKey;
 import com.l2jhellas.gameserver.network.gameserverpackets.ChangeAccessLevel;
@@ -56,7 +55,6 @@ import com.l2jhellas.gameserver.network.loginserverpackets.PlayerAuthResponse;
 import com.l2jhellas.gameserver.network.serverpackets.AuthLoginFail;
 import com.l2jhellas.gameserver.network.serverpackets.AuthLoginFail.FailReason;
 import com.l2jhellas.gameserver.network.serverpackets.CharSelectInfo;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.crypt.NewCrypt;
@@ -90,8 +88,8 @@ public class LoginServerThread extends Thread
 	private int _serverID;
 	private final boolean _reserveHost;
 	private int _maxPlayer;
-	private final List<WaitingClient> _waitingClients;
-	private final Map<String, L2GameClient> _accountsInGameServer;
+	private final Map<String, L2GameClient> _waitingClients = new ConcurrentHashMap<>();
+
 	private int _status;
 	private String _serverName;
 	private final String _gameExternalHost;
@@ -117,16 +115,9 @@ public class LoginServerThread extends Thread
 		_reserveHost = Config.RESERVE_HOST_ON_LOGIN;
 		_gameExternalHost = Config.EXTERNAL_HOSTNAME;
 		_gameInternalHost = Config.INTERNAL_HOSTNAME;
-		_waitingClients = new ArrayList<>();
-		_accountsInGameServer = new ConcurrentHashMap<>();
 		_maxPlayer = Config.MAXIMUM_ONLINE_USERS;
 	}
-	
-	public static LoginServerThread getInstance()
-	{
-		return SingletonHolder._instance;
-	}
-	
+
 	@Override
 	public void run()
 	{
@@ -285,36 +276,23 @@ public class LoginServerThread extends Thread
 							break;
 						case 0x03:
 							PlayerAuthResponse par = new PlayerAuthResponse(decrypt);
-							String account = par.getAccount();
-							WaitingClient wcToRemove = null;
-							synchronized (_waitingClients)
-							{
-								for (WaitingClient wc : _waitingClients)
-								{
-									if (wc.account.equals(account))
-										wcToRemove = wc;
-								}
-							}
-							
+							final L2GameClient wcToRemove = _waitingClients.get(par.getAccount());
+
 							if (wcToRemove != null)
 							{
 								if (par.isAuthed())
 								{
-									PlayerInGame pig = new PlayerInGame(par.getAccount());
-									sendPacket(pig);
-									wcToRemove.gameClient.setState(GameClientState.AUTHED);
-									wcToRemove.gameClient.setSessionId(wcToRemove.session);
-									CharSelectInfo cl = new CharSelectInfo(wcToRemove.account, wcToRemove.gameClient.getSessionId().playOkID1);
-									wcToRemove.gameClient.getConnection().sendPacket(cl);
-									wcToRemove.gameClient.setCharSelection(cl.getCharInfo());
+									sendPacket(new PlayerInGame(par.getAccount()));
+									
+									wcToRemove.setState(GameClientState.AUTHED);
+									wcToRemove.sendPacket(new CharSelectInfo(par.getAccount(),wcToRemove.getSessionId().playOkID1));
+
 								}
 								else
 								{
-									_log.warning("Session key is not correct. closing connection");
-									wcToRemove.gameClient.getConnection().sendPacket(new AuthLoginFail(FailReason.SYSTEM_ERROR_LOGIN_LATER));
-									wcToRemove.gameClient.closeNow();
+									wcToRemove.sendPacket(new AuthLoginFail(FailReason.SYSTEM_ERROR_LOGIN_LATER));
+									wcToRemove.closeNow();
 								}
-								_waitingClients.remove(wcToRemove);
 							}
 							break;
 						case 0x04:
@@ -357,43 +335,26 @@ public class LoginServerThread extends Thread
 		}
 	}
 	
-	public void addWaitingClientAndSendRequest(String acc, L2GameClient client, SessionKey key)
+	public void addWaitingClientAndSendRequest(String acc, L2GameClient client)
 	{
-		if (Config.DEBUG)
-			_log.info(String.valueOf(key));
-		
-		WaitingClient wc = new WaitingClient(acc, client, key);
-		synchronized (_waitingClients)
+		final L2GameClient existingClient = _waitingClients.putIfAbsent(acc, client);
+		if (existingClient == null)
 		{
-			_waitingClients.add(wc);
-		}
-		PlayerAuthRequest par = new PlayerAuthRequest(acc, key);
-		
-		try
-		{
-			sendPacket(par);
-		}
-		catch (IOException e)
-		{
-			_log.warning("Error while sending player auth request");
-			if (Config.DEBUG)
-				_log.log(Level.WARNING, "", e);
-		}
-	}
-	
-	public void removeWaitingClient(L2GameClient client)
-	{
-		WaitingClient toRemove = null;
-		synchronized (_waitingClients)
-		{
-			for (WaitingClient c : _waitingClients)
+			try
 			{
-				if (c.gameClient == client)
-					toRemove = c;
+				sendPacket(new PlayerAuthRequest(client.getAccountName(), client.getSessionId()));
 			}
-			
-			if (toRemove != null)
-				_waitingClients.remove(toRemove);
+			catch (IOException e)
+			{
+				_log.warning("Error while sending player auth request");
+				if (Config.DEBUG)
+					_log.log(Level.WARNING, "", e);
+			}
+		}
+		else
+		{
+			client.closeNow();
+			existingClient.closeNow();
 		}
 	}
 	
@@ -402,10 +363,9 @@ public class LoginServerThread extends Thread
 		if (account == null)
 			return;
 		
-		PlayerLogout pl = new PlayerLogout(account);
 		try
 		{
-			sendPacket(pl);
+			sendPacket(new PlayerLogout(account));
 		}
 		catch (IOException e)
 		{
@@ -415,19 +375,9 @@ public class LoginServerThread extends Thread
 		}
 		finally
 		{
-			_accountsInGameServer.remove(account);
+			_waitingClients.remove(account);
 		}
 	}
-	
-	 public boolean addGameServerLogin(String account, L2GameClient client)
-	 {
-		 
-	  if (_accountsInGameServer.containsKey(account))
-	     return false;
-	  
-	     return _accountsInGameServer.put(account, client) == null;
-	 }
-
 	
 	public void sendAccessLevel(String account, int level)
 	{
@@ -450,13 +400,9 @@ public class LoginServerThread extends Thread
 
 	 public void doKickPlayer(String account)
 	 {
-		 
-			final L2GameClient client = _accountsInGameServer.get(account);
+			final L2GameClient client = _waitingClients.get(account);
 			if (client != null)
-			{
-				client.sendPacket(new SystemMessage(SystemMessageId.ANOTHER_LOGIN_WITH_ACCOUNT));
 				client.closeNow();
-			}
 	 }
 	 
 	public static byte[] generateHex(int size)
@@ -594,23 +540,14 @@ public class LoginServerThread extends Thread
 			return "PlayOk: " + playOkID1 + " " + playOkID2 + " LoginOk:" + loginOkID1 + " " + loginOkID2;
 		}
 	}
-	
-	private class WaitingClient
+
+	public static LoginServerThread getInstance()
 	{
-		public String account;
-		public L2GameClient gameClient;
-		public SessionKey session;
-		
-		public WaitingClient(String acc, L2GameClient client, SessionKey key)
-		{
-			account = acc;
-			gameClient = client;
-			session = key;
-		}
+		return SingletonHolder.INSTANCE;
 	}
 	
 	private static class SingletonHolder
 	{
-		protected static final LoginServerThread _instance = new LoginServerThread();
+		protected static final LoginServerThread INSTANCE = new LoginServerThread();
 	}
 }

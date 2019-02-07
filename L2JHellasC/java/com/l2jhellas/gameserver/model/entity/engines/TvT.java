@@ -56,18 +56,18 @@ public class TvT
 	public static String _eventDesc = "";
 	public static String _topTeam = "";
 	public static String _joiningLocationName = "";
-	public static List<String> _teams = new ArrayList<String>();
-	public static List<String> _savePlayers = new ArrayList<String>();
-	public static List<String> _savePlayerTeams = new ArrayList<String>();
+	public static List<String> _teams = new ArrayList<>();
+	public static List<String> _savePlayers = new ArrayList<>();
+	public static List<String> _savePlayerTeams = new ArrayList<>();
 
-	public static List<L2PcInstance> _players = new ArrayList<L2PcInstance>();
-	public static List<L2PcInstance> _playersShuffle = new ArrayList<L2PcInstance>();
-	public static List<Integer> _teamPlayersCount = new ArrayList<Integer>();
-	public static List<Integer> _teamKillsCount = new ArrayList<Integer>();
-	public static List<Integer> _teamColors = new ArrayList<Integer>();
-	public static List<Integer> _teamsX = new ArrayList<Integer>();
-	public static List<Integer> _teamsY = new ArrayList<Integer>();
-	public static List<Integer> _teamsZ = new ArrayList<Integer>();
+	public static List<L2PcInstance> _players = new ArrayList<>();
+	public static List<L2PcInstance> _playersShuffle = new ArrayList<>();
+	public static List<Integer> _teamPlayersCount = new ArrayList<>();
+	public static List<Integer> _teamKillsCount = new ArrayList<>();
+	public static List<Integer> _teamColors = new ArrayList<>();
+	public static List<Integer> _teamsX = new ArrayList<>();
+	public static List<Integer> _teamsY = new ArrayList<>();
+	public static List<Integer> _teamsZ = new ArrayList<>();
 	public static boolean _joining = false;
 	public static boolean _teleport = false;
 	public static boolean _started = false;
@@ -731,7 +731,7 @@ public class TvT
 		}
 		else if (Config.TVT_EVEN_TEAMS.equals("SHUFFLE"))
 		{
-			List<L2PcInstance> playersShuffleTemp = new ArrayList<L2PcInstance>();
+			List<L2PcInstance> playersShuffleTemp = new ArrayList<>();
 			int loopCount = 0;
 
 			loopCount = _playersShuffle.size();
@@ -1030,17 +1030,17 @@ public class TvT
 		_eventDesc = "";
 		_topTeam = "";
 		_joiningLocationName = "";
-		_teams = new ArrayList<String>();
-		_savePlayers = new ArrayList<String>();
-		_savePlayerTeams = new ArrayList<String>();
-		_players = new ArrayList<L2PcInstance>();
-		_playersShuffle = new ArrayList<L2PcInstance>();
-		_teamPlayersCount = new ArrayList<Integer>();
-		_teamKillsCount = new ArrayList<Integer>();
-		_teamColors = new ArrayList<Integer>();
-		_teamsX = new ArrayList<Integer>();
-		_teamsY = new ArrayList<Integer>();
-		_teamsZ = new ArrayList<Integer>();
+		_teams = new ArrayList<>();
+		_savePlayers = new ArrayList<>();
+		_savePlayerTeams = new ArrayList<>();
+		_players = new ArrayList<>();
+		_playersShuffle = new ArrayList<>();
+		_teamPlayersCount = new ArrayList<>();
+		_teamKillsCount = new ArrayList<>();
+		_teamColors = new ArrayList<>();
+		_teamsX = new ArrayList<>();
+		_teamsY = new ArrayList<>();
+		_teamsZ = new ArrayList<>();
 		_joining = false;
 		_teleport = false;
 		_started = false;
@@ -1459,7 +1459,7 @@ public class TvT
 					countBefore = teamPlayerCount;
 			}
 
-			List<String> joinableTeams = new ArrayList<String>();
+			List<String> joinableTeams = new ArrayList<>();
 
 			for (String team : _teams)
 			{

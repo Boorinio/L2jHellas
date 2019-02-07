@@ -823,10 +823,7 @@ public final class Formulas
 	 */
 	public int getRegeneratePeriod(L2Character cha)
 	{
-		if (cha instanceof L2DoorInstance)
-			return HP_REGENERATE_PERIOD * 100; // 5 mins
-
-		return HP_REGENERATE_PERIOD; // 3s
+		return (cha instanceof L2DoorInstance) ? HP_REGENERATE_PERIOD * 100 : HP_REGENERATE_PERIOD;
 	}
 
 	/**

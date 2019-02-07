@@ -14,8 +14,9 @@
  */
 package com.l2jhellas.gameserver.skills.effects;
 
+
+import com.l2jhellas.gameserver.emum.AbnormalEffect;
 import com.l2jhellas.gameserver.model.L2Effect;
-import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.skills.Env;
 
 public final class EffectParalyze extends L2Effect
@@ -34,7 +35,7 @@ public final class EffectParalyze extends L2Effect
 	@Override
 	public boolean onStart()
 	{
-		getEffected().startAbnormalEffect(L2Character.ABNORMAL_EFFECT_HOLD_1);
+		getEffected().startAbnormalEffect(AbnormalEffect.HOLD_1);
 		getEffected().setIsParalyzed(true);
 		return true;
 	}
@@ -42,7 +43,7 @@ public final class EffectParalyze extends L2Effect
 	@Override
 	public void onExit()
 	{
-		getEffected().stopAbnormalEffect(L2Character.ABNORMAL_EFFECT_HOLD_1);
+		getEffected().stopAbnormalEffect(AbnormalEffect.HOLD_1);
 		getEffected().setIsParalyzed(false);
 	}
 

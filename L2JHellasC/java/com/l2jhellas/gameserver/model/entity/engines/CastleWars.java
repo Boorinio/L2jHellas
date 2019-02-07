@@ -15,9 +15,7 @@
 package com.l2jhellas.gameserver.model.entity.engines;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -36,9 +34,9 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
  */
 public class CastleWars
 {
-	private static List<L2PcInstance> _defenders = new ArrayList<L2PcInstance>();
-	private static List<L2PcInstance> _attackers = new ArrayList<L2PcInstance>();
-	private static Set<L2Npc> _flags = new HashSet<L2Npc>();
+	private static List<L2PcInstance> _defenders = new ArrayList<>();
+	private static List<L2PcInstance> _attackers = new ArrayList<>();
+	private static List<L2Npc> _flags = new ArrayList<>();
 	public static boolean isFinished;
 	public static boolean CastleWarsRunning = false;
 	private static boolean alaksokolies = false;

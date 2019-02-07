@@ -340,12 +340,15 @@ public class AdminEditChar implements IAdminCommandHandler
 					oldName = player.getName();
 					L2Clan temp= player.getClan();
 					boolean wasLeader=false;
-					L2World.getInstance().removeFromAllPlayers(player);
+					
 					if (CharNameTable.getInstance().getIdByName(val) > 0)
 					{
 						activeChar.sendMessage("Warning, player name " + val + " already exists.");
 						return false;
 					}
+					
+					L2World.getInstance().removeFromAllPlayers(player);
+
 					if(temp != null)
 					{
 						
@@ -356,6 +359,7 @@ public class AdminEditChar implements IAdminCommandHandler
 					}
 					player.setName(val);
 					player.store();
+					
 					L2World.getInstance().addToAllPlayers(player);
 					
 					player.sendMessage("Your name has been changed by a GM.");

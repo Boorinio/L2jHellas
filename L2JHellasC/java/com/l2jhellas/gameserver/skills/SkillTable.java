@@ -24,28 +24,19 @@ import com.l2jhellas.gameserver.templates.L2WeaponType;
 public class SkillTable
 {
 	private static Logger _log = Logger.getLogger(SkillTable.class.getName());
-	private static SkillTable _instance;
 
-	private static Map<Integer, L2Skill> _skills;
+	private static Map<Integer, L2Skill> _skills = new HashMap<>();
+	
 	private final boolean _initialized = true;
-
-	public static SkillTable getInstance()
-	{
-		if (_instance == null)
-			_instance = new SkillTable();
-		return _instance;
-	}
 
 	private SkillTable()
 	{
-		_skills = new HashMap<Integer, L2Skill>();
 		SkillsEngine.getInstance().loadAllSkills(_skills);
 		_log.info(SkillTable.class.getSimpleName() + ": Loaded " + _skills.size() + " skills.");
 	}
 
 	public static void reload()
 	{
-		_instance = null;
 		_skills.clear();
 		getInstance();
 	}
@@ -129,5 +120,15 @@ public class SkillTable
 				weaponsAllowed |= weaponDbMasks[i].mask();
 
 		return weaponsAllowed;
+	}
+	
+	public static SkillTable getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final SkillTable _instance = new SkillTable();
 	}
 }

@@ -14,8 +14,9 @@
  */
 package com.l2jhellas.gameserver.skills.effects;
 
+
+import com.l2jhellas.gameserver.emum.AbnormalEffect;
 import com.l2jhellas.gameserver.model.L2Effect;
-import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.skills.Env;
 
 public class EffectPetrification extends L2Effect
@@ -34,7 +35,7 @@ public class EffectPetrification extends L2Effect
 	@Override
 	public boolean onStart()
 	{
-		getEffected().startAbnormalEffect(L2Character.ABNORMAL_EFFECT_HOLD_2);
+		getEffected().startAbnormalEffect(AbnormalEffect.HOLD_2);
 		getEffected().setIsParalyzed(true);
 		getEffected().setIsInvul(true);
 		return true;
@@ -43,7 +44,7 @@ public class EffectPetrification extends L2Effect
 	@Override
 	public void onExit()
 	{
-		getEffected().stopAbnormalEffect(L2Character.ABNORMAL_EFFECT_HOLD_2);
+		getEffected().stopAbnormalEffect(AbnormalEffect.HOLD_2);
 		getEffected().setIsParalyzed(false);
 		getEffected().setIsInvul(false);
 	}

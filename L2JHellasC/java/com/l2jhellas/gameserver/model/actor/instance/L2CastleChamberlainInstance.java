@@ -304,7 +304,7 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 			}
 			else if (actualCommand.equalsIgnoreCase("Clan_Gate"))
 			{
-				L2PcInstance leader = (L2PcInstance) L2World.getInstance().findObject(player.getClan().getLeaderId());
+				L2PcInstance leader = (L2PcInstance) L2World.getInstance().getPlayer(player.getClan().getLeaderId());
 				if (leader == null)
 				{
 					player.sendMessage("Your Leader is not online.");

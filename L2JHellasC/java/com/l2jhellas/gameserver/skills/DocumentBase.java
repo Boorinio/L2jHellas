@@ -29,9 +29,9 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.AbnormalEffect;
 import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.skills.conditions.Condition;
 import com.l2jhellas.gameserver.skills.conditions.ConditionElementSeed;
 import com.l2jhellas.gameserver.skills.conditions.ConditionGameChance;
@@ -81,7 +81,7 @@ abstract class DocumentBase
 	DocumentBase(File pFile)
 	{
 		_file = pFile;
-		_tables = new HashMap<String, String[]>();
+		_tables = new HashMap<>();
 	}
 
 	Document parse()
@@ -125,7 +125,7 @@ abstract class DocumentBase
 
 	protected void resetTable()
 	{
-		_tables = new HashMap<String, String[]>();
+		_tables = new HashMap<>();
 	}
 
 	protected void setTable(String name, String[] table)
@@ -240,15 +240,15 @@ abstract class DocumentBase
 		{
 			String abn = attrs.getNamedItem("abnormal").getNodeValue();
 			if (abn.equals("poison"))
-				abnormal = L2Character.ABNORMAL_EFFECT_POISON;
+				abnormal = AbnormalEffect.POISON.getMask();
 			else if (abn.equals("bleeding"))
-				abnormal = L2Character.ABNORMAL_EFFECT_BLEEDING;
+				abnormal = AbnormalEffect.BLEEDING.getMask();
 			else if (abn.equals("flame"))
-				abnormal = L2Character.ABNORMAL_EFFECT_FLAME;
+				abnormal = AbnormalEffect.FLAME.getMask();
 			else if (abn.equals("bighead"))
-				abnormal = L2Character.ABNORMAL_EFFECT_BIG_HEAD;
+				abnormal = AbnormalEffect.BIG_HEAD.getMask();
 			else if (abn.equals("stealth"))
-				abnormal = L2Character.ABNORMAL_EFFECT_STEALTH;
+				abnormal = AbnormalEffect.STEALTH.getMask();
 		}
 		float stackOrder = 0;
 		String stackType = "none";

@@ -28,7 +28,7 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 public class EventHandlerTvT
 {
 	private static final Logger _log = Logger.getLogger(EventHandlerTvT.class.getName());
-	public List<Long> datesTvT = new ArrayList<Long>();
+	public List<Long> datesTvT = new ArrayList<>();
 	
 	public void startHandler()
 	{

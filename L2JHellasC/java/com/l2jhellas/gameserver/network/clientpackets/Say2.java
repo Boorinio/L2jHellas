@@ -183,7 +183,7 @@ public final class Say2 extends L2GameClientPacket
 			int actor = saymode.getObjectId();
 			_type = 0;
 			
-			Collection<L2PcInstance> list = L2World.getInstance().getVisibleObjects(saymode, L2PcInstance.class);
+			final Collection<L2PcInstance> list = L2World.getInstance().getVisibleObjects(saymode, L2PcInstance.class);
 
 			CreatureSay cs = new CreatureSay(actor, _type, name, _text);
 			for (L2Object obj : list)

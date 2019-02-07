@@ -89,20 +89,7 @@ public final class L2World
 	{
 		return getRegion(point.getX(), point.getY(), point.getZ());
 	}
-	
-	//public L2WorldRegion getRegion(int x, int y, int z)
-	//{
-		//try
-		//{
-		//	return _worldRegions[(x >> SHIFT_BY) + OFFSET_X][(y >> SHIFT_BY) + OFFSET_Y][(z >> SHIFT_BY_Z) + OFFSET_Z];
-		//}
-		//catch (ArrayIndexOutOfBoundsException e)
-		//{
-			//_log.warning("Incorrect world region X: {} Y: {} Z: {} for coordinates x: {} y: {} z: {}"+ ((x >> SHIFT_BY) + OFFSET_X) + ((y >> SHIFT_BY) + OFFSET_Y)+((z >> SHIFT_BY_Z) + OFFSET_Z)+x+ y+ z);
-			//return null;
-		//}
-	//}
-	
+
 	public L2WorldRegion getRegion(int x, int y, int z)
 	{
 		return _worldRegions[(x - WORLD_X_MIN) / REGION_SIZE][(y - WORLD_Y_MIN) / REGION_SIZE][(z - WORLD_Z_MIN) / REGION_SIZE];

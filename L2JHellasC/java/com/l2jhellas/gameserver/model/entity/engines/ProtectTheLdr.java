@@ -15,9 +15,7 @@
 package com.l2jhellas.gameserver.model.entity.engines;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -35,8 +33,8 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
  */
 public class ProtectTheLdr
 {
-	public static List<L2PcInstance> _Team1 = new ArrayList<L2PcInstance>();
-	public static List<L2PcInstance> _Team2 = new ArrayList<L2PcInstance>();
+	public static List<L2PcInstance> _Team1 = new ArrayList<>();
+	public static List<L2PcInstance> _Team2 = new ArrayList<>();
 	public static int team1x = 86535;
 	public static int team1y = 257189;
 	public static int team1z = -11672;
@@ -45,7 +43,7 @@ public class ProtectTheLdr
 	private static int leader2x = 86402, leader2y = 258733, leader2z = -11672;
 	private static int leader1x = 86417, leader1y = 257244, leader1z = -11672;
 	public static boolean ProtectisRunning = false, alaksokolies;
-	private static Set<L2Npc> _leaders = new HashSet<L2Npc>();
+	private static List<L2Npc> _leaders = new ArrayList<>();
 	
 	public static void startevent()
 	{

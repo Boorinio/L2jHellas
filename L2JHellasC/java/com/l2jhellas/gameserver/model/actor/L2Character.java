@@ -22,7 +22,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,6 +36,7 @@ import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable.TeleportWhereType;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData.FrequentSkill;
+import com.l2jhellas.gameserver.emum.AbnormalEffect;
 import com.l2jhellas.gameserver.emum.DuelState;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.geodata.GeoMove;
@@ -161,7 +161,6 @@ public abstract class L2Character extends L2Object
 	protected boolean _showSummonAnimation = false;
 	protected boolean _isTeleporting = false;
 	private L2Character _lastBuffer = null;
-	private ReentrantLock _teleportLock;
 	protected boolean _isInvul = false;
 	private int _lastHealAmount = 0;
 	private CharStat _stat;
@@ -287,7 +286,6 @@ public abstract class L2Character extends L2Object
 	 */
 	public void onDecay()
 	{
-		//ZoneManager.getInstance().getRegion(this).removeFromZones(this);
 		decayMe();
 	}
 	
@@ -300,23 +298,13 @@ public abstract class L2Character extends L2Object
 	
 	public void onTeleported()
 	{
-		_teleportLock = new ReentrantLock();
-		
-		if (!_teleportLock.tryLock())
+		if (!isTeleporting())
 			return;
-		try
-		{
-			if (!isTeleporting())
-				return;
 			
-			spawnMe(getX(), getY(), getZ());
+		spawnMe(getX(), getY(), getZ());
 			
-			setIsTeleporting(false);
-		}
-		finally
-		{
-			_teleportLock.unlock();
-		}
+		setIsTeleporting(false);
+		
 		if (_isPendingRevive)
 			doRevive();
 		
@@ -552,7 +540,7 @@ public abstract class L2Character extends L2Object
 	 */
 	public void doAttack(L2Character target)
 	{
-		if (isAlikeDead() || target == null || !target.isVisible() ||(this instanceof L2Npc && target.isAlikeDead()) || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath()) || (this instanceof L2PcInstance && isDead()) || (target instanceof L2PcInstance && ((L2PcInstance) target).getDuelState() == DuelState.DEAD))
+		if (isAlikeDead() || target == null || !target.isVisible() ||(this instanceof L2Npc && target.isAlikeDead()) || !isInSurroundingRegion(target) || (this instanceof L2PcInstance && target.isDead() && !target.isFakeDeath()) || (this instanceof L2PcInstance && isDead()) || (target instanceof L2PcInstance && ((L2PcInstance) target).getDuelState() == DuelState.DEAD))
 		{
 			getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 			sendPacket(ActionFailed.STATIC_PACKET);
@@ -1599,6 +1587,9 @@ public abstract class L2Character extends L2Object
 		{
 			if (isKilledAlready())
 				return false;
+			
+			setCurrentHp(0);
+			
 			setIsKilledAlready(true);
 		}
 		// Set target to null and cancel Attack or Cast
@@ -1636,7 +1627,8 @@ public abstract class L2Character extends L2Object
 		broadcastStatusUpdate();
 		
 		// Notify L2Character AI
-		getAI().notifyEvent(CtrlEvent.EVT_DEAD, null);
+		if (hasAI())
+		    getAI().notifyEvent(CtrlEvent.EVT_DEAD, null);
 
 		ZoneManager.getInstance().getRegion(this).onDeath(this);
 		
@@ -1664,6 +1656,9 @@ public abstract class L2Character extends L2Object
 	/** Sets HP, MP and CP and revives the L2Character. */
 	public void doRevive()
 	{
+		if (!isDead())
+			return;
+		
 		if (!isTeleporting())
 		{
 			setIsPendingRevive(false);
@@ -1673,9 +1668,10 @@ public abstract class L2Character extends L2Object
 			{
 				((L2Playable) this).stopPhoenixBlessing(null);
 			}
+			
 			_status.setCurrentCp(getMaxCp() * Config.RESPAWN_RESTORE_CP);
 			_status.setCurrentHp(getMaxHp() * Config.RESPAWN_RESTORE_HP);
-			// _Status.setCurrentMp(getMaxMp() * Config.RESPAWN_RESTORE_MP);
+			//_status.setCurrentMp(getMaxMp() * Config.RESPAWN_RESTORE_MP);
 			
 			// Start broadcast status
 			broadcastPacket(new Revive(this));
@@ -2376,32 +2372,32 @@ public abstract class L2Character extends L2Object
 	 */
 	protected Map<String, List<L2Effect>> _stackedEffects;
 	
-	public static final int ABNORMAL_EFFECT_BLEEDING = 0x000001;
-	public static final int ABNORMAL_EFFECT_POISON = 0x000002;
-	public static final int ABNORMAL_EFFECT_UNKNOWN_3 = 0x000004;
-	public static final int ABNORMAL_EFFECT_UNKNOWN_4 = 0x000008;
-	public static final int ABNORMAL_EFFECT_UNKNOWN_5 = 0x000010;
-	public static final int ABNORMAL_EFFECT_UNKNOWN_6 = 0x000020;
-	public static final int ABNORMAL_EFFECT_STUN = 0x000040;
-	public static final int ABNORMAL_EFFECT_SLEEP = 0x000080;
-	public static final int ABNORMAL_EFFECT_MUTED = 0x000100;
-	public static final int ABNORMAL_EFFECT_ROOT = 0x000200;
-	public static final int ABNORMAL_EFFECT_HOLD_1 = 0x000400;
-	public static final int ABNORMAL_EFFECT_HOLD_2 = 0x000800;
-	public static final int ABNORMAL_EFFECT_UNKNOWN_13 = 0x001000;
-	public static final int ABNORMAL_EFFECT_BIG_HEAD = 0x002000;
-	public static final int ABNORMAL_EFFECT_FLAME = 0x004000;
-	public static final int ABNORMAL_EFFECT_UNKNOWN_16 = 0x008000;
-	public static final int ABNORMAL_EFFECT_GROW = 0x010000;
-	public static final int ABNORMAL_EFFECT_FLOATING_ROOT = 0x020000;
-	public static final int ABNORMAL_EFFECT_DANCE_STUNNED = 0x040000;
-	public static final int ABNORMAL_EFFECT_FIREROOT_STUN = 0x080000;
-	public static final int ABNORMAL_EFFECT_STEALTH = 0x100000;
-	public static final int ABNORMAL_EFFECT_IMPRISIONING_1 = 0x200000;
-	public static final int ABNORMAL_EFFECT_IMPRISIONING_2 = 0x400000;
-	public static final int ABNORMAL_EFFECT_MAGIC_CIRCLE = 0x800000;
-	public static final int ABNORMAL_EFFECT_CONFUSED = 0x0020;
-	public static final int ABNORMAL_EFFECT_AFRAID = 0x0010;
+	public static final int SABNORMAL_EFFECT_BLEEDING = 0x000001;
+	public static final int SABNORMAL_EFFECT_POISON = 0x000002;
+	public static final int SABNORMAL_EFFECT_UNKNOWN_3 = 0x000004;
+	public static final int SABNORMAL_EFFECT_UNKNOWN_4 = 0x000008;
+	public static final int SABNORMAL_EFFECT_UNKNOWN_5 = 0x000010;
+	public static final int SABNORMAL_EFFECT_UNKNOWN_6 = 0x000020;
+	public static final int SABNORMAL_EFFECT_STUN = 0x000040;
+	public static final int SABNORMAL_EFFECT_SLEEP = 0x000080;
+	public static final int SABNORMAL_EFFECT_MUTED = 0x000100;
+	public static final int SABNORMAL_EFFECT_ROOT = 0x000200;
+	public static final int SABNORMAL_EFFECT_HOLD_1 = 0x000400;
+	public static final int SABNORMAL_EFFECT_HOLD_2 = 0x000800;
+	public static final int SABNORMAL_EFFECT_UNKNOWN_13 = 0x001000;
+	public static final int SABNORMAL_EFFECT_BIG_HEAD = 0x002000;
+	public static final int SABNORMAL_EFFECT_FLAME = 0x004000;
+	public static final int SABNORMAL_EFFECT_UNKNOWN_16 = 0x008000;
+	public static final int SABNORMAL_EFFECT_GROW = 0x010000;
+	public static final int SABNORMAL_EFFECT_FLOATING_ROOT = 0x020000;
+	public static final int SABNORMAL_EFFECT_DANCE_STUNNED = 0x040000;
+	public static final int SABNORMAL_EFFECT_FIREROOT_STUN = 0x080000;
+	public static final int SABNORMAL_EFFECT_STEALTH = 0x100000;
+	public static final int SABNORMAL_EFFECT_IMPRISIONING_1 = 0x200000;
+	public static final int SABNORMAL_EFFECT_IMPRISIONING_2 = 0x400000;
+	public static final int SABNORMAL_EFFECT_MAGIC_CIRCLE = 0x800000;
+	public static final int SABNORMAL_EFFECT_CONFUSED = 0x0020;
+	public static final int SABNORMAL_EFFECT_AFRAID = 0x0010;
 	
 	/**
 	 * Launch and add L2Effect (including Stack Group management) to L2Character
@@ -2466,6 +2462,12 @@ public abstract class L2Character extends L2Object
 	public final void startAbnormalEffect(int mask)
 	{
 		_AbnormalEffects |= mask;
+		updateAbnormalEffect();	
+	}
+	
+	public final void startAbnormalEffect(AbnormalEffect mask)
+	{
+		_AbnormalEffects |= mask.getMask();
 		updateAbnormalEffect();
 	}
 	
@@ -2613,6 +2615,12 @@ public abstract class L2Character extends L2Object
 	public final void stopAbnormalEffect(int mask)
 	{
 		_AbnormalEffects &= ~mask;
+		updateAbnormalEffect();
+	}
+	
+	public final void stopAbnormalEffect(AbnormalEffect mask)
+	{
+		_AbnormalEffects &= ~mask.getMask();
 		updateAbnormalEffect();
 	}
 	
@@ -2952,19 +2960,22 @@ public abstract class L2Character extends L2Object
 	{
 		int ae = _AbnormalEffects;
 		if (isStunned())
-			ae |= ABNORMAL_EFFECT_STUN;
+			ae |= AbnormalEffect.STUN.getMask();
 		if (isRooted())
-			ae |= ABNORMAL_EFFECT_ROOT;
+			ae |= AbnormalEffect.ROOT.getMask();
 		if (isSleeping())
-			ae |= ABNORMAL_EFFECT_SLEEP;
+			ae |= AbnormalEffect.SLEEP.getMask();
 		if (isConfused())
-			ae |= ABNORMAL_EFFECT_CONFUSED;
-		if (isMuted())
-			ae |= ABNORMAL_EFFECT_MUTED;
+			ae |= AbnormalEffect.FEAR.getMask();
 		if (isAfraid())
-			ae |= ABNORMAL_EFFECT_AFRAID;
+			ae |= AbnormalEffect.FEAR.getMask();
+		if (isMuted())
+			ae |= AbnormalEffect.MUTED.getMask();
 		if (isPsychicalMuted())
-			ae |= ABNORMAL_EFFECT_MUTED;
+			ae |= AbnormalEffect.MUTED.getMask();
+		if (isImmobileUntilAttacked())
+			ae |= AbnormalEffect.FLOATING_ROOT.getMask();
+		
 		return ae;
 	}
 	
@@ -7103,7 +7114,7 @@ public abstract class L2Character extends L2Object
 	public void deleteMe()
 	{
 		if (hasAI())
-			getAI().stopAITask();
+			getAI().stopAITask();	
 	}
 	
 	public static final double HEADINGS_IN_PI = 10430.378350470452724949566316381;

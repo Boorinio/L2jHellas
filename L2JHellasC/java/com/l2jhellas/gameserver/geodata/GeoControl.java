@@ -2,13 +2,13 @@ package com.l2jhellas.gameserver.geodata;
 
 import java.util.HashMap;
 
-import com.l2jhellas.gameserver.model.L2Territory;
+import com.l2jhellas.gameserver.geometry.Polygon;
 
 public interface GeoControl
 {
-	public abstract L2Territory getGeoPos();
+	public abstract Polygon getGeoPos();
 
-	public abstract void setGeoPos(L2Territory value);
+	public abstract void setGeoPos(Polygon value);
 
 	public abstract HashMap<Long, Byte> getGeoAround();
 

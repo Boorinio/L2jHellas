@@ -62,15 +62,15 @@ public class RequestAquireSkill extends L2GameClientPacket
 		if (_id <= 0 || _level <= 0)
 			return;
 		
-		L2PcInstance player = getClient().getActiveChar();
+		final L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
 			return;
 
-		L2NpcInstance trainer = player.getLastFolkNPC();
+		final L2NpcInstance trainer = player.getLastFolkNPC();
 		if (trainer == null)
 			return;
 
-		int npcid = trainer.getNpcId();
+		final int npcid = trainer.getNpcId();
 
 		if (!player.isInsideRadius(trainer, L2Npc.INTERACTION_DISTANCE, false, false) && !player.isGM())
 			return;
@@ -78,7 +78,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 		if (!Config.ALT_GAME_SKILL_LEARN)
 			player.setSkillLearningClassId(player.getClassId());
 
-		L2Skill skill = SkillTable.getInstance().getInfo(_id, _level);
+		final L2Skill skill = SkillTable.getInstance().getInfo(_id, _level);
 		
 		if(skill==null)
 			return;
@@ -93,7 +93,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 
 		if (_skillType == 0)
 		{
-			L2SkillLearn[] skills = SkillTreeData.getInstance().getAvailableSkills(player, player.getSkillLearningClassId());
+			final L2SkillLearn[] skills = SkillTreeData.getInstance().getAvailableSkills(player, player.getSkillLearningClassId());
 
 			for (L2SkillLearn s : skills)
 			{
@@ -115,11 +115,11 @@ public class RequestAquireSkill extends L2GameClientPacket
 			{
 				if (Config.SP_BOOK_NEEDED)
 				{
-					int spbId = SkillSpellbookData.getInstance().getBookForSkill(skill);
+					final int spbId = SkillSpellbookData.getInstance().getBookForSkill(skill);
 
 					if (skill.getLevel() == 1 && spbId > -1)
 					{
-						L2ItemInstance spb = player.getInventory().getItemByItemId(spbId);
+						final L2ItemInstance spb = player.getInventory().getItemByItemId(spbId);
 
 						if (spb == null)
 						{
@@ -146,11 +146,11 @@ public class RequestAquireSkill extends L2GameClientPacket
 			int costid = 0;
 			int costcount = 0;
 			// Skill Learn bug Fix
-			L2SkillLearn[] skillsc = SkillTreeData.getInstance().getAvailableSkills(player);
+			final L2SkillLearn[] skillsc = SkillTreeData.getInstance().getAvailableSkills(player);
 
 			for (L2SkillLearn s : skillsc)
 			{
-				L2Skill sk = SkillTable.getInstance().getInfo(s.getId(), s.getLevel());
+				final L2Skill sk = SkillTable.getInstance().getInfo(s.getId(), s.getLevel());
 
 				if (sk == null || sk != skill)
 					continue;
@@ -203,11 +203,11 @@ public class RequestAquireSkill extends L2GameClientPacket
 			int itemId = 0;
 			int repCost = 100000000;
 			// Skill Learn bug Fix
-			L2PledgeSkillLearn[] skills = SkillTreeData.getInstance().getAvailablePledgeSkills(player);
+			final L2PledgeSkillLearn[] skills = SkillTreeData.getInstance().getAvailablePledgeSkills(player);
 
 			for (L2PledgeSkillLearn s : skills)
 			{
-				L2Skill sk = SkillTable.getInstance().getInfo(s.getId(), s.getLevel());
+				final L2Skill sk = SkillTable.getInstance().getInfo(s.getId(), s.getLevel());
 
 				if (sk == null || sk != skill)
 					continue;

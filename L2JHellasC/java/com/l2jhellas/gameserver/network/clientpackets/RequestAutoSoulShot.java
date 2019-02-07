@@ -42,7 +42,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
 
 		if (activeChar == null)
 			return;
@@ -60,7 +60,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 			if (Config.DEBUG)
 				_log.fine("AutoSoulShot:" + _itemId);
 
-			L2ItemInstance item = activeChar.getInventory().getItemByItemId(_itemId);
+			final L2ItemInstance item = activeChar.getInventory().getItemByItemId(_itemId);
 
 			if (item != null)
 			{

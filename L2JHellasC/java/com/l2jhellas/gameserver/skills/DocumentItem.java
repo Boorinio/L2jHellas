@@ -39,8 +39,10 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 final class DocumentItem extends DocumentBase
 {
 	private Item _currentItem = null;
-	private final List<L2Item> _itemsInFile = new ArrayList<L2Item>();
-	private Map<Integer, Item> _itemData = new HashMap<Integer, Item>();
+	private final List<L2Item> _itemsInFile = new ArrayList<>();
+	private Map<Integer, Item> _itemData = new HashMap<>();
+
+
 
 	/**
 	 * @param armorData

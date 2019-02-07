@@ -62,8 +62,8 @@ public class SiegeManager
 	private int _defenderRespawnDelay = 10000; // Time in ms. Changeable in siege.config
 
 	// Siege settings
-	private HashMap<Integer, ArrayList<SiegeSpawn>> _artefactSpawnList;
-	private HashMap<Integer, ArrayList<SiegeSpawn>> _controlTowerSpawnList;
+	private HashMap<Integer, List<SiegeSpawn>> _artefactSpawnList;
+	private HashMap<Integer, List<SiegeSpawn>> _controlTowerSpawnList;
 
 	private int _controlTowerLosePenalty = 20000; // Time in ms. Changeable in siege.config
 	private int _flagMaxCount = 1; // Changeable in siege.config
@@ -182,12 +182,12 @@ public class SiegeManager
 			_daytosiege = Integer.parseInt(siegeSettings.getProperty("DayToSiege", "14"));
 
 			// Siege spawns settings
-			_controlTowerSpawnList = new HashMap<Integer, ArrayList<SiegeSpawn>>();
-			_artefactSpawnList = new HashMap<Integer, ArrayList<SiegeSpawn>>();
+			_controlTowerSpawnList = new HashMap<Integer, List<SiegeSpawn>>();
+			_artefactSpawnList = new HashMap<Integer, List<SiegeSpawn>>();
 
 			for (Castle castle : CastleManager.getInstance().getCastles())
 			{
-				ArrayList<SiegeSpawn> _controlTowersSpawns = new ArrayList<SiegeSpawn>();
+				List<SiegeSpawn> _controlTowersSpawns = new ArrayList<SiegeSpawn>();
 
 				for (int i = 1; i < 0xFF; i++)
 				{
@@ -216,7 +216,7 @@ public class SiegeManager
 					}
 				}
 
-				ArrayList<SiegeSpawn> _artefactSpawns = new ArrayList<SiegeSpawn>();
+				List<SiegeSpawn> _artefactSpawns = new ArrayList<SiegeSpawn>();
 
 				for (int i = 1; i < 0xFF; i++)
 				{
@@ -259,14 +259,14 @@ public class SiegeManager
 		}
 	}
 
-	public final ArrayList<SiegeSpawn> getArtefactSpawnList(int _castleId)
+	public final List<SiegeSpawn> getArtefactSpawnList(int _castleId)
 	{
 		if (_artefactSpawnList.containsKey(_castleId))
 			return _artefactSpawnList.get(_castleId);
 		return null;
 	}
 
-	public final ArrayList<SiegeSpawn> getControlTowerSpawnList(int _castleId)
+	public final List<SiegeSpawn> getControlTowerSpawnList(int _castleId)
 	{
 		if (_controlTowerSpawnList.containsKey(_castleId))
 			return _controlTowerSpawnList.get(_castleId);

@@ -145,18 +145,19 @@ public final class RequestRestart extends L2GameClientPacket
 
 		player.deleteMe();
 			
-		L2GameClient.saveCharToDisk(client.getActiveChar());
-
+		player.store();
+		
 		getClient().setActiveChar(null);
 
 		// return the client to the authed status
 		client.setState(GameClientState.AUTHED);
 
 		sendPacket(RestartResponse.valueOf(true));
+		
 		// send char list
-		CharSelectInfo cl = new CharSelectInfo(client.getAccountName(), client.getSessionId().playOkID1);
+		final CharSelectInfo cl = new CharSelectInfo(client.getAccountName(), client.getSessionId().playOkID1);
 		sendPacket(cl);
-		client.setCharSelection(cl.getCharInfo());
+		client.setCharSelectSlot(cl.getCharacterSlots());
 
 		RegionBBSManager.getInstance().changeCommunityBoard();
 	}

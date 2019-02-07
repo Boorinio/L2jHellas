@@ -38,13 +38,13 @@ public final class RequestAnswerJoinPledge extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 		{
 			return;
 		}
 
-		L2PcInstance requestor = activeChar.getRequest().getPartner();
+		final L2PcInstance requestor = activeChar.getRequest().getPartner();
 		if (requestor == null)
 		{
 			return;
@@ -68,12 +68,12 @@ public final class RequestAnswerJoinPledge extends L2GameClientPacket
 				return; // hax
 			}
 
-			RequestJoinPledge requestPacket = (RequestJoinPledge) requestor.getRequest().getRequestPacket();
-			L2Clan clan = requestor.getClan();
+			final RequestJoinPledge requestPacket = (RequestJoinPledge) requestor.getRequest().getRequestPacket();
+			final L2Clan clan = requestor.getClan();
 			// we must double check this cause during response time conditions can be changed, i.e. another player could join clan
 			if (clan.checkClanJoinCondition(requestor, activeChar, requestPacket.getPledgeType()))
 			{
-				JoinPledge jp = new JoinPledge(requestor.getClanId());
+				final JoinPledge jp = new JoinPledge(requestor.getClanId());
 				activeChar.sendPacket(jp);
 
 				activeChar.setPledgeType(requestPacket.getPledgeType());

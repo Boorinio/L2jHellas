@@ -16,6 +16,7 @@ package Extensions.AchievmentsEngine.base;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -30,7 +31,7 @@ public class Achievement
 	private final boolean _repeatable;
 
 	private final HashMap<Integer, Long> _rewardList;
-	private final ArrayList<Condition> _conditions;
+	private final List<Condition> _conditions;
 
 	public Achievement(int id, String name, String description, String reward, boolean repeatable, ArrayList<Condition> conditions)
 	{
@@ -110,7 +111,7 @@ public class Achievement
 		return _rewardList;
 	}
 
-	public ArrayList<Condition> getConditions()
+	public List<Condition> getConditions()
 	{
 		return _conditions;
 	}

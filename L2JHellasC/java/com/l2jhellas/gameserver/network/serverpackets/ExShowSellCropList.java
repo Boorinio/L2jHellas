@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,7 +56,7 @@ public class ExShowSellCropList extends L2GameServerPacket
 	private final HashMap<Integer, L2ItemInstance> _cropsItems;
 	private final HashMap<Integer, CropProcure> _castleCrops;
 
-	public ExShowSellCropList(L2PcInstance player, int manorId, ArrayList<CropProcure> arrayList)
+	public ExShowSellCropList(L2PcInstance player, int manorId, List<CropProcure> arrayList)
 	{
 		_manorId = manorId;
 		_castleCrops = new HashMap<Integer, CropProcure>();

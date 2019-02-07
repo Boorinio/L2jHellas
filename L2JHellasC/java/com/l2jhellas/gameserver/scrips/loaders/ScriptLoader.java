@@ -447,6 +447,7 @@ public class ScriptLoader
 		TurekOrcOverlord.class,
 		TurekOrcWarlord.class,
 		VarkaKetraAlly.class,
+		
 		//customs
 		EchoCrystals.class,
 		HeroCirclet.class,

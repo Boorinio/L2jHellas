@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -30,13 +31,12 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 public class PcColorTable
 {
 	private static Logger _log = Logger.getLogger(PcColorTable.class.getName());
-	/** The one and only instance of this class */
-	public static PcColorTable _instance = null;
-	/** List of names and color values container */
-	private static HashMap<String, PcColorContainer> _pcColors = new HashMap<String, PcColorContainer>();
+
+	private static Map<String, PcColorContainer> _pcColors = new HashMap<>();
 
 	PcColorTable()
 	{
+		_pcColors.clear();
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			List<String> deleteNames = new ArrayList<String>();
@@ -77,19 +77,6 @@ public class PcColorTable
 			if (Config.DEVELOPER)
 				e.printStackTrace();
 		}
-	}
-
-	/**
-	 * Returns the instance of this class, assign a new object to _instance if it's null
-	 * 
-	 * @return PcColorTable
-	 */
-	public static PcColorTable getInstance()
-	{
-		if (_instance == null)
-			_instance = new PcColorTable();
-
-		return _instance;
 	}
 
 	/**
@@ -184,5 +171,15 @@ public class PcColorTable
 			return false;
 		}
 		return true;
+	}
+	
+	public static PcColorTable getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final PcColorTable _instance = new PcColorTable();
 	}
 }

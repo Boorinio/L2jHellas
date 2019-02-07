@@ -5334,7 +5334,7 @@ public final class L2PcInstance extends L2Playable
 			return;
 		else
 		{
-			L2PcInstance ptarget = (L2PcInstance) L2World.getInstance().findObject(_engageid);
+			L2PcInstance ptarget = (L2PcInstance) L2World.getInstance().getPlayer(_engageid);
 			setEngageRequest(false, 0);
 			if (ptarget != null)
 			{
@@ -6949,7 +6949,7 @@ public final class L2PcInstance extends L2Playable
 	 *        Identifier of the object to initialized
 	 * @return The L2PcInstance loaded from the database
 	 */
-	private static L2PcInstance restore(int objectId)
+	public static L2PcInstance restore(int objectId)
 	{
 		L2PcInstance player = null;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -9093,7 +9093,7 @@ public final class L2PcInstance extends L2Playable
 	
 	public boolean isInLooterParty(int LooterId)
 	{
-		L2PcInstance looter = (L2PcInstance) L2World.getInstance().findObject(LooterId);
+		L2PcInstance looter = (L2PcInstance) L2World.getInstance().getPlayer(LooterId);
 		
 		// if L2PcInstance is in a CommandChannel
 		if (isInParty() && getParty().isInCommandChannel() && looter != null)
@@ -10991,20 +10991,19 @@ public final class L2PcInstance extends L2Playable
 		
 		// Force a revalidation
 		revalidateZone(true);
+		
 		if (Config.PLAYER_SPAWN_PROTECTION > 0 && !isInOlympiadMode() && !this.inObserverMode())
 		{
 			startAbnormalEffect(2097152);
 			setProtection(true);
 		}
 		
-		if (Config.ALLOW_WATER)
-		{
-			checkWaterState();
-		}
+		if (!isGM())
+			stopAllToggles();
 		
-		// Modify the position of the tamed beast if necessary (normal pets are
-		// handled by super...though
-		// L2PcInstance is the only class that actually has pets!!! )
+		if (Config.ALLOW_WATER)
+			checkWaterState();
+
 		if (getTrainedBeast() != null)
 		{
 			getTrainedBeast().getAI().stopFollow();
@@ -11556,6 +11555,9 @@ public final class L2PcInstance extends L2Playable
 		setIsImmobilized(true);
 		setFishing(true);
 			
+		_fishx = loc.getX();
+		_fishy = loc.getY();
+		_fishz = loc.getZ();
 		// Starts fishing
 		int group = GetRandomGroup();
 
@@ -14004,7 +14006,7 @@ public final class L2PcInstance extends L2Playable
 		if (getPartnerId() != 0)
 		{
 			L2PcInstance partner;
-			partner = (L2PcInstance) L2World.getInstance().findObject(getPartnerId());
+			partner = (L2PcInstance) L2World.getInstance().getPlayer(getPartnerId());
 
 			if (partner != null)
 				partner.sendMessage("Your Partner has logged in.");
@@ -14127,7 +14129,7 @@ public final class L2PcInstance extends L2Playable
 	{
 		if (getSponsor() != 0)
 		{
-			L2PcInstance sponsor = (L2PcInstance) L2World.getInstance().findObject(getSponsor());
+			L2PcInstance sponsor = (L2PcInstance) L2World.getInstance().getPlayer(getSponsor());
 
 			if (sponsor != null)
 			{
@@ -14138,7 +14140,7 @@ public final class L2PcInstance extends L2Playable
 		}
 		else if (getApprentice() != 0)
 		{
-			L2PcInstance apprentice = (L2PcInstance) L2World.getInstance().findObject(getApprentice());
+			L2PcInstance apprentice = (L2PcInstance) L2World.getInstance().getPlayer(getApprentice());
 
 			if (apprentice != null)
 			{
@@ -14741,7 +14743,7 @@ public final class L2PcInstance extends L2Playable
 	public boolean canRequestTrade(L2PcInstance target)
 	{
 		
-		if (target == null || target.equals(this))
+		if (target == null || target.equals(this) || !isInSurroundingRegion(target))
 		{
 			sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
 			return false;

@@ -78,13 +78,9 @@ public class UserInfo extends L2GameServerPacket
 		writeD(_activeChar.getAppearance().getSex() ? 1 : 0);
 
 		if (_activeChar.getClassIndex() == 0)
-		{
 			writeD(_activeChar.getClassId().getId());
-		}
 		else
-		{
 			writeD(_activeChar.getBaseClass());
-		}
 
 		writeD(_activeChar.getLevel());
 		writeQ(_activeChar.getExp());
@@ -254,10 +250,11 @@ public class UserInfo extends L2GameServerPacket
 			writeH(id);
 		}
 
-		writeC(0x00); // 1-find party members
-
+		writeC(_activeChar.isInPartyMatchRoom() ? 1 : 0);
+		
 		writeD(_activeChar.getAbnormalEffect());
-		writeC(0x00);
+		
+		writeC(_activeChar.isFlying() ? 2 : 0);
 
 		writeD(_activeChar.getClanPrivileges());
 
@@ -298,20 +295,16 @@ public class UserInfo extends L2GameServerPacket
 		writeC(_activeChar.isRunning() ? 0x01 : 0x00); // changes the Speed display on Status Window
 
 		writeD(_activeChar.getPledgeClass()); // changes the text above CP on Status Window
-		writeD(0x00); // ??
+		writeD(_activeChar.getPledgeType());
 
 		writeD(_activeChar.getAppearance().getTitleColor());
 
 		// writeD(0x00); // ??
 
 		if (_activeChar.isCursedWeaponEquiped())
-		{
 			writeD(CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()));
-		}
 		else
-		{
 			writeD(0x00);
-		}
 	}
 
 	@Override

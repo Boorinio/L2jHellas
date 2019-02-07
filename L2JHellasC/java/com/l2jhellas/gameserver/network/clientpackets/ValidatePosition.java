@@ -14,20 +14,19 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.TaskPriority;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.geodata.geoeditorcon.GeoEditorListener;
-import com.l2jhellas.gameserver.instancemanager.BoatManager;
-import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.serverpackets.CharMoveToLocation;
+import com.l2jhellas.gameserver.network.serverpackets.GetOnVehicle;
 import com.l2jhellas.gameserver.network.serverpackets.PartyMemberPosition;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
-import com.l2jhellas.gameserver.network.serverpackets.ValidateLocationInVehicle;
 
 public class ValidatePosition extends L2GameClientPacket
 {
@@ -120,27 +119,15 @@ public class ValidatePosition extends L2GameClientPacket
 					if (Config.DEVELOPER)
 						System.out.println(activeChar.getName() + ": Synchronizing position Server --> Client");
 					
-					if (_boatObjId > 0)
+
+					if (activeChar.isInBoat())
 					{
-						final L2BoatInstance boat = BoatManager.getInstance().getBoat(_boatObjId);
-						
-						if ((boat != null) && (activeChar.getBoat() == boat))
-						{
-							activeChar.setHeading(_heading);
-							activeChar.sendPacket(new ValidateLocationInVehicle(activeChar,_boatObjId));
-						}
-						
-						activeChar.setLastClientPosition(_x, _y, _z);
-						activeChar.setLastServerPosition(activeChar.getX(), activeChar.getY(), activeChar.getZ());
+						activeChar.setHeading(_heading);
+						activeChar.sendPacket(new GetOnVehicle(activeChar.getObjectId(),_boatObjId, activeChar.getInBoatPosition()));
 						return;
-					}
-					else
-					{
-						if (activeChar.isRunning())
-						{
-							activeChar.broadcastPacket(new CharMoveToLocation(activeChar));
-						}
-					}
+					}	
+					
+					activeChar.broadcastPacket(new CharMoveToLocation(activeChar));
 				}
 			}
 			activeChar.setLastClientPosition(_x, _y, _z);
@@ -181,10 +168,15 @@ public class ValidatePosition extends L2GameClientPacket
 			}
 			if (diffSq > 1000)
 			{
-				if (_boatObjId > 0 && activeChar.isInBoat())
+				if (activeChar.isInBoat())
 				{
-					activeChar.sendPacket(new ValidateLocationInVehicle(activeChar,_boatObjId));
-				}
+					activeChar.setHeading(_heading);
+					activeChar.sendPacket(new GetOnVehicle(activeChar.getObjectId(),_boatObjId, activeChar.getInBoatPosition()));
+					return;
+				}	
+				
+		        activeChar.broadcastPacket(new CharMoveToLocation(activeChar));
+				
 			}
 		}
 

@@ -19,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -26,33 +27,20 @@ import com.l2jhellas.gameserver.model.L2MaxPolyModel;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
-/**
- * @author Velvet
- */
 public class PolymporphTable
 {
 	private final Logger _log = Logger.getLogger(PolymporphTable.class.getName());
 
-	private final HashMap<Integer, L2MaxPolyModel> _map;
-	private static PolymporphTable _instance;
-
+	private final Map<Integer, L2MaxPolyModel> _map = new HashMap<>();
+	
 	private final String SQL_SELECT = "SELECT * FROM max_poly";
 
 	public PolymporphTable()
 	{
-		_map = new HashMap<Integer, L2MaxPolyModel>();
+		_map.clear();
+		load();
 	}
-
-	public static PolymporphTable getInstance()
-	{
-		if (_instance == null)
-		{
-			_instance = new PolymporphTable();
-			_instance.load();
-		}
-		return _instance;
-	}
-
+	
 	private void load()
 	{
 		PreparedStatement st = null;
@@ -114,5 +102,15 @@ public class PolymporphTable
 	public L2MaxPolyModel getModelForID(int key)
 	{
 		return _map.get(key);
+	}
+	
+	public static PolymporphTable getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final PolymporphTable _instance = new PolymporphTable();
 	}
 }

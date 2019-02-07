@@ -87,7 +87,7 @@ public class Quest
 		_name = name;
 		_descr = descr;
 		_onEnterWorld = false;
-		QuestManager.getInstance().addQuest(Quest.this);
+		QuestManager.getInstance().addQuest(this);
 	}
 	
 	/**

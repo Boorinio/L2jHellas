@@ -51,6 +51,7 @@ public class ExFishingStart extends L2GameServerPacket
 		writeD(_loc.getZ()); // z position
 		writeC(_isNightLure ? 0x01 : 0x00); // night lure
 		writeC(Config.ALLOWFISHING? 0x01 : 0x00); // show fish rank result button
+
 	}
 
 	@Override

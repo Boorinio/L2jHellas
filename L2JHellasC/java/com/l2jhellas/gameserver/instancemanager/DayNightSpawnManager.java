@@ -44,13 +44,6 @@ public class DayNightSpawnManager
 	{
 		
 	}
-
-	public DayNightSpawnManager trim()
-	{
-		((ArrayList<?>) _nightCreatures).trimToSize();
-		((ArrayList<?>) _dayCreatures).trimToSize();
-		return this;
-	}
 	
 	public void addDayCreature(L2Spawn spawnDat)
 	{

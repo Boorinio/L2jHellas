@@ -55,7 +55,7 @@ public final class RequestPartyMatchDetail extends L2GameClientPacket
 		if (activeChar == null)
 			return;
 		
-		PartyMatchRoom room = PartyMatchRoomList.getInstance().getRoom(_roomid);
+		final PartyMatchRoom room = PartyMatchRoomList.getInstance().getRoom(_roomid);
 		if (room == null)
 			return;
 		

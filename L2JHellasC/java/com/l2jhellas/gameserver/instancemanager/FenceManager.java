@@ -140,8 +140,7 @@ public final class FenceManager
 			yi
 		};
 	}
-	
-	
+		
 	public void deleteAllFence()
 	{
 		if (!_fences.isEmpty())

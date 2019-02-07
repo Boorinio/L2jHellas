@@ -44,12 +44,12 @@ final class DocumentSkill extends DocumentBase
 		public StatsSet[] enchsets1;
 		public StatsSet[] enchsets2;
 		public int currentLevel;
-		public List<L2Skill> skills = new ArrayList<L2Skill>();
-		public List<L2Skill> currentSkills = new ArrayList<L2Skill>();
+		public List<L2Skill> skills = new ArrayList<>();
+		public List<L2Skill> currentSkills = new ArrayList<>();
 	}
 
 	private Skill _currentSkill;
-	private final List<L2Skill> _skillsInFile = new ArrayList<L2Skill>();
+	private final List<L2Skill> _skillsInFile = new ArrayList<>();
 
 	DocumentSkill(File file)
 	{

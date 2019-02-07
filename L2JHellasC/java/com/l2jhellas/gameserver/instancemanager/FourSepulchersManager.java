@@ -108,30 +108,31 @@ public class FourSepulchersManager
 		},
 	};/** @formatter:on */
 
-	protected HashMap<Integer, Boolean> _archonSpawned = new HashMap<Integer, Boolean>();
-	protected HashMap<Integer, Boolean> _hallInUse = new HashMap<Integer, Boolean>();
-	protected HashMap<Integer, int[]> _startHallSpawns = new HashMap<Integer, int[]>();
-	protected HashMap<Integer, Integer> _hallGateKeepers = new HashMap<Integer, Integer>();
-	protected HashMap<Integer, Integer> _keyBoxNpc = new HashMap<Integer, Integer>();
-	protected HashMap<Integer, Integer> _victim = new HashMap<Integer, Integer>();
-	protected HashMap<Integer, L2PcInstance> _challengers = new HashMap<Integer, L2PcInstance>();
-	protected HashMap<Integer, L2Spawn> _executionerSpawns = new HashMap<Integer, L2Spawn>();
-	protected HashMap<Integer, L2Spawn> _keyBoxSpawns = new HashMap<Integer, L2Spawn>();
-	protected HashMap<Integer, L2Spawn> _mysteriousBoxSpawns = new HashMap<Integer, L2Spawn>();
-	protected HashMap<Integer, L2Spawn> _shadowSpawns = new HashMap<Integer, L2Spawn>();
-	protected HashMap<Integer, ArrayList<L2Spawn>> _dukeFinalMobs = new HashMap<Integer, ArrayList<L2Spawn>>();
-	protected HashMap<Integer, ArrayList<L2SepulcherMonsterInstance>> _dukeMobs = new HashMap<Integer, ArrayList<L2SepulcherMonsterInstance>>();
-	protected HashMap<Integer, ArrayList<L2Spawn>> _emperorsGraveNpcs = new HashMap<Integer, ArrayList<L2Spawn>>();
-	protected HashMap<Integer, ArrayList<L2Spawn>> _magicalMonsters = new HashMap<Integer, ArrayList<L2Spawn>>();
-	protected HashMap<Integer, ArrayList<L2Spawn>> _physicalMonsters = new HashMap<Integer, ArrayList<L2Spawn>>();
-	protected HashMap<Integer, ArrayList<L2SepulcherMonsterInstance>> _viscountMobs = new HashMap<Integer, ArrayList<L2SepulcherMonsterInstance>>();
 
-	protected ArrayList<L2Spawn> _physicalSpawns;
-	protected ArrayList<L2Spawn> _magicalSpawns;
-	protected ArrayList<L2Spawn> _managers;
-	protected ArrayList<L2Spawn> _dukeFinalSpawns;
-	protected ArrayList<L2Spawn> _emperorsGraveSpawns;
-	protected ArrayList<L2Npc> _allMobs = new ArrayList<L2Npc>();
+	protected Map<Integer, Boolean> _archonSpawned = new HashMap<>();
+	protected Map<Integer, Boolean> _hallInUse = new HashMap<>();
+	protected Map<Integer, L2PcInstance> _challengers = new HashMap<>();
+	protected Map<Integer, int[]> _startHallSpawns = new HashMap<>();
+	protected Map<Integer, Integer> _hallGateKeepers = new HashMap<>();
+	protected Map<Integer, Integer> _keyBoxNpc = new HashMap<>();
+	protected Map<Integer, Integer> _victim = new HashMap<>();
+	protected Map<Integer, L2Spawn> _executionerSpawns = new HashMap<>();
+	protected Map<Integer, L2Spawn> _keyBoxSpawns = new HashMap<>();
+	protected Map<Integer, L2Spawn> _mysteriousBoxSpawns = new HashMap<>();
+	protected Map<Integer, L2Spawn> _shadowSpawns = new HashMap<>();
+	protected Map<Integer, List<L2Spawn>> _dukeFinalMobs = new HashMap<>();
+	protected Map<Integer, List<L2SepulcherMonsterInstance>> _dukeMobs = new HashMap<>();
+	protected Map<Integer, List<L2Spawn>> _emperorsGraveNpcs = new HashMap<>();
+	protected Map<Integer, List<L2Spawn>> _magicalMonsters = new HashMap<>();
+	protected Map<Integer, List<L2Spawn>> _physicalMonsters = new HashMap<>();
+	protected Map<Integer, List<L2SepulcherMonsterInstance>> _viscountMobs = new HashMap<>();
+
+	protected List<L2Spawn> _physicalSpawns;
+	protected List<L2Spawn> _magicalSpawns;
+	protected List<L2Spawn> _managers;
+	protected List<L2Spawn> _dukeFinalSpawns;
+	protected List<L2Spawn> _emperorsGraveSpawns;
+	protected List<L2Npc> _allMobs = new ArrayList<>();
 
 	protected long _attackTimeEnd = 0;
 	protected long _coolDownTimeEnd = 0;
@@ -1091,8 +1092,8 @@ public class FourSepulchersManager
 		if (!isAttackTime())
 			return;
 
-		ArrayList<L2Spawn> monsterList;
-		ArrayList<L2SepulcherMonsterInstance> mobs = new ArrayList<L2SepulcherMonsterInstance>();
+		List<L2Spawn> monsterList;
+		List<L2SepulcherMonsterInstance> mobs = new ArrayList<L2SepulcherMonsterInstance>();
 		L2Spawn keyBoxMobSpawn;
 
 		if (Rnd.get(2) == 0)
@@ -1215,7 +1216,7 @@ public class FourSepulchersManager
 
 	public synchronized boolean isViscountMobsAnnihilated(int npcId)
 	{
-		ArrayList<L2SepulcherMonsterInstance> mobs = _viscountMobs.get(npcId);
+		List<L2SepulcherMonsterInstance> mobs = _viscountMobs.get(npcId);
 
 		if (mobs == null)
 			return true;
@@ -1231,7 +1232,7 @@ public class FourSepulchersManager
 
 	public synchronized boolean isDukeMobsAnnihilated(int npcId)
 	{
-		ArrayList<L2SepulcherMonsterInstance> mobs = _dukeMobs.get(npcId);
+		List<L2SepulcherMonsterInstance> mobs = _dukeMobs.get(npcId);
 
 		if (mobs == null)
 			return true;
@@ -1294,7 +1295,7 @@ public class FourSepulchersManager
 		if (_archonSpawned.get(npcId))
 			return;
 
-		ArrayList<L2Spawn> monsterList = _dukeFinalMobs.get(npcId);
+		List<L2Spawn> monsterList = _dukeFinalMobs.get(npcId);
 
 		if (monsterList != null)
 		{
@@ -1318,7 +1319,7 @@ public class FourSepulchersManager
 		if (!isAttackTime())
 			return;
 
-		ArrayList<L2Spawn> monsterList = _emperorsGraveNpcs.get(npcId);
+		List<L2Spawn> monsterList = _emperorsGraveNpcs.get(npcId);
 
 		if (monsterList != null)
 		{

@@ -62,24 +62,12 @@ public class NpcData
 	private static final String RESTORE_CUSTOM_DROPLIST = "SELECT * FROM custom_droplist ORDER BY mobId, chance DESC";
 	private static final String RELOAD_NPC = "SELECT * FROM npc WHERE id=?";
 	private static final String RELOAD_CUSTOM_NPC = "SELECT * FROM custom_npc WHERE id=?";
-	
-	private static NpcData _instance;
 
-	private final HashMap<Integer, L2NpcTemplate> _npcs;
-
-	public static NpcData getInstance()
-	{
-		if (_instance == null)
-		{
-			_instance = new NpcData();
-		}
-
-		return _instance;
-	}
+	private final Map<Integer, L2NpcTemplate> _npcs = new HashMap<Integer, L2NpcTemplate>();
 
 	private NpcData()
 	{
-		_npcs = new HashMap<Integer, L2NpcTemplate>();
+		_npcs.clear();
 		restoreNpcData();
 	}
 
@@ -755,5 +743,15 @@ public class NpcData
 	public Collection<L2NpcTemplate> getAllNpcs()
 	{
 		return _npcs.values();
+	}
+	
+	public static NpcData getInstance()
+	{
+		return SingletonHolder._instance;
+	}
+	
+	private static class SingletonHolder
+	{
+		protected static final NpcData _instance = new NpcData();
 	}
 }

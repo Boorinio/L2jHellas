@@ -55,11 +55,11 @@ public final class RequestPartyMatchConfig extends L2GameClientPacket
 		if (activeChar.isInPartyMatchRoom())
 		{
 			// If Player is in Room show him room, not list
-			PartyMatchRoomList list = PartyMatchRoomList.getInstance();
+			final PartyMatchRoomList list = PartyMatchRoomList.getInstance();
 			if (list == null)
 				return;
 			
-			PartyMatchRoom room = list.getPlayerRoom(activeChar);
+			final PartyMatchRoom room = list.getPlayerRoom(activeChar);
 			if (room == null)
 				return;
 			

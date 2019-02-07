@@ -394,7 +394,7 @@ public class L2Attackable extends L2Npc
 		
 		public final int checkHate(L2Character owner)
 		{
-			if (_attacker.isAlikeDead() || !_attacker.isVisible())
+			if (_attacker.isAlikeDead() || !_attacker.isVisible() || !owner.isInSurroundingRegion(_attacker))
 				_hate = 0;
 			
 			return _hate;
@@ -927,7 +927,7 @@ public class L2Attackable extends L2Npc
 						damage = getMaxHp();
 					
 					// If there's NO party in progress
-					if (attackerParty == null)
+					if (attackerParty == null && isInSurroundingRegion(attacker))
 					{
 						// Calculate Exp and SP rewards
 							// Calculate the difference of level between this attacker (L2PcInstance or L2SummonInstance owner) and the L2Attackable

@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
+import com.l2jhellas.gameserver.emum.AbnormalEffect;
 import com.l2jhellas.gameserver.emum.Music;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2CommandChannel;
@@ -967,7 +968,7 @@ public class Frintezza extends AbstractNpcAI
 						cha.setIsImmobilized(true);
 						cha.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 						skill.getEffects(frintezza, cha);
-						cha.startAbnormalEffect(L2Character.ABNORMAL_EFFECT_DANCE_STUNNED);
+						cha.startAbnormalEffect(AbnormalEffect.STUN.getMask());
 						cha.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT).addSkillName(5008, 5));
 					}
 				}
@@ -980,8 +981,8 @@ public class Frintezza extends AbstractNpcAI
 			{
 				if (cha instanceof L2PcInstance)
 				{
-					cha.stopAbnormalEffect(L2Character.ABNORMAL_EFFECT_DANCE_STUNNED);
-					cha.stopAbnormalEffect(L2Character.ABNORMAL_EFFECT_FLOATING_ROOT);
+					cha.stopAbnormalEffect(AbnormalEffect.STUN.getMask());
+					cha.stopAbnormalEffect(AbnormalEffect.ROOT.getMask());
 					cha.enableAllSkills();
 					cha.setIsImmobilized(false);
 					cha.setIsParalyzed(false);
@@ -1111,7 +1112,7 @@ public class Frintezza extends AbstractNpcAI
 							cha.setIsParalyzed(true);
 							cha.setIsImmobilized(true);
 							cha.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-							cha.startAbnormalEffect(L2Character.ABNORMAL_EFFECT_FLOATING_ROOT);
+							cha.startAbnormalEffect(AbnormalEffect.ROOT.getMask());
 						}
 					}
 				}

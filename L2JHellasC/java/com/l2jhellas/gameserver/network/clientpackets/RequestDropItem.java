@@ -55,7 +55,7 @@ public final class RequestDropItem extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
 		
 		if ((activeChar == null) || activeChar.isDead())
 			return;
@@ -64,7 +64,7 @@ public final class RequestDropItem extends L2GameClientPacket
 		if (!activeChar.getAntiFlood().getDropItem().tryPerformAction("drop item"))
 			return;
 
-		L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
+		final L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
 
 		if ((item == null) || (_count == 0) || !activeChar.validateItemManipulation(_objectId, "drop") || (!Config.ALLOW_DISCARDITEM && !activeChar.isGM()) || !item.isDropable())
 		{
@@ -165,7 +165,7 @@ public final class RequestDropItem extends L2GameClientPacket
 
 		if (item.isEquipped())
 		{
-			L2ItemInstance[] unequiped = activeChar.getInventory().unEquipItemInSlotAndRecord(item.getLocationSlot());
+			final L2ItemInstance[] unequiped = activeChar.getInventory().unEquipItemInSlotAndRecord(item.getLocationSlot());
 			InventoryUpdate iu = new InventoryUpdate();
 			for (L2ItemInstance itm : unequiped)
 			{
@@ -180,7 +180,7 @@ public final class RequestDropItem extends L2GameClientPacket
 			activeChar.sendPacket(il);			
 		}
 
-		L2ItemInstance dropedItem = activeChar.dropItem("Drop", _objectId, _count, _x, _y, _z, null, false);
+		final L2ItemInstance dropedItem = activeChar.dropItem("Drop", _objectId, _count, _x, _y, _z, null, false);
 
 		if (Config.DEBUG)
 		{
