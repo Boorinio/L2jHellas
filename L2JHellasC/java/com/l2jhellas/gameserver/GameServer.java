@@ -37,6 +37,7 @@ import com.L2JHellasInfo;
 import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.Server;
+import com.l2jhellas.fake.roboto.FakePlayerManager;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
@@ -440,7 +441,9 @@ public class GameServer
 			CoupleManager.getInstance();
 		}
 		
-		IpCatcher.ipsLoad();			
+		IpCatcher.ipsLoad();	
+		
+		FakePlayerManager.INSTANCE.initialise();
 	}
 	
 	public static void main(String[] args) throws Exception

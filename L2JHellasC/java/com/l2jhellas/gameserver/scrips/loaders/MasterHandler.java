@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import Extensions.Balancer.Balancer;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.fake.roboto.admincommands.AdminFakePlayers;
 import com.l2jhellas.gameserver.handler.AdminCommandHandler;
 import com.l2jhellas.gameserver.handler.ChatHandler;
 import com.l2jhellas.gameserver.handler.IHandler;
@@ -367,6 +368,7 @@ public class MasterHandler
 			AdminZone.class,
 			AdminWho.class,
 			AdminFence.class,
+			AdminFakePlayers.class,
 		},
 		{
 			// Chat Handlers

@@ -270,9 +270,9 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
  * This class represents all player characters in the world. There is always a
  * client-thread connected to this (except if a player-store is activated upon logout).
  */
-public final class L2PcInstance extends L2Playable
+public class L2PcInstance extends L2Playable
 {
-	private static Logger _log = Logger.getLogger(L2PcInstance.class.getName());
+	protected static Logger _log = Logger.getLogger(L2PcInstance.class.getName());
 	
 	// Character Skills
 	private static final String RESTORE_SKILLS_FOR_CHAR = "SELECT skill_id,skill_level FROM character_skills WHERE char_obj_id=? AND class_index=?";
@@ -1291,7 +1291,7 @@ public final class L2PcInstance extends L2Playable
 	 * @param accountName
 	 *        The name of the account including this L2PcInstance
 	 */
-	private L2PcInstance(int objectId, L2PcTemplate template, String accountName, PcAppearance app)
+	protected L2PcInstance(int objectId, L2PcTemplate template, String accountName, PcAppearance app)
 	{
 		super(objectId, template);
 		getStat(); // init stats
@@ -1320,7 +1320,7 @@ public final class L2PcInstance extends L2Playable
 		getFreight().restore();
 	}
 	
-	private L2PcInstance(int objectId)
+	protected L2PcInstance(int objectId)
 	{
 		super(objectId, null);
 		getStat(); // init stats
@@ -15015,5 +15015,19 @@ public final class L2PcInstance extends L2Playable
 			NpcHtmlMessage infoHtml = new NpcHtmlMessage(1);
 			infoHtml.setHtml(htmContent);
 			sendPacket(infoHtml);	
+		}
+		
+		public void rechargeShots(boolean physical, boolean magic)
+		{
+			L2ItemInstance weaponInst = getActiveWeaponInstance();
+
+			if (weaponInst == null)
+				return;
+			
+			weaponInst.setChargedSoulshot(L2ItemInstance.CHARGED_SOULSHOT);
+			Broadcast.toSelfAndKnownPlayersInRadius(this, new MagicSkillUse(this, this, 2154, 1, 0, 0), 600);
+			Broadcast.toSelfAndKnownPlayersInRadius(this, new MagicSkillUse(this, this, 2164, 1, 0, 0), 600);
+
+
 		}
 }

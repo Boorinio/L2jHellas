@@ -97,6 +97,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ServerObjectInfo;
 import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.StopMove;
+import com.l2jhellas.gameserver.network.serverpackets.StopRotation;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.TargetUnselected;
 import com.l2jhellas.gameserver.network.serverpackets.TeleportToLocation;
@@ -764,42 +765,35 @@ public abstract class L2Character extends L2Object
 		int reuse = calculateReuseTime(target, weaponItem);
 		
 		// Select the type of attack to start
-		if(weaponItem == null)
+		switch(weaponItem.getItemType())
 		{
-			hitted = doAttackHitSimple(attack, target, timeToHit);
-		}
-		else
-		{
-			switch(weaponItem.getItemType())
+			case BOW:
 			{
-				case BOW:
-				{
-					hitted = doAttackHitByBow(attack, target, timeAtk, reuse);
-					break;
-				}
-				case POLE:
-				{
-					hitted = doAttackHitByPole(attack, timeToHit);
-					break;
-				}
-				case DUAL:
-				case DUALFIST:
-				{
-					hitted = doAttackHitByDual(attack, target, timeToHit);
-					break;
-				}
-				case FIST:
-				{
-					if (getSecondaryWeaponItem() != null && getSecondaryWeaponItem() instanceof L2Armor)
-						hitted = doAttackHitSimple(attack, target, timeAtk / 2);
-					else
-						hitted = doAttackHitByDual(attack, target, timeAtk / 2);
-					break;
-				}
-				default:
-				{
+				hitted = doAttackHitByBow(attack, target, timeAtk, reuse);
+				break;
+			}
+			case POLE:
+			{
+				hitted = doAttackHitByPole(attack, timeToHit);
+				break;
+			}
+			case DUAL:
+			case DUALFIST:
+			{
+				hitted = doAttackHitByDual(attack, target, timeToHit);
+				break;
+			}
+			case FIST:
+			{
+				if (getSecondaryWeaponItem() != null && getSecondaryWeaponItem() instanceof L2Armor)
+					hitted = doAttackHitSimple(attack, target, timeAtk / 2);
+				else
+					hitted = doAttackHitByDual(attack, target, timeAtk / 2);
+				break;
+			}
+			default:
+			{
 					hitted = doAttackHitSimple(attack, target, timeToHit);
-				}
 			}
 		}
 		
@@ -1269,12 +1263,7 @@ public abstract class L2Character extends L2Object
 			else if (this instanceof L2Summon)
 				((L2Summon) this).getOwner().rechargeAutoSoulShot(false, true, true);
 		}
-		// else if (skill.useFishShot())
-		// {
-		// if (this instanceof L2PcInstance)
-		// ((L2PcInstance)this).rechargeAutoSoulShot(true, false, false);
-		// }
-		
+
 		// Get all possible targets of the skill in a table in function of the skill target type
 		L2Object[] targets = null;
 		// targets could be NULL or 0 here cause its not given that objects are in the pointed area
@@ -1321,9 +1310,16 @@ public abstract class L2Character extends L2Object
 		// AURA and SIGNET skills should always be using caster as target
 		switch (skill.getTargetType())
 		{
+			case TARGET_AREA_SUMMON:
+				target = getPet();
+				break;
 			case TARGET_AURA:
 			case TARGET_SIGNET_GROUND:
 			case TARGET_SIGNET:
+			case TARGET_FRONT_AURA:
+			case TARGET_BEHIND_AURA:
+			case TARGET_AURA_UNDEAD:
+			case TARGET_GROUND:
 				target = this;
 			break;
 			default:
@@ -4042,6 +4038,7 @@ public abstract class L2Character extends L2Object
 			setXYZ(pos.x, pos.y, pos.z);
 			setHeading(pos.heading);
 			revalidateZone(true);
+			broadcastPacket(new StopRotation(getObjectId(),pos.heading, 0));
 		}
 		broadcastPacket(new StopMove(this));
 	}
@@ -7132,8 +7129,7 @@ public abstract class L2Character extends L2Object
 	{
 		_effects.stopEffectsOnDamage(awake);
 	}
-	
-	
+
 	@Override
 	public void setXYZ(int x, int y, int z)
 	{

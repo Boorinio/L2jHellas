@@ -27,7 +27,6 @@ import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -39,7 +38,6 @@ import com.l2jhellas.gameserver.network.serverpackets.MoveToLocation;
 import com.l2jhellas.gameserver.network.serverpackets.MoveToLocationInVehicle;
 import com.l2jhellas.gameserver.network.serverpackets.MoveToPawn;
 import com.l2jhellas.gameserver.network.serverpackets.StopMove;
-import com.l2jhellas.gameserver.network.serverpackets.StopRotation;
 import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 
 /**
@@ -582,26 +580,10 @@ abstract class AbstractAI implements Ctrl
 	{
 		// Stop movement of the L2Character
 		if (_actor.isMoving())
-			_accessor.stopMove(pos);
+			_actor.stopMove(pos);
 
 		_clientMovingToPawnOffset = 0;
-
-		if (_clientMoving || pos != null)
-		{
-			_clientMoving = false;
-
-			// Send a Server->Client packet StopMove to the actor and all L2PcInstance in its _knownPlayers
-			StopMove msg = new StopMove(_actor);
-			_actor.broadcastPacket(msg);
-
-			if (pos != null)
-			{
-				// Send a Server->Client packet StopRotation to the actor and all L2PcInstance in its _knownPlayers
-				StopRotation sr = new StopRotation(_actor.getObjectId(), pos.heading, 0);
-				_actor.sendPacket(sr);
-				_actor.broadcastPacket(sr);
-			}
-		}
+		_clientMoving = false;
 	}
 
 	// Client has already arrived to target, no need to force StopMove packet
@@ -610,8 +592,7 @@ abstract class AbstractAI implements Ctrl
 		if (_clientMovingToPawnOffset > 0) // movetoPawn needs to be stopped
 		{
 			_clientMovingToPawnOffset = 0;
-			StopMove msg = new StopMove(_actor);
-			_actor.broadcastPacket(msg);
+			_actor.broadcastPacket(new StopMove(_actor));
 		}
 		_clientMoving = false;
 	}
@@ -702,11 +683,9 @@ abstract class AbstractAI implements Ctrl
 	{
 		if (_clientMoving)
 		{
-		    if ((_clientMovingToPawnOffset != 0) && _followTarget != null)
-			   // Send a Server->Client packet MoveToPawn to the actor and all L2PcInstance in its _knownPlayers
+			if ((_clientMovingToPawnOffset != 0) && isFollowing())
 			   player.sendPacket(new MoveToPawn(_actor, _followTarget, _clientMovingToPawnOffset));
 		    else
-			   // Send a Server->Client packet CharMoveToLocation to the actor and all L2PcInstance in its _knownPlayers
 			   player.sendPacket(new MoveToLocation(_actor));
 		}
 	}
@@ -720,7 +699,7 @@ abstract class AbstractAI implements Ctrl
 	
 	public boolean isFollowing()
 	{
-		return (getTarget() instanceof L2Attackable) && (getIntention() == CtrlIntention.AI_INTENTION_FOLLOW);
+		return (getTarget() instanceof L2Character) && (getIntention() == CtrlIntention.AI_INTENTION_FOLLOW);
 	}
 	
 	class FollowTask implements Runnable

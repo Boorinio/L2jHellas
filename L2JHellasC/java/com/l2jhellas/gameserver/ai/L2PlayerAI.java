@@ -82,10 +82,12 @@ public class L2PlayerAI extends L2CharacterAI
 			return;
 		}					
 		// save current intention so it can be used after cast
-		saveNextIntention(_intention, _intentionArg0, _intentionArg1);
+		if ((_intention != AI_INTENTION_ACTIVE) && (_intention != AI_INTENTION_IDLE))
+		     saveNextIntention(_intention, _intentionArg0, _intentionArg1);
+		
 		super.changeIntention(intention, arg0, arg1);
 	}
-	
+
 	@Override
 	protected void onEvtAttacked(L2Character target)
 	{		
@@ -208,8 +210,9 @@ public class L2PlayerAI extends L2CharacterAI
 		}
 		if (maybeMoveToPawn(target, _actor.getPhysicalAttackRange()))
 			return;
-
+		
 		clientStopMoving(null);
+		
 		_actor.doAttack(target);
 		
 	}
@@ -406,5 +409,5 @@ public class L2PlayerAI extends L2CharacterAI
 		}
 
 		super.onEvtArrived();
-	}
+	}	
 }
