@@ -18,60 +18,49 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
-import com.jolbox.bonecp.BoneCPDataSource;
 import com.l2jhellas.Config;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 public class L2DatabaseFactory
 {
 	private static final Logger _log = Logger.getLogger(L2DatabaseFactory.class.getName());
 
-	private BoneCPDataSource _source;
-	private int database_partition_count = 3;
-	private int database_timeout = 10;
+	private ComboPooledDataSource _source;
 
 	public L2DatabaseFactory()
 	{
 		try
 		{
 			if (Config.DATABASE_MAX_CONNECTIONS < 10)
-			{
 				Config.DATABASE_MAX_CONNECTIONS = 10;
-			}
 
-			if (database_partition_count > 4)
-			{
-				database_partition_count = 4;
-			}
-
-			if (Config.DATABASE_MAX_CONNECTIONS * database_partition_count > 200)
-			{
-				Config.DATABASE_MAX_CONNECTIONS = 50;
-				database_partition_count = 4;
-			}
+			if (Config.DATABASE_MAX_CONNECTIONS > 200)
+				Config.DATABASE_MAX_CONNECTIONS = 200;
 			
-			_source = new BoneCPDataSource();
+			_source = new ComboPooledDataSource();
 			
-			_source.getConfig().setDefaultAutoCommit(true);
-			_source.getConfig().setPoolAvailabilityThreshold(10);
-			_source.getConfig().setMinConnectionsPerPartition(10);
-			_source.getConfig().setMaxConnectionsPerPartition(Config.DATABASE_MAX_CONNECTIONS);
-			_source.getConfig().setPartitionCount(database_partition_count);
-
+			_source.setAutoCommitOnClose(true);
+			_source.setInitialPoolSize(10);
+			_source.setMinPoolSize(10);
+			_source.setMaxPoolSize(Math.max(10, Config.DATABASE_MAX_CONNECTIONS));
+			
 			_source.setAcquireRetryAttempts(0);
-			_source.setAcquireRetryDelayInMs(500);
-			_source.setAcquireIncrement(5);
-			if (Config.DEVELOPER)
-				_source.setCloseConnectionWatch(true); // for debugging unclosed connections
-			_source.setConnectionTimeoutInMs(database_timeout);
+			_source.setAcquireRetryDelay(500); 
+			_source.setCheckoutTimeout(0); 
+			_source.setAcquireIncrement(5); 
 
-			_source.setIdleConnectionTestPeriodInMinutes(1);
+			_source.setAutomaticTestTable("connection_test_table");
+			_source.setTestConnectionOnCheckin(false);
 
-			_source.setIdleMaxAgeInSeconds(1800);
+			_source.setIdleConnectionTestPeriod(3600); 
+			_source.setMaxIdleTime(0);
 
-			_source.setTransactionRecoveryEnabled(true);
-			_source.setDriverClass(Config.DATABASE_DRIVER);
+			_source.setMaxStatementsPerConnection(100);
+			
+			_source.setBreakAfterAcquireFailure(false);
+			_source.setDriverClass("com.mysql.jdbc.Driver");
 			_source.setJdbcUrl(Config.DATABASE_URL);
-			_source.setUsername(Config.DATABASE_LOGIN);
+			_source.setUser(Config.DATABASE_LOGIN);
 			_source.setPassword(Config.DATABASE_PASSWORD);
 
 			_source.getConnection().close();
@@ -131,12 +120,6 @@ public class L2DatabaseFactory
 			}
 		}
 		return con;
-	}
-
-
-	public int getBusyConnectionCount()
-	{
-		return _source.getTotalLeased();
 	}
 	
 	/**

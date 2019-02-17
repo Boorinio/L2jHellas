@@ -273,13 +273,16 @@ public class PeloponnesianWar
 	
 	public static void RemoveAthenian(String name)
 	{
-		_athenians.remove(name);
-		
+		for (L2PcInstance player : _athenians)
+			if (player.getName() == name)
+				_athenians.remove(player);
 	}
 	
 	public static void RemoveSpartan(String name)
 	{
-		_spartans.remove(name);
+		for (L2PcInstance player : _spartans)
+			if (player.getName() == name)
+				_spartans.remove(player);
 	}
 	
 	public static void waitSecs(int i)

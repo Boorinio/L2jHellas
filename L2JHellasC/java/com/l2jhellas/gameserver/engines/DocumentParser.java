@@ -2,12 +2,11 @@ package com.l2jhellas.gameserver.engines;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -23,7 +22,7 @@ import com.l2jhellas.util.filters.file.XMLFilter;
  */
 public interface DocumentParser
 {
-	static final Logger LOG = LoggerFactory.getLogger(DocumentParser.class);
+	static final Logger LOG = Logger.getLogger(DocumentParser.class.getName());
 	
 	static final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 	static final String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
@@ -55,7 +54,7 @@ public interface DocumentParser
 	{
 		if (!getCurrentFileFilter().accept(f))
 		{
-			LOG.warn("{}: Could not parse {} is not a file or it doesn't exist!", getClass().getSimpleName(), f.getName());
+			LOG.warning(getClass().getSimpleName() + ": Could not parse " + f.getName() + " is not a file or it doesn't exist!");
 			return;
 		}
 		
@@ -71,12 +70,14 @@ public interface DocumentParser
 		}
 		catch (SAXParseException e)
 		{
-			LOG.warn("{}: Could not parse file {} at line {}, column {}", getClass().getSimpleName(), f.getName(), e.getLineNumber(), e.getColumnNumber(), e);
+			LOG.warning(getClass().getSimpleName() + ": Could not parse file " + f.getName() + " at line " + e.getLineNumber() + ", column " + e.getColumnNumber());
+			e.printStackTrace();
 			return;
 		}
 		catch (Exception e)
 		{
-			LOG.warn("{}: Could not parse file {}", getClass().getSimpleName(), f.getName(), e);
+			LOG.warning(getClass().getSimpleName() + ": Could not parse file " + f.getName());
+			e.printStackTrace();
 			return;
 		}
 	}
@@ -122,7 +123,7 @@ public interface DocumentParser
 	{
 		if (!dir.exists())
 		{
-			LOG.warn("{}: Folder {} doesn't exist!", getClass().getSimpleName(), dir.getAbsolutePath());
+			LOG.warning(getClass().getSimpleName() + ": Folder " + dir.getAbsolutePath() + " doesn't exist!");
 			return false;
 		}
 		
@@ -173,7 +174,7 @@ public interface DocumentParser
 	 */
 	default void parseDocument(Document doc)
 	{
-		LOG.error("{}: Parser not implemented!", getClass().getSimpleName());
+		LOG.severe(getClass().getSimpleName() + ": Parser not implemented!");
 	}
 	
 	/**
@@ -570,7 +571,7 @@ public interface DocumentParser
 		}
 		catch (IllegalArgumentException e)
 		{
-			LOG.warn("Invalid value specified for node: {} specified value: {} should be enum value of \"{}\" using default value: {}", node.getNodeName(), node.getNodeValue(), clazz.getSimpleName(), defaultValue);
+			LOG.warning("Invalid value specified for node: " + node.getNodeName() + " specified value: " + node.getNodeValue() + " should be enum value of " + clazz.getSimpleName() + " using default value: " + defaultValue);
 			return defaultValue;
 		}
 	}

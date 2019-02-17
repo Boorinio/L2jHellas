@@ -177,7 +177,7 @@ public class SagasSuperClass extends Quest
 	{
 		if (_SpawnList.containsKey(npc))
 		{
-			String np = _SpawnList.get(npc.getName()).toString();
+			String np = npc.getName().toString();
 			
 			final L2PcInstance player = L2World.getInstance().getPlayer(np);
 			if (player != null)
@@ -816,7 +816,7 @@ public class SagasSuperClass extends Quest
 	{
 		if (_SpawnList.containsKey(npc) && _SpawnList.get(npc) != player.getObjectId())
 		{
-			String np = _SpawnList.get(npc.getName()).toString();
+			String np = npc.getName().toString();
 			
 			L2PcInstance quest_player = L2World.getInstance().getPlayer(np);
 			if (quest_player == null)

@@ -119,7 +119,7 @@ public class FishTable implements DocumentParser
 			}
 			default:
 			{
-				LOG.warn("{}: Unmanaged fish grade!", getClass().getSimpleName());
+				LOG.warning(getClass().getSimpleName() + ": Unmanaged fish grade!");
 				return result;
 			}
 		}
@@ -135,7 +135,7 @@ public class FishTable implements DocumentParser
 		
 		if (result.isEmpty())
 		{
-			LOG.warn("{}: Cannot find any fish for level: {} group: {} and grade: {}!", getClass().getSimpleName(), level, group, grade);
+			LOG.warning(getClass().getSimpleName() +": Cannot find any fish for level: " + level + " group: " + group + " and grade: " + grade + "!");
 		}
 		return result;
 	}

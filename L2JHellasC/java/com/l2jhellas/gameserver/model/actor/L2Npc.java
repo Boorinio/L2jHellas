@@ -716,7 +716,7 @@ public class L2Npc extends L2Character
 							scripts.get(0).notifyFirstTalk(this, player);
 						else
 							showChatWindow(player);
-					}
+					}			
 				}
 			}
 			else

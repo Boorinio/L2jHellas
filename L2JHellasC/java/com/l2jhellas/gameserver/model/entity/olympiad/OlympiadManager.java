@@ -88,9 +88,7 @@ public class OlympiadManager
 	
 	private final boolean isRegistered(L2PcInstance player, boolean showMessage)
 	{
-		final Integer objId = Integer.valueOf(player.getObjectId());
-		
-		if (_nonClassBasedRegisters.contains(objId))
+		if (_nonClassBasedRegisters.contains(player.getName()))
 		{
 			if (showMessage)
 				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT));
@@ -99,7 +97,7 @@ public class OlympiadManager
 		}
 		
 		final List<String> classed = _classBasedRegisters.get(player.getBaseClass());
-		if (classed != null && classed.contains(objId))
+		if (classed != null && classed.contains(player.getName()))
 		{
 			if (showMessage)
 				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT));
@@ -236,12 +234,11 @@ public class OlympiadManager
 		if (task != null && task.isGameStarted())
 			task.getGame().handleDisconnect(player);
 		
-		final Integer objId = Integer.valueOf(player.getObjectId());
-		if (_nonClassBasedRegisters.remove(objId))
+		if (_nonClassBasedRegisters.remove(player.getName()))
 			return;
 		
 		final List<String> classed = _classBasedRegisters.get(player.getBaseClass());
-		if (classed != null && classed.remove(objId))
+		if (classed != null && classed.remove(player.getName()))
 			return;
 	}
 	

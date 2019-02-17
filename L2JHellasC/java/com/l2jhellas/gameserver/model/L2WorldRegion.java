@@ -7,9 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.function.Predicate;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -23,7 +21,7 @@ import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 
 public final class L2WorldRegion
 {
-	private static final Logger _log = LoggerFactory.getLogger(L2WorldRegion.class);
+	private static final Logger _log = Logger.getLogger(L2WorldRegion.class.getName());
 	
 	/** Map containing visible objects in this world region. */
 	private final Map<Integer, L2Object> _visibleObjects = new ConcurrentHashMap<>();
@@ -131,7 +129,8 @@ public final class L2WorldRegion
 		// turn the AI on or off to match the region's activation.
 		switchAI(value);
 		
-		_log.debug("{} Grid {}", (value ? "Starting" : "Stoping"), getName());
+		if (Config.DEBUG)
+			_log.warning((value ? "Starting" : "Stoping") + " Grid: " + getName());
 	}
 	
 	/**

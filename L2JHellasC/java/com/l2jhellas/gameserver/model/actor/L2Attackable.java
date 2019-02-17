@@ -2374,8 +2374,6 @@ private boolean _canReturnToSpawnPoint = true;
 		
 		L2NpcTemplate.AbsorbCrystalType absorbType = getTemplate().absorbType;
 		
-		L2PcInstance killer = (attacker instanceof L2Summon) ? ((L2Summon) attacker).getOwner() : (L2PcInstance) attacker;
-		
 		// If this mob is a boss, then skip some checkings
 		if (!isBossMob)
 		{
@@ -2389,8 +2387,8 @@ private boolean _canReturnToSpawnPoint = true;
 			
 			// Fail if the killer isn't in the _absorbersList of this
 			// L2Attackable and mob is not boss
-			AbsorberInfo ai = _absorbersList.get(killer);
-			if (ai == null || ai._objId != killer.getObjectId())
+			AbsorberInfo ai = _absorbersList.get((attacker instanceof L2Summon) ? ((L2Summon) attacker).getOwner() : (L2PcInstance) attacker);
+			if (ai == null || ai._objId != ((attacker instanceof L2Summon) ? ((L2Summon) attacker).getOwner() : (L2PcInstance) attacker).getObjectId())
 			{
 				isSuccess = false;
 			}
@@ -2430,11 +2428,11 @@ private boolean _canReturnToSpawnPoint = true;
 		
 		List<L2PcInstance> players = new ArrayList<L2PcInstance>();
 		
-		if (absorbType == L2NpcTemplate.AbsorbCrystalType.FULL_PARTY && killer.isInParty())
+		if (absorbType == L2NpcTemplate.AbsorbCrystalType.FULL_PARTY && ((attacker instanceof L2Summon) ? ((L2Summon) attacker).getOwner() : (L2PcInstance) attacker).isInParty())
 		{
-			players = killer.getParty().getPartyMembers();
+			players = ((attacker instanceof L2Summon) ? ((L2Summon) attacker).getOwner() : (L2PcInstance) attacker).getParty().getPartyMembers();
 		}
-		else if (absorbType == L2NpcTemplate.AbsorbCrystalType.PARTY_ONE_RANDOM && killer.isInParty())
+		else if (absorbType == L2NpcTemplate.AbsorbCrystalType.PARTY_ONE_RANDOM && ((attacker instanceof L2Summon) ? ((L2Summon) attacker).getOwner() : (L2PcInstance) attacker).isInParty())
 		{
 			// This is a naive method for selecting a random member. It gets any
 			// random party member and
@@ -2442,11 +2440,11 @@ private boolean _canReturnToSpawnPoint = true;
 			// the random party member
 			// among those who have crystals, only. However, this might actually
 			// be correct (same as retail).
-			players.add(killer.getParty().getPartyMembers().get(Rnd.get(killer.getParty().getMemberCount())));
+			players.add(((attacker instanceof L2Summon) ? ((L2Summon) attacker).getOwner() : (L2PcInstance) attacker).getParty().getPartyMembers().get(Rnd.get(((attacker instanceof L2Summon) ? ((L2Summon) attacker).getOwner() : (L2PcInstance) attacker).getParty().getMemberCount())));
 		}
 		else
 		{
-			players.add(killer);
+			players.add((attacker instanceof L2Summon) ? ((L2Summon) attacker).getOwner() : (L2PcInstance) attacker);
 		}
 		
 		for (L2PcInstance player : players)

@@ -18,8 +18,7 @@
  */
 package com.l2jhellas.gameserver.scrips.loaders;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.scrips.quests.*;
 import com.l2jhellas.gameserver.scrips.quests.ai.custom.EchoCrystals;
@@ -107,8 +106,7 @@ import com.l2jhellas.gameserver.scrips.quests.vehicles.BoatTalkingGludin;
  */
 public class ScriptLoader
 {
-	
-	private static final Logger _log = LoggerFactory.getLogger(ScriptLoader.class);
+	private static final Logger _log = Logger.getLogger(ScriptLoader.class.getName());
 	
 	public static ScriptLoader getInstance()
 	{
@@ -513,7 +511,8 @@ public class ScriptLoader
 			}
 			catch (Exception e)
 			{
-				_log.error(ScriptLoader.class.getSimpleName() + ": Failed loading " + _qs.getSimpleName() + ":", e);
+				_log.severe(ScriptLoader.class.getSimpleName() + ": Failed loading " + _qs.getSimpleName() + ":");
+				e.printStackTrace();
 			}
 		}
 	}

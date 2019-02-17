@@ -630,8 +630,9 @@ public abstract class L2Character extends L2Object
 		
 		// Get the active weapon item corresponding to the active weapon instance (always equipped in the right hand)
 		L2Weapon weaponItem = getActiveWeaponItem();
+		final L2WeaponType weaponType = getAttackType();
 		
-		if (weaponItem != null && weaponItem.getItemType() == L2WeaponType.ROD)
+		if (weaponType == L2WeaponType.ROD)
 		{
 			// You can't make an attack with a fishing pole.
 			((L2PcInstance) this).sendPacket(SystemMessageId.CANNOT_ATTACK_WITH_FISHING_POLE);
@@ -653,7 +654,7 @@ public abstract class L2Character extends L2Object
 		}
 		
 		// Check for a bow
-		if ((weaponItem != null && weaponItem.getItemType() == L2WeaponType.BOW))
+		if ((weaponType == L2WeaponType.BOW))
 		{
 			// Check for arrows and MP
 			if (this instanceof L2PcInstance)
@@ -765,7 +766,7 @@ public abstract class L2Character extends L2Object
 		int reuse = calculateReuseTime(target, weaponItem);
 		
 		// Select the type of attack to start
-		switch(weaponItem.getItemType())
+		switch(weaponType)
 		{
 			case BOW:
 			{
@@ -793,9 +794,9 @@ public abstract class L2Character extends L2Object
 			}
 			default:
 			{
-					hitted = doAttackHitSimple(attack, target, timeToHit);
+				hitted = doAttackHitSimple(attack, target, timeToHit);
 			}
-		}
+		}		
 		
 		// Flag the attacker if it's a L2PcInstance outside a PvP area
 		L2PcInstance player = null;
@@ -4872,6 +4873,16 @@ public abstract class L2Character extends L2Object
 	 * <BR>
 	 */
 	public abstract L2ItemInstance getSecondaryWeaponInstance();
+	
+	
+	/**
+	 * @return attack type depending of the weapon.
+	 */
+	public L2WeaponType getAttackType()
+	{
+		final L2Weapon weapon = getActiveWeaponItem();
+		return (weapon == null) ? L2WeaponType.NONE : weapon.getItemType();
+	}
 	
 	/**
 	 * Return the secondary weapon item (always equiped in the left hand).<BR>

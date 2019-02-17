@@ -211,7 +211,7 @@ public class AutoChatHandler implements SpawnListener
 		if (chatInst == null)
 			return false;
 
-		_registeredChats.remove(chatInst);
+		_registeredChats.values().remove(chatInst);
 		chatInst.setActive(false);
 
 		if (Config.DEBUG)

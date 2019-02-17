@@ -21,9 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -33,7 +31,7 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class BlockList
 {
-	private static Logger _log = LoggerFactory.getLogger(BlockList.class);
+	private static Logger _log = Logger.getLogger(BlockList.class.getName());
 	private static Map<Integer, List<Integer>> _offlineList = new ConcurrentHashMap<>();
 	
 	private final L2PcInstance _owner;
@@ -89,7 +87,8 @@ public class BlockList
 		}
 		catch (Exception e)
 		{
-			_log.warn("Error found in " + ObjId + " BlockList while loading BlockList: " + e.getMessage(), e);
+			_log.warning("Error found in " + ObjId + " BlockList while loading BlockList: ");
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -120,7 +119,8 @@ public class BlockList
 		}
 		catch (Exception e)
 		{
-			_log.warn("Could not add block player: " + e.getMessage(), e);
+			_log.warning("Could not add block player: ");
+			e.printStackTrace();
 		}
 	}
 	

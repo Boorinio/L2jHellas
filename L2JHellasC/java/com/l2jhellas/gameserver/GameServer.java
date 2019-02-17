@@ -32,12 +32,12 @@ import Extensions.Balancer.BalanceLoad;
 import Extensions.RankSystem.RankLoader;
 import Extensions.Vote.VoteRewardHopzone;
 import Extensions.Vote.VoteRewardTopzone;
+import Extensions.fake.roboto.FakePlayerManager;
 
 import com.L2JHellasInfo;
 import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.Server;
-import com.l2jhellas.fake.roboto.FakePlayerManager;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
