@@ -19,13 +19,13 @@ import java.nio.BufferUnderflowException;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.TaskPriority;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.PartyMemberPosition;
 import com.l2jhellas.gameserver.network.serverpackets.StopMove;
-import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
@@ -101,9 +101,12 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 	protected void runImpl()
 	{
 		final L2PcInstance activeChar = getClient().getActiveChar();
+		
 		if (activeChar == null || activeChar.isDead() || activeChar.isFakeDeath())
 			return;
 
+		activeChar.onActionRequest();
+		
 		// Like L2OFF movements prohibited when char is sitting
         if (activeChar.isSitting())
         {

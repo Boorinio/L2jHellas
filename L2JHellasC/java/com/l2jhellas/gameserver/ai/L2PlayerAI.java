@@ -208,6 +208,7 @@ public class L2PlayerAI extends L2CharacterAI
 			}
 			return;
 		}
+		
 		if (maybeMoveToPawn(target, _actor.getPhysicalAttackRange()))
 			return;
 		
@@ -255,14 +256,14 @@ public class L2PlayerAI extends L2CharacterAI
 				_actor.setTarget(getCastTarget());
 
 			// Launch the Cast of the skill
-			_accessor.doCast(_skill);
+			_actor.doCast(_skill);
 
 			// Restore the initial target
 			if (target != null && oldTarget != target)
 				_actor.setTarget(oldTarget);
 		}
 		else
-			_accessor.doCast(_skill);
+			_actor.doCast(_skill);
 
 		return;
 	}
@@ -352,15 +353,20 @@ public class L2PlayerAI extends L2CharacterAI
 	
 	private void thinkInteract()
 	{
-		if (_actor.isAllSkillsDisabled())
+		if (_actor.isAllSkillsDisabled() || _actor.isCastingNow())
 			return;
+		
 		L2Object target = getTarget();
+		
 		if (checkTargetLost(target))
 			return;
+		
 		if (maybeMoveToPawn(target, 36))
 			return;
+		
 		if (!(target instanceof L2StaticObjectInstance))
-			((L2PcInstance.AIAccessor) _accessor).doInteract((L2Character) target);
+		_actor.getActingPlayer().doInteract((L2Character) target);
+		
 		setIntention(AI_INTENTION_IDLE);
 	}
 

@@ -15,12 +15,12 @@
 package com.l2jhellas.gameserver.skills.funcs;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.templates.L2Item;
-import com.l2jhellas.gameserver.templates.L2WeaponType;
 
 public class FuncEnchant extends Func
 {

@@ -45,6 +45,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 	{
 		CONNECTED,
 		AUTHED, 
+		ENTERING, // client is currently loading his Player instance, but didn't end
 		IN_GAME
 	}
 	
@@ -484,6 +485,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 					return "[IP: " + (address == null ? "disconnected" : address.getHostAddress()) + "]";
 				case AUTHED:
 					return "[Account: " + getAccountName() + " - IP: " + (address == null ? "disconnected" : address.getHostAddress()) + "]";
+				case ENTERING:
 				case IN_GAME:
 					return "[Character: " + (getActiveChar() == null ? "disconnected" : getActiveChar().getName()) + " - Account: " + getAccountName() + " - IP: " + (address == null ? "disconnected" : address.getHostAddress()) + "]";
 				default:

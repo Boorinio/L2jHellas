@@ -27,7 +27,7 @@ public enum Packets implements IPacket
 	
 	RequestPledgeCrest(0x68,new RequestPledgeCrest(),GameClientState.AUTHED,GameClientState.IN_GAME),
 	MoveBackwardToLocation(0x01,new MoveBackwardToLocation(),GameClientState.IN_GAME),
-	EnterWorld(0x03,new EnterWorld(),GameClientState.IN_GAME),		
+	EnterWorld(0x03,new EnterWorld(),GameClientState.ENTERING),		
 	Action(0x04,new Action(),GameClientState.IN_GAME),		
 	AttackRequest(0x0a,new AttackRequest(),GameClientState.IN_GAME),		
 	RequestItemList(0x0f,new RequestItemList(),GameClientState.IN_GAME),

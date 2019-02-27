@@ -38,7 +38,6 @@ public final class RequestShortCutReg extends L2GameClientPacket
 
 		_slot = slot % 12;
 		_page = slot / 12;
-
 	}
 
 	@Override
@@ -54,8 +53,8 @@ public final class RequestShortCutReg extends L2GameClientPacket
 		final int level = activeChar.getSkillLevel(_id);
 		
 		final L2ShortCut sc = new L2ShortCut(_slot, _page, _type, _id, level, _unk);
-		activeChar.registerShortCut(sc);
 		activeChar.sendPacket(new ShortCutRegister(activeChar,sc));	
+		activeChar.registerShortCut(sc);	
 	}
 
 	@Override

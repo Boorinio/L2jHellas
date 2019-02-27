@@ -127,6 +127,7 @@ public class NpcHtmlMessage extends L2GameServerPacket
 	private static Logger _log = Logger.getLogger(RequestBypassToServer.class.getName());
 	private final int _npcObjId;
 	private String _html;
+	private int _itemId = 0;
 	private boolean _validate = true;
 
 	/**
@@ -228,10 +229,17 @@ public class NpcHtmlMessage extends L2GameServerPacket
 			// System.err.println("["+_html.substring(start, finish)+"]");
 		}
 	}
+	
+	public void setItemId(int itemId)
+	{
+		_itemId = itemId;
+	}
+	
 	public void disableValidation()
 	{
 		_validate = false;
 	}
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -239,6 +247,7 @@ public class NpcHtmlMessage extends L2GameServerPacket
 
 		writeD(_npcObjId);
 		writeS(_html);
+		writeD(_itemId);
 	}
 
 	@Override

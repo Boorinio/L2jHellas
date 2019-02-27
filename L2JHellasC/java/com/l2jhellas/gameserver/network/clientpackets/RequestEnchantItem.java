@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.ClassRace;
+import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
@@ -29,7 +30,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
-import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.shield.antibot.PrivateAntiBot;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Rnd;

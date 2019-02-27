@@ -38,6 +38,7 @@ import com.l2jhellas.gameserver.datatables.xml.MapRegionTable.TeleportWhereType;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData.FrequentSkill;
 import com.l2jhellas.gameserver.emum.AbnormalEffect;
 import com.l2jhellas.gameserver.emum.DuelState;
+import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.geodata.GeoMove;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
@@ -113,7 +114,6 @@ import com.l2jhellas.gameserver.templates.L2CharTemplate;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
-import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.util.Broadcast;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
@@ -576,6 +576,7 @@ public abstract class L2Character extends L2Object
 		}
 		if (isAttackingDisabled())
 			return;
+		
 		if (target instanceof L2DoorInstance && !((L2DoorInstance) target).isAttackable(this))
 			return;
 		
@@ -805,49 +806,48 @@ public abstract class L2Character extends L2Object
 			player = (L2PcInstance) this;
 		else if (this instanceof L2Summon)
 			player = ((L2Summon) this).getOwner();
-		
-		if (player != null)
-		{
-			player.getAI().clientStartAutoAttack();;
-			player.updatePvPStatus(target);				
-		}
+
+		if (player != null && player.getPet() != target)
+		    player.updatePvPStatus(target);	
 		
 		// Check if hit isn't missed
 		if (!hitted)
-		{
-			// Abort the attack of the L2Character and send Server->Client ActionFailed packet
 			abortAttack();
-		}
 		else
-		{			
-			// If we didn't miss the hit, discharge the shoulshots, if any
-			if (this instanceof L2Summon && !(this instanceof L2PetInstance))
-				((L2Summon) this).setChargedSoulShot(L2ItemInstance.CHARGED_NONE);
-			else if (weaponInst != null)
-				weaponInst.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
-			
-			if (player != null)
+		{		
+		  if (player != null)
+		  {
+			if (player.isCursedWeaponEquiped())
 			{
-				if (player.isCursedWeaponEquiped())
-				{
-					// If hitted by a cursed weapon, Cp is reduced to 0
-					if (!target.isInvul())
-						target.setCurrentCp(0);
-				}
-				else if (player.isHero())
-				{
-					if (target instanceof L2PcInstance && ((L2PcInstance) target).isCursedWeaponEquiped())
-						// If a cursed weapon is hitted by a Hero, Cp is reduced to 0
-						target.setCurrentCp(0);
-				}
+				// If hitted by a cursed weapon, Cp is reduced to 0
+				if (!target.isInvul())
+					target.setCurrentCp(0);
 			}
+			else if (player.isHero())
+			{
+				if (target instanceof L2PcInstance && ((L2PcInstance) target).isCursedWeaponEquiped())
+					// If a cursed weapon is hitted by a Hero, Cp is reduced to 0
+					target.setCurrentCp(0);
+			}
+					
+			// l2off like. you give only one hit if the target is not autoattackable
+			if ((target instanceof L2PcInstance) && !target.isAutoAttackable(player))
+			{
+				player.getAI().clientStopAutoAttack();
+				player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, this);
+			}
+			else
+				player.getAI().clientStartAutoAttack();;
+		  }
+		  if (this instanceof L2Summon && !(this instanceof L2PetInstance))
+			((L2Summon) this).setChargedSoulShot(L2ItemInstance.CHARGED_NONE);
+		  else if (weaponInst != null)
+			weaponInst.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);	
 		}
-		
-		// If the Server->Client packet Attack contains at least 1 hit, send the Server->Client packet Attack
-		// to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
+
 		if (attack.hasHits())
 			broadcastPacket(attack);
-		
+					
 		// Notify AI with EVT_READY_TO_ACT
 		ThreadPoolManager.getInstance().scheduleAi(new NotifyAITask(CtrlEvent.EVT_READY_TO_ACT), timeAtk + reuse);
 	}
@@ -1221,7 +1221,7 @@ public abstract class L2Character extends L2Object
 			sendPacket(sm);
 			return;
 		}
-		
+
 		// prevent casting signets to peace zone
 		if ((skill.getSkillType() == L2SkillType.SIGNET) || (skill.getSkillType() == L2SkillType.SIGNET_CASTTIME))
 		{
@@ -2587,6 +2587,7 @@ public abstract class L2Character extends L2Object
 		/* Aborts any attacks/casts if stunned */
 		abortAttack();
 		abortCast();
+		getAI().stopFollow();
 		getAI().notifyEvent(CtrlEvent.EVT_STUNNED, null);
 		updateAbnormalEffect();
 	}
@@ -5204,6 +5205,12 @@ public abstract class L2Character extends L2Object
 			}
 		}
 		
+		if (player.getTarget() != null && !player.getTarget().isAttackable() && !player.getAccessLevel().allowPeaceAttack())
+		{
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
 		if (player.isConfused())
 		{
 			// If target is confused, send a Server->Client packet ActionFailed
@@ -5226,7 +5233,7 @@ public abstract class L2Character extends L2Object
 		}
 			
 			// Notify AI with AI_INTENTION_ATTACK
-		player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
+		player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);	
 	}
 	
 	/**
@@ -5837,7 +5844,7 @@ public abstract class L2Character extends L2Object
 				}
 			}
 		}
-		
+
 		boolean forceBuff = skill.getSkillType() == L2SkillType.FORCE_BUFF;
 		// For force buff skills, start the effect as long as the player is
 		// casting.
@@ -5950,10 +5957,12 @@ public abstract class L2Character extends L2Object
 		
 		if (skill.isOffensive() && !(skill.getSkillType() == L2SkillType.UNLOCK) && !(skill.getSkillType() == L2SkillType.DELUXE_KEY_UNLOCK))
 		{
+					
 			getAI().clientStartAutoAttack();
 			
 			if(target instanceof L2PcInstance)
 			{
+				
 				((L2PcInstance) target).getAI().clientStartAutoAttack();
 				
 				// Flag the attacker if it's a L2PcInstance outside a PvP area
@@ -5963,10 +5972,16 @@ public abstract class L2Character extends L2Object
 					player = (L2PcInstance) this;
 				else if (this instanceof L2Summon)
 					player = ((L2Summon) this).getOwner();
-				
+						
 				if (player != null)
-					player.updatePvPStatus((L2PcInstance)target);				
-			}
+					player.updatePvPStatus((L2PcInstance)target);	
+				
+				if(target.isInsideZone(ZoneId.PEACE))
+				{
+				   player.abortCast();
+	 			   return;
+				}
+			}			
 		}
 		
 		// Notify the AI of the L2Character with EVT_FINISH_CASTING
@@ -6137,6 +6152,7 @@ public abstract class L2Character extends L2Object
 				
 				if (this instanceof L2Playable)
 				{
+									
 					// Raidboss curse.
 					if (!Config.RAID_DISABLE_CURSE)
 					{

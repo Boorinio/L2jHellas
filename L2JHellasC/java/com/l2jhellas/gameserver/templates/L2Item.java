@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.L2ArmorType;
+import com.l2jhellas.gameserver.emum.L2EtcItemType;
+import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;

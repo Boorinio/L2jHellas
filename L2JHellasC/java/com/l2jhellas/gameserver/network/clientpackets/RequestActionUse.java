@@ -39,7 +39,8 @@ import com.l2jhellas.util.Util;
 
 public final class RequestActionUse extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(RequestActionUse.class.getName());
+	private static final Logger _log = Logger.getLogger(RequestActionUse.class.getName());
+
 	private static final String _C__45_REQUESTACTIONUSE = "[C] 45 RequestActionUse";
 
 	private int _actionId;
@@ -61,9 +62,6 @@ public final class RequestActionUse extends L2GameClientPacket
 
 		if (activeChar == null)
 			return;
-
-		if (Config.DEBUG)
-			_log.finest(activeChar.getName() + " request Action use: id " + _actionId + " 2:" + _ctrlPressed + " 3:" + _shiftPressed);
 
 		// Don't do anything if player is dead or confused
 		if ((activeChar.isFakeDeath() && (_actionId != 0)) || activeChar.isDead() || activeChar.isOutOfControl())

@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.scrips.loaders;
 
-import java.awt.print.Book;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -114,6 +113,7 @@ import com.l2jhellas.gameserver.handlers.itemhandlers.BeastSoulShot;
 import com.l2jhellas.gameserver.handlers.itemhandlers.BeastSpice;
 import com.l2jhellas.gameserver.handlers.itemhandlers.BeastSpiritShot;
 import com.l2jhellas.gameserver.handlers.itemhandlers.BlessedSpiritShot;
+import com.l2jhellas.gameserver.handlers.itemhandlers.Book;
 import com.l2jhellas.gameserver.handlers.itemhandlers.BreakingArrow;
 import com.l2jhellas.gameserver.handlers.itemhandlers.CharChangePotions;
 import com.l2jhellas.gameserver.handlers.itemhandlers.ChestKey;

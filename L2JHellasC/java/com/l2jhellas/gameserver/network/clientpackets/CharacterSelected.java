@@ -75,7 +75,7 @@ public class CharacterSelected extends L2GameClientPacket
 					
 					sendPacket(SkyInfo.sendSky());
 					
-					client.setState(GameClientState.IN_GAME);
+					client.setState(GameClientState.ENTERING);
 					
 					sendPacket(new CharSelected(cha, client.getSessionId().playOkID1));
 					

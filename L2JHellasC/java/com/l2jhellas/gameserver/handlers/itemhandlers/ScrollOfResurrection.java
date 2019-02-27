@@ -60,6 +60,12 @@ public class ScrollOfResurrection implements IItemHandler
 		}
 		if (activeChar.isMovementDisabled())
 			return;
+		
+		if (activeChar.isCursedWeaponEquiped())
+		{
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
 
 		int itemId = item.getItemId();
 		boolean humanScroll = (itemId == 3936 || itemId == 3959 || itemId == 737);

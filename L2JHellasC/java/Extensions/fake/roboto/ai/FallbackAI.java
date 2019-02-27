@@ -20,7 +20,7 @@ public class FallbackAI extends CombatAI
 {
 
 	public FallbackAI(FakePlayer character)
-	{
+	{	
 		super(character);
 	}
 
@@ -31,7 +31,7 @@ public class FallbackAI extends CombatAI
 		setBusyThinking(true);
 		applyDefaultBuffs();
 		handleShots();
-		getCloserTarget(L2PcInstance.class, 50);
+		getCloserTarget(L2PcInstance.class, 70);
 		avoid((L2Character) _fakePlayer.getTarget());
 		setBusyThinking(false);
 	}
@@ -90,22 +90,21 @@ public class FallbackAI extends CombatAI
 		    final int targetY = Rnd.get(400) < 50? avoid.getY(): Y +  (int) (150 * Math.sin(angle));	
 		
 		    moveTo(targetX, targetY, avoid.getZ());
-		    
+
 		    _fakePlayer.setTarget(null);
 		    
 		    if(Rnd.get(400) < 50)
 		       _fakePlayer.broadcastPacket(new CreatureSay(_fakePlayer.getObjectId(), 0, _fakePlayer.getName(), Rnd.get(getAvoidComments())));
 		}
 	}
-	
+
 	public List<String> getAvoidComments()
 	{
 		List<String> worlds = new ArrayList<>();;
 		worlds.add("....");
 		worlds.add("...");
-		worlds.add("???");
-		worlds.add("ti?");
-		worlds.add("fuge re malaka");
+		worlds.add("wtf");
+		worlds.add("pff");
 		return worlds;
 	}
 	

@@ -12,6 +12,9 @@
  */
 package com.l2jhellas.gameserver.model.actor;
 
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -66,7 +69,12 @@ public abstract class L2Playable extends L2Character
 			player.setTarget(this);
 		}
 		else
-			player.sendPacket(ActionFailed.STATIC_PACKET);
+		{
+			if (isAutoAttackable(player) && player.isInsideRadius(this, player.getPhysicalAttackRange(), false, false) && ((Config.GEODATA) ? GeoEngine.canSeeTarget(player,this, isFlying()) : GeoEngine.canSeeTarget(player,this)))
+				player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
+			else
+				player.sendPacket(ActionFailed.STATIC_PACKET);
+		}
 	}
 	
 	@Override

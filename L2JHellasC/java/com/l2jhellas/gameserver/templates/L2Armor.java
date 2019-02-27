@@ -17,6 +17,7 @@ package com.l2jhellas.gameserver.templates;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.l2jhellas.gameserver.emum.L2ArmorType;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;

@@ -555,23 +555,20 @@ public class L2Party
 		// Check the number of party members that must be rewarded
 		// (The party member must be in range to receive its reward)
 		List<L2PcInstance> ToReward = new ArrayList<>();
+		
 		for (L2PcInstance member : membersList)
 		{
-			if (!Util.checkIfInRange(Config.ALT_PARTY_RANGE2, target, member, true))
-				continue;
-			
-			ToReward.add(member);
+			if (Util.checkIfInRange(Config.ALT_PARTY_RANGE2, target, member, true))
+			    ToReward.add(member);
 		}
 		
-		// Avoid null exceptions, if any
-		if (ToReward.isEmpty())
-			return;
-		
-		// Now we can actually distribute the adena reward
-		// (Total adena splitted by the number of party members that are in range and must be rewarded)
-		int count = adena / ToReward.size();
-		for (L2PcInstance member : ToReward)
-			member.addAdena("Party", count, player, true);
+		if (!ToReward.isEmpty())
+		{
+		   int count = adena / ToReward.size();
+		   
+		   for (L2PcInstance member : ToReward)
+			   member.addAdena("Party", count, player, true);
+		}
 	}
 	
 	/**

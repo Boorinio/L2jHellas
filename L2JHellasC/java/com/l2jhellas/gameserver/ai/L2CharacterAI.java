@@ -27,6 +27,7 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_REST;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Effect;
@@ -47,7 +48,6 @@ import com.l2jhellas.gameserver.network.serverpackets.AutoAttackStop;
 import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
-import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
 /**

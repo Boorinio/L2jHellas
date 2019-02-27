@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.instancemanager.BoatManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
@@ -22,7 +23,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.StopMoveInVehicle;
-import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.util.Point3D;
 
 public final class RequestMoveToLocationInVehicle extends L2GameClientPacket

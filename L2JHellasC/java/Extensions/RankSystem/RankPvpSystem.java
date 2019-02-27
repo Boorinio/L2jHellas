@@ -662,6 +662,7 @@ public class RankPvpSystem
 
 		if (Config.REWARD_LEGAL_KILL_ENABLED && !checkLegalKillProtection(pvp))
 			return false;
+		
 		return true;
 	}
 

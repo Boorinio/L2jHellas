@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.handlers.itemhandlers;
 
-import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
@@ -42,11 +41,9 @@ public class Book implements IItemHandler
 	{
 		if (!(playable instanceof L2PcInstance))
 			return;
+		
 		L2PcInstance activeChar = (L2PcInstance) playable;
 		final int itemId = item.getItemId();
-
-		String filename = "data/html/help/" + itemId + ".htm";
-		String content = HtmCache.getInstance().getHtm(filename);
 
 		// Quest item: Lidia's diary
 		if (itemId == 7064)
@@ -55,9 +52,10 @@ public class Book implements IItemHandler
 			activeChar.sendPacket(new RadarControl(0, 1, 51995, -51265, -3104));
 		}
 
-		NpcHtmlMessage itemReply = new NpcHtmlMessage(0);
-		itemReply.setHtml(content);
-		activeChar.sendPacket(itemReply);
+		final NpcHtmlMessage html = new NpcHtmlMessage(0);
+		html.setFile("data/html/help/" + itemId + ".htm");
+		html.setItemId(itemId);
+		activeChar.sendPacket(html);
 
 		activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 	}

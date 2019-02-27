@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -77,13 +78,22 @@ public final class Action extends L2GameClientPacket
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
+		
+		if (!obj.isVisibleFor(activeChar))
+		{
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
 
         if(_actionId == 0)
         	obj.onAction(activeChar);
         else if(_actionId ==1)
-        	obj.onActionShift(activeChar);
-        else
-        	activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+        {   
+			if (!activeChar.isGM() && !(obj instanceof L2Npc && Config.ALT_GAME_VIEWNPC))
+				obj.onAction(activeChar);
+			else
+				obj.onActionShift(activeChar);
+        }
 	}
 	@Override
 	public String getType()

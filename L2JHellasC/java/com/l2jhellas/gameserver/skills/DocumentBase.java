@@ -31,6 +31,8 @@ import org.w3c.dom.Node;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.AbnormalEffect;
 import com.l2jhellas.gameserver.emum.ClassRace;
+import com.l2jhellas.gameserver.emum.L2ArmorType;
+import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.skills.conditions.Condition;
 import com.l2jhellas.gameserver.skills.conditions.ConditionElementSeed;
@@ -65,10 +67,8 @@ import com.l2jhellas.gameserver.skills.funcs.Lambda;
 import com.l2jhellas.gameserver.skills.funcs.LambdaCalc;
 import com.l2jhellas.gameserver.skills.funcs.LambdaConst;
 import com.l2jhellas.gameserver.skills.funcs.LambdaStats;
-import com.l2jhellas.gameserver.templates.L2ArmorType;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
-import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
 abstract class DocumentBase

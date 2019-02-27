@@ -31,6 +31,7 @@ import com.l2jhellas.gameserver.ai.L2AttackableAI;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2SiegeGuardAI;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.emum.L2EtcItemType;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2CommandChannel;
@@ -57,7 +58,6 @@ import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Stats;
-import com.l2jhellas.gameserver.templates.L2EtcItemType;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.shield.antibot.PrivateAntiBot;
 import com.l2jhellas.util.Rnd;
@@ -1120,10 +1120,7 @@ public class L2Attackable extends L2Npc
 				e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * @see com.l2jhellas.gameserver.model.actor.L2Character#addAttackerToAttackByList(net.sf.l2j.gameserver.model.actor.L2Character)
-	 */
+
 	@Override
 	public void addAttackerToAttackByList(L2Character player)
 	{

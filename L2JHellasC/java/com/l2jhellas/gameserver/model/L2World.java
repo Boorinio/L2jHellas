@@ -113,6 +113,23 @@ public final class L2World
 	public void storeObject(L2Object object)
 	{
 		_allObjects.putIfAbsent(object.getObjectId(), object);
+
+		if (object instanceof L2PcInstance)
+		{
+			L2PcInstance player = object.getActingPlayer();
+			if (!player.isTeleporting())
+			{
+				final L2PcInstance old = getPlayer(player.getObjectId());
+				if (old != null)
+				{
+					player.closeNetConnection(false);
+					old.closeNetConnection(false);
+					return;
+				}
+				addToAllPlayers(player);
+			}
+		}
+		
 	}
 
 	public void removeObject(L2Object object)
@@ -241,23 +258,6 @@ public final class L2World
 	
 	public void addVisibleObject(L2Object object, L2WorldRegion newRegion)
 	{
-		// TODO: this code should be obsoleted by protection in putObject func...
-		if (object instanceof L2PcInstance)
-		{
-			L2PcInstance player = object.getActingPlayer();
-			if (!player.isTeleporting())
-			{
-				final L2PcInstance old = getPlayer(player.getObjectId());
-				if (old != null)
-				{
-					player.closeNetConnection(false);
-					old.closeNetConnection(false);
-					return;
-				}
-				addToAllPlayers(player);
-			}
-		}
-		
 		if (!newRegion.isActive())
 		{
 			return;
@@ -371,15 +371,6 @@ public final class L2World
 				}
 				return true;
 			});
-			
-			if (object instanceof L2PcInstance)
-			{
-				final L2PcInstance player = object.getActingPlayer();
-				if (!player.isTeleporting())
-				{
-					removeFromAllPlayers(player);
-				}
-			}
 		}
 	}
 	
@@ -544,7 +535,7 @@ public final class L2World
 	{
 		forEachVisibleObject(object, clazz, 1, c);
 	}
-	
+
 	public <T extends L2Object> void forEachVisibleObjectInRange(L2Object object, Class<T> clazz, int range, Consumer<T> c)
 	{
 		if (object == null)
@@ -574,12 +565,6 @@ public final class L2World
 					final int y2 = (getRegionY(y+1));
 					final int z2 = (getRegionZ(z+1));
 
-					//final int x1 = (x - REGION_X_OFFSET);
-					//final int y1 = (y - REGION_Y_OFFSET);
-					//final int z1 = (z - REGION_Z_OFFSET);
-					//final int x2 = ((x + 1) - REGION_X_OFFSET);
-					//final int y2 = ((y + 1) - REGION_Y_OFFSET);
-					//final int z2 = ((z + 1) - REGION_Z_OFFSET);
 					if (Util.cubeIntersectsSphere(x1, y1, z1, x2, y2, z2, object.getX(), object.getY(), object.getZ(), range))
 					{
 						for (L2Object visibleObject : _worldRegions[x][y][z].getVisibleObjects().values())

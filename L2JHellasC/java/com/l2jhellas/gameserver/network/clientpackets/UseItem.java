@@ -17,6 +17,8 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
+import com.l2jhellas.gameserver.emum.L2ArmorType;
+import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.handler.ItemHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -32,10 +34,8 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.PetItemList;
 import com.l2jhellas.gameserver.network.serverpackets.ShowCalculator;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.templates.L2ArmorType;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
-import com.l2jhellas.gameserver.templates.L2WeaponType;
 
 public final class UseItem extends L2GameClientPacket
 {
@@ -45,7 +45,7 @@ public final class UseItem extends L2GameClientPacket
 	private int _itemId;
 	
 	/** Weapon Equip Task */
-	public static class WeaponEquipTask implements Runnable
+	public class WeaponEquipTask implements Runnable
 	{
 		L2ItemInstance item;
 		L2PcInstance activeChar;
@@ -59,8 +59,10 @@ public final class UseItem extends L2GameClientPacket
 		@Override
 		public void run()
 		{
-			// If character is still engaged in strike we should not change weapon
-			if (activeChar.isAttackingNow())
+			
+            final L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
+
+			if (item == null || activeChar.isAttackingNow())
 				return;
 			
 			// Equip or unEquip

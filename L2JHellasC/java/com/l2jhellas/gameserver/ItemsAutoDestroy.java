@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.L2EtcItemType;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.templates.L2EtcItemType;
 
 public class ItemsAutoDestroy
 {

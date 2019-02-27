@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 
 import Extensions.fake.roboto.FakePlayer;
 
+import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable.TeleportWhereType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.L2CharPosition;
@@ -18,6 +20,7 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -25,6 +28,7 @@ import com.l2jhellas.gameserver.network.serverpackets.MoveToLocation;
 import com.l2jhellas.gameserver.network.serverpackets.MoveToPawn;
 import com.l2jhellas.gameserver.network.serverpackets.StopMove;
 import com.l2jhellas.gameserver.network.serverpackets.StopRotation;
+import com.l2jhellas.gameserver.network.serverpackets.TeleportToLocation;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
@@ -32,13 +36,15 @@ import com.l2jhellas.util.Rnd;
 public abstract class FakePlayerAI
 {
 	protected final FakePlayer _fakePlayer;
+	FakePlayer _target;
 	protected volatile boolean _clientMoving;
 	protected volatile boolean _clientAutoAttacking;
 	private long _moveToPawnTimeout;
 	protected int _clientMovingToPawnOffset;
 	protected boolean _isBusyThinking = false;
 	protected int iterationsOnDeath = 0;
-	private final int toVillageIterationsOnDeath = 10;
+	private final int toVillageIterationsOnDeath = 22;
+	private boolean usingress = false;
 
 	public FakePlayerAI(FakePlayer character)
 	{
@@ -80,16 +86,7 @@ public abstract class FakePlayerAI
 	protected void handleDeath()
 	{
 		if (_fakePlayer.isDead())
-		{
-			if (iterationsOnDeath >= toVillageIterationsOnDeath)
-			{
-				toVillageOnDeath();
-			}
-			iterationsOnDeath++;
-			return;
-		}
-
-		iterationsOnDeath = 0;
+			tryRandomDeathAction();
 	}
 
 	public void setBusyThinking(boolean thinking)
@@ -100,6 +97,87 @@ public abstract class FakePlayerAI
 	public boolean isBusyThinking()
 	{
 		return _isBusyThinking;
+	}
+	
+	protected void tryRandomDeathAction()
+	{
+		List<FakePlayer> targets = new ArrayList<>();
+
+		if(!usingress)
+		{
+			L2World.getInstance().forEachVisibleObjectInRange(_fakePlayer, FakePlayer.class,400, target ->
+			{
+		             if (!target.isDead())     
+		            	 targets.add(target);         
+			});	
+				
+			if(targets.isEmpty()) 
+			{
+				toVillageOnDeath();
+				iterationsOnDeath = 0;	
+				usingress = false;	
+				
+				if(_target!=null)
+				{
+				   _target.getFakeAi().setBusyThinking(false);
+				   _target.setIsInvul(false);
+				}
+				
+				return;
+			}
+				
+			_target = targets.get(Rnd.get(0, targets.size() -1 ));	
+			_target.getFakeAi().setBusyThinking(true);
+			_target.setIsInvul(true);
+			_target.abortAllAttacks();
+			_target.setTarget(_fakePlayer);
+			_target.moveToLocation(_fakePlayer.getX(), _fakePlayer.getY(), _fakePlayer.getZ(),Rnd.get(25, 45));
+			_target.broadcastPacket(new MoveToLocation(_target));
+
+		    L2Skill skill = SkillTable.getInstance().getInfo(2014, 1);
+		    _target.getFakeAi().castSpell(skill);		    
+		    usingress = true;
+		}
+		else if(!_target.isCastingNow() && _target.isInsideRadius(_fakePlayer,80, true, false))
+		{
+			_target.getFakeAi().setBusyThinking(false);
+			_target.setIsInvul(false);
+			ThreadPoolManager.getInstance().scheduleGeneral(new ReviveTask(_fakePlayer), 2500);			
+		}
+		else
+		{
+			iterationsOnDeath++;
+				    
+			if (iterationsOnDeath >= toVillageIterationsOnDeath)
+			{
+				toVillageOnDeath();
+				iterationsOnDeath = 0;	
+				usingress = false;
+				
+				if(_target!=null)
+				{
+				  _target.getFakeAi().setBusyThinking(false);	
+				  _target.setIsInvul(false);
+				}
+			}
+		}
+	}
+	
+	class ReviveTask implements Runnable
+	{
+		FakePlayer _player;
+		
+		ReviveTask(FakePlayer player)
+		{
+			_player = player;
+		}
+		
+		@Override
+		public void run()
+		{
+			_player.doRevive();
+			usingress = false;
+		}
 	}
 	
 	protected void tryTargetRandomCreatureByTypeInRadius(Class<? extends L2Character> L2CharacterClass, int radius)
@@ -179,11 +257,48 @@ public abstract class FakePlayerAI
 
 	protected void toVillageOnDeath()
 	{
+		final Location location = MapRegionTable.getInstance().getTeleToLocation(_fakePlayer, TeleportWhereType.TOWN);
+		_fakePlayer.setTarget(null);
+		
+		_fakePlayer.getFakeAi().setBusyThinking(true);
+		
 		if (_fakePlayer.isDead())
 			_fakePlayer.doRevive();
+		
+		_fakePlayer.getFakeAi().teleportToLocation(location.getX(), location.getY(), location.getZ(), 50);
+				
+		_fakePlayer.broadcastUserInfo();
+		
+		if(Rnd.get(1,2)==1)
+		    _fakePlayer.setFakeAi(new EnchanterAI(_fakePlayer));
+		else
+		    _fakePlayer.setFakeAi(new FallbackAI(_fakePlayer));
 
-		_fakePlayer.teleToLocation(TeleportWhereType.TOWN);		
-		_fakePlayer.onTeleported();
+	    _fakePlayer.getFakeAi().setBusyThinking(false);
+	}
+	
+	protected void teleportToLocation(int x, int y, int z, int randomOffset)
+	{
+		_fakePlayer.stopMove(null);
+		_fakePlayer.abortAttack();
+		_fakePlayer.abortCast();		
+		_fakePlayer.setIsTeleporting(true);
+		_fakePlayer.setTarget(null);		
+		
+		if (randomOffset > 0)
+		{
+			x += Rnd.get(-randomOffset, randomOffset);
+			y += Rnd.get(-randomOffset, randomOffset);
+		}	
+		
+		z += 5;
+		
+		_fakePlayer.broadcastPacket(new TeleportToLocation(_fakePlayer, x, y, z));
+		_fakePlayer.decayMe();		
+		_fakePlayer.setXYZ(x, y, z);
+		_fakePlayer.onTeleported();		
+		_fakePlayer.revalidateZone(true);
+		_fakePlayer.broadcastInfo();
 	}
 
 	protected void clientStopMoving(L2CharPosition loc)
@@ -327,6 +442,12 @@ public abstract class FakePlayerAI
 			_clientMovingToPawnOffset = 0;
 			_fakePlayer.moveToLocation(x, y, z, 0);
 
+			if (_fakePlayer.isSpawnProtected())
+			{
+				 _fakePlayer.stopAbnormalEffect(2097152);
+				 _fakePlayer.setProtection(false);
+			}
+			
 			if (!_fakePlayer.isMoving())
 				return;
 

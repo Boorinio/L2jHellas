@@ -36,7 +36,6 @@ public class SpawnTable
 	private static final SpawnTable _instance = new SpawnTable();
 
 	private final Map<Integer, L2Spawn> _spawntable = new ConcurrentHashMap<Integer, L2Spawn>();
-	private int _npcSpawnCount;
 
 	private int _highestId;
 
@@ -102,16 +101,14 @@ public class SpawnTable
 
 						switch (rset.getInt("periodOfDay"))
 						{
-							case 0: // default
-								_npcSpawnCount += spawnDat.init();
+							case 0: // default				
+								spawnDat.init();
 							break;
 							case 1: // Day
 								DayNightSpawnManager.getInstance().addDayCreature(spawnDat);
-								_npcSpawnCount++;
 							break;
 							case 2: // Night
 								DayNightSpawnManager.getInstance().addNightCreature(spawnDat);
-								_npcSpawnCount++;
 							break;
 						}
 
@@ -120,23 +117,19 @@ public class SpawnTable
 							_highestId = spawnDat.getId();
 					}
 				}
+				else
+					_log.warning("SpawnTable: data missing in npc table for id: " + rset.getInt("npc_templateid") + ".");
 			}
 			rset.close();
 			statement.close();
 		}
 		catch (Exception e)
 		{
-			// problem with initializing spawn, go to next one
-			_log.warning(SpawnTable.class.getName() + ": Spawn could not be initialized: ");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
+			_log.warning("SpawnTable: Spawn could not be initialized: " + e);
 		}
 
 		Util.printSection("Spawnlist");
 		_log.info(SpawnTable.class.getSimpleName() + ": Loaded " + _spawntable.size() + " Npc Spawn Locations.");
-
-		if (Config.DEBUG)
-			_log.info(SpawnTable.class.getSimpleName() + ": Spawning completed, total number of NPCs in the world: " + _npcSpawnCount);
 	}
 
 	public L2Spawn getTemplate(int id)

@@ -1,32 +1,25 @@
 package Extensions.fake.roboto;
 
 
-import java.util.logging.Level;
 
 import Extensions.fake.roboto.ai.FakePlayerAI;
 import Extensions.fake.roboto.helpers.FakeHelpers;
 
-import com.l2jhellas.gameserver.datatables.xml.AdminData;
-import com.l2jhellas.gameserver.datatables.xml.SkillTreeData.FrequentSkill;
-import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2SkillType;
-import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.appearance.PcAppearance;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadManager;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MoveToLocation;
 import com.l2jhellas.gameserver.network.serverpackets.MoveToPawn;
-import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListUpdate;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
 import com.l2jhellas.util.Point3D;
 
@@ -382,98 +375,7 @@ public class FakePlayer extends L2PcInstance
 
 	public synchronized void despawnPlayer()
 	{
-		try
-		{
-			// Put the online status to false
-			setOnlineStatus(false);
-
-			// abort cast & attack and remove the target. Cancels movement aswell.
-			abortAttack();
-			abortCast();
-			stopMove(null);
-			setTarget(null);
-
-			removeMeFromPartyMatch();
-
-			if (isFlying())
-				removeSkill(FrequentSkill.WYVERN_BREATH.getSkill(), false);
-
-			// Stop all scheduled tasks
-			stopAllTimers();
-
-			// Stop signets & toggles effects.
-			for (L2Effect effect : getAllEffects())
-			{
-				if (effect.getSkill().isToggle())
-				{
-					effect.exit();
-					continue;
-				}
-
-				switch (effect.getEffectType())
-				{
-					case SIGNET_GROUND:
-					case SIGNET_EFFECT:
-						effect.exit();
-					break;
-					default:
-					break;
-				}
-			}
-
-			// Remove the Player from the world
-			decayMe();
-
-			// If a party is in progress, leave it
-			if (getParty() != null)
-				getParty().removePartyMember(this, false);
-
-			// If the Player has Pet, unsummon it
-			if (getPet() != null)
-				getPet().unSummon(this);
-
-			// Handle removal from olympiad game
-			if (OlympiadManager.getInstance().isRegistered(this) || getOlympiadGameId() != -1)
-				OlympiadManager.getInstance().removeDisconnectedCompetitor(this);
-
-			// set the status for pledge member list to OFFLINE
-			if (getClan() != null)
-			{
-				L2ClanMember clanMember = getClan().getClanMember(getObjectId());
-				if (clanMember != null)
-					clanMember.setPlayerInstance(null);
-			}
-
-			// deals with sudden exit in the middle of transaction
-			if (getActiveRequester() != null)
-			{
-				setActiveRequester(null);
-				cancelActiveTrade();
-			}
-
-			// If the Player is a GM, remove it from the GM List
-			if (isGM())
-				AdminData.getInstance().deleteGm(this);
-
-			if (getVehicle() != null)
-				getVehicle().oustPlayer(this);
-
-			// Update inventory and remove them from the world
-			getInventory().deleteMe();
-
-			// Update warehouse and remove them from the world
-			clearWarehouse();
-
-			if (getClanId() > 0)
-				getClan().broadcastToOtherOnlineMembers(new PledgeShowMemberListUpdate(this), this);
-
-			L2World.getInstance().removeFromAllPlayers(this);
-
-		}
-		catch (Exception e)
-		{
-			_log.log(Level.WARNING, "Exception on deleteMe()" + e.getMessage(), e);
-		}
+		deleteMe();
 	}
 
 	public void heal()

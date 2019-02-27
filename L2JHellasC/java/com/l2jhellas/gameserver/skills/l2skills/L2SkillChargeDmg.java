@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.skills.l2skills;
 
+import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -26,7 +27,6 @@ import com.l2jhellas.gameserver.network.serverpackets.EtcStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.gameserver.skills.effects.EffectCharge;
-import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
 public class L2SkillChargeDmg extends L2Skill

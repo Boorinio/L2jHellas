@@ -121,7 +121,7 @@ public class L2Spawn
 			_scheduledCount--;
 		}
 	}
-
+	
 	/**
 	 * Constructor of L2Spawn.<BR>
 	 * <BR>
@@ -145,8 +145,6 @@ public class L2Spawn
 	 * @param mobTemplate
 	 *        The L2NpcTemplate to link to this L2Spawn
 	 */
-	
-	@SuppressWarnings("rawtypes")
 	public L2Spawn(L2NpcTemplate mobTemplate) throws SecurityException, ClassNotFoundException, NoSuchMethodException
 	{
 		// Set the _template of the L2Spawn
@@ -167,7 +165,7 @@ public class L2Spawn
 			implementationName = "L2SymbolMaker";
 
 		// Create the generic constructor of L2NpcInstance managed by this L2Spawn
-		Class[] parameters =
+		Class<?>[] parameters =
 		{
 		int.class, Class.forName("com.l2jhellas.gameserver.templates.L2NpcTemplate")
 		};
@@ -476,6 +474,7 @@ public class L2Spawn
 			if (!(tmp instanceof L2Npc))
 				return mob;
 			mob = (L2Npc) tmp;
+			
 			return intializeNpcInstance(mob);
 		}
 		catch (Exception e)
@@ -491,21 +490,25 @@ public class L2Spawn
 	 */
 	private L2Npc intializeNpcInstance(L2Npc mob)
 	{
-
-			int newlocx = getLocx();
-			int newlocy = getLocy();
-			int newlocz = 0;
+		int newlocx = getLocx();
+		int newlocy = getLocy();
+		int newlocz = getLocz();
 			
-			if (Config.GEODATA )
-				newlocz = GeoEngine.getHeight(newlocx,newlocy,getLocz());
-			else
-				newlocz = getLocz();
+		if (Config.GEODATA )
+			newlocz = GeoEngine.getHeight(newlocx,newlocy,getLocz());
+
 
 		if (Math.abs(newlocz - getLocz()) > 200)
 			newlocz = getLocz();
 		
 		mob.stopAllEffects();
-		mob.setHeading(getHeading() < 0 ? Rnd.get(65536) : getHeading());
+		mob.setHeading(getHeading() < 0 ? Rnd.get(65536) : getHeading());	
+
+		// Reset decay info
+		mob.setDecayed(false);
+		
+		// Set the HP and MP of the L2NpcInstance to the max
+		mob.setCurrentHpMp(mob.getMaxHp(), mob.getMaxMp());
 		
 		// setting up champion mobs
 		if (((mob instanceof L2MonsterInstance && !(mob instanceof L2RaidBossInstance)) || (mob instanceof L2RaidBossInstance && Config.CHAMPION_BOSS)) && Config.CHAMPION_FREQUENCY > 0 && !mob.getTemplate().isQuestMonster() && mob.getLevel() >= Config.CHAMPION_MIN_LEVEL && mob.getLevel() <= Config.CHAMPION_MAX_LEVEL)
@@ -520,11 +523,7 @@ public class L2Spawn
 		{
 			mob.setChampion(false);
 		}
-		
-		// Set the HP and MP of the L2NpcInstance to the max
-		mob.setCurrentHpMp(mob.getMaxHp(), mob.getMaxMp());
-		// Reset decay info
-		mob.setDecayed(false);
+
 
 		// Link the L2NpcInstance to this L2Spawn
 		mob.setSpawn(this);
@@ -594,7 +593,7 @@ public class L2Spawn
 	public void respawnNpc(L2Npc oldNpc)
 	{
 		oldNpc.refreshID();
-		/* L2NpcInstance instance = */intializeNpcInstance(oldNpc);
+		intializeNpcInstance(oldNpc);
 	}
 
 	public L2NpcTemplate getTemplate()

@@ -20,6 +20,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
+import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
@@ -46,7 +47,6 @@ import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.gameserver.templates.L2Armor;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
-import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 
@@ -336,7 +336,7 @@ public final class Formulas
 		{
 			if (!cond.test(env))
 				return;
-			env.value += 450;
+			env.value += 370;
 		}
 	}
 

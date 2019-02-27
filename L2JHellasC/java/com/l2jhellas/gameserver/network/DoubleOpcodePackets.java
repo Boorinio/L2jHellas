@@ -66,7 +66,7 @@ public enum DoubleOpcodePackets implements IPacket
 		RequestAutoSoulShot(5,new RequestAutoSoulShot(),GameClientState.IN_GAME),
 		RequestExEnchantSkillInfo(6,new RequestExEnchantSkillInfo(),GameClientState.IN_GAME),
 		RequestExEnchantSkill(7,new RequestExEnchantSkill(),GameClientState.IN_GAME),		
-		RequestManorList(8,new RequestManorList(),GameClientState.IN_GAME),
+		RequestManorList(8,new RequestManorList(),GameClientState.ENTERING),
 		RequestProcureCropList( 9,new RequestProcureCropList(),GameClientState.IN_GAME),
         RequestSetSeed(0x0a,new RequestSetSeed(),GameClientState.IN_GAME),
 		RequestSetCrop(0x0b,new RequestSetCrop(),GameClientState.IN_GAME),	

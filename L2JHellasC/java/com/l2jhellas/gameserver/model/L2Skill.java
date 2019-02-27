@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
+import com.l2jhellas.gameserver.emum.L2ArmorType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.holder.IntIntHolder;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
@@ -54,7 +55,6 @@ import com.l2jhellas.gameserver.skills.effects.EffectTemplate;
 import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.gameserver.skills.funcs.FuncTemplate;
 import com.l2jhellas.gameserver.templates.L2Armor;
-import com.l2jhellas.gameserver.templates.L2ArmorType;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Util;

@@ -185,12 +185,8 @@ public final class L2WorldRegion
 		
 		_visibleObjects.put(object.getObjectId(), object);
 		
-		if (object instanceof L2Playable)
-		{
-			// if this is the first player to enter the region, activate self & neighbors
-			if (!isActive() && (!Config.GRIDS_ALWAYS_ON))
-				startActivation();
-		}
+		if (object instanceof L2Playable && !isActive() && (!Config.GRIDS_ALWAYS_ON))
+			startActivation();
 	}
 	
 	/**
@@ -205,11 +201,8 @@ public final class L2WorldRegion
 		
 		_visibleObjects.remove(object.getObjectId());
 		
-		if (object instanceof L2Playable)
-		{
-			if (areNeighborsEmpty() && !Config.GRIDS_ALWAYS_ON)
-				startDeactivation();
-		}
+		if (object instanceof L2Playable && areNeighborsEmpty() && !Config.GRIDS_ALWAYS_ON)
+			startDeactivation();
 	}
 	
 	public Map<Integer, L2Object> getVisibleObjects()
@@ -269,7 +262,7 @@ public final class L2WorldRegion
 		}
 		return true;
 	}
-	
+
 	public int getRegionX()
 	{
 		return _regionX;

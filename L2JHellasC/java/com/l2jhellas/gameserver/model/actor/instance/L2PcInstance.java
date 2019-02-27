@@ -83,6 +83,9 @@ import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.emum.ClassType;
 import com.l2jhellas.gameserver.emum.DuelState;
+import com.l2jhellas.gameserver.emum.L2ArmorType;
+import com.l2jhellas.gameserver.emum.L2EtcItemType;
+import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.emum.Music;
 import com.l2jhellas.gameserver.emum.Sound;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
@@ -194,6 +197,7 @@ import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.LeaveWorld;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillCanceld;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
+import com.l2jhellas.gameserver.network.serverpackets.MoveToPawn;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ObservationMode;
@@ -249,13 +253,10 @@ import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 import com.l2jhellas.gameserver.taskmanager.PvpFlagTaskManager;
 import com.l2jhellas.gameserver.taskmanager.WaterTaskManager;
 import com.l2jhellas.gameserver.templates.L2Armor;
-import com.l2jhellas.gameserver.templates.L2ArmorType;
-import com.l2jhellas.gameserver.templates.L2EtcItemType;
 import com.l2jhellas.gameserver.templates.L2Henna;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
-import com.l2jhellas.gameserver.templates.L2WeaponType;
 import com.l2jhellas.logs.LogRecorder;
 import com.l2jhellas.shield.antibot.AntiBot;
 import com.l2jhellas.shield.antiflood.FloodProtectors;
@@ -311,7 +312,7 @@ public class L2PcInstance extends L2Playable
 	private static final String DELETE_CHAR_HENNA = "DELETE FROM character_hennas WHERE char_obj_id=? AND slot=? AND class_index=?";
 	private static final String DELETE_CHAR_HENNAS = "DELETE FROM character_hennas WHERE char_obj_id=? AND class_index=?";
 	private static final String DELETE_CHAR_SHORTCUTS = "DELETE FROM character_shortcuts WHERE char_obj_id=? AND class_index=?";
-	
+
 	// Character Recommendations
 	private static final String RESTORE_CHAR_RECOMS = "SELECT char_id,target_id FROM character_recommends WHERE char_id=?";
 	private static final String ADD_CHAR_RECOM = "INSERT INTO character_recommends (char_id,target_id) VALUES (?,?)";
@@ -358,11 +359,6 @@ public class L2PcInstance extends L2Playable
 		public void doPickupItem(L2Object object)
 		{
 			L2PcInstance.this.doPickupItem(object);
-		}
-		
-		public void doInteract(L2Character target)
-		{
-			L2PcInstance.this.doInteract(target);
 		}
 		
 		@Override
@@ -4393,8 +4389,7 @@ public class L2PcInstance extends L2Playable
 			{
 				player.sendPacket(ActionFailed.STATIC_PACKET);
 				return;
-			}
-			
+			}			
 			if ((_inEventCTF && !player._inEventCTF) || (!_inEventCTF && player._inEventCTF))
 			{
 				player.sendPacket(ActionFailed.STATIC_PACKET);
@@ -4404,9 +4399,8 @@ public class L2PcInstance extends L2Playable
 			{
 				player.sendPacket(ActionFailed.STATIC_PACKET);
 				return;
-			}
-			
-			else if ((_inEventVIP && !player._inEventVIP) || (!_inEventVIP && player._inEventVIP))
+			}		
+			if ((_inEventVIP && !player._inEventVIP) || (!_inEventVIP && player._inEventVIP))
 			{
 				player.sendPacket(ActionFailed.STATIC_PACKET);
 				return;
@@ -4470,9 +4464,9 @@ public class L2PcInstance extends L2Playable
 				}
 				else
 				{
-					if (((Config.GEODATA) ? GeoEngine.canSeeTarget(player,this, isFlying()) :GeoEngine.canSeeTarget(player,this)))
+					if (player != this && ((Config.GEODATA) ? GeoEngine.canSeeTarget(player,this, isFlying()) :GeoEngine.canSeeTarget(player,this)))
 					{
-						player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
+						player.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, this);
 					}
 				}
 			}
@@ -4841,7 +4835,7 @@ public class L2PcInstance extends L2Playable
 		if (target instanceof L2PcInstance)
 		{
 			L2PcInstance temp = (L2PcInstance) target;
-			sendPacket(ActionFailed.STATIC_PACKET);
+			sendPacket(new MoveToPawn(this, temp, L2Npc.INTERACTION_DISTANCE));
 			
 			if (temp.getPrivateStoreType() == STORE_PRIVATE_SELL || temp.getPrivateStoreType() == STORE_PRIVATE_PACKAGE_SELL)
 			{
@@ -10967,11 +10961,10 @@ public class L2PcInstance extends L2Playable
 	{
 		if (isSpawnProtected())
 		{
+			stopAbnormalEffect(2097152);
+			setProtection(false);
 			sendMessage("You are no longer under teleport protection.");
 		}
-
-		stopAbnormalEffect(2097152);
-		setProtection(false);
 	}
 	
 	public void setExpertiseIndex(int expertiseIndex)
@@ -13284,9 +13277,7 @@ public class L2PcInstance extends L2Playable
 		CrownManager.getInstance().checkCrowns(this);
 		
 		if (Config.PLAYER_SPAWN_PROTECTION > 0)
-		{
 			setProtection(true);
-		}
 		
 		if (L2Event.active && L2Event.connectionLossData.containsKey(getName()) && L2Event.isOnEvent(this))
 		{
@@ -13462,7 +13453,9 @@ public class L2PcInstance extends L2Playable
 		
 		if (ZodiacMain.voting && !ZodiacMain.HasVoted(this))
  			ZodiacMain.showHtmlWindow(this);
+		
 		loadVotes();
+		
 		if (Config.SERVER_NEWS)
 		{
 			if (isGM())
@@ -13539,36 +13532,37 @@ public class L2PcInstance extends L2Playable
 		if (Hero.getInstance().getHeroes() != null && Hero.getInstance().getHeroes().containsKey(getObjectId()))
 			setHero(true);
 		
-		onPlayerEnter();
-		
-		// Send Macro List
-		getMacroses().sendUpdate();
-		// Send Item List
-		sendPacket(new ItemList(this, false));
 		// Send gg check (even if we are not going to check for reply)
 		queryGameGuard();
 
-
+		spawnMe(getX(), getY(), getZ());	
+		sendPacket(ActionFailed.STATIC_PACKET); 
+		onPlayerEnter();
 		Quest.playerEnter(this);
 		loadTutorial();
-
 		recalcHennaStats();
-		
+			
+		// Send Macro List
+		getMacroses().sendUpdate();
 		sendSkillList();
 		sendPacket(new SkillCoolTime(this));
 		sendPacket(new HennaInfo(this));
 		sendPacket(new FriendList(this));
 		sendPacket(new QuestList(this));
 		sendPacket(new UserInfo(this));
-		broadcastUserInfo();
-		broadcastTitleInfo();
 		sendPacket(new EtcStatusUpdate(this));
 		sendPacket(new ItemList(this, false));
 		sendPacket(new ShortCutInit(this));
 		sendPacket(SystemMessageId.WELCOME_TO_LINEAGE);
-		Announcements.getInstance().showAnnouncements(this);
-		spawnMe(getX(), getY(), getZ());
 
+		broadcastUserInfo();
+		broadcastTitleInfo();
+		
+		// add char to online characters
+		setOnlineStatus(true);
+		
+		Announcements.getInstance().showAnnouncements(this);
+		
 		// engage and notify Partner
 		if (Config.MOD_ALLOW_WEDDING)
 		{
@@ -13590,9 +13584,6 @@ public class L2PcInstance extends L2Playable
 				ThreadPoolManager.getInstance().scheduleGeneral(new entermail(this), 20000);
 
 		setPledgeClass();
-
-		// add char to online characters
-		setOnlineStatus(true);
 
 		notifyFriends(true);
 
@@ -13639,6 +13630,7 @@ public class L2PcInstance extends L2Playable
 
 		if (Config.GAMEGUARD_ENFORCE)
 			sendPacket(new GameGuardQuery());
+		
 		sendPacket(ActionFailed.STATIC_PACKET); //just to avoid target issues
 	}
 	

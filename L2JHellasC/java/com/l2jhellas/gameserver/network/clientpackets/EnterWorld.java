@@ -14,11 +14,8 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.TaskPriority;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.L2GameClient.GameClientState;
 
-/**
- * Enter World Packet Handler
- * Optimized By AbsolutePower
- */
 public class EnterWorld extends L2GameClientPacket
 {
 	private static final String _C__03_ENTERWORLD = "[C] 03 EnterWorld";
@@ -45,6 +42,8 @@ public class EnterWorld extends L2GameClientPacket
 			getClient().closeNow();
 			return;
 		}	
+		
+		getClient().setState(GameClientState.IN_GAME);
 		
 		activeChar.EnterWolrd();
 	}

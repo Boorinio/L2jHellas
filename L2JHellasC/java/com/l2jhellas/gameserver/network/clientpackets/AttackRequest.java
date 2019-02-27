@@ -50,8 +50,7 @@ public final class AttackRequest extends L2GameClientPacket
 		if (activeChar == null)
 			return;
 			
-		if (activeChar.isSpawnProtected())
-			activeChar.setProtection(false);
+		activeChar.onActionRequest();
 
 		if (activeChar.inObserverMode())
 		{
@@ -68,6 +67,12 @@ public final class AttackRequest extends L2GameClientPacket
 			target = L2World.getInstance().findObject(_objectId);
 		
 		if (target == null)
+		{
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
+		
+		if (!target.isVisibleFor(activeChar))
 		{
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
@@ -94,9 +99,9 @@ public final class AttackRequest extends L2GameClientPacket
 		else
 		{
 			if ((target.getObjectId() != activeChar.getObjectId()) && !activeChar.isInStoreMode() && activeChar.getActiveRequester() == null)
-				target.onForcedAttack(activeChar);
-			else
-				sendPacket(ActionFailed.STATIC_PACKET);
+			    target.onForcedAttack(activeChar);
+		    else
+			   sendPacket(ActionFailed.STATIC_PACKET);	
 		}
 	}
 

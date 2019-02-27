@@ -14,6 +14,8 @@
  */
 package com.l2jhellas.gameserver.templates;
 
+import com.l2jhellas.gameserver.emum.L2EtcItemType;
+
 public final class L2EtcItem extends L2Item
 {
 	/**
