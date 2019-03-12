@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2World;
@@ -101,10 +100,6 @@ public class AdminAnnouncements implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_announce"))
 		{
-			if (Config.GM_ANNOUNCER_NAME)
-			{
-				command += " [" + activeChar.getName() + "]";
-			}
 			Announcements.getInstance().handleAnnounce(command, 15);
 		}
 		

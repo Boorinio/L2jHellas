@@ -128,7 +128,6 @@ import com.l2jhellas.gameserver.handlers.itemhandlers.EnergyStone;
 import com.l2jhellas.gameserver.handlers.itemhandlers.Firework;
 import com.l2jhellas.gameserver.handlers.itemhandlers.FishShots;
 import com.l2jhellas.gameserver.handlers.itemhandlers.Harvester;
-import com.l2jhellas.gameserver.handlers.itemhandlers.HeroCustomItem;
 import com.l2jhellas.gameserver.handlers.itemhandlers.JackpotSeed;
 import com.l2jhellas.gameserver.handlers.itemhandlers.MOSKey;
 import com.l2jhellas.gameserver.handlers.itemhandlers.MapForestOfTheDead;
@@ -201,17 +200,12 @@ import com.l2jhellas.gameserver.handlers.usercommandhandlers.SiegeStatus;
 import com.l2jhellas.gameserver.handlers.usercommandhandlers.Time;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.BankingCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.CastleCmd;
-import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.ClCmd;
-import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.MailCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.OnlinePlayersCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.PMonoffCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.PremiumCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.PvpInfoCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.ServerRestartVoteCmd;
-import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.SetCmd;
-import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.StatCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.TradeonoffCmd;
-import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.VersionCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.VipTeleportCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.VoiceInfoCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.WeddingCmd;
@@ -407,7 +401,6 @@ public class MasterHandler
 			Firework.class,
 			FishShots.class,
 			Harvester.class,
-			(Config.HERO_CUSTOM_ITEMS ? HeroCustomItem.class : null),
 			JackpotSeed.class,
 			MapForestOfTheDead.class,
 			Maps.class,
@@ -488,18 +481,13 @@ public class MasterHandler
 		{
 			// Voiced Command Handlers
 			(Config.BANKING_SYSTEM_ENABLED ? BankingCmd.class : null),
-			CastleCmd.class,
-			(Config.ALLOW_CLAN_LEADER_COMMAND ? ClCmd.class : null),
-			(Config.ENABLED_MESSAGE_SYSTEM ? MailCmd.class : null),
+			CastleCmd.class,			
 			(Config.ONLINE_VOICE_ALLOW ? OnlinePlayersCmd.class : null),
 			(Config.ALLOW_PLAYERS_REFUSAL ? PMonoffCmd.class : null),
 			PremiumCmd.class,
 			(Config.RANK_PVP_SYSTEM_ENABLED && Config.PVP_INFO_COMMAND_ENABLED && Config.RANK_PVP_SYSTEM_ENABLED && !Config.PVP_INFO_USER_COMMAND_ENABLED ? PvpInfoCmd.class : null),
 			(Config.ALLOW_SERVER_RESTART_COMMAND ? ServerRestartVoteCmd.class : null),
-			SetCmd.class,
-			(Config.ALLOW_STAT_COMMAND ? StatCmd.class : null),
 			(Config.ALLOW_TRADEOFF_COMMAND ? TradeonoffCmd.class : null),
-			(Config.ALLOW_VERSION_COMMAND ? VersionCmd.class : null),
 			(Config.ALLOW_VIPTELEPORT_COMMAND ? VipTeleportCmd.class : null),
 			(Config.ALLOW_INFO_COMMAND ? VoiceInfoCmd.class : null),
 			(Config.MOD_ALLOW_WEDDING ? WeddingCmd.class : null),

@@ -15,12 +15,12 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.sql.NpcData;
+import com.l2jhellas.gameserver.emum.AbnormalEffect;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+import com.l2jhellas.gameserver.model.zone.ZoneId;
 
 public class UserInfo extends L2GameServerPacket
 {
@@ -45,6 +45,7 @@ public class UserInfo extends L2GameServerPacket
 		_swimRunSpd = _flRunSpd = _flyRunSpd = _runSpd;
 		_swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
 		_relation = _activeChar.isClanLeader() ? 0x40 : 0;
+		
 		if (_activeChar.getSiegeState() == 1)
 		{
 			_relation |= 0x180;
@@ -75,12 +76,8 @@ public class UserInfo extends L2GameServerPacket
 		writeD(_activeChar.getObjectId());
 		writeS(_activeChar.getName());
 		writeD(_activeChar.getRace().ordinal());
-		writeD(_activeChar.getAppearance().getSex() ? 1 : 0);
-
-		if (_activeChar.getClassIndex() == 0)
-			writeD(_activeChar.getClassId().getId());
-		else
-			writeD(_activeChar.getBaseClass());
+		writeD(_activeChar.getAppearance().getSex().ordinal());
+		writeD(_activeChar.getClassIndex() == 0 ? _activeChar.getClassId().getId():_activeChar.getBaseClass());
 
 		writeD(_activeChar.getLevel());
 		writeQ(_activeChar.getExp());
@@ -202,8 +199,8 @@ public class UserInfo extends L2GameServerPacket
 		L2Summon pet = _activeChar.getPet();
 		if (_activeChar.getMountType() != 0 && pet != null)
 		{
-			writeF(pet.getTemplate().collisionRadius);
-			writeF(pet.getTemplate().collisionHeight);
+			writeF(pet.getTemplate().getCollisionRadius());
+			writeF(pet.getTemplate().getCollisionHeight());
 		}
 		else
 		{
@@ -217,19 +214,11 @@ public class UserInfo extends L2GameServerPacket
 		writeD(_activeChar.isGM() ? 1 : 0); // builder level
 
 		String title = _activeChar.getTitle();
+		
 		if (_activeChar.getAppearance().getInvisible() && _activeChar.isGM())
-		{
 			title = "Invisible";
-		}
-		if (_activeChar.getPoly().isMorphed())
-		{
-			L2NpcTemplate polyObj = NpcData.getInstance().getTemplate(_activeChar.getPoly().getPolyId());
-			if (polyObj != null)
-			{
-				title += " - " + polyObj.name;
-			}
-		}
-		writeS(title);
+		
+		writeS((_activeChar.getPoly().isMorphed()) ? "Morphed" : title);
 
 		writeD(_activeChar.getClanId());
 		writeD(_activeChar.getClanCrestId());
@@ -245,22 +234,21 @@ public class UserInfo extends L2GameServerPacket
 		writeD(_activeChar.getPvpKills());
 
 		writeH(_activeChar.getCubics().size());
+		
 		for (int id : _activeChar.getCubics().keySet())
-		{
 			writeH(id);
-		}
-
+		
 		writeC(_activeChar.isInPartyMatchRoom() ? 1 : 0);
 		
-		writeD(_activeChar.getAbnormalEffect());
+		writeD(_activeChar.getAppearance().getInvisible() && _activeChar.isGM() ? _activeChar.getAbnormalEffect() | AbnormalEffect.STEALTH.getMask():_activeChar.getAbnormalEffect());
 		
-		writeC(_activeChar.isFlying() ? 2 : 0);
+		writeC(_activeChar.isInsideZone(ZoneId.WATER) ? 1 : _activeChar.isFlying() ? 2 : 0);
 
 		writeD(_activeChar.getClanPrivileges());
 
 		writeH(_activeChar.getRecomLeft()); // c2 recommendations remaining
 		writeH(_activeChar.getRecomHave()); // c2 recommendations received
-		writeD(0x00);
+		writeD(_activeChar.getMountObjectID() > 0 ? _activeChar.getMountObjectID() + 1000000 : 0);
 		writeH(_activeChar.getInventoryLimit());
 
 		writeD(_activeChar.getClassId().getId());
@@ -269,17 +257,7 @@ public class UserInfo extends L2GameServerPacket
 		writeD((int) _activeChar.getCurrentCp());
 		writeC(_activeChar.isMounted() ? 0 : _activeChar.getEnchantEffect());
 
-		if (_activeChar.getTeam() == 1)
-		{
-			writeC(0x01); // team circle around feet 1= Blue, 2 = red
-		}
-		else if (_activeChar.getTeam() == 2)
-		{
-			writeC(0x02); // team circle around feet 1= Blue, 2 = red
-		}
-		else {
-			writeC(0x00); // team circle around feet 1= Blue, 2 = red
-		}
+		writeC(_activeChar.getTeam().getId());
 
 		writeD(_activeChar.getClanCrestLargeId());
 		writeC(_activeChar.isNoble() ? 1 : 0); // 0x01: symbol on char menu ctrl+I
@@ -289,9 +267,9 @@ public class UserInfo extends L2GameServerPacket
 		writeD(_activeChar.GetFishx()); // fishing x
 		writeD(_activeChar.GetFishy()); // fishing y
 		writeD(_activeChar.GetFishz()); // fishing z
+		
 		writeD(_activeChar.getAppearance().getNameColor());
 
-		// new c5
 		writeC(_activeChar.isRunning() ? 0x01 : 0x00); // changes the Speed display on Status Window
 
 		writeD(_activeChar.getPledgeClass()); // changes the text above CP on Status Window
@@ -301,10 +279,7 @@ public class UserInfo extends L2GameServerPacket
 
 		// writeD(0x00); // ??
 
-		if (_activeChar.isCursedWeaponEquiped())
-			writeD(CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()));
-		else
-			writeD(0x00);
+		writeC(_activeChar.isCursedWeaponEquiped() ? CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()) : 0);		
 	}
 
 	@Override

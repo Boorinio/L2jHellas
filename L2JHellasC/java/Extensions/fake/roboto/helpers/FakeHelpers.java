@@ -29,6 +29,7 @@ import Extensions.fake.roboto.ai.WindRiderAI;
 
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
 import com.l2jhellas.gameserver.emum.ClassRace;
+import com.l2jhellas.gameserver.emum.Sex;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -300,8 +301,8 @@ public class FakeHelpers
 	public static PcAppearance getRandomAppearance(ClassRace race)
 	{
 
-		boolean randomSex = Rnd.get(1, 2) == 1 ? false : true;
-		int hairStyle = Rnd.get(0, randomSex == false ? 4 : 6);
+		Sex randomSex = Rnd.get(1, 2) == 1 ? Sex.MALE : Sex.FEMALE;
+		int hairStyle = Rnd.get(0, randomSex == Sex.MALE ? 4 : 6);
 		int hairColor = Rnd.get(0, 3);
 		int faceId = Rnd.get(0, 2);
 

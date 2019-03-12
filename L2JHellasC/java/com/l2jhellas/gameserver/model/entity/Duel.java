@@ -5,11 +5,14 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Future;
 
+
+
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.emum.DuelResult;
 import com.l2jhellas.gameserver.emum.DuelState;
 import com.l2jhellas.gameserver.emum.Music;
+import com.l2jhellas.gameserver.emum.Team;
 import com.l2jhellas.gameserver.instancemanager.DuelManager;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
@@ -309,7 +312,7 @@ public class Duel
 			{
 				partyPlayer.cancelActiveTrade();
 				partyPlayer.setDuelState(DuelState.DUELLING);
-				partyPlayer.setTeam(1);
+				partyPlayer.setTeam(Team.BLUE);
 				partyPlayer.broadcastUserInfo();
 				
 				final L2Summon summon = partyPlayer.getPet();
@@ -323,7 +326,7 @@ public class Duel
 			{
 				partyPlayer.cancelActiveTrade();
 				partyPlayer.setDuelState(DuelState.DUELLING);
-				partyPlayer.setTeam(2);
+				partyPlayer.setTeam(Team.RED);
 				partyPlayer.broadcastUserInfo();
 				
 				final L2Summon summon = partyPlayer.getPet();
@@ -344,9 +347,9 @@ public class Duel
 		else
 		{
 			_playerA.setDuelState(DuelState.DUELLING);
-			_playerA.setTeam(1);
+			_playerA.setTeam(Team.BLUE);
 			_playerB.setDuelState(DuelState.DUELLING);
-			_playerB.setTeam(2);
+			_playerB.setTeam(Team.RED);
 			
 			ExDuelReady ready = new ExDuelReady(0);
 			ExDuelStart start = new ExDuelStart(0);
@@ -409,7 +412,7 @@ public class Duel
 			for (L2PcInstance partyPlayer : _playerA.getParty().getPartyMembers())
 			{
 				partyPlayer.setIsInDuel(0);
-				partyPlayer.setTeam(0);
+				partyPlayer.setTeam(Team.NONE);
 				partyPlayer.broadcastUserInfo();
 				
 				final L2Summon summon = partyPlayer.getPet();
@@ -420,7 +423,7 @@ public class Duel
 			for (L2PcInstance partyPlayer : _playerB.getParty().getPartyMembers())
 			{
 				partyPlayer.setIsInDuel(0);
-				partyPlayer.setTeam(0);
+				partyPlayer.setTeam(Team.NONE);
 				partyPlayer.broadcastUserInfo();
 				
 				final L2Summon summon = partyPlayer.getPet();
@@ -431,7 +434,7 @@ public class Duel
 		else
 		{
 			_playerA.setIsInDuel(0);
-			_playerA.setTeam(0);
+			_playerA.setTeam(Team.NONE);
 			_playerA.broadcastUserInfo();
 			
 			L2Summon summon = _playerA.getPet();
@@ -440,7 +443,7 @@ public class Duel
 				summon.updateAbnormalEffect();
 			
 			_playerB.setIsInDuel(0);
-			_playerB.setTeam(0);
+			_playerB.setTeam(Team.NONE);
 			_playerB.broadcastUserInfo();
 			
 			summon = _playerB.getPet();

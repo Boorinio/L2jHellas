@@ -66,7 +66,7 @@ public class SiegeStatus implements IUserCommandHandler
                break;
             
             final L2CastleZone zone = siege.getCastle().getZone();
-            for (L2PcInstance member : clan.getOnlineMembers(0))
+            for (L2PcInstance member : clan.getOnlineMembers())
                StringUtil.append(content, "<tr><td width=170>", member.getName(), "</td><td width=100>", (zone.isInsideZone(member.getX(), member.getY(), member.getZ())) ? IN_PROGRESS : OUTSIDE_ZONE, "</td></tr>");
             
             NpcHtmlMessage html = new NpcHtmlMessage(0);

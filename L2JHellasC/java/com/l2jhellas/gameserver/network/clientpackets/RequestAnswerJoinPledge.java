@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.model.L2Clan;
+import com.l2jhellas.gameserver.model.L2Clan.SubPledge;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.JoinPledge;
@@ -64,9 +65,7 @@ public final class RequestAnswerJoinPledge extends L2GameClientPacket
 		else
 		{
 			if (!(requestor.getRequest().getRequestPacket() instanceof RequestJoinPledge))
-			{
-				return; // hax
-			}
+				return;
 
 			final RequestJoinPledge requestPacket = (RequestJoinPledge) requestor.getRequest().getRequestPacket();
 			final L2Clan clan = requestor.getClan();
@@ -77,30 +76,43 @@ public final class RequestAnswerJoinPledge extends L2GameClientPacket
 				activeChar.sendPacket(jp);
 
 				activeChar.setPledgeType(requestPacket.getPledgeType());
-				if (requestPacket.getPledgeType() == L2Clan.SUBUNIT_ACADEMY)
+
+				switch (requestPacket.getPledgeType())
 				{
-					activeChar.setPowerGrade(9); // Academy
-					activeChar.setLvlJoinedAcademy(activeChar.getLevel());
+					case L2Clan.SUBUNIT_ACADEMY:
+						activeChar.setPowerGrade(9);
+						activeChar.setLvlJoinedAcademy(activeChar.getLevel());
+						break;
+					
+					case L2Clan.SUBUNIT_ROYAL1:
+					case L2Clan.SUBUNIT_ROYAL2:
+						activeChar.setPowerGrade(7);
+						break;
+					
+					case L2Clan.SUBUNIT_KNIGHT1:
+					case L2Clan.SUBUNIT_KNIGHT2:
+					case L2Clan.SUBUNIT_KNIGHT3:
+					case L2Clan.SUBUNIT_KNIGHT4:
+						activeChar.setPowerGrade(8);
+						break;
+					
+					default:
+						activeChar.setPowerGrade(6);
 				}
-				else
-				{
-					activeChar.setPowerGrade(5); // new member starts at 5, not confirmed
-				}
+				
 				clan.addClanMember(activeChar);
 				activeChar.setClanPrivileges(activeChar.getClan().getRankPrivs(activeChar.getPowerGrade()));
 
 				activeChar.sendPacket(SystemMessageId.ENTERED_THE_CLAN);
-
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_JOINED_CLAN);
-				sm.addString(activeChar.getName());
-				clan.broadcastToOnlineMembers(sm);
-				sm = null;
-
+				clan.broadcastToOtherOnlineMembers(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_JOINED_CLAN).addCharName(activeChar), activeChar);
 				clan.broadcastToOtherOnlineMembers(new PledgeShowMemberListAdd(activeChar), activeChar);
 				clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
 
-				// this activates the clan tab on the new member
-				activeChar.sendPacket(new PledgeShowMemberListAll(clan, activeChar));
+				activeChar.sendPacket(new PledgeShowMemberListAll(clan, 0));
+				
+				for (SubPledge sp : activeChar.getClan().getAllSubPledges())
+					activeChar.sendPacket(new PledgeShowMemberListAll(clan, sp.getId()));
+				
 				activeChar.setClanJoinExpiryTime(0);
 				activeChar.broadcastUserInfo();
 			}

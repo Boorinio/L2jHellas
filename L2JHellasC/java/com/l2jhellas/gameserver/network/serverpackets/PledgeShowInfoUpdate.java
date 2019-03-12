@@ -31,22 +31,21 @@ public class PledgeShowInfoUpdate extends L2GameServerPacket
 	{
 		// ddddddddddSdd
 		writeC(0x88);
-		// sending empty data so client will ask all the info in response ;)
 		writeD(_clan.getClanId());
 		writeD(_clan.getCrestId());
-		writeD(_clan.getLevel()); // clan level
+		writeD(_clan.getLevel()); 
 		writeD(_clan.hasCastle());
 		writeD(_clan.hasHideout());
-		writeD(0); // displayed in the "tree" view (with the clan skills)
-		writeD(_clan.getReputationScore()); // clan reputation score
+		writeD(_clan.getRank());
+		writeD(_clan.getReputationScore());
 		
 		writeD(0);
 		writeD(0);
 
 		writeD(_clan.getAllyId());
-		writeS(_clan.getAllyName()); //c5
-		writeD(_clan.getAllyCrestId()); //c5
-		writeD(_clan.isAtWar() ? 1 : 0); //c5
+		writeS(_clan.getAllyName()); 
+		writeD(_clan.getAllyCrestId());
+		writeD(_clan.isAtWar() ? 1 : 0);
 	}
 
 	@Override

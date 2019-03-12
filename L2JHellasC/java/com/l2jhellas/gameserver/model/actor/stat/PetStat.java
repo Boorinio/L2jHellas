@@ -14,11 +14,12 @@
  */
 package com.l2jhellas.gameserver.model.actor.stat;
 
-import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
+
 import com.l2jhellas.gameserver.datatables.xml.PetData;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
+import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -66,7 +67,7 @@ public class PetStat extends SummonStat
 	@Override
 	public final boolean addLevel(byte value)
 	{
-		if (getLevel() + value > (ExperienceData.getInstance().getMaxLevel() - 1))
+		if (getLevel() + value > (Experience.MAX_LEVEL - 1))
 			return false;
 
 		boolean levelIncreased = super.addLevel(value);
@@ -74,7 +75,7 @@ public class PetStat extends SummonStat
 		// Sync up exp with current level
 		if (getExp() > getExpForLevel(getLevel() + 1) || getExp() < getExpForLevel(getLevel()))
 		{
-			setExp(ExperienceData.getInstance().getExpForLevel(getLevel()));
+			setExp(Experience.LEVEL[getLevel()]);
 		}
 
 		if (levelIncreased)

@@ -29,7 +29,6 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeSkillList;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
-import com.l2jhellas.logs.GMAudit;
 
 /**
  * This class handles following admin commands:
@@ -68,8 +67,6 @@ public class AdminSkill implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		GMAudit.auditGMAction(activeChar.getName(), command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"), "");
-
 		if (command.equals("admin_show_skills"))
 			showMainPage(activeChar);
 		else if (command.startsWith("admin_remove_skills"))
@@ -470,7 +467,7 @@ public class AdminSkill implements IAdminCommandHandler
 			activeChar.sendMessage("You gave the Clan Skill: " + skillname + " to the clan " + player.getClan().getName() + ".");
 
 			activeChar.getClan().broadcastToOnlineMembers(new PledgeSkillList(activeChar.getClan()));
-			for (L2PcInstance member : activeChar.getClan().getOnlineMembers(""))
+			for (L2PcInstance member : activeChar.getClan().getOnlineMembers())
 			{
 				member.sendSkillList();
 			}

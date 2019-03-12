@@ -26,7 +26,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2ControllableMobInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.logs.GMAudit;
 
 /**
  * This class handles following admin commands:
@@ -50,9 +49,6 @@ public class AdminKill implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		String target = (activeChar.getTarget() != null) ? activeChar.getTarget().getName() : "no-target";
-		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
-
 		if (command.startsWith("admin_kill"))
 		{
 			StringTokenizer st = new StringTokenizer(command, " ");

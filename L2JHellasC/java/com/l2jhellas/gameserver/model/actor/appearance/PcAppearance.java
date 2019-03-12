@@ -14,12 +14,15 @@
  */
 package com.l2jhellas.gameserver.model.actor.appearance;
 
+import com.l2jhellas.gameserver.emum.Sex;
+
+
 public class PcAppearance
 {
 	private byte _face;
 	private byte _hairColor;
 	private byte _hairStyle;
-	private boolean _sex; // Female true(1)
+	private Sex _sex;
 	/** true if the player is invisible */
 	private boolean _invisible = false;
 	/** The hexadecimal Color of players name (white is 0xFFFFFF) */
@@ -27,12 +30,12 @@ public class PcAppearance
 	/** The hexadecimal Color of players name (white is 0xFFFFFF) */
 	private int _titleColor = 0xFFFF77;
 
-	public PcAppearance(byte Face, byte HColor, byte HStyle, boolean Sex)
+	public PcAppearance(byte Face, byte HColor, byte HStyle,Sex sex)
 	{
 		_face = Face;
 		_hairColor = HColor;
 		_hairStyle = HStyle;
-		_sex = Sex;
+		_sex = sex;
 	}
 
 	public final byte getFace()
@@ -74,17 +77,14 @@ public class PcAppearance
 		_hairStyle = (byte) value;
 	}
 
-	public final boolean getSex()
+	public Sex getSex()
 	{
 		return _sex;
 	}
-
-	/**
-	 * @param boolean isfemale
-	 */
-	public final void setSex(boolean isfemale)
+	
+	public void setSex(Sex sex)
 	{
-		_sex = isfemale;
+		_sex = sex;
 	}
 
 	public void setInvisible()

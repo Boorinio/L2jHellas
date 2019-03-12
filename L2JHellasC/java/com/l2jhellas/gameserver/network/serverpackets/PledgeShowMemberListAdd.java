@@ -25,6 +25,8 @@ public class PledgeShowMemberListAdd extends L2GameServerPacket
 	private int _classId;
 	private int _isOnline;
 	private int _pledgeType;
+	private final int _race;
+	private final int _sex;
 
 	public PledgeShowMemberListAdd(L2PcInstance player)
 	{
@@ -33,21 +35,19 @@ public class PledgeShowMemberListAdd extends L2GameServerPacket
 		_classId = player.getClassId().getId();
 		_isOnline = (player.isOnline() == 1 ? player.getObjectId() : 0);
 		_pledgeType = player.getPledgeType();
+		_race = player.getRace().ordinal();
+		_sex = player.getAppearance().getSex().ordinal();
 	}
 
 	public PledgeShowMemberListAdd(L2ClanMember cm)
 	{
-		try
-		{
-			_name = cm.getName();
-			_lvl = cm.getLevel();
-			_classId = cm.getClassId();
-			_isOnline = (cm.isOnline() ? cm.getObjectId() : 0);
-			_pledgeType = cm.getPledgeType();
-		}
-		catch (Exception e)
-		{
-		}
+		_name = cm.getName();
+		_lvl = cm.getLevel();
+		_classId = cm.getClassId();
+		_isOnline = (cm.isOnline() ? cm.getObjectId() : 0);
+		_pledgeType = cm.getPledgeType();
+		_race = cm.getPlayerInstance().getRace().ordinal();
+		_sex = cm.getPlayerInstance().getAppearance().getSex().ordinal();
 	}
 
 	@Override
@@ -57,9 +57,9 @@ public class PledgeShowMemberListAdd extends L2GameServerPacket
 		writeS(_name);
 		writeD(_lvl);
 		writeD(_classId);
-		writeD(0);
-		writeD(1);
-		writeD(_isOnline); // 1=online 0=offline
+		writeD(_sex);
+		writeD(_race);
+		writeD(_isOnline);
 		writeD(_pledgeType);
 	}
 

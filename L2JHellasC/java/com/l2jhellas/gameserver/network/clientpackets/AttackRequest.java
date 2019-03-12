@@ -72,7 +72,7 @@ public final class AttackRequest extends L2GameClientPacket
 			return;
 		}
 		
-		if (!target.isVisibleFor(activeChar))
+		if (!target.isVisible())
 		{
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;

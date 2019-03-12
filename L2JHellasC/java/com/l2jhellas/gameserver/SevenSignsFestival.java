@@ -31,7 +31,6 @@ import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
-import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Clan;
@@ -43,6 +42,7 @@ import com.l2jhellas.gameserver.model.SpawnListener;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2FestivalMonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
@@ -865,7 +865,7 @@ public class SevenSignsFestival implements SpawnListener
 	 */
 	public static final int getMaxLevelForFestival(int festivalId)
 	{
-		int maxLevel = (ExperienceData.getInstance().getMaxLevel() - 1);
+		int maxLevel = (Experience.MAX_LEVEL - 1);
 
 		switch (festivalId)
 		{

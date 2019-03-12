@@ -21,14 +21,11 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Formulas;
-import com.l2jhellas.logs.LogRecorder;
 
 public class Mdam implements ISkillHandler
 {
@@ -126,19 +123,6 @@ public class Mdam implements ISkillHandler
 			boolean mcrit = Formulas.getInstance().calcMCrit(activeChar.getMCriticalHit(target, skill));
 
 			int damage = (int) Formulas.getInstance().calcMagicDam(activeChar, target, skill, ss, bss, mcrit);
-
-			if (damage > 5000 && activeChar instanceof L2PcInstance)
-			{
-				String name = "";
-				if (target instanceof L2RaidBossInstance)
-					name = "RaidBoss ";
-				if (target instanceof L2Npc)
-					name += target.getName() + "(" + ((L2Npc) target).getTemplate().npcId + ")";
-				if (target instanceof L2PcInstance)
-					name = target.getName() + "(" + target.getObjectId() + ") ";
-				name += target.getLevel() + " lvl";
-				LogRecorder.add(activeChar.getName() + "(" + activeChar.getObjectId() + ") " + activeChar.getLevel() + " lvl did damage " + damage + " with skill " + skill.getName() + "(" + skill.getId() + ") to " + name, "damage_mdam");
-			}
 
 			// Why are we trying to reduce the current target HP here?
 			// Why not inside the below "if" condition, after the effects

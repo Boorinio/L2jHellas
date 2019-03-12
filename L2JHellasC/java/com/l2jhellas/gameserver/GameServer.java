@@ -59,7 +59,6 @@ import com.l2jhellas.gameserver.datatables.xml.ArmorSetsData;
 import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
-import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.datatables.xml.FishTable;
 import com.l2jhellas.gameserver.datatables.xml.HelperBuffData;
 import com.l2jhellas.gameserver.datatables.xml.HennaData;
@@ -219,7 +218,7 @@ public class GameServer
 		{
 			ForumsBBSManager.getInstance();
 		}
-		ExperienceData.getInstance();
+		
 		ClanTable.getInstance();
 		CharTemplateData.getInstance();
 		LevelUpData.getInstance();
@@ -404,8 +403,7 @@ public class GameServer
 			RankLoader.load();
 		else
 			_log.log(Level.INFO, " - Rank PvP System: Disabled");
-		
-
+	
 		if (Config.ZODIAC_ENABLE)
 		{
 			ZodiacMain.ZodiacIn();
@@ -418,7 +416,9 @@ public class GameServer
 		{
 			new EventHandlerTvT().startHandler();
 		}
+		
 		BalanceLoad.LoadEm();
+		
 		if (Config.ALLOW_SEQURITY_QUE)
 		{
 			AntiBot.getInstance();
@@ -460,6 +460,7 @@ public class GameServer
 		{
 			new File(PackRoot.DATAPACK_ROOT, "config/Others/ChatFilter.txt").createNewFile();
 		}
+		
 		/*** Main ***/
 		// Create directories
 		File logFolder = new File(PackRoot.DATAPACK_ROOT, LOG_FOLDER);
@@ -474,6 +475,7 @@ public class GameServer
 		geodata.mkdir();
 		File donates = new File(PackRoot.DATAPACK_ROOT, "data/donates");
 		donates.mkdir();
+		
 
 		// Create input stream for log file -- or store file data into memory
 		InputStream is = new FileInputStream(new File(LOG_NAME));

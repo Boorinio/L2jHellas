@@ -16,13 +16,12 @@ package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
 import java.util.StringTokenizer;
 
+import com.l2jhellas.gameserver.emum.PolyType;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
-import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
+import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 
 /**
  * This class handles following admin commands: polymorph
@@ -30,43 +29,77 @@ import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
 public class AdminPolymorph implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_polymorph",
 		"admin_unpolymorph",
 		"admin_polymorph_menu",
 		"admin_unpolymorph_menu"
-	};/** @formatter:on */
+	};
 
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
+		if (activeChar.isMounted())
+			return false;
+		
+		L2Object target = activeChar.getTarget();
+		
+		if (target == null)
+			target = activeChar;
+		
 		if (command.startsWith("admin_polymorph"))
 		{
-			StringTokenizer st = new StringTokenizer(command);
-			L2Object target = activeChar.getTarget();
 			try
 			{
+				final StringTokenizer st = new StringTokenizer(command);				
 				st.nextToken();
-				String p1 = st.nextToken();
-				if (st.hasMoreTokens())
+				
+				PolyType info = PolyType.NPC;
+				
+				if (st.countTokens() > 1)
+					info = Enum.valueOf(PolyType.class, st.nextToken().toUpperCase());
+				
+				final int npcId = Integer.parseInt(st.nextToken());
+
+				if (!target.getPoly().polymorph(info, npcId))
 				{
-					String p2 = st.nextToken();
-					doPolymorph(activeChar, target, p2, p1);
+					activeChar.sendMessage("Something went wrong. try again.");
+					return true;
 				}
-				else
-					doPolymorph(activeChar, target, p1, "npc");
+
+				if(target.isPlayer())
+					target.getActingPlayer().sendPacket(new UserInfo(target.getActingPlayer()));
+				
+				target.broadcastInfo();
+				
+				activeChar.sendMessage("You successfully polymorphed: " + target.getName() + ".");
 			}
 			catch (Exception e)
 			{
-				activeChar.sendMessage("Usage: //polymorph [type] <id>");
+				activeChar.sendMessage("Usage: //polymorph <id>");
 			}
 		}
-		else if (command.equals("admin_unpolymorph"))
+		else if (command.startsWith("admin_unpolymorph"))
 		{
-			doUnpoly(activeChar, activeChar.getTarget());
+			if (target.getPoly().getPolyType() == PolyType.DEFAULT)
+			{
+				activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+				return true;
+			}
+			
+			target.getPoly().unpolymorph();
+			
+			if(target.isPlayer())
+				target.getActingPlayer().sendPacket(new UserInfo(target.getActingPlayer()));
+			
+			target.broadcastInfo();
+			
+			activeChar.sendMessage("You successfully unpolymorphed: " + target.getName() + ".");
 		}
+		
 		if (command.contains("menu"))
 			showMainPage(activeChar);
+		
 		return true;
 	}
 
@@ -75,53 +108,7 @@ public class AdminPolymorph implements IAdminCommandHandler
 	{
 		return ADMIN_COMMANDS;
 	}
-
-	/**
-	 * @param activeChar
-	 * @param target
-	 * @param id
-	 * @param type
-	 */
-	private void doPolymorph(L2PcInstance activeChar, L2Object obj, String id, String type)
-	{
-		if (obj != null)
-		{
-			obj.getPoly().setPolyInfo(type, id);
-			// animation
-			if (obj instanceof L2Character)
-			{
-				L2Character Char = (L2Character) obj;
-				MagicSkillUse msk = new MagicSkillUse(Char, 1008, 1, 4000, 0);
-				Char.broadcastPacket(msk);
-				SetupGauge sg = new SetupGauge(0, 4000);
-				Char.sendPacket(sg);
-			}
-			// end of animation
-			obj.decayMe();
-			obj.spawnMe(obj.getX(), obj.getY(), obj.getZ());
-			activeChar.sendMessage("Polymorph succeed");
-		}
-		else
-			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
-	}
-
-	/**
-	 * @param activeChar
-	 * @param target
-	 */
-	private void doUnpoly(L2PcInstance activeChar, L2Object target)
-	{
-		if (target != null)
-		{
-			target.getPoly().setPolyInfo(null, "1");
-			target.decayMe();
-			target.spawnMe(target.getX(), target.getY(), target.getZ());
-			activeChar.sendMessage("Unpolymorph succeed");
-		}
-		else
-			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
-	}
-
+	
 	private void showMainPage(L2PcInstance activeChar)
 	{
 		AdminHelpPage.showHelpPage(activeChar, "effects_menu.htm");

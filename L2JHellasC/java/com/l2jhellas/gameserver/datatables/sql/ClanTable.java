@@ -183,7 +183,7 @@ public class ClanTable
 
 		// should be update packet only
 		player.sendPacket(new PledgeShowInfoUpdate(clan));
-		player.sendPacket(new PledgeShowMemberListAll(clan, player));
+		player.sendPacket(new PledgeShowMemberListAll(clan, 0));
 		player.sendPacket(new UserInfo(player));
 		player.sendPacket(new PledgeShowMemberListUpdate(player));
 		player.sendPacket(SystemMessageId.CLAN_CREATED);

@@ -83,6 +83,7 @@ public class RPSProtection
 	{
 		if (player.isInOlympiadMode() || player.isOlympiadStart())
 			return true;
+
 		if ((TvT._started && player._inEventTvT) || player.isinZodiac || (DM._started && player._inEventDM) || (CTF._started && player._inEventCTF))
 			return true;
 
@@ -248,6 +249,7 @@ public class RPSProtection
 
 		return 1.0;
 	}
+
 	/**
 	 * Returns the ZoneId.<br>
 	 * ZoneId not exists in lower revisions of l2jServer (H5), then this method can be removed.<br>
@@ -259,7 +261,7 @@ public class RPSProtection
 	private static final ZoneId getZoneId(int zoneId)
 	{
 		ZoneId zone = null;
-		
+
 		switch (zoneId)
 		{
 			case 1:

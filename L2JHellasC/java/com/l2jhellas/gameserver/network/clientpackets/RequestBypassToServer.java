@@ -12,8 +12,6 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
@@ -31,7 +29,6 @@ import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
-import com.l2jhellas.gameserver.model.actor.instance.L2AccountManagerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2ClassMasterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2OlympiadManagerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -47,8 +44,6 @@ import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadManager;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.logs.GMAudit;
-import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public final class RequestBypassToServer extends L2GameClientPacket
 {
@@ -102,13 +97,8 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				if (!AdminData.getInstance().hasAccess(command, activeChar.getAccessLevel()))
 				{
 					activeChar.sendMessage("You don't have the access rights to use this command.");
-					_log.warning(RequestBypassToServer.class.getName() + ": "+activeChar.getName() + " tried to use admin command " + command + " without proper Access Level.");
+					_log.warning(RequestBypassToServer.class.getName() + ": " + activeChar.getName() + " tried to use admin command " + command + " without proper Access Level.");
 					return;
-				}
-
-				if (Config.GMAUDIT)
-				{
-					GMAudit.auditGMAction(activeChar.getName() + " [" + activeChar.getObjectId() + "]", _command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"));
 				}
 
 				ach.useAdminCommand(_command, activeChar);
@@ -152,7 +142,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				ZodiacMain.showFinalWindow(activeChar);
 				ZodiacMain.AddVotedPlayer(activeChar);
 			}
-			else if(ZodiacMain.voting && _command.startsWith("ProtectTheLdr") && !ZodiacMain.HasVoted(activeChar))
+			else if (ZodiacMain.voting && _command.startsWith("ProtectTheLdr") && !ZodiacMain.HasVoted(activeChar))
 			{
 				activeChar.sendMessage("You have voted for ProtectTheLeader!");
 				ZodiacMain.count[3]++;
@@ -179,141 +169,6 @@ public final class RequestBypassToServer extends L2GameClientPacket
 				ZodiacMain.count[6]++;
 				ZodiacMain.showFinalWindow(activeChar);
 				ZodiacMain.AddVotedPlayer(activeChar);
-			}	
-			else if (_command.startsWith("sendMsg"))
-			{ // Message System By Pauler
-
-				StringTokenizer st = new StringTokenizer(_command);
-
-				st.nextToken();
-
-				String to;
-				String title;
-				String message = "";;
-
-				if (st.hasMoreTokens())
-				{
-					to = st.nextToken();
-				}
-				else
-					return;
-
-				if (st.hasMoreTokens())
-				{
-					title = st.nextToken();
-				}
-				else
-					return;
-
-				while (st.hasMoreTokens())
-				{
-					message = message + st.nextToken() + " ";
-				}
-
-				if (to.equalsIgnoreCase(activeChar.getName()))
-				{
-					activeChar.sendMessage("You cannot send a message to yourself.");
-					return;
-				}
-
-				if (to.equalsIgnoreCase("") || message.equalsIgnoreCase("") || to == null)
-				{
-					activeChar.sendMessage("You have to fill all the fields.");
-					return;
-				}
-
-				if (title.equalsIgnoreCase("") || title == null)
-				{
-					title = "(No Subject)";
-				}
-
-				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-				{
-					PreparedStatement statement = con.prepareStatement("INSERT INTO mails VALUES ('0',?,?,?,?)");
-					statement.setString(1, activeChar.getName().toLowerCase());
-					statement.setString(2, to);
-					statement.setString(3, title);
-					statement.setString(4, message);
-					statement.execute();
-					statement.close();
-
-					activeChar.sendMessage("Your message has been sent.");
-				}
-				catch (Exception e)
-				{
-					_log.warning(RequestBypassToServer.class.getName() + ": could not send message");
-					if (Config.DEVELOPER)
-						e.printStackTrace();
-				}
-			}
-			else if (_command.startsWith("delMsg"))
-			{
-				StringTokenizer st = new StringTokenizer(_command);
-				st.nextToken();
-
-				int messageId = Integer.parseInt(st.nextToken());
-				try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-				{
-					PreparedStatement statement = con.prepareStatement("DELETE FROM mails WHERE id=?");
-					statement.setInt(1, messageId);
-					statement.execute();
-					statement.close();
-					activeChar.sendMessage("The message has been deleted.");
-				}
-				catch (Exception e)
-				{
-					_log.warning(RequestBypassToServer.class.getName() + ": could not delete message");
-					if (Config.DEVELOPER)
-						e.printStackTrace();
-				}
-
-			}
-			else if (_command.startsWith("submitemail"))
-			{
-				try
-				{
-					String value = _command.substring(11);
-					StringTokenizer s = new StringTokenizer(value, " ");
-					String email1 = null;
-
-					try
-					{
-						email1 = s.nextToken();
-
-						try
-						{
-							try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-							{
-								PreparedStatement statement = con.prepareStatement("UPDATE characters SET email=? WHERE obj_Id=?");
-								statement.setString(1, email1);
-								statement.setInt(2, activeChar.getObjectId());
-								statement.execute();
-								statement.close();
-							}
-							catch (Exception e)
-							{
-								e.printStackTrace();
-							}
-
-							activeChar.sendMessage("We successfully added your email " + email1 + " to our database");
-							L2AccountManagerInstance.setHasSubEmail(activeChar);
-
-						}
-						catch (Exception e)
-						{
-							e.printStackTrace();
-						}
-
-					}
-					catch (Exception e)
-					{
-						activeChar.sendMessage("Something went wrong.");
-					}
-				}
-				catch (Exception e)
-				{
-					activeChar.sendMessage("Something went wrong.");
-				}
 			}
 			else if (_command.startsWith("npc_"))
 			{
@@ -327,16 +182,16 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					id = _command.substring(4, endOfId);
 				else
 					id = _command.substring(4);
-				
+
 				try
 				{
 					L2Object object = L2World.getInstance().findObject(Integer.parseInt(id));
 
-					if(object != null && object instanceof L2Npc && endOfId > 0 && activeChar.isInsideRadius(object, L2Npc.INTERACTION_DISTANCE, false, false) || ((Config.ALLOW_REMOTE_CLASS_MASTER) && (object instanceof L2ClassMasterInstance)))
+					if (object != null && object instanceof L2Npc && endOfId > 0 && activeChar.isInsideRadius(object, L2Npc.INTERACTION_DISTANCE, false, false) || ((Config.ALLOW_REMOTE_CLASS_MASTER) && (object instanceof L2ClassMasterInstance)))
 					{
 						((L2Npc) object).onBypassFeedback(activeChar, _command.substring(endOfId + 1));
 					}
-					
+
 					if (_command.substring(endOfId + 1).startsWith("event_participate"))
 					{
 						L2Event.inscribePlayer(activeChar);
@@ -411,7 +266,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 							activeChar.sendMessage("The event is already started. You can not leave now!");
 						}
 					}
-				
+
 					activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 				}
 				catch (NumberFormatException nfe)
@@ -456,7 +311,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{
 				if (!activeChar.validateBypass(_command))
 					return;
-				
+
 				String[] str = _command.substring(6).trim().split(" ", 2);
 				if (str.length == 1)
 					activeChar.processQuestEvent(str[0], "");
@@ -469,57 +324,55 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			{
 				String bp = _command.substring(11);
 				StringTokenizer st = new StringTokenizer(bp);
-				
+
 				if (st.countTokens() != 1)
 				{
 					return;
 				}
-				
+
 				int classId = Integer.parseInt(st.nextToken());
-				
+
 				Balancer.sendBalanceWindow(classId, activeChar);
 			}
-			
+
 			else if (_command.startsWith("bp_add") && activeChar.isGM())
 			{
 				String bp = _command.substring(7);
 				StringTokenizer st = new StringTokenizer(bp);
-				
+
 				if (st.countTokens() != 3)
 				{
 					return;
 				}
-				
+
 				String stat = st.nextToken();
-				int classId = Integer.parseInt(st.nextToken()),
-					value = Integer.parseInt(st.nextToken());
-				
+				int classId = Integer.parseInt(st.nextToken()), value = Integer.parseInt(st.nextToken());
+
 				BalancerEdit.editStat(stat, classId, value, true);
-				
+
 				Balancer.sendBalanceWindow(classId, activeChar);
 			}
-			
+
 			else if (_command.startsWith("bp_rem") && activeChar.isGM())
 			{
 				String bp = _command.substring(7);
 				StringTokenizer st = new StringTokenizer(bp);
-				
+
 				if (st.countTokens() != 3)
 				{
 					return;
 				}
-				
+
 				String stat = st.nextToken();
-				int classId = Integer.parseInt(st.nextToken()),
-					value = Integer.parseInt(st.nextToken());
-				
+				int classId = Integer.parseInt(st.nextToken()), value = Integer.parseInt(st.nextToken());
+
 				BalancerEdit.editStat(stat, classId, value, false);
-				
+
 				Balancer.sendBalanceWindow(classId, activeChar);
 			}
 			// Rank PvP System by Masterio --------------------------------------------
-			else if(_command.startsWith("RPS."))
-			{ 
+			else if (_command.startsWith("RPS."))
+			{
 				RPSBypass.executeCommand(activeChar, _command);
 			}
 			// ------------------------------------------------------------------------
@@ -545,7 +398,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			}
 			else if (_command.startsWith("arenachange")) // change
 			{
-				 
+
 				final boolean isManager = activeChar.getTarget() instanceof L2OlympiadManagerInstance;
 				if (!isManager)
 				{
@@ -553,19 +406,19 @@ public final class RequestBypassToServer extends L2GameClientPacket
 					if (!activeChar.inObserverMode() || activeChar.isInOlympiadMode() || activeChar.getOlympiadGameId() < 0)
 						return;
 				}
-				
+
 				if (OlympiadManager.getInstance().isRegisteredInComp(activeChar))
 				{
 					activeChar.sendPacket(SystemMessageId.WHILE_YOU_ARE_ON_THE_WAITING_LIST_YOU_ARE_NOT_ALLOWED_TO_WATCH_THE_GAME);
 					return;
 				}
-                			
+
 				final int arenaId = Integer.parseInt(_command.substring(12).trim());
 				final OlympiadGameTask nextArena = OlympiadGameManager.getInstance().getOlympiadTask(arenaId);
 				if (nextArena != null)
 				{
-                     nextArena.getZone().addSpectator(arenaId, activeChar);
-					 return;
+					nextArena.getZone().addSpectator(arenaId, activeChar);
+					return;
 				}
 			}
 
@@ -593,6 +446,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 			// temp.moveTo(player.getX(),player.getY(), player.getZ(), 0 );
 		}
 	}
+
 	private void playerHelp(L2PcInstance activeChar, String path)
 	{
 		if (path.indexOf("..") != -1)
@@ -603,7 +457,7 @@ public final class RequestBypassToServer extends L2GameClientPacket
 		html.setFile(filename);
 		activeChar.sendPacket(html);
 	}
-	
+
 	@Override
 	public String getType()
 	{

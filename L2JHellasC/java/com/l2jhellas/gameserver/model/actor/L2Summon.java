@@ -20,7 +20,6 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2SummonAI;
-import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -35,6 +34,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.stat.SummonStat;
 import com.l2jhellas.gameserver.model.actor.status.SummonStatus;
+import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
@@ -237,16 +237,16 @@ public abstract class L2Summon extends L2Playable
 
 	public long getExpForThisLevel()
 	{
-		if (getLevel() >= ExperienceData.getInstance().getMaxLevel())
+		if (getLevel() >= Experience.MAX_LEVEL)
 			return 0;
-		return ExperienceData.getInstance().getExpForLevel(getLevel());
+		return Experience.LEVEL[getLevel()];
 	}
 
 	public long getExpForNextLevel()
 	{
-		if (getLevel() >= (ExperienceData.getInstance().getMaxLevel() - 1))
+		if (getLevel() >= (Experience.MAX_LEVEL - 1))
 			return 0;
-		return ExperienceData.getInstance().getExpForLevel(getLevel() + 1);
+		return Experience.LEVEL[getLevel() + 1];
 	}
 
 	public final int getKarma()

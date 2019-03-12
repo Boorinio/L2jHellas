@@ -23,7 +23,6 @@ import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.logs.GMAudit;
 
 /**
  * This class handles following admin commands:
@@ -68,8 +67,6 @@ public class AdminAdmin implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		GMAudit.auditGMAction(activeChar.getName(), command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"), "");
-
 		if (command.startsWith("admin_admin"))
 		{
 			showMainPage(activeChar, command);

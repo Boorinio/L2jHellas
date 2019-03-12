@@ -43,7 +43,6 @@ import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
-import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.AutoAttackStop;
 import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -655,9 +654,9 @@ public class L2CharacterAI extends AbstractAI
 	@Override
 	protected void onEvtArrived()
 	{
-		_accessor.getActor().revalidateZone(true);
+		getActor().revalidateZone(true);
 		
-		if (_accessor.getActor().moveToNextRoutePoint())
+		if (getActor().moveToNextRoutePoint())
 			return;
 		
 		clientStoppedMoving();
@@ -696,13 +695,13 @@ public class L2CharacterAI extends AbstractAI
 	@Override
 	protected void onEvtArrivedBlocked(L2CharPosition blocked_at_pos)
 	{
-		// Stop the actor movement server side AND client side by sending Server->Client packet StopMove/StopRotation (broadcast)
-		clientStopMoving(blocked_at_pos);
-		
 		// If the Intention was AI_INTENTION_MOVE_TO, let the Intention to AI_INTENTION_ACTIVE
 		if ((getIntention() == AI_INTENTION_MOVE_TO) || (getIntention() == AI_INTENTION_CAST))
 			setIntention(AI_INTENTION_ACTIVE);
 		
+		// Stop the actor movement server side AND client side by sending Server->Client packet StopMove/StopRotation (broadcast)
+		clientStopMoving(blocked_at_pos);
+			
 		// Launch actions corresponding to the Event Think
 		onEvtThink();
 	}
@@ -842,7 +841,7 @@ public class L2CharacterAI extends AbstractAI
 		
 		if (!_actor.isInsideRadius(worldPosition.getX(), worldPosition.getY(), offset + _actor.getTemplate().collisionRadius, false))
 		{
-			if (_actor.isMovementDisabled())
+			if (_actor.isMovementDisabled() || (_actor.getMoveSpeed() <= 0))
 				return true;
 			
 			if (!_actor.isRunning() && !(this instanceof L2PlayerAI) && !(this instanceof L2SummonAI))
@@ -870,7 +869,7 @@ public class L2CharacterAI extends AbstractAI
 			return true;
 		}
 		
-		if (getFollowTarget() != null)
+		if (isFollowing())
 			stopFollow();
 		
 		return false;
@@ -895,66 +894,33 @@ public class L2CharacterAI extends AbstractAI
 	 */
 	protected boolean maybeMoveToPawn(L2Object target, int offset)
 	{
-		// Get the distance between the current position of the L2Character and the target (x,y)
-		if (target == null)
-		{
-			_log.warning(L2CharacterAI.class.getName() + ": maybeMoveToPawn: target == NULL!");
+		if (target == null || offset < 0)
 			return false;
-		}
-		if (offset < 0)
-			return false; // skill radius -1
+
+		offset += _actor.getTemplate().getCollisionRadius();
 		
-		offset += _actor.getTemplate().collisionRadius;
 		if (target instanceof L2Character)
-			offset += ((L2Character) target).getTemplate().collisionRadius;
+			offset += ((L2Character) target).getTemplate().getCollisionRadius();
 		
 		if (!_actor.isInsideRadius(target, offset, false, false))
 		{
-			// Caller should be L2AbstractPlayable and thinkAttack/thinkCast/thinkInteract/thinkPickUp
-			if (getFollowTarget() != null)
+			if (isFollowing())
 			{
+				if (!_actor.isInsideRadius(target, offset + 100, false, false))
+					return true;
 				
-				// prevent attack-follow into peace zones
-				if (getAttackTarget() != null && _actor instanceof L2Playable && target instanceof L2Playable)
-				{
-					if (getAttackTarget() == getFollowTarget())
-					{
-						// allow GMs to keep following
-						boolean isGM = (_actor instanceof L2PcInstance ? ((L2PcInstance) _actor).isGM() : false);
-						if (((L2Playable) _actor).isInsidePeaceZone(_actor, target) && !isGM)
-						{
-							stopFollow();
-							setIntention(AI_INTENTION_IDLE);
-							return true;
-						}
-					}
-				}
-				// if the target is too far (maybe also teleported)
-				if (!_actor.isInsideRadius(target, 2000, false, false))
-				{
-					stopFollow();
-					setIntention(AI_INTENTION_IDLE);
-					return true;
-				}
-				// allow larger hit range when the target is moving (check is run only once per second)
-				if (!_actor.isInsideRadius(target, offset + 30, false, false))
-					return true;
 				stopFollow();
 				return false;
 			}
 			
-			if (_actor.isMovementDisabled())
+			if (_actor.isMovementDisabled() || (_actor.getMoveSpeed() <= 0))
 			{
-				if (getIntention() == CtrlIntention.AI_INTENTION_ATTACK)
-				{
-					setIntention(CtrlIntention.AI_INTENTION_IDLE);
-				    _actor.sendPacket(ActionFailed.STATIC_PACKET);
-				}
+				if (_actor.getAI().getIntention() == CtrlIntention.AI_INTENTION_ATTACK)
+					_actor.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 				
 				return true;
 			}
 			
-			// If not running, set the L2Character movement type to run and send Server->Client packet ChangeMoveType to all others L2PcInstance
 			if (!_actor.isRunning() && !(this instanceof L2PlayerAI))
 				_actor.setRunning();
 			
@@ -962,28 +928,25 @@ public class L2CharacterAI extends AbstractAI
 			if ((target instanceof L2Character) && !(target instanceof L2DoorInstance))
 			{
 				if (((L2Character) target).isMoving())
-					offset -= 100;
+					offset -= 30;
+				
 				if (offset < 5)
 					offset = 5;
 				
 				startFollow((L2Character) target, offset);
 			}
 			else
-			{
-				// Move the actor to Pawn server side AND client side by sending Server->Client packet MoveToPawn (broadcast)
 				moveToPawn(target, offset);
-			}
+			
 			return true;
 		}
 		
-		if (getFollowTarget() != null)
+		if (isFollowing())
 			stopFollow();
-		
-		// Stop the actor movement server side AND client side by sending Server->Client packet StopMove/StopRotation (broadcast)
-		// clientStopMoving(null);
+
 		return false;
 	}
-	
+
 	/**
 	 * Modify current Intention and actions if the target is lost or dead.<BR><BR>
 	 *

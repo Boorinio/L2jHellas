@@ -22,7 +22,6 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Castle;
-import com.l2jhellas.logs.GMAudit;
 
 /**
  * This class handles following admin commands:
@@ -138,8 +137,7 @@ public class AdminDoorControl implements IAdminCommandHandler
 				e.printStackTrace();
 			}
 		}
-		String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
-		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
+
 		return true;
 	}
 

@@ -98,7 +98,7 @@ public class L2EventManagerInstance extends L2Npc
 							player.sendMessage("You don't have a clan!");
 							return;
 						}
-						L2PcInstance[] onlineclanMembers = player.getClan().getOnlineMembers("");
+						L2PcInstance[] onlineclanMembers = player.getClan().getOnlineMembers();
 						for (L2PcInstance member : onlineclanMembers)
 						{
 							boolean eligible = true;

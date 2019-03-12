@@ -21,7 +21,6 @@ import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.templates.L2Item;
-import com.l2jhellas.logs.GMAudit;
 
 /**
  * This class handles following admin commands:
@@ -40,8 +39,6 @@ public class AdminCreateItem implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		GMAudit.auditGMAction(activeChar.getName(), command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"), "");
-
 		if (command.equals("admin_itemcreate"))
 		{
 			AdminHelpPage.showHelpPage(activeChar, "itemcreation.htm");

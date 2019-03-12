@@ -15,6 +15,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.model.L2Clan;
+import com.l2jhellas.gameserver.model.L2Clan.SubPledge;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListAll;
 
@@ -31,15 +32,19 @@ public final class RequestPledgeMemberList extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
+		
 		if (activeChar == null)
 			return;
 
-		L2Clan clan = activeChar.getClan();
+		final L2Clan clan = activeChar.getClan();
+		
 		if (clan != null)
 		{
-			PledgeShowMemberListAll pm = new PledgeShowMemberListAll(clan, activeChar);
-			activeChar.sendPacket(pm);
+			activeChar.sendPacket(new PledgeShowMemberListAll(clan, 0));
+			
+			for (SubPledge sp : clan.getAllSubPledges())
+				activeChar.sendPacket(new PledgeShowMemberListAll(clan, sp.getId()));
 		}
 	}
 

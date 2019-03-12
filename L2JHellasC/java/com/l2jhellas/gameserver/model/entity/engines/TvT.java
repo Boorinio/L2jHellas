@@ -33,6 +33,7 @@ import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
+import com.l2jhellas.gameserver.emum.Team;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -790,8 +791,31 @@ public class TvT
 			if (Config.TVT_AURA)
 			{
 				if (_teams.size() >= 2)
-					player.setTeam(_teams.indexOf(player._teamNameTvT) + 1);
+				{
+					final int teamId = _teams.indexOf(player._teamNameTvT) + 1;					
+					switch (teamId)
+					{
+						case 0:
+						{
+							player.setTeam(Team.NONE);
+							break;
+						}
+						case 1:
+						{
+							player.setTeam(Team.BLUE);
+							break;
+						}
+						case 2:
+						{
+							player.setTeam(Team.RED);
+							break;
+						}
+					}
+				}
 			}
+			else
+				player.setTeam(Team.NONE);
+
 			player.broadcastUserInfo();
 		}
 	}
@@ -1514,8 +1538,31 @@ public class TvT
 			if (Config.TVT_AURA)
 			{
 				if (_teams.size() >= 2)
-					player.setTeam(_teams.indexOf(player._teamNameTvT) + 1);
+				{
+					final int teamId = _teams.indexOf(player._teamNameTvT) + 1;					
+					switch (teamId)
+					{
+						case 0:
+						{
+							player.setTeam(Team.NONE);
+							break;
+						}
+						case 1:
+						{
+							player.setTeam(Team.BLUE);
+							break;
+						}
+						case 2:
+						{
+							player.setTeam(Team.RED);
+							break;
+						}
+					}
+				}
 			}
+			else
+				player.setTeam(Team.NONE);
+
 			player.broadcastUserInfo();
 			player.teleToLocation(_teamsX.get(_teams.indexOf(player._teamNameTvT)), _teamsY.get(_teams.indexOf(player._teamNameTvT)), _teamsZ.get(_teams.indexOf(player._teamNameTvT)));
 		}
@@ -1533,7 +1580,7 @@ public class TvT
 				if (Config.TVT_AURA)
 				{
 					if (_teams.size() >= 2)
-						player.setTeam(0);// clear aura :P
+						player.setTeam(Team.NONE);// clear aura :P
 				}
 				player.broadcastUserInfo();
 			}

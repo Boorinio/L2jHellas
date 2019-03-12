@@ -79,7 +79,7 @@ public final class Action extends L2GameClientPacket
 			return;
 		}
 		
-		if (!obj.isVisibleFor(activeChar))
+		if (!obj.isVisible())
 		{
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;

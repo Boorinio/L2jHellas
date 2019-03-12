@@ -18,7 +18,6 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.logs.GMAudit;
 
 /**
  * @author -Nemesiss-
@@ -40,9 +39,6 @@ public class AdminGeodata implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		String target = (activeChar.getTarget() != null) ? activeChar.getTarget().getName() : "no-target";
-		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
-
 		if (!Config.GEODATA)
 		{
 			activeChar.sendMessage("Geo Engine is Turned Off!");

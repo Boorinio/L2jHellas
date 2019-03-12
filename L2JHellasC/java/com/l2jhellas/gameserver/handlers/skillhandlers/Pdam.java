@@ -27,14 +27,12 @@ import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.EtcStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.effects.EffectCharge;
-import com.l2jhellas.logs.LogRecorder;
 import com.l2jhellas.util.Rnd;
 
 public class Pdam implements ISkillHandler
@@ -82,19 +80,6 @@ public class Pdam implements ISkillHandler
 			if (crit)
 				damage *= 2; // PDAM Critical damage always 2x and not affected
 								// by buffs
-
-			if (damage > 5000 && activeChar instanceof L2PcInstance)
-			{
-				String name = "";
-				if (target instanceof L2RaidBossInstance)
-					name = "RaidBoss ";
-				if (target instanceof L2Npc)
-					name += target.getName() + "(" + ((L2Npc) target).getTemplate().npcId + ")";
-				if (target instanceof L2PcInstance)
-					name = target.getName() + "(" + target.getObjectId() + ") ";
-				name += target.getLevel() + " lvl";
-				LogRecorder.add(activeChar.getName() + "(" + activeChar.getObjectId() + ") " + activeChar.getLevel() + " lvl did damage " + damage + " with skill " + skill.getName() + "(" + skill.getId() + ") to " + name, "damage_pdam");
-			}
 
 			if (soul && weapon != null)
 				weapon.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);

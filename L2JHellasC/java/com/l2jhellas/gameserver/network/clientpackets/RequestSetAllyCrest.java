@@ -105,7 +105,7 @@ public final class RequestSetAllyCrest extends L2GameClientPacket
 				if (clan.getAllyId() == activeChar.getAllyId())
 				{
 					clan.setAllyCrestId(newId);
-					for (L2PcInstance member : clan.getOnlineMembers(""))
+					for (L2PcInstance member : clan.getOnlineMembers())
 						member.broadcastUserInfo();
 				}
 		}

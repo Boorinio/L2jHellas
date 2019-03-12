@@ -163,22 +163,13 @@ public class L2CharTemplate
 		/** @formatter:on */
 	}
 	
-	public int getCollisionRadius()
-	{
-		return getCollisionRadius(false);
-	}
 
-	public int getCollisionRadius(boolean sex)
+	public int getCollisionRadius()
 	{
 		return (int) collisionRadius;
 	}
-	
-	public int getCollisionHeight()
-	{
-		return getCollisionHeight(false);
-	}
 
-	protected int getCollisionHeight(boolean sex)
+	public int getCollisionHeight()
 	{
 		return (int) collisionHeight;
 	}

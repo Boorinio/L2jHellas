@@ -21,7 +21,6 @@ import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.LeaveWorld;
-import com.l2jhellas.logs.GMAudit;
 
 public class AdminKick implements IAdminCommandHandler
 {
@@ -34,9 +33,6 @@ public class AdminKick implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
-		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
-
 		if (command.startsWith("admin_kick"))
 		{
 			StringTokenizer st = new StringTokenizer(command);

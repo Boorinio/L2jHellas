@@ -14,7 +14,9 @@
  */
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.Config;
+import java.util.List;
+
+import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeReceiveWarList;
 
@@ -26,32 +28,38 @@ import com.l2jhellas.gameserver.network.serverpackets.PledgeReceiveWarList;
 public final class RequestPledgeWarList extends L2GameClientPacket
 {
 	private static final String _C__D0_1E_REQUESTPLEDGEWARLIST = "[C] D0:1E RequestPledgeWarList";
-	private int _unk1;
+	private int _page;
 	private int _tab;
 
 	@Override
 	protected void readImpl()
 	{
-		_unk1 = readD();
+		_page = readD();
 		_tab = readD();
 	}
 
 	@Override
 	protected void runImpl()
 	{
-		if (Config.DEBUG)
+		final L2PcInstance player = getClient().getActiveChar();
+		
+		if (player == null || player.getClan() ==null)
+			return;
+		
+		final L2Clan clan = player.getClan();
+			
+		final List<Integer> list;
+		if (_tab == 0)
 		{
-			_log.config(RequestPledgeWarList.class.getName() + ": C5: RequestPledgeWarList d:"+_unk1);
-			_log.config(RequestPledgeWarList.class.getName() + ": C5: RequestPledgeWarList d:"+_tab);
+			list = clan.getWarList();
 		}
-		L2PcInstance activeChar = getClient().getActiveChar();
-		if (activeChar == null)
-			return;
-		if (activeChar.getClan() == null)
-			return;
-
-		// do we need powers to do that??
-		activeChar.sendPacket(new PledgeReceiveWarList(activeChar.getClan(), _tab));
+		else
+		{
+			list = clan.getAttackerList();
+			_page = Math.max(0, (_page > list.size() / 13) ? 0 : _page);
+		}
+		
+		player.sendPacket(new PledgeReceiveWarList(list, _tab, _page));	
 	}
 
 	@Override

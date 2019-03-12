@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.emum.Music;
+import com.l2jhellas.gameserver.emum.PolyType;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
@@ -661,7 +662,8 @@ public class AdminEventEngine implements IAdminCommandHandler
 			try
 			{
 				L2PcInstance target = L2World.getInstance().getPlayer(it.next().toString());
-				target.getPoly().setPolyInfo("npc", id);
+				PolyType info = PolyType.NPC;
+				target.getPoly().polymorph(info, Integer.parseInt(id));
 				target.teleToLocation(target.getX(), target.getY(), target.getZ(), true);
 				CharInfo info1 = new CharInfo(target);
 				target.broadcastPacket(info1);
@@ -683,9 +685,7 @@ public class AdminEventEngine implements IAdminCommandHandler
 			try
 			{
 				L2PcInstance target = L2World.getInstance().getPlayer(it.next().toString());
-
-				target.getPoly().setPolyInfo(null, "1");
-				target.decayMe();
+				target.getPoly().unpolymorph();
 				target.spawnMe(target.getX(), target.getY(), target.getZ());
 				CharInfo info1 = new CharInfo(target);
 				target.broadcastPacket(info1);

@@ -38,9 +38,9 @@ public class PledgeStatusChanged extends L2GameServerPacket
 		writeC(0xcd);
 		writeD(_clan.getLeaderId());
 		writeD(_clan.getClanId());
-		writeD(0);
-		writeD(_clan.getLevel());
-		writeD(0);
+		writeD(_clan.getCrestId());
+		writeD(_clan.getAllyId());
+		writeD(_clan.getAllyCrestId());
 		writeD(0);
 		writeD(0);
 	}

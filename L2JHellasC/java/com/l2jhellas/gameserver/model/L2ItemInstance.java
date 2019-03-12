@@ -30,6 +30,7 @@ import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
+import com.l2jhellas.gameserver.network.serverpackets.DropItem;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SpawnItem;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
@@ -62,6 +63,7 @@ public final class L2ItemInstance extends L2Object
 
 	/** ID of the owner */
 	private int _ownerId;
+	private int _dropperObjectId = 0;
 
 	/** Quantity of the item */
 	private int _count;
@@ -1132,24 +1134,15 @@ public final class L2ItemInstance extends L2Object
 		if(this.getItemType() == L2EtcItemType.HERB)
 			return;
 	
-		synchronized (this)
-		{
-			// Set the x,y,z position of the L2ItemInstance dropped and update its _worldregion
-			setIsVisible(true);
-			getPosition().setWorldPosition(x, y, z);
-			getPosition().setWorldRegion(L2World.getInstance().getRegion(getPosition().getWorldPosition()));
-
-			// Add the L2ItemInstance dropped to _visibleObjects of its L2WorldRegion
-			getWorldRegion().addVisibleObject(this);
-		}
+		setDropperObjectId(dropper != null ? dropper.getObjectId() : 0);
+		
+		spawnMe(x, y, z);
 		setDropTime(System.currentTimeMillis());
 
-		// this can synchronize on others instancies, so it's out of
-		// synchronized, to avoid deadlocks
-		// Add the L2ItemInstance dropped in the world as a visible objectz
-		L2World.getInstance().addVisibleObject(this, getWorldRegion());
 		if (Config.SAVE_DROPPED_ITEM)
 			ItemsOnGroundManager.getInstance().save(this);
+		
+		setDropperObjectId(0);
 	}
 
 	/**
@@ -1363,11 +1356,18 @@ public final class L2ItemInstance extends L2Object
 		return getItem().isQuestItem();
 	}
 
+	public void setDropperObjectId(int id)
+	{
+		_dropperObjectId = id;
+	}
+	
 	@Override
 	public void sendInfo(L2PcInstance activeChar)
 	{
-         if(isVisible())
-			activeChar.sendPacket(new SpawnItem((L2ItemInstance) this));
+ 		if (_dropperObjectId != 0)
+			activeChar.sendPacket(new DropItem(this, _dropperObjectId));
+		else if(isVisible())
+			activeChar.sendPacket(new SpawnItem(this));
 	}
 
 	/**

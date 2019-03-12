@@ -33,6 +33,7 @@ import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.entity.Siege;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -59,7 +60,7 @@ public class L2Clan
 	private String _name;
 	private int _clanId;
 	private L2ClanMember _leader;
-	private final Map<String, L2ClanMember> _members = new HashMap<String, L2ClanMember>();
+	private final Map<String, L2ClanMember> _members = new HashMap<>();
 
 	private String _allyName;
 	private int _allyId;
@@ -87,14 +88,14 @@ public class L2Clan
 	public static final int PENALTY_TYPE_DISSOLVE_ALLY = 4;
 
 	private final ItemContainer _warehouse = new ClanWarehouse(this);
-	private final List<Integer> _atWarWith = new ArrayList<Integer>();
-	private final List<Integer> _atWarAttackers = new ArrayList<Integer>();
+	private final List<Integer> _atWarWith = new ArrayList<>();
+	private final List<Integer> _atWarAttackers = new ArrayList<>();
 
 	private boolean _hasCrestLarge;
 
 	private Forum _forum;
 
-	private final List<L2Skill> _skillList = new ArrayList<L2Skill>();
+	private final List<L2Skill> _skillList = new ArrayList<>();
 
 	// Clan Privileges
 	/** No privilege to manage any clan activity */
@@ -147,9 +148,9 @@ public class L2Clan
 	public static final int SUBUNIT_KNIGHT4 = 2002;
 
 	/** HashMap(Integer, L2Skill) containing all skills of the L2Clan */
-	protected final Map<Integer, L2Skill> _skills = new HashMap<Integer, L2Skill>();
-	protected final Map<Integer, RankPrivs> _privs = new HashMap<Integer, RankPrivs>();
-	protected final Map<Integer, SubPledge> _subPledges = new HashMap<Integer, SubPledge>();
+	protected final Map<Integer, L2Skill> _skills = new HashMap<>();
+	protected final Map<Integer, RankPrivs> _privs = new HashMap<>();
+	protected final Map<Integer, SubPledge> _subPledges = new HashMap<>();
 
 	private int _reputationScore = 0;
 	private int _rank = 0;
@@ -262,6 +263,7 @@ public class L2Clan
 		newLeader.setClan(this);
 		newLeader.setPledgeClass(member.calculatePledgeClass(newLeader));
 		newLeader.setClanPrivileges(L2Clan.CP_ALL);
+		
 		if (getLevel() >= 4)
 		{
 			SiegeManager.getInstance().addSiegeSkills(newLeader);
@@ -269,11 +271,8 @@ public class L2Clan
 		newLeader.broadcastUserInfo();
 
 		broadcastClanStatus();
+		broadcastToOnlineMembers(SystemMessage.getSystemMessage(SystemMessageId.CLAN_LEADER_PRIVILEGES_HAVE_BEEN_TRANSFERRED_TO_S1).addString(member.getName()));
 
-		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CLAN_LEADER_PRIVILEGES_HAVE_BEEN_TRANSFERRED_TO_S1);
-		sm.addString(newLeader.getName());
-		broadcastToOnlineMembers(sm);
-		sm = null;
 	}
 
 	/**
@@ -314,10 +313,21 @@ public class L2Clan
 		member.setPlayerInstance(player);
 		player.setClan(this);
 		player.setPledgeClass(member.calculatePledgeClass(player));
+		
+		for (Siege siege : SiegeManager.getInstance().getSieges())
+		{
+			if (!siege.getIsInProgress())
+				continue;
+			if (siege.checkIsAttacker(player.getClan()))
+				player.setSiegeState((byte) 1);
+			else if (siege.checkIsDefender(player.getClan()))
+				player.setSiegeState((byte) 2);
+		}
+		
+		player.rewardSkills();
+		
 		player.sendPacket(new PledgeShowMemberListUpdate(player));
 		player.sendPacket(new UserInfo(player));
-		player.rewardSkills();
-		broadcastClanStatus();
 	}
 
 	public void updateClanMember(L2PcInstance player)
@@ -497,42 +507,19 @@ public class L2Clan
 		return limit;
 	}
 
-	/**
-	 * @param exclude the object Id to exclude from list.
-	 * @return all online members excluding the one with object id {code exclude}.
-	 */
-	public ArrayList<L2PcInstance> getOnlineMembers(int exclude)
+	public L2PcInstance[] getOnlineMembers()
 	{
-		final ArrayList<L2PcInstance> onlineMembers = new ArrayList<>();
+		List<L2PcInstance> result = new ArrayList<>();
+		
 		for (L2ClanMember temp : _members.values())
 		{
-			if ((temp != null) && temp.isOnline() && (temp.getObjectId() != exclude))
+			if (temp != null && temp.isOnline())
 			{
-				onlineMembers.add(temp.getPlayerInstance());
+				result.add(temp.getPlayerInstance());
 			}
 		}
-		return onlineMembers;
-	}
-	
-	public L2PcInstance[] getOnlineMembers(String exclude)
-	{
-		List<L2PcInstance> result = new ArrayList<L2PcInstance>();
-		for (L2ClanMember temp : _members.values())
-		{
-			try
-			{
-				if (temp.isOnline() && !temp.getName().equals(exclude))
-				{
-					result.add(temp.getPlayerInstance());
-				}
-			}
-			catch (NullPointerException e)
-			{
-			}
-		}
-
+		
 		return result.toArray(new L2PcInstance[result.size()]);
-
 	}
 
 	/**
@@ -685,7 +672,7 @@ public class L2Clan
 	 */
 	public boolean isMember(String name)
 	{
-		return (name == null ? false : _members.containsKey(name));
+		return _members.containsKey(name);
 	}
 
 	public void updateClanInDB()
@@ -1155,6 +1142,9 @@ public class L2Clan
 			return;
 		for (L2Clan clan : ClanTable.getInstance().getClans())
 		{
+			if(clan ==null)
+				continue;
+			
 			if (clan.getAllyId() == getAllyId())
 			{
 				clan.broadcastToOnlineMembers(packet);
@@ -1166,15 +1156,12 @@ public class L2Clan
 	{
 		for (L2ClanMember member : _members.values())
 		{
-			try
+			if(member ==null)
+				continue;
+			
+			if (member.isOnline() && !BlockList.isBlocked(member.getPlayerInstance(), broadcaster))
 			{
-				if (member.isOnline() && !BlockList.isBlocked(member.getPlayerInstance(), broadcaster))
-				{
-					member.getPlayerInstance().sendPacket(packet);
-				}
-			}
-			catch (NullPointerException e)
-			{
+				member.getPlayerInstance().sendPacket(packet);
 			}
 		}
 	}
@@ -1183,16 +1170,11 @@ public class L2Clan
 	{
 		for (L2ClanMember member : _members.values())
 		{
-			try
-			{
-				if (member.isOnline())
-				{
-					member.getPlayerInstance().sendPacket(packet);
-				}
-			}
-			catch (NullPointerException e)
-			{
-			}
+			if(member ==null)
+				continue;
+			
+			if (member.isOnline())
+				member.getPlayerInstance().sendPacket(packet);
 		}
 	}
 
@@ -1200,15 +1182,12 @@ public class L2Clan
 	{
 		for (L2ClanMember member : _members.values())
 		{
-			try
+			if(member ==null)
+				continue;
+			
+			if (member.isOnline() && member.getPlayerInstance() != player)
 			{
-				if (member.isOnline() && member.getPlayerInstance() != player)
-				{
-					member.getPlayerInstance().sendPacket(packet);
-				}
-			}
-			catch (NullPointerException e)
-			{
+				member.getPlayerInstance().sendPacket(packet);
 			}
 		}
 	}
@@ -1326,10 +1305,23 @@ public class L2Clan
 
 	public void broadcastClanStatus()
 	{
-		for (L2PcInstance member : getOnlineMembers(""))
+		for (L2PcInstance member : getOnlineMembers())
 		{
+			if(member==null)
+				continue;
+			
 			member.sendPacket(new PledgeShowMemberListDeleteAll());
-			member.sendPacket(new PledgeShowMemberListAll(this, member));
+			member.sendPacket(new PledgeShowMemberListAll(this, 0));
+			
+			for (SubPledge sp : getAllSubPledges())
+			{
+				if(sp==null)
+					continue;
+				
+				member.sendPacket(new PledgeShowMemberListAll(this, sp.getId()));
+			}
+			
+			member.sendPacket(new UserInfo(member));
 		}
 	}
 
@@ -1746,7 +1738,7 @@ public class L2Clan
 
 		return _privs.values().toArray(new RankPrivs[_privs.values().size()]);
 	}
-
+	
 	public int getLeaderSubPledge(String name)
 	{
 		int id = 0;
@@ -2477,7 +2469,7 @@ public class L2Clan
 		final boolean needRefresh = (_reputationScore > 0 && value <= 0) || (value > 0 && _reputationScore <= 0);
 		
 		// Store the online members (used in 2 positions, can't merge)
-		final L2PcInstance[] members = getOnlineMembers("");
+		final L2PcInstance[] members = getOnlineMembers();
 		
 		_reputationScore = Math.min(100000000, Math.max(-100000000, value));
 		

@@ -88,7 +88,7 @@ public final class RequestExSetPledgeCrestLarge extends L2GameClientPacket
 				crestLargeId = 0;
 				activeChar.sendMessage("The insignia has been removed.");
 				updated = true;
-				for (L2PcInstance member : clan.getOnlineMembers(""))
+				for (L2PcInstance member : clan.getOnlineMembers())
 					if (member != null)
 						member.broadcastUserInfo();
 			}
@@ -127,7 +127,7 @@ public final class RequestExSetPledgeCrestLarge extends L2GameClientPacket
 				activeChar.sendPacket(SystemMessageId.CLAN_EMBLEM_WAS_SUCCESSFULLY_REGISTERED);
 				updated = true;
 				
-				for (L2PcInstance member : clan.getOnlineMembers(""))
+				for (L2PcInstance member : clan.getOnlineMembers())
 					if (member != null)
 						member.broadcastUserInfo();
 			}

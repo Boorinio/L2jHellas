@@ -16,7 +16,6 @@ package com.l2jhellas.gameserver.skills.l2skills;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
-import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -26,6 +25,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2CubicInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
+import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -199,14 +199,14 @@ public class L2SkillSummon extends L2Skill
 		summon.setName(summonTemplate.name);
 		summon.setTitle(activeChar.getName());
 		summon.setExpPenalty(_expPenalty);
-		if (summon.getLevel() >= ExperienceData.getInstance().getMaxLevel())
+		if (summon.getLevel() >= Experience.MAX_LEVEL)
 		{
-			summon.getStat().setExp(ExperienceData.getInstance().getExpForLevel(ExperienceData.getInstance().getMaxPetLevel() - 1));
+			summon.getStat().setExp(Experience.LEVEL[Experience.MAX_LEVEL-1]);
 			_log.warning(L2SkillSummon.class.getName() + ": Summon (" + summon.getName() + ") NpcID: " + summon.getNpcId() + " has a level above 75. Please rectify.");
 		}
 		else
 		{
-			summon.getStat().setExp(ExperienceData.getInstance().getExpForLevel(summon.getLevel() % ExperienceData.getInstance().getMaxPetLevel()));
+			summon.getStat().setExp(Experience.LEVEL[summon.getLevel() % Experience.MAX_LEVEL]);
 		}
 		summon.setCurrentHp(summon.getMaxHp());
 		summon.setCurrentMp(summon.getMaxMp());

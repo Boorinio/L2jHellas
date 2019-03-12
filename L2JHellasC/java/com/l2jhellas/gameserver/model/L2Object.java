@@ -334,7 +334,7 @@ public abstract class L2Object
 	 */
 	public final boolean isVisible()
 	{
-		 return getPosition().getWorldRegion() != null && _isVisible;
+		 return _isVisible;
 	}
 
 	public final void setIsVisible(boolean value)
@@ -344,19 +344,16 @@ public abstract class L2Object
 		if (!_isVisible)
 		{
 			getPosition().setWorldRegion(null);
-			
+
 			final DeleteObject deletePacket = new DeleteObject(this);
 			
 			L2World.getInstance().forEachVisibleObject(this, L2PcInstance.class, player ->
 			{
-				if (!isVisibleFor(player))
-				{
-					player.sendPacket(deletePacket);
-				}
+				player.sendPacket(deletePacket);
 			});
 					
 		}
-		
+
 		broadcastInfo();
 	}
 
@@ -421,11 +418,6 @@ public abstract class L2Object
 		}
 	}
 	
-	public boolean isVisibleFor(L2PcInstance player)
-	{
-		return isVisible();
-	}
-	
 	public int getHeading()
 	{
 		return getPosition().getHeading();
@@ -472,10 +464,8 @@ public abstract class L2Object
 	{
 		L2World.getInstance().forEachVisibleObject(this, L2PcInstance.class, player ->
 		{
-			if (isVisibleFor(player))
-			{
+			if (isVisible())
 				sendInfo(player);
-			}
 		});
 	}
 

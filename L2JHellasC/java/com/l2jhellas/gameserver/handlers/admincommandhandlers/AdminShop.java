@@ -23,7 +23,6 @@ import com.l2jhellas.gameserver.model.L2TradeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.BuyList;
-import com.l2jhellas.logs.GMAudit;
 
 /**
  * This class handles following admin commands:
@@ -58,8 +57,6 @@ public class AdminShop implements IAdminCommandHandler
 		{
 			AdminHelpPage.showHelpPage(activeChar, "gmshops.htm");
 		}
-		String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
-		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 		return true;
 	}
 

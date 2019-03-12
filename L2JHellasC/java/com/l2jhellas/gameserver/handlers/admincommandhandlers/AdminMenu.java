@@ -31,7 +31,6 @@ import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.logs.GMAudit;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
@@ -59,9 +58,6 @@ public class AdminMenu implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
-		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
-
 		if (command.equals("admin_char_manage"))
 			showMainPage(activeChar);
 		else if (command.startsWith("admin_teleport_character_to_menu"))
@@ -132,7 +128,7 @@ public class AdminMenu implements IAdminCommandHandler
 					teleportCharacter(player, x, y, z, activeChar, "Admin is teleporting you.");
 					return true;
 				}
-				L2PcInstance[] members = clan.getOnlineMembers("");
+				L2PcInstance[] members = clan.getOnlineMembers();
 				for (int i = 0; i < members.length; i++)
 					teleportCharacter(members[i], x, y, z, activeChar, "Your clan is being teleported by an Admin.");
 			}

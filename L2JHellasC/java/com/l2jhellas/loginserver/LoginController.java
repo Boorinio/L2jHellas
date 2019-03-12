@@ -40,7 +40,6 @@ import com.l2jhellas.Config;
 import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
 import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
 import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
-import com.l2jhellas.logs.LogRecorder;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.crypt.ScrambledKeyPair;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -385,7 +384,7 @@ public class LoginController
 		int access = client.getAccessLevel();
 		if (gsi != null && gsi.isAuthed())
 		{
-			boolean loginOk = (gsi.getCurrentPlayerCount() < gsi.getMaxPlayers() && gsi.getStatus() != ServerStatus.STATUS_GM_ONLY) || access >= 0;
+			boolean loginOk = (gsi.getCurrentPlayerCount() < gsi.getMaxPlayers() && gsi.getStatus() != ServerStatus.STATUS_GM_ONLY) || access > 0;
 
 			if (loginOk && client.getLastServer() != serverId)
 			{
@@ -482,8 +481,6 @@ public class LoginController
 	{
 		boolean ok = false;
 		InetAddress address = client.getConnection().getInetAddress();
-		// log it anyway
-		LogRecorder.add("'" + (user == null ? "null" : user) + "' " + (address == null ? "null" : address.getHostAddress()), "logins_ip");
 
 		// player disconnected meanwhile
 		if (address == null)
@@ -604,8 +601,6 @@ public class LoginController
 
 		if (!ok)
 		{
-			LogRecorder.add("'" + user + "' " + address.getHostAddress(), "logins_ip_fails");
-
 			FailedLoginAttempt failedAttempt = _hackProtection.get(address);
 			int failedCount;
 			if (failedAttempt == null)
@@ -628,7 +623,6 @@ public class LoginController
 		else
 		{
 			_hackProtection.remove(address);
-			LogRecorder.add("'" + user + "' " + address.getHostAddress(), "logins_ip");
 		}
 
 		return ok;

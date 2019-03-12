@@ -26,7 +26,6 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.CharInfo;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
-import com.l2jhellas.logs.GMAudit;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
@@ -241,9 +240,6 @@ public class AdminEnchant implements IAdminCommandHandler
 		// informations
 		activeChar.sendMessage("Changed enchantment of " + player.getName() + "'s " + itemInstance.getItem().getItemName() + " from " + curEnchant + " to " + ench + ".");
 		player.sendMessage("Admin has changed the enchantment of your " + itemInstance.getItem().getItemName() + " from " + curEnchant + " to " + ench + ".");
-
-		// log
-		GMAudit.auditGMAction(activeChar.getName(), "enchant", player.getName(), itemInstance.getItem().getItemName() + " from " + curEnchant + " to " + ench);
 	}
 
 	private void showMainPage(L2PcInstance activeChar)

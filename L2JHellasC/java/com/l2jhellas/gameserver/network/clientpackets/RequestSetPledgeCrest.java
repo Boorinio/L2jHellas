@@ -126,7 +126,7 @@ public final class RequestSetPledgeCrest extends L2GameClientPacket
 			clan.setHasCrest(true);
 			
 			if (updated && crestId != -1)
-			for (L2PcInstance member : clan.getOnlineMembers(""))
+			for (L2PcInstance member : clan.getOnlineMembers())
 				member.broadcastUserInfo();
 		}
 	}

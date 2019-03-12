@@ -14,8 +14,8 @@
  */
 package com.l2jhellas.gameserver.model.actor.stat;
 
-import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
+import com.l2jhellas.gameserver.model.base.Experience;
 
 public class PlayableStat extends CharStat
 {
@@ -26,18 +26,16 @@ public class PlayableStat extends CharStat
 
 	public boolean addExp(long value)
 	{
-		if (((getExp() + value) < 0) || (getExp() == (getExpForLevel(ExperienceData.getInstance().getMaxLevel()) - 1)))
+		if (((getExp() + value) < 0) || (getExp() == (getExpForLevel(Experience.MAX_LEVEL) - 1)))
 			return true;
 
-		if ((getExp() + value) >= getExpForLevel(ExperienceData.getInstance().getMaxLevel()))
-		{
-			value = getExpForLevel(ExperienceData.getInstance().getMaxLevel()) - 1 - getExp();
-		}
+		if (getExp() + value >= getExpForLevel(Experience.MAX_LEVEL))
+			value = getExpForLevel(Experience.MAX_LEVEL) - 1 - getExp();
 
 		setExp(getExp() + value);
 
 		byte level = 0;
-		for (level = 1; level <= ExperienceData.getInstance().getMaxLevel(); level++)
+		for (level = 1; level <= Experience.MAX_LEVEL; level++)
 		{
 			if (getExp() >= getExpForLevel(level))
 			{
@@ -64,7 +62,7 @@ public class PlayableStat extends CharStat
 		setExp(getExp() - value);
 
 		byte level = 0;
-		for (level = 1; level <= ExperienceData.getInstance().getMaxLevel(); level++)
+		for (level = 1; level <= Experience.MAX_LEVEL; level++)
 		{
 			if (getExp() >= getExpForLevel(level))
 			{
@@ -114,12 +112,10 @@ public class PlayableStat extends CharStat
 
 	public boolean addLevel(byte value)
 	{
-		if (getLevel() + value > ExperienceData.getInstance().getMaxLevel() - 1)
+		if (getLevel() + value > Experience.MAX_LEVEL - 1)
 		{
-			if (getLevel() < ExperienceData.getInstance().getMaxLevel() - 1)
-			{
-				value = (byte) (ExperienceData.getInstance().getMaxLevel() - 1 - getLevel());
-			}
+			if (getLevel() < Experience.MAX_LEVEL - 1)
+				value = (byte) (Experience.MAX_LEVEL - 1 - getLevel());
 			else
 				return false;
 		}

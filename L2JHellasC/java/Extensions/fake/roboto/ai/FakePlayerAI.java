@@ -293,7 +293,7 @@ public abstract class FakePlayerAI
 		
 		z += 5;
 		
-		_fakePlayer.broadcastPacket(new TeleportToLocation(_fakePlayer, x, y, z));
+		_fakePlayer.broadcastPacket(new TeleportToLocation(_fakePlayer, x, y, z,_fakePlayer.getHeading()));
 		_fakePlayer.decayMe();		
 		_fakePlayer.setXYZ(x, y, z);
 		_fakePlayer.onTeleported();		

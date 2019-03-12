@@ -520,7 +520,7 @@ public class Siege
 				continue;
 
 			clan = ClanTable.getInstance().getClan(siegeclan.getClanId());
-			for (L2PcInstance member : clan.getOnlineMembers(""))
+			for (L2PcInstance member : clan.getOnlineMembers())
 			{
 				if (clear)
 					member.setSiegeState((byte) 0);
@@ -539,7 +539,7 @@ public class Siege
 				continue;
 
 			clan = ClanTable.getInstance().getClan(siegeclan.getClanId());
-			for (L2PcInstance member : clan.getOnlineMembers(""))
+			for (L2PcInstance member : clan.getOnlineMembers())
 			{
 				if (clear)
 					member.setSiegeState((byte) 0);
@@ -675,7 +675,7 @@ public class Siege
 		for (L2SiegeClan siegeclan : getAttackerClans())
 		{
 			clan = ClanTable.getInstance().getClan(siegeclan.getClanId());
-			for (L2PcInstance player : clan.getOnlineMembers(""))
+			for (L2PcInstance player : clan.getOnlineMembers())
 			{
 				if (checkIfInZone(player.getX(), player.getY(), player.getZ()))
 					players.add(player);
@@ -694,7 +694,7 @@ public class Siege
 			clan = ClanTable.getInstance().getClan(siegeclan.getClanId());
 			if (clan.getClanId() == getCastle().getOwnerId())
 				continue;
-			for (L2PcInstance player : clan.getOnlineMembers(""))
+			for (L2PcInstance player : clan.getOnlineMembers())
 			{
 				if (checkIfInZone(player.getX(), player.getY(), player.getZ()))
 					players.add(player);
@@ -719,7 +719,7 @@ public class Siege
 			clan = ClanTable.getInstance().getClan(siegeclan.getClanId());
 			if (clan.getClanId() != getCastle().getOwnerId())
 				continue;
-			for (L2PcInstance player : clan.getOnlineMembers(""))
+			for (L2PcInstance player : clan.getOnlineMembers())
 			{
 				if (checkIfInZone(player.getX(), player.getY(), player.getZ()))
 					players.add(player);

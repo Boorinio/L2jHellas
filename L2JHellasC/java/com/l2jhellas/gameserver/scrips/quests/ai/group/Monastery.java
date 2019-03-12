@@ -14,6 +14,7 @@
  */
 package com.l2jhellas.gameserver.scrips.quests.ai.group;
 
+import com.l2jhellas.gameserver.emum.Sex;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -60,7 +61,7 @@ public class Monastery extends AbstractNpcAI
 			if (player.getActiveWeaponInstance() != null)
 			{
 				npc.setTarget(player);
-				npc.broadcastNpcSay(((player.getAppearance().getSex()) ? "Sister " : "Brother ") + player.getName() + ", move your weapon away!");
+				npc.broadcastNpcSay(((player.getAppearance().getSex() == Sex.FEMALE) ? "Sister " : "Brother ") + player.getName() + ", move your weapon away!");
 				
 				switch (npc.getNpcId())
 				{
@@ -89,7 +90,7 @@ public class Monastery extends AbstractNpcAI
 			{
 				if (obj.equals(npc))
 				{
-					npc.broadcastNpcSay(((caster.getAppearance().getSex()) ? "Sister " : "Brother ") + caster.getName() + ", move your weapon away!");
+					npc.broadcastNpcSay(((caster.getAppearance().getSex() == Sex.FEMALE) ? "Sister " : "Brother ") + caster.getName() + ", move your weapon away!");
 					attack(((L2Attackable) npc), caster);
 					break;
 				}
@@ -108,7 +109,7 @@ public class Monastery extends AbstractNpcAI
 				if (target.getActiveWeaponInstance() != null && !npc.isInCombat() && npc.getTarget() == null)
 				{
 					npc.setTarget(target);
-					npc.broadcastNpcSay(((target.getAppearance().getSex()) ? "Sister " : "Brother ") + target.getName() + ", move your weapon away!");
+					npc.broadcastNpcSay(((target.getAppearance().getSex() == Sex.FEMALE) ? "Sister " : "Brother ") + target.getName() + ", move your weapon away!");
 					
 					switch (npc.getNpcId())
 					{

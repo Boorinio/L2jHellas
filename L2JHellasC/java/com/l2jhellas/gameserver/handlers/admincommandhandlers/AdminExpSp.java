@@ -22,7 +22,6 @@ import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.logs.GMAudit;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
@@ -44,7 +43,6 @@ public class AdminExpSp implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		GMAudit.auditGMAction(activeChar.getName(), command, (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target"), "");
 		if (command.startsWith("admin_add_exp_sp"))
 		{
 			try

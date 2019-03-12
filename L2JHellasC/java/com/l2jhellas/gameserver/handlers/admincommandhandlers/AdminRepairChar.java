@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.logs.GMAudit;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
@@ -43,8 +42,6 @@ public class AdminRepairChar implements IAdminCommandHandler
 	{
 		if (command.equals("admin_repair"))
 		{
-			String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
-			GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 			handleRepair(command);
 			return true;
 		}

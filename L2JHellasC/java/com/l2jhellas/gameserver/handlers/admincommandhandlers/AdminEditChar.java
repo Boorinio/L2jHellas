@@ -28,7 +28,9 @@ import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
+import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
+import com.l2jhellas.gameserver.emum.Sex;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -326,29 +328,34 @@ public class AdminEditChar implements IAdminCommandHandler
 		{
 			try
 			{
-				StringTokenizer st = new StringTokenizer(command);
-				st.nextToken();
-				String val = st.nextToken();
-				L2Object target = activeChar.getTarget();
-				L2PcInstance player = null;
+				final L2Object target = activeChar.getTarget();
+				final String _newName = command.substring(14);
 
-				String oldName = null;
-
+				if(_newName.isEmpty())
+				{
+					activeChar.sendPacket(SystemMessageId.INCORRECT_NAME_TRY_AGAIN);
+					return false;				
+				}
+				
 				if (target instanceof L2PcInstance)
 				{
-					player = (L2PcInstance) target;
-					oldName = player.getName();
-					L2Clan temp= player.getClan();
-					boolean wasLeader=false;
-					
-					if (CharNameTable.getInstance().getIdByName(val) > 0)
+					L2PcInstance player = (L2PcInstance) target;
+			
+					if (CharNameTable.getInstance().getIdByName(_newName) > 0)
 					{
-						activeChar.sendMessage("Warning, player name " + val + " already exists.");
+						activeChar.sendMessage("Warning, player name " + _newName + " already exists.");
 						return false;
 					}
 					
-					L2World.getInstance().removeFromAllPlayers(player);
-
+					if (NpcData.getInstance().getTemplateByName(_newName) != null)
+					{
+						activeChar.sendPacket(SystemMessageId.INCORRECT_NAME_TRY_AGAIN);
+						return false;
+					}
+					
+					L2Clan temp= player.getClan();
+					boolean wasLeader=false;
+					
 					if(temp != null)
 					{
 						
@@ -356,56 +363,54 @@ public class AdminEditChar implements IAdminCommandHandler
 							wasLeader=true;		
 						
 						temp.removeClanMember(player.getName(), 0);
-					}
-					player.setName(val);
-					player.store();
-					
-					L2World.getInstance().addToAllPlayers(player);
-					
-					player.sendMessage("Your name has been changed by a GM.");
+					}					
+					L2World.getInstance().removeObject(player);	
+					player.setName(_newName);
+					L2World.getInstance().storeObject(player);
+					player.store();	
 					player.broadcastUserInfo();
+					player.sendMessage("Your name has been changed by a GM.");
+					
 					if (player.isInParty())
 					{
-						// Delete party window for other party members
 						player.getParty().broadcastToPartyMembers(player, new PartySmallWindowDeleteAll());
 						for (L2PcInstance member : player.getParty().getPartyMembers())
 						{
-							// And re-add
 							if (member != player)
 								member.sendPacket(new PartySmallWindowAll(member, player.getParty()));
 						}
 					}
+					
 					if (temp != null)
 					{
 						temp.addClanMember(player);
+						
 						if(wasLeader)
 							temp.setNewLeader(temp.getClanMember(player.getObjectId()), player, true);
+						
 						temp.updateClanInDB();
 						player.getClan().updateClanMember(player);
 						player.getClan().broadcastClanStatus();
 					}
 
-					RegionBBSManager.getInstance().changeCommunityBoard();
 					temp=null;
 					wasLeader=false;
-					
+					RegionBBSManager.getInstance().changeCommunityBoard();
 				}
 				else if (target instanceof L2Npc)
 				{
-					L2Npc npc = (L2Npc) target;
-					oldName = npc.getName();
-					npc.setName(val);
+					L2Npc npc = (L2Npc) target;					
+					npc.setName(_newName);
 					npc.updateAbnormalEffect();
 				}
-				if (oldName == null)
-					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 				else
-					activeChar.sendMessage("Name changed from " + oldName + " to " + val);
-			}
-			catch (Exception e)
-			{ // Case of empty character name
-				activeChar.sendMessage("Usage: //setname new_name_for_target");
-			}
+					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+		}
+		catch (Exception e)
+		{
+			activeChar.sendMessage("Usage: //setname name");
+		}
+			
 		}
 		else if (command.startsWith("admin_setsex"))
 		{
@@ -419,11 +424,26 @@ public class AdminEditChar implements IAdminCommandHandler
 			{
 				return false;
 			}
-			player.getAppearance().setSex(player.getAppearance().getSex() ? false : true);
-			player.sendMessage("Your gender has been changed by a GM.");
-			player.broadcastUserInfo();
-			player.decayMe();
-			player.spawnMe(player.getX(), player.getY(), player.getZ());
+			
+			Sex male = Sex.MALE;
+			Sex female = Sex.FEMALE;
+			
+			if (male != player.getAppearance().getSex())
+			{
+			    player.getAppearance().setSex(male);
+			    player.sendMessage("Your gender has been changed by a GM.");
+			    player.decayMe();
+			    player.spawnMe(player.getX(), player.getY(), player.getZ());
+			    player.broadcastUserInfo();
+			}
+			else
+			{
+				player.getAppearance().setSex(female);
+				player.sendMessage("Your gender has been changed by a GM.");
+				player.decayMe();
+				player.spawnMe(player.getX(), player.getY(), player.getZ());
+				player.broadcastUserInfo();
+			}
 		}
 		else if (command.startsWith("admin_setcolor"))
 		{

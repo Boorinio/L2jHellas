@@ -45,18 +45,10 @@ public final class RequestAllyCrest extends L2GameClientPacket
 		if (Config.DEBUG)
 			_log.fine("allycrestid " + _crestId + " requested");
 
-		byte[] data = CrestCache.getCrest(CrestType.ALLY, _crestId);
+		final byte[] data = CrestCache.getCrest(CrestType.ALLY, _crestId);
 
 		if (data != null)
-		{
-			AllyCrest ac = new AllyCrest(_crestId, data);
-			sendPacket(ac);
-		}
-		else
-		{
-			if (Config.DEBUG)
-				_log.fine("allycrest is missing:" + _crestId);
-		}
+			sendPacket(new AllyCrest(_crestId, data));
 	}
 
 	@Override

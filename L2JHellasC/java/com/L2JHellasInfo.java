@@ -28,25 +28,25 @@ public class L2JHellasInfo
 
 	public static final void showInfo()
 	{
-		_log.info("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" +
-				"                              Interlude Project                                 " +
-				"                                     Owner                                      " +
-				"                            Boorinio,AbsolutePower                              " +
-				"             ======================================================             " +
-				"             ====  ====  ============  ===  ============      =====             " +
-				"             ====  ====  ============  ===  ===========  ====  ====             " +
-				"             ====  ====  ============  ===  ===========  ====  ====             " +
-				"             ====  ====  ====   =====  ===  ====   =====  =========             " +
-				"             ====        ===  =  ====  ===  ===  =  ======  =======             " +
-				"             ====  ====  ===     ====  ===  ======  ========  =====             " +
-				"             ====  ====  ===  =======  ===  ====    ===  ====  ====             " +
-				"             ====  ====  ===  =  ====  ===  ===  =  ===  ====  ====             " +
-				"             ====  ====  ====   =====  ===  ====    ====      =====             " +
-				"             ======================================================             " +
-				"                           Contact: nikos.nikosnikos1                           " +
-				"                          Forum: http://l2jhellas.info/                         " +
-				" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" +
-				"             Server Version: " + Config.SERVER_VERSION + " Builded: " + Config.SERVER_BUILD_DATE);
+		_log.info("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+		_log.info("                              Interlude Project                                 ");
+		_log.info("                                     Owner                                      ");
+		_log.info("                            Boorinio,AbsolutePower                              ");
+		_log.info("                                                                                ");
+		_log.info("                 ##    ##            ##   ##            ######                  ");
+		_log.info("                 ##    ##            ##   ##           ##    ##                 ");
+		_log.info("                 ##    ##            ##   ##           ##    ##                 ");
+		_log.info("                 ##    ##    ###     ##   ##    ###     ##                      ");
+		_log.info("                 ########   ## ##    ##   ##   ## ##      ##                    ");
+		_log.info("                 ##    ##   #####    ##   ##      ##        ##                  ");
+		_log.info("                 ##    ##   ##       ##   ##    ####   ##    ##                 ");
+		_log.info("                 ##    ##   ## ##    ##   ##   ## ##   ##    ##                 ");
+		_log.info("                 ##    ##    ###     ##   ##    ####    ######                  ");
+		_log.info("                                                                                ");
+		_log.info("                           Contact: nikos.nikosnikos1                           ");
+		_log.info("                          Forum: http://l2jhellas.info/                         ");
+		_log.info(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+		_log.info("             Server Version: " + Config.SERVER_VERSION + " Builded: " + Config.SERVER_BUILD_DATE);
 		_log.info("");
 	}
 }

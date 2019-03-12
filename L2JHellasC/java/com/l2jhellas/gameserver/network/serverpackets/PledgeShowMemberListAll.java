@@ -15,7 +15,6 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.L2Clan;
-import com.l2jhellas.gameserver.model.L2Clan.SubPledge;
 import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
@@ -51,79 +50,79 @@ public class PledgeShowMemberListAll extends L2GameServerPacket
 {
 	// private static Logger _log = Logger.getLogger(PledgeShowMemberListAll.class.getName());
 	private static final String _S__68_PLEDGESHOWMEMBERLISTALL = "[S] 53 PledgeShowMemberListAll";
+	
 	private final L2Clan _clan;
-	private final L2PcInstance _activeChar;
-	private final L2ClanMember[] _members;
 	private int _pledgeType;
-
-	public PledgeShowMemberListAll(L2Clan clan, L2PcInstance activeChar)
+	private final String _pledgeName;
+	
+	public PledgeShowMemberListAll(L2Clan clan, int pledgeType)
 	{
 		_clan = clan;
-		_activeChar = activeChar;
-		_members = _clan.getMembers();
+		_pledgeType = pledgeType;
+		
+		if (_pledgeType == 0) 
+		{
+			_pledgeName = clan.getName();
+		}
+		else if (_clan.getSubPledge(_pledgeType) != null)
+		{
+			_pledgeName = _clan.getSubPledge(_pledgeType).getName();
+		}
+		else
+		{
+			_pledgeName = "";
+		}
 	}
 
 	@Override
 	protected final void writeImpl()
 	{
-
-		_pledgeType = 0;
-		writePledge(0);
-
-		SubPledge[] subPledge = _clan.getAllSubPledges();
-		for (int i = 0; i < subPledge.length; i++)
-		{
-			_activeChar.sendPacket(new PledgeReceiveSubPledgeCreated(subPledge[i]));
-		}
-
-		for (L2ClanMember m : _members)
-		{
-			if (m.getPledgeType() == 0)
-				continue;
-			_activeChar.sendPacket(new PledgeShowMemberListAdd(m));
-		}
-
-		// unless this is sent sometimes, the client doesn't recognize the player as the leader
-		_activeChar.sendPacket(new UserInfo(_activeChar));
-
-	}
-
-	void writePledge(int mainOrSubpledge)
-	{
 		writeC(0x53);
-
-		writeD(mainOrSubpledge); // c5 main clan 0 or any subpledge 1?
+		
+		writeD((_pledgeType == 0) ? 0 : 1);
 		writeD(_clan.getClanId());
-		writeD(_pledgeType); // c5 - possibly pledge type?
-		writeS(_clan.getName());
-		writeS(_clan.getLeaderName());
-
-		writeD(_clan.getCrestId()); // crest id .. is used again
+		writeD(_pledgeType);
+		writeS(_pledgeName);;
+		writeS(_clan.getSubPledge(_pledgeType) != null ? _clan.getSubPledge(_pledgeType).getLeaderName() :_clan.getLeaderName());
+			
+		writeD(_clan.getCrestId());
 		writeD(_clan.getLevel());
 		writeD(_clan.hasCastle());
 		writeD(_clan.hasHideout());
-		writeD(_clan.getRank()); // not confirmed
-		writeD(_clan.getReputationScore()); // was activechar lvl
-		writeD(0); // 0
-		writeD(0); // 0
-
+		writeD(_clan.getRank());
+		writeD(_clan.getReputationScore());
+		writeD(0);
+		writeD(0);
 		writeD(_clan.getAllyId());
 		writeS(_clan.getAllyName());
 		writeD(_clan.getAllyCrestId());
-		writeD(_clan.isAtWar() ? 1 : 0);// new c3
+		writeD(_clan.isAtWar() ? 1 : 0);
 		writeD(_clan.getSubPledgeMembersCount(_pledgeType));
-
-		for (L2ClanMember m : _members)
+		
+		for (L2ClanMember m : _clan.getMembers())
 		{
 			if (m.getPledgeType() != _pledgeType)
 				continue;
+			
 			writeS(m.getName());
 			writeD(m.getLevel());
 			writeD(m.getClassId());
-			writeD(0); // no visible effect
-			writeD(m.getObjectId());// writeD(1);
-			writeD(m.isOnline() ? 1 : 0);  // 1=online 0=offline
-			writeD(0); // c5 makes the name yellow. member is in academy and has a sponsor
+			
+			L2PcInstance player = m.getPlayerInstance();
+			
+			if (player != null)
+			{
+				writeD(player.getAppearance().getSex().ordinal()); 
+				writeD(player.getRace().ordinal());
+			}
+			else
+			{
+				writeD(0x01); 
+				writeD(0x01);
+			}
+			
+			writeD((m.isOnline()) ? m.getObjectId() : 0);
+			writeD((m.getSponsor() != 0 || m.getApprentice() != 0) ? 1 : 0);
 		}
 	}
 

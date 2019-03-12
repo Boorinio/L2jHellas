@@ -25,7 +25,6 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.logs.GMAudit;
 import com.l2jhellas.util.Broadcast;
 
 /**
@@ -59,7 +58,6 @@ public class AdminMobGroup implements IAdminCommandHandler
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
-		GMAudit.auditGMAction(activeChar.getName(), command, "", "");
 		if (command.equals("admin_mobmenu"))
 		{
 			showMainPage(activeChar, command);

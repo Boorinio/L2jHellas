@@ -23,7 +23,6 @@ import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.logs.GMAudit;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 /**
@@ -45,8 +44,6 @@ public class AdminChangeAccessLevel implements IAdminCommandHandler
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		handleChangeLevel(command, activeChar);
-		String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
-		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 		return true;
 	}
 

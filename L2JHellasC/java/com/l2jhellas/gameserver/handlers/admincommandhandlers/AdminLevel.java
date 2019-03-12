@@ -17,13 +17,12 @@ package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.logs.GMAudit;
 
 public class AdminLevel implements IAdminCommandHandler
 {
@@ -37,8 +36,6 @@ public class AdminLevel implements IAdminCommandHandler
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		L2Object targetChar = activeChar.getTarget();
-		String target = (targetChar != null ? targetChar.getName() : "no-target");
-		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 
 		StringTokenizer st = new StringTokenizer(command, " ");
 		String actualCommand = st.nextToken(); // Get actual command
@@ -76,7 +73,7 @@ public class AdminLevel implements IAdminCommandHandler
 				final L2Playable targetPlayer = (L2Playable) targetChar;
 
 				final byte lvl = Byte.parseByte(val);
-				int max_level = ExperienceData.getInstance().getMaxLevel();
+				int max_level = Experience.MAX_LEVEL;
 
 				if (targetChar instanceof L2PcInstance && ((L2PcInstance) targetPlayer).isSubClassActive())
 				{
@@ -86,8 +83,7 @@ public class AdminLevel implements IAdminCommandHandler
 				if (lvl >= 1 && lvl <= max_level)
 				{
 					final long pXp = targetPlayer.getStat().getExp();
-					final long tXp = ExperienceData.getInstance().getExpForLevel(lvl);
-
+					final long tXp = Experience.LEVEL[lvl];
 					if (pXp > tXp)
 					{
 						targetPlayer.getStat().removeExpAndSp(pXp - tXp, 0);
@@ -99,13 +95,13 @@ public class AdminLevel implements IAdminCommandHandler
 				}
 				else
 				{
-					activeChar.sendMessage("You must specify level between 1 and " + ExperienceData.getInstance().getMaxLevel() + ".");
+					activeChar.sendMessage("You must specify level between 1 and " + Experience.MAX_LEVEL + ".");
 					return false;
 				}
 			}
 			catch (NumberFormatException e)
 			{
-				activeChar.sendMessage("You must specify level between 1 and " + ExperienceData.getInstance().getMaxLevel() + ".");
+				activeChar.sendMessage("You must specify level between 1 and " + Experience.MAX_LEVEL + ".");
 				return false;
 			}
 		}

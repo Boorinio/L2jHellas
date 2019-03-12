@@ -14,7 +14,6 @@
  */
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.model.L2Effect;
@@ -63,18 +62,18 @@ public class Blow implements ISkillHandler
 			// Check firstly if target dodges skill
 			final boolean skillIsEvaded = Formulas.calcPhysicalSkillEvasion(target, skill);
 
-			int _successChance = Config.SIDE_BLOW_SUCCESS;
+			int _successChance = 60;
 
 			if (activeChar.isBehindTarget())
-				_successChance = Config.BACK_BLOW_SUCCESS;
+				_successChance = 70;
 			else if (activeChar.isFrontTarget())
-				_successChance = Config.FRONT_BLOW_SUCCESS;
+				_successChance = 50;
 
 			// If skill requires Crit or skill requires behind,
 			// calculate chance based on DEX, Position and on self BUFF
 			boolean success = true;
 			if ((skill.getCondition() & L2Skill.COND_BEHIND) != 0)
-				success = (_successChance == Config.BACK_BLOW_SUCCESS);
+				success = (_successChance == 70);
 			if ((skill.getCondition() & L2Skill.COND_CRIT) != 0)
 				success = (success && Formulas.getInstance().calcBlow(activeChar, target, _successChance));
 			if (!skillIsEvaded && success)

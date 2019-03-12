@@ -82,6 +82,7 @@ import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
+import com.l2jhellas.gameserver.model.zone.ZoneRegion;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.Attack;
@@ -476,7 +477,7 @@ public abstract class L2Character extends L2Object
 			_log.fine("Teleporting to: " + x + ", " + y + ", " + z);
 		
 		// Send a Server->Client packet TeleportToLocationt to the L2Character AND to all L2PcInstance in the _KnownPlayers of the L2Character
-		broadcastPacket(new TeleportToLocation(this, x, y, z));
+		broadcastPacket(new TeleportToLocation(this, x, y, z,getHeading()));
 		
 		decayMe();
 		
@@ -2029,8 +2030,31 @@ public abstract class L2Character extends L2Object
 	
 	public final void setIsRunning(boolean value)
 	{
+		if (_isRunning == value)
+			return;
+		
 		_isRunning = value;
-		broadcastPacket(new ChangeMoveType(this));
+		
+		if (getMoveSpeed() != 0)
+			broadcastPacket(new ChangeMoveType(this));
+		
+		if (this instanceof L2PcInstance)
+			getActingPlayer().broadcastUserInfo();
+		else if (this instanceof L2Summon)
+			broadcastStatusUpdate();
+		else if (this instanceof L2Npc)
+		{
+			L2World.getInstance().forEachVisibleObject(this, L2PcInstance.class, player ->
+			{
+				if (isVisible())
+				{			
+				  if (getRunSpeed() == 0)
+					  player.sendPacket(new ServerObjectInfo((L2Npc) this, player));
+				  else
+					  player.sendPacket(new NpcInfo((L2Npc) this,player));
+				}
+			});
+		}
 	}
 	
 	/**
@@ -4393,7 +4417,7 @@ public abstract class L2Character extends L2Object
 		// the CtrlEvent.EVT_ARRIVED will be sent when the character will actually arrive
 		// to destination by GameTimeController
 	}
-	
+
 	public ArrayList<Location> findPath(int curX, int curY, int curZ, int originalX, int originalY, int originalZ, int _offset)
 	{
 		ArrayList<Location> path = new ArrayList<Location>(1);
@@ -5033,20 +5057,6 @@ public abstract class L2Character extends L2Object
 							reflectedDamage = target.getMaxHp();
 						
 						getStatus().reduceHp(reflectedDamage, target, true);
-						
-						// Custom messages - nice but also more network load
-						if (Config.CUSTOM_MSG_ON_PVP)
-						{
-							if (target instanceof L2PcInstance)
-								((L2PcInstance) target).sendMessage("You reflected " + reflectedDamage + " damage.");
-							else if (target instanceof L2Summon)
-								((L2Summon) target).getOwner().sendMessage("Summon reflected " + reflectedDamage + " damage.");
-							
-							if (this instanceof L2PcInstance)
-								((L2PcInstance) this).sendMessage("Target reflected to you " + reflectedDamage + " damage.");
-							else if (this instanceof L2Summon)
-								((L2Summon) this).getOwner().sendMessage("Target reflected to your summon " + reflectedDamage + " damage.");
-						}
 					}
 					
 					// Absorb HP from the damage inflicted
@@ -5062,20 +5072,7 @@ public abstract class L2Character extends L2Object
 															// than max hp
 							
 						if (absorbDamage > 0)
-						{
 							setCurrentHp(getCurrentHp() + absorbDamage);
-							
-							// Custom messages - nice but also more network load
-							if (Config.CUSTOM_MSG_ON_PVP)
-							{
-								if (this instanceof L2PcInstance)
-									((L2PcInstance) this).sendMessage("You absorbed " + absorbDamage + " damage.");
-								else if (this instanceof L2Summon)
-									((L2Summon) this).getOwner().sendMessage("Summon absorbed " + absorbDamage + " damage.");
-								if (Config.DEBUG)
-									_log.config(L2Character.class.getName() + ": " + getName() + " absorbed " + absorbDamage + " damage.");
-							}
-						}
 					}
 				}
 				
@@ -6581,13 +6578,7 @@ public abstract class L2Character extends L2Object
 	
 	public int getMAtkSpd()
 	{
-		int _matkspd = getStat().getMAtkSpd();
-		if (Config.MAX_MATK_SPEED > 0)
-		{
-			if (_matkspd > Config.MAX_MATK_SPEED)
-				return Config.MAX_MATK_SPEED;
-		}
-		return _matkspd;
+		return Math.min(getStat().getPAtkSpd(),Config.MAX_MATK_SPEED);
 	}
 	
 	public int getMaxMp()
@@ -6657,13 +6648,7 @@ public abstract class L2Character extends L2Object
 	
 	public int getPAtkSpd()
 	{
-		int _patkspd = getStat().getPAtkSpd();
-		if (Config.MAX_PATK_SPEED > 0)
-		{
-			if (_patkspd > Config.MAX_PATK_SPEED)
-				return Config.MAX_PATK_SPEED;
-		}
-		return _patkspd;
+		return Math.min(getStat().getPAtkSpd(),Config.MAX_PATK_SPEED);
 	}
 	
 	public double getPAtkUndead(L2Character target)
@@ -7161,14 +7146,14 @@ public abstract class L2Character extends L2Object
 	public void setXYZ(int x, int y, int z)
 	{
 		
-		//final ZoneRegion oldZoneRegion = ZoneManager.getInstance().getRegion(this);
-		//final ZoneRegion newZoneRegion = ZoneManager.getInstance().getRegion(x, y);
+		final ZoneRegion oldZoneRegion = ZoneManager.getInstance().getRegion(this);
+		final ZoneRegion newZoneRegion = ZoneManager.getInstance().getRegion(x, y);
 		
-		//if (oldZoneRegion != newZoneRegion)
-		//{
-			//oldZoneRegion.removeFromZones(this);
-			//newZoneRegion.revalidateZones(this);		
-		//}
+		if (oldZoneRegion != newZoneRegion)
+		{
+			oldZoneRegion.removeFromZones(this);
+			newZoneRegion.revalidateZones(this);		
+		}
 		
 		super.setXYZ(x, y, z);
 		

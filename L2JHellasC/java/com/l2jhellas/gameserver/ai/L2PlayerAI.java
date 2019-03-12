@@ -198,29 +198,21 @@ public class L2PlayerAI extends L2CharacterAI
 			setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 			return;
 		}
-		
-		if (checkTargetLostOrDead(target))
-		{
-			if (target != null)
-			{
-				// Notify the target
-				setAttackTarget(null);
-			}
-			return;
-		}
-		
+
 		if (maybeMoveToPawn(target, _actor.getPhysicalAttackRange()))
 			return;
 		
+		if (checkTargetLostOrDead(target))
+			return;
+		
 		clientStopMoving(null);
-		
 		_actor.doAttack(target);
-		
 	}
 
 	private void thinkCast()
 	{
 		L2Character target = getCastTarget();
+
 		if (Config.DEBUG)
 			_log.warning(L2PlayerAI.class.getName() + ": thinkCast -> Start");
 
@@ -403,6 +395,12 @@ public class L2PlayerAI extends L2CharacterAI
 	{
 		//_actor.getKnownList().refreshInfos();
 		super.onEvtArrivedRevalidate();
+	}
+	
+	@Override
+	protected void onEvtForgetObject(L2Object object)
+	{
+		super.onEvtForgetObject(object);
 	}
 	
 	@Override

@@ -265,7 +265,7 @@ public final class L2World
 		
 		forEachVisibleObject(object, L2Object.class, 1, wo ->
 		{
-			if (object instanceof L2PcInstance && wo.isVisibleFor((L2PcInstance) object))
+			if (object instanceof L2PcInstance && wo.isVisible())
 			{
 				wo.sendInfo((L2PcInstance) object);
 				if (wo instanceof L2Character)
@@ -285,7 +285,7 @@ public final class L2World
 				}
 			}
 			
-			if (wo instanceof L2PcInstance && object.isVisibleFor((L2PcInstance) wo))
+			if (wo instanceof L2PcInstance && object.isVisible())
 			{
 				object.sendInfo((L2PcInstance) wo);
 				if (object instanceof L2Character)
@@ -448,7 +448,7 @@ public final class L2World
 						continue;
 					}
 					
-					if (object instanceof L2PcInstance && wo.isVisibleFor((L2PcInstance) object))
+					if (object instanceof L2PcInstance && wo.isVisible())
 					{
 						wo.sendInfo((L2PcInstance) object);
 						if (wo instanceof L2Character)
@@ -468,7 +468,7 @@ public final class L2World
 						}
 					}
 					
-					if (wo instanceof L2PcInstance && object.isVisibleFor((L2PcInstance) wo))
+					if (wo instanceof L2PcInstance && object.isVisible())
 					{
 						object.sendInfo((L2PcInstance) wo);
 						if (object instanceof L2Character)

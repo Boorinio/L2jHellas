@@ -25,7 +25,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.GMViewPledgeInfo;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.logs.GMAudit;
 
 /**
  * <B>Pledge Manipulation:</B><BR>
@@ -61,7 +60,6 @@ public class AdminPledge implements IAdminCommandHandler
 		{
 			String action = null;
 			String parameter = null;
-			GMAudit.auditGMAction(activeChar.getName(), command, activeChar.getName(), "");
 			StringTokenizer st = new StringTokenizer(command);
 			try
 			{

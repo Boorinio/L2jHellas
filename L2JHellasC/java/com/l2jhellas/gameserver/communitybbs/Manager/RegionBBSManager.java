@@ -23,10 +23,11 @@ import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GameServer;
-import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
+import com.l2jhellas.gameserver.emum.Sex;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
@@ -100,10 +101,12 @@ public class RegionBBSManager extends BaseBBSManager
 		if (player != null)
 		{
 			String sex = "Male";
-			if (player.getAppearance().getSex())
+			
+			if (player.getAppearance().getSex() == Sex.FEMALE)
 			{
 				sex = "Female";
 			}
+			
 			String levelApprox = "low";
 			if (player.getLevel() >= 60)
 				levelApprox = "very high";
@@ -119,9 +122,9 @@ public class RegionBBSManager extends BaseBBSManager
 			{
 				long nextLevelExp = 0;
 				long nextLevelExpNeeded = 0;
-				if (player.getLevel() < (ExperienceData.getInstance().getMaxLevel() - 1))
+				if (player.getLevel() < (Experience.MAX_LEVEL - 1))
 				{
-					nextLevelExp = ExperienceData.getInstance().getExpForLevel(player.getLevel() + 1);
+					nextLevelExp = Experience.LEVEL[player.getLevel() + 1];
 					nextLevelExpNeeded = nextLevelExp - player.getExp();
 				}
 

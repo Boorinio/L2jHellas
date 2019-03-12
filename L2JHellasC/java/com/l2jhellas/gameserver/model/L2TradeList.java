@@ -27,7 +27,6 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.logs.GMAudit;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class L2TradeList
@@ -289,23 +288,6 @@ public class L2TradeList
 			// DIRTY FIX: Fix for trading pet collar not updating pet with new collar object id
 			changePetItemObjectId(playerItem.getObjectId(), newitem.getObjectId());
 
-			// Remove item from sender and add item to reciever
-			if (reciever.isGM() || player.isGM())
-			{
-				L2PcInstance gm;
-				L2PcInstance target;
-				if (reciever.isGM())
-				{
-					gm = reciever;
-					target = player;
-				}
-				else
-				{
-					gm = player;
-					target = reciever;
-				}
-				GMAudit.auditGMAction(gm.getName(), "trade", target.getName(), newitem.getItem().getItemName() + " - " + newitem.getItemId());
-			}
 			playerItem = playersInv.destroyItem("!L2TradeList!", playerItem.getObjectId(), temp.getCount(), null, null);
 			recieverItem = recieverInv.addItem("!L2TradeList!", newitem, null, null);
 

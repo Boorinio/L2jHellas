@@ -23,7 +23,6 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.logs.GMAudit;
 
 /**
  * This class handles following admin commands: - delete = deletes target
@@ -40,8 +39,6 @@ public class AdminDelete implements IAdminCommandHandler
 	{
 		if (command.equals(ADMIN_COMMANDS[0]))
 			handleDelete(activeChar);
-		String target = (activeChar.getTarget() != null ? activeChar.getTarget().getName() : "no-target");
-		GMAudit.auditGMAction(activeChar.getName(), command, target, "");
 		return true;
 	}
 

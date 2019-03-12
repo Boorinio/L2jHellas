@@ -679,7 +679,7 @@ public abstract class L2Item
 	
 	public boolean checkCondition(L2Character activeChar, L2Object target)
 	{
-		ArrayList<Integer> items = Config.OLY_RESTRICTED_ITEMS_LIST;
+		List<Integer> items = Config.OLY_RESTRICTED_ITEMS_LIST;
 
 		for(L2ItemInstance i: activeChar.getActingPlayer().getInventory().getItems())
 		{			

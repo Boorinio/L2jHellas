@@ -32,7 +32,7 @@ public class AllyInfo extends L2GameServerPacket
 	@Override
 	protected final void writeImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
 
@@ -57,7 +57,7 @@ public class AllyInfo extends L2GameServerPacket
 			if (clan.getAllyId() == _cha.getAllyId())
 			{
 				clancount++;
-				online += clan.getOnlineMembers("").length;
+				online += clan.getOnlineMembers().length;
 				count += clan.getMembers().length;
 			}
 		}

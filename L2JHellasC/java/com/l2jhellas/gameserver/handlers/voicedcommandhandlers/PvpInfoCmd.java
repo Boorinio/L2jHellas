@@ -41,24 +41,18 @@ public class PvpInfoCmd implements IVoicedCommandHandler
 			if (activeChar.getRPSCookie() == null)
 				return false;
 
-			RPSCookie pc = activeChar.getRPSCookie();
+			final RPSCookie pc = activeChar.getRPSCookie();
 
 			// reset death status:
 			if (!activeChar.isDead())
-			{
 				pc.setDeathStatus(null);
-			}
 
 			// save target of active player when command executed:
 			if (activeChar.getTarget() != null && activeChar.getTarget() instanceof L2PcInstance)
-			{
 				pc.setTarget((L2PcInstance) activeChar.getTarget());
-			}
 			else
-			{
 				pc.setTarget(activeChar);
 				activeChar.sendMessage("PvP Status executed on self!");
-			}
 
 			RPSHtmlPvpStatus.sendPage(activeChar, pc.getTarget());
 		}

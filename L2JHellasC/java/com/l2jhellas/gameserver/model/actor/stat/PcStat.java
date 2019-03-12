@@ -17,11 +17,11 @@ package com.l2jhellas.gameserver.model.actor.stat;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.xml.ExperienceData;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2ClassMasterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
+import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
@@ -151,7 +151,7 @@ public class PcStat extends PlayableStat
 	@Override
 	public final boolean addLevel(byte value)
 	{
-		if (getLevel() + value > (ExperienceData.getInstance().getMaxLevel() - 1))
+		if (getLevel() + value > Experience.MAX_LEVEL - 1)
 			return false;
 
 		boolean levelIncreased = super.addLevel(value);
@@ -269,7 +269,7 @@ public class PcStat extends PlayableStat
 	@Override
 	public final long getExpForLevel(int level)
 	{
-		return ExperienceData.getInstance().getExpForLevel(level);
+		return Experience.LEVEL[level];
 	}
 
 	@Override
@@ -312,19 +312,13 @@ public class PcStat extends PlayableStat
 	@Override
 	public final void setLevel(byte value)
 	{
-		if (value > ExperienceData.getInstance().getMaxLevel() - 1)
-		{
-			value = (byte) (ExperienceData.getInstance().getMaxLevel() - 1);
-		}
+		if (value > Experience.MAX_LEVEL - 1)
+			value = Experience.MAX_LEVEL - 1;
 
 		if (getActiveChar().isSubClassActive())
-		{
 			getActiveChar().getSubClasses().get(getActiveChar().getClassIndex()).setLevel(value);
-		}
 		else
-		{
 			super.setLevel(value);
-		}
 	}
 
 	@Override

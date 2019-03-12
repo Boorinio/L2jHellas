@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.emum.ClassRace;
+import com.l2jhellas.gameserver.emum.Sex;
 import com.l2jhellas.gameserver.model.base.ClassId;
 
 /**
@@ -81,21 +82,23 @@ public class L2PcTemplate extends L2CharTemplate
 		if (item != null)
 			_items.add(item);
 	}
-
+    public String getClassName()
+    {
+    	return className;
+    }
 	public final ClassRace getRace()
 	{
 		return classId.getRace();
 	}
-	@Override
-	public int getCollisionRadius(boolean sex)
+
+	public int getCollisionRadius(Sex sex)
 	{
-		return (int) ((sex) ? _currentCollisionRadius : collisionRadius);
+		return (sex == Sex.MALE) ? collisionRadius : _currentCollisionRadius;
 	}
 
-	@Override
-	public int getCollisionHeight(boolean sex)
+	public int getCollisionHeight(Sex sex)
 	{
-		return (int) ((sex) ? _currentCollisionHeight : collisionHeight);
+		return (sex == Sex.MALE) ? collisionHeight : _currentCollisionHeight;
 	}
 
 	public L2Item[] getItems()
