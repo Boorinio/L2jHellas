@@ -1,24 +1,12 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Q633_InTheForgottenVillage extends Quest
 {
@@ -32,7 +20,7 @@ public class Q633_InTheForgottenVillage extends Quest
 	private static final int ZOMBIE_LIVER = 7545;
 	
 	// MOBS / DROP chances
-	private static final Map<Integer, Integer> MOBS = new HashMap<Integer, Integer>();
+	private static final Map<Integer, Integer> MOBS = new HashMap<>();
 	{
 		MOBS.put(21557, 328000); // Bone Snatcher
 		MOBS.put(21558, 328000); // Bone Snatcher
@@ -52,7 +40,7 @@ public class Q633_InTheForgottenVillage extends Quest
 		MOBS.put(21584, 401000); // Bone Scavenger
 	}
 	
-	private static final Map<Integer, Integer> UNDEADS = new HashMap<Integer, Integer>();
+	private static final Map<Integer, Integer> UNDEADS = new HashMap<>();
 	{
 		UNDEADS.put(21553, 347000); // Trampled Man
 		UNDEADS.put(21554, 347000); // Trampled Man

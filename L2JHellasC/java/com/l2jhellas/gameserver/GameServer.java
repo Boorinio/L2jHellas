@@ -1,30 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver;
-
-import java.awt.Toolkit;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 import Extensions.IpCatcher;
 import Extensions.AchievmentsEngine.AchievementsManager;
@@ -133,6 +107,18 @@ import com.l2jhellas.util.hexid.HexId;
 import com.l2jhellas.util.ip.GameServerIP;
 import com.l2jhellas.util.ip.IPConfigData;
 
+import java.awt.Toolkit;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 public class GameServer
 {
 	private static final Logger _log = Logger.getLogger(GameServer.class.getName());
@@ -141,34 +127,33 @@ public class GameServer
 	public static GameServer gameServer;
 	private final LoginServerThread _loginThread;
 	public static final Calendar dateTimeServerStarted = Calendar.getInstance();
-
+	
 	public Gui gui;
 	long freeMemBefore = 0;
 	private String optimizer = "";
-
+	
 	public SelectorThread<L2GameClient> getSelectorThread()
 	{
 		return _selectorThread;
 	}
-
+	
 	public GameServer() throws Exception
 	{
 		gameServer = this;
 		long serverLoadStart = System.currentTimeMillis();
 		ThreadPoolManager.getInstance();
-
+		
 		Util.printSection("Chache");
 		// Call to load caches
 		HtmCache.getInstance();
 		CrestCache.load();
-
-
+		
 		Util.printSection("Geodata");
 		if (Config.GEODATA)
 			GeoEngine.loadGeo();
 		else
-		_log.info(GameServer.class.getSimpleName() + ":GeoEngine disabled by Config.");
-
+			_log.info(GameServer.class.getSimpleName() + ":GeoEngine disabled by Config.");
+		
 		Util.printSection("World");
 		GameTimeController.init();
 		L2World.getInstance();
@@ -179,10 +164,10 @@ public class GameServer
 		DayNightSpawnManager.getInstance();
 		AutoChatHandler.getInstance();
 		StaticObjData.getInstance();
-		TeleportLocationData.getInstance();	
+		TeleportLocationData.getInstance();
 		CharNameTable.getInstance();
 		DuelManager.getInstance();
-
+		
 		Util.printSection("Skills");
 		if (!SkillTable.getInstance().isInitialized())
 		{
@@ -193,7 +178,7 @@ public class GameServer
 		NobleSkillTable.getInstance();
 		HeroSkillTable.getInstance();
 		NpcBufferSkillIdsTable.getInstance();
-
+		
 		Util.printSection("Items");
 		if (!ItemTable.getInstance().isInitialized())
 		{
@@ -206,13 +191,13 @@ public class GameServer
 			FishTable.getInstance();
 		
 		SoulCrystalsTable.getInstance();
-
+		
 		Util.printSection("Npc");
 		NpcData.getInstance();
 		
 		if (Config.ALLOW_NPC_WALKERS)
 			NpcWalkerRoutesData.getInstance();
-
+		
 		Util.printSection("Characters");
 		if (Config.COMMUNITY_TYPE.equals("Full"))
 		{
@@ -229,31 +214,31 @@ public class GameServer
 		BuffTemplateTable.getInstance();
 		PartyMatchWaitingList.getInstance();
 		PartyMatchRoomList.getInstance();
-
+		
 		Util.printSection("Economy");
 		TradeController.getInstance();
 		MultisellData.getInstance();
-
+		
 		Util.printSection("Clan Halls");
 		ClanHallManager.getInstance();
 		AuctionManager.getInstance();
-
+		
 		Util.printSection("Zone");
 		ZoneManager.getInstance();
 		Util.printSection("Castles");
 		CastleManager.getInstance();
 		SiegeManager.getInstance();
 		SiegeReward.getInstance();
-
+		
 		SpawnTable.getInstance();
-
+		
 		RaidBossSpawnManager.getInstance();
 		GrandBossManager.getInstance();
 		RaidBossPointsManager.getInstance();
-
+		
 		Util.printSection("Dimensional Rift");
 		DimensionalRiftManager.getInstance();
-
+		
 		Util.printSection("Misc");
 		RecipeData.getInstance();
 		RecipeController.getInstance();
@@ -280,7 +265,7 @@ public class GameServer
 		}
 		
 		DoorData.getInstance();
-
+		
 		if (Config.ALLOW_BOAT)
 		{
 			BoatManager.getInstance();
@@ -290,27 +275,27 @@ public class GameServer
 		TaskManager.getInstance();
 		PvpFlagTaskManager.getInstance();
 		RandomAnimationTaskManager.getInstance();
-
+		
 		Util.printSection("Manor");
 		L2Manor.getInstance();
 		CastleManorManager.getInstance();
-
+		
 		Util.printSection("Seven Signs");
 		SevenSignsFestival.getInstance();
 		SevenSigns.getInstance().spawnSevenSignsNPC();// Spawn the Orators/Preachers if in the Seal Validation period.
-
+		
 		Util.printSection("Olympiad System");
 		OlympiadGameManager.getInstance();
 		Olympiad.getInstance();
 		Hero.getInstance();
-
+		
 		Util.printSection("Scripts");
 		if (!Config.ALT_DEV_NO_SCRIPT)
 		{
-		   ScriptLoader.getInstance();
-		   QuestManager.getInstance().report();
-		   MasterHandler.getInstance();		
-				
+			ScriptLoader.getInstance();
+			QuestManager.getInstance().report();
+			MasterHandler.getInstance();
+			
 		}
 		else
 		{
@@ -338,7 +323,7 @@ public class GameServer
 		sc.SLEEP_TIME = Config.MMO_SELECTOR_SLEEP_TIME;
 		sc.HELPER_BUFFER_COUNT = Config.MMO_HELPER_BUFFER_COUNT;
 		final L2GamePacketHandler gph = new L2GamePacketHandler();
-		_selectorThread = new SelectorThread<L2GameClient>(sc, gph, gph, gph, null);
+		_selectorThread = new SelectorThread<>(sc, gph, gph, gph, null);
 		InetAddress bindAddress = null;
 		if (!Config.GAMESERVER_HOSTNAME.equals("*"))
 		{
@@ -364,33 +349,33 @@ public class GameServer
 				e.printStackTrace();
 			System.exit(1);
 		}
-
+		
 		_selectorThread.start();
 		Util.printRuntimeInfo();
 		_log.info(GameServer.class.getSimpleName() + ": Maximum Users On: " + Config.MAXIMUM_ONLINE_USERS);
 		long serverLoadEnd = System.currentTimeMillis();
 		_log.info(GameServer.class.getSimpleName() + ": Server Started in: " + ((serverLoadEnd - serverLoadStart) / 1000) + " seconds");
-
+		
 		Toolkit.getDefaultToolkit().beep();
 		_loginThread = LoginServerThread.getInstance();
 		_loginThread.start();
 		_log.info(optimizer);
 	}
-
+	
 	private void RunOptimizer()
 	{
 		Util.gc(2, 100);
 		freeMemBefore = MemoryWatchOptimize.getMemFree();
-
+		
 		Util.gc(2, 100);
-		optimizer = String.format("%s Optimized ~%d Mb of memory",optimizer, (MemoryWatchOptimize.getMemFree() - freeMemBefore) / 0x100000);
-	
+		optimizer = String.format("%s Optimized ~%d Mb of memory", optimizer, (MemoryWatchOptimize.getMemFree() - freeMemBefore) / 0x100000);
+		
 	}
 	
-	private void RunCustoms()
+	private static void RunCustoms()
 	{
 		AchievementsManager.getInstance();
-		PcColorTable.getInstance();	
+		PcColorTable.getInstance();
 		PolymporphTable.getInstance();
 		
 		if (Config.ALLOW_TOPZONE_VOTE_REWARD)
@@ -403,7 +388,7 @@ public class GameServer
 			RankLoader.load();
 		else
 			_log.log(Level.INFO, " - Rank PvP System: Disabled");
-	
+		
 		if (Config.ZODIAC_ENABLE)
 		{
 			ZodiacMain.ZodiacIn();
@@ -441,9 +426,9 @@ public class GameServer
 			CoupleManager.getInstance();
 		}
 		
-		IpCatcher.ipsLoad();	
+		IpCatcher.ipsLoad();
 		
-		FakePlayerManager.INSTANCE.initialise();
+		FakePlayerManager.initialise();
 	}
 	
 	public static void main(String[] args) throws Exception
@@ -455,13 +440,12 @@ public class GameServer
 		// Local Constants
 		final String LOG_FOLDER = "log"; // Name of folder for log file
 		final String LOG_NAME = "./config/Others/log.cfg"; // Name of log file
-
+		
 		if (Config.USE_SAY_FILTER)
 		{
 			new File(PackRoot.DATAPACK_ROOT, "config/Others/ChatFilter.txt").createNewFile();
 		}
 		
-		/*** Main ***/
 		// Create directories
 		File logFolder = new File(PackRoot.DATAPACK_ROOT, LOG_FOLDER);
 		logFolder.mkdir();
@@ -476,7 +460,6 @@ public class GameServer
 		File donates = new File(PackRoot.DATAPACK_ROOT, "data/donates");
 		donates.mkdir();
 		
-
 		// Create input stream for log file -- or store file data into memory
 		InputStream is = new FileInputStream(new File(LOG_NAME));
 		LogManager.getLogManager().readConfiguration(is);
@@ -489,22 +472,22 @@ public class GameServer
 		Util.printSection("Network");
 		IPConfigData.load();
 		GameServerIP.load();
-
+		
 		Util.printSection("Configs");
 		Config.load();
-
+		
 		Util.printSection("General Info");
 		Util.printGeneralSystemInfo();
-
+		
 		Util.printSection("DataBase");
 		L2DatabaseFactory.getInstance();
 		
-		// HexID part 2 (database must be load after driver) 
+		// HexID part 2 (database must be load after driver)
 		HexId.storeDB();
-
+		
 		Util.printSection("Team");
 		L2JHellasInfo.showInfo();
-
+		
 		gameServer = new GameServer();
 	}
 }

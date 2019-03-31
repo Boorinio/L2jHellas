@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import com.l2jhellas.gameserver.holder.ItemHolder;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -23,6 +6,11 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.util.Rnd;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Q325_GrimCollector extends Quest
 {
@@ -45,7 +33,7 @@ public class Q325_GrimCollector extends Quest
 	private static final int VARSAK = 30342;
 	private static final int SAMED = 30434;
 	
-	private static final Map<Integer, List<ItemHolder>> DROPLIST = new HashMap<Integer, List<ItemHolder>>();
+	private static final Map<Integer, List<ItemHolder>> DROPLIST = new HashMap<>();
 	{
 		DROPLIST.put(20026, Arrays.asList(new ItemHolder(ZOMBIE_HEAD, 30), new ItemHolder(ZOMBIE_HEART, 50), new ItemHolder(ZOMBIE_LIVER, 75)));
 		DROPLIST.put(20029, Arrays.asList(new ItemHolder(ZOMBIE_HEAD, 30), new ItemHolder(ZOMBIE_HEART, 52), new ItemHolder(ZOMBIE_LIVER, 75)));
@@ -72,12 +60,12 @@ public class Q325_GrimCollector extends Quest
 			addKillId(npcId);
 	}
 	
-	private int getNumberOfPieces(QuestState st)
+	private static int getNumberOfPieces(QuestState st)
 	{
 		return st.getQuestItemsCount(ZOMBIE_HEAD) + st.getQuestItemsCount(SPINE) + st.getQuestItemsCount(ARM_BONE) + st.getQuestItemsCount(ZOMBIE_HEART) + st.getQuestItemsCount(ZOMBIE_LIVER) + st.getQuestItemsCount(SKULL) + st.getQuestItemsCount(RIB_BONE) + st.getQuestItemsCount(THIGH_BONE) + st.getQuestItemsCount(COMPLETE_SKELETON);
 	}
 	
-	private void payback(QuestState st)
+	private static void payback(QuestState st)
 	{
 		final int count = getNumberOfPieces(st);
 		if (count > 0)

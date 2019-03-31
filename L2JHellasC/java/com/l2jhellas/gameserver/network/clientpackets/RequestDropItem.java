@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
-
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.L2EtcItemType;
@@ -29,17 +13,19 @@ import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
+import java.util.logging.Logger;
+
 public final class RequestDropItem extends L2GameClientPacket
 {
 	private static Logger _log = Logger.getLogger(RequestDropItem.class.getName());
 	private static final String _C__12_REQUESTDROPITEM = "[C] 12 RequestDropItem";
-
+	
 	private int _objectId;
 	private int _count;
 	private int _x;
 	private int _y;
 	private int _z;
-
+	
 	@Override
 	protected void readImpl()
 	{
@@ -49,7 +35,7 @@ public final class RequestDropItem extends L2GameClientPacket
 		_y = readD();
 		_z = readD();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
@@ -57,22 +43,22 @@ public final class RequestDropItem extends L2GameClientPacket
 		
 		if ((activeChar == null) || activeChar.isDead())
 			return;
-
+		
 		// Flood protect drop to avoid packet lag
 		if (!activeChar.getAntiFlood().getDropItem().tryPerformAction("drop item"))
 			return;
-
+		
 		final L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
-
+		
 		if ((item == null) || (_count <= 0))
 			return;
 		
 		if (!activeChar.validateItemManipulation(_objectId, "drop") || (!Config.ALLOW_DISCARDITEM && !activeChar.isGM()) || !item.isDropable())
-		{		
+		{
 			if (item.isAugmented())
 				activeChar.sendPacket(SystemMessageId.AUGMENTED_ITEM_CANNOT_BE_DISCARDED);
 			else
-			    activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);	
+				activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
 			
 			return;
 		}
@@ -81,18 +67,18 @@ public final class RequestDropItem extends L2GameClientPacket
 			return;
 		
 		int itemId = item.getItemId();
-
+		
 		// Cursed Weapons cannot be dropped
 		if (CursedWeaponsManager.getInstance().isCursed(itemId))
 			return;
-
+		
 		if (_count > item.getCount())
 		{
 			activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_THIS_ITEM);
 			return;
 		}
-
-		if (activeChar.getActiveEnchantItem() != null || activeChar.getActiveWarehouse() != null || activeChar.getActiveTradeList()!= null)
+		
+		if (activeChar.getActiveEnchantItem() != null || activeChar.getActiveWarehouse() != null || activeChar.getActiveTradeList() != null)
 		{
 			activeChar.sendMessage("You can't drop items when you are enchanting, got active warehouse or active trade.");
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
@@ -104,20 +90,20 @@ public final class RequestDropItem extends L2GameClientPacket
 			Util.handleIllegalPlayerAction(activeChar, "[RequestDropItem] count <= 0! ban! oid: " + _objectId + " owner: " + activeChar.getName(), IllegalPlayerAction.PUNISH_KICK);
 			return;
 		}
-
+		
 		if (!item.isStackable() && (_count > 1))
 		{
 			Util.handleIllegalPlayerAction(activeChar, "[RequestDropItem] count > 1 but item is not stackable! ban! oid: " + _objectId + " owner: " + activeChar.getName(), IllegalPlayerAction.PUNISH_KICK);
 			return;
 		}
-
+		
 		if (!activeChar.getAccessLevel().allowTransaction())
 		{
 			activeChar.sendMessage("Transactions are disabled for your Access Level.");
 			activeChar.sendPacket(SystemMessageId.NOTHING_HAPPENED);
 			return;
 		}
-
+		
 		if (activeChar.isProcessingTransaction() || (activeChar.getPrivateStoreType() != 0))
 		{
 			activeChar.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
@@ -132,7 +118,7 @@ public final class RequestDropItem extends L2GameClientPacket
 		
 		if (activeChar.isFlying())
 			return;
-
+		
 		// Cannot discard item that the skill is consumming
 		if (activeChar.isCastingNow())
 		{
@@ -142,7 +128,7 @@ public final class RequestDropItem extends L2GameClientPacket
 				return;
 			}
 		}
-
+		
 		if ((L2Item.TYPE2_QUEST == item.getItem().getType2()) && !activeChar.isGM())
 		{
 			if (Config.DEBUG)
@@ -152,13 +138,13 @@ public final class RequestDropItem extends L2GameClientPacket
 			activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_EXCHANGE_ITEM);
 			return;
 		}
-
+		
 		if (!activeChar.isInsideRadius(_x, _y, 150, false) || (Math.abs(_z - activeChar.getZ()) > 50))
 		{
 			activeChar.sendPacket(SystemMessageId.CANNOT_DISCARD_DISTANCE_TOO_FAR);
 			return;
 		}
-
+		
 		if (item.isEquipped())
 		{
 			final L2ItemInstance[] unequiped = activeChar.getInventory().unEquipItemInSlotAndRecord(item.getLocationSlot());
@@ -171,14 +157,14 @@ public final class RequestDropItem extends L2GameClientPacket
 			
 			activeChar.sendPacket(iu);
 			activeChar.broadcastUserInfo();
-
+			
 			ItemList il = new ItemList(activeChar, true);
-			activeChar.sendPacket(il);			
+			activeChar.sendPacket(il);
 		}
-
+		
 		activeChar.dropItem("Drop", _objectId, _count, _x, _y, _z, null, false);
 	}
-
+	
 	@Override
 	public String getType()
 	{

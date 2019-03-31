@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.model.L2CommandChannel;
@@ -27,14 +13,14 @@ public final class RequestDuelStart extends L2GameClientPacket
 	private static final String _C__D0_27_REQUESTDUELSTART = "[C] D0:27 RequestDuelStart";
 	private String _player;
 	private int _partyDuel;
-
+	
 	@Override
 	protected void readImpl()
 	{
 		_player = readS();
 		_partyDuel = readD();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
@@ -145,7 +131,7 @@ public final class RequestDuelStart extends L2GameClientPacket
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_IS_BUSY_TRY_LATER).addCharName(targetChar));
 		}
 	}
-
+	
 	@Override
 	public String getType()
 	{

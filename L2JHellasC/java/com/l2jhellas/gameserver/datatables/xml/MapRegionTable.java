@@ -1,27 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.datatables.xml;
-
-import java.io.File;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.emum.ClassRace;
@@ -39,6 +16,15 @@ import com.l2jhellas.gameserver.model.zone.type.L2ArenaZone;
 import com.l2jhellas.gameserver.model.zone.type.L2ClanHallZone;
 import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
 import com.l2jhellas.util.XMLDocumentFactory;
+
+import java.io.File;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 public class MapRegionTable
 {
@@ -79,7 +65,7 @@ public class MapRegionTable
 		SIEGE_FLAG,
 		TOWN
 	}
-
+	
 	protected MapRegionTable()
 	{
 		int count = 0;
@@ -128,11 +114,6 @@ public class MapRegionTable
 		return (posY >> 15) + 8;
 	}
 	
-	/**
-	 * @param x
-	 * @param y
-	 * @return the castle id associated to the town, based on X/Y points.
-	 */
 	public static final int getAreaCastle(int x, int y)
 	{
 		switch (getMapRegion(x, y))
@@ -177,11 +158,6 @@ public class MapRegionTable
 		}
 	}
 	
-	/**
-	 * @param x
-	 * @param y
-	 * @return a String consisting of town name, based on X/Y points.
-	 */
 	public String getClosestTownName(int x, int y)
 	{
 		return getClosestTownName(getMapRegion(x, y));
@@ -340,16 +316,10 @@ public class MapRegionTable
 			// Get the nearest town
 			return getClosestTown(player.getTemplate().getRace(), activeChar.getX(), activeChar.getY()).getSpawnLoc();
 		}
-
+		
 		return getClosestTown(activeChar.getX(), activeChar.getY()).getSpawnLoc();
 	}
-	/**
-	 * A specific method, used ONLY by players. There's a Race condition.
-	 * @param race : The Race of the player, got an effect for Elf and Dark Elf.
-	 * @param x : The current player's X location.
-	 * @param y : The current player's Y location.
-	 * @return the closest L2TownZone based on a X/Y location.
-	 */
+	
 	private static final L2TownZone getClosestTown(ClassRace race, int x, int y)
 	{
 		switch (getMapRegion(x, y))
@@ -411,11 +381,7 @@ public class MapRegionTable
 		}
 		return getTown(16); // Default to floran
 	}
-	/**
-	 * @param x : The current character's X location.
-	 * @param y : The current character's Y location.
-	 * @return the closest L2TownZone based on a X/Y location.
-	 */
+	
 	private static final L2TownZone getClosestTown(int x, int y)
 	{
 		switch (getMapRegion(x, y))
@@ -478,11 +444,6 @@ public class MapRegionTable
 		return getTown(16); // Default to floran
 	}
 	
-	/**
-	 * @param x : The current character's X location.
-	 * @param y : The current character's Y location.
-	 * @return the second closest L2TownZone based on a X/Y location.
-	 */
 	private static final L2TownZone getSecondClosestTown(int x, int y)
 	{
 		switch (getMapRegion(x, y))
@@ -527,11 +488,6 @@ public class MapRegionTable
 		return getTown(16); // Default to floran
 	}
 	
-	/**
-	 * @param x : The current character's X location.
-	 * @param y : The current character's Y location.
-	 * @return the closest region based on a X/Y location.
-	 */
 	public static final int getClosestLocation(int x, int y)
 	{
 		switch (getMapRegion(x, y))
@@ -582,12 +538,6 @@ public class MapRegionTable
 		return 0;
 	}
 	
-	/**
-	 * Retrieves town's siege statut.
-	 * @param x coords to check.
-	 * @param y coords to check.
-	 * @return true if a siege is currently in progress in that town.
-	 */
 	public static final boolean townHasCastleInSiege(int x, int y)
 	{
 		final int castleIndex = _castleIdArray[getMapRegion(x, y)];
@@ -600,10 +550,6 @@ public class MapRegionTable
 		return false;
 	}
 	
-	/**
-	 * @param townId the townId to match.
-	 * @return a L2TownZone based on the overall list of L2TownZone, matching the townId.
-	 */
 	public static final L2TownZone getTown(int townId)
 	{
 		for (L2TownZone temp : ZoneManager.getInstance().getAllZones(L2TownZone.class))
@@ -614,17 +560,10 @@ public class MapRegionTable
 		return null;
 	}
 	
-	/**
-	 * @param x coords to check.
-	 * @param y coords to check.
-	 * @param z coords to check.
-	 * @return a L2TownZone based on the overall list of zones, matching a 3D location.
-	 */
 	public static final L2TownZone getTown(int x, int y, int z)
 	{
 		return ZoneManager.getInstance().getZone(x, y, z, L2TownZone.class);
 	}
-	
 	
 	public static MapRegionTable getInstance()
 	{

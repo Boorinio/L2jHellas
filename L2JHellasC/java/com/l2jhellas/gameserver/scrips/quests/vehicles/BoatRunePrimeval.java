@@ -1,25 +1,4 @@
-/*
- * Copyright (C) 2004-2016 L2J DataPack
- * 
- * This file is part of L2J DataPack.
- * 
- * L2J DataPack is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * L2J DataPack is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.vehicles;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.emum.Sound;
@@ -30,14 +9,14 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 
-/**
- * @author DS
- */
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class BoatRunePrimeval implements Runnable
 {
 	private static final Logger _log = Logger.getLogger(BoatRunePrimeval.class.getName());
 	private static final L2BoatInstance _boat = BoatManager.getInstance().getNewBoat(5, 34381, -37680, -3610, 40785);
-
+	
 	// Time: 239s
 	private static final VehiclePathPoint[] RUNE_TO_PRIMEVAL =
 	{
@@ -74,7 +53,7 @@ public class BoatRunePrimeval implements Runnable
 	};
 	
 	private static final VehiclePathPoint PRIMEVAL_DOCK = RUNE_TO_PRIMEVAL[RUNE_TO_PRIMEVAL.length - 1];
-
+	
 	private int _cycle = 0;
 	private int _shoutCount = 0;
 	
@@ -88,7 +67,7 @@ public class BoatRunePrimeval implements Runnable
 	
 	public BoatRunePrimeval()
 	{
-
+		
 		ARRIVED_AT_RUNE = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.ARRIVED_AT_RUNE);
 		ARRIVED_AT_RUNE_2 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVING_FOR_PRIMEVAL_3_MINUTES);
 		LEAVING_RUNE = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVING_RUNE_FOR_PRIMEVAL_NOW);

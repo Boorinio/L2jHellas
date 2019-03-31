@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
@@ -25,38 +9,30 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * This class handles following admin commands:
- * - cw_info = displays cursed weapon status
- * - cw_remove = removes a cursed weapon from the world, item id or name must be
- * provided
- * - cw_add = adds a cursed weapon into the world, item id or name must be
- * provided. Target will be the weilder
- * - cw_goto = teleports GM to the specified cursed weapon
- * - cw_reload = reloads instance manager
- */
+import java.util.StringTokenizer;
+
 public class AdminCursedWeapons implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_cw_info",
 		"admin_cw_remove",
 		"admin_cw_goto",
 		"admin_cw_reload",
 		"admin_cw_add",
 		"admin_cw_info_menu"
-	};/** @formatter:on */
+	};
 	private int itemId;
-
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		CursedWeaponsManager cwm = CursedWeaponsManager.getInstance();
 		int id = 0;
-
+		
 		StringTokenizer st = new StringTokenizer(command);
 		st.nextToken();
-
+		
 		if (command.startsWith("admin_cw_info"))
 		{
 			if (!command.contains("menu"))
@@ -68,16 +44,16 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 					if (cw.isActivated())
 					{
 						L2PcInstance pl = cw.getPlayer();
-						activeChar.sendMessage("  Player holding: " + pl == null ? "null" : pl.getName());
-						activeChar.sendMessage("    Player karma: " + cw.getPlayerKarma());
-						activeChar.sendMessage("    Time Remaining: " + (cw.getTimeLeft() / 60000) + " min.");
-						activeChar.sendMessage("    Kills : " + cw.getNbKills());
+						activeChar.sendMessage("  Player holding: " + pl.getName());
+						activeChar.sendMessage("  Player karma: " + cw.getPlayerKarma());
+						activeChar.sendMessage("  Time Remaining: " + (cw.getTimeLeft() / 60000) + " min.");
+						activeChar.sendMessage("  Kills : " + cw.getNbKills());
 					}
 					else if (cw.isDropped())
 					{
 						activeChar.sendMessage("  Lying on the ground.");
-						activeChar.sendMessage("    Time Remaining: " + (cw.getTimeLeft() / 60000) + " min.");
-						activeChar.sendMessage("    Kills : " + cw.getNbKills());
+						activeChar.sendMessage("  Time Remaining: " + (cw.getTimeLeft() / 60000) + " min.");
+						activeChar.sendMessage("  Kills : " + cw.getNbKills());
 					}
 					else
 					{
@@ -160,7 +136,14 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 			{
 				activeChar.sendMessage("Usage: //cw_remove|//cw_goto|//cw_add <itemid|name>");
 			}
-
+			
+			if (cw == null)
+			{
+				activeChar.sendMessage("Unknown cursed weapon ID.");
+				activeChar.sendMessage("Usage: //cw_add <itemid|name>");
+				return false;
+			}
+			
 			if (command.startsWith("admin_cw_remove "))
 			{
 				cw.endOfLife();
@@ -171,12 +154,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 			}
 			else if (command.startsWith("admin_cw_add"))
 			{
-				if (cw == null)
-				{
-					activeChar.sendMessage("Usage: //cw_add <itemid|name>");
-					return false;
-				}
-				else if (cw.isActive())
+				if (cw.isActive())
 					activeChar.sendMessage("This cursed weapon is already active.");
 				else
 				{
@@ -194,7 +172,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 		}
 		return true;
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{

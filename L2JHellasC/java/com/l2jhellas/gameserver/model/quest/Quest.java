@@ -1,28 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.quest;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -48,13 +24,20 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
-/**
- * @author Luis Arias
- */
-public class Quest 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Logger;
+
+public class Quest
 {
-	protected static final Logger _log = Logger.getLogger(Quest.class.getName());
-		
+	public static final Logger _log = Logger.getLogger(Quest.class.getName());
+	
 	private static final String LOAD_QUEST_STATES = "SELECT name,value FROM character_quests WHERE char_id=? AND var='<state>'";
 	private static final String LOAD_QUEST_VARIABLES = "SELECT name,var,value FROM character_quests WHERE char_id=? AND var<>'<state>'";
 	private static final String DELETE_INVALID_QUEST = "DELETE FROM character_quests WHERE name=?";
@@ -74,13 +57,7 @@ public class Quest
 	private final String _descr;
 	private boolean _onEnterWorld;
 	private int[] _itemsIds;
-		
-	/**
-	 * (Constructor)Add values to class variables and put the quest in HashMaps.
-	 * @param questId : int pointing out the ID of the quest
-	 * @param name : String corresponding to the name of the quest
-	 * @param descr : String for the description of the quest
-	 */
+	
 	public Quest(int questId, String name, String descr)
 	{
 		_id = questId;
@@ -90,37 +67,21 @@ public class Quest
 		QuestManager.getInstance().addQuest(this);
 	}
 	
-	/**
-	 * Return ID of the quest.
-	 * @return int
-	 */
 	public int getQuestId()
 	{
 		return _id;
 	}
 	
-	/**
-	 * Return type of the quest.
-	 * @return boolean : True for (live) quest, False for script, AI, etc.
-	 */
 	public boolean isRealQuest()
 	{
 		return _id > 0;
 	}
 	
-	/**
-	 * Return name of the quest.
-	 * @return String
-	 */
 	public String getName()
 	{
 		return _name;
 	}
 	
-	/**
-	 * Return description of the quest.
-	 * @return String
-	 */
 	public String getDescr()
 	{
 		return _descr;
@@ -136,41 +97,21 @@ public class Quest
 		return _onEnterWorld;
 	}
 	
-	/**
-	 * Return registered quest items.
-	 * @return int[]
-	 */
 	public int[] getItemsIds()
 	{
 		return _itemsIds;
 	}
 	
-	/**
-	 * Registers all items that have to be destroyed in case player abort the quest or finish it.
-	 * @param itemIds
-	 */
 	public void setItemsIds(int... itemIds)
 	{
 		_itemsIds = itemIds;
 	}
 	
-	/**
-	 * Add a new QuestState to the database and return it.
-	 * @param player
-	 * @return QuestState : QuestState created
-	 */
 	public QuestState newQuestState(L2PcInstance player)
 	{
 		return new QuestState(player, this, STATE_CREATED);
 	}
 	
-	/**
-	 * Add quests to the L2PCInstance of the player.<BR>
-	 * <BR>
-	 * <U><I>Action : </U></I><BR>
-	 * Add state of quests, drops and variables for quests in the HashMap _quest of L2PcInstance
-	 * @param player : Player who is entering the world
-	 */
 	public final static void playerEnter(L2PcInstance player)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -229,14 +170,14 @@ public class Quest
 			}
 			
 			rs.close();
-			statement.close();			
+			statement.close();
 			invalidQuest.close();
 		}
 		catch (Exception e)
 		{
 			_log.warning(Quest.class.getSimpleName() + ": could not insert char quest:");
 		}
-
+		
 		// events
 		for (Quest q : QuestManager.getInstance().getAllManagedScripts())
 		{
@@ -244,11 +185,6 @@ public class Quest
 		}
 	}
 	
-	/**
-	 * @param player : The player to make checks on.
-	 * @param object : to take range reference from
-	 * @return A random party member or the passed player if he has no party.
-	 */
 	public L2PcInstance getRandomPartyMember(L2PcInstance player, L2Object object)
 	{
 		// No valid player instance is passed, there is nothing to check.
@@ -260,7 +196,7 @@ public class Quest
 			return player;
 		
 		// Player's party.
-		List<L2PcInstance> members = new ArrayList<L2PcInstance>();
+		List<L2PcInstance> members = new ArrayList<>();
 		for (L2PcInstance member : player.getParty().getPartyMembers())
 		{
 			if (member.isInsideRadius(object, Config.ALT_PARTY_RANGE, true, false))
@@ -275,14 +211,6 @@ public class Quest
 		return members.get(Rnd.get(members.size()));
 	}
 	
-	/**
-	 * Auxiliary function for party quests. Checks the player's condition. Player member must be within Config.ALT_PARTY_RANGE distance from the npc. If npc is null, distance condition is ignored.
-	 * @param player : the instance of a player whose party is to be searched
-	 * @param npc : the instance of a L2Npc to compare distance
-	 * @param var : a tuple specifying a quest condition that must be satisfied for a party member to be considered.
-	 * @param value : a tuple specifying a quest condition that must be satisfied for a party member to be considered.
-	 * @return QuestState : The QuestState of that player.
-	 */
 	public QuestState checkPlayerCondition(L2PcInstance player, L2Npc npc, String var, String value)
 	{
 		// No valid player instance is passed, there is nothing to check.
@@ -309,19 +237,10 @@ public class Quest
 		return st;
 	}
 	
-	/**
-	 * Auxiliary function for party quests. Note: This function is only here because of how commonly it may be used by quest developers. For any variations on this function, the quest script can always handle things on its own
-	 * @param player : the instance of a player whose party is to be searched
-	 * @param npc : the instance of a L2Npc to compare distance
-	 * @param var : a tuple specifying a quest condition that must be satisfied for a party member to be considered.
-	 * @param value : a tuple specifying a quest condition that must be satisfied for a party member to be considered.
-	 * @return List<L2PcInstance> : List of party members that matches the specified condition, empty list if none matches. If the var is null, empty list is returned (i.e. no condition is applied). The party member must be within Config.ALT_PARTY_RANGE distance from the npc. If npc is null,
-	 *         distance condition is ignored.
-	 */
 	public List<L2PcInstance> getPartyMembers(L2PcInstance player, L2Npc npc, String var, String value)
 	{
 		// Output list.
-		List<L2PcInstance> candidates = new ArrayList<L2PcInstance>();
+		List<L2PcInstance> candidates = new ArrayList<>();
 		
 		// Valid player instance is passed and player is in a party? Check party.
 		if (player != null && player.isInParty())
@@ -344,15 +263,6 @@ public class Quest
 		return candidates;
 	}
 	
-	/**
-	 * Auxiliary function for party quests. Note: This function is only here because of how commonly it may be used by quest developers. For any variations on this function, the quest script can always handle things on its own
-	 * @param player : the instance of a player whose party is to be searched
-	 * @param npc : the instance of a L2Npc to compare distance
-	 * @param var : a tuple specifying a quest condition that must be satisfied for a party member to be considered.
-	 * @param value : a tuple specifying a quest condition that must be satisfied for a party member to be considered.
-	 * @return L2PcInstance : L2PcInstance for a random party member that matches the specified condition, or null if no match. If the var is null, null is returned (i.e. no condition is applied). The party member must be within 1500 distance from the npc. If npc is null, distance condition is
-	 *         ignored.
-	 */
 	public L2PcInstance getRandomPartyMember(L2PcInstance player, L2Npc npc, String var, String value)
 	{
 		// No valid player instance is passed, there is nothing to check.
@@ -370,25 +280,11 @@ public class Quest
 		return candidates.get(Rnd.get(candidates.size()));
 	}
 	
-	/**
-	 * Auxiliary function for party quests. Note: This function is only here because of how commonly it may be used by quest developers. For any variations on this function, the quest script can always handle things on its own.
-	 * @param player : the instance of a player whose party is to be searched
-	 * @param npc : the instance of a L2Npc to compare distance
-	 * @param value : the value of the "cond" variable that must be matched
-	 * @return L2PcInstance : L2PcInstance for a random party member that matches the specified condition, or null if no match.
-	 */
 	public L2PcInstance getRandomPartyMember(L2PcInstance player, L2Npc npc, String value)
 	{
 		return getRandomPartyMember(player, npc, "cond", value);
 	}
 	
-	/**
-	 * Auxiliary function for party quests. Checks the player's condition. Player member must be within Config.ALT_PARTY_RANGE distance from the npc. If npc is null, distance condition is ignored.
-	 * @param player : the instance of a player whose party is to be searched
-	 * @param npc : the instance of a L2Npc to compare distance
-	 * @param state : the state in which the party member's QuestState must be in order to be considered.
-	 * @return QuestState : The QuestState of that player.
-	 */
 	public QuestState checkPlayerState(L2PcInstance player, L2Npc npc, byte state)
 	{
 		// No valid player instance is passed, there is nothing to check.
@@ -415,17 +311,10 @@ public class Quest
 		return st;
 	}
 	
-	/**
-	 * Auxiliary function for party quests. Note: This function is only here because of how commonly it may be used by quest developers. For any variations on this function, the quest script can always handle things on its own.
-	 * @param player : the instance of a player whose party is to be searched
-	 * @param npc : the instance of a L2Npc to compare distance
-	 * @param state : the state in which the party member's QuestState must be in order to be considered.
-	 * @return List<L2PcInstance> : List of party members that matches the specified quest state, empty list if none matches. The party member must be within Config.ALT_PARTY_RANGE distance from the npc. If npc is null, distance condition is ignored.
-	 */
 	public List<L2PcInstance> getPartyMembersState(L2PcInstance player, L2Npc npc, byte state)
 	{
 		// Output list.
-		List<L2PcInstance> candidates = new ArrayList<L2PcInstance>();
+		List<L2PcInstance> candidates = new ArrayList<>();
 		
 		// Valid player instance is passed and player is in a party? Check party.
 		if (player != null && player.isInParty())
@@ -448,13 +337,6 @@ public class Quest
 		return candidates;
 	}
 	
-	/**
-	 * Auxiliary function for party quests. Note: This function is only here because of how commonly it may be used by quest developers. For any variations on this function, the quest script can always handle things on its own.
-	 * @param player : the instance of a player whose party is to be searched
-	 * @param npc : the instance of a monster to compare distance
-	 * @param state : the state in which the party member's QuestState must be in order to be considered.
-	 * @return L2PcInstance: L2PcInstance for a random party member that matches the specified condition, or null if no match. If the var is null, any random party member is returned (i.e. no condition is applied).
-	 */
 	public L2PcInstance getRandomPartyMemberState(L2PcInstance player, L2Npc npc, byte state)
 	{
 		// No valid player instance is passed, there is nothing to check.
@@ -472,12 +354,6 @@ public class Quest
 		return candidates.get(Rnd.get(candidates.size()));
 	}
 	
-	/**
-	 * Retrieves the clan leader quest state.
-	 * @param player : the player to test
-	 * @param npc : the npc to test distance
-	 * @return the QuestState of the leader, or null if not found
-	 */
 	public QuestState getClanLeaderQuestState(L2PcInstance player, L2Npc npc)
 	{
 		// If player is the leader, retrieves directly the qS and bypass others checks
@@ -501,14 +377,6 @@ public class Quest
 		return null;
 	}
 	
-	/**
-	 * Add a timer to the quest, if it doesn't exist already. If the timer is repeatable, it will auto-fire automatically, at a fixed rate, until explicitly canceled.
-	 * @param name name of the timer (also passed back as "event" in onAdvEvent)
-	 * @param time time in ms for when to fire the timer
-	 * @param npc npc associated with this timer (can be null)
-	 * @param player player associated with this timer (can be null)
-	 * @param repeating indicates if the timer is repeatable or one-time.
-	 */
 	public void startQuestTimer(String name, long time, L2Npc npc, L2PcInstance player, boolean repeating)
 	{
 		// Get quest timers for this timer type.
@@ -584,10 +452,7 @@ public class Quest
 	}
 	
 	// Note, keep it default. It is used withing QuestTimer, when it terminates.
-	/**
-	 * Removes QuestTimer from timer list, when it terminates.
-	 * @param timer : QuestTimer, which is beeing terminated.
-	 */
+	
 	void removeQuestTimer(QuestTimer timer)
 	{
 		// Timer does not exist, return.
@@ -605,46 +470,16 @@ public class Quest
 		timers.remove(timer);
 	}
 	
-	/**
-	 * Add a temporary (quest) spawn on the location of a character.
-	 * @param npcId the NPC template to spawn.
-	 * @param cha the position where to spawn it.
-	 * @param randomOffset
-	 * @param despawnDelay
-	 * @param isSummonSpawn if true, spawn with animation (if any exists).
-	 * @return instance of the newly spawned npc with summon animation.
-	 */
 	public L2Npc addSpawn(int npcId, L2Character cha, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
 	{
 		return addSpawn(npcId, cha.getX(), cha.getY(), cha.getZ(), cha.getHeading(), randomOffset, despawnDelay, isSummonSpawn);
 	}
 	
-	/**
-	 * Add a temporary (quest) spawn on the Location object.
-	 * @param npcId the NPC template to spawn.
-	 * @param loc the position where to spawn it.
-	 * @param randomOffset
-	 * @param despawnDelay
-	 * @param isSummonSpawn if true, spawn with animation (if any exists).
-	 * @return instance of the newly spawned npc with summon animation.
-	 */
 	public L2Npc addSpawn(int npcId, Location loc, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
 	{
 		return addSpawn(npcId, loc.getX(), loc.getY(), loc.getZ(), loc.getHeading(), randomOffset, despawnDelay, isSummonSpawn);
 	}
-
-	/**
-	 * Add a temporary (quest) spawn on the location of a character.
-	 * @param npcId the NPC template to spawn.
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param heading
-	 * @param randomOffset
-	 * @param despawnDelay
-	 * @param isSummonSpawn if true, spawn with animation (if any exists).
-	 * @return instance of the newly spawned npc with summon animation.
-	 */
+	
 	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
 	{
 		L2Npc result = null;
@@ -682,17 +517,11 @@ public class Quest
 		return null;
 	}
 	
-	/**
-	 * @return default html page "You are either not on a quest that involves this NPC, or you don't meet this NPC's minimum quest requirements."
-	 */
 	public static String getNoQuestMsg()
 	{
 		return HTML_NONE_AVAILABLE;
 	}
 	
-	/**
-	 * @return default html page "This quest has already been completed."
-	 */
 	public static String getAlreadyCompletedMsg()
 	{
 		return HTML_ALREADY_COMPLETED;
@@ -703,17 +532,6 @@ public class Quest
 		return HTML_TOO_MUCH_QUESTS;
 	}
 	
-	/**
-	 * Show a message to player.<BR>
-	 * <BR>
-	 * <U><I>Concept : </I></U><BR>
-	 * 3 cases are managed according to the value of the parameter "res" :<BR>
-	 * <LI><U>"res" ends with string ".html" :</U> an HTML is opened in order to be shown in a dialog box</LI> <LI><U>"res" starts with "<html>" :</U> the message hold in "res" is shown in a dialog box</LI> <LI><U>otherwise :</U> the message held in "res" is shown in chat box</LI>
-	 * @param npc : which launches the dialog, null in case of random scripts
-	 * @param player : the player.
-	 * @param result : String pointing out the message to show at the player
-	 * @return boolean
-	 */
 	public boolean showResult(L2Npc npc, L2PcInstance player, String result)
 	{
 		if (player == null || result == null || result.isEmpty())
@@ -750,12 +568,6 @@ public class Quest
 		return true;
 	}
 	
-	/**
-	 * Show message error to player who has an access level greater than 0
-	 * @param player : L2PcInstance
-	 * @param e : Throwable
-	 * @return boolean
-	 */
 	public boolean showError(L2PcInstance player, Throwable e)
 	{
 		_log.warning(Quest.class.getName());
@@ -774,11 +586,6 @@ public class Quest
 		return false;
 	}
 	
-	/**
-	 * Returns String representation of given quest html.
-	 * @param fileName : the filename to send.
-	 * @return String : message sent to client.
-	 */
 	public String getHtmlText(String fileName)
 	{
 		if (isRealQuest())
@@ -787,11 +594,6 @@ public class Quest
 		return HtmCache.getInstance().getHtmForce("./data/html/scripts/" + getDescr() + "/" + getName() + "/" + fileName);
 	}
 	
-	/**
-	 * Add this quest to the list of quests that the passed mob will respond to for the specified Event type.
-	 * @param npcId : id of the NPC to register
-	 * @param eventType : type of event being registered
-	 */
 	public void addEventId(int npcId, QuestEventType eventType)
 	{
 		try
@@ -806,34 +608,18 @@ public class Quest
 		}
 	}
 	
-	/**
-	 * Add the quest to the NPC's startQuest
-	 * @param npcIds A serie of ids.
-	 */
 	public void addStartNpc(int... npcIds)
 	{
 		for (int npcId : npcIds)
 			addEventId(npcId, QuestEventType.QUEST_START);
 	}
 	
-	/**
-	 * Add this quest to the list of quests that the passed mob will respond to for Attack Events.
-	 * @param npcIds A serie of ids.
-	 */
 	public void addAttackId(int... npcIds)
 	{
 		for (int npcId : npcIds)
 			addEventId(npcId, QuestEventType.ON_ATTACK);
 	}
 	
-	/**
-	 * Quest event notifycator for player's or player's pet attack.
-	 * @param npc Attacked npc instace.
-	 * @param attacker Attacker or pet owner.
-	 * @param damage Given damage.
-	 * @param isPet Player summon attacked?
-	 * @return boolean
-	 */
 	public final boolean notifyAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
 		String res = null;
@@ -853,22 +639,12 @@ public class Quest
 		return null;
 	}
 	
-	/**
-	 * Add this quest to the list of quests that the passed mob will respond to for AttackAct Events.
-	 * @param npcIds A serie of ids.
-	 */
 	public void addAttackActId(int... npcIds)
 	{
 		for (int npcId : npcIds)
 			addEventId(npcId, QuestEventType.ON_ATTACK_ACT);
 	}
 	
-	/**
-	 * Quest event notifycator for player being attacked by NPC.
-	 * @param npc Npc providing attack.
-	 * @param victim Attacked npc player.
-	 * @return boolean
-	 */
 	public final boolean notifyAttackAct(L2Npc npc, L2PcInstance victim)
 	{
 		String res = null;
@@ -888,10 +664,6 @@ public class Quest
 		return null;
 	}
 	
-	/**
-	 * Add this quest to the list of quests that the passed npc will respond to for Character See Events.
-	 * @param npcIds : A serie of ids.
-	 */
 	public void addAggroRangeEnterId(int... npcIds)
 	{
 		for (int npcId : npcIds)
@@ -1017,15 +789,14 @@ public class Quest
 		return showResult(null, player, res);
 	}
 	
-
 	public String onDeath(L2Character killer, L2PcInstance player)
 	{
 		if (killer instanceof L2Npc)
 			return onAdvEvent("", (L2Npc) killer, player);
-			
-			return onAdvEvent("", null, player);
-	}
 		
+		return onAdvEvent("", null, player);
+	}
+	
 	public String onDeath(L2Character killer, L2Character victim, L2PcInstance player)
 	{
 		if (killer instanceof L2Npc)
@@ -1085,10 +856,6 @@ public class Quest
 		return null;
 	}
 	
-	/**
-	 * Add this quest to the list of quests that triggers, when player enters specified zones.
-	 * @param zoneIds : A serie of zone ids.
-	 */
 	public void addEnterZoneId(int... zoneIds)
 	{
 		for (int zoneId : zoneIds)
@@ -1122,10 +889,6 @@ public class Quest
 		return null;
 	}
 	
-	/**
-	 * Add this quest to the list of quests that triggers, when player leaves specified zones.
-	 * @param zoneIds : A serie of zone ids.
-	 */
 	public void addExitZoneId(int... zoneIds)
 	{
 		for (int zoneId : zoneIds)
@@ -1159,10 +922,6 @@ public class Quest
 		return null;
 	}
 	
-	/**
-	 * Add this quest to the list of quests that the passed npc will respond to for Faction Call Events.
-	 * @param npcIds : A serie of ids.
-	 */
 	public void addFactionCallId(int... npcIds)
 	{
 		for (int npcId : npcIds)
@@ -1188,10 +947,6 @@ public class Quest
 		return null;
 	}
 	
-	/**
-	 * Add the quest to the NPC's first-talk (default action dialog)
-	 * @param npcIds A serie of ids.
-	 */
 	public void addFirstTalkId(int... npcIds)
 	{
 		for (int npcId : npcIds)
@@ -1223,10 +978,6 @@ public class Quest
 		return null;
 	}
 	
-	/**
-	 * Add the quest to an array of items templates.
-	 * @param itemIds A serie of ids.
-	 */
 	public void addItemUse(int... itemIds)
 	{
 		for (int itemId : itemIds)
@@ -1256,10 +1007,6 @@ public class Quest
 		return null;
 	}
 	
-	/**
-	 * Add this quest to the list of quests that the passed mob will respond to for Kill Events.
-	 * @param killIds A serie of ids.
-	 */
 	public void addKillId(int... killIds)
 	{
 		for (int killId : killIds)
@@ -1285,10 +1032,6 @@ public class Quest
 		return null;
 	}
 	
-	/**
-	 * Add this quest to the list of quests that the passed npc will respond to for Spawn Events.
-	 * @param npcIds : A serie of ids.
-	 */
 	public void addSpawnId(int... npcIds)
 	{
 		for (int npcId : npcIds)
@@ -1314,10 +1057,6 @@ public class Quest
 		return null;
 	}
 	
-	/**
-	 * Add this quest to the list of quests that the passed npc will respond to for Skill-See Events.
-	 * @param npcIds : A serie of ids.
-	 */
 	public void addSkillSeeId(int... npcIds)
 	{
 		for (int npcId : npcIds)
@@ -1369,10 +1108,6 @@ public class Quest
 		return null;
 	}
 	
-	/**
-	 * Add this quest to the list of quests that the passed npc will respond to any skill being used by other npcs or players.
-	 * @param npcIds : A serie of ids.
-	 */
 	public void addSpellFinishedId(int... npcIds)
 	{
 		for (int npcId : npcIds)
@@ -1398,10 +1133,6 @@ public class Quest
 		return null;
 	}
 	
-	/**
-	 * Add this quest to the list of quests that the passed npc will respond to for Talk Events.
-	 * @param talkIds : A serie of ids.
-	 */
 	public void addTalkId(int... talkIds)
 	{
 		for (int talkId : talkIds)

@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.skills.l2skills;
 
 import com.l2jhellas.gameserver.model.L2Effect;
@@ -30,35 +16,35 @@ public class L2SkillElemental extends L2Skill
 {
 	private final int[] _seeds;
 	private final boolean _seedAny;
-
+	
 	public L2SkillElemental(StatsSet set)
 	{
 		super(set);
-
+		
 		_seeds = new int[5];
 		_seeds[0] = set.getInteger("seed1", 0);
 		_seeds[1] = set.getInteger("seed2", 0);
 		_seeds[2] = set.getInteger("seed3", 0);
 		_seeds[3] = set.getInteger("seed4", 0);
 		_seeds[4] = set.getInteger("seed5", 0);
-
+		
 		if (set.getInteger("seed_any", 0) == 1)
 			_seedAny = true;
 		else
 			_seedAny = false;
 	}
-
+	
 	@Override
 	public void useSkill(L2Character activeChar, L2Object[] targets)
 	{
 		if (activeChar.isAlikeDead())
 			return;
-
+		
 		boolean ss = false;
 		boolean bss = false;
-
+		
 		L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
-
+		
 		if (activeChar instanceof L2PcInstance)
 		{
 			if (weaponInst == null)
@@ -69,7 +55,7 @@ public class L2SkillElemental extends L2Skill
 				return;
 			}
 		}
-
+		
 		if (weaponInst != null)
 		{
 			if (weaponInst.getChargedSpiritshot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
@@ -87,7 +73,7 @@ public class L2SkillElemental extends L2Skill
 		else if (activeChar instanceof L2Summon)
 		{
 			L2Summon activeSummon = (L2Summon) activeChar;
-
+			
 			if (activeSummon.getChargedSpiritShot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
 			{
 				bss = true;
@@ -99,21 +85,21 @@ public class L2SkillElemental extends L2Skill
 				activeSummon.setChargedSpiritShot(L2ItemInstance.CHARGED_NONE);
 			}
 		}
-
-		for (int index = 0; index < targets.length; index++)
+		
+		for (L2Object target2 : targets)
 		{
-			L2Character target = (L2Character) targets[index];
+			L2Character target = (L2Character) target2;
 			if (target.isAlikeDead())
 				continue;
-
+			
 			boolean charged = true;
 			if (!_seedAny)
 			{
-				for (int i = 0; i < _seeds.length; i++)
+				for (int _seed : _seeds)
 				{
-					if (_seeds[i] != 0)
+					if (_seed != 0)
 					{
-						L2Effect e = target.getFirstEffect(_seeds[i]);
+						L2Effect e = target.getFirstEffect(_seed);
 						if (e == null || !e.getInUse())
 						{
 							charged = false;
@@ -125,11 +111,11 @@ public class L2SkillElemental extends L2Skill
 			else
 			{
 				charged = false;
-				for (int i = 0; i < _seeds.length; i++)
+				for (int _seed : _seeds)
 				{
-					if (_seeds[i] != 0)
+					if (_seed != 0)
 					{
-						L2Effect e = target.getFirstEffect(_seeds[i]);
+						L2Effect e = target.getFirstEffect(_seed);
 						if (e != null && e.getInUse())
 						{
 							charged = true;
@@ -145,22 +131,22 @@ public class L2SkillElemental extends L2Skill
 				activeChar.sendPacket(sm);
 				continue;
 			}
-
-			boolean mcrit = Formulas.getInstance().calcMCrit(activeChar.getMCriticalHit(target, this));
-
-			int damage = (int) Formulas.getInstance().calcMagicDam(activeChar, target, this, ss, bss, mcrit);
-
+			
+			boolean mcrit = Formulas.calcMCrit(activeChar.getMCriticalHit(target, this));
+			
+			int damage = (int) Formulas.calcMagicDam(activeChar, target, this, ss, bss, mcrit);
+			
 			if (damage > 0)
 			{
 				target.reduceCurrentHp(damage, activeChar);
-
+				
 				// Manage attack or cast break of the target (calculating rate, sending message...)
-				if (!target.isRaid() && !target.isBoss() && Formulas.getInstance().calcAtkBreak(target, damage))
+				if (!target.isRaid() && !target.isBoss() && Formulas.calcAtkBreak(target, damage))
 				{
 					target.breakAttack();
 					target.breakCast();
 				}
-
+				
 				activeChar.sendDamageMessage(target, damage, false, false, false);
 			}
 			// activate attacked effects, if any

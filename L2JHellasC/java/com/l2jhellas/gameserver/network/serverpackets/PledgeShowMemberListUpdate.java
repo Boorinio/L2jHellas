@@ -1,25 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- * @author -Wooden-
- */
 public class PledgeShowMemberListUpdate extends L2GameServerPacket
 {
 	private static final String _S__54_PLEDGESHOWMEMBERLISTUPDATE = "[S] 54 PledgeShowMemberListUpdate";
@@ -31,7 +14,7 @@ public class PledgeShowMemberListUpdate extends L2GameServerPacket
 	private final int _isOnline;
 	private final int _race;
 	private final int _sex;
-
+	
 	public PledgeShowMemberListUpdate(L2PcInstance player)
 	{
 		_pledgeType = player.getPledgeType();
@@ -43,7 +26,7 @@ public class PledgeShowMemberListUpdate extends L2GameServerPacket
 		_sex = player.getAppearance().getSex().ordinal();
 		_isOnline = (player.isbOnline()) ? player.getObjectId() : 0;
 	}
-
+	
 	public PledgeShowMemberListUpdate(L2ClanMember player)
 	{
 		_name = player.getName();
@@ -64,7 +47,7 @@ public class PledgeShowMemberListUpdate extends L2GameServerPacket
 			_race = 0;
 		}
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -78,7 +61,7 @@ public class PledgeShowMemberListUpdate extends L2GameServerPacket
 		writeD(_pledgeType);
 		writeD(_hasSponsor);
 	}
-
+	
 	@Override
 	public String getType()
 	{

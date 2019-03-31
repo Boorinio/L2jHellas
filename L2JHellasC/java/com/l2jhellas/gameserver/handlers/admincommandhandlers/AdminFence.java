@@ -1,8 +1,5 @@
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
-
 import com.l2jhellas.gameserver.emum.FenceState;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.FenceManager;
@@ -12,9 +9,9 @@ import com.l2jhellas.gameserver.model.actor.instance.L2FenceInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
-/**
- * @author AbsolutePower
- */
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
+
 public class AdminFence implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
@@ -27,7 +24,6 @@ public class AdminFence implements IAdminCommandHandler
 		"admin_fence_page",
 		"admin_gofence"
 	};
-	
 	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -54,7 +50,7 @@ public class AdminFence implements IAdminCommandHandler
 					final int length = Integer.parseInt(st.nextToken());
 					final int height = Integer.parseInt(st.nextToken());
 					
-					if(_fenceName.isEmpty() || !_fenceName.isEmpty() && _fenceName.length()>16)
+					if (_fenceName.isEmpty() || !_fenceName.isEmpty() && _fenceName.length() > 16)
 					{
 						activeChar.sendMessage("Something went wrong with name value");
 						return false;
@@ -69,9 +65,9 @@ public class AdminFence implements IAdminCommandHandler
 						activeChar.sendMessage("The range for height can only be 1-3.");
 						return false;
 					}
-		
-					FenceManager.getInstance().spawnFence(_fenceName,(int) activeChar.getX(), (int) activeChar.getY(), (int) activeChar.getZ(), width, length, height, state);
-					activeChar.sendMessage("Fence:"+ _fenceName +" spawned succesfully.");
+					
+					FenceManager.getInstance().spawnFence(_fenceName, activeChar.getX(), activeChar.getY(), activeChar.getZ(), width, length, height, state);
+					activeChar.sendMessage("Fence:" + _fenceName + " spawned succesfully.");
 					MainFence(activeChar);
 				}
 				catch (NoSuchElementException | NumberFormatException e)
@@ -95,7 +91,7 @@ public class AdminFence implements IAdminCommandHandler
 					else
 					{
 						final L2Object obj = L2World.getInstance().findObject(objId);
-						if (obj !=null && obj instanceof L2FenceInstance)
+						if (obj != null && obj instanceof L2FenceInstance)
 						{
 							final L2FenceInstance fence = (L2FenceInstance) obj;
 							final FenceState state = FenceState.values()[fenceTypeOrdinal];
@@ -120,7 +116,7 @@ public class AdminFence implements IAdminCommandHandler
 				{
 					final int objId = Integer.parseInt(st.nextToken());
 					final L2Object obj = L2World.getInstance().findObject(objId);
-					if (obj!=null && obj instanceof L2FenceInstance)
+					if (obj != null && obj instanceof L2FenceInstance)
 					{
 						((L2FenceInstance) obj).deleteMe();
 						activeChar.sendMessage("Fence removed succesfully.");
@@ -151,7 +147,7 @@ public class AdminFence implements IAdminCommandHandler
 					final L2Object obj = L2World.getInstance().findObject(objId);
 					if (obj != null)
 					{
-						activeChar.teleToLocation(obj.getX(),obj.getY(),obj.getZ());
+						activeChar.teleToLocation(obj.getX(), obj.getY(), obj.getZ());
 					}
 				}
 				catch (Exception e)
@@ -169,7 +165,7 @@ public class AdminFence implements IAdminCommandHandler
 					final L2Object obj = L2World.getInstance().findObject(objId);
 					
 					if (obj != null)
-						FencePage(activeChar,objId);
+						FencePage(activeChar, objId);
 				}
 				catch (Exception e)
 				{
@@ -188,13 +184,13 @@ public class AdminFence implements IAdminCommandHandler
 	{
 		return ADMIN_COMMANDS;
 	}
-
-	private static void FencePage(L2PcInstance player,int id)
+	
+	private static void FencePage(L2PcInstance player, int id)
 	{
 		final L2FenceInstance fence = FenceManager.getInstance().getFence(id);
 		final StringBuilder sb = new StringBuilder();
-			    
-		sb.append("<html><body>FenceName: " + fence.getFenceName() + "<br>");  
+		
+		sb.append("<html><body>FenceName: " + fence.getFenceName() + "<br>");
 		sb.append("<a action=\"bypass -h admin_gofence " + fence.getObjectId() + " 1\">TeleToFence</a><br>");
 		sb.append("<a action=\"bypass -h admin_setfencestate " + fence.getObjectId() + " 0\">HideFence</a><br>");
 		sb.append("<a action=\"bypass -h admin_setfencestate " + fence.getObjectId() + " 2\">UnhideFene</a><br>");
@@ -209,25 +205,24 @@ public class AdminFence implements IAdminCommandHandler
 		player.sendPacket(html);
 	}
 	
-	
 	private static void ShowFenceList(L2PcInstance player)
 	{
-
+		
 		final int fences = FenceManager.getInstance().getFenceCount();
 		final StringBuilder sb = new StringBuilder();
-			
+		
 		sb.append("<html><body>Total Fences: " + fences + "<br><br>");
-			
+		
 		for (L2FenceInstance fence : FenceManager.getInstance().getFences().values())
-			sb.append("<a action=\"bypass -h admin_fence_page " + fence.getObjectId() + " 1\">Fence: "+" [" + fence.getFenceName() + "]</a><br>");
-			
+			sb.append("<a action=\"bypass -h admin_fence_page " + fence.getObjectId() + " 1\">Fence: " + " [" + fence.getFenceName() + "]</a><br>");
+		
 		sb.append("</body></html>");
-			
+		
 		NpcHtmlMessage html = new NpcHtmlMessage(0);
 		html.setHtml(sb.toString());
-			
+		
 		player.sendPacket(html);
-	}	
+	}
 	
 	public void MainFence(L2PcInstance player)
 	{
@@ -238,7 +233,7 @@ public class AdminFence implements IAdminCommandHandler
 		sb.append("<table width=270>");
 		sb.append("<tr></tr>");
 		sb.append("<tr><td>Name:</td></tr>");
-		sb.append("<tr><td><td><edit var=\"name\"></td></tr>");		
+		sb.append("<tr><td><td><edit var=\"name\"></td></tr>");
 		sb.append("<tr><td>Type: </td></tr>");
 		sb.append("<tr><td><combobox width=75 var=type list=0;1;2></td></tr>");
 		sb.append("<tr><td>Width:</td></tr>");
@@ -256,7 +251,7 @@ public class AdminFence implements IAdminCommandHandler
 		sb.append("<a action=\"bypass -h admin_listfence \">FenceList</a><br>");
 		sb.append("</body></html>");
 		
-		html.setHtml(sb.toString());	
+		html.setHtml(sb.toString());
 		player.sendPacket(html);
 	}
 }

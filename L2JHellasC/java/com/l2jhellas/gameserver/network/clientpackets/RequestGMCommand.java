@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.model.L2World;
@@ -27,10 +13,10 @@ import com.l2jhellas.gameserver.network.serverpackets.GMViewWarehouseWithdrawLis
 public final class RequestGMCommand extends L2GameClientPacket
 {
 	private static final String _C__6E_REQUESTGMCOMMAND = "[C] 6e RequestGMCommand";
-
+	
 	private String _targetName;
 	private int _command;
-
+	
 	@Override
 	protected void readImpl()
 	{
@@ -38,20 +24,20 @@ public final class RequestGMCommand extends L2GameClientPacket
 		_command = readD();
 		// _unknown = readD();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		// prevent non gm or low level GMs from viewing player stuff
 		if (!getClient().getActiveChar().isGM() || !getClient().getActiveChar().getAccessLevel().allowAltG())
 			return;
-
+		
 		L2PcInstance player = L2World.getInstance().getPlayer(_targetName);
-
+		
 		// player name was incorrect?
 		if (player == null)
 			return;
-
+		
 		switch (_command)
 		{
 			case 1: // player status
@@ -89,7 +75,7 @@ public final class RequestGMCommand extends L2GameClientPacket
 			}
 		}
 	}
-
+	
 	@Override
 	public String getType()
 	{

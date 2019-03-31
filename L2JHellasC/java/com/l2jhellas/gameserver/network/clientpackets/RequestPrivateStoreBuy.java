@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
@@ -27,11 +13,11 @@ import com.l2jhellas.util.Util;
 public final class RequestPrivateStoreBuy extends L2GameClientPacket
 {
 	private static final String _C__79_REQUESTPRIVATESTOREBUY = "[C] 79 RequestPrivateStoreBuy";
-
+	
 	private int _storePlayerId;
 	private int _count;
 	private ItemRequest[] _items;
-
+	
 	@Override
 	protected void readImpl()
 	{
@@ -43,7 +29,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 			_count = 0;
 		}
 		_items = new ItemRequest[_count];
-
+		
 		for (int i = 0; i < _count; i++)
 		{
 			int objectId = readD();
@@ -51,27 +37,27 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 			if (count > Integer.MAX_VALUE)
 				count = Integer.MAX_VALUE;
 			int price = readD();
-
+			
 			_items[i] = new ItemRequest(objectId, (int) count, price);
 		}
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		final L2PcInstance player = getClient().getActiveChar();
-
+		
 		if (player == null)
 			return;
-
+		
 		if (!player.getAntiFlood().getTransaction().tryPerformAction("privatestorebuy"))
 		{
 			player.sendMessage("You buying items too fast.");
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-
-		if(player.getActiveTradeList()!=null || player.getActiveWarehouse()!=null || player.getActiveEnchantItem()!=null)
+		
+		if (player.getActiveTradeList() != null || player.getActiveWarehouse() != null || player.getActiveEnchantItem() != null)
 		{
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
@@ -84,7 +70,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 		
 		if (!(storePlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL || storePlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_PACKAGE_SELL))
 			return;
-
+		
 		final TradeList storeList = storePlayer.getSellList();
 		if (storeList == null)
 		{
@@ -97,10 +83,10 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-
+		
 		// FIXME: this check should be (and most probably is) done in the TradeList mechanics
 		long priceTotal = 0;
-
+		
 		for (ItemRequest ir : _items)
 		{
 			if (ir.getCount() > Integer.MAX_VALUE || ir.getCount() < 0)
@@ -124,7 +110,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 			}
 			priceTotal += ir.getPrice() * ir.getCount();
 		}
-
+		
 		// FIXME: this check should be (and most probably is) done in the TradeList mechanics
 		if (priceTotal < 0 || priceTotal > Integer.MAX_VALUE)
 		{
@@ -132,14 +118,14 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 			Util.handleIllegalPlayerAction(getClient().getActiveChar(), msgErr, Config.DEFAULT_PUNISH);
 			return;
 		}
-
+		
 		if (player.getAdena() < priceTotal)
 		{
 			player.sendPacket(SystemMessageId.YOU_NOT_ENOUGH_ADENA);
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-
+		
 		if (storePlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_PACKAGE_SELL)
 		{
 			if (storeList.getItemCount() > _count)
@@ -149,20 +135,20 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 				return;
 			}
 		}
-
+		
 		if (!storeList.PrivateStoreBuy(player, _items, (int) priceTotal))
 		{
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			_log.warning(RequestPrivateStoreBuy.class.getName() + ": PrivateStore buy has failed due to invalid list or request. Player: " + player.getName() + ", Private store of: " + storePlayer.getName());
 			return;
 		}
-
+		
 		if (storeList.getItemCount() == 0)
 		{
 			storePlayer.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
 			storePlayer.broadcastUserInfo();
 		}
-
+		
 		// Lease holders are currently not implemented
 		// else if (_seller != null)
 		// {
@@ -196,7 +182,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 		// }
 		// }
 	}
-
+	
 	@Override
 	public String getType()
 	{

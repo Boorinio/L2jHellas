@@ -1,25 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.instancemanager;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
@@ -29,58 +8,49 @@ import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
 public class SiegeGuardManager
 {
 	private static Logger _log = Logger.getLogger(SiegeGuardManager.class.getName());
-
+	
 	private final Castle _castle;
-	private final List<L2Spawn> _siegeGuardSpawn = new ArrayList<L2Spawn>();
-
+	private final List<L2Spawn> _siegeGuardSpawn = new ArrayList<>();
+	
 	public SiegeGuardManager(Castle castle)
 	{
 		_castle = castle;
 	}
-
-	/**
-	 * Add guard.
-	 */
+	
 	public void addSiegeGuard(L2PcInstance activeChar, int npcId)
 	{
 		if (activeChar == null)
 			return;
 		addSiegeGuard(activeChar.getX(), activeChar.getY(), activeChar.getZ(), activeChar.getHeading(), npcId);
 	}
-
-	/**
-	 * Add guard.
-	 */
+	
 	public void addSiegeGuard(int x, int y, int z, int heading, int npcId)
 	{
 		saveSiegeGuard(x, y, z, heading, npcId, 0);
 	}
-
-	/**
-	 * Hire merc.
-	 */
+	
 	public void hireMerc(L2PcInstance activeChar, int npcId)
 	{
 		if (activeChar == null)
 			return;
 		hireMerc(activeChar.getX(), activeChar.getY(), activeChar.getZ(), activeChar.getHeading(), npcId);
 	}
-
-	/**
-	 * Hire merc.
-	 */
+	
 	public void hireMerc(int x, int y, int z, int heading, int npcId)
 	{
 		saveSiegeGuard(x, y, z, heading, npcId, 1);
 	}
-
-	/**
-	 * Remove a single mercenary, identified by the npcId and location.
-	 * Presumably, this is used when a castle lord picks up a previously dropped ticket
-	 */
+	
 	public void removeMerc(int npcId, int x, int y, int z)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -100,11 +70,7 @@ public class SiegeGuardManager
 				e1.printStackTrace();
 		}
 	}
-
-	/**
-	 * Remove mercs.<BR>
-	 * <BR>
-	 */
+	
 	public void removeMercs()
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -121,10 +87,7 @@ public class SiegeGuardManager
 				e1.printStackTrace();
 		}
 	}
-
-	/**
-	 * Spawn guards.
-	 */
+	
 	public void spawnSiegeGuard()
 	{
 		loadSiegeGuard();
@@ -132,42 +95,36 @@ public class SiegeGuardManager
 			if (spawn != null)
 				spawn.init();
 	}
-
-	/**
-	 * Unspawn guards.
-	 */
+	
 	public void unspawnSiegeGuard()
 	{
 		for (L2Spawn spawn : getSiegeGuardSpawn())
 		{
 			if (spawn == null)
 				continue;
-
+			
 			spawn.stopRespawn();
 			spawn.getLastSpawn().doDie(spawn.getLastSpawn());
 		}
-
+		
 		getSiegeGuardSpawn().clear();
 	}
-
-	/**
-	 * Load guards.
-	 */
+	
 	private void loadSiegeGuard()
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM castle_siege_guards WHERE castleId = ? AND isHired = ?");
 			statement.setInt(1, getCastle().getCastleId());
-			if (getCastle().getOwnerId() > 0)   // If castle is owned by a clan, then don't spawn default guards
+			if (getCastle().getOwnerId() > 0) // If castle is owned by a clan, then don't spawn default guards
 				statement.setInt(2, 1);
 			else
 				statement.setInt(2, 0);
 			ResultSet rs = statement.executeQuery();
-
+			
 			L2Spawn spawn1;
 			L2NpcTemplate template1;
-
+			
 			while (rs.next())
 			{
 				template1 = NpcData.getInstance().getTemplate(rs.getInt("npcId"));
@@ -182,7 +139,7 @@ public class SiegeGuardManager
 					spawn1.setHeading(rs.getInt("heading"));
 					spawn1.setRespawnDelay(rs.getInt("respawnDelay"));
 					spawn1.setLocation(0);
-
+					
 					_siegeGuardSpawn.add(spawn1);
 				}
 				else
@@ -200,11 +157,7 @@ public class SiegeGuardManager
 				e1.printStackTrace();
 		}
 	}
-
-	/**
-	 * Save guards.<BR>
-	 * <BR>
-	 */
+	
 	private void saveSiegeGuard(int x, int y, int z, int heading, int npcId, int isHire)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -233,12 +186,12 @@ public class SiegeGuardManager
 			}
 		}
 	}
-
+	
 	public final Castle getCastle()
 	{
 		return _castle;
 	}
-
+	
 	public final List<L2Spawn> getSiegeGuardSpawn()
 	{
 		return _siegeGuardSpawn;

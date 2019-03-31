@@ -1,9 +1,5 @@
 package Extensions.fake.roboto.ai;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.ai.addon.IHealer;
 import Extensions.fake.roboto.helpers.FakeHelpers;
@@ -14,6 +10,9 @@ import Extensions.fake.roboto.model.SupportSpell;
 import com.l2jhellas.gameserver.emum.ShotType;
 import com.l2jhellas.gameserver.model.L2SkillTargetType;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class CardinalAI extends CombatAI implements IHealer
 {
@@ -21,7 +20,7 @@ public class CardinalAI extends CombatAI implements IHealer
 	{
 		super(character);
 	}
-
+	
 	@Override
 	public void thinkAndAct()
 	{
@@ -33,19 +32,19 @@ public class CardinalAI extends CombatAI implements IHealer
 		tryHealingTarget(_fakePlayer);
 		setBusyThinking(false);
 	}
-
+	
 	@Override
 	protected ShotType getShotType()
 	{
 		return ShotType.BLESSED_SPIRITSHOT;
 	}
-
+	
 	@Override
 	protected List<OffensiveSpell> getOffensiveSpells()
 	{
 		return Collections.emptyList();
 	}
-
+	
 	@Override
 	protected List<HealingSpell> getHealingSpells()
 	{
@@ -54,13 +53,13 @@ public class CardinalAI extends CombatAI implements IHealer
 		_healingSpells.add(new HealingSpell(1217, L2SkillTargetType.TARGET_ONE, 80, 3));
 		return _healingSpells;
 	}
-
+	
 	@Override
 	protected int[][] getBuffs()
 	{
 		return FakeHelpers.getMageBuffs();
 	}
-
+	
 	@Override
 	protected List<SupportSpell> getSelfSupportSpells()
 	{

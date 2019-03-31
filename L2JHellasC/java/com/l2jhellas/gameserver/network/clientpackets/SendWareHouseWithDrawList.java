@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
-
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.ClanWarehouse;
@@ -31,14 +15,16 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
+import java.util.logging.Logger;
+
 public final class SendWareHouseWithDrawList extends L2GameClientPacket
 {
 	private static Logger _log = Logger.getLogger(SendWareHouseWithDrawList.class.getName());
 	private static final String _C__32_SENDWAREHOUSEWITHDRAWLIST = "[C] 32 SendWareHouseWithDrawList";
-
+	
 	private int _count;
 	private int[] _items;
-
+	
 	@Override
 	protected void readImpl()
 	{
@@ -64,7 +50,7 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket
 			_items[i * 2 + 1] = (int) cnt;
 		}
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
@@ -83,24 +69,24 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-
+		
 		final ItemContainer warehouse = player.getActiveWarehouse();
 		if (warehouse == null)
 			return;
 		final L2NpcInstance manager = player.getLastFolkNPC();
 		if (((manager == null) || !player.isInsideRadius(manager, L2Npc.INTERACTION_DISTANCE, false, false)) && !player.isGM())
 			return;
-
+		
 		if ((warehouse instanceof ClanWarehouse) && !player.getAccessLevel().allowTransaction())
 		{
 			player.sendMessage("Transactions are disabled for your Access Level.");
 			return;
 		}
-
+		
 		// Alt game - Karma punishment
 		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_USE_WAREHOUSE && player.getKarma() > 0)
 			return;
-
+		
 		if (Config.ALT_MEMBERS_CAN_WITHDRAW_FROM_CLANWH)
 		{
 			if (warehouse instanceof ClanWarehouse && ((player.getClanPrivileges() & L2Clan.CP_CL_VIEW_WAREHOUSE) != L2Clan.CP_CL_VIEW_WAREHOUSE))
@@ -117,15 +103,15 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket
 				return;
 			}
 		}
-
+		
 		int weight = 0;
 		int slots = 0;
-
+		
 		for (int i = 0; i < _count; i++)
 		{
 			int objectId = _items[i * 2 + 0];
 			int count = _items[i * 2 + 1];
-
+			
 			// Calculate needed slots
 			L2ItemInstance item = warehouse.getItemByObjectId(objectId);
 			if (item == null)
@@ -136,28 +122,28 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket
 			else if (player.getInventory().getItemByItemId(item.getItemId()) == null)
 				slots++;
 		}
-
+		
 		// Item Max Limit Check
 		if (!player.getInventory().validateCapacity(slots))
 		{
 			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.SLOTS_FULL));
 			return;
 		}
-
+		
 		// Weight limit Check
 		if (!player.getInventory().validateWeight(weight))
 		{
 			sendPacket(SystemMessage.getSystemMessage(SystemMessageId.WEIGHT_LIMIT_EXCEEDED));
 			return;
 		}
-
+		
 		// Proceed to the transfer
 		InventoryUpdate playerIU = Config.FORCE_INVENTORY_UPDATE ? null : new InventoryUpdate();
 		for (int i = 0; i < _count; i++)
 		{
 			int objectId = _items[i * 2 + 0];
 			int count = _items[i * 2 + 1];
-
+			
 			final L2ItemInstance oldItem = warehouse.getItemByObjectId(objectId);
 			if ((oldItem == null) || (oldItem.getCount() < count))
 				player.sendMessage("Can't withdraw requested item" + (count > 1 ? "s" : ""));
@@ -167,7 +153,7 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket
 				_log.warning(SendWareHouseWithDrawList.class.getName() + ": Error withdrawing a warehouse object for char " + player.getName());
 				continue;
 			}
-
+			
 			if (playerIU != null)
 			{
 				if (newItem.getCount() > count)
@@ -176,19 +162,19 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket
 					playerIU.addNewItem(newItem);
 			}
 		}
-
+		
 		// Send updated item list to the player
 		if (playerIU != null)
 			player.sendPacket(playerIU);
 		else
 			player.sendPacket(new ItemList(player, false));
-
+		
 		// Update current load status on player
 		final StatusUpdate su = new StatusUpdate(player.getObjectId());
 		su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
 		player.sendPacket(su);
 	}
-
+	
 	@Override
 	public String getType()
 	{

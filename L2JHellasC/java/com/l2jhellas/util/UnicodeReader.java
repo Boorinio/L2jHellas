@@ -6,10 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PushbackInputStream;
 import java.io.Reader;
 
-/**
- * Generic unicode textreader, which will use BOM mark to identify the encoding to be used. If BOM is not found then use a given default encoding. System default is used if: BOM mark is not found and defaultEnc is NULL Usage pattern: String defaultEnc = "ISO-8859-1"; // or NULL to use system default
- * FileInputStream fis = new FileInputStream(file); Reader in = new UnicodeReader(fis, defaultEnc);
- */
 public class UnicodeReader extends Reader
 {
 	private final PushbackInputStream internalIn;
@@ -36,10 +32,6 @@ public class UnicodeReader extends Reader
 		return internalIn2.getEncoding();
 	}
 	
-	/**
-	 * Read-ahead four bytes and check for BOM marks. Extra bytes are unread back to the stream, only BOM bytes are skipped.
-	 * @throws IOException
-	 */
 	protected void init() throws IOException
 	{
 		if (internalIn2 != null)

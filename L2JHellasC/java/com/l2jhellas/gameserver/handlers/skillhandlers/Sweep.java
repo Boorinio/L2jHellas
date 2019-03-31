@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
 import com.l2jhellas.Config;
@@ -28,16 +14,13 @@ import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * @author _drunk_
- */
 public class Sweep implements ISkillHandler
 {
 	private static final L2SkillType[] SKILL_IDS =
 	{
 		L2SkillType.SWEEP
 	};
-
+	
 	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
@@ -45,11 +28,11 @@ public class Sweep implements ISkillHandler
 		{
 			return;
 		}
-
+		
 		L2PcInstance player = (L2PcInstance) activeChar;
 		InventoryUpdate iu = Config.FORCE_INVENTORY_UPDATE ? null : new InventoryUpdate();
 		boolean send = false;
-
+		
 		for (int index = 0; index < targets.length; index++)
 		{
 			if (!(targets[index] instanceof L2Attackable))
@@ -79,7 +62,7 @@ public class Sweep implements ISkillHandler
 						if (iu != null)
 							iu.addItem(item);
 						send = true;
-
+						
 						SystemMessage smsg;
 						if (ritem.getCount() > 1)
 						{
@@ -97,7 +80,7 @@ public class Sweep implements ISkillHandler
 				}
 			}
 			target.endDecayTask();
-
+			
 			if (send)
 			{
 				if (iu != null)
@@ -107,7 +90,7 @@ public class Sweep implements ISkillHandler
 			}
 		}
 	}
-
+	
 	@Override
 	public L2SkillType[] getSkillIds()
 	{

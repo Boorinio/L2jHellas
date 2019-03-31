@@ -1,27 +1,4 @@
-/*
- * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package Extensions.Vote;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -32,9 +9,14 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage.SMPOS;
 
-/**
- * @author Boorinio
- */
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
 public class VoteRewardTopzone
 {
 	private static Logger _log = Logger.getLogger(VoteRewardTopzone.class.getName());
@@ -126,9 +108,9 @@ public class VoteRewardTopzone
 				}
 				else
 				{
-					for (int i = 0; i < Config.TOPZONE_REWARD.length; i++)
+					for (int[] element : Config.TOPZONE_REWARD)
 					{
-						player.addItem("Vote reward.", Config.TOPZONE_REWARD[i][0], Config.TOPZONE_REWARD[i][1], player, true);
+						player.addItem("Vote reward.", element[0], element[1], player, true);
 						player.sendMessage("You have been rewarded check your inventory");
 					}
 					Boxes.add(temp);
@@ -138,9 +120,9 @@ public class VoteRewardTopzone
 			else
 			{
 				Boxes.add(temp);
-				for (int i = 0; i < Config.TOPZONE_REWARD.length; i++)
+				for (int[] element : Config.TOPZONE_REWARD)
 				{
-					player.addItem("Vote reward.", Config.TOPZONE_REWARD[i][0], Config.TOPZONE_REWARD[i][1], player, true);
+					player.addItem("Vote reward.", element[0], element[1], player, true);
 					player.sendMessage("You have been rewarded check your inventory");
 				}
 			}
@@ -165,10 +147,10 @@ public class VoteRewardTopzone
 		int votes = -1;
 		try
 		{
-			if(!Config.TOPZONE_SERVER_LINK.endsWith(".html"))
-				Config.TOPZONE_SERVER_LINK+=".html";
+			if (!Config.TOPZONE_SERVER_LINK.endsWith(".html"))
+				Config.TOPZONE_SERVER_LINK += ".html";
 			
-			URLConnection con = new URL(Config.TOPZONE_SERVER_LINK).openConnection();			
+			URLConnection con = new URL(Config.TOPZONE_SERVER_LINK).openConnection();
 			con.addRequestProperty("User-L2Topzone", "Mozilla/4.76");
 			BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			
@@ -184,11 +166,11 @@ public class VoteRewardTopzone
 					final String[] vote = nowLetsSplitTheVote.split("</span>");
 					final String votess = vote[0];
 					
-				    votes = Integer.valueOf(votess);
-                    Gui.topzone.setText("TopZone Votes: " + votes);
-
-				return votes;	
-		
+					votes = Integer.valueOf(votess);
+					Gui.topzone.setText("TopZone Votes: " + votes);
+					
+					return votes;
+					
 				}
 			}
 			
@@ -199,8 +181,8 @@ public class VoteRewardTopzone
 			System.out.println(e);
 			System.out.println("Error while getting server vote count on TOPZONE.");
 		}
-	
-	  return -1;
-	}
 		
+		return -1;
+	}
+	
 }

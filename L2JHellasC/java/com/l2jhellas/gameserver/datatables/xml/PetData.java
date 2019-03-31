@@ -1,18 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.datatables.xml;
+
+import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.model.L2PetData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,20 +10,17 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import com.l2jhellas.gameserver.engines.DocumentParser;
-import com.l2jhellas.gameserver.model.L2PetData;
-
 public class PetData implements DocumentParser
 {
 	protected static final Logger _log = Logger.getLogger(PetData.class.getName());
-
+	
 	private static Map<Integer, Map<Integer, L2PetData>> _petTable = new HashMap<>();
-
-	private PetData()
+	
+	protected PetData()
 	{
 		load();
 	}
-
+	
 	@Override
 	public void load()
 	{
@@ -55,13 +41,13 @@ public class PetData implements DocumentParser
 					if (d.getNodeName().equalsIgnoreCase("pet"))
 					{
 						int petId, petLevel;
-
-						petId = Integer.valueOf(d.getAttributes().getNamedItem("typeID").getNodeValue());;
+						
+						petId = Integer.valueOf(d.getAttributes().getNamedItem("typeID").getNodeValue());
 						petLevel = Integer.valueOf(d.getAttributes().getNamedItem("level").getNodeValue());
-
-						//build the petdata for this level
+						
+						// build the petdata for this level
 						L2PetData petData = new L2PetData();
-
+						
 						petData.setPetID(petId);
 						petData.setPetLevel(petLevel);
 						petData.setPetMaxExp(Integer.valueOf(d.getAttributes().getNamedItem("expMax").getNodeValue()));
@@ -85,38 +71,39 @@ public class PetData implements DocumentParser
 						petData.setPetRegenMP(Integer.valueOf(d.getAttributes().getNamedItem("mpregen").getNodeValue()));
 						petData.setPetRegenMP(Integer.valueOf(d.getAttributes().getNamedItem("mpregen").getNodeValue()));
 						petData.setOwnerExpTaken(Float.valueOf(d.getAttributes().getNamedItem("owner_exp_taken").getNodeValue()));
-
+						
 						// if its the first data for this petid, we initialize its level HashMap
 						if (!_petTable.containsKey(petId))
 						{
 							_petTable.put(petId, new HashMap<Integer, L2PetData>());
 						}
-
+						
 						_petTable.get(petId).put(petLevel, petData);
 						petData = null;
 					}
 				}
 			}
-		}		
+		}
 	}
+	
 	public void addPetData(L2PetData petData)
 	{
 		Map<Integer, L2PetData> h = _petTable.get(petData.getPetID());
-
+		
 		if (h == null)
 		{
-			Map<Integer, L2PetData> statTable = new HashMap<Integer, L2PetData>();
+			Map<Integer, L2PetData> statTable = new HashMap<>();
 			statTable.put(petData.getPetLevel(), petData);
 			_petTable.put(petData.getPetID(), statTable);
 			statTable = null;
 			return;
 		}
-
+		
 		h.put(petData.getPetLevel(), petData);
-
+		
 		h = null;
 	}
-
+	
 	public void addPetData(L2PetData[] petLevelsList)
 	{
 		for (L2PetData element : petLevelsList)
@@ -124,77 +111,77 @@ public class PetData implements DocumentParser
 			addPetData(element);
 		}
 	}
-
+	
 	public L2PetData getPetData(int petID, int petLevel)
 	{
 		return _petTable.get(petID).get(petLevel);
 	}
-
+	
 	public static boolean isWolf(int npcId)
 	{
 		return npcId == 12077;
 	}
-
+	
 	public static boolean isSinEater(int npcId)
 	{
 		return npcId == 12564;
 	}
-
+	
 	public static boolean isHatchling(int npcId)
 	{
 		return npcId > 12310 && npcId < 12314;
 	}
-
+	
 	public static boolean isStrider(int npcId)
 	{
 		return npcId > 12525 && npcId < 12529;
 	}
-
+	
 	public static boolean isWyvern(int npcId)
 	{
 		return npcId == 12621;
 	}
-
+	
 	public static boolean isBaby(int npcId)
 	{
 		return npcId > 12779 && npcId < 12783;
 	}
-
+	
 	public static boolean isPetFood(int itemId)
 	{
 		return itemId == 2515 || itemId == 4038 || itemId == 5168 || itemId == 6316 || itemId == 7582;
 	}
-
+	
 	public static boolean isWolfFood(int itemId)
 	{
 		return itemId == 2515;
 	}
-
+	
 	public static boolean isSinEaterFood(int itemId)
 	{
 		return itemId == 2515;
 	}
-
+	
 	public static boolean isHatchlingFood(int itemId)
 	{
 		return itemId == 4038;
 	}
-
+	
 	public static boolean isStriderFood(int itemId)
 	{
 		return itemId == 5168;
 	}
-
+	
 	public static boolean isWyvernFood(int itemId)
 	{
 		return itemId == 6316;
 	}
-
+	
 	public static boolean isBabyFood(int itemId)
 	{
 		return itemId == 7582;
 	}
-
+	
 	public static int getFoodItemId(int npcId)
 	{
 		if (isWolf(npcId))
@@ -210,7 +197,7 @@ public class PetData implements DocumentParser
 		else
 			return 0;
 	}
-
+	
 	public static int getPetIdByItemId(int itemId)
 	{
 		switch (itemId)
@@ -230,10 +217,10 @@ public class PetData implements DocumentParser
 				// hatchling of twilight
 			case 3502:
 				return 12313;
-				//  wind strider
+				// wind strider
 			case 4422:
 				return 12526;
-				//	Star strider
+				// Star strider
 			case 4423:
 				return 12527;
 				// Twilight strider
@@ -256,72 +243,72 @@ public class PetData implements DocumentParser
 				return 0;
 		}
 	}
-
+	
 	public static int getHatchlingWindId()
 	{
 		return 12311;
 	}
-
+	
 	public static int getHatchlingStarId()
 	{
 		return 12312;
 	}
-
+	
 	public static int getHatchlingTwilightId()
 	{
 		return 12313;
 	}
-
+	
 	public static int getStriderWindId()
 	{
 		return 12526;
 	}
-
+	
 	public static int getStriderStarId()
 	{
 		return 12527;
 	}
-
+	
 	public static int getStriderTwilightId()
 	{
 		return 12528;
 	}
-
+	
 	public static int getWyvernItemId()
 	{
 		return 8663;
 	}
-
+	
 	public static int getStriderWindItemId()
 	{
 		return 4422;
 	}
-
+	
 	public static int getStriderStarItemId()
 	{
 		return 4423;
 	}
-
+	
 	public static int getStriderTwilightItemId()
 	{
 		return 4424;
 	}
-
+	
 	public static int getSinEaterItemId()
 	{
 		return 4425;
 	}
-
+	
 	public static boolean isPetItem(int itemId)
 	{
 		return itemId == 2375 // wolf
-				|| itemId == 4425 //Sin Eater
-				|| itemId == 3500 || itemId == 3501 || itemId == 3502 // hatchlings
-				|| itemId == 4422 || itemId == 4423 || itemId == 4424 // striders
-				|| itemId == 8663 // Wyvern
-				|| itemId == 6648 || itemId == 6649 || itemId == 6650; // Babies
+			|| itemId == 4425 // Sin Eater
+			|| itemId == 3500 || itemId == 3501 || itemId == 3502 // hatchlings
+			|| itemId == 4422 || itemId == 4423 || itemId == 4424 // striders
+			|| itemId == 8663 // Wyvern
+			|| itemId == 6648 || itemId == 6649 || itemId == 6650; // Babies
 	}
-
+	
 	public static int[] getPetItemsAsNpc(int npcId)
 	{
 		switch (npcId)
@@ -331,42 +318,48 @@ public class PetData implements DocumentParser
 				{
 					2375
 				};
-			case 12564://Sin Eater
+			case 12564:// Sin Eater
 				return new int[]
 				{
 					4425
 				};
-
+				
 			case 12311:// hatchling of wind
 			case 12312:// hatchling of star
 			case 12313:// hatchling of twilight
 				return new int[]
 				{
-				3500, 3501, 3502
+					3500,
+					3501,
+					3502
 				};
-
+				
 			case 12526:// wind strider
 			case 12527:// Star strider
 			case 12528:// Twilight strider
 				return new int[]
 				{
-				4422, 4423, 4424
+					4422,
+					4423,
+					4424
 				};
-
+				
 			case 12621:// Wyvern
 				return new int[]
 				{
 					8663
 				};
-
+				
 			case 12780:// Baby Buffalo
 			case 12782:// Baby Cougar
 			case 12781:// Baby Kookaburra
 				return new int[]
 				{
-				6648, 6649, 6650
+					6648,
+					6649,
+					6650
 				};
-
+				
 				// unknown item id.. should never happen
 			default:
 				return new int[]
@@ -375,13 +368,13 @@ public class PetData implements DocumentParser
 				};
 		}
 	}
-
+	
 	public static boolean isMountable(int npcId)
 	{
 		return npcId == 12526 // wind strider
-				|| npcId == 12527 // star strider
-				|| npcId == 12528 // twilight strider
-				|| npcId == 12621; // wyvern
+			|| npcId == 12527 // star strider
+			|| npcId == 12528 // twilight strider
+			|| npcId == 12621; // wyvern
 	}
 	
 	public static PetData getInstance()

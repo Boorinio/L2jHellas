@@ -1,26 +1,12 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.quest;
-
-import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+
+import java.util.concurrent.ScheduledFuture;
+import java.util.logging.Logger;
 
 public class QuestTimer
 {
@@ -30,11 +16,11 @@ public class QuestTimer
 	private final String _name;
 	private final L2Npc _npc;
 	private final L2PcInstance _player;
-
+	
 	private ScheduledFuture<?> _schedular;
 	private final boolean _isRepeating;
 	private boolean _isActive = true;
-
+	
 	QuestTimer(Quest quest, String name, L2Npc npc, L2PcInstance player, long time, boolean repeating)
 	{
 		_quest = quest;
@@ -84,7 +70,7 @@ public class QuestTimer
 	{
 		return _name;
 	}
-
+	
 	final class ScheduleTimerTask implements Runnable
 	{
 		@Override
@@ -118,14 +104,6 @@ public class QuestTimer
 		_quest.removeQuestTimer(this);
 	}
 	
-	/**
-	 * public method to compare if this timer matches with the key attributes passed.
-	 * @param quest : Quest instance to which the timer is attached
-	 * @param name : Name of the timer
-	 * @param npc : Npc instance attached to the desired timer (null if no npc attached)
-	 * @param player : Player instance attached to the desired timer (null if no player attached)
-	 * @return boolean
-	 */
 	final boolean equals(Quest quest, String name, L2Npc npc, L2PcInstance player)
 	{
 		if (quest == null || quest != _quest)

@@ -1,24 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package Extensions.Balancer;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2World;
@@ -27,10 +7,16 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class BalancerEdit
 {
 	private static final Logger log = Logger.getLogger(BalancerEdit.class.getSimpleName());
-
+	
 	public static void editStat(String stat, int classId, int value, boolean add)
 	{
 		switch (stat)
@@ -42,7 +28,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET patk=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT patk FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -82,7 +68,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET matk=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT matk FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -121,7 +107,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET pdef=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT pdef FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -160,7 +146,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET mdef=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT mdef FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -199,7 +185,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET acc=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT acc FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -238,7 +224,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET ev=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT ev FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -277,7 +263,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET patksp=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT patksp FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -316,7 +302,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET matksp=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT matksp FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -355,7 +341,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET cp=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT cp FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -394,7 +380,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET hp=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT hp FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -433,7 +419,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET mp=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT mp FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -472,7 +458,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET walk=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT walk FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -511,7 +497,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET critical=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT critical FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -550,7 +536,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET magiccritical=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT magiccritical FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -589,7 +575,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET walkspeed=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT walkspeed FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -628,7 +614,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET matkrange=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT matkrange FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -667,7 +653,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET mreuserate=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT mreuserate FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -706,7 +692,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET preuserate=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT preuserate FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -745,7 +731,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET INT_=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT INT_ FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -784,7 +770,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET MEN=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT MEN FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -823,7 +809,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET WIT=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT WIT FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -862,7 +848,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET CON=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT CON FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -901,7 +887,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET STR=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT STR FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -940,7 +926,7 @@ public class BalancerEdit
 					PreparedStatement stm = con.prepareStatement("UPDATE balance SET DEX=? WHERE class_id=?");
 					PreparedStatement stm2 = con.prepareStatement("SELECT DEX FROM balance WHERE class_id=" + classId);
 					ResultSet rset = stm2.executeQuery();
-
+					
 					if (rset.next())
 					{
 						if (add)
@@ -974,13 +960,13 @@ public class BalancerEdit
 			}
 		}
 	}
-
+	
 	public void sendBalanceWindow(int classId, L2PcInstance p)
 	{
 		NpcHtmlMessage htm = new NpcHtmlMessage(0);
 		htm.setFile("./data/html/admin/balance/balance.htm");
 		htm.replace("%classId%", classId + "");
-
+		
 		p.sendPacket(htm);
 	}
 }

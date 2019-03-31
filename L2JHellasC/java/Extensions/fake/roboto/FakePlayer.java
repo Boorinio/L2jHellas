@@ -1,7 +1,5 @@
 package Extensions.fake.roboto;
 
-
-
 import Extensions.fake.roboto.ai.FakePlayerAI;
 import Extensions.fake.roboto.helpers.FakeHelpers;
 
@@ -23,44 +21,41 @@ import com.l2jhellas.gameserver.network.serverpackets.MoveToPawn;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
 import com.l2jhellas.util.Point3D;
 
-/**
- * @author Elfocrash
- */
 public class FakePlayer extends L2PcInstance
 {
 	private FakePlayerAI _fakeAi;
 	private boolean _underControl = false;
-
+	
 	public boolean isUnderControl()
 	{
 		return _underControl;
 	}
-
+	
 	public void setUnderControl(boolean underControl)
 	{
 		_underControl = underControl;
 	}
-
+	
 	protected FakePlayer(int objectId)
 	{
 		super(objectId);
 	}
-
+	
 	public FakePlayer(int objectId, L2PcTemplate template, String accountName, PcAppearance app)
 	{
 		super(objectId, template, accountName, app);
 	}
-
+	
 	public FakePlayerAI getFakeAi()
 	{
 		return _fakeAi;
 	}
-
+	
 	public void setFakeAi(FakePlayerAI _fakeAi)
 	{
 		this._fakeAi = _fakeAi;
 	}
-
+	
 	public void assignDefaultAI()
 	{
 		try
@@ -72,20 +67,20 @@ public class FakePlayer extends L2PcInstance
 			e.printStackTrace();
 		}
 	}
-
+	
 	public boolean checkUseMagicConditions(L2Skill skill, boolean forceUse, boolean dontMove)
 	{
 		if (skill == null)
 			return false;
-
+		
 		if (isDead() || isOutOfControl())
 		{
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return false;
 		}
-
+		
 		L2SkillType sklType = skill.getSkillType();
-
+		
 		if (isSitting())
 		{
 			if (skill.isToggle())
@@ -99,38 +94,38 @@ public class FakePlayer extends L2PcInstance
 			}
 			return false;
 		}
-
+		
 		if (skill.isToggle())
 		{
 			L2Effect effect = getFirstEffect(skill.getId());
-
+			
 			if (effect != null)
 			{
 				if (skill.getId() != 60)
 					effect.exit();
-
+				
 				sendPacket(ActionFailed.STATIC_PACKET);
 				return false;
 			}
 		}
-
+		
 		if (isFakeDeath())
 		{
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return false;
 		}
-
+		
 		L2Object target = null;
 		L2SkillTargetType sklTargetType = skill.getTargetType();
 		Point3D worldPosition = getCurrentSkillWorldPosition();
-
+		
 		if (sklTargetType == L2SkillTargetType.TARGET_GROUND && worldPosition == null)
 		{
 			_log.info("WorldPosition is null for skill: " + skill.getName() + ", player: " + getName() + ".");
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return false;
 		}
-
+		
 		switch (sklTargetType)
 		{
 			case TARGET_AURA:
@@ -145,33 +140,33 @@ public class FakePlayer extends L2PcInstance
 			case TARGET_CORPSE_ALLY:
 			case TARGET_AREA_SUMMON:
 				target = this;
-			break;
+				break;
 			case TARGET_PET:
 			case TARGET_SUMMON:
 				target = getPet();
-			break;
+				break;
 			default:
 				target = getTarget();
-			break;
+				break;
 		}
-
+		
 		if (target == null)
 		{
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return false;
 		}
-
+		
 		if (target instanceof L2DoorInstance)
 		{
 			if (!((L2DoorInstance) target).isAutoAttackable(this) // Siege doors only hittable during siege
-					|| (((L2DoorInstance) target).isUnlockable() && skill.getSkillType() != L2SkillType.UNLOCK)) // unlockable doors
+				|| (((L2DoorInstance) target).isUnlockable() && skill.getSkillType() != L2SkillType.UNLOCK)) // unlockable doors
 			{
 				sendPacket(SystemMessageId.INCORRECT_TARGET);
 				sendPacket(ActionFailed.STATIC_PACKET);
 				return false;
 			}
 		}
-
+		
 		if (isInDuel())
 		{
 			if (target instanceof L2Playable)
@@ -191,7 +186,7 @@ public class FakePlayer extends L2PcInstance
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return false;
 		}
-
+		
 		if (skill.isOffensive())
 		{
 			if (isInsidePeaceZone(this, target))
@@ -216,25 +211,25 @@ public class FakePlayer extends L2PcInstance
 					case TARGET_GROUND:
 					case TARGET_CORPSE_ALLY:
 					case TARGET_AREA_SUMMON:
-					break;
+						break;
 					default:
 						sendPacket(ActionFailed.STATIC_PACKET);
 						return false;
 				}
 			}
-
+			
 			if (dontMove)
 			{
 				if (sklTargetType == L2SkillTargetType.TARGET_GROUND)
 				{
-					if (!isInsideRadius(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), (int) (skill.getCastRange() + getTemplate().getCollisionRadius()), false, false))
+					if (!isInsideRadius(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), skill.getCastRange() + getTemplate().getCollisionRadius(), false, false))
 					{
 						sendPacket(SystemMessageId.TARGET_TOO_FAR);
 						sendPacket(ActionFailed.STATIC_PACKET);
 						return false;
 					}
 				}
-				else if (skill.getCastRange() > 0 && !isInsideRadius(target, (int) (skill.getCastRange() + getTemplate().getCollisionRadius()), false, false))
+				else if (skill.getCastRange() > 0 && !isInsideRadius(target, skill.getCastRange() + getTemplate().getCollisionRadius(), false, false))
 				{
 					sendPacket(SystemMessageId.TARGET_TOO_FAR);
 					sendPacket(ActionFailed.STATIC_PACKET);
@@ -242,7 +237,7 @@ public class FakePlayer extends L2PcInstance
 				}
 			}
 		}
-
+		
 		if (!skill.isOffensive() && target instanceof L2MonsterInstance && !forceUse)
 		{
 			switch (sklTargetType)
@@ -261,7 +256,7 @@ public class FakePlayer extends L2PcInstance
 				case TARGET_CORPSE_MOB:
 				case TARGET_AREA_CORPSE_MOB:
 				case TARGET_GROUND:
-				break;
+					break;
 				default:
 				{
 					switch (sklType)
@@ -269,7 +264,7 @@ public class FakePlayer extends L2PcInstance
 						case BEAST_FEED:
 						case DELUXE_KEY_UNLOCK:
 						case UNLOCK:
-						break;
+							break;
 						default:
 							sendPacket(ActionFailed.STATIC_PACKET);
 							return false;
@@ -287,11 +282,11 @@ public class FakePlayer extends L2PcInstance
 				return false;
 			}
 		}
-
+		
 		switch (sklTargetType)
 		{
 			case TARGET_PARTY:
-			case TARGET_ALLY: 
+			case TARGET_ALLY:
 			case TARGET_CLAN:
 			case TARGET_AURA:
 			case TARGET_FRONT_AURA:
@@ -301,7 +296,7 @@ public class FakePlayer extends L2PcInstance
 			case TARGET_SELF:
 			case TARGET_CORPSE_ALLY:
 			case TARGET_AREA_SUMMON:
-			break;
+				break;
 			default:
 				if (!checkPvpSkill(target, skill) && !getAccessLevel().allowPeaceAttack())
 				{
@@ -310,10 +305,10 @@ public class FakePlayer extends L2PcInstance
 					return false;
 				}
 		}
-
+		
 		return true;
 	}
-
+	
 	protected boolean maybeMoveToPawn(L2Object target, int offset)
 	{
 		if (target == null)
@@ -330,10 +325,10 @@ public class FakePlayer extends L2PcInstance
 		if (!isInsideRadius(target, offset, false, false))
 		{
 			moveToPawn(target, offset);
-		    return true;
+			return true;
 		}
-		    		
-		 return false;
+		
+		return false;
 	}
 	
 	protected void moveToPawn(L2Object pawn, int offset)
@@ -342,10 +337,10 @@ public class FakePlayer extends L2PcInstance
 		{
 			if (offset < 10)
 				offset = 10;
-
+			
 			if (pawn == null)
 				return;
-
+			
 			moveToLocation(pawn.getX(), pawn.getY(), pawn.getZ(), offset);
 			
 			if (!isMoving())
@@ -359,25 +354,26 @@ public class FakePlayer extends L2PcInstance
 					broadcastPacket(new MoveToPawn(this, pawn, offset));
 			}
 			else
-			  broadcastPacket(new MoveToLocation(this));
+				broadcastPacket(new MoveToLocation(this));
 		}
 	}
+	
 	public void forceAutoAttack(L2Character target)
 	{
-		if (this.getTarget() == null)
+		if (getTarget() == null)
 			return;
-
-		if(maybeMoveToPawn(target, getPhysicalAttackRange()))
+		
+		if (maybeMoveToPawn(target, getPhysicalAttackRange()))
 			return;
-
-		doAttack(target);
+		
+		doAttack(target,true);
 	}
-
+	
 	public synchronized void despawnPlayer()
 	{
 		deleteMe();
 	}
-
+	
 	public void heal()
 	{
 		setCurrentCp(getMaxCp());

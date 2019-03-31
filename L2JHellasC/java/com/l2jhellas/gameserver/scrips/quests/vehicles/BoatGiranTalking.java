@@ -1,25 +1,4 @@
-/*
- * Copyright (C) 2004-2016 L2J DataPack
- * 
- * This file is part of L2J DataPack.
- * 
- * L2J DataPack is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * L2J DataPack is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.vehicles;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.emum.Sound;
@@ -30,14 +9,14 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 
-/**
- * @author DS
- */
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class BoatGiranTalking implements Runnable
 {
 	private static final Logger _log = Logger.getLogger(BoatGiranTalking.class.getName());
 	private static final L2BoatInstance _boat = BoatManager.getInstance().getNewBoat(2, 48950, 190613, -3610, 60800);
-
+	
 	// Time: 868s
 	private static final VehiclePathPoint[] GIRAN_TO_TALKING =
 	{
@@ -91,7 +70,7 @@ public class BoatGiranTalking implements Runnable
 	};
 	
 	private static final VehiclePathPoint GIRAN_DOCK = TALKING_TO_GIRAN[TALKING_TO_GIRAN.length - 1];
-
+	
 	private int _cycle = 0;
 	private int _shoutCount = 0;
 	

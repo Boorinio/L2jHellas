@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
-
-import java.util.concurrent.ScheduledFuture;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
@@ -22,64 +6,38 @@ import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.MinionList;
 
-/**
- * This class manages all Monsters.
- * L2MonsterInstance :<BR>
- * <BR>
- * <li>L2MinionInstance</li> <li>L2RaidBossInstance</li>
- */
+import java.util.concurrent.ScheduledFuture;
+
 public class L2MonsterInstance extends L2Attackable
 {
 	private L2MonsterInstance _master;
-	private MinionList _minionList;
+	protected MinionList _minionList;
 	
 	protected ScheduledFuture<?> _minionMaintainTask = null;
-
+	
 	private static final int MONSTER_MAINTENANCE_INTERVAL = 1000;
 	
-	/**
-	 * Constructor of L2MonsterInstance (use L2Character and L2NpcInstance constructor).<BR>
-	 * <BR>
-	 * <B><U> Actions</U> :</B><BR>
-	 * <BR>
-	 * <li>Call the L2Character constructor to set the _template of the L2MonsterInstance (copy skills from template to object and link _calculators to NPC_STD_CALCULATOR)</li> <li>
-	 * Set the name of the L2MonsterInstance</li> <li>Create a RandomAnimation Task that will be launched after the calculated delay if the server allow it</li><BR>
-	 * <BR>
-	 * 
-	 * @param objectId
-	 *        Identifier of the object to initialized
-	 * @param L2NpcTemplate
-	 *        Template to apply to the NPC
-	 */
 	public L2MonsterInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 		_minionList = new MinionList(this);
 	}
-
-	/**
-	 * Return True if the attacker is not another L2MonsterInstance.<BR>
-	 * <BR>
-	 */
+	
 	@Override
 	public boolean isAutoAttackable(L2Character attacker)
 	{
 		if (attacker instanceof L2MonsterInstance)
 			return false;
-
+		
 		return !isEventMob;
 	}
-
-	/**
-	 * Return True if the L2MonsterInstance is Aggressive (aggroRange > 0).<BR>
-	 * <BR>
-	 */
+	
 	@Override
 	public boolean isAggressive()
 	{
 		return (getTemplate().aggroRange > 0) && !isEventMob;
 	}
-
+	
 	@Override
 	public void onSpawn()
 	{
@@ -100,20 +58,14 @@ public class L2MonsterInstance extends L2Attackable
 		
 		// dynamic script-based minions spawned here, after all preparations.
 		super.onSpawn();
-	}	
-
-	/**
-	 * Return home.
-	 */
+	}
+	
 	@Override
 	public boolean returnHome()
 	{
-        return super.returnHome();
+		return super.returnHome();
 	}
 	
-	/**
-	 * Spawn all minions at a regular interval
-	 */
 	protected void manageMinions()
 	{
 		_minionMaintainTask = ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
@@ -136,13 +88,13 @@ public class L2MonsterInstance extends L2Attackable
 	{
 		if (!super.doDie(killer))
 			return false;
-			
+		
 		if (_master != null)
 			_master.getMinionList().onMinionDie(this, _master.getSpawn().getRespawnDelay() / 2);
-				
+		
 		return true;
 	}
-
+	
 	@Override
 	public void deleteMe()
 	{

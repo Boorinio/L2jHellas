@@ -8,73 +8,73 @@ public class MemoryWatchOptimize extends Thread
 {
 	private static final MemoryMXBean mem_bean = ManagementFactory.getMemoryMXBean();
 	private static MemoryWatchOptimize instance = null;
-
+	
 	public static long getMemUsed()
 	{
 		return mem_bean.getHeapMemoryUsage().getUsed();
 	}
-
+	
 	public static double getMemUsedPercentage()
 	{
 		MemoryUsage heapMemoryUsage = mem_bean.getHeapMemoryUsage();
 		return 100f * heapMemoryUsage.getUsed() / heapMemoryUsage.getMax();
 	}
-
+	
 	public static String getMemUsedPerc()
 	{
 		return String.format("%.2f%%", getMemUsedPercentage());
 	}
-
+	
 	public static String getMemUsedMb()
 	{
 		return getMemUsed() / 0x100000 + " Mb";
 	}
-
+	
 	public static long getMemMax()
 	{
 		return mem_bean.getHeapMemoryUsage().getMax();
 	}
-
+	
 	public static String getMemMaxMb()
 	{
 		return getMemMax() / 0x100000 + " Mb";
 	}
-
+	
 	public static long getMemFree()
 	{
 		MemoryUsage heapMemoryUsage = mem_bean.getHeapMemoryUsage();
 		return heapMemoryUsage.getMax() - heapMemoryUsage.getUsed();
 	}
-
+	
 	public static double getMemFreePercentage()
 	{
 		return 100f - getMemUsedPercentage();
 	}
-
+	
 	public static String getMemFreePerc()
 	{
 		return String.format("%.2f%%", getMemFreePercentage());
 	}
-
+	
 	public static String getMemFreeMb()
 	{
 		return getMemFree() / 0x100000 + " Mb";
 	}
-
+	
 	public static MemoryWatchOptimize getInstance()
 	{
-		if(instance == null)
+		if (instance == null)
 			instance = new MemoryWatchOptimize(1000);
 		return instance;
 	}
-
+	
 	private final long sleepInterval;
-
+	
 	public MemoryWatchOptimize(long interval)
 	{
 		sleepInterval = interval;
 	}
-
+	
 	@Override
 	public void run()
 	{
@@ -82,7 +82,7 @@ public class MemoryWatchOptimize extends Thread
 		{
 			Thread.sleep(sleepInterval);
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

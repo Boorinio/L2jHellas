@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.zone.type;
 
 import com.l2jhellas.Config;
@@ -25,10 +11,6 @@ import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.taskmanager.PvpFlagTaskManager;
 
-/**
- * A siege zone
- * @author durgus
- */
 public class L2SiegeZone extends L2ZoneType
 {
 	private int _siegableId = -1;
@@ -162,10 +144,6 @@ public class L2SiegeZone extends L2ZoneType
 		}
 	}
 	
-	/**
-	 * Sends a message to all players in this zone
-	 * @param message
-	 */
 	public void announceToPlayers(String message)
 	{
 		for (L2PcInstance player : getKnownTypeInside(L2PcInstance.class))
@@ -187,10 +165,6 @@ public class L2SiegeZone extends L2ZoneType
 		_isActiveSiege = val;
 	}
 	
-	/**
-	 * Removes all foreigners from the zone
-	 * @param owningClan
-	 */
 	public void banishForeigners(L2Clan owningClan)
 	{
 		for (L2PcInstance player : getKnownTypeInside(L2PcInstance.class))

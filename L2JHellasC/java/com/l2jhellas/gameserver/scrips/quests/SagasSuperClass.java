@@ -1,23 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -34,9 +15,14 @@ import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.util.Rnd;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class SagasSuperClass extends Quest
 {
-	private static List<Quest> _scripts = new ArrayList<Quest>();
+	private static List<Quest> _scripts = new ArrayList<>();
 	public int qnu;
 	
 	public int[] NPC = {};
@@ -51,7 +37,7 @@ public class SagasSuperClass extends Quest
 	public int[] Y = {};
 	public int[] Z = {};
 	
-	private final Map<L2Npc, Integer> _SpawnList = new HashMap<L2Npc, Integer>();
+	private final Map<L2Npc, Integer> _SpawnList = new HashMap<>();
 	
 	private static final String[] Text = new String[]
 	{
@@ -153,7 +139,7 @@ public class SagasSuperClass extends Quest
 			addKillId(Guardian_Angel);
 	}
 	
-	private void cast(L2Npc npc, L2Character target, int skillId, int level)
+	private static void cast(L2Npc npc, L2Character target, int skillId, int level)
 	{
 		target.broadcastPacket(new MagicSkillUse(target, target, skillId, level, 6000, 1));
 		target.broadcastPacket(new MagicSkillUse(npc, npc, skillId, level, 6000, 1));
@@ -852,7 +838,7 @@ public class SagasSuperClass extends Quest
 				L2Party party = player.getParty();
 				if (party != null)
 				{
-					List<QuestState> PartyQuestMembers = new ArrayList<QuestState>();
+					List<QuestState> PartyQuestMembers = new ArrayList<>();
 					for (L2PcInstance player1 : party.getPartyMembers())
 					{
 						QuestState st1 = findQuest(player1);

@@ -1,22 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.L2EtcItemType;
@@ -24,16 +6,20 @@ import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
 public class ItemsAutoDestroy
 {
 	protected static final Logger _log = Logger.getLogger(ItemsAutoDestroy.class.getName());
 	private static ItemsAutoDestroy _instance;
 	protected List<L2ItemInstance> _items = null;
 	protected static long _sleep;
-
+	
 	private ItemsAutoDestroy()
 	{
-		_items = new ArrayList<L2ItemInstance>();
+		_items = new ArrayList<>();
 		_sleep = Config.AUTODESTROY_ITEM_AFTER * 1000;
 		if (_sleep == 0)
 		{
@@ -42,7 +28,7 @@ public class ItemsAutoDestroy
 		ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CheckItemsForDestroy(), _sleep, _sleep);
 		_log.info(ItemsAutoDestroy.class.getSimpleName() + "ItemsAutoDestroy: Time " + _sleep / 1000 + ".");
 	}
-
+	
 	public static ItemsAutoDestroy getInstance()
 	{
 		if (_instance == null)
@@ -52,23 +38,23 @@ public class ItemsAutoDestroy
 		}
 		return _instance;
 	}
-
+	
 	public synchronized void addItem(L2ItemInstance item)
 	{
 		item.setDropTime(System.currentTimeMillis());
 		_items.add(item);
 	}
-
+	
 	public synchronized void removeItems()
 	{
 		if (Config.DEBUG)
 		{
 			_log.config(ItemsAutoDestroy.class.getName() + ": " + _items.size() + " items to check.");
 		}
-
+		
 		if (_items.isEmpty())
 			return;
-
+		
 		long curtime = System.currentTimeMillis();
 		for (L2ItemInstance item : _items)
 		{
@@ -82,7 +68,7 @@ public class ItemsAutoDestroy
 				{
 					if ((curtime - item.getDropTime()) > Config.HERB_AUTO_DESTROY_TIME)
 					{
-						L2World.getInstance().removeVisibleObject(item, item.getWorldRegion());
+						L2World.removeVisibleObject(item, item.getWorldRegion());
 						L2World.getInstance().removeObject(item);
 						_items.remove(item);
 						if (Config.SAVE_DROPPED_ITEM)
@@ -93,7 +79,7 @@ public class ItemsAutoDestroy
 				}
 				else if ((curtime - item.getDropTime()) > _sleep)
 				{
-					L2World.getInstance().removeVisibleObject(item, item.getWorldRegion());
+					L2World.removeVisibleObject(item, item.getWorldRegion());
 					L2World.getInstance().removeObject(item);
 					_items.remove(item);
 					if (Config.SAVE_DROPPED_ITEM)
@@ -108,7 +94,7 @@ public class ItemsAutoDestroy
 			_log.config(ItemsAutoDestroy.class.getName() + ": " + _items.size() + " items remaining.");
 		}
 	}
-
+	
 	protected class CheckItemsForDestroy extends Thread
 	{
 		@Override

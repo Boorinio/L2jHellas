@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.L2ManufactureItem;
@@ -19,26 +5,23 @@ import com.l2jhellas.gameserver.model.L2ManufactureList;
 import com.l2jhellas.gameserver.model.L2RecipeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- * dd d(dd) d(ddd)
- */
 public class RecipeShopManageList extends L2GameServerPacket
 {
 	private static final String _S__D8_RecipeShopManageList = "[S] d8 RecipeShopManageList";
 	private final L2PcInstance _seller;
 	private final boolean _isDwarven;
 	private L2RecipeList[] _recipes;
-
+	
 	public RecipeShopManageList(L2PcInstance seller, boolean isDwarven)
 	{
 		_seller = seller;
 		_isDwarven = isDwarven;
-
+		
 		if (_isDwarven && _seller.hasDwarvenCraft())
 			_recipes = _seller.getDwarvenRecipeBook();
 		else
 			_recipes = _seller.getCommonRecipeBook();
-
+		
 		// clean previous recipes
 		if (_seller.getCreateList() != null)
 		{
@@ -50,7 +33,7 @@ public class RecipeShopManageList extends L2GameServerPacket
 			}
 		}
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -58,7 +41,7 @@ public class RecipeShopManageList extends L2GameServerPacket
 		writeD(_seller.getObjectId());
 		writeD(_seller.getAdena());
 		writeD(_isDwarven ? 0x00 : 0x01);
-
+		
 		if (_recipes == null)
 		{
 			writeD(0);
@@ -66,7 +49,7 @@ public class RecipeShopManageList extends L2GameServerPacket
 		else
 		{
 			writeD(_recipes.length);// number of items in recipe book
-
+			
 			for (int i = 0; i < _recipes.length; i++)
 			{
 				L2RecipeList temp = _recipes[i];
@@ -74,7 +57,7 @@ public class RecipeShopManageList extends L2GameServerPacket
 				writeD(i + 1);
 			}
 		}
-
+		
 		if (_seller.getCreateList() == null)
 		{
 			writeD(0);
@@ -83,7 +66,7 @@ public class RecipeShopManageList extends L2GameServerPacket
 		{
 			L2ManufactureList list = _seller.getCreateList();
 			writeD(list.size());
-
+			
 			for (L2ManufactureItem item : list.getList())
 			{
 				writeD(item.getRecipeId());
@@ -92,7 +75,7 @@ public class RecipeShopManageList extends L2GameServerPacket
 			}
 		}
 	}
-
+	
 	@Override
 	public String getType()
 	{

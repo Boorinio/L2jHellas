@@ -1,24 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package Extensions.RankSystem.Util;
 
 import java.util.Calendar;
 
-/**
- * @author Masterio
- */
 public final class RPSUtil
 {
 	public static final String getClassName(int classId)
@@ -141,7 +124,7 @@ public final class RPSUtil
 				return "Artisan";
 			case 57:
 				return "Warsmith";
-				//Third Classes -->
+				// Third Classes -->
 			case 88:
 				return "Duelist";
 			case 89:
@@ -204,19 +187,19 @@ public final class RPSUtil
 				return "Fortune Seeker";
 			case 118:
 				return "Maestro";
-
+				
 			default:
 				return "Unknown";
 		}
 	}
-
+	
 	public static String preparePrice(long price)
 	{
-
+		
 		String preparePrice = String.valueOf(price);
 		String priceTmp = "";
 		int j = 0;
-
+		
 		for (int i = (preparePrice.length() - 1); i >= 0; i--)
 		{
 			j++;
@@ -225,14 +208,14 @@ public final class RPSUtil
 			else
 				priceTmp = preparePrice.charAt(i) + priceTmp;
 		}
-
+		
 		return priceTmp;
 	}
-
+	
 	public static String dateToString(Calendar time)
 	{
 		String t = "";
-
+		
 		int d = time.get(Calendar.DAY_OF_MONTH);
 		if (d < 10)
 		{
@@ -242,7 +225,7 @@ public final class RPSUtil
 		{
 			t += d;
 		}
-
+		
 		int m = time.get(Calendar.MONTH) + 1;
 		if (m < 10)
 		{
@@ -252,19 +235,19 @@ public final class RPSUtil
 		{
 			t += "." + m;
 		}
-
+		
 		t += "." + time.get(Calendar.YEAR);
-
+		
 		return t;
 	}
-
+	
 	public static String dateToString(long timeL)
 	{
 		Calendar time = Calendar.getInstance();
 		time.setTimeInMillis(timeL);
-
+		
 		String t = "";
-
+		
 		int d = time.get(Calendar.DAY_OF_MONTH);
 		if (d < 10)
 		{
@@ -274,7 +257,7 @@ public final class RPSUtil
 		{
 			t += d;
 		}
-
+		
 		int m = time.get(Calendar.MONTH) + 1;
 		if (m < 10)
 		{
@@ -284,16 +267,16 @@ public final class RPSUtil
 		{
 			t += "." + m;
 		}
-
+		
 		t += "." + time.get(Calendar.YEAR);
-
+		
 		return t;
 	}
-
+	
 	public static String timeToString(Calendar time)
 	{
 		String t = "" + time.get(Calendar.HOUR_OF_DAY);
-
+		
 		int m = time.get(Calendar.MINUTE);
 		if (m < 10)
 		{
@@ -303,7 +286,7 @@ public final class RPSUtil
 		{
 			t += ":" + m;
 		}
-
+		
 		int s = time.get(Calendar.SECOND);
 		if (s < 10)
 		{
@@ -313,16 +296,16 @@ public final class RPSUtil
 		{
 			t += ":" + s;
 		}
-
+		
 		return t;
 	}
-
+	
 	public static String timeToString(long timeL)
 	{
 		Calendar time = Calendar.getInstance();
 		time.setTimeInMillis(timeL);
 		String t = "" + time.get(Calendar.HOUR_OF_DAY);
-
+		
 		int m = time.get(Calendar.MINUTE);
 		if (m < 10)
 		{
@@ -332,7 +315,7 @@ public final class RPSUtil
 		{
 			t += ":" + m;
 		}
-
+		
 		int s = time.get(Calendar.SECOND);
 		if (s < 10)
 		{
@@ -342,7 +325,7 @@ public final class RPSUtil
 		{
 			t += ":" + s;
 		}
-
+		
 		return t;
 	}
 }

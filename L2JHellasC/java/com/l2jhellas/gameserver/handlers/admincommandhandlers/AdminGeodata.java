@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
 import com.l2jhellas.Config;
@@ -19,13 +5,10 @@ import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- * @author -Nemesiss-
- */
 public class AdminGeodata implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_geo_z",
 		"admin_geo_type",
 		"admin_geo_nswe",
@@ -34,8 +17,8 @@ public class AdminGeodata implements IAdminCommandHandler
 		"admin_geo_bug",
 		"admin_geo_load",
 		"admin_geo_unload"
-	};/** @formatter:on */
-
+	};
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -45,7 +28,7 @@ public class AdminGeodata implements IAdminCommandHandler
 			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 			return true;
 		}
-
+		
 		if (command.equals("admin_geo_z"))
 		{
 			activeChar.sendMessage("GeoEngine: Geo_Z = " + GeoEngine.getHeight(activeChar.getX(), activeChar.getY(), activeChar.getZ()) + " Loc_Z = " + activeChar.getZ());
@@ -82,7 +65,7 @@ public class AdminGeodata implements IAdminCommandHandler
 					activeChar.sendMessage("GeoEngine: Can See Target");
 				else
 					activeChar.sendMessage("GeoEngine: Can't See Target");
-
+				
 			}
 			else
 				activeChar.sendMessage("None Target!");
@@ -105,9 +88,9 @@ public class AdminGeodata implements IAdminCommandHandler
 				{
 					byte rx = Byte.parseByte(v[0]);
 					byte ry = Byte.parseByte(v[1]);
-
+					
 					boolean result = GeoEngine.LoadGeodataFile(rx, ry);
-
+					
 					if (result)
 						activeChar.sendMessage("GeoEngine: File for region [" + rx + "," + ry + "] loaded succesfuly");
 					else
@@ -120,44 +103,10 @@ public class AdminGeodata implements IAdminCommandHandler
 			}
 			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
 		}
-		/*else if (command.startsWith("admin_geo_unload"))
-		{
-			String[] v = command.substring(17).split(" ");
-			if (v.length != 2)
-				activeChar.sendMessage("Usage: //admin_geo_unload <regionX> <regionY>");
-			else
-			{
-				try
-				{
-					byte rx = Byte.parseByte(v[0]);
-					byte ry = Byte.parseByte(v[1]);
-
-					//GeoEngine.unloadGeodata(rx, ry);
-					//activeChar.sendMessage("GeoEngine: File for region [" + rx + "," + ry + "] unloaded.");
-				}
-				catch (Exception e)
-				{
-					activeChar.sendMessage("You have to write numbers of regions <regionX> <regionY>");
-				}
-			}
-			AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
-		}*/
-		/*else if (command.startsWith("admin_geo_bug"))
-		{
-			try
-			{
-				String comment = command.substring(14);
-				GeoEngine.addGeoDataBug(activeChar, comment);
-			}
-			catch (StringIndexOutOfBoundsException e)
-			{
-				activeChar.sendMessage("Usage: //admin_geo_bug you coments here");
-				AdminHelpPage.showHelpPage(activeChar, "server_menu.htm");
-			}
-		}*/
+		
 		return true;
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{

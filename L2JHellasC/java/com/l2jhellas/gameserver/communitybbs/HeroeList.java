@@ -1,16 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.communitybbs;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,22 +10,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 public class HeroeList
 {
 	protected static final Logger _log = Logger.getLogger(HeroeList.class.getName());
-
+	
 	private static final String SELECT_DATA = "SELECT h.count, h.played, ch.char_name, ch.base_class, ch.online, cl.clan_name, cl.ally_name FROM heroes h LEFT JOIN characters ch ON ch.obj_Id=h.char_id LEFT OUTER JOIN clan_data cl ON cl.clan_id=ch.clanid ORDER BY h.count DESC, ch.char_name ASC LIMIT 20";
 	private int _posId;
 	private final StringBuilder _heroeList = new StringBuilder();
-
+	
 	public HeroeList()
 	{
 		loadFromDB();
 	}
-
+	
 	private void loadFromDB()
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -42,15 +30,15 @@ public class HeroeList
 			_posId = 0;
 			PreparedStatement statement = con.prepareStatement(SELECT_DATA);
 			ResultSet result = statement.executeQuery();
-
+			
 			while (result.next())
 			{
 				boolean status = false;
 				_posId = _posId + 1;
-
+				
 				if (result.getInt("online") == 1)
 					status = true;
-
+				
 				addPlayerToList(_posId, result.getInt("count"), result.getInt("played"), result.getString("char_name"), result.getInt("base_class"), result.getString("clan_name"), result.getString("ally_name"), status);
 			}
 			result.close();
@@ -63,12 +51,12 @@ public class HeroeList
 				e.printStackTrace();
 		}
 	}
-
+	
 	public String loadHeroeList()
 	{
 		return _heroeList.toString();
 	}
-
+	
 	private void addPlayerToList(int objId, int count, int played, String name, int ChrClass, String clan, String ally, boolean isOnline)
 	{
 		_heroeList.append("<table border=0 cellspacing=0 cellpadding=2 width=610>");
@@ -87,11 +75,11 @@ public class HeroeList
 		_heroeList.append("</table>");
 		_heroeList.append("<img src=\"L2UI.Squaregray\" width=\"610\" height=\"1\">");
 	}
-
+	
 	public final static String className(int classId)
 	{
 		Map<Integer, String> classList;
-		classList = new HashMap<Integer, String>();
+		classList = new HashMap<>();
 		classList.put(0, "Fighter");
 		classList.put(1, "Warrior");
 		classList.put(2, "Gladiator");
@@ -181,7 +169,7 @@ public class HeroeList
 		classList.put(116, "Doomcryer");
 		classList.put(117, "Fortune Seeker");
 		classList.put(118, "Maestro");
-
+		
 		return classList.get(classId);
 	}
 }

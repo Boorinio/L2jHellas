@@ -28,7 +28,7 @@ public class Q413_PathToAShillienOracle extends Quest
 	
 	public Q413_PathToAShillienOracle()
 	{
-		super(413,qn, "Path to a Shillien Oracle");
+		super(413, qn, "Path to a Shillien Oracle");
 		
 		setItemsIds(SIDRA_LETTER, BLANK_SHEET, BLOODY_RUNE, GARMIEL_BOOK, PRAYER_OF_ADONIUS, PENITENT_MARK, ASHEN_BONES, ANDARIEL_BOOK);
 		

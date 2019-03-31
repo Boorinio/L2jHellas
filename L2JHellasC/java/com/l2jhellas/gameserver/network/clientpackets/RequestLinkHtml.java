@@ -1,47 +1,29 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
-
-import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
-/**
- * @author zabbix
- *         Lets drink to code!
- */
+import java.util.logging.Logger;
+
 public final class RequestLinkHtml extends L2GameClientPacket
 {
 	private static Logger _log = Logger.getLogger(RequestLinkHtml.class.getName());
 	private static final String REQUESTLINKHTML__C__20 = "[C] 20 RequestLinkHtml";
 	private String _link;
-
+	
 	@Override
 	protected void readImpl()
 	{
 		_link = readS();
 	}
-
+	
 	@Override
 	public void runImpl()
 	{
 		L2PcInstance actor = getClient().getActiveChar();
 		if (actor == null)
 			return;
-
+		
 		if (_link.isEmpty())
 		{
 			_log.warning("Player " + actor.getName() + " sent empty html link!");
@@ -55,10 +37,10 @@ public final class RequestLinkHtml extends L2GameClientPacket
 		}
 		NpcHtmlMessage msg = new NpcHtmlMessage(0);
 		msg.setFile(_link);
-
+		
 		sendPacket(msg);
 	}
-
+	
 	@Override
 	public String getType()
 	{

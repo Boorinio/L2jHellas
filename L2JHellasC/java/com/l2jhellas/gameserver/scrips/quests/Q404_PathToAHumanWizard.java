@@ -35,7 +35,7 @@ public class Q404_PathToAHumanWizard extends Quest
 	
 	public Q404_PathToAHumanWizard()
 	{
-		super(404,qn, "Path to a Human Wizard");
+		super(404, qn, "Path to a Human Wizard");
 		
 		setItemsIds(MAP_OF_LUSTER, KEY_OF_FLAME, FLAME_EARING, BROKEN_BRONZE_MIRROR, WIND_FEATHER, WIND_BANGEL, RAMA_DIARY, SPARKLE_PEBBLE, WATER_NECKLACE, RUST_GOLD_COIN, RED_SOIL, EARTH_RING);
 		

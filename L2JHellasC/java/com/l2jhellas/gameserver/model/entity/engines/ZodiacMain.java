@@ -1,22 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.entity.engines;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -29,19 +11,26 @@ import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage.SMPOS;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
-/**
- * @author Boorinio
- */
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
 public class ZodiacMain
 {
-	private static final Logger _log = Logger.getLogger(ZodiacMain.class.getName());
+	static final Logger _log = Logger.getLogger(ZodiacMain.class.getName());
 	public static List<String> Ips = new ArrayList<>();
 	public static boolean ZodiacRegisterActive;
 	public static int i, max;
 	public static List<String> VotedPlayers = new ArrayList<>();
 	public static int[] count =
 	{
-	0, 0, 0, 0, 0, 0, 0
+		0,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0
 	};
 	
 	public static boolean voting;
@@ -63,7 +52,7 @@ public class ZodiacMain
 		
 		if (EventsZodiacAreRunning())
 		{
-			Announcements.getInstance().announceToAll("Another event of zodiac engine is running. The zodiac engine will start when the event is completed.");	
+			Announcements.getInstance().announceToAll("Another event of zodiac engine is running. The zodiac engine will start when the event is completed.");
 			voting = false;
 			return;
 		}
@@ -92,28 +81,28 @@ public class ZodiacMain
 		{
 			case 0:
 				PeloponnesianWar.startevent();
-			break;
+				break;
 			case 1:
 				CaptureThem.openRegistration();
-			break;
+				break;
 			case 2:
 				CastleWars.openRegi();
-			break;
+				break;
 			case 3:
 				ProtectTheLdr.startevent();
-			break;
+				break;
 			case 4:
 				TreasureChest.registration();
-			break;
+				break;
 			case 5:
 				ChaosEvent.registration();
-			break;
+				break;
 			case 6:
 				DaChallenge.StartEvent();
-			break;
+				break;
 			default:
 				Announcements.getInstance().announceToAll("Not enough votes. The event is canceled. Next event starts in " + Config.BETWEEN_EVENTS + " Minutes!");
-			break;
+				break;
 		
 		}
 	}
@@ -230,7 +219,7 @@ public class ZodiacMain
 			TreasureChest.onDeath(player);
 		if (ProtectTheLdr.ProtectisRunning)
 			ProtectTheLdr.onDeath(player);
-		if(DaChallenge.ChallengeRunning)
+		if (DaChallenge.ChallengeRunning)
 			DaChallenge.onDeath(player);
 		
 	}
@@ -283,7 +272,7 @@ public class ZodiacMain
 				DaChallenge.RoomCount++;
 				if (DaChallenge.RoomCount == 10)
 				{
-					DaChallenge.SpawnExtraMobs();					
+					DaChallenge.SpawnExtraMobs();
 				}
 				if (DaChallenge.RoomCount == 60)
 				{
@@ -299,7 +288,7 @@ public class ZodiacMain
 			}
 			if (npc.getNpcId() == 36013)
 			{
-			  DaChallenge.LastOne();
+				DaChallenge.LastOne();
 			}
 			if (npc.getNpcId() == 36014)
 			{
@@ -377,10 +366,7 @@ public class ZodiacMain
 	
 	public static boolean hasbots(String ip)
 	{
-		if (Ips.contains(ip))
-			return true;
-		else
-			return false;
+		return Ips.contains(ip) ? true : false;
 	}
 	
 	// full events

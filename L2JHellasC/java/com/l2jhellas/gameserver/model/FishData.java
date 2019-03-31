@@ -1,21 +1,6 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model;
 
 import com.l2jhellas.gameserver.templates.StatsSet;
-
 
 public class FishData implements Cloneable
 {
@@ -36,7 +21,7 @@ public class FishData implements Cloneable
 	private final double _gutsCheckProbability;
 	private final double _cheatingProb;
 	private final int _fishGrade;
-
+	
 	public FishData(StatsSet set)
 	{
 		_fishId = set.getInteger("fishId");
@@ -47,17 +32,17 @@ public class FishData implements Cloneable
 		_fishBiteRate = set.getDouble("fishBiteRate");
 		_fishGuts = set.getDouble("fishGuts");
 		_fishHp = set.getInteger("fishHp");
-		_fishMaxLength = set.getInteger("fishMaxLength"); 
+		_fishMaxLength = set.getInteger("fishMaxLength");
 		_fishLengthRate = set.getDouble("fishLengthRate");
 		_hpRegen = set.getDouble("hpRegen");
 		_startCombatTime = set.getInteger("startCombatTime");
 		_combatDuration = set.getInteger("combatDuration");
 		_gutsCheckTime = set.getInteger("gutsCheckTime");
-		_gutsCheckProbability = set.getDouble("gutsCheckProbability"); 
+		_gutsCheckProbability = set.getDouble("gutsCheckProbability");
 		_cheatingProb = set.getDouble("cheatingProb");
 		_fishGrade = getGradeId(set.getString("fishGrade"));
 	}
-
+	
 	@Override
 	public FishData clone()
 	{
@@ -70,156 +55,98 @@ public class FishData implements Cloneable
 			return null;
 		}
 	}
-	/**
-	 * @return the fish Id.
-	 */
+	
 	public int getFishId()
 	{
 		return _fishId;
 	}
 	
-	/**
-	 * @return the fish Item Id.
-	 */
 	public int getItemId()
 	{
 		return _itemId;
 	}
 	
-	/**
-	 * @return the fish Item name Id.
-	 */
 	public String getItemName()
 	{
 		return _itemName;
 	}
 	
-	/**
-	 * @return the fish Group.
-	 */
 	public int getFishGroup()
 	{
 		return _fishGroup;
 	}
 	
-	/**
-	 * @return the fish Level.
-	 */
 	public int getFishLevel()
 	{
 		return _fishLevel;
 	}
 	
-	/**
-	 * @return the fish Bite Rate.
-	 */
 	public double getFishBiteRate()
 	{
 		return _fishBiteRate;
 	}
 	
-	/**
-	 * @return the fish Guts.
-	 */
 	public double getFishGuts()
 	{
 		return _fishGuts;
 	}
 	
-	/**
-	 * @return the fish Hp.
-	 */
 	public int getFishHp()
 	{
 		return _fishHp;
 	}
 	
-	/**
-	 * @return the fish Max length.
-	 */
 	public int getFishMaxLength()
 	{
 		return _fishMaxLength;
 	}
 	
-	/**
-	 * @return the fish Length rate.
-	 */
 	public double getFishLengthRate()
 	{
 		return _fishLengthRate;
 	}
 	
-	/**
-	 * @return the fish Hp regen.
-	 */
 	public double getHpRegen()
 	{
 		return _hpRegen;
 	}
 	
-	/**
-	 * @return the fish start Combat time.
-	 */
 	public int getStartCombatTime()
 	{
 		return _startCombatTime;
 	}
 	
-	/**
-	 * @return the fish Combat duration.
-	 */
 	public int getCombatDuration()
 	{
 		return _combatDuration;
 	}
 	
-	/**
-	 * @return the fish Guts check time.
-	 */
 	public int getGutsCheckTime()
 	{
 		return _gutsCheckTime;
 	}
 	
-	/**
-	 * @return the fish Guts Check probability.
-	 */
 	public double getGutsCheckProbability()
 	{
 		return _gutsCheckProbability;
 	}
 	
-	/**
-	 * @return the fish Cheating prob.
-	 */
 	public double getCheatingProb()
 	{
 		return _cheatingProb;
 	}
 	
-	/**
-	 * @return the fish Grade.
-	 */
 	public int getFishGrade()
 	{
 		return _fishGrade;
 	}
 	
-	/**
-	 * @param fg the fish Group.
-	 */
 	public void setFishGroup(int fg)
 	{
 		_fishGroup = fg;
 	}
 	
-	
-	/**
-	 * @param name the Group Name.
-	 * @return the fish Group Id.
-	 */
-	private int getGroupId(String name)
+	private static int getGroupId(String name)
 	{
 		switch (name)
 		{
@@ -249,11 +176,7 @@ public class FishData implements Cloneable
 		}
 	}
 	
-	/**
-	 * @param name the Grade Name.
-	 * @return the fish Grade Id.
-	 */
-	private int getGradeId(String name)
+	private static int getGradeId(String name)
 	{
 		switch (name)
 		{

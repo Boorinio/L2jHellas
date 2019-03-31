@@ -33,7 +33,7 @@ public class Q418_PathToAnArtisan extends Quest
 	
 	public Q418_PathToAnArtisan()
 	{
-		super(418,qn, "Path to an Artisan");
+		super(418, qn, "Path to an Artisan");
 		
 		setItemsIds(SILVERA_RING, FIRST_PASS_CERTIFICATE, SECOND_PASS_CERTIFICATE, BOOGLE_RATMAN_TOOTH, BOOGLE_RATMAN_LEADER_TOOTH, KLUTO_LETTER, FOOTPRINT_OF_THIEF, STOLEN_SECRET_BOX, SECRET_BOX);
 		

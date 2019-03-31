@@ -1,24 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.loaders;
-
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.logging.Logger;
 
 import Extensions.Balancer.Balancer;
 import Extensions.fake.roboto.admincommands.AdminFakePlayers;
@@ -211,13 +191,15 @@ import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.VoiceInfoCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.WeddingCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.ZodiacRegistrationCmd;
 
-/**
- * Master handler.
- */
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Logger;
+
 public class MasterHandler
 {
 	private static final Logger _log = Logger.getLogger(MasterHandler.class.getName());
-	
 	
 	public static MasterHandler getInstance()
 	{
@@ -266,13 +248,13 @@ public class MasterHandler
 				}
 				catch (Exception e)
 				{
-					_log.warning(MasterHandler.class.getName()+ ": " + "Failed loading handler: " + c.getSimpleName());
+					_log.warning(MasterHandler.class.getName() + ": " + "Failed loading handler: " + c.getSimpleName());
 					continue;
 				}
 			}
 		}
 		
-		_log.info("============"+MasterHandler.class.getSimpleName()+"==============");
+		_log.info("============" + MasterHandler.class.getSimpleName() + "==============");
 		for (IHandler<?, ?> loadInstance : _loadInstances)
 		{
 			_log.info(loadInstance.getClass().getSimpleName() + ": Loaded " + loadInstance.size() + " Handlers.");
@@ -291,7 +273,7 @@ public class MasterHandler
 	};
 	
 	private static final Class<?>[][] _handlers =
-	{//formatter:off
+	{// formatter:off
 		{
 			// Admin Command Handlers
 			AdminAdmin.class,
@@ -368,11 +350,11 @@ public class MasterHandler
 			// Chat Handlers
 			ChatAll.class,
 			ChatAlliance.class,
-			//ChatBattlefield.class,
+			// ChatBattlefield.class,
 			ChatClan.class,
 			ChatHeroVoice.class,
 			ChatParty.class,
-			//ChatPartyMatchRoom.class,
+			// ChatPartyMatchRoom.class,
 			ChatPartyRoomAll.class,
 			ChatPartyRoomCommander.class,
 			ChatPetition.class,
@@ -481,7 +463,7 @@ public class MasterHandler
 		{
 			// Voiced Command Handlers
 			(Config.BANKING_SYSTEM_ENABLED ? BankingCmd.class : null),
-			CastleCmd.class,			
+			CastleCmd.class,
 			(Config.ONLINE_VOICE_ALLOW ? OnlinePlayersCmd.class : null),
 			(Config.ALLOW_PLAYERS_REFUSAL ? PMonoffCmd.class : null),
 			PremiumCmd.class,
@@ -494,7 +476,7 @@ public class MasterHandler
 			(Config.ZODIAC_ENABLE ? ZodiacRegistrationCmd.class : null),
 		},
 	};
-
+	
 	private static class SingletonHolder
 	{
 		protected static final MasterHandler _instance = new MasterHandler();

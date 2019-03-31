@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.entity.olympiad;
-
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -22,13 +6,15 @@ import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
+import java.util.logging.Logger;
+
 public final class OlympiadGameTask implements Runnable
 {
 	protected static final Logger _log = Logger.getLogger(OlympiadGameTask.class.getName());
 	protected static final long BATTLE_PERIOD = Config.ALT_OLY_BATTLE; // 6 mins
 	
 	public static final int[] TELEPORT_TO_ARENA =
-	{/**@formatter:off*/
+	{
 		120,
 		60,
 		30,
@@ -73,7 +59,7 @@ public final class OlympiadGameTask implements Runnable
 		2,
 		1,
 		0
-	};/**@formatter:on*/
+	};
 	
 	private final L2OlympiadStadiumZone _zone;
 	private AbstractOlympiadGame _game;
@@ -345,10 +331,6 @@ public final class OlympiadGameTask implements Runnable
 		return 1;
 	}
 	
-	/**
-	 * Second stage: check for defaulted, port players to arena, announce game.
-	 * @return true if no participants defaulted.
-	 */
 	private final boolean startGame()
 	{
 		try
@@ -359,8 +341,8 @@ public final class OlympiadGameTask implements Runnable
 			
 			if (!_game.portPlayersToArena(_zone.getCoordinates(_game._stadiumID)))
 				return false;
-
-			_game.removals();		
+			
+			_game.removals();
 			_needAnnounce = true;
 			OlympiadGameManager.getInstance().startBattle(); // inform manager
 			return true;
@@ -372,10 +354,6 @@ public final class OlympiadGameTask implements Runnable
 		return false;
 	}
 	
-	/**
-	 * Fourth stage: last checks, start competition itself.
-	 * @return true if all participants online and ready on the stadium.
-	 */
 	private final boolean startBattle()
 	{
 		try
@@ -396,10 +374,6 @@ public final class OlympiadGameTask implements Runnable
 		return false;
 	}
 	
-	/**
-	 * Fifth stage: battle is running, returns true if winner found.
-	 * @return
-	 */
 	private final boolean checkBattle()
 	{
 		try
@@ -414,9 +388,6 @@ public final class OlympiadGameTask implements Runnable
 		return true;
 	}
 	
-	/**
-	 * Sixth stage: winner's validations
-	 */
 	private final void stopGame()
 	{
 		try
@@ -447,9 +418,6 @@ public final class OlympiadGameTask implements Runnable
 		}
 	}
 	
-	/**
-	 * Seventh stage: game cleanup (port players back, closing doors, etc)
-	 */
 	private final void cleanupGame()
 	{
 		try

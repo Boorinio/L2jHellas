@@ -1,18 +1,10 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model;
+
+import com.l2jhellas.gameserver.emum.L2EtcItemType;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.serverpackets.ExAutoSoulShot;
+import com.l2jhellas.gameserver.network.serverpackets.ShortCutInit;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,12 +13,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import com.l2jhellas.gameserver.emum.L2EtcItemType;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.ExAutoSoulShot;
-import com.l2jhellas.gameserver.network.serverpackets.ShortCutInit;
-import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class ShortCuts
 {
@@ -69,6 +55,24 @@ public class ShortCuts
 			if (item == null)
 				return;
 		}
+
+		if (shortcut.getType() == L2ShortCut.TYPE_MACRO)
+		{
+			final L2Macro macro = _owner.getMacroses().getMacro(shortcut.getId());
+			if (macro == null)
+			    return;
+		}
+		
+		if (shortcut.getType() == L2ShortCut.TYPE_SKILL)
+		{
+			final L2Skill skill = _owner.getSkill(shortcut.getId());		
+			if (skill == null)
+			    return;
+		}
+		
+		if (shortcut.getType() == L2ShortCut.TYPE_RECIPE && !_owner.hasRecipeList(shortcut.getId()))
+			return;
+			
 		final L2ShortCut oldShortCut = _shortCuts.put(shortcut.getSlot() + (shortcut.getPage() * MAX_SHORTCUTS_PER_BAR), shortcut);
 		registerShortCutInDb(shortcut, oldShortCut);
 	}
@@ -96,7 +100,7 @@ public class ShortCuts
 			_log.log(Level.WARNING, "Could not store character shortcut: " + e.getMessage(), e);
 		}
 	}
-
+	
 	public synchronized void deleteShortCut(int slot, int page)
 	{
 		final L2ShortCut old = _shortCuts.remove(slot + page * 12);
@@ -116,7 +120,7 @@ public class ShortCuts
 		}
 		
 		_owner.sendPacket(new ShortCutInit(_owner));
-
+		
 		for (int shotId : _owner.getAutoSoulShot().values())
 			_owner.sendPacket(new ExAutoSoulShot(shotId, 1));
 	}
@@ -132,7 +136,7 @@ public class ShortCuts
 			}
 		}
 	}
-
+	
 	private void deleteShortCutFromDb(L2ShortCut shortcut)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())

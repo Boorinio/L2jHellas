@@ -1,16 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.datatables.xml;
+
+import com.PackRoot;
+import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.model.L2ArmorSet;
 
 import java.io.File;
 import java.util.HashMap;
@@ -20,25 +12,18 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import com.PackRoot;
-import com.l2jhellas.gameserver.engines.DocumentParser;
-import com.l2jhellas.gameserver.model.L2ArmorSet;
-
-/**
- * @author Luno
- */
 public class ArmorSetsData implements DocumentParser
 {
 	private static Logger _log = Logger.getLogger(ArmorSetsData.class.getName());
-
+	
 	private final Map<Integer, L2ArmorSet> _armorSets = new HashMap<>();
 	private final Map<Integer, ArmorDummy> _cusArmorSets = new HashMap<>();
-
-	private ArmorSetsData()
+	
+	protected ArmorSetsData()
 	{
 		load();
 	}
-
+	
 	@Override
 	public void load()
 	{
@@ -47,56 +32,53 @@ public class ArmorSetsData implements DocumentParser
 		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/armor_sets.xml"));
 		_log.info(ArmorSetsData.class.getSimpleName() + ": Loaded " + _armorSets.size() + " armor sets.");
 		_log.info(ArmorSetsData.class.getSimpleName() + ": Loaded " + _cusArmorSets.size() + " custom armor sets.");
-
+		
 	}
 	
 	@Override
 	public void parseDocument(Document doc)
 	{
-			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
+		for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
+		{
+			if (n.getNodeName().equalsIgnoreCase("list"))
 			{
-				if (n.getNodeName().equalsIgnoreCase("list"))
+				for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
 				{
-					for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
+					if (d.getNodeName().equalsIgnoreCase("armorset"))
 					{
-						if (d.getNodeName().equalsIgnoreCase("armorset"))
-						{
-							int chest = Integer.valueOf(d.getAttributes().getNamedItem("chest").getNodeValue());
-							int legs = Integer.valueOf(d.getAttributes().getNamedItem("legs").getNodeValue());
-							int head = Integer.valueOf(d.getAttributes().getNamedItem("head").getNodeValue());
-							int gloves = Integer.valueOf(d.getAttributes().getNamedItem("gloves").getNodeValue());
-							int feet = Integer.valueOf(d.getAttributes().getNamedItem("feet").getNodeValue());
-							int skill_id = Integer.valueOf(d.getAttributes().getNamedItem("skill_id").getNodeValue());
-							int shield = Integer.valueOf(d.getAttributes().getNamedItem("shield").getNodeValue());
-							int shield_skill_id = Integer.valueOf(d.getAttributes().getNamedItem("shield_skill_id").getNodeValue());
-							int enchant6skill = Integer.valueOf(d.getAttributes().getNamedItem("enchant6skill").getNodeValue());
-
-							_armorSets.put(chest, new L2ArmorSet(chest, legs, head, gloves, feet, skill_id, shield, shield_skill_id, enchant6skill));
-							_cusArmorSets.put(chest, new ArmorDummy(chest, legs, head, gloves, feet, skill_id, shield));
-						}
+						int chest = Integer.valueOf(d.getAttributes().getNamedItem("chest").getNodeValue());
+						int legs = Integer.valueOf(d.getAttributes().getNamedItem("legs").getNodeValue());
+						int head = Integer.valueOf(d.getAttributes().getNamedItem("head").getNodeValue());
+						int gloves = Integer.valueOf(d.getAttributes().getNamedItem("gloves").getNodeValue());
+						int feet = Integer.valueOf(d.getAttributes().getNamedItem("feet").getNodeValue());
+						int skill_id = Integer.valueOf(d.getAttributes().getNamedItem("skill_id").getNodeValue());
+						int shield = Integer.valueOf(d.getAttributes().getNamedItem("shield").getNodeValue());
+						int shield_skill_id = Integer.valueOf(d.getAttributes().getNamedItem("shield_skill_id").getNodeValue());
+						int enchant6skill = Integer.valueOf(d.getAttributes().getNamedItem("enchant6skill").getNodeValue());
+						
+						_armorSets.put(chest, new L2ArmorSet(chest, legs, head, gloves, feet, skill_id, shield, shield_skill_id, enchant6skill));
+						_cusArmorSets.put(chest, new ArmorDummy(chest, legs, head, gloves, feet, skill_id, shield));
 					}
 				}
 			}
+		}
 	}
-
+	
 	public boolean setExists(int chestId)
 	{
 		return _armorSets.containsKey(chestId);
 	}
-
+	
 	public L2ArmorSet getSet(int chestId)
 	{
 		return _armorSets.get(chestId);
 	}
-
-	/**
-	 * @return Returns the cusArmorSets.
-	 */
+	
 	public ArmorDummy getCusArmorSets(int id)
 	{
 		return _cusArmorSets.get(id);
 	}
-
+	
 	public class ArmorDummy
 	{
 		private final int _chest;
@@ -106,7 +88,7 @@ public class ArmorSetsData implements DocumentParser
 		private final int _feet;
 		private final int _skill_id;
 		private final int _shield;
-
+		
 		public ArmorDummy(int chest, int legs, int head, int gloves, int feet, int skill_id, int shield)
 		{
 			_chest = chest;
@@ -117,37 +99,37 @@ public class ArmorSetsData implements DocumentParser
 			_skill_id = skill_id;
 			_shield = shield;
 		}
-
+		
 		public int getChest()
 		{
 			return _chest;
 		}
-
+		
 		public int getLegs()
 		{
 			return _legs;
 		}
-
+		
 		public int getHead()
 		{
 			return _head;
 		}
-
+		
 		public int getGloves()
 		{
 			return _gloves;
 		}
-
+		
 		public int getFeet()
 		{
 			return _feet;
 		}
-
+		
 		public int getSkill_id()
 		{
 			return _skill_id;
 		}
-
+		
 		public int getShield()
 		{
 			return _shield;

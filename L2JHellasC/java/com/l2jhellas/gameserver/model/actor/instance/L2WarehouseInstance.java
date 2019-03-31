@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
-
-import java.util.Map;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Clan;
@@ -27,16 +11,16 @@ import com.l2jhellas.gameserver.network.serverpackets.WareHouseDepositList;
 import com.l2jhellas.gameserver.network.serverpackets.WareHouseWithdrawalList;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
+import java.util.Map;
+
 public final class L2WarehouseInstance extends L2NpcInstance
 {
-	/**
-	 * @param template
-	 */
+	
 	public L2WarehouseInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 	}
-
+	
 	@Override
 	public String getHtmlPath(int npcId, int val)
 	{
@@ -45,33 +29,33 @@ public final class L2WarehouseInstance extends L2NpcInstance
 			pom = "" + npcId;
 		else
 			pom = npcId + "-" + val;
-
+		
 		return "data/html/warehouse/" + pom + ".htm";
 	}
-
-	private void showRetrieveWindow(L2PcInstance player)
+	
+	private static void showRetrieveWindow(L2PcInstance player)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		player.setActiveWarehouse(player.getWarehouse());
-
+		
 		if (player.getActiveWarehouse().getSize() == 0)
 		{
 			player.sendPacket(SystemMessageId.NO_ITEM_DEPOSITED_IN_WH);
 			return;
 		}
-
+		
 		player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.PRIVATE));
 	}
-
-	private void showDepositWindow(L2PcInstance player)
+	
+	private static void showDepositWindow(L2PcInstance player)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		player.setActiveWarehouse(player.getWarehouse());
 		player.tempInvetoryDisable();
 		player.sendPacket(new WareHouseDepositList(player, WareHouseDepositList.PRIVATE));
 	}
-
-	private void showDepositWindowClan(L2PcInstance player)
+	
+	private static void showDepositWindowClan(L2PcInstance player)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		if (player.getClan() != null)
@@ -87,8 +71,8 @@ public final class L2WarehouseInstance extends L2NpcInstance
 			}
 		}
 	}
-
-	private void showWithdrawWindowClan(L2PcInstance player)
+	
+	private static void showWithdrawWindowClan(L2PcInstance player)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		if ((player.getClanPrivileges() & L2Clan.CP_CL_VIEW_WAREHOUSE) != L2Clan.CP_CL_VIEW_WAREHOUSE)
@@ -96,41 +80,38 @@ public final class L2WarehouseInstance extends L2NpcInstance
 			player.sendPacket(SystemMessageId.YOU_DO_NOT_HAVE_THE_RIGHT_TO_USE_CLAN_WAREHOUSE);
 			return;
 		}
+		if (player.getClan().getLevel() == 0)
+			player.sendPacket(SystemMessageId.ONLY_LEVEL_1_CLAN_OR_HIGHER_CAN_USE_WAREHOUSE);
 		else
 		{
-			if (player.getClan().getLevel() == 0)
-				player.sendPacket(SystemMessageId.ONLY_LEVEL_1_CLAN_OR_HIGHER_CAN_USE_WAREHOUSE);
-			else
-			{
-				player.setActiveWarehouse(player.getClan().getWarehouse());
-				player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.CLAN));
-			}
+			player.setActiveWarehouse(player.getClan().getWarehouse());
+			player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.CLAN));
 		}
 	}
-
+	
 	private void showWithdrawWindowFreight(L2PcInstance player)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		PcFreight freight = player.getFreight();
-
+		
 		if (freight != null)
 			if (freight.getSize() > 0)
 			{
 				if (Config.ALT_GAME_FREIGHTS)
-
+					
 					freight.setActiveLocation(0);
 				else
 					freight.setActiveLocation(getWorldRegion().hashCode());
-
+				
 				player.setActiveWarehouse(freight);
 				player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.FREIGHT));
 			}
 			else
 				player.sendPacket(SystemMessageId.NO_ITEM_DEPOSITED_IN_WH);
-
+		
 	}
-
-	private void showDepositWindowFreight(L2PcInstance player)
+	
+	private static void showDepositWindowFreight(L2PcInstance player)
 	{
 		// No other chars in the account of this player
 		if (player.getAccountChars().size() == 0)
@@ -147,7 +128,7 @@ public final class L2WarehouseInstance extends L2NpcInstance
 			player.sendPacket(new PackageToList(chars));
 		}
 	}
-
+	
 	private void showDepositWindowFreight(L2PcInstance player, int obj_Id)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
@@ -156,7 +137,7 @@ public final class L2WarehouseInstance extends L2NpcInstance
 		{
 			return;
 		}
-
+		
 		PcFreight freight = destChar.getFreight();
 		if (Config.ALT_GAME_FREIGHTS)
 		{
@@ -169,13 +150,13 @@ public final class L2WarehouseInstance extends L2NpcInstance
 		player.setActiveWarehouse(freight);
 		player.tempInvetoryDisable();
 		destChar.deleteMe();
-
+		
 		player.sendPacket(new WareHouseDepositList(player, WareHouseDepositList.FREIGHT));
 	}
-
+	
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
-	{		
+	{
 		if (player.isProcessingTransaction())
 		{
 			player.sendPacket(SystemMessageId.ALREADY_TRADING);
@@ -188,7 +169,7 @@ public final class L2WarehouseInstance extends L2NpcInstance
 			player.sendPacket(EnchantResult.CANCELLED);
 			player.sendPacket(SystemMessageId.ENCHANT_SCROLL_CANCELLED);
 		}
-
+		
 		if (command.startsWith("WithdrawP"))
 		{
 			showRetrieveWindow(player);

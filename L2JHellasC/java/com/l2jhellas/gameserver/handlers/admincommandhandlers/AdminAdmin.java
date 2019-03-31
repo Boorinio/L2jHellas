@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
@@ -24,25 +8,12 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 
-/**
- * This class handles following admin commands:
- * - admin|admin1/admin2/admin3/admin4/admin5 = slots for the 5 starting admin
- * menus
- * - gmliston/gmlistoff = includes/excludes active character from /gmlist
- * results
- * - silence = toggles private messages acceptance mode
- * - diet = toggles weight penalty mode
- * - tradeoff = toggles trade acceptance mode
- * - reload = reloads specified component from
- * multisell|skill|npc|htm|item|instancemanager
- * - set/set_menu/set_mod = alters specified server setting
- * - saveolymp = saves olympiad state manually
- * - manualhero = cycles olympiad and calculate new heroes.
- */
+import java.util.StringTokenizer;
+
 public class AdminAdmin implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_admin",
 		"admin_admin1",
 		"admin_admin2",
@@ -62,8 +33,8 @@ public class AdminAdmin implements IAdminCommandHandler
 		"admin_set_mod",
 		"admin_saveolymp",
 		"admin_manualhero"
-	};/** @formatter:on */
-
+	};
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -265,14 +236,14 @@ public class AdminAdmin implements IAdminCommandHandler
 		}
 		return true;
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
-	private void showMainPage(L2PcInstance activeChar, String command)
+	
+	private static void showMainPage(L2PcInstance activeChar, String command)
 	{
 		int mode = 0;
 		String filename = null;
@@ -287,22 +258,22 @@ public class AdminAdmin implements IAdminCommandHandler
 		{
 			case 1:
 				filename = "main";
-			break;
+				break;
 			case 2:
 				filename = "game";
-			break;
+				break;
 			case 3:
 				filename = "effects";
-			break;
+				break;
 			case 4:
 				filename = "server";
-			break;
+				break;
 			case 5:
 				filename = "mods";
-			break;
+				break;
 			default:
 				filename = "main";
-			break;
+				break;
 		}
 		AdminHelpPage.showHelpPage(activeChar, filename + "_menu.htm");
 	}

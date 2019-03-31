@@ -1,28 +1,14 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.util.Rnd;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Q419_GetAPet extends Quest
 {
@@ -264,7 +250,7 @@ public class Q419_GetAPet extends Quest
 		return null;
 	}
 	
-	private String join(List<String> list)
+	private static String join(List<String> list)
 	{
 		StringBuilder sb = new StringBuilder();
 		String loopDelim = "";
@@ -277,7 +263,7 @@ public class Q419_GetAPet extends Quest
 		return sb.toString();
 	}
 	
-	private String checkQuestions(QuestState st)
+	private static String checkQuestions(QuestState st)
 	{
 		final int answers = st.getInt("correct") + (st.getInt("wrong"));
 		if (answers < 10)
@@ -289,7 +275,7 @@ public class Q419_GetAPet extends Quest
 			if (questions.length > 10 - answers)
 			{
 				questions[index] = questions[questions.length - 1];
-				List<String> list = new ArrayList<String>(Arrays.asList(questions));
+				List<String> list = new ArrayList<>(Arrays.asList(questions));
 				list.remove(questions.length - 1);
 				questions = list.toArray(questions);
 				st.set("quiz", join(list));

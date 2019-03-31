@@ -1,18 +1,10 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.tools.accountmanager;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.Server;
+import com.l2jhellas.tools.ngl.ConsoleLocalizator;
+import com.l2jhellas.tools.ngl.LocaleCodes;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -26,16 +18,6 @@ import java.util.Base64;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.Server;
-import com.l2jhellas.tools.ngl.ConsoleLocalizator;
-import com.l2jhellas.tools.ngl.LocaleCodes;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
-/**
- * This class SQL Account Manager
- * @author netimperia
- */
 public class SQLAccountManager
 {
 	protected static final Logger _log = Logger.getLogger(SQLAccountManager.class.getName());
@@ -187,10 +169,10 @@ public class SQLAccountManager
 		{
 			PreparedStatement statement = con.prepareStatement(q);
 			ResultSet rset = statement.executeQuery();
-
+			
 			while (rset.next())
 			{
-				_log.info(SQLAccountManager.class.getName() + rset.getString("login") + " -> " + rset.getInt("access_level"));;
+				_log.info(SQLAccountManager.class.getName() + rset.getString("login") + " -> " + rset.getInt("access_level"));
 				count++;
 			}
 			
@@ -262,8 +244,11 @@ public class SQLAccountManager
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("SELECT COUNT(*) FROM accounts WHERE login=?;");
+			ResultSet rset = null;
 			statement.setString(1, account);
-			ResultSet rset = statement.executeQuery();
+			rset = statement.executeQuery();
+			rset.close();
+			statement.close();
 			if (!rset.next())
 			{
 				cl.println("falseString");
@@ -274,7 +259,6 @@ public class SQLAccountManager
 				rset.close();
 				// Account exist
 				// Get Accounts ID
-				ResultSet rcln;
 				statement = con.prepareStatement("SELECT obj_Id, char_name, clanid FROM characters WHERE account_name=?;");
 				statement.setEscapeProcessing(true);
 				statement.setString(1, account);
@@ -290,17 +274,22 @@ public class SQLAccountManager
 					charNames.add(rset.getString("char_name"));
 					clanIds.add(rset.getString("clanid"));
 				}
+				
 				rset.close();
+				statement.close();
+				
+		
 				
 				for (int index = 0; index < objIds.size(); index++)
 				{
 					cl.println("functDeleteAccountChar", charNames.get(index));
 					
 					// Check If clan leader Remove Clan and remove all from it
-					statement.close();
 					statement = con.prepareStatement("SELECT COUNT(*) FROM clan_data WHERE leader_id=?;");
 					statement.setString(1, clanIds.get(index));
-					rcln = statement.executeQuery();
+					ResultSet rcln = statement.executeQuery();
+					rcln.close();
+					statement.close();
 					rcln.next();
 					if (rcln.getInt(1) > 0)
 					{
@@ -358,6 +347,9 @@ public class SQLAccountManager
 						statement = con.prepareStatement("DELETE FROM clan_skills WHERE clan_id=?;");
 						statement.setString(1, clanIds.get(index));
 						statement.executeUpdate();
+						
+						rcln.close();
+						statement.close();
 						
 					}
 					else

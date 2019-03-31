@@ -1,18 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.datatables.sql;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.datatables.xml.PetData;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,16 +13,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.xml.PetData;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 public class PetNameTable
 {
 	private static Logger _log = Logger.getLogger(PetNameTable.class.getName());
-
+	
 	private static PetNameTable _instance;
-
+	
 	public static PetNameTable getInstance()
 	{
 		if (_instance == null)
@@ -41,7 +27,7 @@ public class PetNameTable
 		}
 		return _instance;
 	}
-
+	
 	public boolean doesPetNameExist(String name, int petNpcId)
 	{
 		boolean result = true;
@@ -49,7 +35,7 @@ public class PetNameTable
 		{
 			PreparedStatement statement = con.prepareStatement("SELECT name FROM pets p, items i WHERE p.item_obj_id = i.object_id AND name=? AND i.item_id IN (?)");
 			statement.setString(1, name);
-
+			
 			String cond = "";
 			for (int it : PetData.getPetItemsAsNpc(petNpcId))
 			{
@@ -71,14 +57,14 @@ public class PetNameTable
 		}
 		return result;
 	}
-
+	
 	public boolean isValidPetName(String name)
 	{
 		boolean result = true;
-
+		
 		if (!isAlphaNumeric(name))
 			return result;
-
+		
 		Pattern pattern;
 		try
 		{
@@ -98,8 +84,8 @@ public class PetNameTable
 		}
 		return result;
 	}
-
-	private boolean isAlphaNumeric(String text)
+	
+	private static boolean isAlphaNumeric(String text)
 	{
 		boolean result = true;
 		char[] chars = text.toCharArray();

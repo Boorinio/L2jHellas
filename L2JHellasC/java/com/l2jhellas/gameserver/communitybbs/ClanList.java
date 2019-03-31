@@ -1,40 +1,28 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.communitybbs;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 public class ClanList
 {
 	protected static final Logger _log = Logger.getLogger(ClanList.class.getName());
-
+	
 	private static final String SELECT_CLAN_DATA = "SELECT * FROM clan_data ORDER BY clan_level DESC LIMIT ";
 	private static final String SELECT_CASTLE = "SELECT name FROM castle WHERE id=";
 	private static final String SELECT_CHARNAME = "SELECT char_name FROM characters WHERE obj_Id=";
 	
 	private final StringBuilder _clanList = new StringBuilder();
-
+	
 	public ClanList(int type)
 	{
 		loadFromDB(type);
 	}
-
+	
 	private void loadFromDB(int type)
 	{
 		int stpoint = 0;
@@ -46,13 +34,13 @@ public class ClanList
 		{
 			stpoint += 20;
 		}
-
+		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement(SELECT_CLAN_DATA + stpoint + ", " + results);
 			ResultSet result = statement.executeQuery();
 			int pos = 0;
-
+			
 			while (result.next())
 			{
 				int clanid = result.getInt("leader_id");
@@ -87,7 +75,7 @@ public class ClanList
 					castlename = "[none]";
 				PreparedStatement statement3 = con.prepareStatement(SELECT_CHARNAME + clanleader);
 				ResultSet result3 = statement3.executeQuery();
-
+				
 				if (result3.next())
 					leadername = result3.getString("char_name");
 				result3.close();
@@ -105,7 +93,7 @@ public class ClanList
 				e.printStackTrace();
 		}
 	}
-
+	
 	private void addClanToList(int pos, String clan, String ally, String leadername, int clanlevel, int reputation, String castlename, String allystatus)
 	{
 		_clanList.append("<table border=0 cellspacing=0 cellpadding=2 width=610>");
@@ -124,7 +112,7 @@ public class ClanList
 		_clanList.append("</table>");
 		_clanList.append("<img src=\"L2UI.Squaregray\" width=\"610\" height=\"1\">");
 	}
-
+	
 	public String loadClanList()
 	{
 		return _clanList.toString();

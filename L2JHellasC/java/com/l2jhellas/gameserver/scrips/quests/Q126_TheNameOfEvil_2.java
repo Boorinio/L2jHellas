@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -388,7 +374,7 @@ public class Q126_TheNameOfEvil_2 extends Quest
 		return htmltext;
 	}
 	
-	private String getSongOne(QuestState st)
+	private static String getSongOne(QuestState st)
 	{
 		String htmltext = "32122-24.htm";
 		if (st.getInt("cond") == 14 && st.getInt("DO") > 0 && st.getInt("MI") > 0 && st.getInt("FA") > 0 && st.getInt("SOL") > 0 && st.getInt("FA_2") > 0)
@@ -405,7 +391,7 @@ public class Q126_TheNameOfEvil_2 extends Quest
 		return htmltext;
 	}
 	
-	private String getSongTwo(QuestState st)
+	private static String getSongTwo(QuestState st)
 	{
 		String htmltext = "32122-45.htm";
 		if (st.getInt("cond") == 15 && st.getInt("FA") > 0 && st.getInt("SOL") > 0 && st.getInt("TI") > 0 && st.getInt("SOL_2") > 0 && st.getInt("FA_2") > 0)
@@ -422,7 +408,7 @@ public class Q126_TheNameOfEvil_2 extends Quest
 		return htmltext;
 	}
 	
-	private String getSongTri(QuestState st)
+	private static String getSongTri(QuestState st)
 	{
 		String htmltext = "32122-66.htm";
 		if (st.getInt("cond") == 16 && st.getInt("SOL") > 0 && st.getInt("FA") > 0 && st.getInt("MI") > 0 && st.getInt("FA_2") > 0 && st.getInt("MI_2") > 0)

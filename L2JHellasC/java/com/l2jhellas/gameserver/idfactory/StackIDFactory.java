@@ -1,18 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.idfactory;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,41 +10,38 @@ import java.sql.SQLException;
 import java.util.Stack;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 public class StackIDFactory extends IdFactory
 {
 	private static Logger _log = Logger.getLogger(StackIDFactory.class.getName());
-
+	
 	private int _curOID;
 	private int _tempOID;
-
-	private final Stack<Integer> _freeOIDStack = new Stack<Integer>();
-
+	
+	private final Stack<Integer> _freeOIDStack = new Stack<>();
+	
 	protected StackIDFactory()
 	{
 		super();
 		_curOID = FIRST_OID;
 		_tempOID = FIRST_OID;
-
+		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			// con.createStatement().execute("drop table if exists tmp_obj_id");
-
+			
 			int[] tmp_obj_ids = extractUsedObjectIDTable();
 			if (tmp_obj_ids.length > 0)
 			{
 				_curOID = tmp_obj_ids[tmp_obj_ids.length - 1];
 			}
 			_log.info(StackIDFactory.class.getSimpleName() + ": Max Id = " + _curOID);
-
+			
 			int N = tmp_obj_ids.length;
 			for (int idx = 0; idx < N; idx++)
 			{
 				N = insertUntil(tmp_obj_ids, idx, N, con);
 			}
-
+			
 			_curOID++;
 			_log.info(StackIDFactory.class.getSimpleName() + ": Next usable Object ID is: " + _curOID);
 			_initialized = true;
@@ -67,7 +53,7 @@ public class StackIDFactory extends IdFactory
 				e.printStackTrace();
 		}
 	}
-
+	
 	private int insertUntil(int[] tmp_obj_ids, int idx, int N, java.sql.Connection con) throws SQLException
 	{
 		int id = tmp_obj_ids[idx];
@@ -96,7 +82,7 @@ public class StackIDFactory extends IdFactory
 				ps.close();
 			}
 		}
-
+		
 		// int hole = id - _curOID;
 		int hole = id - _tempOID;
 		if (hole > N - idx)
@@ -113,12 +99,12 @@ public class StackIDFactory extends IdFactory
 			_tempOID++;
 		return N - hole;
 	}
-
+	
 	public static IdFactory getInstance()
 	{
 		return _instance;
 	}
-
+	
 	@Override
 	public synchronized int getNextId()
 	{
@@ -132,19 +118,13 @@ public class StackIDFactory extends IdFactory
 		}
 		return id;
 	}
-
-	/**
-	 * return a used Object ID back to the pool
-	 * 
-	 * @param object
-	 *        ID
-	 */
+	
 	@Override
 	public synchronized void releaseId(int id)
 	{
 		_freeOIDStack.push(id);
 	}
-
+	
 	@Override
 	public int size()
 	{

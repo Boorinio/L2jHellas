@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
-
-import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
@@ -36,13 +20,11 @@ import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 
+import java.util.StringTokenizer;
 
-/**
- * Author AbsolutePower
- */
 public final class L2FastAugByAbsoInstance extends L2NpcInstance
 {
-
+	
 	public L2FastAugByAbsoInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
@@ -51,12 +33,12 @@ public final class L2FastAugByAbsoInstance extends L2NpcInstance
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
-		if(player==null)
+		if (player == null)
 			return;
 		
 		final StringTokenizer st = new StringTokenizer(command, " ");
 		final String currentcommand = st.nextToken();
-			
+		
 		final String letsSliptIt = currentcommand;
 		final String[] nowTheId = letsSliptIt.split("-");
 		
@@ -75,24 +57,24 @@ public final class L2FastAugByAbsoInstance extends L2NpcInstance
 				break;
 			case "tryremove":
 				
-			    final L2ItemInstance itemToRem = player.getInventory().getItemByObjectId(Integer.parseInt(FinallyWeHaveObjectId));
-	 		 	
-		 		if(itemToRem == null )
-		 		{
-		 			player.sendPacket(new ActionFailed());
-		 			return;
-		 		}
-		 		
-		        if (itemToRem.isEquipped())
+				final L2ItemInstance itemToRem = player.getInventory().getItemByObjectId(Integer.parseInt(FinallyWeHaveObjectId));
+				
+				if (itemToRem == null)
+				{
+					player.sendPacket(new ActionFailed());
+					return;
+				}
+				
+				if (itemToRem.isEquipped())
 				{
 					player.disarmWeapons();
 					player.broadcastUserInfo();
 				}
-
-		        itemToRem.removeAugmentation();
+				
+				itemToRem.removeAugmentation();
 				
 				player.sendPacket(new ExVariationCancelResult(1));
-
+				
 				InventoryUpdate iu = new InventoryUpdate();
 				iu.addModifiedItem(itemToRem);
 				player.sendPacket(iu);
@@ -105,33 +87,32 @@ public final class L2FastAugByAbsoInstance extends L2NpcInstance
 				showListWindowForRemove(player);
 				player.sendPacket(new ActionFailed());
 				break;
-				
+			
 			case "tryaug":
 				if (player.getInventory().getInventoryItemCount(57, 0) < 200000)
-		 		{
+				{
 					player.sendMessage("You do not have enough adena!");
 					player.sendPacket(new ActionFailed());
 					return;
-		 		}
-			
-		 		final L2ItemInstance itemToAug = player.getInventory().getItemByObjectId(Integer.parseInt(FinallyWeHaveObjectId));
-		 		
-		 	
-		 		if(itemToAug == null )
-		 		{
-		 			player.sendPacket(new ActionFailed());
-		 			return;
-		 		}
-		 		
-		        if (itemToAug.isEquipped())
+				}
+				
+				final L2ItemInstance itemToAug = player.getInventory().getItemByObjectId(Integer.parseInt(FinallyWeHaveObjectId));
+				
+				if (itemToAug == null)
+				{
+					player.sendPacket(new ActionFailed());
+					return;
+				}
+				
+				if (itemToAug.isEquipped())
 				{
 					player.disarmWeapons();
 					player.broadcastUserInfo();
 				}
-		        
-		 		final L2Augmentation aug = AugmentationData.getInstance().generateRandomAugmentation(itemToAug,2,2);
-		 		itemToAug.setAugmentation(aug);
-		 			 			 		
+				
+				final L2Augmentation aug = AugmentationData.getInstance().generateRandomAugmentation(itemToAug, 2, 2);
+				itemToAug.setAugmentation(aug);
+				
 				final int stat12 = 0x0000FFFF & aug.getAugmentationId();
 				final int stat34 = aug.getAugmentationId() >> 16;
 				player.sendPacket(new ExVariationResult(stat12, stat34, 1));
@@ -147,17 +128,17 @@ public final class L2FastAugByAbsoInstance extends L2NpcInstance
 				showListWindow(player);
 				
 				player.getInventory().reduceAdena("FastAugh", 200000, player, null);
-
+				
 				player.sendPacket(SystemMessageId.THE_ITEM_WAS_SUCCESSFULLY_AUGMENTED);
 				
-				if(itemToAug.getAugmentation().getSkill()!=null)
+				if (itemToAug.getAugmentation().getSkill() != null)
 				{
-				   player.sendPacket(new ExShowScreenMessage("You have " + itemToAug.getAugmentation().getSkill().getName(), 5000, SMPOS.TOP_CENTER, true));
-				   player.sendPacket(new SkillList());
+					player.sendPacket(new ExShowScreenMessage("You have " + itemToAug.getAugmentation().getSkill().getName(), 5000, SMPOS.TOP_CENTER, true));
+					player.sendPacket(new SkillList());
 				}
-
+				
 				player.sendPacket(new ActionFailed());
-				break;	
+				break;
 			default: // Send a Server->Client packet ActionFailed to the L2PcInstance
 				player.sendPacket(new ActionFailed());
 				return;
@@ -173,8 +154,8 @@ public final class L2FastAugByAbsoInstance extends L2NpcInstance
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		StringBuilder tb = new StringBuilder("");
 		String Rem = "RemoveAug";
-        L2ItemInstance[] invitems = player.getInventory().getItems();
-        
+		L2ItemInstance[] invitems = player.getInventory().getItems();
+		
 		tb.append("<html><head><title>By AbsolutePower</title></head><body>");
 		tb.append("<center>");
 		tb.append("<table width=\"250\" cellpadding=\"5\" bgcolor=\"000000\">");
@@ -187,36 +168,36 @@ public final class L2FastAugByAbsoInstance extends L2NpcInstance
 		tb.append("</center>");
 		tb.append("<center>");
 		tb.append("<br>");
-				
+		
 		for (L2ItemInstance item : invitems)
-		{	   
-			if(item==null)
+		{
+			if (item == null)
 				continue;
-
+			
 			boolean canBeShow = isValid(player, item);
 			
-		    if(canBeShow)
-		     {
-		    	tb.append("<button value=\""+item.getItemName()+"\" action=\"bypass -h npc_" + getObjectId() + "_tryaug-"+item.getObjectId()+"\" width=204 height=20 back=\"sek.cbui75\" fore=\"sek.cbui75\"><br>");
-		     }		          
+			if (canBeShow)
+			{
+				tb.append("<button value=\"" + item.getItemName() + "\" action=\"bypass -h npc_" + getObjectId() + "_tryaug-" + item.getObjectId() + "\" width=204 height=20 back=\"sek.cbui75\" fore=\"sek.cbui75\"><br>");
+			}
 		}
 		
 		tb.append("<br>");
-		tb.append("<button value=\""+Rem+"\" action=\"bypass -h npc_" + getObjectId() + "_showremlist-1"+"\" width=204 height=20 back=\"sek.cbui75\" fore=\"sek.cbui75\"><br>");
+		tb.append("<button value=\"" + Rem + "\" action=\"bypass -h npc_" + getObjectId() + "_showremlist-1" + "\" width=204 height=20 back=\"sek.cbui75\" fore=\"sek.cbui75\"><br>");
 		tb.append("</center>");
 		tb.append("</body></html>");
-
+		
 		nhm.setHtml(tb.toString());
 		player.sendPacket(nhm);
 	}
-
+	
 	public void showListWindowForRemove(L2PcInstance player)
 	{
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		StringBuilder tb = new StringBuilder("");
 		String Rem = "GobackToAugList";
 		L2ItemInstance[] invitems = player.getInventory().getItems();
-	       
+		
 		tb.append("<html><head><title>By AbsolutePower</title></head><body>");
 		tb.append("<center>");
 		tb.append("<table width=\"250\" cellpadding=\"5\" bgcolor=\"000000\">");
@@ -229,29 +210,29 @@ public final class L2FastAugByAbsoInstance extends L2NpcInstance
 		tb.append("</center>");
 		tb.append("<center>");
 		tb.append("<br>");
-				
+		
 		for (L2ItemInstance item : invitems)
 		{
-		     if(item==null)
-	             continue;
-		     
-		     boolean canBeShow = item.isAugmented();
-				
-		     if(canBeShow)
-		     {     
-				tb.append("<button value=\""+item.getItemName()+"\" action=\"bypass -h npc_" + getObjectId() + "_tryremove-"+item.getObjectId()+"\" width=204 height=20 back=\"sek.cbui75\" fore=\"sek.cbui75\"><br>");
-			 }		          
+			if (item == null)
+				continue;
+			
+			boolean canBeShow = item.isAugmented();
+			
+			if (canBeShow)
+			{
+				tb.append("<button value=\"" + item.getItemName() + "\" action=\"bypass -h npc_" + getObjectId() + "_tryremove-" + item.getObjectId() + "\" width=204 height=20 back=\"sek.cbui75\" fore=\"sek.cbui75\"><br>");
+			}
 		}
 		
 		tb.append("<br>");
-		tb.append("<button value=\""+Rem+"\" action=\"bypass -h npc_" + getObjectId() + "_showauglist-1"+"\" width=204 height=20 back=\"sek.cbui75\" fore=\"sek.cbui75\"><br>");
+		tb.append("<button value=\"" + Rem + "\" action=\"bypass -h npc_" + getObjectId() + "_showauglist-1" + "\" width=204 height=20 back=\"sek.cbui75\" fore=\"sek.cbui75\"><br>");
 		tb.append("</center>");
 		tb.append("</body></html>");
-
+		
 		nhm.setHtml(tb.toString());
 		player.sendPacket(nhm);
 	}
-
+	
 	protected static final boolean isValid(L2PcInstance player, L2ItemInstance item)
 	{
 		if (!isValid(player))
@@ -267,7 +248,7 @@ public final class L2FastAugByAbsoInstance extends L2NpcInstance
 			return false;
 		if (item.getItem().getCrystalType() < L2Item.CRYSTAL_C)
 			return false;
-		if(item.isQuestItem())
+		if (item.isQuestItem())
 			return false;
 		
 		switch (item.getLocation())
@@ -336,23 +317,24 @@ public final class L2FastAugByAbsoInstance extends L2NpcInstance
 		return true;
 	}
 	
-    @Override
-    public void onAction(L2PcInstance player)
-    {
-		if (this != player.getTarget()) 
+	@Override
+	public void onAction(L2PcInstance player)
+	{
+		if (this != player.getTarget())
 		{
 			player.setTarget(this);
 			player.sendPacket(new MyTargetSelected(getObjectId(), player.getLevel() - getLevel()));
 		}
-		else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false)) 
+		else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false))
 		{
 			player.setLastFolkNPC(this);
 			showListWindow(player);
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
-		else {
+		else
+		{
 			player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
-    }
+	}
 }

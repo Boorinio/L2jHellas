@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model;
-
-import java.util.concurrent.Future;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
@@ -27,6 +11,8 @@ import com.l2jhellas.gameserver.network.serverpackets.ExFishingStartCombat;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
+
+import java.util.concurrent.Future;
 
 public class L2Fishing implements Runnable
 {
@@ -45,13 +31,13 @@ public class L2Fishing implements Runnable
 	private int _fishCurHp;
 	private final double _regenHp;
 	private final boolean _isUpperGrade;
-
+	
 	@Override
 	public void run()
 	{
 		if (_fisher == null)
 			return;
-
+		
 		if (_fishCurHp >= (_fishMaxHp * 2))
 		{
 			// The fish got away
@@ -67,7 +53,7 @@ public class L2Fishing implements Runnable
 		else
 			aiTask();
 	}
-
+	
 	public L2Fishing(L2PcInstance Fisher, FishData fish, boolean isNoob, boolean isUpperGrade)
 	{
 		_fisher = Fisher;
@@ -100,7 +86,7 @@ public class L2Fishing implements Runnable
 			_fishAiTask = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(this, 1000, 1000);
 		}
 	}
-
+	
 	public void changeHp(int hp, int pen)
 	{
 		_fishCurHp -= hp;
@@ -123,14 +109,15 @@ public class L2Fishing implements Runnable
 			return;
 		}
 	}
+	
 	public synchronized void doDie(boolean win)
 	{
 		_fishAiTask.cancel(false);
 		_fishAiTask = null;
-
+		
 		if (_fisher == null)
 			return;
-
+		
 		if (win)
 		{
 			int check = Rnd.get(100);
@@ -147,14 +134,14 @@ public class L2Fishing implements Runnable
 		_fisher.EndFishing(win);
 		_fisher = null;
 	}
-
+	
 	protected void aiTask()
 	{
 		if (_thinking)
 			return;
 		_thinking = true;
 		_time--;
-
+		
 		try
 		{
 			if (_mode == 1)
@@ -197,7 +184,7 @@ public class L2Fishing implements Runnable
 				_fisher.sendPacket(efhr);
 		}
 	}
-
+	
 	public void useRealing(int dmg, int pen)
 	{
 		_anim = 2;
@@ -265,7 +252,7 @@ public class L2Fishing implements Runnable
 			}
 		}
 	}
-
+	
 	public void usePomping(int dmg, int pen)
 	{
 		_anim = 1;
@@ -333,43 +320,43 @@ public class L2Fishing implements Runnable
 			}
 		}
 	}
-
+	
 	private void PenaltyMonster()
 	{
 		int lvl = (int) Math.round(_fisher.getLevel() * 0.1);
 		int npcid;
-
+		
 		_fisher.sendPacket(SystemMessageId.YOU_CAUGHT_SOMETHING_SMELLY_THROW_IT_BACK);
 		switch (lvl)
 		{
 			case 0:
 			case 1:
 				npcid = 18319;
-			break;
+				break;
 			case 2:
 				npcid = 18320;
-			break;
+				break;
 			case 3:
 				npcid = 18321;
-			break;
+				break;
 			case 4:
 				npcid = 18322;
-			break;
+				break;
 			case 5:
 				npcid = 18323;
-			break;
+				break;
 			case 6:
 				npcid = 18324;
-			break;
+				break;
 			case 7:
 				npcid = 18325;
-			break;
+				break;
 			case 8:
 				npcid = 18326;
-			break;
+				break;
 			default:
 				npcid = 18319;
-			break;
+				break;
 		}
 		L2NpcTemplate temp;
 		temp = NpcData.getInstance().getTemplate(npcid);

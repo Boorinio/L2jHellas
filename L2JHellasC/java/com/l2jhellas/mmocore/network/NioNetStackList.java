@@ -1,9 +1,5 @@
 package com.l2jhellas.mmocore.network;
 
-/**
- * @author Forsaiken
- * @param <E>
- */
 public final class NioNetStackList<E>
 {
 	private final NioNetStackNode _start = new NioNetStackNode();

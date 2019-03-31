@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -41,19 +24,22 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Valakas extends AbstractNpcAI
 {
-
+	
 	public static final int VALAKAS = 29028;
-
+	
 	private static final SkillHolder VALAKAS_LAVA_SKIN = new SkillHolder(4680, 1);
 	private static final int VALAKAS_REGENERATION = 4691;
 	
 	private static final SkillHolder[] VALAKAS_REGULAR_SKILLS =
 	{
 		new SkillHolder(4681, 1),
-		new SkillHolder(4682, 1), 
-		new SkillHolder(4683, 1), 
+		new SkillHolder(4682, 1),
+		new SkillHolder(4683, 1),
 		new SkillHolder(4689, 1),
 	};
 	
@@ -62,7 +48,7 @@ public class Valakas extends AbstractNpcAI
 		new SkillHolder(4681, 1), // Valakas Trample
 		new SkillHolder(4682, 1), // Valakas Trample
 		new SkillHolder(4683, 1), // Valakas Dragon Breath
-		new SkillHolder(4689, 1), // Valakas Fear 
+		new SkillHolder(4689, 1), // Valakas Fear
 		new SkillHolder(4690, 1), // Valakas Meteor Storm
 	};
 	
@@ -73,7 +59,7 @@ public class Valakas extends AbstractNpcAI
 		new SkillHolder(4685, 1), // Valakas Tail Stomp
 		new SkillHolder(4686, 1), // Valakas Tail Stomp
 		new SkillHolder(4688, 1), // Valakas Stun
-		new SkillHolder(4689, 1), // Valakas Fear 
+		new SkillHolder(4689, 1), // Valakas Fear
 		new SkillHolder(4690, 1), // Valakas Meteor Storm
 	};
 	
@@ -113,11 +99,14 @@ public class Valakas extends AbstractNpcAI
 	{
 		super(Valakas.class.getSimpleName(), "ai/individual");
 		
-		int[] mob ={VALAKAS};
+		int[] mob =
+		{
+			VALAKAS
+		};
 		
 		registerMobs(mob);
-
-		ZONE = GrandBossManager.getInstance().getZone(212852, -114842, -1632);
+		
+		ZONE = GrandBossManager.getZone(212852, -114842, -1632);
 		final StatsSet info = GrandBossManager.getStatsSet(VALAKAS);
 		final int status = GrandBossManager.getBossStatus(VALAKAS);
 		
@@ -192,7 +181,7 @@ public class Valakas extends AbstractNpcAI
 				_timeTracker = System.currentTimeMillis();
 				
 				// Teleport Valakas to his lair.
-				npc.teleToLocation(VALAKAS_LAIR,false);
+				npc.teleToLocation(VALAKAS_LAIR, false);
 				
 				// Sound + socialAction.
 				for (L2Character plyr : ZONE.getCharactersInside())
@@ -202,16 +191,16 @@ public class Valakas extends AbstractNpcAI
 				}
 				
 				// Launch the cinematic, and tasks (regen + skill).
-				startQuestTimer("spawn_1", 1700, npc, null,false); // 1700
-				startQuestTimer("spawn_2", 3200, npc, null,false); // 1500
-				startQuestTimer("spawn_3", 6500, npc, null,false); // 3300
-				startQuestTimer("spawn_4", 9400, npc, null,false); // 2900
-				startQuestTimer("spawn_5", 12100, npc, null,false); // 2700
-				startQuestTimer("spawn_6", 12430, npc, null,false); // 330
-				startQuestTimer("spawn_7", 15430, npc, null,false); // 3000
-				startQuestTimer("spawn_8", 16830, npc, null,false); // 1400
-				startQuestTimer("spawn_9", 23530, npc, null,false); // 6700 - end of cinematic
-				startQuestTimer("spawn_10", 26000, npc, null,false); // 2500 - AI + unlock
+				startQuestTimer("spawn_1", 1700, npc, null, false); // 1700
+				startQuestTimer("spawn_2", 3200, npc, null, false); // 1500
+				startQuestTimer("spawn_3", 6500, npc, null, false); // 3300
+				startQuestTimer("spawn_4", 9400, npc, null, false); // 2900
+				startQuestTimer("spawn_5", 12100, npc, null, false); // 2700
+				startQuestTimer("spawn_6", 12430, npc, null, false); // 330
+				startQuestTimer("spawn_7", 15430, npc, null, false); // 3000
+				startQuestTimer("spawn_8", 16830, npc, null, false); // 1400
+				startQuestTimer("spawn_9", 23530, npc, null, false); // 6700 - end of cinematic
+				startQuestTimer("spawn_10", 26000, npc, null, false); // 2500 - AI + unlock
 			}
 			// Regeneration && inactivity task
 			else if (event.equalsIgnoreCase("regen_task"))
@@ -222,7 +211,7 @@ public class Valakas extends AbstractNpcAI
 					if ((_timeTracker + 900000) < System.currentTimeMillis())
 					{
 						npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-						npc.teleToLocation(VALAKAS_REGENERATION_LOC,false);
+						npc.teleToLocation(VALAKAS_REGENERATION_LOC, false);
 						
 						GrandBossManager.setBossStatus(VALAKAS, DORMANT);
 						npc.setCurrentHpMp(npc.getMaxHp(), npc.getMaxMp());
@@ -256,7 +245,7 @@ public class Valakas extends AbstractNpcAI
 					npc.doCast(SkillTable.getInstance().getInfo(VALAKAS_REGENERATION, 2));
 				}
 				// Apply lvl 1.
-				else 
+				else
 				{
 					npc.setTarget(npc);
 					npc.doCast(SkillTable.getInstance().getInfo(VALAKAS_REGENERATION, 1));
@@ -309,10 +298,10 @@ public class Valakas extends AbstractNpcAI
 				
 				for (Location loc : TELEPORT_CUBE_LOCATIONS)
 				{
-					addSpawn(31759, loc, false, 900000,false);
+					addSpawn(31759, loc, false, 900000, false);
 				}
 				
-				startQuestTimer("remove_players", 900000, null, null,false);
+				startQuestTimer("remove_players", 900000, null, null, false);
 			}
 			else if (event.equalsIgnoreCase("skill_task"))
 			{
@@ -323,7 +312,7 @@ public class Valakas extends AbstractNpcAI
 		{
 			if (event.equalsIgnoreCase("valakas_unlock"))
 			{
-				final L2Npc valakas = addSpawn(VALAKAS, -105200, -253104, -15264, 32768, false, 0,false);
+				final L2Npc valakas = addSpawn(VALAKAS, -105200, -253104, -15264, 32768, false, 0, false);
 				GrandBossManager.addBoss((L2GrandBossInstance) valakas);
 				GrandBossManager.setBossStatus(VALAKAS, DORMANT);
 			}
@@ -358,7 +347,7 @@ public class Valakas extends AbstractNpcAI
 		
 		if (GrandBossManager.getBossStatus(VALAKAS) != FIGHTING)
 		{
-			attacker.teleToLocation(ATTACKER_REMOVE,false);
+			attacker.teleToLocation(ATTACKER_REMOVE, false);
 			return null;
 		}
 		
@@ -403,7 +392,7 @@ public class Valakas extends AbstractNpcAI
 		long respawnTime = Config.Interval_Of_Valakas_Spawn + getRandom(-Config.Random_Of_Valakas_Spawn, Config.Random_Of_Valakas_Spawn);
 		respawnTime *= 3600000;
 		
-		startQuestTimer("valakas_unlock", respawnTime, null, null,false);
+		startQuestTimer("valakas_unlock", respawnTime, null, null, false);
 		// also save the respawn time so that the info is maintained past reboots
 		StatsSet info = GrandBossManager.getStatsSet(VALAKAS);
 		info.set("respawn_time", (System.currentTimeMillis() + respawnTime));
@@ -466,14 +455,7 @@ public class Valakas extends AbstractNpcAI
 		}
 	}
 	
-	/**
-	 * Pick a random skill.<br>
-	 * Valakas will mostly use utility skills. If Valakas feels surrounded, he will use AoE skills.<br>
-	 * Lower than 50% HPs, he will begin to use Meteor skill.
-	 * @param npc valakas
-	 * @return a skill holder
-	 */
-	private SkillHolder getRandomSkill(L2Npc npc)
+	private static SkillHolder getRandomSkill(L2Npc npc)
 	{
 		final int hpRatio = (int) ((npc.getCurrentHp() / npc.getMaxHp()) * 100);
 		
@@ -499,16 +481,11 @@ public class Valakas extends AbstractNpcAI
 		return VALAKAS_LOWHP_SKILLS[getRandom(VALAKAS_LOWHP_SKILLS.length)];
 	}
 	
-	/**
-	 * Pickup a random L2Playable from the zone, deads targets aren't included.
-	 * @param npc
-	 * @return a random L2Playable.
-	 */
-	private L2Playable getRandomTarget(L2Npc npc)
+	private static L2Playable getRandomTarget(L2Npc npc)
 	{
 		List<L2Playable> result = new ArrayList<>();
 		
-		for (L2Character obj : L2World.getInstance().getVisibleObjects(npc, L2Playable.class,2000))
+		for (L2Character obj : L2World.getInstance().getVisibleObjects(npc, L2Playable.class, 2000))
 		{
 			if ((obj == null) || obj instanceof L2Summon || obj instanceof L2PetInstance)
 			{

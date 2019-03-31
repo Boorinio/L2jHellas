@@ -1,39 +1,27 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.communitybbs;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 public class RaidList
 {
 	protected static final Logger _log = Logger.getLogger(RaidList.class.getName());
-
+	
 	private static final String SELECT_RAID_DATA = "SELECT id, name, level FROM npc WHERE type='L2RaidBoss' AND EXISTS (SELECT * FROM raidboss_spawnlist WHERE raidboss_spawnlist.boss_id = npc.id) ORDER BY `level` ";
 	private static final String SELECT_SPAWN = "SELECT respawn_time, respawn_min_delay, respawn_max_delay FROM raidboss_spawnlist WHERE boss_id=";
 	
 	private final StringBuilder _raidList = new StringBuilder();
-
+	
 	public RaidList(String rfid)
 	{
 		loadFromDB(rfid);
 	}
-
+	
 	private void loadFromDB(String rfid)
 	{
 		int type = Integer.parseInt(rfid);
@@ -48,13 +36,13 @@ public class RaidList
 		{
 			stpoint += Config.RAID_LIST_RESULTS;
 		}
-
+		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement(SELECT_RAID_DATA + sort + " Limit " + stpoint + ", " + Config.RAID_LIST_RESULTS);
 			ResultSet result = statement.executeQuery();
 			pos = stpoint;
-
+			
 			while (result.next())
 			{
 				int npcid = result.getInt("id");
@@ -62,7 +50,7 @@ public class RaidList
 				int rlevel = result.getInt("level");
 				PreparedStatement statement2 = con.prepareStatement(SELECT_SPAWN + npcid);
 				ResultSet result2 = statement2.executeQuery();
-
+				
 				while (result2.next())
 				{
 					pos++;
@@ -79,7 +67,7 @@ public class RaidList
 				result2.close();
 				statement2.close();
 			}
-
+			
 			result.close();
 			statement.close();
 		}
@@ -90,7 +78,7 @@ public class RaidList
 				e.printStackTrace();
 		}
 	}
-
+	
 	private void addRaidToList(int pos, String npcname, int rlevel, int mindelay, int maxdelay, boolean rstatus)
 	{
 		_raidList.append("<table border=0 cellspacing=0 cellpadding=2 width=610 height=" + Config.RAID_LIST_ROW_HEIGHT + ">");
@@ -106,7 +94,7 @@ public class RaidList
 		_raidList.append("</table>");
 		_raidList.append("<img src=\"L2UI.Squaregray\" width=\"610\" height=\"1\">");
 	}
-
+	
 	public String loadRaidList()
 	{
 		return _raidList.toString();

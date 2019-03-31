@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -45,10 +31,10 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 		_originX = readD();
 		_originY = readD();
 		_originZ = readD();
-		_origin_pos.setXYZ(_originX,_originY, _originZ);
-
+		_origin_pos.setXYZ(_originX, _originY, _originZ);
+		
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
@@ -102,10 +88,10 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 			activeChar.setVehicle(boat);
 		}
 		
-
 		activeChar.setInVehiclePosition(_pos);
 		activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO_IN_A_BOAT, new L2CharPosition(_pos.getX(), _pos.getY(), _pos.getZ(), 0), new L2CharPosition(_origin_pos.getX(), _origin_pos.getY(), _origin_pos.getZ(), 0));
 	}
+	
 	@Override
 	public String getType()
 	{

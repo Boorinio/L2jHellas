@@ -1,18 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.datatables.xml;
+
+import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.templates.L2Henna;
+import com.l2jhellas.gameserver.templates.StatsSet;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,10 +14,6 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import com.l2jhellas.gameserver.engines.DocumentParser;
-import com.l2jhellas.gameserver.templates.L2Henna;
-import com.l2jhellas.gameserver.templates.StatsSet;
-
 public class HennaData implements DocumentParser
 {
 	private static Logger _log = Logger.getLogger(HennaData.class.getName());
@@ -37,7 +23,7 @@ public class HennaData implements DocumentParser
 	
 	protected HennaData()
 	{
-      load();
+		load();
 	}
 	
 	@Override
@@ -90,8 +76,9 @@ public class HennaData implements DocumentParser
 				else
 					_hennaTrees.get(classId).add(template);
 			}
-		}		
+		}
 	}
+	
 	public L2Henna getTemplate(int id)
 	{
 		return _henna.get(id);

@@ -1,9 +1,5 @@
 package Extensions.fake.roboto.ai;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.helpers.FakeHelpers;
 import Extensions.fake.roboto.model.HealingSpell;
@@ -13,13 +9,17 @@ import Extensions.fake.roboto.model.SupportSpell;
 
 import com.l2jhellas.gameserver.emum.ShotType;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class TitanAI extends CombatAI
 {
 	public TitanAI(FakePlayer character)
 	{
 		super(character);
 	}
-
+	
 	@Override
 	public void thinkAndAct()
 	{
@@ -32,19 +32,19 @@ public class TitanAI extends CombatAI
 		tryAttackingUsingFighterOffensiveSkill();
 		setBusyThinking(false);
 	}
-
+	
 	@Override
 	protected double changeOfUsingSkill()
 	{
 		return 0.10;
 	}
-
+	
 	@Override
 	protected ShotType getShotType()
 	{
 		return ShotType.SOULSHOT;
 	}
-
+	
 	@Override
 	protected List<OffensiveSpell> getOffensiveSpells()
 	{
@@ -54,7 +54,7 @@ public class TitanAI extends CombatAI
 		_offensiveSpells.add(new OffensiveSpell(362, 3));
 		return _offensiveSpells;
 	}
-
+	
 	@Override
 	public List<SupportSpell> getSelfSupportSpells()
 	{
@@ -63,13 +63,13 @@ public class TitanAI extends CombatAI
 		_selfSupportSpells.add(new SupportSpell(176, SpellUsageCondition.LESSHPPERCENT, 30, 2));
 		return _selfSupportSpells;
 	}
-
+	
 	@Override
 	protected int[][] getBuffs()
 	{
 		return FakeHelpers.getFighterBuffs();
 	}
-
+	
 	@Override
 	protected List<HealingSpell> getHealingSpells()
 	{

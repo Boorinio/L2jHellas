@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
-
-import java.text.SimpleDateFormat;
-import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.controllers.TradeController;
@@ -39,6 +22,9 @@ import com.l2jhellas.gameserver.network.serverpackets.WareHouseWithdrawalList;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
+import java.text.SimpleDateFormat;
+import java.util.StringTokenizer;
+
 public class L2ClanHallManagerInstance extends L2NpcInstance
 {
 	protected static final int COND_OWNER_FALSE = 0;
@@ -46,16 +32,12 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 	protected static final int COND_BUSY_BECAUSE_OF_SIEGE = 2;
 	protected static final int COND_OWNER = 3;
 	private int _clanHallId = -1;
-
-	/**
-	 * @param objectId
-	 * @param template
-	 */
+	
 	public L2ClanHallManagerInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 	}
-
+	
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
@@ -72,7 +54,7 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 			{
 				val = st.nextToken();
 			}
-
+			
 			if (actualCommand.equalsIgnoreCase("banish_foreigner"))
 			{
 				getClanHall().banishForeigners();
@@ -200,46 +182,46 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 									{
 										case 0:
 											fee = 0;
-										break;
+											break;
 										case 20:
 											fee = Config.CH_HPREG1_FEE;
-										break;
+											break;
 										case 40:
 											fee = Config.CH_HPREG2_FEE;
-										break;
+											break;
 										case 80:
 											fee = Config.CH_HPREG3_FEE;
-										break;
+											break;
 										case 100:
 											fee = Config.CH_HPREG4_FEE;
-										break;
+											break;
 										case 120:
 											fee = Config.CH_HPREG5_FEE;
-										break;
+											break;
 										case 140:
 											fee = Config.CH_HPREG6_FEE;
-										break;
+											break;
 										case 160:
 											fee = Config.CH_HPREG7_FEE;
-										break;
+											break;
 										case 180:
 											fee = Config.CH_HPREG8_FEE;
-										break;
+											break;
 										case 200:
 											fee = Config.CH_HPREG9_FEE;
-										break;
+											break;
 										case 220:
 											fee = Config.CH_HPREG10_FEE;
-										break;
+											break;
 										case 240:
 											fee = Config.CH_HPREG11_FEE;
-										break;
+											break;
 										case 260:
 											fee = Config.CH_HPREG12_FEE;
-										break;
+											break;
 										default:
 											fee = Config.CH_HPREG13_FEE;
-										break;
+											break;
 									}
 									if (!getClanHall().updateFunctions(ClanHall.FUNC_RESTORE_HP, percent, fee, Config.CH_HPREG_FEE_RATIO, (getClanHall().getFunction(ClanHall.FUNC_RESTORE_HP) == null)))
 										player.sendMessage("You don't have enough adena in your clan's warehouse");
@@ -260,22 +242,22 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 									{
 										case 0:
 											fee = 0;
-										break;
+											break;
 										case 5:
 											fee = Config.CH_MPREG1_FEE;
-										break;
+											break;
 										case 10:
 											fee = Config.CH_MPREG2_FEE;
-										break;
+											break;
 										case 15:
 											fee = Config.CH_MPREG3_FEE;
-										break;
+											break;
 										case 30:
 											fee = Config.CH_MPREG4_FEE;
-										break;
+											break;
 										default:
 											fee = Config.CH_MPREG5_FEE;
-										break;
+											break;
 									}
 									if (!getClanHall().updateFunctions(ClanHall.FUNC_RESTORE_MP, percent, fee, Config.CH_MPREG_FEE_RATIO, (getClanHall().getFunction(ClanHall.FUNC_RESTORE_MP) == null)))
 										player.sendMessage("You don't have enough adena in your clan's warehouse");
@@ -296,28 +278,28 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 									{
 										case 0:
 											fee = 0;
-										break;
+											break;
 										case 5:
 											fee = Config.CH_EXPREG1_FEE;
-										break;
+											break;
 										case 10:
 											fee = Config.CH_EXPREG2_FEE;
-										break;
+											break;
 										case 15:
 											fee = Config.CH_EXPREG3_FEE;
-										break;
+											break;
 										case 25:
 											fee = Config.CH_EXPREG4_FEE;
-										break;
+											break;
 										case 35:
 											fee = Config.CH_EXPREG5_FEE;
-										break;
+											break;
 										case 40:
 											fee = Config.CH_EXPREG6_FEE;
-										break;
+											break;
 										default:
 											fee = Config.CH_EXPREG7_FEE;
-										break;
+											break;
 									}
 									if (!getClanHall().updateFunctions(ClanHall.FUNC_RESTORE_EXP, percent, fee, Config.CH_EXPREG_FEE_RATIO, (getClanHall().getFunction(ClanHall.FUNC_RESTORE_EXP) == null)))
 										player.sendMessage("You don't have enough adena in your clan's warehouse");
@@ -394,16 +376,16 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 									{
 										case 0:
 											fee = 0;
-										break;
+											break;
 										case 1:
 											fee = Config.CH_ITEM1_FEE;
-										break;
+											break;
 										case 2:
 											fee = Config.CH_ITEM2_FEE;
-										break;
+											break;
 										default:
 											fee = Config.CH_ITEM3_FEE;
-										break;
+											break;
 									}
 									if (!getClanHall().updateFunctions(ClanHall.FUNC_ITEM_CREATE, lvl, fee, Config.CH_ITEM_FEE_RATIO, (getClanHall().getFunction(ClanHall.FUNC_ITEM_CREATE) == null)))
 										player.sendMessage("You don't have enough adena in your clan's warehouse");
@@ -424,19 +406,19 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 									{
 										case 0:
 											fee = 0;
-										break;
+											break;
 										case 1:
 											fee = Config.CH_TELE1_FEE;
-										break;
+											break;
 										case 2:
 											fee = Config.CH_TELE2_FEE;
-										break;
+											break;
 										case 3:
 											fee = Config.CH_TELE3_FEE;
-										break;
+											break;
 										default:
 											fee = Config.CH_TELE4_FEE;
-										break;
+											break;
 									}
 									if (!getClanHall().updateFunctions(ClanHall.FUNC_TELEPORT, lvl, fee, Config.CH_TELE_FEE_RATIO, (getClanHall().getFunction(ClanHall.FUNC_TELEPORT) == null)))
 										player.sendMessage("You don't have enough adena in your clan's warehouse");
@@ -457,34 +439,34 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 									{
 										case 0:
 											fee = 0;
-										break;
+											break;
 										case 1:
 											fee = Config.CH_SUPPORT1_FEE;
-										break;
+											break;
 										case 2:
 											fee = Config.CH_SUPPORT2_FEE;
-										break;
+											break;
 										case 3:
 											fee = Config.CH_SUPPORT3_FEE;
-										break;
+											break;
 										case 4:
 											fee = Config.CH_SUPPORT4_FEE;
-										break;
+											break;
 										case 5:
 											fee = Config.CH_SUPPORT5_FEE;
-										break;
+											break;
 										case 6:
 											fee = Config.CH_SUPPORT6_FEE;
-										break;
+											break;
 										case 7:
 											fee = Config.CH_SUPPORT7_FEE;
-										break;
+											break;
 										case 8:
 											fee = Config.CH_SUPPORT8_FEE;
-										break;
+											break;
 										default:
 											fee = Config.CH_SUPPORT9_FEE;
-										break;
+											break;
 									}
 									if (!getClanHall().updateFunctions(ClanHall.FUNC_SUPPORT, lvl, fee, Config.CH_SUPPORT_FEE_RATIO, (getClanHall().getFunction(ClanHall.FUNC_SUPPORT) == null)))
 										player.sendMessage("You don't have enough adena in your clan's warehouse");
@@ -556,13 +538,13 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 									{
 										case 0:
 											fee = 0;
-										break;
+											break;
 										case 1:
 											fee = Config.CH_CURTAIN1_FEE;
-										break;
+											break;
 										default:
 											fee = Config.CH_CURTAIN2_FEE;
-										break;
+											break;
 									}
 									if (!getClanHall().updateFunctions(ClanHall.FUNC_DECO_CURTAINS, lvl, fee, Config.CH_CURTAIN_FEE_RATIO, (getClanHall().getFunction(ClanHall.FUNC_DECO_CURTAINS) == null)))
 										player.sendMessage("You don't have enough adena in your clan's warehouse");
@@ -583,13 +565,13 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 									{
 										case 0:
 											fee = 0;
-										break;
+											break;
 										case 1:
 											fee = Config.CH_FRONT1_FEE;
-										break;
+											break;
 										default:
 											fee = Config.CH_FRONT2_FEE;
-										break;
+											break;
 									}
 									if (!getClanHall().updateFunctions(ClanHall.FUNC_DECO_FRONTPLATEFORM, lvl, fee, Config.CH_FRONT_FEE_RATIO, (getClanHall().getFunction(ClanHall.FUNC_DECO_FRONTPLATEFORM) == null)))
 										player.sendMessage("You don't have enough adena in your clan's warehouse");
@@ -645,7 +627,7 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 				L2Skill skill;
 				if (val == "")
 					return;
-
+				
 				try
 				{
 					int skill_id = Integer.parseInt(val);
@@ -688,26 +670,21 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 		}
 		super.onBypassFeedback(player, command);
 	}
-
-	/**
-	 * this is called when a player interacts with this NPC
-	 * 
-	 * @param player
-	 */
+	
 	@Override
 	public void onAction(L2PcInstance player)
 	{
 		if (!canTarget(player))
 			return;
-
+		
 		player.setLastFolkNPC(this);
-
+		
 		// Check if the L2PcInstance already target the L2NpcInstance
 		if (this != player.getTarget())
 		{
 			// Set the target of the L2PcInstance player
 			player.setTarget(this);
-
+			
 			// Send a Server->Client packet MyTargetSelected to the L2PcInstance player
 			MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
 			player.sendPacket(my);
@@ -719,7 +696,7 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 			{
 				// Notify the L2PcInstance AI with AI_INTENTION_INTERACT
 				// note: commented out so the player must stand close
-				//player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
+				// player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
 			}
 			else
 			{
@@ -729,7 +706,7 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-
+	
 	private void sendHtmlMessage(L2PcInstance player, NpcHtmlMessage html)
 	{
 		html.replace("%objectId%", String.valueOf(getObjectId()));
@@ -737,12 +714,12 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 		html.replace("%npcId%", String.valueOf(getNpcId()));
 		player.sendPacket(html);
 	}
-
+	
 	private void showMessageWindow(L2PcInstance player)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		String filename = "data/html/clanHallManager/chamberlain-no.htm";
-
+		
 		int condition = validateCondition(player);
 		if (condition == COND_OWNER)
 			filename = "data/html/clanHallManager/chamberlain.htm";// Owner message window
@@ -755,7 +732,7 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 		html.replace("%npcname%", getName());
 		player.sendPacket(html);
 	}
-
+	
 	protected int validateCondition(L2PcInstance player)
 	{
 		if (getClanHall() == null)
@@ -770,37 +747,36 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 		}
 		return COND_ALL_FALSE;
 	}
-
-	/** Return the L2ClanHall this L2NpcInstance belongs to. */
+	
 	public final ClanHall getClanHall()
 	{
 		if (_clanHallId < 0)
 		{
 			ClanHall temp = ClanHallManager.getInstance().getNearbyClanHall(getX(), getY(), 500);
-
+			
 			if (temp != null)
 				_clanHallId = temp.getId();
-
+			
 			if (_clanHallId < 0)
 				return null;
 		}
 		return ClanHallManager.getInstance().getClanHallById(_clanHallId);
 	}
-
-	private void showVaultWindowDeposit(L2PcInstance player)
+	
+	private static void showVaultWindowDeposit(L2PcInstance player)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		player.setActiveWarehouse(player.getClan().getWarehouse());
-		player.sendPacket(new WareHouseDepositList(player, WareHouseDepositList.CLAN)); //Or Clan Hall??
+		player.sendPacket(new WareHouseDepositList(player, WareHouseDepositList.CLAN)); // Or Clan Hall??
 	}
-
-	private void showVaultWindowWithdraw(L2PcInstance player)
+	
+	private static void showVaultWindowWithdraw(L2PcInstance player)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		player.setActiveWarehouse(player.getClan().getWarehouse());
-		player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.CLAN)); //Or Clan Hall ??
+		player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.CLAN)); // Or Clan Hall ??
 	}
-
+	
 	private void doTeleport(L2PcInstance player, int val)
 	{
 		if (Config.DEBUG)
@@ -808,8 +784,8 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 		L2TeleportLocation list = TeleportLocationData.getInstance().getTemplate(val);
 		if (list != null)
 		{
-			//you cannot teleport to village that is in siege Not sure about this one though
-			if (SiegeManager.getInstance().getSiege(list.getLocX(), list.getLocY(), list.getLocZ()) != null)
+			// you cannot teleport to village that is in siege Not sure about this one though
+			if (SiegeManager.getSiege(list.getLocX(), list.getLocY(), list.getLocZ()) != null)
 			{
 				player.sendPacket(SystemMessageId.NO_PORT_THAT_IS_IN_SIGE);
 				return;
@@ -827,21 +803,21 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 		}
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-
+	
 	private void showBuyWindow(L2PcInstance player, int val)
 	{
 		double taxRate = 0;
-
+		
 		if (getIsInTown())
 			taxRate = getCastle().getTaxRate();
-
+		
 		player.tempInvetoryDisable();
-
+		
 		if (Config.DEBUG)
 			_log.fine("Showing buylist :" + player.getName() + " List ID :" + val);
-
+		
 		L2TradeList list = TradeController.getInstance().getBuyList(val);
-
+		
 		if (list != null && list.getNpcId().equals(String.valueOf(getNpcId())))
 		{
 			BuyList bl = new BuyList(list, player.getAdena(), taxRate);
@@ -852,11 +828,11 @@ public class L2ClanHallManagerInstance extends L2NpcInstance
 			_log.warning(L2ClanHallManagerInstance.class.getName() + ": possible client hacker: " + player.getName() + " attempting to buy from GM shop! < Ban him!");
 			_log.warning(L2ClanHallManagerInstance.class.getName() + ": buylist id:" + val);
 		}
-
+		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-
-	private void revalidateDeco(L2PcInstance player)
+	
+	private static void revalidateDeco(L2PcInstance player)
 	{
 		ClanHallDecoration bl = new ClanHallDecoration(ClanHallManager.getInstance().getClanHallByOwner(player.getClan()));
 		player.sendPacket(bl);

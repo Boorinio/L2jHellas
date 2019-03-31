@@ -6,7 +6,6 @@ import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.scrips.quests.ai.vilagemaster.FirstClassChange;
 
-
 public class ShadowWeapon extends Quest
 {
 	private static final String qn = "ShadowWeapon";

@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
 import com.l2jhellas.Config;
@@ -39,15 +25,15 @@ public class Fishing implements ISkillHandler
 	{
 		L2SkillType.FISHING
 	};
-		
+	
 	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		if (activeChar == null || !(activeChar instanceof L2PcInstance))
 			return;
-
+		
 		final L2PcInstance player = (L2PcInstance) activeChar;
-
+		
 		if (!Config.ALLOWFISHING && !player.isGM())
 		{
 			player.sendMessage("Fishing is off");
@@ -65,12 +51,12 @@ public class Fishing implements ISkillHandler
 			return;
 		}
 		
-		if (player.getActiveWeaponItem()!=null && player.getActiveWeaponItem().getItemType() != L2WeaponType.ROD)
+		if (player.getActiveWeaponItem() != null && player.getActiveWeaponItem().getItemType() != L2WeaponType.ROD)
 		{
 			player.sendPacket(SystemMessageId.FISHING_POLE_NOT_EQUIPPED);
 			return;
 		}
-
+		
 		final L2ItemInstance lure = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LHAND);
 		
 		if (lure == null)
@@ -100,11 +86,11 @@ public class Fishing implements ISkillHandler
 		}
 		
 		int x = 0;
-		int y = 0;	
+		int y = 0;
 		int z = 0;
 		
 		boolean allowFish = false;
-
+		
 		if (player.isInsideZone(ZoneId.FISHING))
 		{
 			if (!player.destroyItem("Consume", lure.getObjectId(), 1, player, false))
@@ -120,24 +106,23 @@ public class Fishing implements ISkillHandler
 			x = player.getX() + (int) (Math.cos(radian) * distance);
 			y = player.getY() + (int) (Math.sin(radian) * distance);
 			z = 0;
-
+			
 			final L2WaterZone zone = ZoneManager.getInstance().getZone(x, y, L2WaterZone.class);
 			
-			if(zone!=null)
+			if (zone != null)
 			{
-			   z = zone.getWaterZ();
+				z = zone.getWaterZ();
 				
-			   if( GeoEngine.canSeeTarget(player.getZ(),z))
-				    allowFish = true;
-			}		
+				if (GeoEngine.canSeeTarget(player.getZ(), z))
+					allowFish = true;
+			}
 		}
-			
+		
 		if (allowFish)
 			player.startFishing(new Location(x, y, z));
 		else
 			player.sendPacket(SystemMessageId.CANNOT_FISH_HERE);
 	}
-	
 	
 	@Override
 	public L2SkillType[] getSkillIds()

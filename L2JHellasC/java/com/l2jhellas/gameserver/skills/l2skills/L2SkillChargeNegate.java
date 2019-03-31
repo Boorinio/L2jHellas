@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.skills.l2skills;
 
 import com.l2jhellas.gameserver.model.L2Effect;
@@ -26,27 +12,23 @@ import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
-/**
- * Used for Break Duress skill mainly
- * uses number of charges to negate, negate number depends on charge consume
- */
 public class L2SkillChargeNegate extends L2Skill
 {
 	public L2SkillChargeNegate(StatsSet set)
 	{
 		super(set);
 	}
-
+	
 	public void useSkill(L2Character activeChar, L2Character... targets)
 	{
 		if (activeChar.isAlikeDead() || !(activeChar instanceof L2PcInstance))
 			return;
-
+		
 		for (L2Character target : targets)
 		{
 			if (target.isAlikeDead())
 				continue;
-
+			
 			String[] _negateStats = getNegateStats();
 			int count = 0;
 			for (String stat : _negateStats)
@@ -54,7 +36,7 @@ public class L2SkillChargeNegate extends L2Skill
 				count++;
 				if (count > getNumCharges())
 					return; // ROOT=1 PARALYZE=2 SLOW=3
-
+					
 				if (stat == "root")
 					negateEffect(target, L2SkillType.ROOT);
 				if (stat == "slow")
@@ -67,8 +49,8 @@ public class L2SkillChargeNegate extends L2Skill
 			}
 		}
 	}
-
-	private void negateEffect(L2Character target, L2SkillType type)
+	
+	private static void negateEffect(L2Character target, L2SkillType type)
 	{
 		L2Effect[] effects = target.getAllEffects();
 		for (L2Effect e : effects)
@@ -106,7 +88,7 @@ public class L2SkillChargeNegate extends L2Skill
 			}
 		}
 	}
-
+	
 	@Override
 	public void useSkill(L2Character caster, L2Object[] targets)
 	{

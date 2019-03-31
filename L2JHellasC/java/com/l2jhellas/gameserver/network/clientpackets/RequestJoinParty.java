@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
-
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.BlockList;
@@ -28,28 +12,23 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.AskJoinParty;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * sample<BR>
- * 29<BR>
- * 42 00 00 10<BR>
- * 01 00 00 00<BR>
- * format cdd
- */
+import java.util.logging.Logger;
+
 public final class RequestJoinParty extends L2GameClientPacket
 {
 	private static Logger _log = Logger.getLogger(RequestJoinParty.class.getName());
 	private static final String _C__29_REQUESTJOINPARTY = "[C] 29 RequestJoinParty";
-
+	
 	private String _name;
 	private int _itemDistribution;
-
+	
 	@Override
 	protected void readImpl()
 	{
 		_name = readS();
 		_itemDistribution = readD();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
@@ -74,7 +53,7 @@ public final class RequestJoinParty extends L2GameClientPacket
 		{
 			requestor.sendPacket(SystemMessageId.YOU_HAVE_INVITED_THE_WRONG_TARGET);
 			return;
-		}		
+		}
 		if (((TvT._started && !Config.TVT_ALLOW_INTERFERENCE) || (CTF._started && !Config.CTF_ALLOW_INTERFERENCE) || (DM._started && !Config.DM_ALLOW_INTERFERENCE) && !requestor.isGM()))
 		{
 			if ((target._inEventTvT && !requestor._inEventTvT) || (!target._inEventTvT && requestor._inEventTvT))
@@ -129,10 +108,6 @@ public final class RequestJoinParty extends L2GameClientPacket
 		}
 	}
 	
-	/**
-	 * @param target
-	 * @param requestor
-	 */
 	private static void addTargetToParty(L2PcInstance target, L2PcInstance requestor)
 	{
 		final L2Party party = requestor.getParty();
@@ -177,10 +152,6 @@ public final class RequestJoinParty extends L2GameClientPacket
 		}
 	}
 	
-	/**
-	 * @param target
-	 * @param requestor
-	 */
 	private void createNewParty(L2PcInstance target, L2PcInstance requestor)
 	{
 		if (!target.isProcessingRequest())

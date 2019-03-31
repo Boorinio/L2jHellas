@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.L2ClanMember;
@@ -20,14 +6,14 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 public class PledgeShowMemberListAdd extends L2GameServerPacket
 {
 	private static final String _S__55_PLEDGESHOWMEMBERLISTADD = "[S] 55 PledgeShowMemberListAdd";
-	private String _name;
-	private int _lvl;
-	private int _classId;
-	private int _isOnline;
-	private int _pledgeType;
+	private final String _name;
+	private final int _lvl;
+	private final int _classId;
+	private final int _isOnline;
+	private final int _pledgeType;
 	private final int _race;
 	private final int _sex;
-
+	
 	public PledgeShowMemberListAdd(L2PcInstance player)
 	{
 		_name = player.getName();
@@ -38,7 +24,7 @@ public class PledgeShowMemberListAdd extends L2GameServerPacket
 		_race = player.getRace().ordinal();
 		_sex = player.getAppearance().getSex().ordinal();
 	}
-
+	
 	public PledgeShowMemberListAdd(L2ClanMember cm)
 	{
 		_name = cm.getName();
@@ -49,7 +35,7 @@ public class PledgeShowMemberListAdd extends L2GameServerPacket
 		_race = cm.getPlayerInstance().getRace().ordinal();
 		_sex = cm.getPlayerInstance().getAppearance().getSex().ordinal();
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -62,7 +48,7 @@ public class PledgeShowMemberListAdd extends L2GameServerPacket
 		writeD(_isOnline);
 		writeD(_pledgeType);
 	}
-
+	
 	@Override
 	public String getType()
 	{

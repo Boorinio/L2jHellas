@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
-
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -31,6 +14,9 @@ import com.l2jhellas.gameserver.network.serverpackets.SpecialCamera;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Sailren extends AbstractNpcAI
 {
@@ -53,7 +39,7 @@ public class Sailren extends AbstractNpcAI
 	
 	private static final Location SAILREN_LOC = new Location(27549, -6638, -2008);
 	
-	private final List<L2Npc> _mobs = new CopyOnWriteArrayList<L2Npc>();
+	private final List<L2Npc> _mobs = new CopyOnWriteArrayList<>();
 	private static long _timeTracker;
 	
 	public Sailren()
@@ -226,8 +212,8 @@ public class Sailren extends AbstractNpcAI
 			case TREX:
 				// Trex is dead, wait 5min and spawn Sailren.
 				if (_mobs.remove(npc))
-				{ 
-				    startQuestTimer("spawn", 5 * 60000, npc, killer, false);
+				{
+					startQuestTimer("spawn", 5 * 60000, npc, killer, false);
 				}
 				break;
 			

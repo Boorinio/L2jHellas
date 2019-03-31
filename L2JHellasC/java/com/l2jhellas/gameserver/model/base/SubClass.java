@@ -1,11 +1,5 @@
 package com.l2jhellas.gameserver.model.base;
 
-
-/**
- * Character Sub-Class Definition <BR>
- * Used to store key information about a character's sub-class.
- * @author Tempy
- */
 public final class SubClass
 {
 	private ClassId _class;
@@ -13,7 +7,7 @@ public final class SubClass
 	private long _exp;
 	private int _sp;
 	private byte _level;
-
+	
 	public SubClass(int classId, int classIndex, long exp, int sp, byte level)
 	{
 		_class = ClassId.VALUES[classId];
@@ -22,7 +16,7 @@ public final class SubClass
 		_sp = sp;
 		_level = level;
 	}
-
+	
 	public SubClass(int classId, int classIndex)
 	{
 		_class = ClassId.VALUES[classId];

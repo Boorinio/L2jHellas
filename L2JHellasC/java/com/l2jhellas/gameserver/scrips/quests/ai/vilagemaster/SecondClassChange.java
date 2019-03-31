@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.ai.vilagemaster;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -25,9 +8,9 @@ import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.serverpackets.HennaInfo;
 
-/**
- * @author fernandopm
- */
+import java.util.HashMap;
+import java.util.Map;
+
 public class SecondClassChange extends Quest
 {
 	private static final String qn = "SecondClassChange";
@@ -834,10 +817,6 @@ public class SecondClassChange extends Quest
 		return htmltext;
 	}
 	
-	/**
-	 * @param player : The player to make checks on.
-	 * @return a String corresponding to html directory.
-	 */
 	private static String getClassHtml(L2PcInstance player)
 	{
 		String change = "";

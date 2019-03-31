@@ -1,38 +1,24 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PartySpelled extends L2GameServerPacket
 {
 	private static final String _S__EE_PartySpelled = "[S] EE PartySpelled";
 	private final List<Effect> _effects;
 	private final L2Character _activeChar;
-
+	
 	private class Effect
 	{
 		protected int _skillId;
 		protected int _dat;
 		protected int _duration;
-
+		
 		public Effect(int pSkillId, int pDat, int pDuration)
 		{
 			_skillId = pSkillId;
@@ -40,13 +26,13 @@ public class PartySpelled extends L2GameServerPacket
 			_duration = pDuration;
 		}
 	}
-
+	
 	public PartySpelled(L2Character cha)
 	{
-		_effects = new ArrayList<Effect>();
+		_effects = new ArrayList<>();
 		_activeChar = cha;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -63,12 +49,12 @@ public class PartySpelled extends L2GameServerPacket
 			writeD(temp._duration / 1000);
 		}
 	}
-
+	
 	public void addPartySpelledEffect(int skillId, int dat, int duration)
 	{
 		_effects.add(new Effect(skillId, dat, duration));
 	}
-
+	
 	@Override
 	public String getType()
 	{

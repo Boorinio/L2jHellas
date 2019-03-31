@@ -1,39 +1,25 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.util.database;
+
+import com.l2jhellas.Config;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
-import com.mchange.v2.c3p0.ComboPooledDataSource;
-
 public class L2DatabaseFactory
 {
 	private static final Logger _log = Logger.getLogger(L2DatabaseFactory.class.getName());
-
+	
 	private ComboPooledDataSource _source;
-
+	
 	public L2DatabaseFactory()
 	{
 		try
 		{
 			if (Config.DATABASE_MAX_CONNECTIONS < 10)
 				Config.DATABASE_MAX_CONNECTIONS = 10;
-
+			
 			if (Config.DATABASE_MAX_CONNECTIONS > 200)
 				Config.DATABASE_MAX_CONNECTIONS = 200;
 			
@@ -45,16 +31,16 @@ public class L2DatabaseFactory
 			_source.setMaxPoolSize(Math.max(10, Config.DATABASE_MAX_CONNECTIONS));
 			
 			_source.setAcquireRetryAttempts(0);
-			_source.setAcquireRetryDelay(500); 
-			_source.setCheckoutTimeout(0); 
-			_source.setAcquireIncrement(5); 
-
+			_source.setAcquireRetryDelay(500);
+			_source.setCheckoutTimeout(0);
+			_source.setAcquireIncrement(5);
+			
 			_source.setAutomaticTestTable("connection_test_table");
 			_source.setTestConnectionOnCheckin(false);
-
-			_source.setIdleConnectionTestPeriod(3600); 
+			
+			_source.setIdleConnectionTestPeriod(3600);
 			_source.setMaxIdleTime(0);
-
+			
 			_source.setMaxStatementsPerConnection(100);
 			
 			_source.setBreakAfterAcquireFailure(false);
@@ -62,17 +48,17 @@ public class L2DatabaseFactory
 			_source.setJdbcUrl(Config.DATABASE_URL);
 			_source.setUser(Config.DATABASE_LOGIN);
 			_source.setPassword(Config.DATABASE_PASSWORD);
-
+			
 			_source.getConnection().close();
 			
 			_log.info(L2DatabaseFactory.class.getSimpleName() + ": Database Connected.");
 		}
 		catch (Exception e)
 		{
-			_log.severe(L2DatabaseFactory.class.getSimpleName() + ": Failed to init database connections: "+e);
+			_log.severe(L2DatabaseFactory.class.getSimpleName() + ": Failed to init database connections: " + e);
 		}
 	}
-
+	
 	public void shutdown()
 	{
 		try
@@ -92,17 +78,12 @@ public class L2DatabaseFactory
 			_log.info(L2DatabaseFactory.class.getName() + "");
 		}
 	}
-
+	
 	public static L2DatabaseFactory getInstance()
 	{
 		return SingletonHolder._instance;
 	}
-
-	/**
-	 * Gets the connection.
-	 * 
-	 * @return the connection
-	 */
+	
 	public Connection getConnection()
 	{
 		Connection con = null;
@@ -122,14 +103,7 @@ public class L2DatabaseFactory
 		return con;
 	}
 	
-	/**
-	 * mono gia to territory na ginei delete
-	 * @param fields
-	 * @param tableName
-	 * @param whereClause
-	 * @return
-	 */
-	public final String prepQuerySelect(String[] fields, String tableName, String whereClause)
+	public final static String prepQuerySelect(String[] fields, String tableName, String whereClause)
 	{
 		String mySqlTop1 = " Limit 1 ";
 		String query = "SELECT " + fields + " FROM " + tableName + " WHERE " + whereClause + mySqlTop1;

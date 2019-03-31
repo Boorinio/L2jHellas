@@ -1,18 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.datatables.xml;
+
+import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.model.L2TeleportLocation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,16 +12,13 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import com.l2jhellas.gameserver.engines.DocumentParser;
-import com.l2jhellas.gameserver.model.L2TeleportLocation;
-
 public class TeleportLocationData implements DocumentParser
 {
 	private static Logger _log = Logger.getLogger(TeleportLocationData.class.getName());
-
-	private Map<Integer, L2TeleportLocation> _teleports = new HashMap<>();
-
-	private TeleportLocationData()
+	
+	private final Map<Integer, L2TeleportLocation> _teleports = new HashMap<>();
+	
+	protected TeleportLocationData()
 	{
 		load();
 	}
@@ -41,7 +27,7 @@ public class TeleportLocationData implements DocumentParser
 	public void load()
 	{
 		_teleports.clear();
-		parseDatapackDirectory("data/teleports", true);	
+		parseDatapackDirectory("data/teleports", true);
 		_log.info("[" + getClass().getSimpleName() + "]: Loaded: " + _teleports.size() + " Location Templates.");
 	}
 	
@@ -62,16 +48,16 @@ public class TeleportLocationData implements DocumentParser
 						int x = Integer.parseInt(d.getAttributes().getNamedItem("X").getNodeValue());
 						int y = Integer.parseInt(d.getAttributes().getNamedItem("Y").getNodeValue());
 						int z = Integer.parseInt(d.getAttributes().getNamedItem("Z").getNodeValue());
-
+						
 						boolean isNoble = false;
 						boolean isGM = false;
 						boolean isClanHallTp = false;
 						boolean isFortTp = false;
 						boolean isCastleTp = false;
-						List<int[]> items = new ArrayList<int[]>(1);
+						List<int[]> items = new ArrayList<>(1);
 						int minLevel = 1;
 						int maxLevel = 85;
-
+						
 						Node node = d.getAttributes().getNamedItem("isNoble");
 						if (node != null)
 						{
@@ -102,7 +88,7 @@ public class TeleportLocationData implements DocumentParser
 						{
 							try
 							{
-
+								
 								String[] values = node.getNodeValue().split(";");
 								for (String value : values)
 								{
@@ -134,13 +120,13 @@ public class TeleportLocationData implements DocumentParser
 								continue;
 							}
 						}
-
+						
 						if (_teleports.containsKey(id))
 						{
 							L2TeleportLocation loc = _teleports.get(id);
 							_log.info(TeleportLocationData.class.getName() + "[" + getClass().getSimpleName() + "]: Duplicate teleport found! \nid: " + id + " X: " + x + " Y: " + y + " Z: " + z + " \nExisting: X: " + loc.getLocX() + " Y: " + loc.getLocY() + " Z: " + loc.getLocZ());
 						}
-
+						
 						teleport = new L2TeleportLocation();
 						teleport.setTeleId(id);
 						teleport.setLocX(x);
@@ -154,19 +140,14 @@ public class TeleportLocationData implements DocumentParser
 						teleport.setIsForCastle(isCastleTp);
 						teleport.setMinLevel(minLevel);
 						teleport.setMaxLevel(maxLevel);
-
+						
 						_teleports.put(teleport.getTeleId(), teleport);
 					}
 				}
 			}
-		}		
+		}
 	}
-
-	/**
-	 * @param template
-	 *        id
-	 * @return
-	 */
+	
 	public L2TeleportLocation getTemplate(int id)
 	{
 		return _teleports.get(id);
@@ -181,5 +162,5 @@ public class TeleportLocationData implements DocumentParser
 	{
 		protected static final TeleportLocationData _instance = new TeleportLocationData();
 	}
-
+	
 }

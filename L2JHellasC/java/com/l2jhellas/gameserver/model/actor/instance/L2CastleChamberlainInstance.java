@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
-
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
@@ -44,39 +27,34 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Util;
 
-/**
- * Castle Chamberlains implementation
- * used for:
- * - tax rate control
- * - regional manor system control
- * - castle treasure control
- * - ...
- */
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
+
 public class L2CastleChamberlainInstance extends L2NpcInstance
 {
 	protected static final int COND_ALL_FALSE = 0;
 	protected static final int COND_BUSY_BECAUSE_OF_SIEGE = 1;
 	protected static final int COND_OWNER = 2;
-
+	
 	public L2CastleChamberlainInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 	}
-
+	
 	@Override
 	public void onAction(L2PcInstance player)
 	{
 		if (!canTarget(player))
 			return;
-
+		
 		player.setLastFolkNPC(this);
-
+		
 		// Check if the L2PcInstance already target the L2NpcInstance
 		if (this != player.getTarget())
 		{
 			// Set the target of the L2PcInstance player
 			player.setTarget(this);
-
+			
 			// Send a Server->Client packet MyTargetSelected to the L2PcInstance player
 			MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
 			player.sendPacket(my);
@@ -97,31 +75,31 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-
+	
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
 		// BypassValidation Exploit plug.
-		if (player.getLastFolkNPC().getObjectId() != this.getObjectId())
+		if (player.getLastFolkNPC().getObjectId() != getObjectId())
 			return;
-
+		
 		int condition = validateCondition(player);
 		if (condition <= COND_ALL_FALSE)
 			return;
-
+		
 		if (condition == COND_BUSY_BECAUSE_OF_SIEGE)
 			return;
 		else if (condition == COND_OWNER)
 		{
 			StringTokenizer st = new StringTokenizer(command, " ");
 			String actualCommand = st.nextToken(); // Get actual command
-
+			
 			String val = "";
 			if (st.countTokens() >= 1)
 			{
 				val = st.nextToken();
 			}
-
+			
 			if (actualCommand.equalsIgnoreCase("banish_foreigner"))
 			{
 				getCastle().banishForeigners(); // Move non-clan members off castle area
@@ -141,63 +119,63 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 				html.replace("%clanname%", clan.getName());
 				html.replace("%clanleadername%", clan.getLeaderName());
 				html.replace("%castlename%", getCastle().getName());
-
+				
 				int currentPeriod = SevenSigns.getInstance().getCurrentPeriod();
 				switch (currentPeriod)
 				{
 					case SevenSigns.PERIOD_COMP_RECRUITING:
 						html.replace("%ss_event%", "Quest Event Initialization");
-					break;
+						break;
 					case SevenSigns.PERIOD_COMPETITION:
 						html.replace("%ss_event%", "Competition (Quest Event)");
-					break;
+						break;
 					case SevenSigns.PERIOD_COMP_RESULTS:
 						html.replace("%ss_event%", "Quest Event Results");
-					break;
+						break;
 					case SevenSigns.PERIOD_SEAL_VALIDATION:
 						html.replace("%ss_event%", "Seal Validation");
-					break;
+						break;
 				}
 				int sealOwner1 = SevenSigns.getInstance().getSealOwner(1);
 				switch (sealOwner1)
 				{
 					case SevenSigns.CABAL_NULL:
 						html.replace("%ss_avarice%", "Not in Possession");
-					break;
+						break;
 					case SevenSigns.CABAL_DAWN:
 						html.replace("%ss_avarice%", "Lords of Dawn");
-					break;
+						break;
 					case SevenSigns.CABAL_DUSK:
 						html.replace("%ss_avarice%", "Revolutionaries of Dusk");
-					break;
+						break;
 				}
 				int sealOwner2 = SevenSigns.getInstance().getSealOwner(2);
 				switch (sealOwner2)
 				{
 					case SevenSigns.CABAL_NULL:
 						html.replace("%ss_gnosis%", "Not in Possession");
-					break;
+						break;
 					case SevenSigns.CABAL_DAWN:
 						html.replace("%ss_gnosis%", "Lords of Dawn");
-					break;
+						break;
 					case SevenSigns.CABAL_DUSK:
 						html.replace("%ss_gnosis%", "Revolutionaries of Dusk");
-					break;
+						break;
 				}
 				int sealOwner3 = SevenSigns.getInstance().getSealOwner(3);
 				switch (sealOwner3)
 				{
 					case SevenSigns.CABAL_NULL:
 						html.replace("%ss_strife%", "Not in Possession");
-					break;
+						break;
 					case SevenSigns.CABAL_DAWN:
 						html.replace("%ss_strife%", "Lords of Dawn");
-					break;
+						break;
 					case SevenSigns.CABAL_DUSK:
 						html.replace("%ss_strife%", "Revolutionaries of Dusk");
-					break;
+						break;
 				}
-
+				
 				player.sendPacket(html);
 				return;
 			}
@@ -206,10 +184,10 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 				if (val == "")
 					return;
 				player.tempInvetoryDisable();
-
+				
 				if (Config.DEBUG)
 					_log.fine("Showing chamberlain buylist");
-
+				
 				int buy;
 				{
 					int castleId = getCastle().getCastleId();
@@ -286,11 +264,11 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 						{
 							if (getCastle().addToTreasuryNoTax((-1) * amount))
 								player.addAdena("Castle", amount, this, true);
-
+							
 						}
 					}
 				}
-
+				
 				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 				html.setFile(filename);
 				html.replace("%objectId%", String.valueOf(getObjectId()));
@@ -299,23 +277,23 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 				html.replace("%tax_income%", Util.formatAdena(getCastle().getTreasury()));
 				html.replace("%withdraw_amount%", Util.formatAdena(amount));
 				player.sendPacket(html);
-
+				
 				return;
 			}
 			else if (actualCommand.equalsIgnoreCase("Clan_Gate"))
 			{
-				L2PcInstance leader = (L2PcInstance) L2World.getInstance().getPlayer(player.getClan().getLeaderId());
+				L2PcInstance leader = L2World.getInstance().getPlayer(player.getClan().getLeaderId());
 				if (leader == null)
 				{
 					player.sendMessage("Your Leader is not online.");
 				}
-
+				
 				else if (leader.atEvent || leader.isinZodiac || leader.isInFunEvent())
 				{
 					player.sendMessage("Your leader is in an event.");
 					return;
 				}
-
+				
 				else if (leader.isInJail())
 				{
 					player.sendMessage("Your leader is in Jail.");
@@ -326,38 +304,38 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 					player.sendMessage("Your are the leader.");
 					return;
 				}
-
+				
 				else if (leader.isInOlympiadMode())
 				{
 					player.sendMessage("Your leader is in the Olympiad now.");
 					return;
 				}
-
+				
 				else if (leader.inObserverMode())
 				{
 					player.sendMessage("Your leader is in Observ Mode.");
 					return;
 				}
-
+				
 				else if (leader.isInDuel())
 				{
 					player.sendMessage("Your leader is in a duel.");
 					return;
 				}
-
+				
 				else if (leader.isFestivalParticipant())
 				{
 					player.sendMessage("Your leader is in a festival.");
-
+					
 					return;
 				}
-
+				
 				else if (leader.isInParty() && leader.getParty().isInDimensionalRift())
 				{
 					player.sendMessage("Your leader is in dimensional rift.");
 					return;
 				}
-
+				
 				if (player.getClan() != null)
 				{
 					if (leader == null)
@@ -391,17 +369,17 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 					{
 						case 0:
 							filename = "data/html/chamberlain/manor/manor.htm";
-						break;
+							break;
 						// TODO: correct in html's to 1
 						case 4:
 							filename = "data/html/chamberlain/manor/manor_help00" + st.nextToken() + ".htm";
-						break;
+							break;
 						default:
 							filename = "data/html/chamberlain/chamberlain-no.htm";
-						break;
+							break;
 					}
 				}
-
+				
 				if (filename.length() != 0)
 				{
 					NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
@@ -421,20 +399,20 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 					player.sendPacket(SystemMessageId.THE_MANOR_SYSTEM_IS_CURRENTLY_UNDER_MAINTENANCE);
 					return;
 				}
-
+				
 				String params = command.substring(command.indexOf("?") + 1);
 				StringTokenizer str = new StringTokenizer(params, "&");
 				int ask = Integer.parseInt(str.nextToken().split("=")[1]);
 				int state = Integer.parseInt(str.nextToken().split("=")[1]);
 				int time = Integer.parseInt(str.nextToken().split("=")[1]);
-
+				
 				int castleId;
 				if (state == -1) // info for current manor
 					castleId = getCastle().getCastleId();
 				else
 					// info for requested manor
 					castleId = state;
-
+				
 				switch (ask)
 				{ // Main action
 					case 3: // Current seeds (Manor info)
@@ -442,16 +420,16 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 							player.sendPacket(new ExShowSeedInfo(castleId, null));
 						else
 							player.sendPacket(new ExShowSeedInfo(castleId, CastleManager.getInstance().getCastleById(castleId).getSeedProduction(time)));
-					break;
+						break;
 					case 4: // Current crops (Manor info)
 						if (time == 1 && !CastleManager.getInstance().getCastleById(castleId).isNextPeriodApproved())
 							player.sendPacket(new ExShowCropInfo(castleId, null));
 						else
 							player.sendPacket(new ExShowCropInfo(castleId, CastleManager.getInstance().getCastleById(castleId).getCropProcure(time)));
-					break;
+						break;
 					case 5: // Basic info (Manor info)
 						player.sendPacket(new ExShowManorDefaultInfo());
-					break;
+						break;
 					case 7: // Edit seed setup
 						if (getCastle().isNextPeriodApproved())
 						{
@@ -461,7 +439,7 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 						{
 							player.sendPacket(new ExShowSeedSetting(getCastle().getCastleId()));
 						}
-					break;
+						break;
 					case 8: // Edit crop setup
 						if (getCastle().isNextPeriodApproved())
 						{
@@ -471,7 +449,7 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 						{
 							player.sendPacket(new ExShowCropSetting(getCastle().getCastleId()));
 						}
-					break;
+						break;
 				}
 			}
 			else if (actualCommand.equalsIgnoreCase("operate_door")) // door control
@@ -484,7 +462,7 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 						getCastle().openCloseDoor(player, Integer.parseInt(st.nextToken()), open);
 					}
 				}
-
+				
 				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 				html.setFile("data/html/chamberlain/" + getTemplate().npcId + "-d.htm");
 				html.replace("%objectId%", String.valueOf(getObjectId()));
@@ -496,7 +474,7 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 			{
 				if (val != "")
 					getCastle().setTaxPercent(player, Integer.parseInt(val));
-
+				
 				StringBuilder msg = new StringBuilder("<html><body>");
 				msg.append(getName() + ":<br>");
 				msg.append("Current tax rate: " + getCastle().getTaxPercent() + "%<br>");
@@ -509,15 +487,15 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 				msg.append("</table>");
 				msg.append("</center>");
 				msg.append("</body></html>");
-
+				
 				sendHtmlMessage(player, msg.toString());
 				return;
 			}
 		}
-
+		
 		super.onBypassFeedback(player, command);
 	}
-
+	
 	private void sendHtmlMessage(L2PcInstance player, String htmlMessage)
 	{
 		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
@@ -526,12 +504,12 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 		html.replace("%npcname%", getName());
 		player.sendPacket(html);
 	}
-
+	
 	private void showMessageWindow(L2PcInstance player)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		String filename = "data/html/chamberlain/chamberlain-no.htm";
-
+		
 		int condition = validateCondition(player);
 		if (condition > COND_ALL_FALSE)
 		{
@@ -540,7 +518,7 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 			else if (condition == COND_OWNER) // Clan owns castle
 				filename = "data/html/chamberlain/chamberlain.htm"; // Owner message window
 		}
-
+		
 		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		html.setFile(filename);
 		html.replace("%objectId%", String.valueOf(getObjectId()));
@@ -548,34 +526,18 @@ public class L2CastleChamberlainInstance extends L2NpcInstance
 		html.replace("%npcname%", getName());
 		player.sendPacket(html);
 	}
-
-	/*
-	 * private void showVaultWindowDeposit(L2PcInstance player)
-	 * {
-	 * player.sendPacket(ActionFailed.STATIC_PACKET);
-	 * player.setActiveWarehouse(player.getClan().getWarehouse());
-	 * player.sendPacket(new WareHouseDepositList(player, WareHouseDepositList.CLAN)); //Or Castle ??
-	 * }
-	 * 
-	 * private void showVaultWindowWithdraw(L2PcInstance player)
-	 * {
-	 * player.sendPacket(ActionFailed.STATIC_PACKET);
-	 * player.setActiveWarehouse(player.getClan().getWarehouse());
-	 * player.sendPacket(new WareHouseWithdrawalList(player, WareHouseWithdrawalList.CLAN)); //Or Castle ??
-	 * }
-	 */
 	
 	protected int validateCondition(L2PcInstance player)
 	{
 		if (getCastle() != null && player.getClan() != null)
 		{
-				if (getCastle().getSiege().getIsInProgress())
-					return COND_BUSY_BECAUSE_OF_SIEGE; // Busy because of siege
+			if (getCastle().getSiege().getIsInProgress())
+				return COND_BUSY_BECAUSE_OF_SIEGE; // Busy because of siege
 				
-				if (getCastle().getOwnerId() == player.getClanId()) // Clan owns castle
-					return COND_OWNER; // Owner
+			if (getCastle().getOwnerId() == player.getClanId()) // Clan owns castle
+				return COND_OWNER; // Owner
 		}
-
+		
 		return COND_ALL_FALSE;
 	}
 	

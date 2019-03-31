@@ -1,25 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.communitybbs.Manager;
-
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
 import com.l2jhellas.gameserver.communitybbs.BB.Post;
@@ -28,11 +7,18 @@ import com.l2jhellas.gameserver.communitybbs.BB.Topic;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 public class PostBBSManager extends BaseBBSManager
 {
 	private final Map<Topic, Post> _postByTopic;
 	private static PostBBSManager _instance;
-
+	
 	public static PostBBSManager getInstance()
 	{
 		if (_instance == null)
@@ -41,12 +27,12 @@ public class PostBBSManager extends BaseBBSManager
 		}
 		return _instance;
 	}
-
+	
 	public PostBBSManager()
 	{
-		_postByTopic = new HashMap<Topic, Post>();
+		_postByTopic = new HashMap<>();
 	}
-
+	
 	public Post getGPosttByTopic(Topic t)
 	{
 		Post post = null;
@@ -58,12 +44,12 @@ public class PostBBSManager extends BaseBBSManager
 		}
 		return post;
 	}
-
+	
 	public void delPostByTopic(Topic t)
 	{
 		_postByTopic.remove(t);
 	}
-
+	
 	public void addPostByTopic(Post p, Topic t)
 	{
 		if (_postByTopic.get(t) == null)
@@ -71,14 +57,14 @@ public class PostBBSManager extends BaseBBSManager
 			_postByTopic.put(t, p);
 		}
 	}
-
-	private Post load(Topic t)
+	
+	private static Post load(Topic t)
 	{
 		Post p;
 		p = new Post(t);
 		return p;
 	}
-
+	
 	@Override
 	public void parsecmd(String command, L2PcInstance activeChar)
 	{
@@ -103,7 +89,7 @@ public class PostBBSManager extends BaseBBSManager
 			{
 				ind = Integer.parseInt(index);
 			}
-
+			
 			showPost((TopicBBSManager.getInstance().getTopicByID(idp)), ForumsBBSManager.getInstance().getForumByID(idf), activeChar, ind);
 		}
 		else if (command.startsWith("_bbsposts;edit;"))
@@ -124,13 +110,7 @@ public class PostBBSManager extends BaseBBSManager
 			activeChar.sendPacket(new ShowBoard(null, "103"));
 		}
 	}
-
-	/**
-	 * @param topic
-	 * @param forumByID
-	 * @param activeChar
-	 * @param idp
-	 */
+	
 	private void showEditPost(Topic topic, Forum forum, L2PcInstance activeChar, int idp)
 	{
 		Post p = getGPosttByTopic(topic);
@@ -146,14 +126,7 @@ public class PostBBSManager extends BaseBBSManager
 			showHtmlEditPost(topic, activeChar, forum, p);
 		}
 	}
-
-	/**
-	 * @param posttByTopic
-	 * @param forumByID
-	 * @param activeChar
-	 * @param ind
-	 * @param idf
-	 */
+	
 	private void showPost(Topic topic, Forum forum, L2PcInstance activeChar, int ind)
 	{
 		if ((forum == null) || (topic == null))
@@ -175,13 +148,7 @@ public class PostBBSManager extends BaseBBSManager
 			activeChar.sendPacket(new ShowBoard(null, "103"));
 		}
 	}
-
-	/**
-	 * @param topic
-	 * @param activeChar
-	 * @param forum
-	 * @param p
-	 */
+	
 	private void showHtmlEditPost(Topic topic, L2PcInstance activeChar, Forum forum, Post p)
 	{
 		StringBuilder html = new StringBuilder("<html>");
@@ -229,12 +196,7 @@ public class PostBBSManager extends BaseBBSManager
 		send1001(html.toString(), activeChar);
 		send1002(activeChar, p.getCPost(0).postTxt, topic.getName(), DateFormat.getInstance().format(new Date(topic.getDate())));
 	}
-
-	/**
-	 * @param topic
-	 * @param activeChar
-	 * @param forum
-	 */
+	
 	private void showMemoPost(Topic topic, L2PcInstance activeChar, Forum forum)
 	{
 		//
@@ -302,16 +264,16 @@ public class PostBBSManager extends BaseBBSManager
 		html.append("</html>");
 		separateAndSend(html.toString(), activeChar);
 	}
-
+	
 	@Override
 	public void parsewrite(String ar1, String ar2, String ar3, String ar4, String ar5, L2PcInstance activeChar)
 	{
-
+		
 		StringTokenizer st = new StringTokenizer(ar1, ";");
 		int idf = Integer.parseInt(st.nextToken());
 		int idt = Integer.parseInt(st.nextToken());
 		int idp = Integer.parseInt(st.nextToken());
-
+		
 		Forum f = ForumsBBSManager.getInstance().getForumByID(idf);
 		if (f == null)
 		{
@@ -345,7 +307,7 @@ public class PostBBSManager extends BaseBBSManager
 					activeChar.sendPacket(new ShowBoard(null, "102"));
 					activeChar.sendPacket(new ShowBoard(null, "103"));
 				}
-				else
+				else if (p != null)
 				{
 					p.getCPost(idp).postTxt = ar4;
 					p.updatetxt(idp);

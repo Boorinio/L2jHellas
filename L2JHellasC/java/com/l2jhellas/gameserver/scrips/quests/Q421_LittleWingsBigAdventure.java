@@ -1,15 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -26,15 +14,6 @@ import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.util.Rnd;
 
-/**
- * iCond is an internal variable, used because cond isn't developped on that quest (only 3 states) :
- * <ul>
- * <li>1-3 leads initial mimyu behavior ;</li>
- * <li>used for leaves support as mask : 4, 8, 16 or 32 = 60 overall ;</li>
- * <li>63 becomes the "marker" to get back to mimyu (60 + 3), meaning you hitted the 4 trees ;</li>
- * <li>setted to 100 if mimyu check is ok.</li>
- * </ul>
- */
 public class Q421_LittleWingsBigAdventure extends Quest
 {
 	private static final String qn = "Q421_LittleWingsBigAdventure";

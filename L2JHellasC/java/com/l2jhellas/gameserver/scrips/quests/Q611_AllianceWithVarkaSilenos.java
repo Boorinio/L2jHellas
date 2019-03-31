@@ -1,18 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
-
-import java.util.HashMap;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -20,15 +6,14 @@ import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.util.Rnd;
 
-/**
- * This quest supports both Q611 && Q612 onKill sections.
- */
+import java.util.HashMap;
+
 public class Q611_AllianceWithVarkaSilenos extends Quest
 {
 	private static final String qn = "Q611_AllianceWithVarkaSilenos";
 	private static final String qn2 = "Q612_WarWithKetraOrcs";
 	
-	private static final HashMap<Integer, Integer> Chance = new HashMap<Integer, Integer>();
+	private static final HashMap<Integer, Integer> Chance = new HashMap<>();
 	{
 		Chance.put(21324, 508000);
 		Chance.put(21325, 500000);
@@ -53,7 +38,7 @@ public class Q611_AllianceWithVarkaSilenos extends Quest
 		Chance.put(21349, 627000);
 	}
 	
-	private static final HashMap<Integer, Integer> ChanceMolar = new HashMap<Integer, Integer>();
+	private static final HashMap<Integer, Integer> ChanceMolar = new HashMap<>();
 	{
 		ChanceMolar.put(21324, 500000);
 		ChanceMolar.put(21327, 510000);

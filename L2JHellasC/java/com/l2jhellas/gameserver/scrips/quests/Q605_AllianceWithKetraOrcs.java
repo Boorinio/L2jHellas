@@ -1,19 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
-
-import java.util.HashMap;
-import java.util.Set;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -21,15 +6,15 @@ import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.util.Rnd;
 
-/**
- * This quest supports both Q605 && Q606 onKill sections.
- */
+import java.util.HashMap;
+import java.util.Set;
+
 public class Q605_AllianceWithKetraOrcs extends Quest
 {
 	private static final String qn = "Q605_AllianceWithKetraOrcs";
 	private static final String qn2 = "Q606_WarWithVarkaSilenos";
 	
-	private static final HashMap<Integer, Integer> Chance = new HashMap<Integer, Integer>();
+	private static final HashMap<Integer, Integer> Chance = new HashMap<>();
 	{
 		Chance.put(21350, 500000);
 		Chance.put(21351, 500000);
@@ -54,7 +39,7 @@ public class Q605_AllianceWithKetraOrcs extends Quest
 		Chance.put(21375, 626000);
 	}
 	
-	private static final HashMap<Integer, Integer> ChanceMane = new HashMap<Integer, Integer>();
+	private static final HashMap<Integer, Integer> ChanceMane = new HashMap<>();
 	{
 		ChanceMane.put(21350, 500000);
 		ChanceMane.put(21353, 510000);
@@ -343,7 +328,7 @@ public class Q605_AllianceWithKetraOrcs extends Quest
 		QuestState st = partyMember.getQuestState(qn2);
 		if (st != null && Rnd.get(1) == 0)
 		{
-			int chance = (int) ChanceMane.get(npcId);
+			int chance = ChanceMane.get(npcId);
 			if (chance != 0)
 			{
 				st.dropItems(Mane, 1, -1, chance);
@@ -365,13 +350,13 @@ public class Q605_AllianceWithKetraOrcs extends Quest
 			case 21354:
 			case 21355:
 				if (cond == 1)
-					st.dropItems(Varka_Badge_Soldier, 1, 100, (int) Chance.get(npcId));
+					st.dropItems(Varka_Badge_Soldier, 1, 100, Chance.get(npcId));
 				else if (cond == 2)
-					st.dropItems(Varka_Badge_Soldier, 1, 200, (int) Chance.get(npcId));
+					st.dropItems(Varka_Badge_Soldier, 1, 200, Chance.get(npcId));
 				else if (cond == 3 || cond == 4)
-					st.dropItems(Varka_Badge_Soldier, 1, 300, (int) Chance.get(npcId));
+					st.dropItems(Varka_Badge_Soldier, 1, 300, Chance.get(npcId));
 				else if (cond == 5)
-					st.dropItems(Varka_Badge_Soldier, 1, 400, (int) Chance.get(npcId));
+					st.dropItems(Varka_Badge_Soldier, 1, 400, Chance.get(npcId));
 				break;
 			
 			case 21357:
@@ -382,13 +367,13 @@ public class Q605_AllianceWithKetraOrcs extends Quest
 			case 21369:
 			case 21370:
 				if (cond == 2)
-					st.dropItems(Varka_Badge_Officer, 1, 100, (int) Chance.get(npcId));
+					st.dropItems(Varka_Badge_Officer, 1, 100, Chance.get(npcId));
 				else if (cond == 3)
-					st.dropItems(Varka_Badge_Officer, 1, 200, (int) Chance.get(npcId));
+					st.dropItems(Varka_Badge_Officer, 1, 200, Chance.get(npcId));
 				else if (cond == 4)
-					st.dropItems(Varka_Badge_Officer, 1, 300, (int) Chance.get(npcId));
+					st.dropItems(Varka_Badge_Officer, 1, 300, Chance.get(npcId));
 				else if (cond == 5)
-					st.dropItems(Varka_Badge_Officer, 1, 400, (int) Chance.get(npcId));
+					st.dropItems(Varka_Badge_Officer, 1, 400, Chance.get(npcId));
 				break;
 			
 			case 21364:
@@ -401,9 +386,9 @@ public class Q605_AllianceWithKetraOrcs extends Quest
 			case 21374:
 			case 21375:
 				if (cond == 3)
-					st.dropItems(Varka_Badge_Captain, 1, 100, (int) Chance.get(npcId));
+					st.dropItems(Varka_Badge_Captain, 1, 100, Chance.get(npcId));
 				else if (cond == 4 || cond == 5)
-					st.dropItems(Varka_Badge_Captain, 1, 200, (int) Chance.get(npcId));
+					st.dropItems(Varka_Badge_Captain, 1, 200, Chance.get(npcId));
 				break;
 		}
 		

@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -20,13 +6,10 @@ import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.util.Util;
 
-/**
- * @author SqueezeD
- */
 public class AdminDMEngine implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_dmevent",
 		"admin_dmevent_name",
 		"admin_dmevent_desc",
@@ -48,8 +31,8 @@ public class AdminDMEngine implements IAdminCommandHandler
 		"admin_dmevent_dump",
 		"admin_dmevent_save",
 		"admin_dmevent_load"
-	};/** @formatter:on */
-
+	};
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -157,21 +140,21 @@ public class AdminDMEngine implements IAdminCommandHandler
 		}
 		else if (command.equals("admin_dmevent_dump"))
 			DM.dumpData();
-
+		
 		return true;
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
+	
 	public void showMainPage(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		StringBuilder replyMSG = new StringBuilder("<html><body>");
-
+		
 		replyMSG.append("<center><font color=\"LEVEL\">[dm Engine - by SqueezeD]</font></center><br><br><br>");
 		replyMSG.append("<table><tr><td><edit var=\"input1\" width=\"125\"></td><td><edit var=\"input2\" width=\"125\"></td></tr></table>");
 		replyMSG.append("<table border=\"0\"><tr>");
@@ -217,7 +200,7 @@ public class AdminDMEngine implements IAdminCommandHandler
 		replyMSG.append("    ... Death Match Color:&nbsp;<font color=\"00FF00\">" + DM._playerColors + "</font><br>");
 		replyMSG.append("    ... Death Match Spawn Pos:&nbsp;<font color=\"00FF00\">" + DM._playerX + "," + DM._playerY + "," + DM._playerZ + "</font><br><br>");
 		replyMSG.append("Current players:<br1>");
-
+		
 		if (!DM._started)
 		{
 			replyMSG.append("<br1>");
@@ -230,7 +213,7 @@ public class AdminDMEngine implements IAdminCommandHandler
 			replyMSG.append(DM._players.size() + " players in fighting event.");
 			replyMSG.append("<br><br>");
 		}
-
+		
 		replyMSG.append("</body></html>");
 		adminReply.setHtml(replyMSG.toString());
 		activeChar.sendPacket(adminReply);

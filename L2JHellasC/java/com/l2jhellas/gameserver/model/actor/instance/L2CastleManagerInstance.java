@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
 
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -22,9 +8,6 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SiegeInfo;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-/**
- * @author -=DoctorNo=-
- */
 public class L2CastleManagerInstance extends L2Npc
 {
 	public String filename;
@@ -33,7 +16,7 @@ public class L2CastleManagerInstance extends L2Npc
 	{
 		super(objectId, template);
 	}
-
+	
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
@@ -41,11 +24,11 @@ public class L2CastleManagerInstance extends L2Npc
 			return;
 		if (!canTarget(player))
 			return;
-
+		
 		else if (command.startsWith("siege_"))
 		{
 			int castleId = 0;
-
+			
 			if (command.startsWith("siege_gludio"))
 				castleId = 1;
 			else if (command.startsWith("siege_dion"))
@@ -64,22 +47,22 @@ public class L2CastleManagerInstance extends L2Npc
 				castleId = 8;
 			else if (command.startsWith("siege_schuttgart"))
 				castleId = 9;
-
+			
 			Castle castle = CastleManager.getInstance().getCastleById(castleId);
 			if (castle != null && castleId != 0)
 				player.sendPacket(new SiegeInfo(castle));
 		}
 	}
-
+	
 	@Override
 	public void showChatWindow(L2PcInstance player, int val)
 	{
 		filename = (getHtmlPath(getNpcId(), val));
-		NpcHtmlMessage msg = new NpcHtmlMessage(this.getObjectId());
+		NpcHtmlMessage msg = new NpcHtmlMessage(getObjectId());
 		msg.setHtml(showWindow(player));
-		msg.replace("%objectId%", String.valueOf(this.getObjectId()));
+		msg.replace("%objectId%", String.valueOf(getObjectId()));
 		player.sendPacket(msg);
-
+		
 	}
 	
 	private static String showWindow(L2PcInstance player)

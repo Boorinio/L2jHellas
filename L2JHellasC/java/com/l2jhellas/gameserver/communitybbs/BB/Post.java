@@ -1,18 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.communitybbs.BB;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.communitybbs.Manager.PostBBSManager;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,17 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.communitybbs.Manager.PostBBSManager;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
-/**
- * @author Maktakien
- */
 public class Post
 {
 	private static Logger _log = Logger.getLogger(Post.class.getName());
-
+	
 	public class CPost
 	{
 		public int postId;
@@ -42,17 +25,12 @@ public class Post
 		public int postForumId;
 		public String postTxt;
 	}
-
+	
 	private final List<CPost> _post;
-
-	/**
-	 * @param restore
-	 * @param t
-	 */
-	// public enum ConstructorType {REPLY, CREATE };
+	
 	public Post(String _PostOwner, int _PostOwnerID, long date, int tid, int _PostForumID, String txt)
 	{
-		_post = new ArrayList<CPost>();
+		_post = new ArrayList<>();
 		CPost cp = new CPost();
 		cp.postId = 0;
 		cp.postOwner = _PostOwner;
@@ -63,9 +41,9 @@ public class Post
 		cp.postTxt = txt;
 		_post.add(cp);
 		insertindb(cp);
-
+		
 	}
-
+	
 	public void insertindb(CPost cp)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -88,13 +66,13 @@ public class Post
 				e.printStackTrace();
 		}
 	}
-
+	
 	public Post(Topic t)
 	{
-		_post = new ArrayList<CPost>();
+		_post = new ArrayList<>();
 		load(t);
 	}
-
+	
 	public CPost getCPost(int id)
 	{
 		int i = 0;
@@ -108,7 +86,7 @@ public class Post
 		}
 		return null;
 	}
-
+	
 	public void deleteme(Topic t)
 	{
 		PostBBSManager.getInstance().delPostByTopic(t);
@@ -129,10 +107,7 @@ public class Post
 			}
 		}
 	}
-
-	/**
-	 * @param t
-	 */
+	
 	private void load(Topic t)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -163,10 +138,7 @@ public class Post
 				e.printStackTrace();
 		}
 	}
-
-	/**
-	 * @param i
-	 */
+	
 	public void updatetxt(int i)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())

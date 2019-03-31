@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
@@ -23,25 +9,25 @@ public class AllyInfo extends L2GameServerPacket
 {
 	private static final String _S__7A_FRIENDLIST = "[S] 7a AllyInfo";
 	private static L2PcInstance _cha;
-
+	
 	public AllyInfo(L2PcInstance cha)
 	{
 		_cha = cha;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		final L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
-
+		
 		if (activeChar.getAllyId() == 0)
 		{
 			_cha.sendPacket(SystemMessageId.NO_CURRENT_ALLIANCES);
 			return;
 		}
-
+		
 		// ======<AllyInfo>======
 		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.ALLIANCE_INFO_HEAD);
 		_cha.sendPacket(sm);
@@ -102,7 +88,7 @@ public class AllyInfo extends L2GameServerPacket
 		sm = SystemMessage.getSystemMessage(SystemMessageId.CLAN_INFO_FOOT);
 		_cha.sendPacket(sm);
 	}
-
+	
 	@Override
 	public String getType()
 	{

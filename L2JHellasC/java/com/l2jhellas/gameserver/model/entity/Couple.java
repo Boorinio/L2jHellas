@@ -1,18 +1,9 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.entity;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.idfactory.IdFactory;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,51 +11,43 @@ import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.idfactory.IdFactory;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
-/**
- * @author evill33t
- */
 public class Couple
 {
 	protected static final Logger _log = Logger.getLogger(Couple.class.getName());
-
+	
 	private int _Id = 0;
 	private int _player1Id = 0;
 	private int _player2Id = 0;
 	private boolean _maried = false;
 	private Calendar _affiancedDate;
 	private Calendar _weddingDate;
-
+	
 	public Couple(int coupleId)
 	{
 		_Id = coupleId;
-
+		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM mods_wedding WHERE id=?");
 			statement.setInt(1, _Id);
 			ResultSet rs = statement.executeQuery();
-
+			
 			while (rs.next())
 			{
 				_player1Id = rs.getInt("player1Id");
 				_player2Id = rs.getInt("player2Id");
 				_maried = rs.getBoolean("married");
-
+				
 				_affiancedDate = Calendar.getInstance();
 				_affiancedDate.setTimeInMillis(rs.getLong("affianceDate"));
-
+				
 				_weddingDate = Calendar.getInstance();
 				_weddingDate.setTimeInMillis(rs.getLong("weddingDate"));
 			}
 			
 			rs.close();
 			statement.close();
-			this._maried = true;
+			_maried = true;
 		}
 		catch (Exception e)
 		{
@@ -73,21 +56,21 @@ public class Couple
 				e.printStackTrace();
 		}
 	}
-
+	
 	public Couple(L2PcInstance player1, L2PcInstance player2)
 	{
 		int _tempPlayer1Id = player1.getObjectId();
 		int _tempPlayer2Id = player2.getObjectId();
-
+		
 		_player1Id = _tempPlayer1Id;
 		_player2Id = _tempPlayer2Id;
-
+		
 		_affiancedDate = Calendar.getInstance();
 		_affiancedDate.setTimeInMillis(Calendar.getInstance().getTimeInMillis());
-
+		
 		_weddingDate = Calendar.getInstance();
 		_weddingDate.setTimeInMillis(Calendar.getInstance().getTimeInMillis());
-
+		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			_Id = IdFactory.getInstance().getNextId();
@@ -100,8 +83,8 @@ public class Couple
 			statement.setLong(6, _weddingDate.getTimeInMillis());
 			statement.execute();
 			statement.close();
-			this._maried = true;
-
+			_maried = true;
+			
 		}
 		catch (Exception e)
 		{
@@ -110,7 +93,7 @@ public class Couple
 				e.printStackTrace();
 		}
 	}
-
+	
 	public void marry()
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -131,7 +114,7 @@ public class Couple
 				e.printStackTrace();
 		}
 	}
-
+	
 	public void divorce()
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -139,6 +122,7 @@ public class Couple
 			PreparedStatement statement = con.prepareStatement("DELETE FROM mods_wedding WHERE id=?");
 			statement.setInt(1, _Id);
 			statement.execute();
+			statement.close();
 		}
 		catch (Exception e)
 		{
@@ -147,32 +131,32 @@ public class Couple
 				e.printStackTrace();
 		}
 	}
-
+	
 	public final int getId()
 	{
 		return _Id;
 	}
-
+	
 	public final int getPlayer1Id()
 	{
 		return _player1Id;
 	}
-
+	
 	public final int getPlayer2Id()
 	{
 		return _player2Id;
 	}
-
+	
 	public final boolean getMaried()
 	{
 		return _maried;
 	}
-
+	
 	public final Calendar getAffiancedDate()
 	{
 		return _affiancedDate;
 	}
-
+	
 	public final Calendar getWeddingDate()
 	{
 		return _weddingDate;

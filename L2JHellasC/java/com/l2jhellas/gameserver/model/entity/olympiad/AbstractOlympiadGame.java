@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.entity.olympiad;
-
-import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -34,6 +18,8 @@ import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
+
+import java.util.logging.Logger;
 
 public abstract class AbstractOlympiadGame
 {
@@ -89,14 +75,9 @@ public abstract class AbstractOlympiadGame
 		broadcastPacket(sm);
 	}
 	
-	/**
-	 * Return null if player passed all checks or broadcast the reason to opponent.
-	 * @param player to check.
-	 * @return null or reason.
-	 */
 	protected static SystemMessage checkDefaulted(L2PcInstance player)
 	{
-		if (player == null || player.isOnline()==0)
+		if (player == null || player.isOnline() == 0)
 			return SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_HAS_BEEN_CANCELLED_BECAUSE_THE_OTHER_PARTY_ENDS_THE_GAME);
 		
 		if (player.getClient() == null || player.getClient().isDetached())
@@ -123,7 +104,6 @@ public abstract class AbstractOlympiadGame
 			player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CANNOT_JOIN_OLYMPIAD_POSSESSING_S1).addItemName(player.getCursedWeaponEquipedId()));
 			return SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_HAS_BEEN_CANCELLED_BECAUSE_THE_OTHER_PARTY_DOES_NOT_MEET_THE_REQUIREMENTS_FOR_JOINING_THE_GAME);
 		}
-
 		
 		return null;
 	}
@@ -131,21 +111,21 @@ public abstract class AbstractOlympiadGame
 	protected static final boolean portPlayerToArena(Participant par, Location loc, int id)
 	{
 		final L2PcInstance player = par.player;
-		if (player == null || player.isOnline()==0)
+		if (player == null || player.isOnline() == 0)
 			return false;
 		
 		_playerLocation = new int[3];
 		
 		try
 		{
-
-			if(player.isDead())
+			
+			if (player.isDead())
 				player.doRevive();
 			
-			if(player.isInvul())
+			if (player.isInvul())
 				player.setIsInvul(false);
 			
-			if(player.getAppearance().getInvisible())
+			if (player.getAppearance().getInvisible())
 				player.getAppearance().setVisible();
 			
 			_playerLocation[0] = player.getX();
@@ -173,6 +153,7 @@ public abstract class AbstractOlympiadGame
 		return true;
 	}
 	
+	@SuppressWarnings("static-access")
 	protected static final void removals(L2PcInstance player, boolean removeParty)
 	{
 		try
@@ -250,10 +231,6 @@ public abstract class AbstractOlympiadGame
 		}
 	}
 	
-	/**
-	 * Buff and heal the player. WW2 for fighter/mage + haste 1 if fighter.
-	 * @param player : the happy benefactor.
-	 */
 	protected static final void buffAndHealPlayer(L2PcInstance player)
 	{
 		L2Skill skill = SkillTable.getInstance().getInfo(1204, 2); // Windwalk 2
@@ -346,7 +323,7 @@ public abstract class AbstractOlympiadGame
 			if (player.isHero())
 			{
 				for (L2Skill skill : HeroSkillTable.GetHeroSkills())
-					player.addSkill(skill, false);				
+					player.addSkill(skill, false);
 			}
 			player.sendSkillList();
 		}
@@ -369,7 +346,7 @@ public abstract class AbstractOlympiadGame
 	
 	public static final void rewardParticipant(L2PcInstance player, int[][] reward)
 	{
-		if (player == null || player.isOnline()==0 || reward == null)
+		if (player == null || player.isOnline() == 0 || reward == null)
 			return;
 		
 		try

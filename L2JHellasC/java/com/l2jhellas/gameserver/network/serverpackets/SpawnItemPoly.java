@@ -1,33 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 
-/**
- * 15
- * ee cc 11 43 object id
- * 39 00 00 00 item id
- * 8f 14 00 00 x
- * b7 f1 00 00 y
- * 60 f2 ff ff z
- * 01 00 00 00 show item count
- * 7a 00 00 00 count .
- * format dddddddd
- */
 public class SpawnItemPoly extends L2GameServerPacket
 {
 	private static final String _S__15_SPAWNITEM = "[S] 15 SpawnItem";
@@ -35,7 +10,7 @@ public class SpawnItemPoly extends L2GameServerPacket
 	private int _itemId;
 	private int _x, _y, _z;
 	private int _stackable, _count;
-
+	
 	public SpawnItemPoly(L2Object object)
 	{
 		if (object instanceof L2ItemInstance)
@@ -60,14 +35,14 @@ public class SpawnItemPoly extends L2GameServerPacket
 			_count = 1;
 		}
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x0b);
 		writeD(_objectId);
 		writeD(_itemId);
-
+		
 		writeD(_x);
 		writeD(_y);
 		writeD(_z);
@@ -76,7 +51,7 @@ public class SpawnItemPoly extends L2GameServerPacket
 		writeD(_count);
 		writeD(0x00); // c2
 	}
-
+	
 	@Override
 	public String getType()
 	{

@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.entity.engines;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -29,9 +12,9 @@ import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage.SMPOS;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-/**
- * @author Boorinio
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class CastleWars
 {
 	private static List<L2PcInstance> _defenders = new ArrayList<>();
@@ -50,15 +33,21 @@ public class CastleWars
 	public static int attackersz = -933;
 	public static int[] flagslocx =
 	{
-	77545, 76663, 78446,
+		77545,
+		76663,
+		78446,
 	};
 	private static int[] flagslocy =
 	{
-	-149937, -154522, -154524,
+		-149937,
+		-154522,
+		-154524,
 	};
 	private static int[] flagslocz =
 	{
-	345, 128, 235,
+		345,
+		128,
+		235,
 	};
 	
 	public static void openRegi()
@@ -141,7 +130,7 @@ public class CastleWars
 			flags.deleteMe();
 			
 		}
-		CastleWarsRunning =false;
+		CastleWarsRunning = false;
 		flagskilled = 0;
 		_flags.clear();
 		_defenders.clear();
@@ -165,10 +154,10 @@ public class CastleWars
 		Announcements.getInstance().announceToAll("The Defending side Won the event! They successfully protected the flags!");
 		for (L2PcInstance defender : _defenders)
 		{
-			if(defender!=null)
+			if (defender != null)
 			{
-			defender.sendMessage("Congratulations! Here is a reward for your effort!");
-			defender.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, defender, true);
+				defender.sendMessage("Congratulations! Here is a reward for your effort!");
+				defender.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, defender, true);
 			}
 		}
 		isFinished = true;
@@ -194,19 +183,19 @@ public class CastleWars
 	{
 		if (player != null)
 		{
-		if (isattacker(player))
-		{
+			if (isattacker(player))
+			{
+				
+				player.teleToLocation(attackersx, attackersy, attackersz);
+			}
+			if (isdefender(player))
+			{
+				
+				player.teleToLocation(defendersx, defendersy, defendersz);
+				
+			}
 			
-			player.teleToLocation(attackersx, attackersy, attackersz);
-		}
-		if (isdefender(player))
-		{
-			
-			player.teleToLocation(defendersx, defendersy, defendersz);
-
-		}	
-		
-		player.doRevive();
+			player.doRevive();
 		}
 	}
 	

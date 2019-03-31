@@ -27,7 +27,7 @@ public class Q401_PathToAWarrior extends Quest
 	
 	public Q401_PathToAWarrior()
 	{
-		super(401,qn, "Path to a Warrior");
+		super(401, qn, "Path to a Warrior");
 		
 		setItemsIds(AURON_LETTER, WARRIOR_GUILD_MARK, RUSTED_BRONZE_SWORD_1, RUSTED_BRONZE_SWORD_2, RUSTED_BRONZE_SWORD_3, SIMPLON_LETTER, POISON_SPIDER_LEG);
 		
@@ -175,6 +175,7 @@ public class Q401_PathToAWarrior extends Quest
 		
 		return null;
 	}
+	
 	public static void main(String[] args)
 	{
 		new Q401_PathToAWarrior();

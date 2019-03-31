@@ -1,24 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.skills;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
 
 import com.PackRoot;
 import com.l2jhellas.gameserver.emum.L2EtcItemType;
@@ -29,26 +9,29 @@ import com.l2jhellas.gameserver.templates.L2EtcItem;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 
-/**
- * @author mkizub
- */
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
 public class SkillsEngine
 {
-
+	
 	protected static final Logger _log = Logger.getLogger(SkillsEngine.class.getName());
-
+	
 	private static final SkillsEngine _instance = new SkillsEngine();
-
-	private final List<File> _armorFiles = new ArrayList<File>();
-	private final List<File> _weaponFiles = new ArrayList<File>();
-	private final List<File> _etcitemFiles = new ArrayList<File>();
-	private final List<File> _skillFiles = new ArrayList<File>();
-
+	
+	private final List<File> _armorFiles = new ArrayList<>();
+	private final List<File> _weaponFiles = new ArrayList<>();
+	private final List<File> _etcitemFiles = new ArrayList<>();
+	private final List<File> _skillFiles = new ArrayList<>();
+	
 	public static SkillsEngine getInstance()
 	{
 		return _instance;
 	}
-
+	
 	private SkillsEngine()
 	{
 		// hashFiles("data/stats/etcitem", _etcitemFiles);
@@ -56,8 +39,8 @@ public class SkillsEngine
 		hashFiles("data/stats/weapon", _weaponFiles);
 		hashFiles("data/stats/skills", _skillFiles);
 	}
-
-	private void hashFiles(String dirname, List<File> hash)
+	
+	private static void hashFiles(String dirname, List<File> hash)
 	{
 		File dir = new File(PackRoot.DATAPACK_ROOT, dirname);
 		if (!dir.exists())
@@ -76,7 +59,7 @@ public class SkillsEngine
 		if (customfile.exists())
 			hash.add(customfile);
 	}
-
+	
 	public List<L2Skill> loadSkills(File file)
 	{
 		if (file == null)
@@ -88,7 +71,7 @@ public class SkillsEngine
 		doc.parse();
 		return doc.getSkills();
 	}
-
+	
 	public void loadAllSkills(Map<Integer, L2Skill> allSkills)
 	{
 		int count = 0;
@@ -105,30 +88,30 @@ public class SkillsEngine
 		}
 		_log.config("SkillsEngine: Loaded " + count + " Skill templates from XML files.");
 	}
-
+	
 	public List<L2Armor> loadArmors(Map<Integer, Item> armorData)
 	{
-		List<L2Armor> list = new ArrayList<L2Armor>();
+		List<L2Armor> list = new ArrayList<>();
 		for (L2Item item : loadData(armorData, _armorFiles))
 		{
 			list.add((L2Armor) item);
 		}
 		return list;
 	}
-
+	
 	public List<L2Weapon> loadWeapons(Map<Integer, Item> weaponData)
 	{
-		List<L2Weapon> list = new ArrayList<L2Weapon>();
+		List<L2Weapon> list = new ArrayList<>();
 		for (L2Item item : loadData(weaponData, _weaponFiles))
 		{
 			list.add((L2Weapon) item);
 		}
 		return list;
 	}
-
+	
 	public List<L2EtcItem> loadItems(Map<Integer, Item> itemData)
 	{
-		List<L2EtcItem> list = new ArrayList<L2EtcItem>();
+		List<L2EtcItem> list = new ArrayList<>();
 		for (L2Item item : loadData(itemData, _etcitemFiles))
 		{
 			list.add((L2EtcItem) item);
@@ -142,10 +125,10 @@ public class SkillsEngine
 		}
 		return list;
 	}
-
+	
 	public List<L2Item> loadData(Map<Integer, Item> itemData, List<File> files)
 	{
-		List<L2Item> list = new ArrayList<L2Item>();
+		List<L2Item> list = new ArrayList<>();
 		for (File f : files)
 		{
 			DocumentItem document = new DocumentItem(itemData, f);

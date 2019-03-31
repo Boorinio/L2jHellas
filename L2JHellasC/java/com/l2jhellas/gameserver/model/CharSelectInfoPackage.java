@@ -1,16 +1,16 @@
 package com.l2jhellas.gameserver.model;
 
+import com.l2jhellas.util.database.L2DatabaseFactory;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Logger;
 
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 public class CharSelectInfoPackage
-{	
+{
 	protected static final Logger _log = Logger.getLogger(CharSelectInfoPackage.class.getName());
-
+	
 	private static final String RESTORE_PAPERDOLLS = "SELECT object_id,item_id,loc_data,enchant_level FROM items WHERE owner_id=? AND loc='PAPERDOLL'";
 	
 	private final int _objectId;
@@ -359,8 +359,8 @@ public class CharSelectInfoPackage
 		}
 		catch (Exception e)
 		{
-			_log.warning(PcInventory.class.getSimpleName() + "Couldn't restore paperdolls for " +objectId +e);
-
+			_log.warning(PcInventory.class.getSimpleName() + "Couldn't restore paperdolls for " + objectId + e);
+			
 		}
 		return paperdoll;
 	}

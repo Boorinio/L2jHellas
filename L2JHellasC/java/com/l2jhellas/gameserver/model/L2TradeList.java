@@ -1,24 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -29,39 +9,47 @@ import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
 public class L2TradeList
 {
 	private static Logger _log = Logger.getLogger(L2TradeList.class.getName());
-
+	
 	private final List<L2ItemInstance> _items;
 	private final int _listId;
 	private boolean _confirmed;
 	private String _buystorename, _sellstorename;
-
+	
 	private String _npcId;
 
+	private TradeItem temp2;
+	
 	public L2TradeList(int listId)
 	{
-		_items = new ArrayList<L2ItemInstance>();
+		_items = new ArrayList<>();
 		_listId = listId;
 		_confirmed = false;
 	}
-
+	
 	public void setNpcId(String id)
 	{
 		_npcId = id;
 	}
-
+	
 	public String getNpcId()
 	{
 		return _npcId;
 	}
-
+	
 	public void addItem(L2ItemInstance item)
 	{
 		_items.add(item);
 	}
-
+	
 	public void replaceItem(int itemID, int price)
 	{
 		for (int i = 0; i < _items.size(); i++)
@@ -73,7 +61,7 @@ public class L2TradeList
 			}
 		}
 	}
-
+	
 	public void decreaseCount(int itemID, int count)
 	{
 		for (int i = 0; i < _items.size(); i++)
@@ -85,7 +73,7 @@ public class L2TradeList
 			}
 		}
 	}
-
+	
 	public void restoreCount(int time)
 	{
 		for (int i = 0; i < _items.size(); i++)
@@ -97,7 +85,7 @@ public class L2TradeList
 			}
 		}
 	}
-
+	
 	public void removeItem(int itemID)
 	{
 		for (int i = 0; i < _items.size(); i++)
@@ -109,48 +97,42 @@ public class L2TradeList
 			}
 		}
 	}
-
-	/**
-	 * @return Returns the listId.
-	 */
+	
 	public int getListId()
 	{
 		return _listId;
 	}
-
+	
 	public void setSellStoreName(String name)
 	{
 		_sellstorename = name;
 	}
-
+	
 	public String getSellStoreName()
 	{
 		return _sellstorename;
 	}
-
+	
 	public void setBuyStoreName(String name)
 	{
 		_buystorename = name;
 	}
-
+	
 	public String getBuyStoreName()
 	{
 		return _buystorename;
 	}
-
-	/**
-	 * @return Returns the items.
-	 */
+	
 	public List<L2ItemInstance> getItems()
 	{
 		return _items;
 	}
-
+	
 	public List<L2ItemInstance> getItems(int start, int end)
 	{
 		return _items.subList(start, end);
 	}
-
+	
 	public int getPriceForItemId(int itemId)
 	{
 		for (int i = 0; i < _items.size(); i++)
@@ -163,7 +145,7 @@ public class L2TradeList
 		}
 		return -1;
 	}
-
+	
 	public boolean countDecrease(int itemId)
 	{
 		for (int i = 0; i < _items.size(); i++)
@@ -176,7 +158,7 @@ public class L2TradeList
 		}
 		return false;
 	}
-
+	
 	public boolean containsItemId(int itemId)
 	{
 		for (L2ItemInstance item : _items)
@@ -184,10 +166,10 @@ public class L2TradeList
 			if (item.getItemId() == itemId)
 				return true;
 		}
-
+		
 		return false;
 	}
-
+	
 	public L2ItemInstance getItem(int ObjectId)
 	{
 		for (int i = 0; i < _items.size(); i++)
@@ -200,17 +182,17 @@ public class L2TradeList
 		}
 		return null;
 	}
-
+	
 	public synchronized void setConfirmedTrade(boolean x)
 	{
 		_confirmed = x;
 	}
-
+	
 	public synchronized boolean hasConfirmed()
 	{
 		return _confirmed;
 	}
-
+	
 	public void removeItem(int objId, int count)
 	{
 		L2ItemInstance temp;
@@ -223,12 +205,12 @@ public class L2TradeList
 				{
 					_items.remove(temp);
 				}
-
+				
 				break;
 			}
 		}
 	}
-
+	
 	public boolean contains(int objId)
 	{
 		boolean bool = false;
@@ -242,15 +224,15 @@ public class L2TradeList
 				break;
 			}
 		}
-
+		
 		return bool;
 	}
-
+	
 	public boolean validateTrade(L2PcInstance player)
 	{
 		Inventory playersInv = player.getInventory();
 		L2ItemInstance playerItem, temp;
-
+		
 		for (int y = 0; y < _items.size(); y++)
 		{
 			temp = _items.get(y);
@@ -260,8 +242,8 @@ public class L2TradeList
 		}
 		return true;
 	}
-
-	//Call validate before this
+	
+	// Call validate before this
 	public void tradeItems(L2PcInstance player, L2PcInstance reciever)
 	{
 		Inventory playersInv = player.getInventory();
@@ -269,12 +251,12 @@ public class L2TradeList
 		L2ItemInstance playerItem, recieverItem, temp, newitem;
 		InventoryUpdate update = new InventoryUpdate();
 		ItemTable itemTable = ItemTable.getInstance();
-
-		//boolean isValid;
-		//LinkedList<L2ItemInstance> itemsToAdd = new LinkedList<L2ItemInstance>();
-		//LinkedList<L2ItemInstance> itemsToRemove = new LinkedList<L2ItemInstance>();
-		//LinkedList countsToRemove = new LinkedList();
-
+		
+		// boolean isValid;
+		// LinkedList<L2ItemInstance> itemsToAdd = new LinkedList<L2ItemInstance>();
+		// LinkedList<L2ItemInstance> itemsToRemove = new LinkedList<L2ItemInstance>();
+		// LinkedList countsToRemove = new LinkedList();
+		
 		for (int y = 0; y < _items.size(); y++)
 		{
 			temp = _items.get(y);
@@ -284,19 +266,19 @@ public class L2TradeList
 				continue;
 			newitem = itemTable.createItem("L2TradeList", playerItem.getItemId(), playerItem.getCount(), player);
 			newitem.setEnchantLevel(temp.getEnchantLevel());
-
+			
 			// DIRTY FIX: Fix for trading pet collar not updating pet with new collar object id
 			changePetItemObjectId(playerItem.getObjectId(), newitem.getObjectId());
-
+			
 			playerItem = playersInv.destroyItem("!L2TradeList!", playerItem.getObjectId(), temp.getCount(), null, null);
 			recieverItem = recieverInv.addItem("!L2TradeList!", newitem, null, null);
-
+			
 			if (playerItem == null)
 			{
 				_log.warning(L2TradeList.class.getName() + ": L2TradeList: PlayersInv.destroyItem returned NULL!");
 				continue;
 			}
-
+			
 			if (playerItem.getLastChange() == L2ItemInstance.MODIFIED)
 			{
 				update.addModifiedItem(playerItem);
@@ -306,9 +288,9 @@ public class L2TradeList
 				L2World.getInstance().removeObject(playerItem);
 				update.addRemovedItem(playerItem);
 			}
-
+			
 			player.sendPacket(update);
-
+			
 			update = new InventoryUpdate();
 			if (recieverItem.getLastChange() == L2ItemInstance.MODIFIED)
 			{
@@ -318,21 +300,21 @@ public class L2TradeList
 			{
 				update.addNewItem(recieverItem);
 			}
-
+			
 			reciever.sendPacket(update);
 		}
-
+		
 		// weight status update both player and reciever
 		StatusUpdate su = new StatusUpdate(player.getObjectId());
 		su.addAttribute(StatusUpdate.CUR_LOAD, player.getCurrentLoad());
 		player.sendPacket(su);
-
+		
 		su = new StatusUpdate(reciever.getObjectId());
 		su.addAttribute(StatusUpdate.CUR_LOAD, reciever.getCurrentLoad());
 		reciever.sendPacket(su);
 	}
-
-	private void changePetItemObjectId(int oldObjectId, int newObjectId)
+	
+	private static void changePetItemObjectId(int oldObjectId, int newObjectId)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -348,18 +330,18 @@ public class L2TradeList
 			if (Config.DEVELOPER)
 				e.printStackTrace();
 		}
-
+		
 	}
-
+	
 	public void updateBuyList(L2PcInstance player, List<TradeItem> list)
 	{
-
+		
 		TradeItem temp;
 		int count;
 		Inventory playersInv = player.getInventory();
 		L2ItemInstance temp2;
 		count = 0;
-
+		
 		while (count != list.size())
 		{
 			temp = list.get(count);
@@ -379,9 +361,9 @@ public class L2TradeList
 			}
 			count++;
 		}
-
+		
 	}
-
+	
 	public void updateSellList(L2PcInstance player, List<TradeItem> list)
 	{
 		Inventory playersInv = player.getInventory();
@@ -407,36 +389,35 @@ public class L2TradeList
 			count++;
 		}
 	}
-
+	
 	public synchronized void buySellItems(L2PcInstance buyer, List<TradeItem> buyerslist, L2PcInstance seller, List<TradeItem> sellerslist)
 	{
 		Inventory sellerInv = seller.getInventory();
 		Inventory buyerInv = buyer.getInventory();
-
-		//TradeItem buyerItem         = null;
-		TradeItem temp2 = null;
-
+		
+		temp2 = null;
+		
 		L2ItemInstance sellerItem = null;
 		L2ItemInstance temp = null;
 		L2ItemInstance newitem = null;
 		L2ItemInstance adena = null;
 		int enchantLevel = 0;
-
+		
 		InventoryUpdate buyerupdate = new InventoryUpdate();
 		InventoryUpdate sellerupdate = new InventoryUpdate();
-
+		
 		ItemTable itemTable = ItemTable.getInstance();
-
+		
 		int amount = 0;
 		int x = 0;
 		int y = 0;
-
-		List<SystemMessage> sysmsgs = new ArrayList<SystemMessage>();
+		
+		List<SystemMessage> sysmsgs = new ArrayList<>();
 		SystemMessage msg = null;
-
+		
 		for (TradeItem buyerItem : buyerslist)
 		{
-			for (x = 0; x < sellerslist.size(); x++)//find in sellerslist
+			for (x = 0; x < sellerslist.size(); x++)// find in sellerslist
 			{
 				temp2 = sellerslist.get(x);
 				if (temp2.getItemId() == buyerItem.getItemId())
@@ -445,7 +426,7 @@ public class L2TradeList
 					break;
 				}
 			}
-
+			
 			if (sellerItem != null)
 			{
 				if (buyerItem.getCount() > temp2.getCount())
@@ -465,15 +446,15 @@ public class L2TradeList
 					_log.warning(L2TradeList.class.getName() + ": Integer Overflow on Cost. Possible Exploit attempt between " + buyer.getName() + " and " + seller.getName() + ".");
 					return;
 				}
-				//int cost = amount * buyerItem.getOwnersPrice();
+				// int cost = amount * buyerItem.getOwnersPrice();
 				enchantLevel = sellerItem.getEnchantLevel();
 				sellerItem = sellerInv.destroyItem("", sellerItem.getObjectId(), amount, null, null);
-				//		        buyer.reduceAdena(cost);
-				//		        seller.addAdena(cost);
+				// buyer.reduceAdena(cost);
+				// seller.addAdena(cost);
 				newitem = itemTable.createItem("L2TradeList", sellerItem.getItemId(), amount, buyer, seller);
 				newitem.setEnchantLevel(enchantLevel);
 				temp = buyerInv.addItem("", newitem, null, null);
-				if (amount == 1)//system msg stuff
+				if (amount == 1)// system msg stuff
 				{
 					msg = SystemMessage.getSystemMessage(SystemMessageId.S1_PURCHASED_S2);
 					msg.addString(buyer.getName());
@@ -513,7 +494,7 @@ public class L2TradeList
 						buyerItem.setCount(buyerItem.getCount() - temp2.getCount());
 					}
 				}
-
+				
 				if (sellerItem.getLastChange() == L2ItemInstance.MODIFIED)
 				{
 					sellerupdate.addModifiedItem(sellerItem);
@@ -523,7 +504,7 @@ public class L2TradeList
 					L2World.getInstance().removeObject(sellerItem);
 					sellerupdate.addRemovedItem(sellerItem);
 				}
-
+				
 				if (temp.getLastChange() == L2ItemInstance.MODIFIED)
 				{
 					buyerupdate.addModifiedItem(temp);
@@ -538,18 +519,18 @@ public class L2TradeList
 		}
 		if (newitem != null)
 		{
-			//updateSellList(seller,sellerslist);
+			// updateSellList(seller,sellerslist);
 			adena = seller.getInventory().getAdenaInstance();
 			adena.setLastChange(L2ItemInstance.MODIFIED);
 			sellerupdate.addModifiedItem(adena);
 			adena = buyer.getInventory().getAdenaInstance();
 			adena.setLastChange(L2ItemInstance.MODIFIED);
 			buyerupdate.addModifiedItem(adena);
-
+			
 			seller.sendPacket(sellerupdate);
 			buyer.sendPacket(buyerupdate);
 			y = 0;
-
+			
 			for (x = 0; x < sysmsgs.size(); x++)
 			{
 				if (y == 0)

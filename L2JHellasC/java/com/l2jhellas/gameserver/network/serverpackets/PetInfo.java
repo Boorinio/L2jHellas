@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.actor.L2Summon;
@@ -33,12 +19,7 @@ public class PetInfo extends L2GameServerPacket
 	private final int _maxHp, _maxMp;
 	private int _maxFed, _curFed;
 	private float _multiplier;
-
-	/**
-	 * rev 478 dddddddddddddddddddffffdddcccccSSdddddddddddddddddddddddddddhc
-	 * 
-	 * @param _characters
-	 */
+	
 	public PetInfo(L2Summon summon, int val)
 	{
 		_summon = summon;
@@ -64,7 +45,7 @@ public class PetInfo extends L2GameServerPacket
 			_maxFed = pet.getMaxFed(); // max fed it can be
 		}
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -72,8 +53,8 @@ public class PetInfo extends L2GameServerPacket
 		writeD(_summon.getSummonType());
 		writeD(_summon.getObjectId());
 		writeD(_summon.getTemplate().idTemplate + 1000000);
-		writeD(0);    // 1=attackable
-
+		writeD(0); // 1=attackable
+		
 		writeD(_x);
 		writeD(_y);
 		writeD(_z);
@@ -89,24 +70,24 @@ public class PetInfo extends L2GameServerPacket
 		writeD(_flWalkSpd);
 		writeD(_flyRunSpd);
 		writeD(_flyWalkSpd);
-
-		writeF(1/* _cha.getProperMultiplier() */);
-		writeF(1/* _cha.getAttackSpeedMultiplier() */);
+		
+		writeF(1);
+		writeF(1);
 		writeF(_summon.getTemplate().collisionRadius);
 		writeF(_summon.getTemplate().collisionHeight);
 		writeD(0); // right hand weapon
 		writeD(0);
 		writeD(0); // left hand weapon
-		writeC(1);	// name above char 1=true ... ??
-		writeC(_summon.isRunning() ? 1 : 0);	// running=1
-		writeC(_summon.isInCombat() ? 1 : 0);	// attacking 1=true
-		writeC(_summon.isAlikeDead() ? 1 : 0);  // dead 1=true
+		writeC(1); // name above char 1=true ... ??
+		writeC(_summon.isRunning() ? 1 : 0); // running=1
+		writeC(_summon.isInCombat() ? 1 : 0); // attacking 1=true
+		writeC(_summon.isAlikeDead() ? 1 : 0); // dead 1=true
 		writeC(_isSummoned ? 2 : 0); // invisible ?? 0=false 1=true 2=summoned (only works if model has a summon animation)
 		writeS(_summon.getName());
 		writeS(_summon.getTitle().replace(_summon.getTitle(), _summon.getOwner().getName()));
 		writeD(1);
-		writeD(_summon.getPvpFlag());	// 0 = white,2= purpleblink, if its greater then karma = purple
-		writeD(_summon.getKarma());  // hmm karma ??
+		writeD(_summon.getPvpFlag()); // 0 = white,2= purpleblink, if its greater then karma = purple
+		writeD(_summon.getKarma()); // hmm karma ??
 		writeD(_curFed); // how fed it is
 		writeD(_maxFed); // max fed it can be
 		writeD((int) _summon.getCurrentHp());// current hp
@@ -130,59 +111,45 @@ public class PetInfo extends L2GameServerPacket
 		writeD(_runSpd);// speed
 		writeD(_summon.getPAtkSpd());// atkspeed
 		writeD(_summon.getMAtkSpd());// casting speed
-
+		
 		writeD(0);// c2 abnormal visual effect... bleed=1; poison=2; poison & bleed=3; flame=4;
 		int npcId = _summon.getTemplate().npcId;
-
+		
 		if (npcId >= 12526 && npcId <= 12528)
 			writeH(1);// c2 ride button
 		else
 			writeH(0);
-
+		
 		writeC(0); // c2
-
+		
 		// Following all added in C4.
 		writeH(0); // ??
 		writeC(0); // team aura (1 = blue, 2 = red)
 		writeD(_summon.getSoulShotsPerHit()); // How many soulshots this servitor uses per hit
 		writeD(_summon.getSpiritShotsPerHit()); // How many spiritshots this servitor uses per hit
 	}
-
+	
 	@Override
 	public String getType()
 	{
 		return _S__CA_PETINFO;
 	}
-
-	/**
-	 * @param val
-	 *        The val to set.
-	 */
+	
 	public void setVal(int val)
 	{
 		_val = val;
 	}
-
-	/**
-	 * @return Returns the val.
-	 */
+	
 	public int getVal()
 	{
 		return _val;
 	}
-
-	/**
-	 * @param multiplier
-	 *        The multiplier to set.
-	 */
+	
 	public void setMultiplier(float multiplier)
 	{
 		_multiplier = multiplier;
 	}
-
-	/**
-	 * @return Returns the multiplier.
-	 */
+	
 	public float getMultiplier()
 	{
 		return _multiplier;

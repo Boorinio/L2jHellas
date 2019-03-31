@@ -1,5 +1,9 @@
 package com.l2jhellas.gameserver;
 
+import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -13,10 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
+import javax.swing.WindowConstants;
 
 public class Gui extends JFrame
 {
@@ -26,12 +27,12 @@ public class Gui extends JFrame
 	static JPanel panel2 = new JPanel();
 	static JPanel panel3 = new JPanel();
 	static JPanel panel4 = new JPanel();
-	static JTextField announceTa = new JTextField("Write a Text To Announce",15);
-	static JTextField pmPlayerName = new JTextField("PlayerName",7);
-	static JTextField pmPlayerMessage = new JTextField("Your Message",8);
-	static JTextField rewardName = new JTextField("PlayerName",7);
-	static JTextField id = new JTextField("RewardId",5);
-	static JTextField count = new JTextField("Count",3);
+	static JTextField announceTa = new JTextField("Write a Text To Announce", 15);
+	static JTextField pmPlayerName = new JTextField("PlayerName", 7);
+	static JTextField pmPlayerMessage = new JTextField("Your Message", 8);
+	static JTextField rewardName = new JTextField("PlayerName", 7);
+	static JTextField id = new JTextField("RewardId", 5);
+	static JTextField count = new JTextField("Count", 3);
 	static JLabel onlinePlayers = new JLabel("Online Players: ");
 	public static JLabel hopzone = new JLabel("HopZone Votes: ");
 	public static JLabel topzone = new JLabel("TopZone Votes: ");
@@ -45,6 +46,7 @@ public class Gui extends JFrame
 	static JButton abort = new JButton("Abort");
 	static JButton instaDown = new JButton("Instant Shutdown");
 	static JButton reward = new JButton("Reward");
+	
 	public static void main(String[] args)
 	{
 		new Gui();
@@ -215,8 +217,8 @@ public class Gui extends JFrame
 		setTitle("L2jHellas Control Panel");
 		setSize(400, 200);
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		
 		panel.add(onlinePlayers);
 		panel.add(hopzone);
 		panel.add(topzone);

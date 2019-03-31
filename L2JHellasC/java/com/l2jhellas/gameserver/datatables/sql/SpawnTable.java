@@ -1,25 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.datatables.sql;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
@@ -29,42 +8,49 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
+
 public class SpawnTable
 {
 	private static Logger _log = Logger.getLogger(SpawnTable.class.getName());
-
+	
 	private static final SpawnTable _instance = new SpawnTable();
-
-	private final Map<Integer, L2Spawn> _spawntable = new ConcurrentHashMap<Integer, L2Spawn>();
-
+	
+	private final Map<Integer, L2Spawn> _spawntable = new ConcurrentHashMap<>();
+	
 	private int _highestId;
-
+	
 	public static SpawnTable getInstance()
 	{
 		return _instance;
 	}
-
+	
 	private SpawnTable()
 	{
 		if (!Config.ALT_DEV_NO_SPAWNS)
 			fillSpawnTable();
 	}
-
+	
 	public Map<Integer, L2Spawn> getSpawnTable()
 	{
 		return _spawntable;
 	}
-
+	
 	private void fillSpawnTable()
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM spawnlist");
 			ResultSet rset = statement.executeQuery();
-
+			
 			L2Spawn spawnDat;
 			L2NpcTemplate template1;
-
+			
 			while (rset.next())
 			{
 				template1 = NpcData.getInstance().getTemplate(rset.getInt("npc_templateid"));
@@ -98,20 +84,20 @@ public class SpawnTable
 						spawnDat.setRespawnDelay(rset.getInt("respawn_delay"));
 						int loc_id = rset.getInt("loc_id");
 						spawnDat.setLocation(loc_id);
-
+						
 						switch (rset.getInt("periodOfDay"))
 						{
-							case 0: // default				
+							case 0: // default
 								spawnDat.init();
-							break;
+								break;
 							case 1: // Day
 								DayNightSpawnManager.getInstance().addDayCreature(spawnDat);
-							break;
+								break;
 							case 2: // Night
 								DayNightSpawnManager.getInstance().addNightCreature(spawnDat);
-							break;
+								break;
 						}
-
+						
 						_spawntable.put(spawnDat.getId(), spawnDat);
 						if (spawnDat.getId() > _highestId)
 							_highestId = spawnDat.getId();
@@ -127,22 +113,22 @@ public class SpawnTable
 		{
 			_log.warning("SpawnTable: Spawn could not be initialized: " + e);
 		}
-
+		
 		Util.printSection("Spawnlist");
 		_log.info(SpawnTable.class.getSimpleName() + ": Loaded " + _spawntable.size() + " Npc Spawn Locations.");
 	}
-
+	
 	public L2Spawn getTemplate(int id)
 	{
 		return _spawntable.get(id);
 	}
-
+	
 	public void addNewSpawn(L2Spawn spawn, boolean storeInDb)
 	{
 		_highestId++;
 		spawn.setId(_highestId);
 		_spawntable.put(_highestId, spawn);
-
+		
 		if (storeInDb)
 		{
 			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -169,12 +155,12 @@ public class SpawnTable
 			}
 		}
 	}
-
+	
 	public void deleteSpawn(L2Spawn spawn, boolean updateDb)
 	{
 		if (_spawntable.remove(spawn.getId()) == null)
 			return;
-
+		
 		if (updateDb)
 		{
 			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -193,22 +179,14 @@ public class SpawnTable
 			}
 		}
 	}
-
+	
 	// just wrapper
 	public void reloadAll()
 	{
 		_spawntable.clear();
 		fillSpawnTable();
 	}
-
-	/**
-	 * Get all the spawn of a NPC<BR>
-	 * <BR>
-	 * 
-	 * @param npcId
-	 *        : ID of the NPC to find.
-	 * @return
-	 */
+	
 	public void findNPCInstances(L2PcInstance activeChar, int npcId, int teleportIndex)
 	{
 		int index = 0;
@@ -217,7 +195,7 @@ public class SpawnTable
 			if (npcId == spawn.getNpcid())
 			{
 				index++;
-
+				
 				if (teleportIndex > -1)
 				{
 					if (teleportIndex == index)
@@ -229,7 +207,7 @@ public class SpawnTable
 				}
 			}
 		}
-
+		
 		if (index == 0)
 			activeChar.sendMessage("No current spawns found.");
 	}

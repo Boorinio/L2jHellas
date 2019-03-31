@@ -1,6 +1,5 @@
 package com.l2jhellas.gameserver.emum;
 
-
 public enum FenceState
 {
 	HIDDEN(0),

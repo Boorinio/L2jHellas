@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
 import com.l2jhellas.Config;
@@ -30,50 +16,47 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Rnd;
 
-/**
- * @author l3x
- */
 public class Harvest implements ISkillHandler
 {
 	private static final L2SkillType[] SKILL_IDS =
 	{
 		L2SkillType.HARVEST
 	};
-
+	
 	private L2PcInstance _activeChar;
 	private L2MonsterInstance _target;
-
+	
 	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		if (!(activeChar instanceof L2PcInstance))
 			return;
-
+		
 		_activeChar = (L2PcInstance) activeChar;
-
+		
 		L2Object[] targetList = skill.getTargetList(activeChar);
-
+		
 		InventoryUpdate iu = Config.FORCE_INVENTORY_UPDATE ? null : new InventoryUpdate();
-
+		
 		if (targetList == null)
 		{
 			return;
 		}
-
+		
 		for (int index = 0; index < targetList.length; index++)
 		{
 			if (!(targetList[index] instanceof L2MonsterInstance))
 				continue;
-
+			
 			_target = (L2MonsterInstance) targetList[index];
-
+			
 			if (_activeChar.getObjectId() != _target.getSeederId())
 			{
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_HARVEST);
 				_activeChar.sendPacket(sm);
 				continue;
 			}
-
+			
 			boolean send = false;
 			int total = 0;
 			int cropId = 0;
@@ -88,7 +71,7 @@ public class Harvest implements ISkillHandler
 						for (L2Attackable.RewardItem ritem : items)
 						{
 							cropId = ritem.getItemId(); // always got 1 type of
-														// crop as reward
+							// crop as reward
 							if (_activeChar.isInParty())
 								_activeChar.getParty().distributeItem(_activeChar, ritem, true, _target);
 							else
@@ -114,7 +97,7 @@ public class Harvest implements ISkillHandler
 								smsg.addItemName(cropId);
 								_activeChar.getParty().broadcastToPartyMembers(_activeChar, smsg);
 							}
-
+							
 							if (iu != null)
 								_activeChar.sendPacket(iu);
 							else
@@ -133,35 +116,35 @@ public class Harvest implements ISkillHandler
 			}
 		}
 	}
-
+	
 	private boolean calcSuccess()
 	{
 		int basicSuccess = 100;
 		int levelPlayer = _activeChar.getLevel();
 		int levelTarget = _target.getLevel();
-
+		
 		int diff = (levelPlayer - levelTarget);
 		if (diff < 0)
 			diff = -diff;
-
+		
 		// apply penalty, target <=> player levels
 		// 5% penalty for each level
 		if (diff > 5)
 		{
 			basicSuccess -= (diff - 5) * 5;
 		}
-
+		
 		// success rate can't be less than 1%
 		if (basicSuccess < 1)
 			basicSuccess = 1;
-
+		
 		int rate = Rnd.nextInt(99);
-
+		
 		if (rate < basicSuccess)
 			return true;
 		return false;
 	}
-
+	
 	@Override
 	public L2SkillType[] getSkillIds()
 	{

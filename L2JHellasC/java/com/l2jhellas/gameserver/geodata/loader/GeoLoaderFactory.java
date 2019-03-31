@@ -2,50 +2,48 @@ package com.l2jhellas.gameserver.geodata.loader;
 
 import java.io.File;
 
-/**
- * information about aviable geoloaders
- */
 public class GeoLoaderFactory
 {
-
+	
 	private static GeoLoaderFactory instance;
-
-	private GeoLoader[] geoLoaders;
-
+	
+	private final GeoLoader[] geoLoaders;
+	
 	public static GeoLoaderFactory getInstance()
 	{
-
+		
 		if (instance == null)
 		{
 			instance = new GeoLoaderFactory();
 		}
-
+		
 		return instance;
 	}
-
+	
 	private GeoLoaderFactory()
 	{
-		geoLoaders = new GeoLoader[]{new L2JGeoLoader(), new OffGeoLoader()};
+		geoLoaders = new GeoLoader[]
+		{
+			new L2JGeoLoader(),
+			new OffGeoLoader()
+		};
 	}
-
-
-	public GeoLoader getGeoLoader(File file) 
+	
+	public GeoLoader getGeoLoader(File file)
 	{
-		if (file == null) 
+		if (file == null)
 		{
 			return null;
 		}
-
-		for (int i = 0, n = geoLoaders.length; i < n; i++) 
+		
+		for (GeoLoader geoLoader : geoLoaders)
 		{
-			GeoLoader geoLoader = geoLoaders[i];
-
 			if (geoLoader.isAcceptable(file))
 			{
 				return geoLoader;
 			}
 		}
-
+		
 		return null;
 	}
 }

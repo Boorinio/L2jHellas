@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
 import com.l2jhellas.gameserver.ai.CtrlEvent;
@@ -26,16 +12,13 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Formulas;
 
-/**
- * @author AbsolutePower
- */
 public class Spoil implements ISkillHandler
 {
 	private static final L2SkillType[] SKILL_IDS =
 	{
 		L2SkillType.SPOIL
 	};
-
+	
 	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] t)
 	{
@@ -51,8 +34,8 @@ public class Spoil implements ISkillHandler
 		for (L2Object spoiledtarget : t)
 		{
 			boolean isMonster = spoiledtarget instanceof L2MonsterInstance;
-
-			if(!isMonster)
+			
+			if (!isMonster)
 				continue;
 			
 			final L2MonsterInstance target = (L2MonsterInstance) spoiledtarget;
@@ -69,7 +52,7 @@ public class Spoil implements ISkillHandler
 				continue;
 			}
 			
-			if (Formulas.getInstance().calcMagicSuccess(activeChar, (L2Character) spoiledtarget, skill))
+			if (Formulas.calcMagicSuccess(activeChar, (L2Character) spoiledtarget, skill))
 			{
 				target.setIsSpoiledBy(activeChar.getObjectId());
 				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.SPOIL_SUCCESS));
@@ -80,7 +63,7 @@ public class Spoil implements ISkillHandler
 			target.getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, activeChar);
 		}
 	}
-
+	
 	@Override
 	public L2SkillType[] getSkillIds()
 	{

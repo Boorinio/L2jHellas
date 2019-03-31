@@ -1,18 +1,9 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.datatables.xml;
+
+import com.PackRoot;
+import com.l2jhellas.gameserver.controllers.RecipeController;
+import com.l2jhellas.gameserver.model.L2RecipeInstance;
+import com.l2jhellas.gameserver.model.L2RecipeList;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,33 +21,28 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import com.PackRoot;
-import com.l2jhellas.gameserver.controllers.RecipeController;
-import com.l2jhellas.gameserver.model.L2RecipeInstance;
-import com.l2jhellas.gameserver.model.L2RecipeList;
-
 public class RecipeData extends RecipeController
 {
 	protected static final Logger _log = Logger.getLogger(RecipeData.class.getName());
-
-	private Map<Integer, L2RecipeList> _lists;
-
+	
+	private final Map<Integer, L2RecipeList> _lists;
+	
 	private static RecipeData instance;
-
+	
 	public static RecipeData getInstance()
 	{
 		if (instance == null)
 		{
 			instance = new RecipeData();
 		}
-
+		
 		return instance;
 	}
-
+	
 	private RecipeData()
 	{
-		_lists = new HashMap<Integer, L2RecipeList>();
-
+		_lists = new HashMap<>();
+		
 		try
 		{
 			ParseXML();
@@ -67,7 +53,7 @@ public class RecipeData extends RecipeController
 		}
 		_log.info("RecipeTable: Loaded " + _lists.size() + " recipes.");
 	}
-
+	
 	private void ParseXML() throws SAXException, IOException, ParserConfigurationException
 	{
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -77,8 +63,8 @@ public class RecipeData extends RecipeController
 		if (file.exists())
 		{
 			Document doc = factory.newDocumentBuilder().parse(file);
-			List<L2RecipeInstance> recipePartList = new ArrayList<L2RecipeInstance>();
-
+			List<L2RecipeInstance> recipePartList = new ArrayList<>();
+			
 			for (Node n = doc.getFirstChild(); n != null; n = n.getNextSibling())
 			{
 				if ("list".equalsIgnoreCase(n.getNodeName()))
@@ -99,7 +85,7 @@ public class RecipeData extends RecipeController
 								continue;
 							}
 							id = Integer.parseInt(att.getNodeValue());
-
+							
 							att = attrs.getNamedItem("name");
 							if (att == null)
 							{
@@ -107,7 +93,7 @@ public class RecipeData extends RecipeController
 								continue;
 							}
 							recipeName = att.getNodeValue();
-
+							
 							int recipeId = -1;
 							int level = -1;
 							boolean isDwarvenRecipe = true;
@@ -120,7 +106,7 @@ public class RecipeData extends RecipeController
 								if ("recipe".equalsIgnoreCase(c.getNodeName()))
 								{
 									NamedNodeMap atts = c.getAttributes();
-
+									
 									recipeId = Integer.parseInt(atts.getNamedItem("id").getNodeValue());
 									level = Integer.parseInt(atts.getNamedItem("level").getNodeValue());
 									isDwarvenRecipe = atts.getNamedItem("type").getNodeValue().equalsIgnoreCase("dwarven");
@@ -148,7 +134,7 @@ public class RecipeData extends RecipeController
 							L2RecipeList recipeList = new L2RecipeList(id, level, recipeId, recipeName, successRate, mpCost, prodId, count, isDwarvenRecipe);
 							for (L2RecipeInstance recipePart : recipePartList)
 								recipeList.addRecipe(recipePart);
-
+							
 							_lists.put(_lists.size(), recipeList);
 						}
 					}
@@ -158,17 +144,17 @@ public class RecipeData extends RecipeController
 		else
 			_log.warning(RecipeData.class.getName() + ": recipes.xml is missing in data folder.");
 	}
-
+	
 	public int getRecipesCount()
 	{
 		return _lists.size();
 	}
-
+	
 	public L2RecipeList getRecipeList(int listId)
 	{
 		return _lists.get(listId);
 	}
-
+	
 	@Override
 	public L2RecipeList getRecipeByItemId(int itemId)
 	{
@@ -182,7 +168,7 @@ public class RecipeData extends RecipeController
 		}
 		return null;
 	}
-
+	
 	public L2RecipeList getRecipeById(int recId)
 	{
 		for (int i = 0; i < _lists.size(); i++)
@@ -195,5 +181,5 @@ public class RecipeData extends RecipeController
 		}
 		return null;
 	}
-
+	
 }

@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -27,25 +10,18 @@ import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 
-/**
- * This class handles following admin commands:
- * - kill = kills target L2Character
- * - kill_monster = kills target non-player
- * - kill <radius> = If radius is specified, then ALL players only in that
- * radius will be killed.
- * - kill_monster <radius> = If radius is specified, then ALL non-players only
- * in that radius will be killed.
- *
- * @author Nightwolf
- */
+import java.util.StringTokenizer;
+import java.util.logging.Logger;
+
 public class AdminKill implements IAdminCommandHandler
 {
 	private static Logger _log = Logger.getLogger(AdminKill.class.getName());
 	private static final String[] ADMIN_COMMANDS =
 	{
-	"admin_kill", "admin_kill_monster"
+		"admin_kill",
+		"admin_kill_monster"
 	};
-
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -53,7 +29,7 @@ public class AdminKill implements IAdminCommandHandler
 		{
 			StringTokenizer st = new StringTokenizer(command, " ");
 			st.nextToken(); // skip command
-
+			
 			if (st.hasMoreTokens())
 			{
 				String firstParam = st.nextToken();
@@ -65,16 +41,16 @@ public class AdminKill implements IAdminCommandHandler
 						try
 						{
 							int radius = Integer.parseInt(st.nextToken());
-							for (L2Character knownChar : L2World.getInstance().getVisibleObjects(activeChar, L2Character.class,radius))
+							for (L2Character knownChar : L2World.getInstance().getVisibleObjects(activeChar, L2Character.class, radius))
 							{
 								if ((knownChar == null) || (knownChar instanceof L2ControllableMobInstance) || knownChar.equals(activeChar))
 								{
 									continue;
 								}
-
+								
 								kill(activeChar, knownChar);
 							}
-
+							
 							activeChar.sendMessage("Killed all characters within a " + radius + " unit radius.");
 							return true;
 						}
@@ -91,7 +67,7 @@ public class AdminKill implements IAdminCommandHandler
 					try
 					{
 						int radius = Integer.parseInt(firstParam);
-						for (L2Character knownChar : L2World.getInstance().getVisibleObjects(activeChar, L2Character.class,radius))
+						for (L2Character knownChar : L2World.getInstance().getVisibleObjects(activeChar, L2Character.class, radius))
 						{
 							if ((knownChar == null) || (knownChar instanceof L2ControllableMobInstance) || knownChar.equals(activeChar))
 							{
@@ -99,7 +75,7 @@ public class AdminKill implements IAdminCommandHandler
 							}
 							kill(activeChar, knownChar);
 						}
-
+						
 						activeChar.sendMessage("Killed all characters within a " + radius + " unit radius.");
 						return true;
 					}
@@ -125,8 +101,8 @@ public class AdminKill implements IAdminCommandHandler
 		}
 		return true;
 	}
-
-	private void kill(L2PcInstance activeChar, L2Character target)
+	
+	private static void kill(L2PcInstance activeChar, L2Character target)
 	{
 		if (target instanceof L2PcInstance)
 		{
@@ -166,7 +142,7 @@ public class AdminKill implements IAdminCommandHandler
 			target.reduceCurrentHp(target.getMaxHp() + 1, activeChar);
 		}
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{

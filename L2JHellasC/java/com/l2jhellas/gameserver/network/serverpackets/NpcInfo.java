@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.Config;
@@ -45,10 +31,7 @@ public final class NpcInfo extends L2GameServerPacket
 	int _allyId = 0;
 	int _clanId = 0;
 	private int _form = 0;
-
-	/**
-	 * @param _characters
-	 */
+	
 	public NpcInfo(L2Npc cha, L2Character attacker)
 	{
 		if (cha.getMxcPoly() != null)
@@ -56,7 +39,7 @@ public final class NpcInfo extends L2GameServerPacket
 			attacker.sendPacket(new MxCPolyInfo(cha));
 			return;
 		}
-
+		
 		_activeChar = cha;
 		_idTemplate = cha.getTemplate().idTemplate;
 		_isAttackable = cha.isAutoAttackable(attacker);
@@ -67,26 +50,26 @@ public final class NpcInfo extends L2GameServerPacket
 		_collisionRadius = cha.getCollisionRadius();
 		if (cha.getTemplate().serverSideName)
 			_name = cha.getTemplate().name;
-
+		
 		if (cha.isChampion())
 			_title = (Config.CHAMPION_TITLE);
 		else if (cha.getTemplate().serverSideTitle)
 			_title = cha.getTemplate().title;
 		else
 			_title = cha.getTitle();
-
+		
 		if (Config.SHOW_NPC_LVL && _activeChar instanceof L2MonsterInstance)
 		{
 			String t = "Lv " + cha.getLevel() + (cha.getAggroRange() > 0 ? "*" : "");
 			if (_title != null)
 				t += " " + _title;
-
+			
 			_title = t;
 		}
-
+		
 		if (Config.SHOW_NPC_CREST)
 		{
-			if (cha instanceof L2Npc && cha.isInsideZone(ZoneId.PEACE) && cha.getCastle().getOwnerId() != 0)
+			if (cha.isInsideZone(ZoneId.PEACE) && cha.getCastle().getOwnerId() != 0)
 			{
 				int _x, _y, _z;
 				_x = cha.getX();
@@ -109,7 +92,7 @@ public final class NpcInfo extends L2GameServerPacket
 				}
 			}
 		}
-
+		
 		_x = _activeChar.getX();
 		_y = _activeChar.getY();
 		_z = _activeChar.getZ();
@@ -121,7 +104,7 @@ public final class NpcInfo extends L2GameServerPacket
 		_swimRunSpd = _flRunSpd = _flyRunSpd = _runSpd;
 		_swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
 	}
-
+	
 	public NpcInfo(L2Summon cha, L2Character attacker, int val)
 	{
 		_activeChar = cha;
@@ -155,7 +138,7 @@ public final class NpcInfo extends L2GameServerPacket
 			else if (_summon.getLevel() > 59)
 				setForm(1);
 		}
-
+		
 		_x = _activeChar.getX();
 		_y = _activeChar.getY();
 		_z = _activeChar.getZ();
@@ -167,7 +150,7 @@ public final class NpcInfo extends L2GameServerPacket
 		_swimRunSpd = _flRunSpd = _flyRunSpd = _runSpd;
 		_swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
 	}
-
+	
 	public NpcInfo(L2Summon cha, L2Character attacker)
 	{
 		_activeChar = cha;
@@ -183,7 +166,7 @@ public final class NpcInfo extends L2GameServerPacket
 			_name = _activeChar.getName();
 			_title = cha.getTitle();
 		}
-
+		
 		_x = _activeChar.getX();
 		_y = _activeChar.getY();
 		_z = _activeChar.getZ();
@@ -195,13 +178,13 @@ public final class NpcInfo extends L2GameServerPacket
 		_swimRunSpd = _flRunSpd = _flyRunSpd = _runSpd;
 		_swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		if (_activeChar == null)
 			return;
-
+		
 		if (_activeChar instanceof L2Summon)
 			if (((L2Summon) _activeChar).getOwner() != null && ((L2Summon) _activeChar).getOwner().getAppearance().getInvisible())
 				return;
@@ -218,14 +201,14 @@ public final class NpcInfo extends L2GameServerPacket
 		writeD(_pAtkSpd);
 		writeD(_runSpd);
 		writeD(_walkSpd);
-		writeD(_swimRunSpd/* 0x32 */); // swimspeed
-		writeD(_swimWalkSpd/* 0x32 */); // swimspeed
+		writeD(_swimRunSpd); // swimspeed
+		writeD(_swimWalkSpd); // swimspeed
 		writeD(_flRunSpd);
 		writeD(_flWalkSpd);
 		writeD(_flyRunSpd);
 		writeD(_flyWalkSpd);
-		writeF(1.1/* _activeChar.getProperMultiplier() */);
-		// writeF(1/*_activeChar.getAttackSpeedMultiplier()*/);
+		writeF(1.1);
+		// writeF(1);
 		writeF(_pAtkSpd / 277.478340719);
 		writeF(_collisionRadius);
 		writeF(_collisionHeight);
@@ -242,7 +225,7 @@ public final class NpcInfo extends L2GameServerPacket
 		writeD(0);
 		writeD(0);
 		writeD(0000); // hmm karma ??
-
+		
 		writeD(_activeChar.getAbnormalEffect()); // C2
 		if (Config.SHOW_NPC_CREST)
 		{
@@ -259,66 +242,45 @@ public final class NpcInfo extends L2GameServerPacket
 			writeD(0000);
 			writeC(0000);
 		}
-
+		
 		writeC(0x00); // C3 team circle 1-blue, 2-red
 		writeF(_collisionRadius);
 		writeF(_collisionHeight);
 		writeD(0x00); // C4
 		writeD(0x00); // C6
 	}
-
+	
 	@Override
 	public String getType()
 	{
 		return _S__22_NPCINFO;
 	}
-
-	/**
-	 * @param chest
-	 *        The chest to set.
-	 */
+	
 	public void setChest(int chest)
 	{
 		_chest = chest;
 	}
-
-	/**
-	 * @return Returns the chest.
-	 */
+	
 	public int getChest()
 	{
 		return _chest;
 	}
-
-	/**
-	 * @param val
-	 *        The val to set.
-	 */
+	
 	public void setVal(int val)
 	{
 		_val = val;
 	}
-
-	/**
-	 * @return Returns the val.
-	 */
+	
 	public int getVal()
 	{
 		return _val;
 	}
-
-	/**
-	 * @param form
-	 *        The form to set.
-	 */
+	
 	public void setForm(int form)
 	{
 		_form = form;
 	}
-
-	/**
-	 * @return Returns the form.
-	 */
+	
 	public int getForm()
 	{
 		return _form;

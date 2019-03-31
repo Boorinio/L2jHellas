@@ -1,7 +1,7 @@
-/*
- * Copyright 2010 InC-Gaming, nBd. All rights reserved.
- */
 package com.l2jhellas.util;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.templates.StatsSet;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,12 +13,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.templates.StatsSet;
-
-/**
- * @author nBd
- */
 public final class XMLParser
 {
 	private static Logger _log = Logger.getLogger(XMLParser.class.getName());

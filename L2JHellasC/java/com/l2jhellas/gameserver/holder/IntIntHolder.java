@@ -3,10 +3,6 @@ package com.l2jhellas.gameserver.holder;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
-
-/**
- * A generic int/int container.
- */
 public class IntIntHolder
 {
 	private int _id;
@@ -38,9 +34,6 @@ public class IntIntHolder
 		_value = value;
 	}
 	
-	/**
-	 * @return the L2Skill associated to the id/value.
-	 */
 	public final L2Skill getSkill()
 	{
 		return SkillTable.getInstance().getInfo(_id, _value);

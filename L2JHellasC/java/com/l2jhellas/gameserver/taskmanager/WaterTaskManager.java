@@ -1,8 +1,5 @@
 package com.l2jhellas.gameserver.taskmanager;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -10,6 +7,8 @@ import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Stats;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class WaterTaskManager implements Runnable
 {
@@ -25,7 +24,7 @@ public final class WaterTaskManager implements Runnable
 		// Run task each second.
 		ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(this, 1000, 1000);
 	}
-
+	
 	public final void add(L2PcInstance player)
 	{
 		if (!player.isDead() && !_players.containsKey(player))
@@ -41,7 +40,7 @@ public final class WaterTaskManager implements Runnable
 	public final void remove(L2PcInstance player)
 	{
 		if (_players.remove(player) != null)
-		    player.sendPacket(new SetupGauge(SetupGauge.CYAN, 0));
+			player.sendPacket(new SetupGauge(SetupGauge.CYAN, 0));
 	}
 	
 	@Override

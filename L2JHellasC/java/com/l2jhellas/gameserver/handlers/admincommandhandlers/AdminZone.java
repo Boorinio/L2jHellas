@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -26,6 +10,8 @@ import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.util.StringUtil;
 
+import java.util.StringTokenizer;
+
 public class AdminZone implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
@@ -33,7 +19,7 @@ public class AdminZone implements IAdminCommandHandler
 		"admin_zone_check",
 		"admin_zone_visual"
 	};
-
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -43,7 +29,7 @@ public class AdminZone implements IAdminCommandHandler
 		
 		StringTokenizer st = new StringTokenizer(command, " ");
 		String actualCommand = st.nextToken(); // Get actual command
-		  		
+		
 		if (actualCommand.equalsIgnoreCase("admin_zone_check"))
 			showHtml(activeChar);
 		else if (actualCommand.equalsIgnoreCase("admin_zone_visual"))
@@ -77,18 +63,17 @@ public class AdminZone implements IAdminCommandHandler
 		
 		return true;
 	}
-
 	
 	private static void showHtml(L2PcInstance activeChar)
 	{
-
+		
 		int x = activeChar.getX();
 		int y = activeChar.getY();
-		//int z = activeChar.getZ();
+		// int z = activeChar.getZ();
 		
 		int rx = (x - L2World.WORLD_X_MIN) / L2World.TILE_SIZE + L2World.TILE_X_MIN;
 		int ry = (y - L2World.WORLD_Y_MIN) / L2World.TILE_SIZE + L2World.TILE_Y_MIN;
-
+		
 		final NpcHtmlMessage html = new NpcHtmlMessage(0);
 		html.setFile("data/html/admin/zone.htm");
 		
@@ -116,7 +101,7 @@ public class AdminZone implements IAdminCommandHandler
 		html.replace("%CASTONARTIFACT%", (activeChar.isInsideZone(ZoneId.CAST_ON_ARTIFACT) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
 		html.replace("%NORESTART%", (activeChar.isInsideZone(ZoneId.NO_RESTART) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
 		html.replace("%FISHING%", (activeChar.isInsideZone(ZoneId.FISHING) ? "<font color=\"LEVEL\">YES</font>" : "NO"));
-
+		
 		final StringBuilder sb = new StringBuilder(100);
 		
 		for (L2ZoneType zone : ZoneManager.getInstance().getRegion(activeChar).getZones())
@@ -126,7 +111,7 @@ public class AdminZone implements IAdminCommandHandler
 		}
 		
 		html.replace("%ZLIST%", sb.toString());
-		activeChar.sendPacket(html);	
+		activeChar.sendPacket(html);
 	}
 	
 	@Override

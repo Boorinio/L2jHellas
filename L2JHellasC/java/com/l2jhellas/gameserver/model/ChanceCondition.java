@@ -1,32 +1,15 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model;
-
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
 
-/**
- * @author kombat
- */
+import java.util.logging.Logger;
+
 public final class ChanceCondition
 {
 	protected static final Logger _log = Logger.getLogger(ChanceCondition.class.getName());
-
+	
 	public static final int EVT_HIT = 1;
 	public static final int EVT_CRIT = 2;
 	public static final int EVT_CAST = 4;
@@ -41,7 +24,7 @@ public final class ChanceCondition
 	public static final int EVT_HIT_BY_OFFENSIVE_SKILL = 2048;
 	public static final int EVT_HIT_BY_GOOD_MAGIC = 4096;
 	public static final int EVT_EVADED_HIT = 8192;
-
+	
 	public static enum TriggerType
 	{
 		// You hit an enemy
@@ -72,30 +55,30 @@ public final class ChanceCondition
 		ON_HIT_BY_GOOD_MAGIC(4096),
 		// Evading melee attack
 		ON_EVADED_HIT(8192);
-
+		
 		private int _mask;
-
+		
 		private TriggerType(int mask)
 		{
 			_mask = mask;
 		}
-
+		
 		public boolean check(int event)
 		{
 			return (_mask & event) != 0; // Trigger (sub-)type contains event (sub-)type
 		}
 	}
-
+	
 	private final TriggerType _triggerType;
-
+	
 	private final int _chance;
-
+	
 	private ChanceCondition(TriggerType trigger, int chance)
 	{
 		_triggerType = trigger;
 		_chance = chance;
 	}
-
+	
 	public static ChanceCondition parse(StatsSet set)
 	{
 		try
@@ -113,12 +96,12 @@ public final class ChanceCondition
 		}
 		return null;
 	}
-
+	
 	public boolean trigger(int event)
 	{
 		return _triggerType.check(event) && Rnd.get(100) < _chance;
 	}
-
+	
 	@Override
 	public String toString()
 	{

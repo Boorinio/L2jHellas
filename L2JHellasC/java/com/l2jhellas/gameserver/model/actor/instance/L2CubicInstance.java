@@ -1,23 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Future;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -32,10 +13,15 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 import com.l2jhellas.util.Rnd;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Future;
+import java.util.logging.Logger;
+
 public class L2CubicInstance
 {
 	protected static final Logger _log = Logger.getLogger(L2CubicInstance.class.getName());
-
+	
 	public static final int STORM_CUBIC = 1;
 	public static final int VAMPIRIC_CUBIC = 2;
 	public static final int LIFE_CUBIC = 3;
@@ -45,65 +31,65 @@ public class L2CubicInstance
 	public static final int AQUA_CUBIC = 7;
 	public static final int SPARK_CUBIC = 8;
 	public static final int ATTRACT_CUBIC = 9;
-
+	
 	protected L2PcInstance _owner;
 	protected L2Character _target;
-
+	
 	protected int _id;
 	protected int _level = 1;
 	protected long _lifetime = 1200000; // disappear in 20 mins
-
+	
 	protected List<Integer> _skills = new ArrayList<>();
-
+	
 	private Future<?> _disappearTask;
 	private Future<?> _actionTask;
-
+	
 	public L2CubicInstance(L2PcInstance owner, int id, int level)
 	{
 		_owner = owner;
 		_id = id;
 		_level = level;
-
+		
 		switch (_id)
 		{
 			case STORM_CUBIC:
 				_skills.add(4049);
-			break;
+				break;
 			case VAMPIRIC_CUBIC:
 				_skills.add(4050);
-			break;
+				break;
 			case LIFE_CUBIC:
 				_skills.add(4051);
 				_lifetime = 3600000; // disappear in 60 mins
 				doAction(_owner);
-			break;
+				break;
 			case VIPER_CUBIC:
 				_skills.add(4052);
-			break;
+				break;
 			case POLTERGEIST_CUBIC:
 				_skills.add(4053);
 				_skills.add(4054);
 				_skills.add(4055);
-			break;
+				break;
 			case BINDING_CUBIC:
 				_skills.add(4164);
-			break;
+				break;
 			case AQUA_CUBIC:
 				_skills.add(4165);
-			break;
+				break;
 			case SPARK_CUBIC:
 				_skills.add(4166);
-			break;
+				break;
 			case ATTRACT_CUBIC:
 				_skills.add(5115);
 				_skills.add(5116);
-			break;
+				break;
 		}
-
-		if(_disappearTask==null)
-		   _disappearTask = ThreadPoolManager.getInstance().scheduleGeneral(new Disappear(),_lifetime); 
+		
+		if (_disappearTask == null)
+			_disappearTask = ThreadPoolManager.getInstance().scheduleGeneral(new Disappear(), _lifetime);
 	}
-
+	
 	public void doAction(L2Character target)
 	{
 		if (_target == target)
@@ -117,40 +103,40 @@ public class L2CubicInstance
 		{
 			case STORM_CUBIC:
 				_actionTask = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new Action(12), 0, 10000);
-			break;
+				break;
 			case VAMPIRIC_CUBIC:
 				_actionTask = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new Action(8), 0, 15000);
-			break;
+				break;
 			case VIPER_CUBIC:
 				_actionTask = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new Action(30), 0, 20000);
-			break;
+				break;
 			case POLTERGEIST_CUBIC:
 				_actionTask = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new Action(30), 0, 8000);
-			break;
+				break;
 			case BINDING_CUBIC:
 			case AQUA_CUBIC:
 			case SPARK_CUBIC:
 				_actionTask = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new Action(30), 0, 8000);
-			break;
+				break;
 			case LIFE_CUBIC:
 				_actionTask = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new Heal(50), 0, 30000);
-			break;
+				break;
 			case ATTRACT_CUBIC:
 				_actionTask = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new Action(30), 0, 8000);
-			break;
+				break;
 		}
 	}
-
+	
 	public int getId()
 	{
 		return _id;
 	}
-
+	
 	public void setLevel(int level)
 	{
 		_level = level;
 	}
-
+	
 	public void stopAction()
 	{
 		_target = null;
@@ -160,7 +146,7 @@ public class L2CubicInstance
 			_actionTask = null;
 		}
 	}
-
+	
 	public void cancelDisappear()
 	{
 		if (_disappearTask != null)
@@ -169,17 +155,17 @@ public class L2CubicInstance
 			_disappearTask = null;
 		}
 	}
-
+	
 	private class Action implements Runnable
 	{
 		private final int _chance;
-
+		
 		Action(int chance)
 		{
 			_chance = chance;
 			// run task
 		}
-
+		
 		@Override
 		public void run()
 		{
@@ -206,14 +192,17 @@ public class L2CubicInstance
 						final L2Skill skill = SkillTable.getInstance().getInfo(_skills.get(Rnd.get(_skills.size())), _level);
 						if (skill != null)
 						{
-							final L2Character[] targets ={_target};
+							final L2Character[] targets =
+							{
+								_target
+							};
 							final ISkillHandler handler = SkillHandler.getInstance().getHandler(skill.getSkillType());
-
+							
 							int x, y, z;
 							
-							//range for cubic skills
+							// range for cubic skills
 							final int range = 900;
-
+							
 							x = (_owner.getX() - _target.getX());
 							y = (_owner.getY() - _target.getY());
 							z = (_owner.getZ() - _target.getZ());
@@ -228,7 +217,7 @@ public class L2CubicInstance
 								{
 									skill.useSkill(_owner, targets);
 								}
-
+								
 								MagicSkillUse msu = new MagicSkillUse(_owner, _target, skill.getId(), _level, 0, 0);
 								_owner.broadcastPacket(msu);
 							}
@@ -244,17 +233,17 @@ public class L2CubicInstance
 			}
 		}
 	}
-
+	
 	private class Heal implements Runnable
 	{
 		private final int _chance;
-
+		
 		Heal(int chance)
 		{
 			_chance = chance;
 			// run task
 		}
-
+		
 		@Override
 		public void run()
 		{
@@ -293,22 +282,22 @@ public class L2CubicInstance
 								L2Character partyMember = null;
 								int x, y, z;
 								
-								//range for cubic skills
-								int range = 900; 
+								// range for cubic skills
+								int range = 900;
 								
 								for (int i = 0; i < partyList.size(); i++)
 								{
 									partyMember = partyList.get(i);
 									if (!partyMember.isDead())
 									{
-										//if party member not dead, check if he is in castrange of heal cubic
+										// if party member not dead, check if he is in castrange of heal cubic
 										x = (caster.getX() - partyMember.getX());
 										y = (caster.getY() - partyMember.getY());
 										z = (caster.getZ() - partyMember.getZ());
 										if ((x * x) + (y * y) + (z * z) > range * range)
 											continue;
-
-										//member is in cubic casting range, check if he need heal and if he have the lowest HP
+										
+										// member is in cubic casting range, check if he need heal and if he have the lowest HP
 										if (partyMember.getCurrentHp() < partyMember.getMaxHp())
 										{
 											if (percentleft > (partyMember.getCurrentHp() / partyMember.getMaxHp()))
@@ -352,14 +341,14 @@ public class L2CubicInstance
 			}
 		}
 	}
-
+	
 	private class Disappear implements Runnable
 	{
 		Disappear()
 		{
 			// run task
 		}
-
+		
 		@Override
 		public void run()
 		{

@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
-
-import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
@@ -30,6 +14,8 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
+import java.util.StringTokenizer;
+
 public class L2DoormenInstance extends L2NpcInstance
 {
 	private ClanHall _clanHall;
@@ -37,25 +23,22 @@ public class L2DoormenInstance extends L2NpcInstance
 	private static int COND_BUSY_BECAUSE_OF_SIEGE = 1;
 	private static int COND_CASTLE_OWNER = 2;
 	private static int COND_HALL_OWNER = 3;
-
-	/**
-	 * @param template
-	 */
+	
 	public L2DoormenInstance(int objectID, L2NpcTemplate template)
 	{
 		super(objectID, template);
 	}
-
+	
 	public final ClanHall getClanHall()
 	{
-		//_log.warning(classoura.class.getName() +": " + this.getName() + " searching ch");
+		// _log.warning(classoura.class.getName() +": " + this.getName() + " searching ch");
 		if (_clanHall == null)
 			_clanHall = ClanHallManager.getInstance().getNearbyClanHall(getX(), getY(), 500);
-		//if (_ClanHall != null)
-		//   _log.warning(classoura.class.getName() +": " + this.getName() + " found ch "+_ClanHall.getName());
+		// if (_ClanHall != null)
+		// _log.warning(classoura.class.getName() +": " + this.getName() + " found ch "+_ClanHall.getName());
 		return _clanHall;
 	}
-
+	
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
@@ -80,10 +63,10 @@ public class L2DoormenInstance extends L2NpcInstance
 				}
 				else
 				{
-					//DoorTable doorTable = DoorTable.getInstance();
+					// DoorTable doorTable = DoorTable.getInstance();
 					StringTokenizer st = new StringTokenizer(command.substring(10), ", ");
 					st.nextToken(); // Bypass first value since its castleid/hallid
-
+					
 					if (condition == 2)
 					{
 						while (st.hasMoreTokens())
@@ -92,10 +75,10 @@ public class L2DoormenInstance extends L2NpcInstance
 						}
 						return;
 					}
-
+					
 				}
 			}
-
+			
 			if (command.startsWith("RideWyvern"))
 			{
 				if (!player.isClanLeader())
@@ -131,7 +114,7 @@ public class L2DoormenInstance extends L2NpcInstance
 						if (!player.disarmWeapons())
 							return;
 						
-						if(player.getActiveTradeList() !=null)
+						if (player.getActiveTradeList() != null)
 							player.cancelActiveTrade();
 						
 						player.getPet().unSummon(player);
@@ -168,12 +151,12 @@ public class L2DoormenInstance extends L2NpcInstance
 				}
 				else
 				{
-					//DoorTable doorTable = DoorTable.getInstance();
+					// DoorTable doorTable = DoorTable.getInstance();
 					StringTokenizer st = new StringTokenizer(command.substring(11), ", ");
 					st.nextToken(); // Bypass first value since its castleid/hallid
-
-					//L2Clan playersClan = player.getClan();
-
+					
+					// L2Clan playersClan = player.getClan();
+					
 					if (condition == 2)
 					{
 						while (st.hasMoreTokens())
@@ -185,27 +168,22 @@ public class L2DoormenInstance extends L2NpcInstance
 				}
 			}
 		}
-
+		
 		super.onBypassFeedback(player, command);
 	}
-
-	/**
-	 * this is called when a player interacts with this NPC
-	 * 
-	 * @param player
-	 */
+	
 	@Override
 	public void onAction(L2PcInstance player)
 	{
 		if (!canTarget(player))
 			return;
-
+		
 		// Check if the L2PcInstance already target the L2NpcInstance
 		if (this != player.getTarget())
 		{
 			// Set the target of the L2PcInstance player
 			player.setTarget(this);
-
+			
 			// Send a Server->Client packet MyTargetSelected to the L2PcInstance player
 			MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
 			player.sendPacket(my);
@@ -226,18 +204,18 @@ public class L2DoormenInstance extends L2NpcInstance
 		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-
+	
 	public void showMessageWindow(L2PcInstance player)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		String filename = "data/html/doormen/" + getTemplate().npcId + "-no.htm";
-
+		
 		int condition = validateCondition(player);
 		if (condition == COND_BUSY_BECAUSE_OF_SIEGE)
 			filename = "data/html/doormen/" + getTemplate().npcId + "-busy.htm"; // Busy because of siege
 		else if (condition == COND_CASTLE_OWNER) // Clan owns castle
 			filename = "data/html/doormen/" + getTemplate().npcId + ".htm"; // Owner message window
-
+			
 		// Prepare doormen for clan hall
 		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		String str;
@@ -252,7 +230,7 @@ public class L2DoormenInstance extends L2NpcInstance
 					str += "<button value=\"Pet Evolution\" action=\"bypass -h npc_%objectId%_Quest 5025_Evolve\" width=80 height=27 back=\"L2UI_CT1.Button_DF_Down\" fore=\"L2UI_CT1.Button_DF\"></center></body></html>";
 				else if (getClanHall().getId() >= 36 && getClanHall().getId() <= 41)
 				{
-
+					
 					str += "<button value=\"Wyvern Exchange\" action=\"bypass -h npc_%objectId%_RideWyvern\" width=85 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center></body></html>";
 				}
 				else
@@ -274,11 +252,11 @@ public class L2DoormenInstance extends L2NpcInstance
 		}
 		else
 			html.setFile(filename);
-
+		
 		html.replace("%objectId%", String.valueOf(getObjectId()));
 		player.sendPacket(html);
 	}
-
+	
 	private int validateCondition(L2PcInstance player)
 	{
 		if (player.getClan() != null)
@@ -292,14 +270,14 @@ public class L2DoormenInstance extends L2NpcInstance
 			}
 			if (getCastle() != null && getCastle().getCastleId() > 0)
 			{
-				//		        if (getCastle().getSiege().getIsInProgress())
-				//		            return COND_BUSY_BECAUSE_OF_SIEGE;									// Busy because of siege
-				//		        else
+				// if (getCastle().getSiege().getIsInProgress())
+				// return COND_BUSY_BECAUSE_OF_SIEGE; // Busy because of siege
+				// else
 				if (getCastle().getOwnerId() == player.getClanId()) // Clan owns castle
 					return COND_CASTLE_OWNER; // Owner
 			}
 		}
-
+		
 		return COND_ALL_FALSE;
 	}
 }

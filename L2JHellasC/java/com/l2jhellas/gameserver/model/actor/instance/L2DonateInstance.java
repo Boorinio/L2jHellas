@@ -1,18 +1,11 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
+
+import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
+import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
+import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
+import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,16 +15,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.StringTokenizer;
 
-import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
-import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-
-/**
- * @author Autos! 1-0
- */
 public class L2DonateInstance extends L2NpcInstance
 {
 	Date dateInfo = new Date();
@@ -42,13 +25,13 @@ public class L2DonateInstance extends L2NpcInstance
 	{
 		super(objectId, template);
 	}
-
+	
 	@Override
 	public void onBypassFeedback(final L2PcInstance player, String command)
 	{
 		if (player == null)
 			return;
-
+		
 		if (command.startsWith("dlist"))
 			info(player);
 		if (command.startsWith("donate"))
@@ -61,10 +44,10 @@ public class L2DonateInstance extends L2NpcInstance
 			String pin3 = null;
 			String pin4 = null;
 			String message = "";
-
+			
 			try
 			{
-				if(st.countTokens() < 5 )
+				if (st.countTokens() < 5)
 				{
 					player.sendMessage("Complete all the fields before pressing donate");
 					return;
@@ -76,7 +59,7 @@ public class L2DonateInstance extends L2NpcInstance
 				pin4 = st.nextToken();
 				while (st.hasMoreTokens())
 					message = message + st.nextToken() + " ";
-				if (pin1.length() != 4 || pin2.length() != 4 || pin3.length() != 4 || pin4.length() !=4)
+				if (pin1.length() != 4 || pin2.length() != 4 || pin3.length() != 4 || pin4.length() != 4)
 				{
 					player.sendMessage("Invalid Pin code.Please check your pin code and try again.");
 					return;
@@ -101,7 +84,7 @@ public class L2DonateInstance extends L2NpcInstance
 				out.write("Delete this file so player can make a new donation :)");
 				out.close();
 				player.sendMessage("Donation sent, you can donate again after 1 hour!");
-
+				
 				Collection<L2PcInstance> pls = L2World.getInstance().getAllPlayers().values();
 				for (L2PcInstance gms : pls)
 				{
@@ -115,7 +98,7 @@ public class L2DonateInstance extends L2NpcInstance
 			}
 		}
 	}
-
+	
 	@Override
 	public void onAction(L2PcInstance player)
 	{
@@ -135,25 +118,25 @@ public class L2DonateInstance extends L2NpcInstance
 			player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
-
+		
 	}
-
+	
 	private void showHtmlWindow(L2PcInstance activeChar)
 	{
 		StringBuilder tb = new StringBuilder();
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
-
+		
 		tb.append("<html><head><title>Donation Manager</title></head><body><center><table width=\"250\" bgcolor=\"000000\"><tr><td align=center><font color=\"6fd3d1\">Easy Donation With Paysafe Card</font></td></tr></table>_______________________________________<br><br><table width=\"250\"><tr><td><font color=\"ddc16d\">Select Donation amount:</font></td><td><combobox width=80 height=17 var=amount list=10-Euro;25-Euro;50-Euro;100-Euro;></td></tr></table><br><br><font color=\"ddc16d\">Paysafe Card Pin:</font><table width=\"250\"><tr><td><edit var=\"pin1\" width=50 height=12 type=number></td><td><edit var=\"pin2\" width=50 height=12 type=number></td><td><edit var=\"pin3\" width=50 height=12 type=number></td><td><edit var=\"pin4\" width=50 height=12 type=number></td></table><br><br><multiedit var=\"message\" width=240 height=40><br><br><button value=\"Donate!\" action=\"bypass -h npc_" + getObjectId() + "_donate $amount $pin1 $pin2 $pin3 $pin4 $message\" width=95 height=21 back=\"bigbutton_over\" fore=\"bigbutton\"><br><button value=\"Donation List\" action=\"bypass -h npc_" + getObjectId() + "_dlist\" width=95 height=21 back=\"bigbutton_over\" fore=\"bigbutton\"><br><font color=\"a1df64\">L2jHellas Donation Manager</font></center></body></html>");
-
+		
 		html.setHtml(tb.toString());
 		activeChar.sendPacket(html);
 	}
-
-	private void info(L2PcInstance activeChar)
+	
+	private static void info(L2PcInstance activeChar)
 	{
 		StringBuilder tb = new StringBuilder();
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
-
+		
 		tb.append("<html><head><title>Donation Manager</title></head><body><center>Info goes here</center></body></html>");
 		html.setHtml(tb.toString());
 		activeChar.sendPacket(html);

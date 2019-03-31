@@ -1,16 +1,11 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.datatables.xml;
+
+import com.PackRoot;
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.model.base.ClassId;
+import com.l2jhellas.gameserver.templates.L2PcTemplate;
+import com.l2jhellas.gameserver.templates.StatsSet;
 
 import java.io.File;
 import java.util.HashMap;
@@ -20,26 +15,136 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import com.PackRoot;
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.engines.DocumentParser;
-import com.l2jhellas.gameserver.model.base.ClassId;
-import com.l2jhellas.gameserver.templates.L2PcTemplate;
-import com.l2jhellas.gameserver.templates.StatsSet;
-
 public class CharTemplateData implements DocumentParser
 {
 	protected static final Logger _log = Logger.getLogger(CharTemplateData.class.getName());
-
+	
 	private static final String[] CHAR_CLASSES =
 	{
-	"Human Fighter", "Warrior", "Gladiator", "Warlord", "Human Knight", "Paladin", "Dark Avenger", "Rogue", "Treasure Hunter", "Hawkeye", "Human Mystic", "Human Wizard", "Sorceror", "Necromancer", "Warlock", "Cleric", "Bishop", "Prophet", "Elven Fighter", "Elven Knight", "Temple Knight", "Swordsinger", "Elven Scout", "Plainswalker", "Silver Ranger", "Elven Mystic", "Elven Wizard", "Spellsinger", "Elemental Summoner", "Elven Oracle", "Elven Elder", "Dark Fighter", "Palus Knight", "Shillien Knight", "Bladedancer", "Assassin", "Abyss Walker", "Phantom Ranger", "Dark Elven Mystic", "Dark Elven Wizard", "Spellhowler", "Phantom Summoner", "Shillien Oracle", "Shillien Elder", "Orc Fighter", "Orc Raider", "Destroyer", "Orc Monk", "Tyrant", "Orc Mystic", "Orc Shaman", "Overlord", "Warcryer", "Dwarven Fighter", "Dwarven Scavenger", "Bounty Hunter", "Dwarven Artisan", "Warsmith", "dummyEntry1", "dummyEntry2", "dummyEntry3", "dummyEntry4", "dummyEntry5", "dummyEntry6", "dummyEntry7", "dummyEntry8", "dummyEntry9", "dummyEntry10", "dummyEntry11", "dummyEntry12", "dummyEntry13", "dummyEntry14", "dummyEntry15", "dummyEntry16", "dummyEntry17", "dummyEntry18", "dummyEntry19", "dummyEntry20", "dummyEntry21", "dummyEntry22", "dummyEntry23", "dummyEntry24", "dummyEntry25", "dummyEntry26", "dummyEntry27", "dummyEntry28", "dummyEntry29", "dummyEntry30", "Duelist", "DreadNought", "Phoenix Knight", "Hell Knight", "Sagittarius", "Adventurer", "Archmage", "Soultaker", "Arcana Lord", "Cardinal", "Hierophant", "Eva Templar", "Sword Muse", "Wind Rider", "Moonlight Sentinel", "Mystic Muse", "Elemental Master", "Eva's Saint", "Shillien Templar", "Spectral Dancer", "Ghost Hunter", "Ghost Sentinel", "Storm Screamer", "Spectral Master", "Shillien Saint", "Titan", "Grand Khauatari", "Dominator", "Doomcryer", "Fortune Seeker", "Maestro"
+		"Human Fighter",
+		"Warrior",
+		"Gladiator",
+		"Warlord",
+		"Human Knight",
+		"Paladin",
+		"Dark Avenger",
+		"Rogue",
+		"Treasure Hunter",
+		"Hawkeye",
+		"Human Mystic",
+		"Human Wizard",
+		"Sorceror",
+		"Necromancer",
+		"Warlock",
+		"Cleric",
+		"Bishop",
+		"Prophet",
+		"Elven Fighter",
+		"Elven Knight",
+		"Temple Knight",
+		"Swordsinger",
+		"Elven Scout",
+		"Plainswalker",
+		"Silver Ranger",
+		"Elven Mystic",
+		"Elven Wizard",
+		"Spellsinger",
+		"Elemental Summoner",
+		"Elven Oracle",
+		"Elven Elder",
+		"Dark Fighter",
+		"Palus Knight",
+		"Shillien Knight",
+		"Bladedancer",
+		"Assassin",
+		"Abyss Walker",
+		"Phantom Ranger",
+		"Dark Elven Mystic",
+		"Dark Elven Wizard",
+		"Spellhowler",
+		"Phantom Summoner",
+		"Shillien Oracle",
+		"Shillien Elder",
+		"Orc Fighter",
+		"Orc Raider",
+		"Destroyer",
+		"Orc Monk",
+		"Tyrant",
+		"Orc Mystic",
+		"Orc Shaman",
+		"Overlord",
+		"Warcryer",
+		"Dwarven Fighter",
+		"Dwarven Scavenger",
+		"Bounty Hunter",
+		"Dwarven Artisan",
+		"Warsmith",
+		"dummyEntry1",
+		"dummyEntry2",
+		"dummyEntry3",
+		"dummyEntry4",
+		"dummyEntry5",
+		"dummyEntry6",
+		"dummyEntry7",
+		"dummyEntry8",
+		"dummyEntry9",
+		"dummyEntry10",
+		"dummyEntry11",
+		"dummyEntry12",
+		"dummyEntry13",
+		"dummyEntry14",
+		"dummyEntry15",
+		"dummyEntry16",
+		"dummyEntry17",
+		"dummyEntry18",
+		"dummyEntry19",
+		"dummyEntry20",
+		"dummyEntry21",
+		"dummyEntry22",
+		"dummyEntry23",
+		"dummyEntry24",
+		"dummyEntry25",
+		"dummyEntry26",
+		"dummyEntry27",
+		"dummyEntry28",
+		"dummyEntry29",
+		"dummyEntry30",
+		"Duelist",
+		"DreadNought",
+		"Phoenix Knight",
+		"Hell Knight",
+		"Sagittarius",
+		"Adventurer",
+		"Archmage",
+		"Soultaker",
+		"Arcana Lord",
+		"Cardinal",
+		"Hierophant",
+		"Eva Templar",
+		"Sword Muse",
+		"Wind Rider",
+		"Moonlight Sentinel",
+		"Mystic Muse",
+		"Elemental Master",
+		"Eva's Saint",
+		"Shillien Templar",
+		"Spectral Dancer",
+		"Ghost Hunter",
+		"Ghost Sentinel",
+		"Storm Screamer",
+		"Spectral Master",
+		"Shillien Saint",
+		"Titan",
+		"Grand Khauatari",
+		"Dominator",
+		"Doomcryer",
+		"Fortune Seeker",
+		"Maestro"
 	};
-
-	private Map<Integer, L2PcTemplate> _templates = new HashMap<>();
-
-
-	private CharTemplateData()
+	
+	private final Map<Integer, L2PcTemplate> _templates = new HashMap<>();
+	
+	protected CharTemplateData()
 	{
 		load();
 	}
@@ -71,7 +176,7 @@ public class CharTemplateData implements DocumentParser
 						{
 							if (t.getNodeName().equalsIgnoreCase("stats"))
 							{
-
+								
 								int STR = Integer.valueOf(t.getAttributes().getNamedItem("str").getNodeValue());
 								int CON = Integer.valueOf(t.getAttributes().getNamedItem("con").getNodeValue());
 								int DEX = Integer.valueOf(t.getAttributes().getNamedItem("dex").getNodeValue());
@@ -89,7 +194,7 @@ public class CharTemplateData implements DocumentParser
 								int X = Integer.valueOf(t.getAttributes().getNamedItem("x").getNodeValue());
 								int Y = Integer.valueOf(t.getAttributes().getNamedItem("y").getNodeValue());
 								int Z = Integer.valueOf(t.getAttributes().getNamedItem("z").getNodeValue());
-
+								
 								double COL_R = Double.valueOf(t.getAttributes().getNamedItem("m_col_r").getNodeValue());
 								double COL_H = Double.valueOf(t.getAttributes().getNamedItem("m_col_h").getNodeValue());
 								
@@ -165,7 +270,7 @@ public class CharTemplateData implements DocumentParser
 												set.set("lvlMpMod", MPMOD);
 												set.set("classBaseLevel", lvl);
 												ct = new L2PcTemplate(set);
-
+												
 												// 5items must go here
 												for (int x = 1; x < 6; x++)
 												{
@@ -174,7 +279,7 @@ public class CharTemplateData implements DocumentParser
 														ct.addItem(Integer.valueOf(q.getAttributes().getNamedItem("item" + x).getNodeValue()));
 													}
 												}
-
+												
 												_templates.put(ct.classId.getId(), ct);
 											}
 										}
@@ -187,39 +292,38 @@ public class CharTemplateData implements DocumentParser
 			}
 		}
 	}
-
-
+	
 	public L2PcTemplate getTemplate(ClassId classId)
 	{
 		return getTemplate(classId.getId());
 	}
-
+	
 	public L2PcTemplate getTemplate(int classId)
 	{
 		int key = classId;
-
+		
 		return _templates.get(key);
 	}
-
-	public final String getClassNameById(int classId)
+	
+	public final static String getClassNameById(int classId)
 	{
 		return CHAR_CLASSES[classId];
 	}
-
+	
 	public static final int getClassIdByName(String className)
 	{
 		int currId = 1;
-
+		
 		for (String name : CHAR_CLASSES)
 		{
 			if (name.equalsIgnoreCase(className))
 			{
 				break;
 			}
-
+			
 			currId++;
 		}
-
+		
 		return currId;
 	}
 	

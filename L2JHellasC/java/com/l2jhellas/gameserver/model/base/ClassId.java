@@ -1,21 +1,11 @@
 package com.l2jhellas.gameserver.model.base;
 
-import java.util.EnumSet;
-
 import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.emum.ClassType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
+import java.util.EnumSet;
 
-/**
- * This class defines all classes (ex : human fighter, darkFighter...) that a player can chose.
- * <ul>
- * <li>id : The Identifier of the class</li>
- * <li>isMage : True if the class is a mage class</li>
- * <li>race : The race of this class</li>
- * <li>parent : The parent ClassId or null if this class is the root</li>
- * </ul>
- */
 public enum ClassId
 {
 	HUMAN_FIGHTER(ClassRace.HUMAN, ClassType.FIGHTER, 0, "Human Fighter", null),
@@ -154,35 +144,20 @@ public enum ClassId
 	
 	public static final ClassId[] VALUES = values();
 	
-	/** The ID of the class */
 	private final int _id;
 	
-	/** The ClassRace object of the class */
 	private final ClassRace _race;
 	
-	/** The ClassType of the class */
 	private final ClassType _type;
 	
-	/** The level of the class */
 	private final int _level;
 	
-	/** The name of the class */
 	private final String _name;
 	
-	/** The parent ClassId of the class */
 	private final ClassId _parent;
 	
-	/** The set of subclasses available for the class */
 	private EnumSet<ClassId> _subclasses;
 	
-	/**
-	 * Implicit constructor.
-	 * @param race : Class race.
-	 * @param type : Class type.
-	 * @param level : Class level.
-	 * @param name : Class name.
-	 * @param parent : Class parent.
-	 */
 	private ClassId(ClassRace race, ClassType type, int level, String name, ClassId parent)
 	{
 		_id = ordinal();
@@ -193,37 +168,21 @@ public enum ClassId
 		_parent = parent;
 	}
 	
-	/**
-	 * Returns the ID of the {@link ClassId}.
-	 * @return int : The ID.
-	 */
 	public final int getId()
 	{
 		return _id;
 	}
 	
-	/**
-	 * Returns the {@link ClassRace} of the {@link ClassId}.
-	 * @return {@link ClassRace} : The race.
-	 */
 	public final ClassRace getRace()
 	{
 		return _race;
 	}
 	
-	/**
-	 * Returns the {@link ClassType} of the {@link ClassId}.
-	 * @return {@link ClassType} : The type.
-	 */
 	public final ClassType getType()
 	{
 		return _type;
 	}
 	
-	/**
-	 * Returns the level of the {@link ClassId}.
-	 * @return int : The level (-1=dummy, 0=base, 1=1st class, 2=2nd class, 3=3rd class)
-	 */
 	public final int level()
 	{
 		return _level;
@@ -235,19 +194,11 @@ public enum ClassId
 		return _name;
 	}
 	
-	/**
-	 * Returns the parent {@link ClassId} of the {@link ClassId}.
-	 * @return {@link ClassId} : The parent.
-	 */
 	public final ClassId getParent()
 	{
 		return _parent;
 	}
 	
-	/**
-	 * @param classId The parent ClassId to check
-	 * @return True if this Class is a child of the selected ClassId.
-	 */
 	public final boolean childOf(ClassId classId)
 	{
 		if (_parent == null)
@@ -259,10 +210,6 @@ public enum ClassId
 		return _parent.childOf(classId);
 	}
 	
-	/**
-	 * @param classId the parent ClassId to check.
-	 * @return true if this Class is equal to the selected ClassId or a child of the selected ClassId.
-	 */
 	public final boolean equalsOrChildOf(ClassId classId)
 	{
 		return this == classId || childOf(classId);
@@ -338,15 +285,6 @@ public enum ClassId
 		}
 	}
 	
-	/**
-	 * Returns set of subclasses available for given {@link Player}.<br>
-	 * 1) If the race of your main class is Elf or Dark Elf, you may not select each class as a subclass to the other class.<br>
-	 * 2) You may not select Overlord and Warsmith class as a subclass.<br>
-	 * 3) You may not select a similar class as the subclass. The occupations classified as similar classes are as follows:<br>
-	 * Paladin, Dark Avenger, Temple Knight and Shillien Knight Treasure Hunter, Plainswalker and Abyss Walker Hawkeye, Silver Ranger and Phantom Ranger Warlock, Elemental Summoner and Phantom Summoner Sorcerer, Spellsinger and Spellhowler
-	 * @param player : The {@link Player} to make checks on.
-	 * @return EnumSet<ClassId> : Available subclasses for given player.
-	 */
 	public static final EnumSet<ClassId> getAvailableSubclasses(L2PcInstance player)
 	{
 		ClassId classId = VALUES[player.getBaseClass()];
@@ -367,15 +305,15 @@ public enum ClassId
 			classId.createSubclasses();
 	}
 	
-    public static ClassId getClassIdByOrdinal(int id)
-    {
-        for(ClassId current:values())
-        {
-            if(current._id == id)
-            {
-                return current;
-            }
-        }
-        return null;
-    }
+	public static ClassId getClassIdByOrdinal(int id)
+	{
+		for (ClassId current : values())
+		{
+			if (current._id == id)
+			{
+				return current;
+			}
+		}
+		return null;
+	}
 }

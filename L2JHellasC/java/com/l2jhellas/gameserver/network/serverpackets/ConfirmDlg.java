@@ -1,93 +1,75 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Dezmond_snz
- *         Format: cdddsdd
- */
-
 public class ConfirmDlg extends L2GameServerPacket
 {
 	private static final String _S__ED_CONFIRMDLG = "[S] ed ConfirmDlg";
-	@SuppressWarnings("unused")
-	private int _requestId;
-    private int _messageId;
-    private int _skillLvL = 1;
-	@SuppressWarnings("unused")
-	private String _name;
-    private static final int TYPE_ZONE_NAME = 7;
-    private static final int TYPE_SKILL_NAME = 4;
-    private static final int TYPE_ITEM_NAME = 3;
-    private static final int TYPE_NPC_NAME = 2;
-    private static final int TYPE_NUMBER = 1;
-    private static final int TYPE_TEXT = 0;
-	private List<Integer> _types = new ArrayList<Integer>();
-	private List<Object> _values = new ArrayList<Object>();
+	private final int _messageId;
+	private int _skillLvL = 1;
+	private static final int TYPE_ZONE_NAME = 7;
+	private static final int TYPE_SKILL_NAME = 4;
+	private static final int TYPE_ITEM_NAME = 3;
+	private static final int TYPE_NPC_NAME = 2;
+	private static final int TYPE_NUMBER = 1;
+	private static final int TYPE_TEXT = 0;
+	private final List<Integer> _types = new ArrayList<>();
+	private final List<Object> _values = new ArrayList<>();
 	private int _time = 0;
 	private int _requesterId = 0;
-
+	
 	public ConfirmDlg(int messageId)
 	{
 		_messageId = messageId;
 	}
-
+	
 	public ConfirmDlg addString(String text)
 	{
 		_types.add(new Integer(TYPE_TEXT));
 		_values.add(text);
 		return this;
 	}
-
+	
 	public ConfirmDlg addNumber(int number)
 	{
 		_types.add(new Integer(TYPE_NUMBER));
 		_values.add(new Integer(number));
 		return this;
 	}
-
+	
 	public ConfirmDlg addNpcName(int id)
 	{
 		_types.add(new Integer(TYPE_NPC_NAME));
 		_values.add(new Integer(1000000 + id));
 		return this;
 	}
-
+	
 	public ConfirmDlg addItemName(int id)
 	{
 		_types.add(new Integer(TYPE_ITEM_NAME));
 		_values.add(new Integer(id));
 		return this;
 	}
-
+	
 	public ConfirmDlg addZoneName(int x, int y, int z)
 	{
 		_types.add(new Integer(TYPE_ZONE_NAME));
-		int[] coord = { x, y, z };
+		int[] coord =
+		{
+			x,
+			y,
+			z
+		};
 		_values.add(coord);
 		return this;
 	}
-
+	
 	public ConfirmDlg addSkillName(int id)
 	{
 		return addSkillName(id, 1);
 	}
-
+	
 	public ConfirmDlg addSkillName(int id, int lvl)
 	{
 		_types.add(new Integer(TYPE_SKILL_NAME));
@@ -95,22 +77,22 @@ public class ConfirmDlg extends L2GameServerPacket
 		_skillLvL = lvl;
 		return this;
 	}
-
+	
 	public ConfirmDlg addTime(int time)
 	{
 		_time = time;
 		return this;
 	}
-
+	
 	public ConfirmDlg addRequesterId(int id)
 	{
 		_requesterId = id;
 		return this;
 	}
-
-    @Override
-    protected final void writeImpl()
-    {
+	
+	@Override
+	protected final void writeImpl()
+	{
 		writeC(0xed);
 		writeD(_messageId);
 		if (_types != null && _types.size() > 0)
@@ -166,8 +148,8 @@ public class ConfirmDlg extends L2GameServerPacket
 			writeD(0x00);
 			writeD(0x00);
 		}
-    }
-
+	}
+	
 	@Override
 	public String getType()
 	{

@@ -1,34 +1,20 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.instancemanager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OlympiadStadiaManager
 {
-
-	private List<L2OlympiadStadiumZone> _olympiadStadias = new ArrayList<L2OlympiadStadiumZone>();
-
+	
+	private final List<L2OlympiadStadiumZone> _olympiadStadias = new ArrayList<>();
+	
 	public OlympiadStadiaManager()
 	{
 	}
-
+	
 	public void addStadium(L2OlympiadStadiumZone arena)
 	{
 		_olympiadStadias.add(arena);
@@ -36,18 +22,18 @@ public class OlympiadStadiaManager
 	
 	public void clearStadium()
 	{
-		_olympiadStadias.clear();;
+		_olympiadStadias.clear();
 	}
-
+	
 	public final L2OlympiadStadiumZone getStadium(L2Character character)
 	{
 		for (L2OlympiadStadiumZone temp : _olympiadStadias)
 			if (temp.isCharacterInZone(character))
 				return temp;
-
+		
 		return null;
 	}
-
+	
 	@Deprecated
 	public final L2OlympiadStadiumZone getOlympiadStadiumById(int olympiadStadiumId)
 	{
@@ -58,7 +44,7 @@ public class OlympiadStadiaManager
 	}
 	
 	private static OlympiadStadiaManager _instance;
-
+	
 	public static final OlympiadStadiaManager getInstance()
 	{
 		if (_instance == null)

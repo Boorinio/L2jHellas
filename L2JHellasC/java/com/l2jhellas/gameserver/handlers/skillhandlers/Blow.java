@@ -1,20 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
 import com.l2jhellas.gameserver.emum.L2WeaponType;
+import com.l2jhellas.gameserver.emum.Sound;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -38,44 +25,41 @@ import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 
-/**
- * @author Steuf
- */
 public class Blow implements ISkillHandler
 {
 	private static final L2SkillType[] SKILL_IDS =
 	{
 		L2SkillType.BLOW
 	};
-
+	
 	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		if (activeChar.isAlikeDead())
 			return;
-
+		
 		for (L2Character target : (L2Character[]) targets)
 		{
 			if (target.isAlikeDead())
 				continue;
-
+			
 			// Check firstly if target dodges skill
 			final boolean skillIsEvaded = Formulas.calcPhysicalSkillEvasion(target, skill);
-
+			
 			int _successChance = 60;
-
+			
 			if (activeChar.isBehindTarget())
 				_successChance = 70;
 			else if (activeChar.isFrontTarget())
 				_successChance = 50;
-
+			
 			// If skill requires Crit or skill requires behind,
 			// calculate chance based on DEX, Position and on self BUFF
 			boolean success = true;
 			if ((skill.getCondition() & L2Skill.COND_BEHIND) != 0)
 				success = (_successChance == 70);
 			if ((skill.getCondition() & L2Skill.COND_CRIT) != 0)
-				success = (success && Formulas.getInstance().calcBlow(activeChar, target, _successChance));
+				success = (success && Formulas.calcBlow(activeChar, target, _successChance));
 			if (!skillIsEvaded && success)
 			{
 				if (skill.hasEffects())
@@ -92,7 +76,7 @@ public class Blow implements ISkillHandler
 				L2ItemInstance weapon = activeChar.getActiveWeaponInstance();
 				boolean soul = (weapon != null && weapon.getChargedSoulshot() == L2ItemInstance.CHARGED_SOULSHOT && weapon.getItemType() == L2WeaponType.DAGGER);
 				byte shld = Formulas.calcShldUse(activeChar, target);
-
+				
 				// Crit rate base crit rate for skill, modified with STR bonus
 				boolean crit = false;
 				if (Formulas.calcCrit(skill.getBaseCritRate() * 10 * Formulas.getSTRBonus(activeChar)))
@@ -119,7 +103,7 @@ public class Blow implements ISkillHandler
 						}
 					}
 				}
-
+				
 				if (soul && weapon != null)
 					weapon.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
 				if (skill.getDmgDirectlyToHP() && target instanceof L2PcInstance)
@@ -132,7 +116,7 @@ public class Blow implements ISkillHandler
 						if (summon != null && summon instanceof L2SummonInstance && Util.checkIfInRange(900, player, summon, true))
 						{
 							int tDmg = (int) damage * (int) player.getStat().calcStat(Stats.TRANSFER_DAMAGE_PERCENT, 0, null, null) / 100;
-
+							
 							// Only transfer dmg up to current HP, it should not
 							// be killed
 							if (summon.getCurrentHp() < tDmg)
@@ -170,19 +154,24 @@ public class Blow implements ISkillHandler
 				}
 				else
 					target.reduceCurrentHp(damage, activeChar);
+				
 				if (activeChar instanceof L2PcInstance)
+				{
+					activeChar.broadcastPacket(Sound.SKILLSOUND_CRITICAL.getPacket());
 					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.CRITICAL_HIT));
+				}
+				
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_DID_S1_DMG);
 				sm.addNumber((int) damage);
 				activeChar.sendPacket(sm);
 			}
 			// Possibility of a lethal strike
 			if ((!target.isRaid() && !target.isBoss()) && !(target instanceof L2DoorInstance) && !(target instanceof L2GrandBossInstance) && !(target instanceof L2MonsterInstance && ((L2MonsterInstance) target).getNpcId() == 36006) && (target instanceof L2Npc && ((L2Npc) target).getNpcId() != 35062))
- 			{
+			{
 				int chance = Rnd.get(100);
 				// 2nd lethal effect activate (cp,hp to 1 or if target is npc
 				// then hp to 1)
-				if (skill.getLethalChance2() > 0 && chance < Formulas.getInstance().calcLethal(activeChar, target, skill.getLethalChance2()))
+				if (skill.getLethalChance2() > 0 && chance < Formulas.calcLethal(activeChar, target, skill.getLethalChance2()))
 				{
 					if (target instanceof L2Npc)
 						target.reduceCurrentHp(target.getCurrentHp() - 1, activeChar);
@@ -195,10 +184,11 @@ public class Blow implements ISkillHandler
 							player.setCurrentCp(1);
 						}
 					}
+					activeChar.broadcastPacket(Sound.SKILLSOUND_CRITICAL.getPacket());
 					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LETHAL_STRIKE));
 					
 				}
-				else if (skill.getLethalChance1() > 0 && chance < Formulas.getInstance().calcLethal(activeChar, target, skill.getLethalChance1()))
+				else if (skill.getLethalChance1() > 0 && chance < Formulas.calcLethal(activeChar, target, skill.getLethalChance1()))
 				{
 					if (target instanceof L2PcInstance)
 					{
@@ -209,8 +199,9 @@ public class Blow implements ISkillHandler
 					else if (target instanceof L2Npc) // If is a monster remove first damage and after 50% of current hp
 						target.reduceCurrentHp(target.getCurrentHp() / 2, activeChar);
 					
-					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LETHAL_STRIKE));		
-
+					activeChar.broadcastPacket(Sound.SKILLSOUND_CRITICAL.getPacket());
+					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LETHAL_STRIKE));
+					
 				}
 			}
 			L2Effect effect = activeChar.getFirstEffect(skill.getId());
@@ -220,7 +211,7 @@ public class Blow implements ISkillHandler
 			skill.getEffectsSelf(activeChar);
 		}
 	}
-
+	
 	@Override
 	public L2SkillType[] getSkillIds()
 	{

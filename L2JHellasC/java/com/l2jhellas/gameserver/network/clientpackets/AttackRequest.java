@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -29,9 +15,9 @@ public final class AttackRequest extends L2GameClientPacket
 	private int _originX, _originY, _originZ;
 	@SuppressWarnings("unused")
 	private int _attackId;
-
+	
 	private static final String _C__0A_ATTACKREQUEST = "[C] 0A AttackRequest";
-
+	
 	@Override
 	protected void readImpl()
 	{
@@ -41,7 +27,7 @@ public final class AttackRequest extends L2GameClientPacket
 		_originZ = readD();
 		_attackId = readC(); // 0 for simple click 1 for shift-click
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
@@ -49,18 +35,18 @@ public final class AttackRequest extends L2GameClientPacket
 		
 		if (activeChar == null)
 			return;
-			
+		
 		activeChar.onActionRequest();
-
+		
 		if (activeChar.inObserverMode())
 		{
 			activeChar.sendPacket(SystemMessageId.OBSERVERS_CANNOT_PARTICIPATE);
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-	
-		 L2Object target;
-
+		
+		L2Object target;
+		
 		if (activeChar.getTargetId() == _objectId)
 			target = activeChar.getTarget();
 		else
@@ -99,12 +85,12 @@ public final class AttackRequest extends L2GameClientPacket
 		else
 		{
 			if ((target.getObjectId() != activeChar.getObjectId()) && !activeChar.isInStoreMode() && activeChar.getActiveRequester() == null)
-			    target.onForcedAttack(activeChar);
-		    else
-			   sendPacket(ActionFailed.STATIC_PACKET);	
+				target.onForcedAttack(activeChar);
+			else
+				sendPacket(ActionFailed.STATIC_PACKET);
 		}
 	}
-
+	
 	@Override
 	public String getType()
 	{

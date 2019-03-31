@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
-
-import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
@@ -29,34 +13,30 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-/**
- * @author NightMarez
- */
+import java.util.StringTokenizer;
+
 public final class L2TeleporterInstance extends L2NpcInstance
 {
 	private static final int COND_ALL_FALSE = 0;
 	private static final int COND_BUSY_BECAUSE_OF_SIEGE = 1;
 	private static final int COND_OWNER = 2;
 	private static final int COND_REGULAR = 3;
-
-	/**
-	 * @param template
-	 */
+	
 	public L2TeleporterInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 	}
-
+	
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
 		player.sendPacket(ActionFailed.STATIC_PACKET);
-
+		
 		int condition = validateCondition(player);
-
+		
 		StringTokenizer st = new StringTokenizer(command, " ");
 		String actualCommand = st.nextToken(); // Get actual command
-
+		
 		final int sealAvariceOwner = SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_AVARICE);
 		final int sealGnosisOwner = SevenSigns.getInstance().getSealOwner(SevenSigns.SEAL_GNOSIS);
 		final int playerCabal = SevenSigns.getInstance().getPlayerCabal(player);
@@ -169,10 +149,10 @@ public final class L2TeleporterInstance extends L2NpcInstance
 			doTeleport(player, Integer.parseInt(st.nextToken()));
 			player.setIsIn7sDungeon(false);
 		}
-
+		
 		super.onBypassFeedback(player, command);
 	}
-
+	
 	@Override
 	public String getHtmlPath(int npcId, int val)
 	{
@@ -185,15 +165,15 @@ public final class L2TeleporterInstance extends L2NpcInstance
 		{
 			pom = npcId + "-" + val;
 		}
-
+		
 		return "data/html/teleporter/" + pom + ".htm";
 	}
-
+	
 	@Override
 	public void showChatWindow(L2PcInstance player)
 	{
 		String filename = "data/html/teleporter/castleteleporter-no.htm";
-
+		
 		int condition = validateCondition(player);
 		if (condition == COND_REGULAR)
 		{
@@ -207,14 +187,14 @@ public final class L2TeleporterInstance extends L2NpcInstance
 			else if (condition == COND_OWNER) // Clan owns castle
 				filename = getHtmlPath(getNpcId(), 0); // Owner message window
 		}
-
+		
 		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		html.setFile(filename);
 		html.replace("%objectId%", String.valueOf(getObjectId()));
 		html.replace("%npcname%", getName());
 		player.sendPacket(html);
 	}
-
+	
 	private void doTeleport(L2PcInstance player, int val)
 	{
 		L2TeleportLocation list = TeleportLocationData.getInstance().getTemplate(val);
@@ -231,8 +211,8 @@ public final class L2TeleporterInstance extends L2NpcInstance
 			}
 			else if (player.isAlikeDead() || player.isDead())
 				return;
-			//you cannot teleport to village that is in siege
-			if (SiegeManager.getInstance().getSiege(list.getLocX(), list.getLocY(), list.getLocZ()) != null)
+			// you cannot teleport to village that is in siege
+			if (SiegeManager.getSiege(list.getLocX(), list.getLocY(), list.getLocZ()) != null)
 			{
 				player.sendPacket(SystemMessageId.NO_PORT_THAT_IS_IN_SIGE);
 				return;
@@ -247,7 +227,7 @@ public final class L2TeleporterInstance extends L2NpcInstance
 				player.sendMessage("You Are Not Able To Run Away From PvP!");
 				return;
 			}
-			else if (!Config.ALT_GAME_KARMA_PLAYER_CAN_USE_GK && player.getKarma() > 0) //karma
+			else if (!Config.ALT_GAME_KARMA_PLAYER_CAN_USE_GK && player.getKarma() > 0) // karma
 			{
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 				sm.addString("Go away, you're not welcome here.");
@@ -298,13 +278,13 @@ public final class L2TeleporterInstance extends L2NpcInstance
 				html.replace("%playername%", player.getName());
 				player.sendPacket(html);
 			}
-			else if (!list.getIsForNoble() && (Config.ALT_GAME_FREE_TELEPORT || player.destroyItemsByList("Teleport "+(list.getIsForNoble() ? " nobless" : ""), list.getItemsList(), this, true, payType)))
+			else if (!list.getIsForNoble() && (Config.ALT_GAME_FREE_TELEPORT || player.destroyItemsByList("Teleport " + (list.getIsForNoble() ? " nobless" : ""), list.getItemsList(), this, true, payType)))
 			{
 				if (Config.DEBUG)
 					_log.fine("Teleporting player " + player.getName() + " to new location: " + list.getLocX() + ":" + list.getLocY() + ":" + list.getLocZ());
 				player.teleToLocation(list.getLocX(), list.getLocY(), list.getLocZ(), true);
 			}
-			else if (list.getIsForNoble() && (Config.ALT_GAME_FREE_TELEPORT || player.destroyItemsByList("Teleport "+(list.getIsForNoble() ? " nobless" : ""), list.getItemsList(), this, true, payType)))
+			else if (list.getIsForNoble() && (Config.ALT_GAME_FREE_TELEPORT || player.destroyItemsByList("Teleport " + (list.getIsForNoble() ? " nobless" : ""), list.getItemsList(), this, true, payType)))
 			{
 				if (Config.DEBUG)
 					_log.fine("Teleporting player " + player.getName() + " to new location: " + list.getLocX() + ":" + list.getLocY() + ":" + list.getLocZ());
@@ -317,7 +297,7 @@ public final class L2TeleporterInstance extends L2NpcInstance
 		}
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-
+	
 	private int validateCondition(L2PcInstance player)
 	{
 		if (CastleManager.getInstance().getCastleIndex(this) < 0) // Teleporter isn't on castle ground

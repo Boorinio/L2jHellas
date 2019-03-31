@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
@@ -41,10 +27,7 @@ public class NpcInfoPoly extends L2GameServerPacket
 	L2NpcTemplate _template;
 	private final int _collisionRadius;
 	private final int _collisionHeight;
-
-	/**
-	 * @param _characters
-	 */
+	
 	public NpcInfoPoly(L2Object obj, L2Character attacker)
 	{
 		_obj = obj;
@@ -62,9 +45,9 @@ public class NpcInfoPoly extends L2GameServerPacket
 			_isAttackable = obj.isAutoAttackable(attacker);
 			_rhand = _template.rhand;
 			_lhand = _template.lhand;
-
+			
 		}
-
+		
 		if (_obj instanceof L2ItemInstance)
 		{
 			_x = _obj.getX();
@@ -100,10 +83,10 @@ public class NpcInfoPoly extends L2GameServerPacket
 			_name = _activeChar.getName();
 			_title = _activeChar.getTitle();
 			_abnormalEffect = _activeChar.getAbnormalEffect();
-
+			
 		}
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -120,14 +103,14 @@ public class NpcInfoPoly extends L2GameServerPacket
 		writeD(_pAtkSpd);
 		writeD(_runSpd);
 		writeD(_walkSpd);
-		writeD(_swimRunSpd/* 0x32 */); // swimspeed
-		writeD(_swimWalkSpd/* 0x32 */); // swimspeed
+		writeD(_swimRunSpd); // swimspeed
+		writeD(_swimWalkSpd); // swimspeed
 		writeD(_flRunSpd);
 		writeD(_flWalkSpd);
 		writeD(_flyRunSpd);
 		writeD(_flyWalkSpd);
-		writeF(1/* _activeChar.getProperMultiplier() */);
-		writeF(1/* _activeChar.getAttackSpeedMultiplier() */);
+		writeF(1);
+		writeF(1);
 		writeF(_collisionRadius);
 		writeF(_collisionHeight);
 		writeD(_rhand); // right hand weapon
@@ -143,8 +126,8 @@ public class NpcInfoPoly extends L2GameServerPacket
 		writeD(0);
 		writeD(0);
 		writeD(0000); // hmm karma ??
-
-		writeH(_abnormalEffect);  // C2
+		
+		writeH(_abnormalEffect); // C2
 		writeH(0x00); // C2
 		writeD(0000); // C2
 		writeD(0000); // C2
@@ -152,7 +135,7 @@ public class NpcInfoPoly extends L2GameServerPacket
 		writeD(0000); // C2
 		writeC(0000); // C2
 	}
-
+	
 	@Override
 	public String getType()
 	{

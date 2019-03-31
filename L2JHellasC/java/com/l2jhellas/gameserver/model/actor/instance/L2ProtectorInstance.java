@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
-
-import java.util.concurrent.ScheduledFuture;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -30,22 +14,21 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-/**
- * @author Ederik
- */
+import java.util.concurrent.ScheduledFuture;
+
 public class L2ProtectorInstance extends L2NpcInstance
 {
 	private ScheduledFuture<?> _aiTask;
-
+	
 	public L2ProtectorInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-
+		
 		if (_aiTask != null)
 		{
 			_aiTask.cancel(true);
 		}
-
+		
 		_aiTask = ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new ProtectorAI(this), 3000, 3000);
 	}
 	
@@ -78,24 +61,24 @@ public class L2ProtectorInstance extends L2NpcInstance
 			_aiTask.cancel(true);
 			_aiTask = null;
 		}
-
+		
 		super.deleteMe();
 	}
-
+	
 	@Override
 	public boolean isAutoAttackable(L2Character attacker)
 	{
 		return false;
 	}
 	
-	private void showHtmlWindow(L2PcInstance activeChar)
+	private static void showHtmlWindow(L2PcInstance activeChar)
 	{
 		StringBuilder tb = new StringBuilder();
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
-
+		
 		tb.append("<html><head><title>Protector</title></head><body>");
 		tb.append("<center><font color=\"a1df64\">L2jHellas Protector</font></center></body></html>");
-
+		
 		html.setHtml(tb.toString());
 		activeChar.sendPacket(html);
 	}
@@ -103,21 +86,18 @@ public class L2ProtectorInstance extends L2NpcInstance
 	private class ProtectorAI implements Runnable
 	{
 		private final L2ProtectorInstance _caster;
-
+		
 		protected ProtectorAI(L2ProtectorInstance caster)
 		{
 			_caster = caster;
 		}
-
+		
 		@Override
 		public void run()
 		{
-			/**
-			 * For each known player in range, cast sleep if pvpFlag != 0 or Karma >0 Skill use is just for buff
-			 * animation
-			 */
-			for (L2PcInstance player : L2World.getInstance().getVisibleObjects(_caster, L2PcInstance.class,2000))
-
+			
+			for (L2PcInstance player : L2World.getInstance().getVisibleObjects(_caster, L2PcInstance.class, 2000))
+			
 			{
 				if (player.getKarma() > 0 && Config.PROTECTOR_PLAYER_PK || player.getPvpFlag() != 0 && Config.PROTECTOR_PLAYER_PVP)
 				{
@@ -125,14 +105,14 @@ public class L2ProtectorInstance extends L2NpcInstance
 				}
 			}
 		}
-
+		
 		private boolean handleCast(L2PcInstance player, int skillId, int skillLevel)
 		{
 			if (player.isGM() || player.isDead() || !player.isVisible() || !isInsideRadius(player, Config.PROTECTOR_RADIUS_ACTION, false, false))
 				return false;
-
+			
 			L2Skill skill = SkillTable.getInstance().getInfo(skillId, skillLevel);
-
+			
 			if (player.getFirstEffect(skill) == null)
 			{
 				int objId = _caster.getObjectId();
@@ -143,7 +123,7 @@ public class L2ProtectorInstance extends L2NpcInstance
 				skill = null;
 				return true;
 			}
-
+			
 			return false;
 		}
 	}

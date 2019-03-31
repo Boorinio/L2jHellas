@@ -1,11 +1,5 @@
 package Extensions.fake.roboto.ai;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import Extensions.fake.roboto.FakePlayer;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -33,6 +27,12 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public abstract class FakePlayerAI
 {
 	protected final FakePlayer _fakePlayer;
@@ -44,20 +44,20 @@ public abstract class FakePlayerAI
 	protected boolean _isBusyThinking = false;
 	protected int iterationsOnDeath = 0;
 	private final int toVillageIterationsOnDeath = 22;
-	private boolean usingress = false;
-
+	boolean usingress = false;
+	
 	public FakePlayerAI(FakePlayer character)
 	{
 		_fakePlayer = character;
 		setup();
 		applyDefaultBuffs();
 	}
-
+	
 	public void setup()
 	{
 		_fakePlayer.setIsRunning(true);
 	}
-
+	
 	protected void applyDefaultBuffs()
 	{
 		for (int[] buff : getBuffs())
@@ -65,7 +65,7 @@ public abstract class FakePlayerAI
 			try
 			{
 				Map<Integer, L2Effect> activeEffects = Arrays.stream(_fakePlayer.getAllEffects()).filter(x -> x.getEffectType() == EffectType.BUFF).collect(Collectors.toMap(x -> x.getSkill().getId(), x -> x));
-
+				
 				if (!activeEffects.containsKey(buff[0]))
 					SkillTable.getInstance().getInfo(buff[0], buff[1]).getEffects(_fakePlayer, _fakePlayer);
 				else
@@ -82,18 +82,18 @@ public abstract class FakePlayerAI
 			}
 		}
 	}
-
+	
 	protected void handleDeath()
 	{
 		if (_fakePlayer.isDead())
 			tryRandomDeathAction();
 	}
-
+	
 	public void setBusyThinking(boolean thinking)
 	{
 		_isBusyThinking = thinking;
 	}
-
+	
 	public boolean isBusyThinking()
 	{
 		return _isBusyThinking;
@@ -102,62 +102,62 @@ public abstract class FakePlayerAI
 	protected void tryRandomDeathAction()
 	{
 		List<FakePlayer> targets = new ArrayList<>();
-
-		if(!usingress)
+		
+		if (!usingress)
 		{
-			L2World.getInstance().forEachVisibleObjectInRange(_fakePlayer, FakePlayer.class,400, target ->
+			L2World.getInstance().forEachVisibleObjectInRange(_fakePlayer, FakePlayer.class, 400, target ->
 			{
-		             if (!target.isDead())     
-		            	 targets.add(target);         
-			});	
-				
-			if(targets.isEmpty()) 
+				if (!target.isDead())
+					targets.add(target);
+			});
+			
+			if (targets.isEmpty())
 			{
 				toVillageOnDeath();
-				iterationsOnDeath = 0;	
-				usingress = false;	
+				iterationsOnDeath = 0;
+				usingress = false;
 				
-				if(_target!=null)
+				if (_target != null)
 				{
-				   _target.getFakeAi().setBusyThinking(false);
-				   _target.setIsInvul(false);
+					_target.getFakeAi().setBusyThinking(false);
+					_target.setIsInvul(false);
 				}
 				
 				return;
 			}
-				
-			_target = targets.get(Rnd.get(0, targets.size() -1 ));	
+			
+			_target = targets.get(Rnd.get(0, targets.size() - 1));
 			_target.getFakeAi().setBusyThinking(true);
 			_target.setIsInvul(true);
 			_target.abortAllAttacks();
 			_target.setTarget(_fakePlayer);
-			_target.moveToLocation(_fakePlayer.getX(), _fakePlayer.getY(), _fakePlayer.getZ(),Rnd.get(25, 45));
+			_target.moveToLocation(_fakePlayer.getX(), _fakePlayer.getY(), _fakePlayer.getZ(), Rnd.get(25, 45));
 			_target.broadcastPacket(new MoveToLocation(_target));
-
-		    L2Skill skill = SkillTable.getInstance().getInfo(2014, 1);
-		    _target.getFakeAi().castSpell(skill);		    
-		    usingress = true;
+			
+			L2Skill skill = SkillTable.getInstance().getInfo(2014, 1);
+			_target.getFakeAi().castSpell(skill);
+			usingress = true;
 		}
-		else if(!_target.isCastingNow() && _target.isInsideRadius(_fakePlayer,80, true, false))
+		else if (!_target.isCastingNow() && _target.isInsideRadius(_fakePlayer, 80, true, false))
 		{
 			_target.getFakeAi().setBusyThinking(false);
 			_target.setIsInvul(false);
-			ThreadPoolManager.getInstance().scheduleGeneral(new ReviveTask(_fakePlayer), 2500);			
+			ThreadPoolManager.getInstance().scheduleGeneral(new ReviveTask(_fakePlayer), 2500);
 		}
 		else
 		{
 			iterationsOnDeath++;
-				    
+			
 			if (iterationsOnDeath >= toVillageIterationsOnDeath)
 			{
 				toVillageOnDeath();
-				iterationsOnDeath = 0;	
+				iterationsOnDeath = 0;
 				usingress = false;
 				
-				if(_target!=null)
+				if (_target != null)
 				{
-				  _target.getFakeAi().setBusyThinking(false);	
-				  _target.setIsInvul(false);
+					_target.getFakeAi().setBusyThinking(false);
+					_target.setIsInvul(false);
 				}
 			}
 		}
@@ -186,30 +186,30 @@ public abstract class FakePlayerAI
 		{
 			List<L2Character> targets = new ArrayList<>();
 			
-			L2World.getInstance().forEachVisibleObjectInRange(_fakePlayer, L2CharacterClass,radius, target ->
+			L2World.getInstance().forEachVisibleObjectInRange(_fakePlayer, L2CharacterClass, radius, target ->
 			{
-               if (!target.isDead())     
-            	   targets.add(target);         
-			});	
-							
-			if(!targets.isEmpty()) 
+				if (!target.isDead())
+					targets.add(target);
+			});
+			
+			if (!targets.isEmpty())
 			{
-				L2Character target = targets.get(Rnd.get(0, targets.size() -1 ));
-				_fakePlayer.setTarget(target);				
+				L2Character target = targets.get(Rnd.get(0, targets.size() - 1));
+				_fakePlayer.setTarget(target);
 			}
 		}
 		else
-		{			
-			if (((L2Character) _fakePlayer.getTarget()).isDead() || !_fakePlayer.isInsideRadius(_fakePlayer.getTarget(),radius,false,false))
+		{
+			if (((L2Character) _fakePlayer.getTarget()).isDead() || !_fakePlayer.isInsideRadius(_fakePlayer.getTarget(), radius, false, false))
 				_fakePlayer.setTarget(null);
 		}
 	}
-
+	
 	public void castSpell(L2Skill skill)
 	{
 		if (!_fakePlayer.isCastingNow())
 		{
-
+			
 			if (skill.getTargetType() == L2SkillTargetType.TARGET_GROUND)
 			{
 				if (maybeMoveToPosition((_fakePlayer).getCurrentSkillWorldPosition(), skill.getCastRange()))
@@ -223,10 +223,10 @@ public abstract class FakePlayerAI
 				{
 					if (skill.isOffensive() && _fakePlayer.getTarget() != null)
 						_fakePlayer.setTarget(null);
-
+					
 					return;
 				}
-
+				
 				if (_fakePlayer.getTarget() != null)
 				{
 					if (maybeMoveToPawn(_fakePlayer.getTarget(), skill.getCastRange()))
@@ -235,26 +235,26 @@ public abstract class FakePlayerAI
 					}
 				}
 			}
-
+			
 			if (skill.getHitTime() > 50)
 				clientStopMoving(null);
-
+			
 			_fakePlayer.doCast(skill);
 		}
 	}
-
+	
 	protected void castSelfSpell(L2Skill skill)
 	{
 		if (!_fakePlayer.isCastingNow() && !_fakePlayer.isSkillDisabled(skill.getId()))
 		{
-
+			
 			if (skill.getHitTime() > 50)
 				clientStopMoving(null);
-
+			
 			_fakePlayer.doCast(skill);
 		}
 	}
-
+	
 	protected void toVillageOnDeath()
 	{
 		final Location location = MapRegionTable.getInstance().getTeleToLocation(_fakePlayer, TeleportWhereType.TOWN);
@@ -266,59 +266,59 @@ public abstract class FakePlayerAI
 			_fakePlayer.doRevive();
 		
 		_fakePlayer.getFakeAi().teleportToLocation(location.getX(), location.getY(), location.getZ(), 50);
-				
+		
 		_fakePlayer.broadcastUserInfo();
 		
-		if(Rnd.get(1,2)==1)
-		    _fakePlayer.setFakeAi(new EnchanterAI(_fakePlayer));
+		if (Rnd.get(1, 2) == 1)
+			_fakePlayer.setFakeAi(new EnchanterAI(_fakePlayer));
 		else
-		    _fakePlayer.setFakeAi(new FallbackAI(_fakePlayer));
-
-	    _fakePlayer.getFakeAi().setBusyThinking(false);
+			_fakePlayer.setFakeAi(new FallbackAI(_fakePlayer));
+		
+		_fakePlayer.getFakeAi().setBusyThinking(false);
 	}
 	
 	protected void teleportToLocation(int x, int y, int z, int randomOffset)
 	{
 		_fakePlayer.stopMove(null);
 		_fakePlayer.abortAttack();
-		_fakePlayer.abortCast();		
+		_fakePlayer.abortCast();
 		_fakePlayer.setIsTeleporting(true);
-		_fakePlayer.setTarget(null);		
+		_fakePlayer.setTarget(null);
 		
 		if (randomOffset > 0)
 		{
 			x += Rnd.get(-randomOffset, randomOffset);
 			y += Rnd.get(-randomOffset, randomOffset);
-		}	
+		}
 		
 		z += 5;
 		
-		_fakePlayer.broadcastPacket(new TeleportToLocation(_fakePlayer, x, y, z,_fakePlayer.getHeading()));
-		_fakePlayer.decayMe();		
+		_fakePlayer.broadcastPacket(new TeleportToLocation(_fakePlayer, x, y, z, _fakePlayer.getHeading()));
+		_fakePlayer.decayMe();
 		_fakePlayer.setXYZ(x, y, z);
-		_fakePlayer.onTeleported();		
+		_fakePlayer.onTeleported();
 		_fakePlayer.revalidateZone(true);
 		_fakePlayer.broadcastInfo();
 	}
-
+	
 	protected void clientStopMoving(L2CharPosition loc)
 	{
 		if (_fakePlayer.isMoving())
 			_fakePlayer.stopMove(loc);
-
+		
 		_clientMovingToPawnOffset = 0;
-
+		
 		if (_clientMoving || loc != null)
 		{
 			_clientMoving = false;
-
+			
 			_fakePlayer.broadcastPacket(new StopMove(_fakePlayer));
-
+			
 			if (loc != null)
 				_fakePlayer.broadcastPacket(new StopRotation(_fakePlayer.getObjectId(), _fakePlayer.getHeading(), 0));
 		}
 	}
-
+	
 	protected boolean checkTargetLost(L2Object target)
 	{
 		if (target instanceof L2PcInstance)
@@ -330,7 +330,7 @@ public abstract class FakePlayerAI
 				return false;
 			}
 		}
-
+		
 		if (target == null)
 		{
 			_fakePlayer.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
@@ -338,54 +338,54 @@ public abstract class FakePlayerAI
 		}
 		return false;
 	}
-
+	
 	protected boolean maybeMoveToPosition(Point3D point3d, int offset)
 	{
 		if (point3d == null)
 		{
 			return false;
 		}
-
+		
 		if (offset < 10)
-			offset=10;
-
-		if (!_fakePlayer.isInsideRadius(point3d.getX(), point3d.getY(), (int) (offset + _fakePlayer.getTemplate().getCollisionRadius()), false))
+			offset = 10;
+		
+		if (!_fakePlayer.isInsideRadius(point3d.getX(), point3d.getY(), offset + _fakePlayer.getTemplate().getCollisionRadius(), false))
 		{
 			if (_fakePlayer.isMovementDisabled())
 				return true;
-
+			
 			int x = _fakePlayer.getX();
 			int y = _fakePlayer.getY();
-
+			
 			double dx = point3d.getX() - x;
 			double dy = point3d.getY() - y;
-
+			
 			double dist = Math.sqrt(dx * dx + dy * dy);
-
+			
 			double sin = dy / dist;
 			double cos = dx / dist;
-
+			
 			dist -= offset - 5;
-
+			
 			x += (int) (dist * cos);
 			y += (int) (dist * sin);
-
+			
 			if (!_fakePlayer.isMoving())
-			   moveTo(x, y, point3d.getZ());
+				moveTo(x, y, point3d.getZ());
 			
 			return true;
 		}
-
+		
 		return false;
 	}
-
+	
 	protected void moveToPawn(L2Object pawn, int offset)
 	{
 		if (!_fakePlayer.isMovementDisabled())
 		{
 			if (offset < 10)
 				offset = 10;
-
+			
 			boolean sendPacket = true;
 			if (_clientMoving && (_fakePlayer.getTarget() == pawn))
 			{
@@ -393,7 +393,7 @@ public abstract class FakePlayerAI
 				{
 					if (System.currentTimeMillis() < _moveToPawnTimeout)
 						return;
-
+					
 					sendPacket = false;
 				}
 				else if (_fakePlayer.isOnGeodataPath())
@@ -402,22 +402,22 @@ public abstract class FakePlayerAI
 						return;
 				}
 			}
-
+			
 			_clientMoving = true;
 			_clientMovingToPawnOffset = offset;
 			_fakePlayer.setTarget(pawn);
 			_moveToPawnTimeout = System.currentTimeMillis() + 1000;
-
+			
 			if (pawn == null)
 				return;
-
+			
 			_fakePlayer.moveToLocation(pawn.getX(), pawn.getY(), pawn.getZ(), offset);
-
+			
 			if (!_fakePlayer.isMoving())
 			{
 				return;
 			}
-
+			
 			if (pawn instanceof L2Character)
 			{
 				if (_fakePlayer.isOnGeodataPath())
@@ -432,40 +432,40 @@ public abstract class FakePlayerAI
 				_fakePlayer.broadcastPacket(new MoveToLocation(_fakePlayer));
 		}
 	}
-
+	
 	public void moveTo(int x, int y, int z)
 	{
-
+		
 		if (!_fakePlayer.isMovementDisabled())
 		{
 			_clientMoving = true;
 			_clientMovingToPawnOffset = 0;
 			_fakePlayer.moveToLocation(x, y, z, 0);
-
+			
 			if (_fakePlayer.isSpawnProtected())
 			{
-				 _fakePlayer.stopAbnormalEffect(2097152);
-				 _fakePlayer.setProtection(false);
+				_fakePlayer.stopAbnormalEffect(2097152);
+				_fakePlayer.setProtection(false);
 			}
 			
 			if (!_fakePlayer.isMoving())
 				return;
-
+			
 			_fakePlayer.broadcastPacket(new MoveToLocation(_fakePlayer));
-
+			
 		}
 	}
-
+	
 	protected boolean maybeMoveToPawn(L2Object target, int offset)
 	{
-
+		
 		if (target == null || offset < 0)
 			return false;
-
+		
 		offset += _fakePlayer.getTemplate().getCollisionRadius();
 		if (target instanceof L2Character)
 			offset += ((L2Character) target).getTemplate().getCollisionRadius();
-
+		
 		if (!_fakePlayer.isInsideRadius(target, offset, false, false))
 		{
 			if (_fakePlayer.isMovementDisabled())
@@ -474,31 +474,31 @@ public abstract class FakePlayerAI
 					_fakePlayer.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 				return true;
 			}
-
+			
 			if (target instanceof L2Character && !(target instanceof L2DoorInstance))
 			{
 				if (((L2Character) target).isMoving())
 					offset -= 30;
-
+				
 				if (offset < 5)
 					offset = 5;
 			}
-
+			
 			moveToPawn(target, offset);
-
+			
 			return true;
 		}
-
+		
 		if (!GeoEngine.canSeeTarget(_fakePlayer, _fakePlayer.getTarget()))
 		{
 			moveToPawn(target, 50);
 			return true;
 		}
-
+		
 		return false;
 	}
-
+	
 	public abstract void thinkAndAct();
-
+	
 	protected abstract int[][] getBuffs();
 }

@@ -1,26 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
-
-import java.nio.BufferUnderflowException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.ChatHandler;
@@ -35,11 +13,19 @@ import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
+import java.nio.BufferUnderflowException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.logging.Logger;
+
 public final class Say2 extends L2GameClientPacket
 {
 	private static final String _C__38_SAY2 = "[C] 38 Say2";
 	private static Logger _log = Logger.getLogger(Say2.class.getName());
-
+	
 	public final static int ALL = 0;
 	public final static int SHOUT = 1; // !
 	public final static int TELL = 2;
@@ -59,7 +45,7 @@ public final class Say2 extends L2GameClientPacket
 	public final static int PARTYROOM_ALL = 16; // (Red)
 	public final static int HERO_VOICE = 17;
 	public static final int CRITICAL_ANNOUNCE = 18;
-
+	
 	private final static String[] CHAT_NAMES =
 	{
 		"ALL",
@@ -82,11 +68,11 @@ public final class Say2 extends L2GameClientPacket
 		"HERO_VOICE",
 		"CRITICAL_ANNOUNCEMENT"
 	};
-
+	
 	private String _text;
 	private int _type;
 	private String _target;
-
+	
 	@Override
 	protected void readImpl()
 	{
@@ -101,15 +87,15 @@ public final class Say2 extends L2GameClientPacket
 		}
 		_target = (_type == TELL) ? readS() : null;
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		if (Config.DEBUG)
 			_log.info("Say2: Msg Type = '" + _type + "' Text = '" + _text + "'.");
-
+		
 		final L2PcInstance activeChar = getClient().getActiveChar();
-
+		
 		if (activeChar == null)
 			return;
 		
@@ -118,7 +104,7 @@ public final class Say2 extends L2GameClientPacket
 			_log.warning(Say2.class.getName() + ": Invalid type: " + _type);
 			return;
 		}
-
+		
 		if (_text.length() >= 100)
 		{
 			return;
@@ -144,11 +130,11 @@ public final class Say2 extends L2GameClientPacket
 			Util.handleIllegalPlayerAction(activeChar, "Client Emulator Detect: " + activeChar.getName() + " is using L2Walker.", Config.DEFAULT_PUNISH);
 			return;
 		}
-	    
+		
 		// Say Filter implementation
 		if (Config.USE_SAY_FILTER)
 			checkText(activeChar);
-
+		
 		if (activeChar.isChatBanned())
 		{
 			if (_type == ALL || _type == SHOUT || _type == TRADE || _type == HERO_VOICE)
@@ -157,7 +143,7 @@ public final class Say2 extends L2GameClientPacket
 				return;
 			}
 		}
-
+		
 		if (activeChar.isInJail() && Config.JAIL_DISABLE_CHAT)
 		{
 			if (_type == TELL || _type == SHOUT || _type == TRADE || _type == HERO_VOICE)
@@ -166,16 +152,16 @@ public final class Say2 extends L2GameClientPacket
 				return;
 			}
 		}
-
+		
 		if (activeChar.isCursedWeaponEquiped() && (_type == TRADE || _type == SHOUT))
 		{
 			activeChar.sendMessage("Shout and trade chatting cannot be used while possessing a cursed weapon.");
 			return;
 		}
-
+		
 		if (_type == PETITION_PLAYER && activeChar.isGM())
 			_type = PETITION_GM;
-
+		
 		L2Object saymode = activeChar.getSayMode();
 		if (saymode != null)
 		{
@@ -184,7 +170,7 @@ public final class Say2 extends L2GameClientPacket
 			_type = 0;
 			
 			final Collection<L2PcInstance> list = L2World.getInstance().getVisibleObjects(saymode, L2PcInstance.class);
-
+			
 			CreatureSay cs = new CreatureSay(actor, _type, name, _text);
 			for (L2Object obj : list)
 			{
@@ -202,17 +188,17 @@ public final class Say2 extends L2GameClientPacket
 			handler.handleChat(_type, activeChar, _target, _text);
 		}
 	}
-
+	
 	private void checkText(L2PcInstance activeChar)
 	{
 		String filteredText = _text;
 		filteredText.toLowerCase();
-
+		
 		for (String pattern : Config.FILTER_LIST)
 		{
 			filteredText = filteredText.replaceAll("(?i)" + pattern, Config.CHAT_FILTER_CHARS);
 		}
-
+		
 		if (Config.CHAT_FILTER_PUNISHMENT.equalsIgnoreCase("jail") && _text != filteredText)
 		{
 			int punishmentLength = 0;
@@ -275,7 +261,7 @@ public final class Say2 extends L2GameClientPacket
 		}
 		_text = filteredText;
 	}
-
+	
 	@Override
 	public String getType()
 	{

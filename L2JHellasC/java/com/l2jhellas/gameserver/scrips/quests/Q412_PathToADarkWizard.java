@@ -32,7 +32,7 @@ public class Q412_PathToADarkWizard extends Quest
 	
 	public Q412_PathToADarkWizard()
 	{
-		super(412, qn,"Path to a Dark Wizard");
+		super(412, qn, "Path to a Dark Wizard");
 		
 		setItemsIds(SEED_OF_ANGER, SEED_OF_DESPAIR, SEED_OF_HORROR, SEED_OF_LUNACY, FAMILY_REMAINS, VARIKA_LIQUOR, KNEE_BONE, HEART_OF_LUNACY, LUCKY_KEY, CANDLE, HUB_SCENT);
 		

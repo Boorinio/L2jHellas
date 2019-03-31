@@ -1,22 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.zone.type;
-
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
@@ -28,9 +10,10 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
 
-/**
- * @author DaRkRaGe
- */
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class L2BossZone extends L2ZoneType
 {
 	// Track the times that players got disconnected. Players are allowed to log back into the zone as long as their log-out was within _timeInvade time...
@@ -143,7 +126,7 @@ public class L2BossZone extends L2ZoneType
 				
 				if (_playerAllowed.contains(id))
 				{
-					if (player.isOnline()==0)
+					if (player.isOnline() == 0)
 					{
 						// Player disconnected.
 						_playerAllowEntry.put(id, System.currentTimeMillis() + _timeInvade);
@@ -183,11 +166,6 @@ public class L2BossZone extends L2ZoneType
 			((L2Attackable) character).returnHome();
 	}
 	
-	/**
-	 * Enables the entry of a player to the boss zone for next "duration" seconds. If the player tries to enter the boss zone after this period, he will be teleported out.
-	 * @param player : Player to allow entry.
-	 * @param duration : Entry permission is valid for this period (in seconds).
-	 */
 	public void allowPlayerEntry(L2PcInstance player, int duration)
 	{
 		// Get player object id.
@@ -201,10 +179,6 @@ public class L2BossZone extends L2ZoneType
 		_playerAllowEntry.put(playerId, System.currentTimeMillis() + duration * 1000);
 	}
 	
-	/**
-	 * Enables the entry of a player to the boss zone after server shutdown/restart. The time limit is specified by each zone via "InvadeTime" parameter. If the player tries to enter the boss zone after this period, he will be teleported out.
-	 * @param playerId : The ID of player to allow entry.
-	 */
 	public void allowPlayerEntry(int playerId)
 	{
 		// Allow player entry.
@@ -215,10 +189,6 @@ public class L2BossZone extends L2ZoneType
 		_playerAllowEntry.put(playerId, System.currentTimeMillis() + _timeInvade);
 	}
 	
-	/**
-	 * Removes the player from allowed list and cancel the entry permition.
-	 * @param player : Player to remove from the zone.
-	 */
 	public void removePlayer(L2PcInstance player)
 	{
 		// Get player object id.
@@ -231,20 +201,11 @@ public class L2BossZone extends L2ZoneType
 		_playerAllowEntry.remove(id);
 	}
 	
-	/**
-	 * @return the list of all allowed players object ids.
-	 */
 	public Set<Integer> getAllowedPlayers()
 	{
 		return _playerAllowed;
 	}
-
-	/**
-	 * Some GrandBosses send all players in zone to a specific part of the zone, rather than just removing them all. If this is the case, this command should be used. If this is no the case, then use oustAllPlayers().
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
+	
 	public void movePlayersTo(int x, int y, int z)
 	{
 		if (_characterList.isEmpty())
@@ -252,15 +213,11 @@ public class L2BossZone extends L2ZoneType
 		
 		for (L2PcInstance player : getKnownTypeInside(L2PcInstance.class))
 		{
-			if (player.isOnline()==1)
-				player.teleToLocation(x, y, z,  false);
+			if (player.isOnline() == 1)
+				player.teleToLocation(x, y, z, false);
 		}
 	}
 	
-	/**
-	 * Occasionally, all players need to be sent out of the zone (for example, if the players are just running around without fighting for too long, or if all players die, etc). This call sends all online players to town and marks offline players to be teleported (by clearing their relog expiration
-	 * times) when they log back in (no real need for off-line teleport).
-	 */
 	public void oustAllPlayers()
 	{
 		if (_characterList.isEmpty())
@@ -268,10 +225,10 @@ public class L2BossZone extends L2ZoneType
 		
 		for (L2PcInstance player : getKnownTypeInside(L2PcInstance.class))
 		{
-			if (player.isOnline()==1)
+			if (player.isOnline() == 1)
 			{
 				if (_oustLoc[0] != 0 && _oustLoc[1] != 0 && _oustLoc[2] != 0)
-					player.teleToLocation(_oustLoc[0], _oustLoc[1], _oustLoc[2],  false);
+					player.teleToLocation(_oustLoc[0], _oustLoc[1], _oustLoc[2], false);
 				else
 					player.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 			}

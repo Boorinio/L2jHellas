@@ -1,21 +1,4 @@
-/*
- * This program is free software, you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http,//www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -23,13 +6,16 @@ import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.util.Rnd;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Q426_QuestForFishingShot extends Quest
 {
 	private static final String qn = "Q426_QuestForFishingShot";
 	
 	private static final int SWEET_FLUID = 7586;
 	
-	private static final Map<Integer, Integer> MOBS1 = new HashMap<Integer, Integer>();
+	private static final Map<Integer, Integer> MOBS1 = new HashMap<>();
 	{
 		MOBS1.put(20005, 45);
 		MOBS1.put(20013, 100);
@@ -203,7 +189,7 @@ public class Q426_QuestForFishingShot extends Quest
 		MOBS1.put(21644, 170);
 	}
 	
-	private static final Map<Integer, Integer> MOBS2 = new HashMap<Integer, Integer>();
+	private static final Map<Integer, Integer> MOBS2 = new HashMap<>();
 	{
 		MOBS2.put(20579, 420);
 		MOBS2.put(20639, 280);
@@ -233,7 +219,7 @@ public class Q426_QuestForFishingShot extends Quest
 		MOBS2.put(21636, 950);
 	}
 	
-	private static final Map<Integer, Integer> MOBS3 = new HashMap<Integer, Integer>();
+	private static final Map<Integer, Integer> MOBS3 = new HashMap<>();
 	{
 		MOBS3.put(20655, 110);
 		MOBS3.put(20656, 150);
@@ -253,7 +239,7 @@ public class Q426_QuestForFishingShot extends Quest
 		MOBS3.put(21264, 920);
 	}
 	
-	private static final Map<Integer, Integer> MOBS4 = new HashMap<Integer, Integer>();
+	private static final Map<Integer, Integer> MOBS4 = new HashMap<>();
 	{
 		MOBS4.put(20815, 205);
 		MOBS4.put(20822, 100);
@@ -276,7 +262,7 @@ public class Q426_QuestForFishingShot extends Quest
 		MOBS4.put(21657, 935);
 	}
 	
-	private static final Map<Integer, Integer> MOBS5 = new HashMap<Integer, Integer>();
+	private static final Map<Integer, Integer> MOBS5 = new HashMap<>();
 	{
 		MOBS5.put(20828, 935);
 		MOBS5.put(21061, 530);
@@ -288,7 +274,7 @@ public class Q426_QuestForFishingShot extends Quest
 		MOBS5.put(21656, 750);
 	}
 	
-	private static final Map<Integer, int[]> MOBSspecial = new HashMap<Integer, int[]>();
+	private static final Map<Integer, int[]> MOBSspecial = new HashMap<>();
 	{
 		MOBSspecial.put(20829, new int[]
 		{

@@ -1,36 +1,22 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.geodata.geoeditorcon.GeoEditorListener;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
+import java.util.StringTokenizer;
+
 public class AdminGeoEditor implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_ge_status",
 		"admin_ge_mode",
 		"admin_ge_join",
 		"admin_ge_leave"
-	};/** @formatter:on */
-
+	};
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -54,7 +40,7 @@ public class AdminGeoEditor implements IAdminCommandHandler
 			{
 				String val = command.substring("admin_ge_mode".length());
 				StringTokenizer st = new StringTokenizer(val);
-
+				
 				if (st.countTokens() < 1)
 				{
 					activeChar.sendMessage("Usage: //ge_mode X");
@@ -100,7 +86,7 @@ public class AdminGeoEditor implements IAdminCommandHandler
 		}
 		return true;
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{

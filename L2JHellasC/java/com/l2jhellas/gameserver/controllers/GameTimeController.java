@@ -1,32 +1,18 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.controllers;
+
+import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 
 import java.util.Calendar;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
-import com.l2jhellas.gameserver.model.actor.L2Character;
-
 public class GameTimeController extends Thread
 {
 	static final Logger _log = Logger.getLogger(GameTimeController.class.getName());
-
+	
 	public static final int TICKS_PER_SECOND = 10; // not able to change this without checking through code
 	public static final int MILLIS_IN_TICK = 1000 / TICKS_PER_SECOND;
 	public static final int IG_DAYS_PER_DAY = 6;
@@ -82,19 +68,11 @@ public class GameTimeController extends Thread
 		return getGameHour() < 6;
 	}
 	
-	/**
-	 * The true GameTime tick. Directly taken from current time. This represents the tick of the time.
-	 * @return
-	 */
 	public final int getGameTicks()
 	{
 		return (int) ((System.currentTimeMillis() - _referenceTime) / MILLIS_IN_TICK);
 	}
 	
-	/**
-	 * Add a L2Character to movingObjects of GameTimeController.
-	 * @param cha The L2Character to add to movingObjects of GameTimeController
-	 */
 	public final void registerMovingObject(final L2Character cha)
 	{
 		if (cha == null)
@@ -103,17 +81,6 @@ public class GameTimeController extends Thread
 		_movingObjects.add(cha);
 	}
 	
-	/**
-	 * Move all L2Characters contained in movingObjects of GameTimeController.<BR>
-	 * <B><U> Concept</U> :</B><BR>
-	 * All L2Character in movement are identified in <B>movingObjects</B> of GameTimeController.<BR>
-	 * <B><U> Actions</U> :</B><BR>
-	 * <ul>
-	 * <li>Update the position of each L2Character</li>
-	 * <li>If movement is finished, the L2Character is removed from movingObjects</li>
-	 * <li>Create a task to update the _knownObject and _knowPlayers of each L2Character that finished its movement and of their already known L2Object then notify AI with EVT_ARRIVED</li>
-	 * </ul>
-	 */
 	private final void moveObjects()
 	{
 		_movingObjects.removeIf(L2Character::updatePosition);
@@ -146,7 +113,7 @@ public class GameTimeController extends Thread
 			}
 			catch (final Throwable e)
 			{
-				_log.info("Unable to move objects!"+e);
+				_log.info("Unable to move objects!" + e);
 			}
 			
 			sleepTime = nextTickTime - System.currentTimeMillis();

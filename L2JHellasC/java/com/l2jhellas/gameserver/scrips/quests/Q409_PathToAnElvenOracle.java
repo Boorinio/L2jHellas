@@ -26,7 +26,7 @@ public class Q409_PathToAnElvenOracle extends Quest
 	
 	public Q409_PathToAnElvenOracle()
 	{
-		super(409,qn, "Path to an Elven Oracle");
+		super(409, qn, "Path to an Elven Oracle");
 		
 		setItemsIds(CRYSTAL_MEDALLION, SWINDLER_MONEY, ALLANA_DIARY, LIZARD_CAPTAIN_ORDER, HALF_OF_DIARY, TAMIL_NECKLACE);
 		

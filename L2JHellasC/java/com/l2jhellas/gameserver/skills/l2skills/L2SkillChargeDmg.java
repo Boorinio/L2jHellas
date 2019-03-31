@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.skills.l2skills;
 
 import com.l2jhellas.gameserver.emum.L2WeaponType;
@@ -32,13 +18,13 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 public class L2SkillChargeDmg extends L2Skill
 {
 	final int chargeSkillId;
-
+	
 	public L2SkillChargeDmg(StatsSet set)
 	{
 		super(set);
 		chargeSkillId = set.getInteger("charge_skill_id");
 	}
-
+	
 	@Override
 	public boolean checkCondition(L2Character activeChar, L2Object target, boolean itemOrWeapon)
 	{
@@ -56,7 +42,7 @@ public class L2SkillChargeDmg extends L2Skill
 		}
 		return super.checkCondition(activeChar, target, itemOrWeapon);
 	}
-
+	
 	@Override
 	public void useSkill(L2Character caster, L2Object[] targets)
 	{
@@ -64,7 +50,7 @@ public class L2SkillChargeDmg extends L2Skill
 		{
 			return;
 		}
-
+		
 		// get the effect
 		EffectCharge effect = (EffectCharge) caster.getFirstEffect(chargeSkillId);
 		if (effect == null || effect.numCharges < getNumCharges())
@@ -84,13 +70,13 @@ public class L2SkillChargeDmg extends L2Skill
 		{
 			effect.exit();
 		}
-		for (int index = 0; index < targets.length; index++)
+		for (L2Object target2 : targets)
 		{
 			L2ItemInstance weapon = caster.getActiveWeaponInstance();
-			L2Character target = (L2Character) targets[index];
+			L2Character target = (L2Character) target2;
 			if (target.isAlikeDead())
 				continue;
-
+			
 			// Calculate skill evasion
 			boolean skillIsEvaded = Formulas.calcPhysicalSkillEvasion(target, this);
 			if (skillIsEvaded)
@@ -107,31 +93,31 @@ public class L2SkillChargeDmg extends L2Skill
 					sm.addString(caster.getName());
 					((L2PcInstance) target).sendPacket(sm);
 				}
-
+				
 				// no futher calculations needed.
 				continue;
 			}
 			
 			// because if so, damage are lowered but we don't do anything special with dual then
 			// like in doAttackHitByDual which in fact does the calcPhysDam call twice
-
+			
 			// boolean dual = caster.isUsingDualWeapon();
 			byte shld = Formulas.calcShldUse(caster, target);
 			boolean crit = Formulas.calcCrit(caster.getCriticalHit(target, this));
 			boolean soul = (weapon != null && weapon.getChargedSoulshot() == L2ItemInstance.CHARGED_SOULSHOT && weapon.getItemType() != L2WeaponType.DAGGER);
-
+			
 			// damage calculation, crit is static 2x
 			int damage = (int) Formulas.calcPhysDam(caster, target, this, shld, false, false, soul);
 			if (crit)
 				damage *= 2;
-
+			
 			if (damage > 0)
 			{
 				double finalDamage = damage * modifier;
 				target.reduceCurrentHp(finalDamage, caster);
-
+				
 				caster.sendDamageMessage(target, (int) finalDamage, false, crit, false);
-
+				
 				if (soul && weapon != null)
 					weapon.setChargedSoulshot(L2ItemInstance.CHARGED_NONE);
 			}

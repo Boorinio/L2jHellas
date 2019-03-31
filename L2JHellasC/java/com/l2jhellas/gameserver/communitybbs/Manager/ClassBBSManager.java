@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.communitybbs.Manager;
-
-import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -26,10 +10,12 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.util.Util;
 
+import java.util.StringTokenizer;
+
 public class ClassBBSManager extends BaseBBSManager
 {
 	private static ClassBBSManager _Instance = null;
-
+	
 	public static ClassBBSManager getInstance()
 	{
 		if (_Instance == null)
@@ -38,7 +24,7 @@ public class ClassBBSManager extends BaseBBSManager
 		}
 		return _Instance;
 	}
-
+	
 	@Override
 	public void parsecmd(String command, L2PcInstance activeChar)
 	{
@@ -81,32 +67,32 @@ public class ClassBBSManager extends BaseBBSManager
 					html.append("In order to change your profession you must achieve: <font color=F2C202>20-th level.</font><br>");
 					html.append("To activate the subclass you have to reach <font color=F2C202> 76th level. </font><br>");
 					html.append("To become a Nobless, you should pump up <font color=F2C202> subclass 76-th level.</font><br>");
-				break;
+					break;
 				case 1:
 					html.append("Greetings " + activeChar.getName() + " Your current occupation <font color=F2C202>" + activeChar.getClassId().name() + "</font>.<br>");
 					html.append("In order to change your profession you must achieve: <font color=F2C202>40-th level.</font><br>");
 					html.append("To activate the subclass you have to reach <font color=F2C202> 76th level. </font><br>");
 					html.append("To become a Nobless, you should pump up <font color=F2C202> subclass 76-th level.</font><br>");
-				break;
+					break;
 				case 2:
 					html.append("Greetings " + activeChar.getName() + " Your current occupation <font color=F2C202>" + activeChar.getClassId().name() + "</font>.<br>");
 					html.append("In order to change your profession you must achieve: <font color=F2C202>76-th level.</font><br>");
 					html.append("To activate the subclass you have to reach <font color=F2C202> 76th level. </font><br>");
 					html.append("To become a Nobless, you should pump up <font color=F2C202> subclass 76-th level.</font><br>");
-				break;
+					break;
 				case 3:
 					html.append("Greetings " + activeChar.getName() + " Your current occupation <font color=F2C202>" + activeChar.getClassId().name() + "</font>.<br>");
 					html.append("For you are no jobs available, or master class is currently not available.<br>");
 			}
 		}
-
+		
 		html.append("</center>");
 		html.append("<br>");
 		html.append("<br>");
 		String content = HtmCache.getInstance().getHtm("data/html/CommunityBoard/classmaster.htm");
 		content = content.replace("%classmaster%", html.toString());
 		separateAndSend(content, activeChar);
-
+		
 		if (command.startsWith("_bbsclass;change_class;"))
 		{
 			StringTokenizer st = new StringTokenizer(command, ";");
@@ -132,8 +118,8 @@ public class ClassBBSManager extends BaseBBSManager
 			}
 		}
 	}
-
-	private void changeClass(L2PcInstance activeChar, short val)
+	
+	private static void changeClass(L2PcInstance activeChar, short val)
 	{
 		int prof = activeChar.getClassId().level();
 		if (activeChar.getClassId().level() == ClassId.values()[val].level())
@@ -149,7 +135,7 @@ public class ClassBBSManager extends BaseBBSManager
 			activeChar.sendPacket(SystemMessageId.CLASS_TRANSFER);
 		}
 		activeChar.setClassId(val);
-
+		
 		if (prof == 2)
 		{
 			activeChar.getInventory().addItem("bbsClassManager", 6622, 1, activeChar, null);
@@ -184,7 +170,7 @@ public class ClassBBSManager extends BaseBBSManager
 		}
 		activeChar.broadcastUserInfo();
 	}
-
+	
 	@Override
 	public void parsewrite(String ar1, String ar2, String ar3, String ar4, String ar5, L2PcInstance activeChar)
 	{

@@ -1,6 +1,3 @@
-/*
- * Copyright 2010 InC-Gaming, Patrick Biesenbach aka. Forsaiken. All rights reserved.
- */
 package com.l2jhellas.util;
 
 import java.io.File;
@@ -15,9 +12,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 
-/**
- * @author Forsaiken
- */
 public final class XMLDocumentFactory
 {
 	public static final XMLDocumentFactory getInstance()
@@ -58,6 +52,7 @@ public final class XMLDocumentFactory
 		return _builder.parse(file);
 	}
 	
+	@SuppressWarnings("resource")
 	public final void writeDocument(final String filePath, final Document doc) throws Exception
 	{
 		final File file = new File(filePath);

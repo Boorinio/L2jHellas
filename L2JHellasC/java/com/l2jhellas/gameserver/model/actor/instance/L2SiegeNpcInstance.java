@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -26,29 +12,24 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 public class L2SiegeNpcInstance extends L2NpcInstance
 {
-
+	
 	public L2SiegeNpcInstance(int objectID, L2NpcTemplate template)
 	{
 		super(objectID, template);
 	}
-
-	/**
-	 * this is called when a player interacts with this NPC
-	 * 
-	 * @param player
-	 */
+	
 	@Override
 	public void onAction(L2PcInstance player)
 	{
 		if (!canTarget(player))
 			return;
-
+		
 		// Check if the L2PcInstance already target the L2NpcInstance
 		if (this != player.getTarget())
 		{
 			// Set the target of the L2PcInstance player
 			player.setTarget(this);
-
+			
 			// Send a Server->Client packet MyTargetSelected to the L2PcInstance player
 			MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
 			player.sendPacket(my);
@@ -69,44 +50,38 @@ public class L2SiegeNpcInstance extends L2NpcInstance
 		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-
-	/**
-	 * If siege is in progress shows the Busy HTML<BR>
-	 * else Shows the SiegeInfo window
-	 * 
-	 * @param player
-	 */
+	
 	public void showSiegeInfoWindow(L2PcInstance player)
-	{		
-		int castleid = MapRegionTable.getAreaCastle(getX(),getY());
+	{
+		int castleid = MapRegionTable.getAreaCastle(getX(), getY());
 		Castle castle = CastleManager.getInstance().getCastleById(castleid);
-
-	if (castle != null)
-	{		
-		if (validateCondition(player))
+		
+		if (castle != null)
 		{
-			player.sendPacket(new SiegeInfo(castle));
-		}	
-		else
-		{
-			NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-			html.setFile("data/html/siege/" + getTemplate().npcId + "-busy.htm");
-			html.replace("%castlename%", castle.getName());
-			html.replace("%objectId%", String.valueOf(getObjectId()));
-			player.sendPacket(html);
-			player.sendPacket(ActionFailed.STATIC_PACKET);
+			if (validateCondition(player))
+			{
+				player.sendPacket(new SiegeInfo(castle));
+			}
+			else
+			{
+				NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
+				html.setFile("data/html/siege/" + getTemplate().npcId + "-busy.htm");
+				html.replace("%castlename%", castle.getName());
+				html.replace("%objectId%", String.valueOf(getObjectId()));
+				player.sendPacket(html);
+				player.sendPacket(ActionFailed.STATIC_PACKET);
+			}
 		}
 	}
-	}
-
+	
 	private boolean validateCondition(L2PcInstance player)
 	{
-		int castleid = MapRegionTable.getAreaCastle(getX(),getY());
+		int castleid = MapRegionTable.getAreaCastle(getX(), getY());
 		Castle castle = CastleManager.getInstance().getCastleById(castleid);
 		
 		if (castle != null && castle.getSiege().getIsInProgress())
 			return false; // Busy because of siege
-
+			
 		return true;
 	}
 }

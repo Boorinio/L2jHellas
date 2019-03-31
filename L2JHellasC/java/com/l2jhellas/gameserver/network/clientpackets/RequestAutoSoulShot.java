@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
-
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -23,27 +7,29 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ExAutoSoulShot;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
+import java.util.logging.Logger;
+
 public final class RequestAutoSoulShot extends L2GameClientPacket
 {
 	private static Logger _log = Logger.getLogger(RequestAutoSoulShot.class.getName());
 	private static final String _C__CF_REQUESTAUTOSOULSHOT = "[C] CF RequestAutoSoulShot";
-
+	
 	// format cd
 	private int _itemId;
 	private int _type; // 1 = on : 0 = off;
-
+	
 	@Override
 	protected void readImpl()
 	{
 		_itemId = readD();
 		_type = readD();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		final L2PcInstance activeChar = getClient().getActiveChar();
-
+		
 		if (activeChar == null)
 			return;
 		
@@ -59,9 +45,9 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 		{
 			if (Config.DEBUG)
 				_log.fine("AutoSoulShot:" + _itemId);
-
+			
 			final L2ItemInstance item = activeChar.getInventory().getItemByItemId(_itemId);
-
+			
 			if (item != null)
 			{
 				if (_type == 1)
@@ -75,13 +61,13 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 							activeChar.addAutoSoulShot(_itemId);
 							ExAutoSoulShot atk = new ExAutoSoulShot(_itemId, _type);
 							activeChar.sendPacket(atk);
-
+							
 							// start the auto soulshot use
 							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.USE_OF_S1_WILL_BE_AUTO);
 							sm.addString(item.getItemName());
 							activeChar.sendPacket(sm);
 							sm = null;
-
+							
 							activeChar.rechargeAutoSoulShot(true, true, true);
 						}
 						else
@@ -100,13 +86,13 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 									activeChar.addAutoSoulShot(_itemId);
 									ExAutoSoulShot atk = new ExAutoSoulShot(_itemId, _type);
 									activeChar.sendPacket(atk);
-
+									
 									// start the auto soulshot use
 									SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.USE_OF_S1_WILL_BE_AUTO);
 									sm.addString(item.getItemName());
 									activeChar.sendPacket(sm);
 									sm = null;
-
+									
 									activeChar.rechargeAutoSoulShot(true, true, false);
 								}
 							}
@@ -125,7 +111,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 					activeChar.removeAutoSoulShot(_itemId);
 					ExAutoSoulShot atk = new ExAutoSoulShot(_itemId, _type);
 					activeChar.sendPacket(atk);
-
+					
 					// cancel the auto soulshot use
 					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.AUTO_USE_OF_S1_CANCELLED);
 					sm.addString(item.getItemName());
@@ -135,7 +121,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 			}
 		}
 	}
-
+	
 	@Override
 	public String getType()
 	{

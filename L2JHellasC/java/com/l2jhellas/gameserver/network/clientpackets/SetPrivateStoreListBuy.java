@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
@@ -24,10 +10,10 @@ import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreMsgBuy;
 public final class SetPrivateStoreListBuy extends L2GameClientPacket
 {
 	private static final String _C__91_SETPRIVATESTORELISTBUY = "[C] 91 SetPrivateStoreListBuy";
-
+	
 	private int _count;
 	private int[] _items; // count * 3
-
+	
 	@Override
 	protected void readImpl()
 	{
@@ -57,41 +43,41 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket
 			_items[x * 3 + 2] = price;
 		}
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
 			return;
-
+		
 		if (!player.getAccessLevel().allowTransaction())
 		{
 			player.sendMessage("Transactions are disabled for your Access Level.");
 			return;
 		}
-
+		
 		TradeList tradeList = player.getBuyList();
 		tradeList.clear();
-
+		
 		int cost = 0;
 		for (int i = 0; i < _count; i++)
 		{
 			int itemId = _items[i * 3 + 0];
 			int count = _items[i * 3 + 1];
 			int price = _items[i * 3 + 2];
-
+			
 			tradeList.addItemByItemId(itemId, count, price);
 			cost += count * price;
 		}
-
+		
 		if (_count <= 0)
 		{
 			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
 			player.broadcastUserInfo();
 			return;
 		}
-
+		
 		// Check maximum number of allowed slots for pvt shops
 		if (_count > player.getPrivateBuyStoreLimit())
 		{
@@ -99,7 +85,7 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket
 			player.sendPacket(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
 			return;
 		}
-
+		
 		// Check for available funds
 		if (cost > player.getAdena() || cost <= 0)
 		{
@@ -107,13 +93,13 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket
 			player.sendPacket(SystemMessageId.THE_PURCHASE_PRICE_IS_HIGHER_THAN_MONEY);
 			return;
 		}
-
+		
 		player.sitDown();
 		player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_BUY);
 		player.broadcastUserInfo();
 		player.broadcastPacket(new PrivateStoreMsgBuy(player));
 	}
-
+	
 	@Override
 	public String getType()
 	{

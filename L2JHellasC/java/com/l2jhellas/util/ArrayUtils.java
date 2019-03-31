@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.util;
 
 import java.lang.reflect.Array;
@@ -41,19 +27,19 @@ public class ArrayUtils
 	public static final char[] EMPTY_CHAR_ARRAY = new char[0];
 	public static final Character[] EMPTY_CHARACTER_OBJECT_ARRAY = new Character[0];
 	public static final int INDEX_NOT_FOUND = -1;
-
+	
 	public ArrayUtils()
 	{
 		super();
 	}
-
+	
 	public static Map<Object, Object> toMap(Object[] array)
 	{
 		if (array == null)
 		{
 			return null;
 		}
-		final Map<Object, Object> map = new HashMap<Object, Object>((int) (array.length * 1.5));
+		final Map<Object, Object> map = new HashMap<>((int) (array.length * 1.5));
 		for (int i = 0; i < array.length; i++)
 		{
 			Object object = array[i];
@@ -78,13 +64,13 @@ public class ArrayUtils
 		}
 		return map;
 	}
-
+	
 	@SafeVarargs
 	public static <T> T[] toArray(final T... items)
 	{
 		return items;
 	}
-
+	
 	public static <T> T[] clone(T[] array)
 	{
 		if (array == null)
@@ -93,7 +79,7 @@ public class ArrayUtils
 		}
 		return array.clone();
 	}
-
+	
 	public static long[] clone(long[] array)
 	{
 		if (array == null)
@@ -102,7 +88,7 @@ public class ArrayUtils
 		}
 		return array.clone();
 	}
-
+	
 	public static int[] clone(int[] array)
 	{
 		if (array == null)
@@ -111,7 +97,7 @@ public class ArrayUtils
 		}
 		return array.clone();
 	}
-
+	
 	public static short[] clone(short[] array)
 	{
 		if (array == null)
@@ -120,7 +106,7 @@ public class ArrayUtils
 		}
 		return array.clone();
 	}
-
+	
 	public static char[] clone(char[] array)
 	{
 		if (array == null)
@@ -129,7 +115,7 @@ public class ArrayUtils
 		}
 		return array.clone();
 	}
-
+	
 	public static byte[] clone(byte[] array)
 	{
 		if (array == null)
@@ -138,7 +124,7 @@ public class ArrayUtils
 		}
 		return array.clone();
 	}
-
+	
 	public static double[] clone(double[] array)
 	{
 		if (array == null)
@@ -147,7 +133,7 @@ public class ArrayUtils
 		}
 		return array.clone();
 	}
-
+	
 	public static float[] clone(float[] array)
 	{
 		if (array == null)
@@ -156,7 +142,7 @@ public class ArrayUtils
 		}
 		return array.clone();
 	}
-
+	
 	public static boolean[] clone(boolean[] array)
 	{
 		if (array == null)
@@ -165,7 +151,7 @@ public class ArrayUtils
 		}
 		return array.clone();
 	}
-
+	
 	public static Object[] nullToEmpty(Object[] array)
 	{
 		if (array == null || array.length == 0)
@@ -174,7 +160,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static String[] nullToEmpty(String[] array)
 	{
 		if (array == null || array.length == 0)
@@ -183,7 +169,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static long[] nullToEmpty(long[] array)
 	{
 		if (array == null || array.length == 0)
@@ -192,7 +178,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static int[] nullToEmpty(int[] array)
 	{
 		if (array == null || array.length == 0)
@@ -201,7 +187,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static short[] nullToEmpty(short[] array)
 	{
 		if (array == null || array.length == 0)
@@ -210,7 +196,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static char[] nullToEmpty(char[] array)
 	{
 		if (array == null || array.length == 0)
@@ -219,7 +205,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static byte[] nullToEmpty(byte[] array)
 	{
 		if (array == null || array.length == 0)
@@ -228,7 +214,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static double[] nullToEmpty(double[] array)
 	{
 		if (array == null || array.length == 0)
@@ -237,7 +223,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static float[] nullToEmpty(float[] array)
 	{
 		if (array == null || array.length == 0)
@@ -246,7 +232,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static boolean[] nullToEmpty(boolean[] array)
 	{
 		if (array == null || array.length == 0)
@@ -255,7 +241,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static Long[] nullToEmpty(Long[] array)
 	{
 		if (array == null || array.length == 0)
@@ -264,7 +250,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static Integer[] nullToEmpty(Integer[] array)
 	{
 		if (array == null || array.length == 0)
@@ -273,7 +259,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static Short[] nullToEmpty(Short[] array)
 	{
 		if (array == null || array.length == 0)
@@ -282,7 +268,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static Character[] nullToEmpty(Character[] array)
 	{
 		if (array == null || array.length == 0)
@@ -291,7 +277,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static Byte[] nullToEmpty(Byte[] array)
 	{
 		if (array == null || array.length == 0)
@@ -300,7 +286,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static Double[] nullToEmpty(Double[] array)
 	{
 		if (array == null || array.length == 0)
@@ -309,7 +295,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static Float[] nullToEmpty(Float[] array)
 	{
 		if (array == null || array.length == 0)
@@ -318,7 +304,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static Boolean[] nullToEmpty(Boolean[] array)
 	{
 		if (array == null || array.length == 0)
@@ -327,7 +313,7 @@ public class ArrayUtils
 		}
 		return array;
 	}
-
+	
 	public static <T> T[] subarray(T[] array, int startIndexInclusive, int endIndexExclusive)
 	{
 		if (array == null)
@@ -357,7 +343,7 @@ public class ArrayUtils
 		System.arraycopy(array, startIndexInclusive, subarray, 0, newSize);
 		return subarray;
 	}
-
+	
 	public static long[] subarray(long[] array, int startIndexInclusive, int endIndexExclusive)
 	{
 		if (array == null)
@@ -377,12 +363,12 @@ public class ArrayUtils
 		{
 			return EMPTY_LONG_ARRAY;
 		}
-
+		
 		long[] subarray = new long[newSize];
 		System.arraycopy(array, startIndexInclusive, subarray, 0, newSize);
 		return subarray;
 	}
-
+	
 	public static int[] subarray(int[] array, int startIndexInclusive, int endIndexExclusive)
 	{
 		if (array == null)
@@ -402,12 +388,12 @@ public class ArrayUtils
 		{
 			return EMPTY_INT_ARRAY;
 		}
-
+		
 		int[] subarray = new int[newSize];
 		System.arraycopy(array, startIndexInclusive, subarray, 0, newSize);
 		return subarray;
 	}
-
+	
 	public static short[] subarray(short[] array, int startIndexInclusive, int endIndexExclusive)
 	{
 		if (array == null)
@@ -427,12 +413,12 @@ public class ArrayUtils
 		{
 			return EMPTY_SHORT_ARRAY;
 		}
-
+		
 		short[] subarray = new short[newSize];
 		System.arraycopy(array, startIndexInclusive, subarray, 0, newSize);
 		return subarray;
 	}
-
+	
 	public static char[] subarray(char[] array, int startIndexInclusive, int endIndexExclusive)
 	{
 		if (array == null)
@@ -452,12 +438,12 @@ public class ArrayUtils
 		{
 			return EMPTY_CHAR_ARRAY;
 		}
-
+		
 		char[] subarray = new char[newSize];
 		System.arraycopy(array, startIndexInclusive, subarray, 0, newSize);
 		return subarray;
 	}
-
+	
 	public static byte[] subarray(byte[] array, int startIndexInclusive, int endIndexExclusive)
 	{
 		if (array == null)
@@ -477,12 +463,12 @@ public class ArrayUtils
 		{
 			return EMPTY_BYTE_ARRAY;
 		}
-
+		
 		byte[] subarray = new byte[newSize];
 		System.arraycopy(array, startIndexInclusive, subarray, 0, newSize);
 		return subarray;
 	}
-
+	
 	public static double[] subarray(double[] array, int startIndexInclusive, int endIndexExclusive)
 	{
 		if (array == null)
@@ -502,12 +488,12 @@ public class ArrayUtils
 		{
 			return EMPTY_DOUBLE_ARRAY;
 		}
-
+		
 		double[] subarray = new double[newSize];
 		System.arraycopy(array, startIndexInclusive, subarray, 0, newSize);
 		return subarray;
 	}
-
+	
 	public static float[] subarray(float[] array, int startIndexInclusive, int endIndexExclusive)
 	{
 		if (array == null)
@@ -527,12 +513,12 @@ public class ArrayUtils
 		{
 			return EMPTY_FLOAT_ARRAY;
 		}
-
+		
 		float[] subarray = new float[newSize];
 		System.arraycopy(array, startIndexInclusive, subarray, 0, newSize);
 		return subarray;
 	}
-
+	
 	public static boolean[] subarray(boolean[] array, int startIndexInclusive, int endIndexExclusive)
 	{
 		if (array == null)
@@ -552,12 +538,12 @@ public class ArrayUtils
 		{
 			return EMPTY_BOOLEAN_ARRAY;
 		}
-
+		
 		boolean[] subarray = new boolean[newSize];
 		System.arraycopy(array, startIndexInclusive, subarray, 0, newSize);
 		return subarray;
 	}
-
+	
 	public static boolean isSameLength(Object[] array1, Object[] array2)
 	{
 		if ((array1 == null && array2 != null && array2.length > 0) || (array2 == null && array1 != null && array1.length > 0) || (array1 != null && array2 != null && array1.length != array2.length))
@@ -566,7 +552,7 @@ public class ArrayUtils
 		}
 		return true;
 	}
-
+	
 	public static boolean isSameLength(long[] array1, long[] array2)
 	{
 		if ((array1 == null && array2 != null && array2.length > 0) || (array2 == null && array1 != null && array1.length > 0) || (array1 != null && array2 != null && array1.length != array2.length))
@@ -575,7 +561,7 @@ public class ArrayUtils
 		}
 		return true;
 	}
-
+	
 	public static boolean isSameLength(int[] array1, int[] array2)
 	{
 		if ((array1 == null && array2 != null && array2.length > 0) || (array2 == null && array1 != null && array1.length > 0) || (array1 != null && array2 != null && array1.length != array2.length))
@@ -584,7 +570,7 @@ public class ArrayUtils
 		}
 		return true;
 	}
-
+	
 	public static boolean isSameLength(short[] array1, short[] array2)
 	{
 		if ((array1 == null && array2 != null && array2.length > 0) || (array2 == null && array1 != null && array1.length > 0) || (array1 != null && array2 != null && array1.length != array2.length))
@@ -593,7 +579,7 @@ public class ArrayUtils
 		}
 		return true;
 	}
-
+	
 	public static boolean isSameLength(char[] array1, char[] array2)
 	{
 		if ((array1 == null && array2 != null && array2.length > 0) || (array2 == null && array1 != null && array1.length > 0) || (array1 != null && array2 != null && array1.length != array2.length))
@@ -602,7 +588,7 @@ public class ArrayUtils
 		}
 		return true;
 	}
-
+	
 	public static boolean isSameLength(byte[] array1, byte[] array2)
 	{
 		if ((array1 == null && array2 != null && array2.length > 0) || (array2 == null && array1 != null && array1.length > 0) || (array1 != null && array2 != null && array1.length != array2.length))
@@ -611,7 +597,7 @@ public class ArrayUtils
 		}
 		return true;
 	}
-
+	
 	public static boolean isSameLength(double[] array1, double[] array2)
 	{
 		if ((array1 == null && array2 != null && array2.length > 0) || (array2 == null && array1 != null && array1.length > 0) || (array1 != null && array2 != null && array1.length != array2.length))
@@ -620,7 +606,7 @@ public class ArrayUtils
 		}
 		return true;
 	}
-
+	
 	public static boolean isSameLength(float[] array1, float[] array2)
 	{
 		if ((array1 == null && array2 != null && array2.length > 0) || (array2 == null && array1 != null && array1.length > 0) || (array1 != null && array2 != null && array1.length != array2.length))
@@ -629,7 +615,7 @@ public class ArrayUtils
 		}
 		return true;
 	}
-
+	
 	public static boolean isSameLength(boolean[] array1, boolean[] array2)
 	{
 		if ((array1 == null && array2 != null && array2.length > 0) || (array2 == null && array1 != null && array1.length > 0) || (array1 != null && array2 != null && array1.length != array2.length))
@@ -638,7 +624,7 @@ public class ArrayUtils
 		}
 		return true;
 	}
-
+	
 	public static int getLength(Object array)
 	{
 		if (array == null)
@@ -647,7 +633,7 @@ public class ArrayUtils
 		}
 		return Array.getLength(array);
 	}
-
+	
 	public static boolean isSameType(Object array1, Object array2)
 	{
 		if (array1 == null || array2 == null)
@@ -656,7 +642,7 @@ public class ArrayUtils
 		}
 		return array1.getClass().getName().equals(array2.getClass().getName());
 	}
-
+	
 	public static void reverse(Object[] array)
 	{
 		if (array == null)
@@ -675,7 +661,7 @@ public class ArrayUtils
 			i++;
 		}
 	}
-
+	
 	public static void reverse(long[] array)
 	{
 		if (array == null)
@@ -694,7 +680,7 @@ public class ArrayUtils
 			i++;
 		}
 	}
-
+	
 	public static void reverse(int[] array)
 	{
 		if (array == null)
@@ -713,7 +699,7 @@ public class ArrayUtils
 			i++;
 		}
 	}
-
+	
 	public static void reverse(short[] array)
 	{
 		if (array == null)
@@ -732,7 +718,7 @@ public class ArrayUtils
 			i++;
 		}
 	}
-
+	
 	public static void reverse(char[] array)
 	{
 		if (array == null)
@@ -751,7 +737,7 @@ public class ArrayUtils
 			i++;
 		}
 	}
-
+	
 	public static void reverse(byte[] array)
 	{
 		if (array == null)
@@ -770,7 +756,7 @@ public class ArrayUtils
 			i++;
 		}
 	}
-
+	
 	public static void reverse(double[] array)
 	{
 		if (array == null)
@@ -789,7 +775,7 @@ public class ArrayUtils
 			i++;
 		}
 	}
-
+	
 	public static void reverse(float[] array)
 	{
 		if (array == null)
@@ -808,7 +794,7 @@ public class ArrayUtils
 			i++;
 		}
 	}
-
+	
 	public static void reverse(boolean[] array)
 	{
 		if (array == null)
@@ -827,12 +813,12 @@ public class ArrayUtils
 			i++;
 		}
 	}
-
+	
 	public static int indexOf(Object[] array, Object objectToFind)
 	{
 		return indexOf(array, objectToFind, 0);
 	}
-
+	
 	public static int indexOf(Object[] array, Object objectToFind, int startIndex)
 	{
 		if (array == null)
@@ -865,12 +851,12 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static int lastIndexOf(Object[] array, Object objectToFind)
 	{
 		return lastIndexOf(array, objectToFind, Integer.MAX_VALUE);
 	}
-
+	
 	public static int lastIndexOf(Object[] array, Object objectToFind, int startIndex)
 	{
 		if (array == null)
@@ -907,17 +893,17 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static boolean contains(Object[] array, Object objectToFind)
 	{
 		return indexOf(array, objectToFind) != INDEX_NOT_FOUND;
 	}
-
+	
 	public static int indexOf(long[] array, long valueToFind)
 	{
 		return indexOf(array, valueToFind, 0);
 	}
-
+	
 	public static int indexOf(long[] array, long valueToFind, int startIndex)
 	{
 		if (array == null)
@@ -937,12 +923,12 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static int lastIndexOf(long[] array, long valueToFind)
 	{
 		return lastIndexOf(array, valueToFind, Integer.MAX_VALUE);
 	}
-
+	
 	public static int lastIndexOf(long[] array, long valueToFind, int startIndex)
 	{
 		if (array == null)
@@ -966,17 +952,17 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static boolean contains(long[] array, long valueToFind)
 	{
 		return indexOf(array, valueToFind) != INDEX_NOT_FOUND;
 	}
-
+	
 	public static int indexOf(int[] array, int valueToFind)
 	{
 		return indexOf(array, valueToFind, 0);
 	}
-
+	
 	public static int indexOf(int[] array, int valueToFind, int startIndex)
 	{
 		if (array == null)
@@ -996,12 +982,12 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static int lastIndexOf(int[] array, int valueToFind)
 	{
 		return lastIndexOf(array, valueToFind, Integer.MAX_VALUE);
 	}
-
+	
 	public static int lastIndexOf(int[] array, int valueToFind, int startIndex)
 	{
 		if (array == null)
@@ -1025,17 +1011,17 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static boolean contains(int[] array, int valueToFind)
 	{
 		return indexOf(array, valueToFind) != INDEX_NOT_FOUND;
 	}
-
+	
 	public static int indexOf(short[] array, short valueToFind)
 	{
 		return indexOf(array, valueToFind, 0);
 	}
-
+	
 	public static int indexOf(short[] array, short valueToFind, int startIndex)
 	{
 		if (array == null)
@@ -1055,12 +1041,12 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static int lastIndexOf(short[] array, short valueToFind)
 	{
 		return lastIndexOf(array, valueToFind, Integer.MAX_VALUE);
 	}
-
+	
 	public static int lastIndexOf(short[] array, short valueToFind, int startIndex)
 	{
 		if (array == null)
@@ -1084,17 +1070,17 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static boolean contains(short[] array, short valueToFind)
 	{
 		return indexOf(array, valueToFind) != INDEX_NOT_FOUND;
 	}
-
+	
 	public static int indexOf(char[] array, char valueToFind)
 	{
 		return indexOf(array, valueToFind, 0);
 	}
-
+	
 	public static int indexOf(char[] array, char valueToFind, int startIndex)
 	{
 		if (array == null)
@@ -1114,12 +1100,12 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static int lastIndexOf(char[] array, char valueToFind)
 	{
 		return lastIndexOf(array, valueToFind, Integer.MAX_VALUE);
 	}
-
+	
 	public static int lastIndexOf(char[] array, char valueToFind, int startIndex)
 	{
 		if (array == null)
@@ -1143,17 +1129,17 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static boolean contains(char[] array, char valueToFind)
 	{
 		return indexOf(array, valueToFind) != INDEX_NOT_FOUND;
 	}
-
+	
 	public static int indexOf(byte[] array, byte valueToFind)
 	{
 		return indexOf(array, valueToFind, 0);
 	}
-
+	
 	public static int indexOf(byte[] array, byte valueToFind, int startIndex)
 	{
 		if (array == null)
@@ -1173,12 +1159,12 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static int lastIndexOf(byte[] array, byte valueToFind)
 	{
 		return lastIndexOf(array, valueToFind, Integer.MAX_VALUE);
 	}
-
+	
 	public static int lastIndexOf(byte[] array, byte valueToFind, int startIndex)
 	{
 		if (array == null)
@@ -1202,22 +1188,22 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static boolean contains(byte[] array, byte valueToFind)
 	{
 		return indexOf(array, valueToFind) != INDEX_NOT_FOUND;
 	}
-
+	
 	public static int indexOf(double[] array, double valueToFind)
 	{
 		return indexOf(array, valueToFind, 0);
 	}
-
+	
 	public static int indexOf(double[] array, double valueToFind, double tolerance)
 	{
 		return indexOf(array, valueToFind, 0, tolerance);
 	}
-
+	
 	public static int indexOf(double[] array, double valueToFind, int startIndex)
 	{
 		if (ArrayUtils.isEmpty(array))
@@ -1237,7 +1223,7 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static int indexOf(double[] array, double valueToFind, int startIndex, double tolerance)
 	{
 		if (ArrayUtils.isEmpty(array))
@@ -1259,17 +1245,17 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static int lastIndexOf(double[] array, double valueToFind)
 	{
 		return lastIndexOf(array, valueToFind, Integer.MAX_VALUE);
 	}
-
+	
 	public static int lastIndexOf(double[] array, double valueToFind, double tolerance)
 	{
 		return lastIndexOf(array, valueToFind, Integer.MAX_VALUE, tolerance);
 	}
-
+	
 	public static int lastIndexOf(double[] array, double valueToFind, int startIndex)
 	{
 		if (ArrayUtils.isEmpty(array))
@@ -1293,7 +1279,7 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static int lastIndexOf(double[] array, double valueToFind, int startIndex, double tolerance)
 	{
 		if (ArrayUtils.isEmpty(array))
@@ -1319,22 +1305,22 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static boolean contains(double[] array, double valueToFind)
 	{
 		return indexOf(array, valueToFind) != INDEX_NOT_FOUND;
 	}
-
+	
 	public static boolean contains(double[] array, double valueToFind, double tolerance)
 	{
 		return indexOf(array, valueToFind, 0, tolerance) != INDEX_NOT_FOUND;
 	}
-
+	
 	public static int indexOf(float[] array, float valueToFind)
 	{
 		return indexOf(array, valueToFind, 0);
 	}
-
+	
 	public static int indexOf(float[] array, float valueToFind, int startIndex)
 	{
 		if (ArrayUtils.isEmpty(array))
@@ -1354,12 +1340,12 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static int lastIndexOf(float[] array, float valueToFind)
 	{
 		return lastIndexOf(array, valueToFind, Integer.MAX_VALUE);
 	}
-
+	
 	public static int lastIndexOf(float[] array, float valueToFind, int startIndex)
 	{
 		if (ArrayUtils.isEmpty(array))
@@ -1383,17 +1369,17 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static boolean contains(float[] array, float valueToFind)
 	{
 		return indexOf(array, valueToFind) != INDEX_NOT_FOUND;
 	}
-
+	
 	public static int indexOf(boolean[] array, boolean valueToFind)
 	{
 		return indexOf(array, valueToFind, 0);
 	}
-
+	
 	public static int indexOf(boolean[] array, boolean valueToFind, int startIndex)
 	{
 		if (ArrayUtils.isEmpty(array))
@@ -1413,12 +1399,12 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static int lastIndexOf(boolean[] array, boolean valueToFind)
 	{
 		return lastIndexOf(array, valueToFind, Integer.MAX_VALUE);
 	}
-
+	
 	public static int lastIndexOf(boolean[] array, boolean valueToFind, int startIndex)
 	{
 		if (ArrayUtils.isEmpty(array))
@@ -1442,12 +1428,12 @@ public class ArrayUtils
 		}
 		return INDEX_NOT_FOUND;
 	}
-
+	
 	public static boolean contains(boolean[] array, boolean valueToFind)
 	{
 		return indexOf(array, valueToFind) != INDEX_NOT_FOUND;
 	}
-
+	
 	public static char[] toPrimitive(Character[] array)
 	{
 		if (array == null)
@@ -1465,7 +1451,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static char[] toPrimitive(Character[] array, char valueForNull)
 	{
 		if (array == null)
@@ -1484,7 +1470,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static Character[] toObject(char[] array)
 	{
 		if (array == null)
@@ -1502,7 +1488,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static long[] toPrimitive(Long[] array)
 	{
 		if (array == null)
@@ -1520,7 +1506,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static long[] toPrimitive(Long[] array, long valueForNull)
 	{
 		if (array == null)
@@ -1539,7 +1525,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static Long[] toObject(long[] array)
 	{
 		if (array == null)
@@ -1557,7 +1543,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static int[] toPrimitive(Integer[] array)
 	{
 		if (array == null)
@@ -1575,7 +1561,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static int[] toPrimitive(Integer[] array, int valueForNull)
 	{
 		if (array == null)
@@ -1594,7 +1580,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static Integer[] toObject(int[] array)
 	{
 		if (array == null)
@@ -1612,7 +1598,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static short[] toPrimitive(Short[] array)
 	{
 		if (array == null)
@@ -1630,7 +1616,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static short[] toPrimitive(Short[] array, short valueForNull)
 	{
 		if (array == null)
@@ -1649,7 +1635,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static Short[] toObject(short[] array)
 	{
 		if (array == null)
@@ -1667,7 +1653,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static byte[] toPrimitive(Byte[] array)
 	{
 		if (array == null)
@@ -1685,7 +1671,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static byte[] toPrimitive(Byte[] array, byte valueForNull)
 	{
 		if (array == null)
@@ -1704,7 +1690,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static Byte[] toObject(byte[] array)
 	{
 		if (array == null)
@@ -1722,7 +1708,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static double[] toPrimitive(Double[] array)
 	{
 		if (array == null)
@@ -1740,7 +1726,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static double[] toPrimitive(Double[] array, double valueForNull)
 	{
 		if (array == null)
@@ -1759,7 +1745,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static Double[] toObject(double[] array)
 	{
 		if (array == null)
@@ -1777,7 +1763,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static float[] toPrimitive(Float[] array)
 	{
 		if (array == null)
@@ -1795,7 +1781,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static float[] toPrimitive(Float[] array, float valueForNull)
 	{
 		if (array == null)
@@ -1814,7 +1800,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static Float[] toObject(float[] array)
 	{
 		if (array == null)
@@ -1832,7 +1818,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static boolean[] toPrimitive(Boolean[] array)
 	{
 		if (array == null)
@@ -1850,7 +1836,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static boolean[] toPrimitive(Boolean[] array, boolean valueForNull)
 	{
 		if (array == null)
@@ -1869,7 +1855,7 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static Boolean[] toObject(boolean[] array)
 	{
 		if (array == null)
@@ -1887,97 +1873,97 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	public static boolean isEmpty(Object[] array)
 	{
 		return array == null || array.length == 0;
 	}
-
+	
 	public static boolean isEmpty(long[] array)
 	{
 		return array == null || array.length == 0;
 	}
-
+	
 	public static boolean isEmpty(int[] array)
 	{
 		return array == null || array.length == 0;
 	}
-
+	
 	public static boolean isEmpty(short[] array)
 	{
 		return array == null || array.length == 0;
 	}
-
+	
 	public static boolean isEmpty(char[] array)
 	{
 		return array == null || array.length == 0;
 	}
-
+	
 	public static boolean isEmpty(byte[] array)
 	{
 		return array == null || array.length == 0;
 	}
-
+	
 	public static boolean isEmpty(double[] array)
 	{
 		return array == null || array.length == 0;
 	}
-
+	
 	public static boolean isEmpty(float[] array)
 	{
 		return array == null || array.length == 0;
 	}
-
+	
 	public static boolean isEmpty(boolean[] array)
 	{
 		return array == null || array.length == 0;
 	}
-
+	
 	public static <T> boolean isNotEmpty(T[] array)
 	{
 		return (array != null && array.length != 0);
 	}
-
+	
 	public static boolean isNotEmpty(long[] array)
 	{
 		return (array != null && array.length != 0);
 	}
-
+	
 	public static boolean isNotEmpty(int[] array)
 	{
 		return (array != null && array.length != 0);
 	}
-
+	
 	public static boolean isNotEmpty(short[] array)
 	{
 		return (array != null && array.length != 0);
 	}
-
+	
 	public static boolean isNotEmpty(char[] array)
 	{
 		return (array != null && array.length != 0);
 	}
-
+	
 	public static boolean isNotEmpty(byte[] array)
 	{
 		return (array != null && array.length != 0);
 	}
-
+	
 	public static boolean isNotEmpty(double[] array)
 	{
 		return (array != null && array.length != 0);
 	}
-
+	
 	public static boolean isNotEmpty(float[] array)
 	{
 		return (array != null && array.length != 0);
 	}
-
+	
 	public static boolean isNotEmpty(boolean[] array)
 	{
 		return (array != null && array.length != 0);
 	}
-
+	
 	@SafeVarargs
 	public static <T> T[] addAll(T[] array1, T... array2)
 	{
@@ -2008,7 +1994,7 @@ public class ArrayUtils
 		}
 		return joinedArray;
 	}
-
+	
 	public static boolean[] addAll(boolean[] array1, boolean... array2)
 	{
 		if (array1 == null)
@@ -2024,7 +2010,7 @@ public class ArrayUtils
 		System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
 		return joinedArray;
 	}
-
+	
 	public static char[] addAll(char[] array1, char... array2)
 	{
 		if (array1 == null)
@@ -2040,7 +2026,7 @@ public class ArrayUtils
 		System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
 		return joinedArray;
 	}
-
+	
 	public static byte[] addAll(byte[] array1, byte... array2)
 	{
 		if (array1 == null)
@@ -2056,7 +2042,7 @@ public class ArrayUtils
 		System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
 		return joinedArray;
 	}
-
+	
 	public static short[] addAll(short[] array1, short... array2)
 	{
 		if (array1 == null)
@@ -2072,7 +2058,7 @@ public class ArrayUtils
 		System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
 		return joinedArray;
 	}
-
+	
 	public static int[] addAll(int[] array1, int... array2)
 	{
 		if (array1 == null)
@@ -2088,7 +2074,7 @@ public class ArrayUtils
 		System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
 		return joinedArray;
 	}
-
+	
 	public static long[] addAll(long[] array1, long... array2)
 	{
 		if (array1 == null)
@@ -2104,7 +2090,7 @@ public class ArrayUtils
 		System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
 		return joinedArray;
 	}
-
+	
 	public static float[] addAll(float[] array1, float... array2)
 	{
 		if (array1 == null)
@@ -2120,7 +2106,7 @@ public class ArrayUtils
 		System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
 		return joinedArray;
 	}
-
+	
 	public static double[] addAll(double[] array1, double... array2)
 	{
 		if (array1 == null)
@@ -2136,7 +2122,7 @@ public class ArrayUtils
 		System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
 		return joinedArray;
 	}
-
+	
 	public static <T> T[] add(T[] array, T element)
 	{
 		Class<?> type;
@@ -2157,63 +2143,63 @@ public class ArrayUtils
 		newArray[newArray.length - 1] = element;
 		return newArray;
 	}
-
+	
 	public static boolean[] add(boolean[] array, boolean element)
 	{
 		boolean[] newArray = (boolean[]) copyArrayGrow1(array, Boolean.TYPE);
 		newArray[newArray.length - 1] = element;
 		return newArray;
 	}
-
+	
 	public static byte[] add(byte[] array, byte element)
 	{
 		byte[] newArray = (byte[]) copyArrayGrow1(array, Byte.TYPE);
 		newArray[newArray.length - 1] = element;
 		return newArray;
 	}
-
+	
 	public static char[] add(char[] array, char element)
 	{
 		char[] newArray = (char[]) copyArrayGrow1(array, Character.TYPE);
 		newArray[newArray.length - 1] = element;
 		return newArray;
 	}
-
+	
 	public static double[] add(double[] array, double element)
 	{
 		double[] newArray = (double[]) copyArrayGrow1(array, Double.TYPE);
 		newArray[newArray.length - 1] = element;
 		return newArray;
 	}
-
+	
 	public static float[] add(float[] array, float element)
 	{
 		float[] newArray = (float[]) copyArrayGrow1(array, Float.TYPE);
 		newArray[newArray.length - 1] = element;
 		return newArray;
 	}
-
+	
 	public static int[] add(int[] array, int element)
 	{
 		int[] newArray = (int[]) copyArrayGrow1(array, Integer.TYPE);
 		newArray[newArray.length - 1] = element;
 		return newArray;
 	}
-
+	
 	public static long[] add(long[] array, long element)
 	{
 		long[] newArray = (long[]) copyArrayGrow1(array, Long.TYPE);
 		newArray[newArray.length - 1] = element;
 		return newArray;
 	}
-
+	
 	public static short[] add(short[] array, short element)
 	{
 		short[] newArray = (short[]) copyArrayGrow1(array, Short.TYPE);
 		newArray[newArray.length - 1] = element;
 		return newArray;
 	}
-
+	
 	private static Object copyArrayGrow1(Object array, Class<?> newArrayComponentType)
 	{
 		if (array != null)
@@ -2225,7 +2211,7 @@ public class ArrayUtils
 		}
 		return Array.newInstance(newArrayComponentType, 1);
 	}
-
+	
 	public static <T> T[] add(T[] array, int index, T element)
 	{
 		Class<?> clss = null;
@@ -2245,47 +2231,47 @@ public class ArrayUtils
 		final T[] newArray = (T[]) add(array, index, element, clss);
 		return newArray;
 	}
-
+	
 	public static boolean[] add(boolean[] array, int index, boolean element)
 	{
 		return (boolean[]) add(array, index, Boolean.valueOf(element), Boolean.TYPE);
 	}
-
+	
 	public static char[] add(char[] array, int index, char element)
 	{
 		return (char[]) add(array, index, Character.valueOf(element), Character.TYPE);
 	}
-
+	
 	public static byte[] add(byte[] array, int index, byte element)
 	{
 		return (byte[]) add(array, index, Byte.valueOf(element), Byte.TYPE);
 	}
-
+	
 	public static short[] add(short[] array, int index, short element)
 	{
 		return (short[]) add(array, index, Short.valueOf(element), Short.TYPE);
 	}
-
+	
 	public static int[] add(int[] array, int index, int element)
 	{
 		return (int[]) add(array, index, Integer.valueOf(element), Integer.TYPE);
 	}
-
+	
 	public static long[] add(long[] array, int index, long element)
 	{
 		return (long[]) add(array, index, Long.valueOf(element), Long.TYPE);
 	}
-
+	
 	public static float[] add(float[] array, int index, float element)
 	{
 		return (float[]) add(array, index, Float.valueOf(element), Float.TYPE);
 	}
-
+	
 	public static double[] add(double[] array, int index, double element)
 	{
 		return (double[]) add(array, index, Double.valueOf(element), Double.TYPE);
 	}
-
+	
 	private static Object add(Object array, int index, Object element, Class<?> clss)
 	{
 		if (array == null)
@@ -2312,13 +2298,13 @@ public class ArrayUtils
 		}
 		return result;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public static <T> T[] remove(T[] array, int index)
 	{
 		return (T[]) remove((Object) array, index);
 	}
-
+	
 	public static <T> T[] removeElement(T[] array, Object element)
 	{
 		int index = indexOf(array, element);
@@ -2328,12 +2314,12 @@ public class ArrayUtils
 		}
 		return remove(array, index);
 	}
-
+	
 	public static boolean[] remove(boolean[] array, int index)
 	{
 		return (boolean[]) remove((Object) array, index);
 	}
-
+	
 	public static boolean[] removeElement(boolean[] array, boolean element)
 	{
 		int index = indexOf(array, element);
@@ -2343,12 +2329,12 @@ public class ArrayUtils
 		}
 		return remove(array, index);
 	}
-
+	
 	public static byte[] remove(byte[] array, int index)
 	{
 		return (byte[]) remove((Object) array, index);
 	}
-
+	
 	public static byte[] removeElement(byte[] array, byte element)
 	{
 		int index = indexOf(array, element);
@@ -2358,12 +2344,12 @@ public class ArrayUtils
 		}
 		return remove(array, index);
 	}
-
+	
 	public static char[] remove(char[] array, int index)
 	{
 		return (char[]) remove((Object) array, index);
 	}
-
+	
 	public static char[] removeElement(char[] array, char element)
 	{
 		int index = indexOf(array, element);
@@ -2373,12 +2359,12 @@ public class ArrayUtils
 		}
 		return remove(array, index);
 	}
-
+	
 	public static double[] remove(double[] array, int index)
 	{
 		return (double[]) remove((Object) array, index);
 	}
-
+	
 	public static double[] removeElement(double[] array, double element)
 	{
 		int index = indexOf(array, element);
@@ -2388,12 +2374,12 @@ public class ArrayUtils
 		}
 		return remove(array, index);
 	}
-
+	
 	public static float[] remove(float[] array, int index)
 	{
 		return (float[]) remove((Object) array, index);
 	}
-
+	
 	public static float[] removeElement(float[] array, float element)
 	{
 		int index = indexOf(array, element);
@@ -2403,12 +2389,12 @@ public class ArrayUtils
 		}
 		return remove(array, index);
 	}
-
+	
 	public static int[] remove(int[] array, int index)
 	{
 		return (int[]) remove((Object) array, index);
 	}
-
+	
 	public static int[] removeElement(int[] array, int element)
 	{
 		int index = indexOf(array, element);
@@ -2418,12 +2404,12 @@ public class ArrayUtils
 		}
 		return remove(array, index);
 	}
-
+	
 	public static long[] remove(long[] array, int index)
 	{
 		return (long[]) remove((Object) array, index);
 	}
-
+	
 	public static long[] removeElement(long[] array, long element)
 	{
 		int index = indexOf(array, element);
@@ -2433,12 +2419,12 @@ public class ArrayUtils
 		}
 		return remove(array, index);
 	}
-
+	
 	public static short[] remove(short[] array, int index)
 	{
 		return (short[]) remove((Object) array, index);
 	}
-
+	
 	public static short[] removeElement(short[] array, short element)
 	{
 		int index = indexOf(array, element);
@@ -2448,7 +2434,7 @@ public class ArrayUtils
 		}
 		return remove(array, index);
 	}
-
+	
 	private static Object remove(Object array, int index)
 	{
 		int length = getLength(array);
@@ -2456,32 +2442,32 @@ public class ArrayUtils
 		{
 			throw new IndexOutOfBoundsException("Index: " + index + ", Length: " + length);
 		}
-
+		
 		Object result = Array.newInstance(array.getClass().getComponentType(), length - 1);
 		System.arraycopy(array, 0, result, 0, index);
 		if (index < length - 1)
 		{
 			System.arraycopy(array, index + 1, result, index, length - index - 1);
 		}
-
+		
 		return result;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public static <T> T[] removeAll(T[] array, int... indices)
 	{
 		return (T[]) removeAll((Object) array, clone(indices));
 	}
-
+	
 	private static Object removeAll(Object array, int... indices)
 	{
 		int length = getLength(array);
 		int diff = 0;
-
+		
 		if (isNotEmpty(indices))
 		{
 			Arrays.sort(indices);
-
+			
 			int i = indices.length;
 			int prevIndex = length;
 			while (--i >= 0)

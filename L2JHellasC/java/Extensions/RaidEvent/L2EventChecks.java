@@ -1,30 +1,13 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package Extensions.RaidEvent;
-
-import java.util.List;
 
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
+import java.util.List;
+
 public class L2EventChecks
 {
-	/**
-	 * CheckIfOtherEvent --> Checks if the player is already inscribed in
-	 * another event.
-	 */
+	
 	private static boolean checkIfOtherEvent(L2PcInstance player)
 	{
 		if (player.inSoloEvent || player.inPartyEvent || player.inClanEvent)
@@ -34,21 +17,7 @@ public class L2EventChecks
 		}
 		return false;
 	}
-
-	/**
-	 * Check if Player/Clan/Party is eligible for Event.<br>
-	 * Documentation can be found in the method.<br>
-	 * 
-	 * @param player
-	 *        --> Basic Player Taking the action.
-	 * @param eventType
-	 *        --> Type of Event to check.
-	 * @param points
-	 *        --> Minimum Event Points Required to participate.
-	 * @param minPeople
-	 *        --> Minimum allowed People Required to participate.
-	 * @return --> True for Eligible Players and False for UnEligible Players.
-	 */
+	
 	public static boolean checkPlayer(L2PcInstance player, int eventType, int points, int minPeople, List<L2PcInstance> _eventPlayers)
 	{
 		int eventPoints = 0;
@@ -66,33 +35,21 @@ public class L2EventChecks
 		}
 		for (L2PcInstance member : _eventPlayers)
 		{
-			/*
-			 * In case of finding a disconnected player, we will continue the
-			 * for statement.
-			 */
+			
 			if (member == null)
 				continue;
 			// Let's check if any of the members is in another Event.
 			if (checkIfOtherEvent(member))
 			{
-				/*
-				 * If this is the case, we will notify the request instance
-				 * about the inconvenience produced.
-				 * We will also return a false.
-				 */
+				
 				String badRequestor = member.getName();
 				notifyBadRequestor(player, badRequestor, 2, _eventPlayers);
 				return false;
 			}
-
+			
 			// TODO: Add a Check asking members of the clan/party (ONLY)
 			// ACTUALLY WANT TO PARTICIPATE or not.
-
-			/*
-			 * Let's count all the points for every one of the event members,
-			 * only in the case that
-			 * the request instance and the Clan Members are from the same clan
-			 */
+			
 			switch (eventType)
 			{
 				case 2:
@@ -115,11 +72,7 @@ public class L2EventChecks
 				}
 			}
 		}
-		/*
-		 * If the addition of all the points is bigger than the requested
-		 * points, we will accept
-		 * the Participation of this clan in the event
-		 */
+		
 		if (eventPoints >= points)
 		{
 			for (L2PcInstance member : _eventPlayers)
@@ -145,11 +98,7 @@ public class L2EventChecks
 			return false;
 		}
 	}
-
-	/**
-	 * notifyOfBadRequestor --> Tell the members of the Clan/Party that the
-	 * player is already inscribed in another event.
-	 */
+	
 	private static void notifyBadRequestor(L2PcInstance player, String badRequestor, int type, List<L2PcInstance> _eventPlayers)
 	{
 		if (type == 2)
@@ -167,7 +116,7 @@ public class L2EventChecks
 			}
 		}
 	}
-
+	
 	public static boolean usualChecks(L2PcInstance player, int minLevel)
 	{
 		if (player.getLevel() < minLevel)
@@ -202,7 +151,7 @@ public class L2EventChecks
 		}
 		return true;
 	}
-
+	
 	public static String eType(int type)
 	{
 		String sType;

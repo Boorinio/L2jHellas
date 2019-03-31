@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-import java.util.StringTokenizer;
 
 import Extensions.Balancer.BalanceLoad;
 
@@ -52,9 +36,8 @@ import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.util.Util;
 
-/**
- * @author KidZor
- */
+import java.util.StringTokenizer;
+
 public class AdminReload implements IAdminCommandHandler
 {
 	private static final String RELOAD_USAGE = "Usage: //reload <multisell|doors|teleport|npc|respawn_npcs|zone|htm|crest|fix_crest|items|access|instancemanager|npcwalkers|configs|tradelist|pccolor|cw|levelupdata|summonitems|balancer|skill|nobleskill|heroskill|sktrees|spellbooks|augment>";
@@ -62,7 +45,7 @@ public class AdminReload implements IAdminCommandHandler
 	{
 		"admin_reload"
 	};
-
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -112,7 +95,7 @@ public class AdminReload implements IAdminCommandHandler
 				{
 					for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 					{
-						if(player==null)
+						if (player == null)
 							continue;
 						player.sendPacket(SystemMessageId.NPC_SERVER_NOT_OPERATING);
 					}
@@ -287,19 +270,14 @@ public class AdminReload implements IAdminCommandHandler
 		}
 		return true;
 	}
-
-	/**
-	 * send reload page
-	 * 
-	 * @param admin
-	 */
-	private void sendReloadPage(L2PcInstance player)
+	
+	private static void sendReloadPage(L2PcInstance player)
 	{
 		String html = HtmCache.getInstance().getHtm("data/html/admin/reload_menu.htm");
 		player.sendPacket(new NpcHtmlMessage(1, html));
 		Util.printSection("Reload");
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{

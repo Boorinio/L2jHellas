@@ -1,25 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -34,33 +13,40 @@ import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 public final class L2AuctioneerInstance extends L2NpcInstance
 {
 	private static final int COND_ALL_FALSE = 0;
 	private static final int COND_BUSY_BECAUSE_OF_SIEGE = 1;
 	private static final int COND_REGULAR = 3;
-
-	private final Map<Integer, Auction> _pendingAuctions = new HashMap<Integer, Auction>();
-
+	
+	private final Map<Integer, Auction> _pendingAuctions = new HashMap<>();
+	
 	public L2AuctioneerInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 	}
-
+	
 	@Override
 	public void onAction(L2PcInstance player)
 	{
 		if (!canTarget(player))
 			return;
-
+		
 		player.setLastFolkNPC(this);
-
+		
 		// Check if the L2PcInstance already target the L2NpcInstance
 		if (this != player.getTarget())
 		{
 			// Set the target of the L2PcInstance player
 			player.setTarget(this);
-
+			
 			// Send a Server->Client packet MyTargetSelected to the L2PcInstance player
 			MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
 			player.sendPacket(my);
@@ -81,20 +67,20 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-
+	
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
 		int condition = validateCondition(player);
 		if (condition == COND_ALL_FALSE)
 		{
-			//TODO: html
+			// TODO: html
 			player.sendMessage("Wrong conditions.");
 			return;
 		}
 		if (condition == COND_BUSY_BECAUSE_OF_SIEGE)
 		{
-			//TODO: html
+			// TODO: html
 			player.sendMessage("Busy because of siege.");
 			return;
 		}
@@ -102,18 +88,18 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 		{
 			StringTokenizer st = new StringTokenizer(command, " ");
 			String actualCommand = st.nextToken(); // Get actual command
-
+			
 			String val = "";
 			if (st.countTokens() >= 1)
 			{
 				val = st.nextToken();
 			}
-
+			
 			if (actualCommand.equalsIgnoreCase("auction"))
 			{
 				if (val == "")
 					return;
-
+				
 				try
 				{
 					int days = Integer.parseInt(val);
@@ -123,13 +109,13 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 						int bid = 0;
 						if (st.countTokens() >= 1)
 							bid = Integer.parseInt(st.nextToken());
-
+						
 						Auction a = new Auction(player.getClan().hasHideout(), player.getClan(), days * 86400000L, bid, ClanHallManager.getInstance().getClanHallByOwner(player.getClan()).getName());
 						if (_pendingAuctions.get(a.getId()) != null)
 							_pendingAuctions.remove(a.getId());
-
+						
 						_pendingAuctions.put(a.getId(), a);
-
+						
 						String filename = "data/html/auction/AgitSale3.htm";
 						NpcHtmlMessage html = new NpcHtmlMessage(1);
 						html.setFile(filename);
@@ -173,7 +159,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 					return;
 				if (Config.DEBUG)
 					player.sendMessage("bidding show successful");
-
+				
 				try
 				{
 					SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -182,7 +168,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 						player.sendMessage("auction test started");
 					String filename = "data/html/auction/AgitAuctionInfo.htm";
 					Auction a = AuctionManager.getInstance().getAuction(auctionId);
-
+					
 					NpcHtmlMessage html = new NpcHtmlMessage(1);
 					html.setFile(filename);
 					if (a != null)
@@ -212,14 +198,14 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 				{
 					player.sendMessage("Invalid auction!");
 				}
-
+				
 				return;
 			}
 			else if (actualCommand.equalsIgnoreCase("bid"))
 			{
 				if (val == "")
 					return;
-
+				
 				try
 				{
 					int auctionId = Integer.parseInt(val);
@@ -228,7 +214,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 						int bid = 0;
 						if (st.countTokens() >= 1)
 							bid = Integer.parseInt(st.nextToken());
-
+						
 						AuctionManager.getInstance().getAuction(auctionId).setBid(player, bid);
 					}
 					catch (Exception e)
@@ -240,7 +226,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 				{
 					player.sendMessage("Invalid auction!");
 				}
-
+				
 				return;
 			}
 			else if (actualCommand.equalsIgnoreCase("bid1"))
@@ -250,7 +236,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 					player.sendMessage("Your clan's level needs to be at least 2, before you can bid in an auction");
 					return;
 				}
-
+				
 				if (val == "")
 					return;
 				if ((player.getClan().getAuctionBiddedAt() > 0 && player.getClan().getAuctionBiddedAt() != Integer.parseInt(val)) || player.getClan().hasHideout() > 0)
@@ -258,15 +244,15 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 					player.sendMessage("You can't bid at more than one auction");
 					return;
 				}
-
+				
 				try
 				{
 					String filename = "data/html/auction/AgitBid1.htm";
-
+					
 					int minimumBid = AuctionManager.getInstance().getAuction(Integer.parseInt(val)).getHighestBidderMaxBid();
 					if (minimumBid == 0)
 						minimumBid = AuctionManager.getInstance().getAuction(Integer.parseInt(val)).getStartingBid();
-
+					
 					NpcHtmlMessage html = new NpcHtmlMessage(1);
 					html.setFile(filename);
 					html.replace("%AGIT_LINK_BACK%", "bypass -h npc_" + getObjectId() + "_bidding " + val);
@@ -286,7 +272,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 			{
 				List<Auction> auctions = AuctionManager.getInstance().getAuctions();
 				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-				/** Limit for make new page, prevent client crash **/
+				
 				int limit = 15;
 				int start;
 				int i = 1;
@@ -318,18 +304,13 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 					}
 					else
 						i++;
-					/** @formatter:off */
-					items+="<tr>" +
-							"<td>"+ClanHallManager.getInstance().getClanHallById(a.getItemId()).getLocation()+"</td>" +
-							"<td><a action=\"bypass -h npc_"+getObjectId()+"_bidding "+a.getId()+"\">"+a.getItemName()+"</a></td>" +
-							"<td>"+format.format(a.getEndDate())+"</td>" +
-							"<td>"+a.getStartingBid()+"</td>" +
-							"</tr>";
-                	/** @formatter:on */
+					
+					items += "<tr>" + "<td>" + ClanHallManager.getInstance().getClanHallById(a.getItemId()).getLocation() + "</td>" + "<td><a action=\"bypass -h npc_" + getObjectId() + "_bidding " + a.getId() + "\">" + a.getItemName() + "</a></td>" + "<td>" + format.format(a.getEndDate()) + "</td>" + "<td>" + a.getStartingBid() + "</td>" + "</tr>";
+					
 				}
 				items += "</table>";
 				String filename = "data/html/auction/AgitAuctionList.htm";
-
+				
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(filename);
 				html.replace("%AGIT_LINK_BACK%", "bypass -h npc_" + getObjectId() + "_start");
@@ -357,7 +338,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 					biders += "<tr><td>" + b.getClanName() + "</td><td>" + b.getName() + "</td><td>" + b.getTimeBid().get(Calendar.YEAR) + "/" + (b.getTimeBid().get(Calendar.MONTH) + 1) + "/" + b.getTimeBid().get(Calendar.DATE) + "</td><td>" + b.getBid() + "</td></tr>";
 				}
 				String filename = "data/html/auction/AgitBidderList.htm";
-
+				
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile(filename);
 				html.replace("%AGIT_LIST%", biders);
@@ -566,7 +547,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 			{
 				NpcHtmlMessage html = new NpcHtmlMessage(1);
 				html.setFile("data/html/auction/location.htm");
-				html.replace("%location%", MapRegionTable.getInstance().getClosestTownName(player.getX(),player.getY()));
+				html.replace("%location%", MapRegionTable.getInstance().getClosestTownName(player.getX(), player.getY()));
 				html.replace("%LOCATION%", getPictureName(player));
 				html.replace("%AGIT_LINK_BACK%", "bypass -h npc_" + getObjectId() + "_start");
 				player.sendPacket(html);
@@ -580,17 +561,17 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 		}
 		super.onBypassFeedback(player, command);
 	}
-
+	
 	public void showMessageWindow(L2PcInstance player)
 	{
 		String filename = "data/html/auction/auction-no.htm";
-
+		
 		int condition = validateCondition(player);
 		if (condition == COND_BUSY_BECAUSE_OF_SIEGE)
 			filename = "data/html/auction/auction-busy.htm"; // Busy because of siege
 		else
 			filename = "data/html/auction/auction.htm";
-
+		
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
 		html.setFile(filename);
 		html.replace("%objectId%", String.valueOf(getObjectId()));
@@ -598,7 +579,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 		html.replace("%npcname%", getName());
 		player.sendPacket(html);
 	}
-
+	
 	private int validateCondition(L2PcInstance player)
 	{
 		if (getCastle() != null && getCastle().getCastleId() > 0)
@@ -607,43 +588,43 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 				return COND_BUSY_BECAUSE_OF_SIEGE; // Busy because of siege
 			return COND_REGULAR;
 		}
-
+		
 		return COND_ALL_FALSE;
 	}
-
-	private String getPictureName(L2PcInstance plyr)
+	
+	private static String getPictureName(L2PcInstance plyr)
 	{
 		int nearestTownId = MapRegionTable.getMapRegion(plyr.getX(), plyr.getY());
 		String nearestTown;
-
+		
 		switch (nearestTownId)
 		{
 			case 5:
 				nearestTown = "GLUDIO";
-			break;
+				break;
 			case 6:
 				nearestTown = "GLUDIN";
-			break;
+				break;
 			case 7:
 				nearestTown = "DION";
-			break;
+				break;
 			case 8:
 				nearestTown = "GIRAN";
-			break;
+				break;
 			case 14:
 				nearestTown = "RUNE";
-			break;
+				break;
 			case 15:
 				nearestTown = "GODARD";
-			break;
+				break;
 			case 16:
 				nearestTown = "SCHUTTGART";
-			break;
+				break;
 			default:
 				nearestTown = "ADEN";
-			break;
+				break;
 		}
-
+		
 		return nearestTown;
 	}
 }

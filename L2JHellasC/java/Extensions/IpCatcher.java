@@ -1,18 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package Extensions;
+
+import com.PackRoot;
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 import java.io.File;
 import java.io.FileReader;
@@ -26,13 +16,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import com.PackRoot;
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
-/**
- * @author AbsolutePower
- */
 public class IpCatcher
 {
 	public static ArrayList<String> ips = new ArrayList<>();
@@ -46,8 +29,8 @@ public class IpCatcher
 		if (p != null)
 			try
 			{
-				@SuppressWarnings("static-access")
-				final InetAddress ip = p.getClient().getConnection().getInetAddress().getLocalHost();
+				p.getClient().getConnection().getInetAddress();
+				final InetAddress ip = InetAddress.getLocalHost();
 				
 				NetworkInterface network = NetworkInterface.getByInetAddress(ip);
 				
@@ -110,6 +93,7 @@ public class IpCatcher
 		}
 	}
 	
+	@SuppressWarnings("resource")
 	public void addIp(L2PcInstance p)
 	{
 		MkTiNe();
@@ -117,7 +101,7 @@ public class IpCatcher
 		final String name = p.getName();
 		
 		if (ip != null && name != null)
-		ips.add("Name");
+			ips.add("Name");
 		ips.add(name);
 		ips.add("Ip");
 		ips.add(ip);
@@ -147,6 +131,7 @@ public class IpCatcher
 		ipsLoad();
 	}
 	
+	@SuppressWarnings("resource")
 	public void removeIp(L2PcInstance p)
 	{
 		final String ip = getIp(p);
@@ -185,12 +170,11 @@ public class IpCatcher
 	
 	public static void ipsLoad()
 	{
-		LineNumberReader l = null;
 		try
 		{
 			MkTiNe();
 			String line = null;
-			l = new LineNumberReader(new FileReader(file));
+			LineNumberReader l = new LineNumberReader(new FileReader(file));
 			while ((line = l.readLine()) != null)
 			{
 				StringTokenizer st = new StringTokenizer(line, "\n\r");
@@ -200,23 +184,13 @@ public class IpCatcher
 					ips.add(n);
 				}
 			}
+			l.close();
 		}
 		catch (Exception e)
 		{
 			System.err.print("could not load ips from file:" + file);
 			if (Config.DEVELOPER)
 				e.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
-				if (l != null)
-					l.close();
-			}
-			catch (Exception e)
-			{
-			}
 		}
 	}
 }

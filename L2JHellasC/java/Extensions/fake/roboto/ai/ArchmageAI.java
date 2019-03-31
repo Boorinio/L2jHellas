@@ -1,9 +1,5 @@
 package Extensions.fake.roboto.ai;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.helpers.FakeHelpers;
 import Extensions.fake.roboto.model.HealingSpell;
@@ -12,6 +8,9 @@ import Extensions.fake.roboto.model.SupportSpell;
 
 import com.l2jhellas.gameserver.emum.ShotType;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ArchmageAI extends CombatAI
 {
@@ -19,7 +18,7 @@ public class ArchmageAI extends CombatAI
 	{
 		super(character);
 	}
-
+	
 	@Override
 	public void thinkAndAct()
 	{
@@ -31,13 +30,13 @@ public class ArchmageAI extends CombatAI
 		tryAttackingUsingMageOffensiveSkill();
 		setBusyThinking(false);
 	}
-
+	
 	@Override
 	protected ShotType getShotType()
 	{
 		return ShotType.BLESSED_SPIRITSHOT;
 	}
-
+	
 	@Override
 	protected List<OffensiveSpell> getOffensiveSpells()
 	{
@@ -46,19 +45,19 @@ public class ArchmageAI extends CombatAI
 		_offensiveSpells.add(new OffensiveSpell(1339, 1));
 		return _offensiveSpells;
 	}
-
+	
 	@Override
 	protected int[][] getBuffs()
 	{
 		return FakeHelpers.getMageBuffs();
 	}
-
+	
 	@Override
 	protected List<HealingSpell> getHealingSpells()
 	{
 		return Collections.emptyList();
 	}
-
+	
 	@Override
 	protected List<SupportSpell> getSelfSupportSpells()
 	{

@@ -1,9 +1,5 @@
 package Extensions.fake.roboto.ai;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.helpers.FakeHelpers;
 import Extensions.fake.roboto.model.HealingSpell;
@@ -12,13 +8,17 @@ import Extensions.fake.roboto.model.SupportSpell;
 
 import com.l2jhellas.gameserver.emum.ShotType;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class GhostHunterAI extends CombatAI
 {
 	public GhostHunterAI(FakePlayer character)
 	{
 		super(character);
 	}
-
+	
 	@Override
 	public void thinkAndAct()
 	{
@@ -30,13 +30,13 @@ public class GhostHunterAI extends CombatAI
 		tryAttackingUsingFighterOffensiveSkill();
 		setBusyThinking(false);
 	}
-
+	
 	@Override
 	protected ShotType getShotType()
 	{
 		return ShotType.SOULSHOT;
 	}
-
+	
 	@Override
 	public List<OffensiveSpell> getOffensiveSpells()
 	{
@@ -51,19 +51,19 @@ public class GhostHunterAI extends CombatAI
 		_offensiveSpells.add(new OffensiveSpell(358, 1));
 		return _offensiveSpells;
 	}
-
+	
 	@Override
 	protected int[][] getBuffs()
 	{
 		return FakeHelpers.getFighterBuffs();
 	}
-
+	
 	@Override
 	protected List<HealingSpell> getHealingSpells()
 	{
 		return Collections.emptyList();
 	}
-
+	
 	@Override
 	protected List<SupportSpell> getSelfSupportSpells()
 	{

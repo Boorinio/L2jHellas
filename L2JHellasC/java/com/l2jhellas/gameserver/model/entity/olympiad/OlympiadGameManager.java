@@ -1,27 +1,13 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.entity.olympiad;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2SpawnZone;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class OlympiadGameManager implements Runnable
 {
@@ -34,15 +20,15 @@ public class OlympiadGameManager implements Runnable
 	{
 		protected static final OlympiadGameManager _instance = new OlympiadGameManager();
 	}
-
+	
 	protected OlympiadGameManager()
 	{
 		L2SpawnZone.STADIUMSADD();
-
+		
 		final Collection<L2OlympiadStadiumZone> zones = ZoneManager.getInstance().getAllZones(L2OlympiadStadiumZone.class);
 		if (zones == null || zones.isEmpty())
 			throw new Error("No olympiad stadium zones defined !");
-
+		
 		_tasks = new OlympiadGameTask[zones.size()];
 		int i = 0;
 		for (L2OlympiadStadiumZone zone : zones)

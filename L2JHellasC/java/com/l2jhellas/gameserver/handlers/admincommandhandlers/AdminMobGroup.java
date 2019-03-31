@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
@@ -27,14 +13,10 @@ import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Broadcast;
 
-/**
- * @author littlecrow
- *         Admin commands handler for controllable mobs
- */
 public class AdminMobGroup implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_mobmenu",
 		"admin_mobgroup_list",
 		"admin_mobgroup_create",
@@ -53,8 +35,8 @@ public class AdminMobGroup implements IAdminCommandHandler
 		"admin_mobgroup_attackgrp",
 		"admin_mobgroup_invul",
 		"admin_mobinst"
-	};/** @formatter:on */
-
+	};
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -109,19 +91,16 @@ public class AdminMobGroup implements IAdminCommandHandler
 		showMainPage(activeChar, command);
 		return true;
 	}
-
-	/**
-	 * @param activeChar
-	 */
-	private void showMainPage(L2PcInstance activeChar, String command)
+	
+	private static void showMainPage(L2PcInstance activeChar, String command)
 	{
 		String filename = "mobgroup.htm";
 		if (command.contains("mobinst"))
 			filename = "mobgrouphelp.htm";
 		AdminHelpPage.showHelpPage(activeChar, filename);
 	}
-
-	private void returnToChar(String command, L2PcInstance activeChar)
+	
+	private static void returnToChar(String command, L2PcInstance activeChar)
 	{
 		int groupId;
 		try
@@ -141,11 +120,11 @@ public class AdminMobGroup implements IAdminCommandHandler
 		}
 		group.returnGroup(activeChar);
 	}
-
-	private void idle(String command, L2PcInstance activeChar)
+	
+	private static void idle(String command, L2PcInstance activeChar)
 	{
 		int groupId;
-
+		
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
@@ -163,8 +142,8 @@ public class AdminMobGroup implements IAdminCommandHandler
 		}
 		group.setIdleMode();
 	}
-
-	private void setNormal(String command, L2PcInstance activeChar)
+	
+	private static void setNormal(String command, L2PcInstance activeChar)
 	{
 		int groupId;
 		try
@@ -184,8 +163,8 @@ public class AdminMobGroup implements IAdminCommandHandler
 		}
 		group.setAttackRandom();
 	}
-
-	private void attack(String command, L2PcInstance activeChar, L2Character target)
+	
+	private static void attack(String command, L2PcInstance activeChar, L2Character target)
 	{
 		int groupId;
 		try
@@ -205,8 +184,8 @@ public class AdminMobGroup implements IAdminCommandHandler
 		}
 		group.setAttackTarget(target);
 	}
-
-	private void follow(String command, L2PcInstance activeChar, L2Character target)
+	
+	private static void follow(String command, L2PcInstance activeChar, L2Character target)
 	{
 		int groupId;
 		try
@@ -226,17 +205,17 @@ public class AdminMobGroup implements IAdminCommandHandler
 		}
 		group.setFollowMode(target);
 	}
-
-	private void createGroup(String command, L2PcInstance activeChar)
+	
+	private static void createGroup(String command, L2PcInstance activeChar)
 	{
 		int groupId;
 		int templateId;
 		int mobCount;
-
+		
 		try
 		{
 			String[] cmdParams = command.split(" ");
-
+			
 			groupId = Integer.parseInt(cmdParams[1]);
 			templateId = Integer.parseInt(cmdParams[2]);
 			mobCount = Integer.parseInt(cmdParams[3]);
@@ -246,31 +225,31 @@ public class AdminMobGroup implements IAdminCommandHandler
 			activeChar.sendMessage("Usage: //mobgroup_create <group> <npcid> <count>");
 			return;
 		}
-
+		
 		if (MobGroupTable.getInstance().getGroup(groupId) != null)
 		{
 			activeChar.sendMessage("Mob group " + groupId + " already exists.");
 			return;
 		}
-
+		
 		L2NpcTemplate template = NpcData.getInstance().getTemplate(templateId);
-
+		
 		if (template == null)
 		{
 			activeChar.sendMessage("Invalid NPC ID specified.");
 			return;
 		}
-
+		
 		MobGroup group = new MobGroup(groupId, template, mobCount);
 		MobGroupTable.getInstance().addGroup(groupId, group);
-
+		
 		activeChar.sendMessage("Mob group " + groupId + " created.");
 	}
-
-	private void removeGroup(String command, L2PcInstance activeChar)
+	
+	private static void removeGroup(String command, L2PcInstance activeChar)
 	{
 		int groupId;
-
+		
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
@@ -280,35 +259,35 @@ public class AdminMobGroup implements IAdminCommandHandler
 			activeChar.sendMessage("Usage: //mobgroup_remove <groupId>");
 			return;
 		}
-
+		
 		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-
+		
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-
+		
 		doAnimation(activeChar);
 		group.unspawnGroup();
-
+		
 		if (MobGroupTable.getInstance().removeGroup(groupId))
 			activeChar.sendMessage("Mob group " + groupId + " unspawned and removed.");
 	}
-
-	private void spawnGroup(String command, L2PcInstance activeChar)
+	
+	private static void spawnGroup(String command, L2PcInstance activeChar)
 	{
 		int groupId;
 		boolean topos = false;
 		int posx = 0;
 		int posy = 0;
 		int posz = 0;
-
+		
 		try
 		{
 			String[] cmdParams = command.split(" ");
 			groupId = Integer.parseInt(cmdParams[1]);
-
+			
 			try
 			{ // we try to get a position
 				posx = Integer.parseInt(cmdParams[2]);
@@ -326,29 +305,29 @@ public class AdminMobGroup implements IAdminCommandHandler
 			activeChar.sendMessage("Usage: //mobgroup_spawn <group> [ x y z ]");
 			return;
 		}
-
+		
 		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-
+		
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-
+		
 		doAnimation(activeChar);
-
+		
 		if (topos)
 			group.spawnGroup(posx, posy, posz);
 		else
 			group.spawnGroup(activeChar);
-
+		
 		activeChar.sendMessage("Mob group " + groupId + " spawned.");
 	}
-
-	private void unspawnGroup(String command, L2PcInstance activeChar)
+	
+	private static void unspawnGroup(String command, L2PcInstance activeChar)
 	{
 		int groupId;
-
+		
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
@@ -358,25 +337,25 @@ public class AdminMobGroup implements IAdminCommandHandler
 			activeChar.sendMessage("Usage: //mobgroup_unspawn <groupId>");
 			return;
 		}
-
+		
 		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-
+		
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-
+		
 		doAnimation(activeChar);
 		group.unspawnGroup();
-
+		
 		activeChar.sendMessage("Mob group " + groupId + " unspawned.");
 	}
-
-	private void killGroup(String command, L2PcInstance activeChar)
+	
+	private static void killGroup(String command, L2PcInstance activeChar)
 	{
 		int groupId;
-
+		
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
@@ -386,23 +365,23 @@ public class AdminMobGroup implements IAdminCommandHandler
 			activeChar.sendMessage("Usage: //mobgroup_kill <groupId>");
 			return;
 		}
-
+		
 		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-
+		
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-
+		
 		doAnimation(activeChar);
 		group.killGroup(activeChar);
 	}
-
-	private void setCasting(String command, L2PcInstance activeChar)
+	
+	private static void setCasting(String command, L2PcInstance activeChar)
 	{
 		int groupId;
-
+		
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
@@ -412,23 +391,23 @@ public class AdminMobGroup implements IAdminCommandHandler
 			activeChar.sendMessage("Usage: //mobgroup_casting <groupId>");
 			return;
 		}
-
+		
 		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-
+		
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-
+		
 		group.setCastMode();
 	}
-
-	private void noMove(String command, L2PcInstance activeChar)
+	
+	private static void noMove(String command, L2PcInstance activeChar)
 	{
 		int groupId;
 		String enabled;
-
+		
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
@@ -439,15 +418,15 @@ public class AdminMobGroup implements IAdminCommandHandler
 			activeChar.sendMessage("Usage: //mobgroup_nomove <groupId> <on|off>");
 			return;
 		}
-
+		
 		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-
+		
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-
+		
 		if (enabled.equalsIgnoreCase("on") || enabled.equalsIgnoreCase("true"))
 			group.setNoMoveMode(true);
 		else if (enabled.equalsIgnoreCase("off") || enabled.equalsIgnoreCase("false"))
@@ -455,18 +434,18 @@ public class AdminMobGroup implements IAdminCommandHandler
 		else
 			activeChar.sendMessage("Incorrect command arguments.");
 	}
-
-	private void doAnimation(L2PcInstance activeChar)
+	
+	private static void doAnimation(L2PcInstance activeChar)
 	{
-		Broadcast.toSelfAndKnownPlayersInRadius(activeChar, new MagicSkillUse(activeChar, 1008, 1, 4000, 0), 2250000/* 1500 */);
+		Broadcast.toSelfAndKnownPlayersInRadius(activeChar, new MagicSkillUse(activeChar, 1008, 1, 4000, 0), 2250000);
 		activeChar.sendPacket(new SetupGauge(0, 4000));
 	}
-
-	private void attackGrp(String command, L2PcInstance activeChar)
+	
+	private static void attackGrp(String command, L2PcInstance activeChar)
 	{
 		int groupId;
 		int othGroupId;
-
+		
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
@@ -477,31 +456,31 @@ public class AdminMobGroup implements IAdminCommandHandler
 			activeChar.sendMessage("Usage: //mobgroup_attackgrp <groupId> <TargetGroupId>");
 			return;
 		}
-
+		
 		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-
+		
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-
+		
 		MobGroup othGroup = MobGroupTable.getInstance().getGroup(othGroupId);
-
+		
 		if (othGroup == null)
 		{
 			activeChar.sendMessage("Incorrect target group.");
 			return;
 		}
-
+		
 		group.setAttackGroup(othGroup);
 	}
-
-	private void invul(String command, L2PcInstance activeChar)
+	
+	private static void invul(String command, L2PcInstance activeChar)
 	{
 		int groupId;
 		String enabled;
-
+		
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
@@ -512,15 +491,15 @@ public class AdminMobGroup implements IAdminCommandHandler
 			activeChar.sendMessage("Usage: //mobgroup_invul <groupId> <on|off>");
 			return;
 		}
-
+		
 		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-
+		
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-
+		
 		if (enabled.equalsIgnoreCase("on") || enabled.equalsIgnoreCase("true"))
 			group.setInvul(true);
 		else if (enabled.equalsIgnoreCase("off") || enabled.equalsIgnoreCase("false"))
@@ -528,21 +507,21 @@ public class AdminMobGroup implements IAdminCommandHandler
 		else
 			activeChar.sendMessage("Incorrect command arguments.");
 	}
-
-	private void teleportGroup(String command, L2PcInstance activeChar)
+	
+	private static void teleportGroup(String command, L2PcInstance activeChar)
 	{
 		int groupId;
 		String targetPlayerStr = null;
 		L2PcInstance targetPlayer = null;
-
+		
 		try
 		{
 			groupId = Integer.parseInt(command.split(" ")[1]);
 			targetPlayerStr = command.split(" ")[2];
-
+			
 			if (targetPlayerStr != null)
 				targetPlayer = L2World.getInstance().getPlayer(targetPlayerStr);
-
+			
 			if (targetPlayer == null)
 				targetPlayer = activeChar;
 		}
@@ -551,30 +530,30 @@ public class AdminMobGroup implements IAdminCommandHandler
 			activeChar.sendMessage("Usage: //mobgroup_teleport <groupId> [playerName]");
 			return;
 		}
-
+		
 		MobGroup group = MobGroupTable.getInstance().getGroup(groupId);
-
+		
 		if (group == null)
 		{
 			activeChar.sendMessage("Invalid group specified.");
 			return;
 		}
-
+		
 		group.teleportGroup(activeChar);
 	}
-
-	private void showGroupList(L2PcInstance activeChar)
+	
+	private static void showGroupList(L2PcInstance activeChar)
 	{
 		MobGroup[] mobGroupList = MobGroupTable.getInstance().getGroups();
-
+		
 		activeChar.sendMessage("======= <Mob Groups> =======");
-
+		
 		for (MobGroup mobGroup : mobGroupList)
 			activeChar.sendMessage(mobGroup.getGroupId() + ": " + mobGroup.getActiveMobCount() + " alive out of " + mobGroup.getMaxMobCount() + " of NPC ID " + mobGroup.getTemplate().npcId + " (" + mobGroup.getStatus() + ")");
-
+		
 		activeChar.sendPacket(SystemMessageId.FRIEND_LIST_FOOTER);
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{

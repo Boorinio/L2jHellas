@@ -1,23 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.util;
-
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -27,6 +8,11 @@ import com.l2jhellas.gameserver.model.L2MinionData;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 public class MinionList
 {
@@ -40,21 +26,11 @@ public class MinionList
 		_master = master;
 	}
 	
-	/**
-	 * @return list of the spawned (alive) minions.
-	 */
 	public Set<L2MonsterInstance> getSpawnedMinions()
 	{
 		return _minionReferences;
 	}
 	
-	/**
-	 * Manage the spawn of Minions.
-	 * <ul>
-	 * <li>Get the Minion data of all Minions that must be spawn</li>
-	 * <li>For each Minion type, spawn the amount of Minion needed</li>
-	 * </ul>
-	 */
 	public final void spawnMinions()
 	{
 		if (_master.isAlikeDead())
@@ -79,9 +55,6 @@ public class MinionList
 		}
 	}
 	
-	/**
-	 * Delete all spawned minions and try to reuse them.
-	 */
 	public void deleteSpawnedMinions()
 	{
 		if (!_minionReferences.isEmpty())
@@ -90,7 +63,7 @@ public class MinionList
 			{
 				if (minion != null)
 				{
-				    minion.setLeader(null);
+					minion.setLeader(null);
 					minion.deleteMe();
 				}
 			}
@@ -100,33 +73,20 @@ public class MinionList
 	
 	// hooks
 	
-	/**
-	 * Called on the minion spawn and added them in the list of the spawned minions.
-	 * @param minion The instance of minion.
-	 */
 	public void onMinionSpawn(L2MonsterInstance minion)
 	{
-		   _minionReferences.add(minion);
+		_minionReferences.add(minion);
 	}
 	
-	/**
-	 * Called on the master death/delete.
-	 * @param force if true - force delete of the spawned minions By default minions deleted only for raidbosses
-	 */
 	public void onMasterDie(boolean force)
 	{
 		if (_master.isRaid() || force)
 			deleteSpawnedMinions();
 	}
 	
-	/**
-	 * Called on the minion death/delete. Removed minion from the list of the spawned minions and reuse if possible.
-	 * @param minion The minion to make checks on.
-	 * @param respawnTime (ms) enable respawning of this minion while master is alive. -1 - use default value: 0 (disable) for mobs and config value for raids.
-	 */
 	public void onMinionDie(L2MonsterInstance minion, int respawnTime)
 	{
-		 minion.setLeader(null);
+		minion.setLeader(null);
 		_minionReferences.remove(minion);
 		
 		final int time = _master.isRaid() ? (int) Config.RAID_MINION_RESPAWN_TIMER : respawnTime;
@@ -134,11 +94,6 @@ public class MinionList
 			ThreadPoolManager.getInstance().scheduleGeneral(new MinionRespawnTask(minion), time);
 	}
 	
-	/**
-	 * Called if master/minion was attacked. Master and all free minions receive aggro against attacker.
-	 * @param caller That instance will call for help versus attacker.
-	 * @param attacker That instance will receive all aggro.
-	 */
 	public void onAssist(L2Character caller, L2Character attacker)
 	{
 		if (attacker == null)
@@ -159,9 +114,6 @@ public class MinionList
 		}
 	}
 	
-	/**
-	 * Called from onTeleported() of the master Alive and able to move minions teleported to master.
-	 */
 	public void onMasterTeleported()
 	{
 		final int offset = 200;
@@ -212,19 +164,6 @@ public class MinionList
 		}
 	}
 	
-	/**
-	 * Init a Minion and add it in the world as a visible object.
-	 * <ul>
-	 * <li>Get the template of the Minion to spawn</li>
-	 * <li>Create and Init the Minion and generate its Identifier</li>
-	 * <li>Set the Minion HP, MP and Heading</li>
-	 * <li>Set the Minion leader to this RaidBoss</li>
-	 * <li>Init the position of the Minion and add it in the world as a visible object</li><BR>
-	 * </ul>
-	 * @param master L2MonsterInstance used as master for this minion
-	 * @param minionId The L2NpcTemplate Identifier of the Minion to spawn
-	 * @return the instance of the new minion.
-	 */
 	public static final L2MonsterInstance spawnMinion(L2MonsterInstance master, int minionId)
 	{
 		// Get the template of the Minion to spawn
@@ -244,7 +183,7 @@ public class MinionList
 		// Set the Minion HP, MP and Heading
 		minion.setCurrentHpMp(minion.getMaxHp(), minion.getMaxMp());
 		minion.setHeading(master.getHeading());
-
+		
 		// Set the Minion leader to this RaidBoss
 		minion.setLeader(master);
 		

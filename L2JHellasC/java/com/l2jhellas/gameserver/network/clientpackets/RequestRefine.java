@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
@@ -26,11 +12,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ShortCutInit;
 import com.l2jhellas.gameserver.network.serverpackets.SkillList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 
-/**
- * Format:(ch) dddd
- * 
- * @author -Wooden-
- */
 public final class RequestRefine extends AbstractRefinePacket
 {
 	private static final String _C__D0_2C_REQUESTREFINE = "[C] D0:2C RequestRefine";
@@ -47,7 +28,7 @@ public final class RequestRefine extends AbstractRefinePacket
 		_gemStoneItemObjId = readD();
 		_gemStoneCount = readD();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
@@ -103,7 +84,7 @@ public final class RequestRefine extends AbstractRefinePacket
 			return;
 		}
 		
-		if(activeChar.getActiveTradeList() != null || activeChar.getActiveWarehouse() != null || activeChar.getActiveEnchantItem() != null)
+		if (activeChar.getActiveTradeList() != null || activeChar.getActiveWarehouse() != null || activeChar.getActiveEnchantItem() != null)
 		{
 			activeChar.sendMessage("You can't augment items when you got active warehouse or active trade or active enchant.");
 			activeChar.sendPacket(new ActionFailed());
@@ -118,7 +99,7 @@ public final class RequestRefine extends AbstractRefinePacket
 		}
 		
 		// Consume the life stone
-		if (!activeChar.destroyItem("RequestRefine", refinerItem,null, false))
+		if (!activeChar.destroyItem("RequestRefine", refinerItem, null, false))
 		{
 			activeChar.sendPacket(new ExVariationResult(0, 0, 0));
 			activeChar.sendPacket(SystemMessageId.AUGMENTATION_FAILED_DUE_TO_INAPPROPRIATE_CONDITIONS);
@@ -132,7 +113,7 @@ public final class RequestRefine extends AbstractRefinePacket
 			return;
 		}
 		
-		final L2Augmentation aug = AugmentationData.getInstance().generateRandomAugmentation(targetItem,lifeStoneLevel, lifeStoneGrade);
+		final L2Augmentation aug = AugmentationData.getInstance().generateRandomAugmentation(targetItem, lifeStoneLevel, lifeStoneGrade);
 		targetItem.setAugmentation(aug);
 		
 		final int stat12 = 0x0000FFFF & aug.getAugmentationId();
@@ -149,7 +130,7 @@ public final class RequestRefine extends AbstractRefinePacket
 		activeChar.sendPacket(new SkillList());
 		activeChar.sendPacket(new ShortCutInit(activeChar));
 	}
-
+	
 	@Override
 	public String getType()
 	{

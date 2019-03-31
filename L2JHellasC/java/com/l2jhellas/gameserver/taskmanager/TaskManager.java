@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.taskmanager;
 
 import static com.l2jhellas.gameserver.taskmanager.TaskTypes.TYPE_FIXED_SHEDULED;
@@ -62,7 +48,7 @@ public final class TaskManager
 
 	};/** @formatter:on */
 
-	private final HashMap<Integer, Task> _tasks = new HashMap<Integer, Task>();
+	private final HashMap<Integer, Task> _tasks = new HashMap<>();
 	protected final List<ExecutedTask> _currentTasks = new ArrayList<>();
 
 	public class ExecutedTask implements Runnable
@@ -225,7 +211,7 @@ public final class TaskManager
 		}
 	}
 
-	private boolean launchTask(ExecutedTask task)
+	private static boolean launchTask(ExecutedTask task)
 	{
 		final ThreadPoolManager scheduler = ThreadPoolManager.getInstance();
 		final TaskTypes type = task.getType();
@@ -332,14 +318,15 @@ public final class TaskManager
 
 			if (!rset.next())
 			{
-				statement = con.prepareStatement(SQL_STATEMENTS[3]);
-				statement.setString(1, task);
-				statement.setString(2, type.toString());
-				statement.setLong(3, lastActivation);
-				statement.setString(4, param1);
-				statement.setString(5, param2);
-				statement.setString(6, param3);
-				statement.execute();
+				PreparedStatement statement1 = con.prepareStatement(SQL_STATEMENTS[3]);
+				statement1.setString(1, task);
+				statement1.setString(2, type.toString());
+				statement1.setLong(3, lastActivation);
+				statement1.setString(4, param1);
+				statement1.setString(5, param2);
+				statement1.setString(6, param3);
+				statement1.execute();
+				statement1.close();
 			}
 
 			rset.close();
@@ -373,7 +360,6 @@ public final class TaskManager
 			statement.setString(5, param2);
 			statement.setString(6, param3);
 			statement.execute();
-
 			statement.close();
 			return true;
 		}

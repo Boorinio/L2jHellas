@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.voicedcommandhandlers;
 
 import com.l2jhellas.Config;
@@ -24,7 +10,7 @@ public class VipTeleportCmd implements IVoicedCommandHandler
 	{
 		"areavip"
 	};
-
+	
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
@@ -80,18 +66,18 @@ public class VipTeleportCmd implements IVoicedCommandHandler
 				activeChar.sendMessage("You are dead? get up first!");
 				return false;
 			}
-			else if (activeChar._donator = false)
+			else if (!activeChar._donator)
 			{
 				activeChar.sendMessage("You must be donator to use this service.");
 				return false;
 			}
-
+			
 			activeChar.teleToLocation(Config.VIP_X, Config.VIP_Y, Config.VIP_Z);
 			activeChar.sendMessage("You have been teleported in Vip Area!");
 		}
 		return true;
 	}
-
+	
 	@Override
 	public String[] getVoicedCommandList()
 	{

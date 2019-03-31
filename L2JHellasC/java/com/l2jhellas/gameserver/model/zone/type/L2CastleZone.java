@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.zone.type;
 
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
@@ -25,10 +11,6 @@ import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * A castle zone
- * @author durgus
- */
 public class L2CastleZone extends L2SpawnZone
 {
 	private int _castleId;
@@ -56,7 +38,6 @@ public class L2CastleZone extends L2SpawnZone
 			character.setInsideZone(ZoneId.CASTLE, true);
 		}
 		
-		
 	}
 	
 	@Override
@@ -78,10 +59,6 @@ public class L2CastleZone extends L2SpawnZone
 	{
 	}
 	
-	/**
-	 * Removes all foreigners from the castle
-	 * @param owningClanId
-	 */
 	public void banishForeigners(int owningClanId)
 	{
 		for (L2PcInstance player : getKnownTypeInside(L2PcInstance.class))
@@ -105,12 +82,7 @@ public class L2CastleZone extends L2SpawnZone
 		
 		return _castle;
 	}
-
-	/**
-	 * Sends a message to all players in this zone
-	 * 
-	 * @param message
-	 */
+	
 	public void announceToPlayers(String message)
 	{
 		for (L2Character temp : _characterList.values())
@@ -119,7 +91,7 @@ public class L2CastleZone extends L2SpawnZone
 				((L2PcInstance) temp).sendMessage(message);
 		}
 	}
-
+	
 	public void updateZoneStatusForCharactersInside()
 	{
 		if (_castle.getSiege().getIsInProgress())
@@ -143,7 +115,7 @@ public class L2CastleZone extends L2SpawnZone
 				{
 					character.setInsideZone(ZoneId.PVP, false);
 					character.setInsideZone(ZoneId.SIEGE, false);
-
+					
 					if (character instanceof L2PcInstance)
 						character.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.LEFT_COMBAT_ZONE));
 					if (character instanceof L2SiegeSummonInstance)
@@ -157,17 +129,17 @@ public class L2CastleZone extends L2SpawnZone
 			}
 		}
 	}
-
-	//test
-	//public boolean isActive()
-	//{
-		//return true;
-	//}
 	
-	//only in siege
-	//public boolean isActive()
-	//{
-		//return getCastle() != null && getCastle().getSiege().getIsInProgress();
-//	}
-
+	// test
+	// public boolean isActive()
+	// {
+	// return true;
+	// }
+	
+	// only in siege
+	// public boolean isActive()
+	// {
+	// return getCastle() != null && getCastle().getSiege().getIsInProgress();
+	// }
+	
 }

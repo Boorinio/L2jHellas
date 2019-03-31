@@ -1,18 +1,10 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model;
+
+import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,12 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
-
-import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class BlockList
 {
@@ -169,7 +155,7 @@ public class BlockList
 		}
 		
 		String charName = CharNameTable.getInstance().getNameById(targetId);
-
+		
 		if (listOwner.getBlockList().getBlockList().contains(targetId))
 		{
 			listOwner.sendMessage("Already in ignore list.");
@@ -244,11 +230,6 @@ public class BlockList
 		listOwner.sendPacket(SystemMessageId.FRIEND_LIST_FOOTER);
 	}
 	
-	/**
-	 * @param ownerId object id of owner block list
-	 * @param targetId object id of potential blocked player
-	 * @return true if blocked
-	 */
 	public static boolean isInBlockList(int ownerId, int targetId)
 	{
 		L2PcInstance player = L2World.getInstance().getPlayer(ownerId);

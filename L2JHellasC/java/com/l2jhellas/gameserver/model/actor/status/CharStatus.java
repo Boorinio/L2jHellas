@@ -1,23 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.status;
-
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Future;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -34,46 +15,33 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.util.Rnd;
 
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Future;
+import java.util.logging.Logger;
+
 public class CharStatus
 {
 	protected static final Logger _log = Logger.getLogger(CharStatus.class.getName());
-
+	
 	private final L2Character _activeChar;
 	private double _currentCp = 0; // Current CP of the L2Character
 	private double _currentHp = 0; // Current HP of the L2Character
 	private double _currentMp = 0; // Current MP of the L2Character
-
-	/** Array containing all clients that need to be notified about hp/mp updates of the L2Character */
+	
 	private final Set<L2Character> _StatusListener = ConcurrentHashMap.newKeySet();
-
+	
 	private Future<?> _regTask;
 	private byte _flagsRegenActive = 0;
 	private static final byte REGEN_FLAG_CP = 4;
 	private static final byte REGEN_FLAG_HP = 1;
 	private static final byte REGEN_FLAG_MP = 2;
-
+	
 	public CharStatus(L2Character activeChar)
 	{
 		_activeChar = activeChar;
 	}
-
-	/**
-	 * Add the object to the list of L2Character that must be informed of HP/MP updates of this L2Character.<BR>
-	 * <BR>
-	 * <B><U> Concept</U> :</B><BR>
-	 * <BR>
-	 * Each L2Character owns a list called <B>_statusListener</B> that contains all L2PcInstance to inform of HP/MP updates.
-	 * Players who must be informed are players that target this L2Character.
-	 * When a RegenTask is in progress sever just need to go through this list to send Server->Client packet StatusUpdate.<BR>
-	 * <BR>
-	 * <B><U> Example of use </U> :</B><BR>
-	 * <BR>
-	 * <li>Target a PC or NPC</li><BR>
-	 * <BR>
-	 * 
-	 * @param object
-	 *        L2Character to add to the listener
-	 */
+	
 	public final void addStatusListener(L2Character object)
 	{
 		if (object == getActiveChar())
@@ -81,7 +49,7 @@ public class CharStatus
 		
 		_StatusListener.add(object);
 	}
-
+	
 	public final void reduceCp(int value)
 	{
 		if (getCurrentCp() > value)
@@ -89,32 +57,17 @@ public class CharStatus
 		else
 			setCurrentCp(0);
 	}
-
-	/**
-	 * Reduce the current HP of the L2Character and launch the doDie Task if necessary.<BR>
-	 * <BR>
-	 * <B><U> Overridden in </U> :</B><BR>
-	 * <BR>
-	 * <li>L2Attackable : Update the attacker AggroInfo of the L2Attackable _aggroList</li><BR>
-	 * <BR>
-	 * 
-	 * @param i
-	 *        The HP decrease value
-	 * @param attacker
-	 *        The L2Character who attacks
-	 * @param awake
-	 *        The awake state (If True : stop sleeping)
-	 */
+	
 	public void reduceHp(double value, L2Character attacker)
 	{
 		reduceHp(value, attacker, true);
 	}
-
+	
 	public void reduceHp(double value, L2Character attacker, boolean awake)
 	{
 		if (getActiveChar().isInvul())
 			return;
-
+		
 		if (getActiveChar() instanceof L2PcInstance)
 		{
 			if (((L2PcInstance) getActiveChar()).isInDuel())
@@ -124,7 +77,7 @@ public class CharStatus
 					return;
 				else if (((L2PcInstance) getActiveChar()).getDuelState() == DuelState.WINNER)
 					return;
-
+				
 				// cancel duel if player got hit by another player, that is not part of the duel or a monster
 				if (!(attacker instanceof L2SummonInstance) && !(attacker instanceof L2PcInstance && ((L2PcInstance) attacker).getDuelId() == ((L2PcInstance) getActiveChar()).getDuelId()))
 				{
@@ -138,14 +91,10 @@ public class CharStatus
 		{
 			if (getActiveChar().isDead())
 				return; // Disabled == null check so skills like Body to Mind work again until another solution is found
-
-			/** @formatter:off */
-			if (attacker instanceof L2PcInstance
-					&& ((L2PcInstance) attacker).isInDuel()
-					&& !(getActiveChar() instanceof L2SummonInstance
-					&& ((L2SummonInstance) getActiveChar()).getOwner().getDuelId() == ((L2PcInstance) attacker).getDuelId()))
-				// Duelling player attacks mob
-			/** @formatter:on */
+				
+			if (attacker instanceof L2PcInstance && ((L2PcInstance) attacker).isInDuel() && !(getActiveChar() instanceof L2SummonInstance && ((L2SummonInstance) getActiveChar()).getOwner().getDuelId() == ((L2PcInstance) attacker).getDuelId()))
+			// Duelling player attacks mob
+			
 			{
 				((L2PcInstance) attacker).setDuelState(DuelState.INTERRUPTED);
 			}
@@ -156,17 +105,17 @@ public class CharStatus
 			getActiveChar().stopStunning(null);
 		if (!getActiveChar().isImmobileUntilAttacked())
 			getActiveChar().stopImmobileUntilAttacked(null);
-
+		
 		if (getActiveChar().isImmobileUntilAttacked())
 			getActiveChar().stopImmobileUntilAttacked(null);
-
+		
 		if (getActiveChar().isAfraid())
 			getActiveChar().stopFear(null);
-
+		
 		// Add attackers to npc's attacker list
 		if (getActiveChar() instanceof L2Npc)
 			getActiveChar().addAttackerToAttackByList(attacker);
-
+		
 		if (value > 0) // Reduce Hp if any
 		{
 			// If we're dealing with an L2Attackable Instance and the attacker hit it with an over-hit enabled skill, set the over-hit values.
@@ -188,7 +137,7 @@ public class CharStatus
 					stopHpMpRegeneration();
 					attacker.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 					attacker.sendPacket(ActionFailed.STATIC_PACKET);
-
+					
 					// let the DuelManager know of his defeat
 					DuelManager.getInstance().onPlayerDefeat((L2PcInstance) getActiveChar());
 					value = 1;
@@ -206,12 +155,12 @@ public class CharStatus
 				((L2Attackable) getActiveChar()).overhitEnabled(false);
 			}
 		}
-
+		
 		if (getActiveChar().isDead())
 		{
 			getActiveChar().abortAttack();
 			getActiveChar().abortCast();
-
+			
 			if (getActiveChar() instanceof L2PcInstance)
 			{
 				if (((L2PcInstance) getActiveChar()).isInOlympiadMode())
@@ -220,13 +169,13 @@ public class CharStatus
 					return;
 				}
 			}
-
+			
 			// first die (and calculate rewards), if currentHp < 0,
 			// then overhit may be calculated
-
+			
 			// Start the doDie process
 			getActiveChar().doDie(attacker);
-
+			
 			// now reset currentHp to zero
 			setCurrentHp(0);
 		}
@@ -239,7 +188,7 @@ public class CharStatus
 			}
 		}
 	}
-
+	
 	public final void reduceMp(double value)
 	{
 		value = getCurrentMp() - value;
@@ -247,57 +196,24 @@ public class CharStatus
 			value = 0;
 		setCurrentMp(value);
 	}
-
-	/**
-	 * Remove the object from the list of L2Character that must be informed of HP/MP updates of this L2Character.<BR>
-	 * <BR>
-	 * <B><U> Concept</U> :</B><BR>
-	 * <BR>
-	 * Each L2Character owns a list called <B>_statusListener</B> that contains all L2PcInstance to inform of HP/MP updates.
-	 * Players who must be informed are players that target this L2Character.
-	 * When a RegenTask is in progress sever just need to go through this list to send Server->Client packet StatusUpdate.<BR>
-	 * <BR>
-	 * <B><U> Example of use </U> :</B><BR>
-	 * <BR>
-	 * <li>Untarget a PC or NPC</li><BR>
-	 * <BR>
-	 * 
-	 * @param object
-	 *        L2Character to add to the listener
-	 */
+	
 	public final void removeStatusListener(L2Character object)
 	{
 		_StatusListener.remove(object);
 	}
-
-	/**
-	 * Start the HP/MP/CP Regeneration task.<BR>
-	 * <BR>
-	 * <B><U> Actions</U> :</B><BR>
-	 * <BR>
-	 * <li>Calculate the regen task period</li> <li>Launch the HP/MP/CP Regeneration task with Medium priority</li><BR>
-	 * <BR>
-	 */
+	
 	public synchronized final void startHpMpRegeneration()
 	{
 		if (_regTask == null && !getActiveChar().isDead())
 		{
 			// Get the Regeneration periode
-			int period = Formulas.getInstance().getRegeneratePeriod(getActiveChar());
-
+			int period = Formulas.getRegeneratePeriod(getActiveChar());
+			
 			// Create the HP/MP/CP Regeneration task
 			_regTask = ThreadPoolManager.getInstance().scheduleEffectAtFixedRate(new RegenTask(), period, period);
 		}
 	}
-
-	/**
-	 * Stop the HP/MP/CP Regeneration task.<BR>
-	 * <BR>
-	 * <B><U> Actions</U> :</B><BR>
-	 * <BR>
-	 * <li>Set the RegenActive flag to False</li> <li>Stop the HP/MP/CP Regeneration task</li><BR>
-	 * <BR>
-	 */
+	
 	public synchronized final void stopHpMpRegeneration()
 	{
 		if (_regTask != null)
@@ -305,43 +221,43 @@ public class CharStatus
 			// Stop the HP/MP/CP Regeneration task
 			_regTask.cancel(false);
 			_regTask = null;
-
+			
 			// Set the RegenActive flag to false
 			_flagsRegenActive = 0;
 		}
 	}
-
+	
 	public L2Character getActiveChar()
 	{
 		return _activeChar;
 	}
-
+	
 	public final double getCurrentCp()
 	{
 		return _currentCp;
 	}
-
+	
 	public final void setCurrentCp(double newCp)
 	{
 		setCurrentCp(newCp, true);
 	}
-
+	
 	public final void setCurrentCp(double newCp, boolean broadcastPacket)
 	{
 		synchronized (this)
 		{
 			// Get the Max CP of the L2Character
 			int maxCp = getActiveChar().getStat().getMaxCp();
-
+			
 			if (newCp < 0)
 				newCp = 0;
-
+			
 			if (newCp >= maxCp)
 			{
 				// Set the RegenActive flag to false
 				_currentCp = maxCp;
 				_flagsRegenActive &= ~REGEN_FLAG_CP;
-
+				
 				// Stop the HP/MP/CP Regeneration task
 				if (_flagsRegenActive == 0)
 					stopHpMpRegeneration();
@@ -351,41 +267,41 @@ public class CharStatus
 				// Set the RegenActive flag to true
 				_currentCp = newCp;
 				_flagsRegenActive |= REGEN_FLAG_CP;
-
+				
 				// Start the HP/MP/CP Regeneration task with Medium priority
 				startHpMpRegeneration();
 			}
 		}
-
+		
 		// Send the Server->Client packet StatusUpdate with current HP and MP to all other L2PcInstance to inform
 		if (broadcastPacket)
 			getActiveChar().broadcastStatusUpdate();
 	}
-
+	
 	public final double getCurrentHp()
 	{
 		return _currentHp;
 	}
-
+	
 	public final void setCurrentHp(double newHp)
 	{
 		setCurrentHp(newHp, true);
 	}
-
+	
 	public final void setCurrentHp(double newHp, boolean broadcastPacket)
 	{
 		synchronized (this)
 		{
 			// Get the Max HP of the L2Character
 			double maxHp = getActiveChar().getStat().getMaxHp();
-
+			
 			if (newHp >= maxHp)
 			{
 				// Set the RegenActive flag to false
 				_currentHp = maxHp;
 				_flagsRegenActive &= ~REGEN_FLAG_HP;
 				getActiveChar().setIsKilledAlready(false);
-
+				
 				// Stop the HP/MP/CP Regeneration task
 				if (_flagsRegenActive == 0)
 					stopHpMpRegeneration();
@@ -397,46 +313,46 @@ public class CharStatus
 				_flagsRegenActive |= REGEN_FLAG_HP;
 				if (!getActiveChar().isDead())
 					getActiveChar().setIsKilledAlready(false);
-
+				
 				// Start the HP/MP/CP Regeneration task with Medium priority
 				startHpMpRegeneration();
 			}
 		}
-
+		
 		// Send the Server->Client packet StatusUpdate with current HP and MP to all other L2PcInstance to inform
 		if (broadcastPacket)
 			getActiveChar().broadcastStatusUpdate();
 	}
-
+	
 	public final void setCurrentHpMp(double newHp, double newMp)
 	{
 		setCurrentHp(newHp, false);
 		setCurrentMp(newMp, true); // send the StatusUpdate only once
 	}
-
+	
 	public final double getCurrentMp()
 	{
 		return _currentMp;
 	}
-
+	
 	public final void setCurrentMp(double newMp)
 	{
 		setCurrentMp(newMp, true);
 	}
-
+	
 	public final void setCurrentMp(double newMp, boolean broadcastPacket)
 	{
 		synchronized (this)
 		{
 			// Get the Max MP of the L2Character
 			int maxMp = getActiveChar().getStat().getMaxMp();
-
+			
 			if (newMp >= maxMp)
 			{
 				// Set the RegenActive flag to false
 				_currentMp = maxMp;
 				_flagsRegenActive &= ~REGEN_FLAG_MP;
-
+				
 				// Stop the HP/MP/CP Regeneration task
 				if (_flagsRegenActive == 0)
 					stopHpMpRegeneration();
@@ -446,35 +362,22 @@ public class CharStatus
 				// Set the RegenActive flag to true
 				_currentMp = newMp;
 				_flagsRegenActive |= REGEN_FLAG_MP;
-
+				
 				// Start the HP/MP/CP Regeneration task with Medium priority
 				startHpMpRegeneration();
 			}
 		}
-
+		
 		// Send the Server->Client packet StatusUpdate with current HP and MP to all other L2PcInstance to inform
 		if (broadcastPacket)
 			getActiveChar().broadcastStatusUpdate();
 	}
-
-	/**
-	 * Return the list of L2Character that must be informed of HP/MP updates of this L2Character.<BR>
-	 * <BR>
-	 * <B><U> Concept</U> :</B><BR>
-	 * <BR>
-	 * Each L2Character owns a list called <B>_statusListener</B> that contains all L2PcInstance to inform of HP/MP updates.
-	 * Players who must be informed are players that target this L2Character.
-	 * When a RegenTask is in progress sever just need to go through this list to send Server->Client packet StatusUpdate.<BR>
-	 * <BR>
-	 * 
-	 * @return The list of L2Character to inform or null if empty
-	 */
+	
 	public final Set<L2Character> getStatusListener()
 	{
 		return _StatusListener;
 	}
-
-	/** Task of HP/MP/CP regeneration */
+	
 	class RegenTask implements Runnable
 	{
 		@Override
@@ -483,19 +386,19 @@ public class CharStatus
 			try
 			{
 				CharStat charstat = getActiveChar().getStat();
-
+				
 				// Modify the current CP of the L2Character and broadcast Server->Client packet StatusUpdate
 				if (getCurrentCp() < charstat.getMaxCp())
-					setCurrentCp(getCurrentCp() + Formulas.getInstance().calcCpRegen((L2PcInstance)getActiveChar()), false);
-
+					setCurrentCp(getCurrentCp() + Formulas.calcCpRegen((L2PcInstance) getActiveChar()), false);
+				
 				// Modify the current HP of the L2Character and broadcast Server->Client packet StatusUpdate
 				if (getCurrentHp() < charstat.getMaxHp())
-					setCurrentHp(getCurrentHp() + Formulas.getInstance().calcHpRegen(getActiveChar()), false);
-
+					setCurrentHp(getCurrentHp() + Formulas.calcHpRegen(getActiveChar()), false);
+				
 				// Modify the current MP of the L2Character and broadcast Server->Client packet StatusUpdate
 				if (getCurrentMp() < charstat.getMaxMp())
-					setCurrentMp(getCurrentMp() + Formulas.getInstance().calcMpRegen(getActiveChar()), false);
-
+					setCurrentMp(getCurrentMp() + Formulas.calcMpRegen(getActiveChar()), false);
+				
 				if (!getActiveChar().isInActiveRegion())
 				{
 					// no broadcast necessary for characters that are in inactive regions.

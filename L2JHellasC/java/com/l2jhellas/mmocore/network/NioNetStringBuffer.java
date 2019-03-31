@@ -2,9 +2,6 @@ package com.l2jhellas.mmocore.network;
 
 import java.nio.BufferOverflowException;
 
-/**
- * @author Forsaiken
- */
 public final class NioNetStringBuffer
 {
 	private final char[] _buf;

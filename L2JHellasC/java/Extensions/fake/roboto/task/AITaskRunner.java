@@ -1,10 +1,10 @@
 package Extensions.fake.roboto.task;
 
-import java.util.List;
-
 import Extensions.fake.roboto.FakePlayerTaskManager;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
+
+import java.util.List;
 
 public class AITaskRunner implements Runnable
 {

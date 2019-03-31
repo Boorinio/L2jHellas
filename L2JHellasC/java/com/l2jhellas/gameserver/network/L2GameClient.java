@@ -1,18 +1,5 @@
 package com.l2jhellas.gameserver.network;
 
-import java.net.InetAddress;
-import java.nio.ByteBuffer;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.Future;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.LoginServerThread;
 import com.l2jhellas.gameserver.LoginServerThread.SessionKey;
@@ -33,10 +20,19 @@ import com.l2jhellas.mmocore.network.ReceivablePacket;
 import com.l2jhellas.util.EventData;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
-/**
- * Represents a client connected on Game Server
- * @author KenM
- */
+import java.net.InetAddress;
+import java.nio.ByteBuffer;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> implements Runnable
 {
 	protected static final Logger _log = Logger.getLogger(L2GameClient.class.getName());
@@ -44,13 +40,13 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 	public static enum GameClientState
 	{
 		CONNECTED,
-		AUTHED, 
+		AUTHED,
 		ENTERING, // client is currently loading his Player instance, but didn't end
 		IN_GAME
 	}
 	
 	public GameClientState _state;
-
+	
 	private String _accountName;
 	private SessionKey _sessionId;
 	private L2PcInstance _activeChar;
@@ -59,7 +55,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 	private boolean _isAuthedGG;
 	private final long _connectionStartTime;
 	private CharSelectInfoPackage[] _slots;
-
+	
 	protected final ScheduledFuture<?> _autoSaveInDB;
 	protected ScheduledFuture<?> _cleanupTask = null;
 	
@@ -192,7 +188,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 	{
 		_isDetached = b;
 	}
-
+	
 	public byte markToDeleteChar(int charslot)
 	{
 		int objid = getObjectIdForSlot(charslot);
@@ -224,7 +220,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 			
 			rs.close();
 			statement.close();
-
+			
 			if (answer == 0)
 			{
 				if (Config.DELETE_DAYS == 0)
@@ -392,8 +388,8 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 		
 		if (player != null)
 		{
-			player.setRunning(); 
-			player.standUp(); 
+			player.setRunning();
+			player.standUp();
 			
 			player.setOnlineStatus(true);
 			
@@ -406,7 +402,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 		
 		return player;
 	}
-
+	
 	public CharSelectInfoPackage getCharSelectSlot(int id)
 	{
 		if (_slots == null || id < 0 || id >= _slots.length)
@@ -414,7 +410,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 		
 		return _slots[id];
 	}
-
+	
 	public void setCharSelectSlot(CharSelectInfoPackage[] list)
 	{
 		_slots = list;
@@ -424,7 +420,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 	{
 		getConnection().close(gsp);
 	}
-
+	
 	private int getObjectIdForSlot(int charslot)
 	{
 		final CharSelectInfoPackage info = getCharSelectSlot(charslot);
@@ -454,12 +450,9 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 		}
 	}
 	
-	/**
-	 * Close client connection with {@link ServerClose} packet
-	 */
 	public void closeNow()
 	{
-		_isDetached = true; 
+		_isDetached = true;
 		close(ServerClose.STATIC_PACKET);
 		synchronized (this)
 		{
@@ -470,9 +463,6 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 		}
 	}
 	
-	/**
-	 * Produces the best possible string representation of this client.
-	 */
 	@Override
 	public String toString()
 	{
@@ -500,9 +490,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 	
 	protected class DisconnectTask implements Runnable
 	{
-		/**
-		 * @see java.lang.Runnable#run()
-		 */
+		
 		@Override
 		public void run()
 		{
@@ -542,7 +530,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 	
 	protected class CleanupTask implements Runnable
 	{
-
+		
 		@Override
 		public void run()
 		{
@@ -551,12 +539,12 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 				if (_autoSaveInDB != null)
 					_autoSaveInDB.cancel(true);
 				
-				if (getActiveChar() != null) 
+				if (getActiveChar() != null)
 				{
 					// we store all data from players who are disconnected while in an event in order to restore it in the next login
 					if (getActiveChar().atEvent)
 					{
-						EventData data = new EventData(getActiveChar().eventX, getActiveChar().eventY, getActiveChar().eventZ, getActiveChar().eventkarma, getActiveChar().eventpvpkills, getActiveChar().eventpkkills,getActiveChar().eventTitle, getActiveChar().kills, getActiveChar().eventSitForced);
+						EventData data = new EventData(getActiveChar().eventX, getActiveChar().eventY, getActiveChar().eventZ, getActiveChar().eventkarma, getActiveChar().eventpvpkills, getActiveChar().eventpkkills, getActiveChar().eventTitle, getActiveChar().kills, getActiveChar().eventSitForced);
 						L2Event.connectionLossData.put(getActiveChar().getName(), data);
 					}
 					
@@ -565,7 +553,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 					
 					getActiveChar().setClient(null);
 					
-					if (getActiveChar().isOnline()==1)
+					if (getActiveChar().isOnline() == 1)
 						getActiveChar().deleteMe();
 				}
 				setActiveChar(null);
@@ -588,7 +576,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 		{
 			try
 			{
-				if (getActiveChar() != null && getActiveChar().isOnline()==1)
+				if (getActiveChar() != null && getActiveChar().isOnline() == 1)
 				{
 					getActiveChar().store();
 					
@@ -602,12 +590,12 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 			}
 		}
 	}
-
+	
 	public boolean dropPacket()
 	{
 		if (_isDetached)
 			return true;
-
+		
 		if (getStats().countPacket(_packetQueue.size()))
 		{
 			sendPacket(ActionFailed.STATIC_PACKET);
@@ -616,7 +604,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 		
 		return getStats().dropPacket();
 	}
-
+	
 	public void onBufferUnderflow()
 	{
 		if (getStats().countUnderflowException())
@@ -626,11 +614,11 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 			return;
 		}
 		
-		if (_state == GameClientState.CONNECTED) 
+		if (_state == GameClientState.CONNECTED)
 			closeNow();
 		
 	}
-
+	
 	public void onUnknownPacket()
 	{
 		if (getStats().countUnknownPacket())
@@ -645,7 +633,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 			closeNow();
 		}
 	}
-
+	
 	public void execute(ReceivablePacket<L2GameClient> packet)
 	{
 		if (getStats().countFloods())
@@ -702,7 +690,7 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 			{
 				packet = _packetQueue.poll();
 				
-				if (packet == null) 
+				if (packet == null)
 					return;
 				
 				if (_isDetached)

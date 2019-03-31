@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.skills.effects;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -24,26 +10,21 @@ import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import com.l2jhellas.gameserver.skills.Env;
 
-/**
- * @author littlecrow
- *         Implementation of the Fear Effect
- */
 public final class EffectFear extends L2Effect
 {
 	public static final int FEAR_RANGE = 500;
-
+	
 	public EffectFear(Env env, EffectTemplate template)
 	{
 		super(env, template);
 	}
-
+	
 	@Override
 	public EffectType getEffectType()
 	{
 		return EffectType.FEAR;
 	}
-
-	/** Notify started */
+	
 	@Override
 	public boolean onStart()
 	{
@@ -59,16 +40,16 @@ public final class EffectFear extends L2Effect
 			// Fear skills cannot be used on Headquarters Flag.
 			if (getEffected() instanceof L2SiegeFlagInstance)
 				return false;
-
+			
 			if (getEffected() instanceof L2SiegeSummonInstance)
 				return false;
-
+			
 			getEffected().startFear();
-
+			
 			int posX = getEffected().getX();
 			int posY = getEffected().getY();
 			int posZ = getEffected().getZ();
-
+			
 			int signx = -1;
 			int signy = -1;
 			if (getEffected().getX() > getEffector().getX())
@@ -77,14 +58,14 @@ public final class EffectFear extends L2Effect
 				signy = 1;
 			posX += signx * FEAR_RANGE;
 			posY += signy * FEAR_RANGE;
-
+			
 			getEffected().setRunning();
 			getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(posX, posY, posZ, 0));
 			return true;
 		}
 		return false;
 	}
-
+	
 	@Override
 	public boolean onActionTime()
 	{

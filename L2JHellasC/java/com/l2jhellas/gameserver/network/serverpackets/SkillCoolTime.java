@@ -1,34 +1,20 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance.TimeStamp;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SkillCoolTime extends L2GameServerPacket
 {
 	public List<TimeStamp> _reuseTimeStamps;
 	
-    public SkillCoolTime(L2PcInstance cha)
-    {
+	public SkillCoolTime(L2PcInstance cha)
+	{
 		_reuseTimeStamps = cha.getReuseTimeStamps().stream().filter(r -> r.hasNotPassed()).collect(Collectors.toList());
 	}
-    
+	
 	@Override
 	protected void writeImpl()
 	{
@@ -42,9 +28,9 @@ public class SkillCoolTime extends L2GameServerPacket
 		}
 	}
 	
-    @Override
+	@Override
 	public String getType()
-    {
-        return "[S] c1 SkillCoolTime";
-    }
+	{
+		return "[S] c1 SkillCoolTime";
+	}
 }

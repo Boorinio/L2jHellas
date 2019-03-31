@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.taskmanager;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -25,9 +8,9 @@ import com.l2jhellas.gameserver.model.actor.instance.L2CubicInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.AutoAttackStop;
 
-/**
- * @author Luca Baldi
- */
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class AttackStanceTaskManager implements Runnable
 {
 	private static final long ATTACK_STANCE_PERIOD = 15000; // 15 seconds
@@ -45,29 +28,21 @@ public class AttackStanceTaskManager implements Runnable
 		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(this, 1000, 1000);
 	}
 	
-	/**
-	 * Adds {@link L2Character} to the AttackStanceTask.
-	 * @param character : {@link L2Character} to be added and checked.
-	 */
 	public final void add(L2Character character)
 	{
 		if (character instanceof L2Playable)
 		{
-			if(character.getActingPlayer()!=null && !character.getActingPlayer().getCubics().isEmpty())
+			if (character.getActingPlayer() != null && !character.getActingPlayer().getCubics().isEmpty())
 			{
-			   for (L2CubicInstance cubic : character.getActingPlayer().getCubics().values())
-				    if (cubic!=null && cubic.getId() != L2CubicInstance.LIFE_CUBIC)
-					    cubic.doAction(character.getActingPlayer());
+				for (L2CubicInstance cubic : character.getActingPlayer().getCubics().values())
+					if (cubic != null && cubic.getId() != L2CubicInstance.LIFE_CUBIC)
+						cubic.doAction(character.getActingPlayer());
 			}
 		}
 		
 		_characters.put(character, System.currentTimeMillis() + ATTACK_STANCE_PERIOD);
 	}
 	
-	/**
-	 * Removes {@link L2Character} from the AttackStanceTask.
-	 * @param character : {@link L2Character} to be removed.
-	 */
 	public final void remove(L2Character character)
 	{
 		if (character instanceof L2Summon)
@@ -76,11 +51,6 @@ public class AttackStanceTaskManager implements Runnable
 		_characters.remove(character);
 	}
 	
-	/**
-	 * Tests if {@link L2Character} is in AttackStanceTask.
-	 * @param character : {@link L2Character} to be removed.
-	 * @return boolean : True when {@link L2Character} is in attack stance.
-	 */
 	public final boolean isInAttackStance(L2Character character)
 	{
 		if (character instanceof L2Summon)

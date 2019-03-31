@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
-
-import java.util.Arrays;
 
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -26,6 +10,8 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+
+import java.util.Arrays;
 
 public final class SystemMessage extends L2GameServerPacket
 {
@@ -95,11 +81,6 @@ public final class SystemMessage extends L2GameServerPacket
 		return sm;
 	}
 	
-	/**
-	 * Use {@link #getSystemMessage(SystemMessageId)} where possible instead
-	 * @param id
-	 * @return the system message associated to the given Id.
-	 */
 	public static SystemMessage getSystemMessage(int id)
 	{
 		return getSystemMessage(SystemMessageId.getSystemMessageId(id));
@@ -134,15 +115,6 @@ public final class SystemMessage extends L2GameServerPacket
 		return this;
 	}
 	
-	/**
-	 * Castlename-e.dat<br>
-	 * 0-9 Castle names<br>
-	 * 21-64 CH names<br>
-	 * 81-89 Territory names<br>
-	 * 101-121 Fortress names<br>
-	 * @param number
-	 * @return
-	 */
 	public final SystemMessage addFortId(final int number)
 	{
 		append(new SMParam(TYPE_CASTLE_NAME, number));

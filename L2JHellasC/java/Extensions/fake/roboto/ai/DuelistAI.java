@@ -1,9 +1,5 @@
 package Extensions.fake.roboto.ai;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.ai.addon.IConsumableSpender;
 import Extensions.fake.roboto.helpers.FakeHelpers;
@@ -14,14 +10,18 @@ import Extensions.fake.roboto.model.SupportSpell;
 
 import com.l2jhellas.gameserver.emum.ShotType;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class DuelistAI extends CombatAI implements IConsumableSpender
 {
-
+	
 	public DuelistAI(FakePlayer character)
 	{
 		super(character);
 	}
-
+	
 	@Override
 	public void thinkAndAct()
 	{
@@ -34,19 +34,19 @@ public class DuelistAI extends CombatAI implements IConsumableSpender
 		tryAttackingUsingFighterOffensiveSkill();
 		setBusyThinking(false);
 	}
-
+	
 	@Override
 	protected ShotType getShotType()
 	{
 		return ShotType.SOULSHOT;
 	}
-
+	
 	@Override
 	protected double changeOfUsingSkill()
 	{
 		return 0.5;
 	}
-
+	
 	@Override
 	protected List<OffensiveSpell> getOffensiveSpells()
 	{
@@ -58,7 +58,7 @@ public class DuelistAI extends CombatAI implements IConsumableSpender
 		_offensiveSpells.add(new OffensiveSpell(1, 5));
 		return _offensiveSpells;
 	}
-
+	
 	@Override
 	protected List<SupportSpell> getSelfSupportSpells()
 	{
@@ -68,17 +68,17 @@ public class DuelistAI extends CombatAI implements IConsumableSpender
 		_selfSupportSpells.add(new SupportSpell(440, SpellUsageCondition.MISSINGCP, 1000, 3));
 		return _selfSupportSpells;
 	}
-
+	
 	@Override
 	protected int[][] getBuffs()
 	{
 		return FakeHelpers.getFighterBuffs();
 	}
-
+	
 	@Override
 	protected List<HealingSpell> getHealingSpells()
 	{
 		return Collections.emptyList();
 	}
-
+	
 }

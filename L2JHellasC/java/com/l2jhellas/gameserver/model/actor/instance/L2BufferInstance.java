@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
-
-import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -26,30 +10,35 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.StringUtil;
 
+import java.util.StringTokenizer;
+
 public final class L2BufferInstance extends L2NpcInstance
 {
-    public L2BufferInstance(int objectId, L2NpcTemplate template)
-    {
-        super(objectId, template);
-    }
-
-    @Override
-    public void onBypassFeedback(L2PcInstance player, String command)
-    {
+	public L2BufferInstance(int objectId, L2NpcTemplate template)
+	{
+		super(objectId, template);
+	}
+	
+	@Override
+	public void onBypassFeedback(L2PcInstance player, String command)
+	{
 		StringTokenizer st = new StringTokenizer(command, " ");
 		String actualCommand = st.nextToken();
-
+		
 		int buffid = 0;
 		int bufflevel = 1;
-		if (st.countTokens() == 2) {
+		if (st.countTokens() == 2)
+		{
 			buffid = Integer.valueOf(st.nextToken());
 			bufflevel = Integer.valueOf(st.nextToken());
 		}
 		else if (st.countTokens() == 1)
 			buffid = Integer.valueOf(st.nextToken());
-
-		if (actualCommand.equalsIgnoreCase("getbuff")) {
-			if (buffid != 0) {
+		
+		if (actualCommand.equalsIgnoreCase("getbuff"))
+		{
+			if (buffid != 0)
+			{
 				MagicSkillUse mgc = new MagicSkillUse(this, player, buffid, bufflevel, 5, 0);
 				final L2Skill skill = SkillTable.getInstance().getInfo(buffid, bufflevel);
 				skill.getEffects(player, player);
@@ -57,23 +46,25 @@ public final class L2BufferInstance extends L2NpcInstance
 				player.broadcastPacket(mgc);
 			}
 		}
-		else if (actualCommand.equalsIgnoreCase("restore")) {
+		else if (actualCommand.equalsIgnoreCase("restore"))
+		{
 			player.setCurrentHpMp(player.getMaxHp(), player.getMaxMp());
 			player.setCurrentCp(player.getMaxCp());
 			showMessageWindow(player);
 		}
-		else if (actualCommand.equalsIgnoreCase("cancel")) {
+		else if (actualCommand.equalsIgnoreCase("cancel"))
+		{
 			player.stopAllEffects();
 			showMessageWindow(player);
 		}
 		else
 			super.onBypassFeedback(player, command);
-    }
-
-    @Override
-    public void onAction(L2PcInstance player)
-    {
-		if (this != player.getTarget()) 
+	}
+	
+	@Override
+	public void onAction(L2PcInstance player)
+	{
+		if (this != player.getTarget())
 		{
 			player.setTarget(this);
 			player.sendPacket(new MyTargetSelected(getObjectId(), player.getLevel() - getLevel()));
@@ -84,38 +75,40 @@ public final class L2BufferInstance extends L2NpcInstance
 			showMessageWindow(player);
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
-		else {
+		else
+		{
 			player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
-    }
+	}
 	
-    private void showMessageWindow(L2PcInstance player)
-    {
+	private void showMessageWindow(L2PcInstance player)
+	{
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
 		final StringBuilder strBuffer = StringUtil.startAppend(3500, "<html><title>CLAW Magician</title><body><center>");
-
-        if (player.isSitting())
-        {
-        	player.sendMessage("You can't use buffer while you're sitting.");
-		    strBuffer.append("Stand up, <font color=\"LEVEL\">%charname%</font>!<br>");
-		    strBuffer.append("How dare you to talk with me while you're sitting?!<br>");
+		
+		if (player.isSitting())
+		{
+			player.sendMessage("You can't use buffer while you're sitting.");
+			strBuffer.append("Stand up, <font color=\"LEVEL\">%charname%</font>!<br>");
+			strBuffer.append("How dare you to talk with me while you're sitting?!<br>");
 		}
-        else if (player.isAlikeDead() || player.isDead())
-        {
-        	player.sendMessage("You can't use buffer while you're dead or using fake death.");
-		    strBuffer.append("Sadly, <font color=\"LEVEL\">%charname%</font>, you're dead.<br>");
-		    strBuffer.append("I can't offer any support effect for dead people...<br>");
-        }
-        else if (player.isInCombat()) {
-        	player.sendMessage("You can't use buffer while you're in combat.");
-		    strBuffer.append("Sadly, <font color=\"LEVEL\">%charname%</font>, I can't serve you.<br>");
-		    strBuffer.append("Came back when you will not be in a combat.<br>");
-        }
-        else 
-        {
-		    strBuffer.append("Welcome, <font color=\"LEVEL\">%charname%</font>!<br>");
-		    strBuffer.append("Here is the list of all available effects:<br>");
+		else if (player.isAlikeDead() || player.isDead())
+		{
+			player.sendMessage("You can't use buffer while you're dead or using fake death.");
+			strBuffer.append("Sadly, <font color=\"LEVEL\">%charname%</font>, you're dead.<br>");
+			strBuffer.append("I can't offer any support effect for dead people...<br>");
+		}
+		else if (player.isInCombat())
+		{
+			player.sendMessage("You can't use buffer while you're in combat.");
+			strBuffer.append("Sadly, <font color=\"LEVEL\">%charname%</font>, I can't serve you.<br>");
+			strBuffer.append("Came back when you will not be in a combat.<br>");
+		}
+		else
+		{
+			strBuffer.append("Welcome, <font color=\"LEVEL\">%charname%</font>!<br>");
+			strBuffer.append("Here is the list of all available effects:<br>");
 			strBuffer.append("<img src=\"L2UI_CH3.onscrmsg_pattern01_2\" width=300 height=32 align=left>");
 			strBuffer.append("<table width=300>");
 			strBuffer.append("<tr><td><a action=\"bypass -h npc_%objectId%_getbuff 1204 2\">Wind Walk</a></td> <td><a action=\"bypass -h npc_%objectId%_getbuff 1040 3\">Shield</a></td> <td><a action=\"bypass -h npc_%objectId%_getbuff 1243 6\">Bless Shield</a></td></tr>");
@@ -149,11 +142,11 @@ public final class L2BufferInstance extends L2NpcInstance
 			strBuffer.append("<tr><td></td><td><a action=\"bypass -h npc_%objectId%_getbuff 1355 1\">Prophecy of Water</a></td><td><a action=\"bypass -h npc_%objectId%_getbuff 1357 1\">Prophecy of Wind</a></td></tr>");
 			strBuffer.append("<tr><td></td><td><a action=\"bypass -h npc_%objectId%_getbuff 1413 1\">Magnus' Chant</a></td><td></td></tr>");
 			strBuffer.append("</table><img src=\"L2UI_CH3.onscrmsg_pattern01_2\" width=300 height=32 align=left>");
-        }
+		}
 		strBuffer.append("</center></body></html>");
 		html.setHtml(strBuffer.toString());
 		html.replace("%objectId%", String.valueOf(getObjectId()));
 		html.replace("%charname%", player.getName());
 		player.sendPacket(html);
-    }
+	}
 }

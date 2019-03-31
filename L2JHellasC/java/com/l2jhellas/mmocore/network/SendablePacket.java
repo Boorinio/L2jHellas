@@ -1,9 +1,5 @@
 package com.l2jhellas.mmocore.network;
 
-/**
- * @author KenM
- * @param <T>
- */
 public abstract class SendablePacket<T extends MMOClient<?>> extends AbstractPacket<T>
 {
 	protected final void putInt(final int value)

@@ -1,31 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.instancemanager;
-
-import java.io.File;
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -43,10 +16,19 @@ import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 import com.l2jhellas.util.XMLDocumentFactory;
 
-/**
- * This class manages the zones
- * @author durgus
- */
+import java.io.File;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
 public class ZoneManager
 {
 	private static final Logger _log = Logger.getLogger(ZoneManager.class.getName());
@@ -55,7 +37,7 @@ public class ZoneManager
 	private int _lastDynamicId = 0;
 	private final List<L2ItemInstance> _debugItems = new ArrayList<>();
 	boolean reload = false;
-
+	
 	private final ZoneRegion[][] _zoneRegions = new ZoneRegion[L2World.REGIONS_X + 1][L2World.REGIONS_Y + 1];
 	
 	public static final ZoneManager getInstance()
@@ -80,7 +62,7 @@ public class ZoneManager
 	}
 	
 	public void reload()
-	{	
+	{
 		// Get the world regions
 		int count = 0;
 		for (ZoneRegion[] zoneRegions : _zoneRegions)
@@ -99,7 +81,7 @@ public class ZoneManager
 		
 		reload = true;
 		
-		_lastDynamicId =0;
+		_lastDynamicId = 0;
 		
 		// Load the zones
 		load();
@@ -109,14 +91,14 @@ public class ZoneManager
 			if (o instanceof L2Character)
 				((L2Character) o).revalidateZone(true);
 		}
-
+		
 	}
 	
 	private final void load()
 	{
 		_log.info("Loading zones...");
 		_classZones.clear();
-				
+		
 		// Load the zone xml
 		try
 		{
@@ -300,31 +282,31 @@ public class ZoneManager
 								
 								Node val = attrs.getNamedItem("isChaotic");
 								
-								if(reload)
+								if (reload)
 									((L2SpawnZone) temp).clearSpawnZone();
 								
 								if (val != null && Boolean.parseBoolean(val.getNodeValue()))
 									((L2SpawnZone) temp).addChaoticSpawn(spawnX, spawnY, spawnZ);
 								else
-									((L2SpawnZone) temp).addSpawn(spawnX, spawnY, spawnZ);								
+									((L2SpawnZone) temp).addSpawn(spawnX, spawnY, spawnZ);
 							}
 						}
 						if (checkId(zoneId))
 							_log.config("Caution: Zone (" + zoneId + ") from file: " + f.getName() + " overrides previos definition.");
 						
 						addZone(zoneId, temp);
-
+						
 						// Register the zone into any world region it intersects with...
-						for (int x = 0; x <  _zoneRegions.length; x++)
+						for (int x = 0; x < _zoneRegions.length; x++)
 						{
-							for (int y = 0; y <  _zoneRegions[x].length; y++)
+							for (int y = 0; y < _zoneRegions[x].length; y++)
 							{
 								if (temp.getZone().intersectsRectangle(L2World.getRegionX(x), L2World.getRegionX(x + 1), L2World.getRegionY(y), L2World.getRegionY(y + 1)))
 									_zoneRegions[x][y].addZone(temp);
 							}
 						}
 						
-                        if (temp instanceof L2OlympiadStadiumZone)
+						if (temp instanceof L2OlympiadStadiumZone)
 						{
 							OlympiadStadiaManager.getInstance().addStadium((L2OlympiadStadiumZone) temp);
 						}
@@ -358,12 +340,6 @@ public class ZoneManager
 		return false;
 	}
 	
-	/**
-	 * Add new zone
-	 * @param id
-	 * @param <T>
-	 * @param zone
-	 */
 	@SuppressWarnings("unchecked")
 	public <T extends L2ZoneType> void addZone(Integer id, T zone)
 	{
@@ -379,24 +355,12 @@ public class ZoneManager
 			map.put(id, zone);
 	}
 	
-	/**
-	 * Return all zones by class type
-	 * @param <T>
-	 * @param zoneType Zone class
-	 * @return Collection of zones
-	 */
 	@SuppressWarnings("unchecked")
 	public <T extends L2ZoneType> Collection<T> getAllZones(Class<T> zoneType)
 	{
 		return (Collection<T>) _classZones.get(zoneType).values();
 	}
 	
-	/**
-	 * Get zone by ID
-	 * @param id
-	 * @return
-	 * @see #getZoneById(int, Class)
-	 */
 	public L2ZoneType getZoneById(int id)
 	{
 		for (Map<Integer, ? extends L2ZoneType> map : _classZones.values())
@@ -407,50 +371,24 @@ public class ZoneManager
 		return null;
 	}
 	
-	/**
-	 * Get zone by ID and zone class
-	 * @param <T>
-	 * @param id
-	 * @param zoneType
-	 * @return zone
-	 */
 	@SuppressWarnings("unchecked")
 	public <T extends L2ZoneType> T getZoneById(int id, Class<T> zoneType)
 	{
 		return (T) _classZones.get(zoneType).get(id);
 	}
 	
-	/**
-	 * Returns all zones from where the object is located
-	 * @param object
-	 * @return zones
-	 */
 	public List<L2ZoneType> getZones(L2Object object)
 	{
 		return getZones(object.getX(), object.getY(), object.getZ());
 	}
 	
-	/**
-	 * Returns zone from where the object is located by type
-	 * @param <T>
-	 * @param object
-	 * @param type
-	 * @return zone
-	 */
 	public <T extends L2ZoneType> T getZone(L2Object object, Class<T> type)
 	{
 		if (object == null)
 			return null;
 		return getZone(object.getX(), object.getY(), object.getZ(), type);
 	}
-
-	/**
-	 * Returns all zones from given coordinates
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return zones
-	 */
+	
 	public List<L2ZoneType> getZones(int x, int y, int z)
 	{
 		final List<L2ZoneType> temp = new ArrayList<>();
@@ -464,15 +402,6 @@ public class ZoneManager
 		return temp;
 	}
 	
-	/**
-	 * Returns zone from given coordinates
-	 * @param <T>
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param type
-	 * @return zone
-	 */
 	@SuppressWarnings("unchecked")
 	public <T extends L2ZoneType> T getZone(int x, int y, int z, Class<T> type)
 	{
@@ -524,13 +453,6 @@ public class ZoneManager
 		return null;
 	}
 	
-	/**
-	 * For testing purposes only
-	 * @param <T>
-	 * @param obj
-	 * @param type
-	 * @return
-	 */
 	@SuppressWarnings("unchecked")
 	public <T extends L2ZoneType> T getClosestZone(L2Object obj, Class<T> type)
 	{
@@ -551,18 +473,11 @@ public class ZoneManager
 		return zone;
 	}
 	
-	/**
-	 * General storage for debug items used for visualizing zones.
-	 * @return list of items
-	 */
 	public List<L2ItemInstance> getDebugItems()
 	{
 		return _debugItems;
 	}
 	
-	/**
-	 * Remove all debug items from l2world
-	 */
 	public void clearDebugItems()
 	{
 		for (L2ItemInstance item : _debugItems)
@@ -571,18 +486,17 @@ public class ZoneManager
 		_debugItems.clear();
 	}
 	
-	
-	//public ZoneRegion getRegion(int x, int y)
-	//{
-		//try
-		//{
-			//return _zoneRegions[(x >> SHIFT_BY) + OFFSET_X][(y >> SHIFT_BY) + OFFSET_Y];
-		//}
-		//catch (ArrayIndexOutOfBoundsException e)
-		//{
-			//return null;
-		//}
-	//}
+	// public ZoneRegion getRegion(int x, int y)
+	// {
+	// try
+	// {
+	// return _zoneRegions[(x >> SHIFT_BY) + OFFSET_X][(y >> SHIFT_BY) + OFFSET_Y];
+	// }
+	// catch (ArrayIndexOutOfBoundsException e)
+	// {
+	// return null;
+	// }
+	// }
 	
 	public ZoneRegion getRegion(int x, int y)
 	{

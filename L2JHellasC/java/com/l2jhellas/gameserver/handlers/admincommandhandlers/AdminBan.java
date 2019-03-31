@@ -1,23 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.StringTokenizer;
 
 import Extensions.IpCatcher;
 
@@ -31,21 +12,15 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ServerClose;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
-/**
- * This class handles following admin commands:
- * - ban_acc <account_name> = changes account access level to -1 and logs him off. If no account is specified target's account is used.
- * - ban_char <char_name> = changes a characters access level to -1 and logs him off. If no character is specified target is used.
- * - ban_chat <char_name> <duration> = chat bans a character for the specified duration. If no name is specified the target is chat banned indefinitely.
- * - unban_acc <account_name> = changes account access level to 0.
- * - unban_char <char_name> = changes specified characters access level to 0.
- * - unban_chat <char_name> = lifts chat ban from specified player. If no player name is specified current target is used.
- * - jail charname [penalty_time] = jails character. Time specified in minutes. For ever if no time is specified.
- * - unjail charname = Unjails player, teleport him to Floran.
- */
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.StringTokenizer;
+
 public class AdminBan implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_ban", // returns ban commands
 		"admin_ban_acc",
 		"admin_ban_char",
@@ -56,7 +31,7 @@ public class AdminBan implements IAdminCommandHandler
 		"admin_unjail",
 		"admin_permaban",
 		"admin_removeperma"
-	};/** @formatter:on */
+	};
 	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -250,10 +225,10 @@ public class AdminBan implements IAdminCommandHandler
 		return true;
 	}
 	
-	private void jailOfflinePlayer(L2PcInstance activeChar, String name, int delay)
+	private static void jailOfflinePlayer(L2PcInstance activeChar, String name, int delay)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("UPDATE characters SET x=?, y=?, z=?, in_jail=?, jail_timer=? WHERE char_name=?"))
+			PreparedStatement statement = con.prepareStatement("UPDATE characters SET x=?, y=?, z=?, in_jail=?, jail_timer=? WHERE char_name=?"))
 		{
 			statement.setInt(1, -114356);
 			statement.setInt(2, -249645);
@@ -278,10 +253,10 @@ public class AdminBan implements IAdminCommandHandler
 		}
 	}
 	
-	private void unjailOfflinePlayer(L2PcInstance activeChar, String name)
+	private static void unjailOfflinePlayer(L2PcInstance activeChar, String name)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("UPDATE characters SET x=?, y=?, z=?, in_jail=?, jail_timer=? WHERE char_name=?"))
+			PreparedStatement statement = con.prepareStatement("UPDATE characters SET x=?, y=?, z=?, in_jail=?, jail_timer=? WHERE char_name=?"))
 		{
 			statement.setInt(1, 17836);
 			statement.setInt(2, 170178);
@@ -304,7 +279,7 @@ public class AdminBan implements IAdminCommandHandler
 		}
 	}
 	
-	private boolean changeCharAccessLevel(L2PcInstance targetPlayer, String player, L2PcInstance activeChar, int lvl)
+	private static boolean changeCharAccessLevel(L2PcInstance targetPlayer, String player, L2PcInstance activeChar, int lvl)
 	{
 		boolean output = false;
 		
@@ -343,7 +318,7 @@ public class AdminBan implements IAdminCommandHandler
 		else
 		{
 			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-					PreparedStatement statement = con.prepareStatement("UPDATE characters SET accesslevel=? WHERE char_name=?"))
+				PreparedStatement statement = con.prepareStatement("UPDATE characters SET accesslevel=? WHERE char_name=?"))
 			{
 				statement.setInt(1, lvl);
 				statement.setString(2, player);

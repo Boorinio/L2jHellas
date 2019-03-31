@@ -7,7 +7,7 @@ public class ExColosseumFenceInfo extends L2GameServerPacket
 	private final int _objectId;
 	private final L2FenceInstance _fence;
 	
-	public ExColosseumFenceInfo(int objectId,L2FenceInstance fence)
+	public ExColosseumFenceInfo(int objectId, L2FenceInstance fence)
 	{
 		_objectId = objectId;
 		_fence = fence;

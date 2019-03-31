@@ -1,27 +1,4 @@
-/*
- * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package Extensions.Vote;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -32,9 +9,14 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage.SMPOS;
 
-/**
- * @author Boorinio
- */
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
 public class VoteRewardHopzone
 {
 	private static Logger _log = Logger.getLogger(VoteRewardHopzone.class.getName());
@@ -126,9 +108,9 @@ public class VoteRewardHopzone
 				}
 				else
 				{
-					for (int i = 0; i < Config.HOPZONE_REWARD.length; i++)
+					for (int[] element : Config.HOPZONE_REWARD)
 					{
-						player.addItem("Vote reward.", Config.HOPZONE_REWARD[i][0], Config.HOPZONE_REWARD[i][1], player, true);
+						player.addItem("Vote reward.", element[0], element[1], player, true);
 						player.sendMessage("You have been rewarded check your inventory");
 					}
 					HBoxes.add(temp);
@@ -137,9 +119,9 @@ public class VoteRewardHopzone
 			else
 			{
 				HBoxes.add(temp);
-				for (int i = 0; i < Config.HOPZONE_REWARD.length; i++)
+				for (int[] element : Config.HOPZONE_REWARD)
 				{
-					player.addItem("Vote reward.", Config.HOPZONE_REWARD[i][0], Config.HOPZONE_REWARD[i][1], player, true);
+					player.addItem("Vote reward.", element[0], element[1], player, true);
 					player.sendMessage("You have been rewarded check your inventory");
 				}
 			}
@@ -165,21 +147,21 @@ public class VoteRewardHopzone
 	{
 		try
 		{
-			if(!Config.HOPZONE_SERVER_LINK.endsWith(".html"))
-				Config.HOPZONE_SERVER_LINK+=".html";
+			if (!Config.HOPZONE_SERVER_LINK.endsWith(".html"))
+				Config.HOPZONE_SERVER_LINK += ".html";
 			
 			URLConnection con = new URL(Config.HOPZONE_SERVER_LINK).openConnection();
 			con.addRequestProperty("User-Agent", "Mozilla/5.0");
-			//con.addRequestProperty("User-L2Hopzone", "Mozilla/4.76");
+			// con.addRequestProperty("User-L2Hopzone", "Mozilla/4.76");
 			BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String line;
 			while ((line = br.readLine()) != null)
 			{
-				if (line.contains("Total Votes") || line.contains("no steal make love")||line.contains("no votes here")||line.contains("bang, you don't have votes")|| line.contains("la vita e bella"))
+				if (line.contains("Total Votes") || line.contains("no steal make love") || line.contains("no votes here") || line.contains("bang, you don't have votes") || line.contains("la vita e bella"))
 				{
 					int votes = Integer.valueOf(line.split(">")[2].replace("</span", ""));
 					Gui.hopzone.setText("HopZone Votes: " + votes);
-					return votes;				
+					return votes;
 				}
 			}
 			br.close();

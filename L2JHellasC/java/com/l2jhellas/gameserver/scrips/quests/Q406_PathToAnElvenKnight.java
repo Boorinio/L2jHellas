@@ -24,7 +24,7 @@ public class Q406_PathToAnElvenKnight extends Quest
 	
 	public Q406_PathToAnElvenKnight()
 	{
-		super(406,qn, "Path to an Elven Knight");
+		super(406, qn, "Path to an Elven Knight");
 		
 		setItemsIds(SORIUS_LETTER, KLUTO_BOX, TOPAZ_PIECE, EMERALD_PIECE, KLUTO_MEMO);
 		

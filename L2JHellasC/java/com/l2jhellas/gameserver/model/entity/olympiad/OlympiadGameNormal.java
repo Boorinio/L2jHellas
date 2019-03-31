@@ -1,23 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.entity.olympiad;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.List;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2World;
@@ -32,6 +13,11 @@ import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.database.L2DatabaseFactory;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
 
 abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 {
@@ -66,10 +52,10 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		{
 			playerOneName = list.remove(Rnd.get(list.size()));
 			playerOne = L2World.getInstance().getPlayer(playerOneName);
-			if (playerOne == null || playerOne.isOnline()==0)
+			if (playerOne == null || playerOne.isOnline() == 0)
 				continue;
 			playerTwo = L2World.getInstance().getPlayer(list.remove(Rnd.get(list.size())));
-			if (playerTwo == null || playerTwo.isOnline()==0)
+			if (playerTwo == null || playerTwo.isOnline() == 0)
 			{
 				list.add(playerOneName);
 				continue;
@@ -93,10 +79,10 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 	protected final boolean portPlayersToArena(Location location)
 	{
 		boolean result = true;
-
+		
 		Location loc1 = new Location(location.getX() + 900, location.getY(), location.getZ());
 		Location loc2 = new Location(location.getX() - 900, location.getY(), location.getZ());
-
+		
 		try
 		{
 			result &= portPlayerToArena(_playerOne, loc1, _stadiumID);
@@ -113,15 +99,15 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 	@Override
 	public final void sendOlympiadInfo(L2Character player)
 	{
-		player.sendPacket(new ExOlympiadUserInfo(_playerOne.player,1));
-		player.sendPacket(new ExOlympiadUserInfo(_playerTwo.player,1));
+		player.sendPacket(new ExOlympiadUserInfo(_playerOne.player, 1));
+		player.sendPacket(new ExOlympiadUserInfo(_playerTwo.player, 1));
 	}
 	
 	@Override
 	public final void broadcastOlympiadInfo(L2OlympiadStadiumZone stadium)
 	{
-		broadcastPacket(new ExOlympiadUserInfo(_playerOne.player,2));
-		broadcastPacket(new ExOlympiadUserInfo(_playerTwo.player,2));
+		broadcastPacket(new ExOlympiadUserInfo(_playerOne.player, 2));
+		broadcastPacket(new ExOlympiadUserInfo(_playerTwo.player, 2));
 	}
 	
 	@Override
@@ -135,16 +121,17 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		if (_playerTwo.player != null)
 			_playerTwo.player.sendPacket(packet);
 	}
-
+	
 	@Override
 	public void hpsShow()
 	{
-		if(_playerTwo.player != null && _playerOne.player != null)
+		if (_playerTwo.player != null && _playerOne.player != null)
 		{
-		_playerTwo.player.sendPacket(new ExOlympiadUserInfo(_playerOne.player,1));
-		_playerOne.player.sendPacket(new ExOlympiadUserInfo(_playerTwo.player,1));
+			_playerTwo.player.sendPacket(new ExOlympiadUserInfo(_playerOne.player, 1));
+			_playerOne.player.sendPacket(new ExOlympiadUserInfo(_playerTwo.player, 1));
 		}
 	}
+	
 	@Override
 	protected final void removals()
 	{
@@ -282,8 +269,8 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		
 		final String ploneIp = _playerOne.player.getClient().getConnection().getInetAddress().getHostAddress();
 		final String pltowIp = _playerTwo.player.getClient().getConnection().getInetAddress().getHostAddress();
-
-		if(ploneIp.equals(pltowIp) && !Config.OLY_SAME_IP)
+		
+		if (ploneIp.equals(pltowIp) && !Config.OLY_SAME_IP)
 		{
 			SystemMessage _sm;
 			_log.config("Match from same ip " + _playerOne.player.getName() + "(IP : " + _playerOne.player.getClient().getConnection().getInetAddress() + " )" + " vs " + _playerTwo.player.getName() + "(IP : " + _playerOne.player.getClient().getConnection().getInetAddress() + " )");
@@ -428,14 +415,14 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 			_playerOne.updatePlayer();
 			_playerTwo.updatePlayer();
 			
-			if ((_playerOne.player == null || _playerOne.player.isOnline()==0) && (_playerTwo.player == null || _playerTwo.player.isOnline()==0))
+			if ((_playerOne.player == null || _playerOne.player.isOnline() == 0) && (_playerTwo.player == null || _playerTwo.player.isOnline() == 0))
 			{
 				_playerOne.updateStat(COMP_DRAWN, 1);
 				_playerTwo.updateStat(COMP_DRAWN, 1);
 				sm = SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_ENDED_IN_A_TIE);
 				stadium.broadcastPacket(sm);
 			}
-			else if (_playerTwo.player == null || _playerTwo.player.isOnline()==0 || (playerTwoHp == 0 && playerOneHp != 0) || (_damageP1 > _damageP2 && playerTwoHp != 0 && playerOneHp != 0))
+			else if (_playerTwo.player == null || _playerTwo.player.isOnline() == 0 || (playerTwoHp == 0 && playerOneHp != 0) || (_damageP1 > _damageP2 && playerTwoHp != 0 && playerOneHp != 0))
 			{
 				sm = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WON_THE_GAME);
 				sm.addString(_playerOne.name);
@@ -451,7 +438,7 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 				saveResults(_playerOne, _playerTwo, 1, _startTime, _fightTime, getType());
 				rewardParticipant(_playerOne.player, getReward());
 			}
-			else if (_playerOne.player == null || _playerOne.player.isOnline()==0 || (playerOneHp == 0 && playerTwoHp != 0) || (_damageP2 > _damageP1 && playerOneHp != 0 && playerTwoHp != 0))
+			else if (_playerOne.player == null || _playerOne.player.isOnline() == 0 || (playerOneHp == 0 && playerTwoHp != 0) || (_damageP2 > _damageP1 && playerOneHp != 0 && playerTwoHp != 0))
 			{
 				sm = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WON_THE_GAME);
 				sm.addString(_playerTwo.name);

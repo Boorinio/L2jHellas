@@ -1,15 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -254,12 +242,6 @@ public class Q660_AidingTheFloranVillage extends Quest
 		return null;
 	}
 	
-	/**
-	 * This method drops items following current counts.
-	 * @param st The QuestState to affect.
-	 * @param numberToVerify The count of qItems to drop from the different categories.
-	 * @return false when counter isn't reached, true otherwise.
-	 */
 	private static boolean verifyAndRemoveItems(QuestState st, int numberToVerify)
 	{
 		final int eyes = st.getQuestItemsCount(WATCHING_EYES);

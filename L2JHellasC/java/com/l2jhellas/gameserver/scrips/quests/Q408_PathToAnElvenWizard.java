@@ -45,7 +45,7 @@ public class Q408_PathToAnElvenWizard extends Quest
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc,L2PcInstance player)
+	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = event;
 		QuestState st = player.getQuestState(qn);
@@ -115,7 +115,7 @@ public class Q408_PathToAnElvenWizard extends Quest
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc,L2PcInstance player)
+	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg();
 		QuestState st = player.getQuestState(qn);
@@ -233,7 +233,7 @@ public class Q408_PathToAnElvenWizard extends Quest
 	}
 	
 	@Override
-	public String onKill(L2Npc npc,L2PcInstance player, boolean isPet)
+	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
 		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)

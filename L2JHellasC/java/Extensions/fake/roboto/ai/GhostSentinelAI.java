@@ -1,9 +1,5 @@
 package Extensions.fake.roboto.ai;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.ai.addon.IConsumableSpender;
 import Extensions.fake.roboto.helpers.FakeHelpers;
@@ -13,14 +9,18 @@ import Extensions.fake.roboto.model.SupportSpell;
 
 import com.l2jhellas.gameserver.emum.ShotType;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class GhostSentinelAI extends CombatAI implements IConsumableSpender
 {
-
+	
 	public GhostSentinelAI(FakePlayer character)
 	{
 		super(character);
 	}
-
+	
 	@Override
 	public void thinkAndAct()
 	{
@@ -34,19 +34,19 @@ public class GhostSentinelAI extends CombatAI implements IConsumableSpender
 		tryAttackingUsingFighterOffensiveSkill();
 		setBusyThinking(false);
 	}
-
+	
 	@Override
 	protected double changeOfUsingSkill()
 	{
 		return 0.15;
 	}
-
+	
 	@Override
 	protected ShotType getShotType()
 	{
 		return ShotType.SOULSHOT;
 	}
-
+	
 	@Override
 	protected List<OffensiveSpell> getOffensiveSpells()
 	{
@@ -55,19 +55,19 @@ public class GhostSentinelAI extends CombatAI implements IConsumableSpender
 		_offensiveSpells.add(new OffensiveSpell(343, 1));
 		return _offensiveSpells;
 	}
-
+	
 	@Override
 	protected int[][] getBuffs()
 	{
 		return FakeHelpers.getFighterBuffs();
 	}
-
+	
 	@Override
 	protected List<HealingSpell> getHealingSpells()
 	{
 		return Collections.emptyList();
 	}
-
+	
 	@Override
 	protected List<SupportSpell> getSelfSupportSpells()
 	{

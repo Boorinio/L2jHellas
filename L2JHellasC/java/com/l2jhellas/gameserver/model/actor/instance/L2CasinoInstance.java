@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -28,12 +14,12 @@ import com.l2jhellas.util.Rnd;
 public class L2CasinoInstance extends L2Npc
 {
 	public String filename;
-
+	
 	public L2CasinoInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 	}
-
+	
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
@@ -93,24 +79,24 @@ public class L2CasinoInstance extends L2Npc
 		else
 			player.sendMessage("Wrong bypass command.");
 	}
-
+	
 	public static void displayCongrats(L2PcInstance player)
 	{
 		MagicSkillUse MSU = new MagicSkillUse(player, player, 2024, 1, 1, 0);
 		player.broadcastPacket(MSU);
 		player.sendMessage("Congratulations, you won!");
 	}
-
+	
 	@Override
 	public void showChatWindow(L2PcInstance player, int val)
 	{
 		filename = (getHtmlPath(getNpcId(), val));
-		NpcHtmlMessage msg = new NpcHtmlMessage(this.getObjectId());
+		NpcHtmlMessage msg = new NpcHtmlMessage(getObjectId());
 		msg.setHtml(casinoWindow(player));
-		msg.replace("%objectId%", String.valueOf(this.getObjectId()));
+		msg.replace("%objectId%", String.valueOf(getObjectId()));
 		player.sendPacket(msg);
 	}
-
+	
 	private static String casinoWindow(L2PcInstance player)
 	{
 		StringBuilder tb = new StringBuilder();
@@ -149,7 +135,7 @@ public class L2CasinoInstance extends L2Npc
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		return tb.toString();
 	}
-
+	
 	public static void Casino1(L2PcInstance player)
 	{
 		int unstuckTimer = 1000;
@@ -162,11 +148,11 @@ public class L2CasinoInstance extends L2Npc
 		player.sendPacket(sg);
 		if (player.isDead())
 			return;
-
+		
 		player.setIsIn7sDungeon(false);
 		player.enableAllSkills();
 		int chance = Rnd.get(2);
-
+		
 		if (player.getInventory().getInventoryItemCount(9142, 0) >= 2)
 		{
 			if (chance == 0)
@@ -187,7 +173,7 @@ public class L2CasinoInstance extends L2Npc
 		else
 			player.sendMessage("You do not have enough items.");
 	}
-
+	
 	public static void Casino2(L2PcInstance player)
 	{
 		int unstuckTimer = 1000;
@@ -200,11 +186,11 @@ public class L2CasinoInstance extends L2Npc
 		player.sendPacket(sg);
 		if (player.isDead())
 			return;
-
+		
 		player.setIsIn7sDungeon(false);
 		player.enableAllSkills();
 		int chance = Rnd.get(3);
-
+		
 		if (player.getInventory().getInventoryItemCount(9142, 0) >= 4)
 		{
 			if (chance == 0)
@@ -232,7 +218,7 @@ public class L2CasinoInstance extends L2Npc
 		else
 			player.sendMessage("You do not have enough items.");
 	}
-
+	
 	public static void Casino3(L2PcInstance player)
 	{
 		int unstuckTimer = 1000;
@@ -248,7 +234,7 @@ public class L2CasinoInstance extends L2Npc
 		player.setIsIn7sDungeon(false);
 		player.enableAllSkills();
 		int chance = Rnd.get(3);
-
+		
 		if (player.getInventory().getInventoryItemCount(9142, 0) >= 8)
 		{
 			if (chance == 0)
@@ -276,7 +262,7 @@ public class L2CasinoInstance extends L2Npc
 		else
 			player.sendMessage("You do not have enough items.");
 	}
-
+	
 	public static void Casino4(L2PcInstance player)
 	{
 		int unstuckTimer = 1000;
@@ -289,11 +275,11 @@ public class L2CasinoInstance extends L2Npc
 		player.sendPacket(sg);
 		if (player.isDead())
 			return;
-
+		
 		player.setIsIn7sDungeon(false);
 		player.enableAllSkills();
 		int chance = Rnd.get(3);
-
+		
 		if (player.getInventory().getInventoryItemCount(9142, 0) >= 16)
 		{
 			if (chance == 0)
@@ -321,7 +307,7 @@ public class L2CasinoInstance extends L2Npc
 		else
 			player.sendMessage("You do not have enough items.");
 	}
-
+	
 	public static void Casino5(L2PcInstance player)
 	{
 		int unstuckTimer = 1000;
@@ -334,11 +320,11 @@ public class L2CasinoInstance extends L2Npc
 		player.sendPacket(sg);
 		if (player.isDead())
 			return;
-
+		
 		player.setIsIn7sDungeon(false);
 		player.enableAllSkills();
 		int chance = Rnd.get(2);
-
+		
 		if (player.getInventory().getInventoryItemCount(57, 0) >= 500000)
 		{
 			if (chance == 0)
@@ -359,7 +345,7 @@ public class L2CasinoInstance extends L2Npc
 		else
 			player.sendMessage("You do not have enough items.");
 	}
-
+	
 	public static void Casino6(L2PcInstance player)
 	{
 		int unstuckTimer = 1000;
@@ -372,11 +358,11 @@ public class L2CasinoInstance extends L2Npc
 		player.sendPacket(sg);
 		if (player.isDead())
 			return;
-
+		
 		player.setIsIn7sDungeon(false);
 		player.enableAllSkills();
 		int chance = Rnd.get(3);
-
+		
 		if (player.getInventory().getInventoryItemCount(57, 0) >= 1000000)
 		{
 			if (chance == 0)
@@ -404,7 +390,7 @@ public class L2CasinoInstance extends L2Npc
 		else
 			player.sendMessage("You do not have enough items.");
 	}
-
+	
 	public static void Casino7(L2PcInstance player)
 	{
 		int unstuckTimer = 1000;
@@ -417,11 +403,11 @@ public class L2CasinoInstance extends L2Npc
 		player.sendPacket(sg);
 		if (player.isDead())
 			return;
-
+		
 		player.setIsIn7sDungeon(false);
 		player.enableAllSkills();
 		int chance = Rnd.get(3);
-
+		
 		if (player.getInventory().getInventoryItemCount(57, 0) >= 10000000)
 		{
 			if (chance == 0)

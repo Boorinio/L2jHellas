@@ -13,16 +13,16 @@ public class Anays extends AbstractNpcAI
 {
 	private final int ANAYS = 25517;
 	private final L2BossZone _Zone;
-
+	
 	public Anays()
 	{
 		super("Anays", "ai");
-		_Zone = GrandBossManager.getInstance().getZone(113000, -76000, 200);
+		_Zone = GrandBossManager.getZone(113000, -76000, 200);
 		addEventId(ANAYS, QuestEventType.ON_ATTACK);
 		addEventId(ANAYS, QuestEventType.ON_SPAWN);
 		addEventId(ANAYS, QuestEventType.ON_AGGRO_RANGE_ENTER);
 	}
-
+	
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
@@ -34,7 +34,7 @@ public class Anays extends AbstractNpcAI
 		}
 		return super.onAttack(npc, attacker, damage, isPet);
 	}
-
+	
 	@Override
 	public String onSpawn(L2Npc npc)
 	{
@@ -42,7 +42,7 @@ public class Anays extends AbstractNpcAI
 			((L2Attackable) npc).seeThroughSilentMove(true);
 		return super.onSpawn(npc);
 	}
-
+	
 	@Override
 	public String onAggroRangeEnter(L2Npc npc, L2PcInstance player, boolean isPet)
 	{

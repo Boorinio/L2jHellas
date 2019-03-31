@@ -1,9 +1,5 @@
 package Extensions.fake.roboto.ai;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.ai.addon.IConsumableSpender;
 import Extensions.fake.roboto.helpers.FakeHelpers;
@@ -13,15 +9,19 @@ import Extensions.fake.roboto.model.SupportSpell;
 
 import com.l2jhellas.gameserver.emum.ShotType;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class SoultakerAI extends CombatAI implements IConsumableSpender
 {
 	private final int boneId = 2508;
-
+	
 	public SoultakerAI(FakePlayer character)
 	{
 		super(character);
 	}
-
+	
 	@Override
 	public void thinkAndAct()
 	{
@@ -34,13 +34,13 @@ public class SoultakerAI extends CombatAI implements IConsumableSpender
 		tryAttackingUsingMageOffensiveSkill();
 		setBusyThinking(false);
 	}
-
+	
 	@Override
 	protected ShotType getShotType()
 	{
 		return ShotType.BLESSED_SPIRITSHOT;
 	}
-
+	
 	@Override
 	protected List<OffensiveSpell> getOffensiveSpells()
 	{
@@ -50,19 +50,19 @@ public class SoultakerAI extends CombatAI implements IConsumableSpender
 		_offensiveSpells.add(new OffensiveSpell(1343, 3));
 		return _offensiveSpells;
 	}
-
+	
 	@Override
 	protected int[][] getBuffs()
 	{
 		return FakeHelpers.getMageBuffs();
 	}
-
+	
 	@Override
 	protected List<HealingSpell> getHealingSpells()
 	{
 		return Collections.emptyList();
 	}
-
+	
 	@Override
 	protected List<SupportSpell> getSelfSupportSpells()
 	{

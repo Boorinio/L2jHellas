@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -40,15 +23,9 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 
-/**
- * Following animations are handled in that time tempo :
- * <ul>
- * <li>wake(2), 0-13 secs</li>
- * <li>neck(3), 14-24 secs.</li>
- * <li>roar(1), 25-37 secs.</li>
- * </ul>
- * Waker's sacrifice is handled between neck and roar animation.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class Baium extends AbstractNpcAI
 {
 	private static L2BossZone _baiumLair = GrandBossManager.getZoneById(110002);
@@ -99,7 +76,7 @@ public class Baium extends AbstractNpcAI
 	
 	private L2Character _actualVictim;
 	private long _LastAttackVsBaiumTime = 0;
-	private final List<L2Npc> _Minions = new ArrayList<L2Npc>(5);
+	private final List<L2Npc> _Minions = new ArrayList<>(5);
 	
 	public Baium()
 	{
@@ -183,7 +160,7 @@ public class Baium extends AbstractNpcAI
 			}
 			else if (event.equalsIgnoreCase("baium_neck"))
 			{
-				npc.broadcastPacket(new SocialAction(npc.getObjectId(), 3),1200);
+				npc.broadcastPacket(new SocialAction(npc.getObjectId(), 3), 1200);
 			}
 			else if (event.equalsIgnoreCase("sacrifice_waker"))
 			{
@@ -201,7 +178,7 @@ public class Baium extends AbstractNpcAI
 			else if (event.equalsIgnoreCase("baium_roar"))
 			{
 				// Roar animation
-				npc.broadcastPacket(new SocialAction(npc.getObjectId(), 1),1200);
+				npc.broadcastPacket(new SocialAction(npc.getObjectId(), 1), 1200);
 				
 				// Spawn angels
 				for (int[] element : ANGEL_LOCATION)
@@ -257,7 +234,7 @@ public class Baium extends AbstractNpcAI
 					npc.doCast(SkillTable.getInstance().getInfo(4135, 1));
 				}
 				else if (!_baiumLair.isInsideZone(npc))
-					npc.teleToLocation(116033, 17447, 10104,false);
+					npc.teleToLocation(116033, 17447, 10104, false);
 			}
 		}
 		else if (event.equalsIgnoreCase("baium_unlock"))
@@ -316,32 +293,32 @@ public class Baium extends AbstractNpcAI
 		
 		if (_baiumLair == null)
 		{
-			_baiumLair = GrandBossManager.getInstance().getZone(113100, 14500, 10077);
+			_baiumLair = GrandBossManager.getZone(113100, 14500, 10077);
 			
 			if (_baiumLair == null)
 				return "<html><body>Angelic Vortex:<br>You may not enter!</body></html>";
 		}
 		if (npcId == STONE_BAIUM && GrandBossManager.getBossStatus(LIVE_BAIUM) == ASLEEP)
 		{
-				GrandBossManager.setBossStatus(LIVE_BAIUM, AWAKE);
-				
-				final L2Npc baium = addSpawn(LIVE_BAIUM, npc, false, 0, false);
-				baium.setIsInvul(true);
-				
-				GrandBossManager.addBoss((L2GrandBossInstance) baium);
-				
-				// First animation
-				baium.broadcastPacket(new SocialAction(baium.getObjectId(), 2),1200);
-				baium.broadcastPacket(new Earthquake(baium.getX(), baium.getY(), baium.getZ(), 40, 10));
-				
-				// Second animation, waker sacrifice, followed by angels spawn, third animation and finally movement.
-				startQuestTimer("baium_neck", 13000, baium, null, false);
-				startQuestTimer("sacrifice_waker", 24000, baium, player, false);
-				startQuestTimer("baium_roar", 28000, baium, null, false);
-				startQuestTimer("baium_move", 35000, baium, null, false);
-				
-				// Delete the statue.
-				npc.deleteMe();
+			GrandBossManager.setBossStatus(LIVE_BAIUM, AWAKE);
+			
+			final L2Npc baium = addSpawn(LIVE_BAIUM, npc, false, 0, false);
+			baium.setIsInvul(true);
+			
+			GrandBossManager.addBoss((L2GrandBossInstance) baium);
+			
+			// First animation
+			baium.broadcastPacket(new SocialAction(baium.getObjectId(), 2), 1200);
+			baium.broadcastPacket(new Earthquake(baium.getX(), baium.getY(), baium.getZ(), 40, 10));
+			
+			// Second animation, waker sacrifice, followed by angels spawn, third animation and finally movement.
+			startQuestTimer("baium_neck", 13000, baium, null, false);
+			startQuestTimer("sacrifice_waker", 24000, baium, player, false);
+			startQuestTimer("baium_roar", 28000, baium, null, false);
+			startQuestTimer("baium_move", 35000, baium, null, false);
+			
+			// Delete the statue.
+			npc.deleteMe();
 		}
 		return htmltext;
 	}
@@ -421,21 +398,16 @@ public class Baium extends AbstractNpcAI
 		return super.onKill(npc, killer, isPet);
 	}
 	
-	/**
-	 * This method allows to select a random target, and is used both for Baium and angels.
-	 * @param npc to check.
-	 * @return the random target.
-	 */
 	private L2Character getRandomTarget(L2Npc npc)
 	{
 		int npcId = npc.getNpcId();
-		List<L2Character> result = new ArrayList<L2Character>();
+		List<L2Character> result = new ArrayList<>();
 		
 		for (L2Character obj : L2World.getInstance().getVisibleObjects(npc, L2Attackable.class))
 		{
 			if (obj instanceof L2PcInstance)
 			{
-				if (obj.isDead() || !(GeoEngine.canSeeTarget(npc, obj,false)))
+				if (obj.isDead() || !(GeoEngine.canSeeTarget(npc, obj, false)))
 					continue;
 				
 				if (((L2PcInstance) obj).isGM() && ((L2PcInstance) obj).getAppearance().getInvisible())
@@ -468,17 +440,13 @@ public class Baium extends AbstractNpcAI
 		return (result.isEmpty()) ? null : result.get(Rnd.get(result.size()));
 	}
 	
-	/**
-	 * The personal casting AI for Baium.
-	 * @param npc baium, basically...
-	 */
 	private void callSkillAI(L2Npc npc)
 	{
 		if (npc.isInvul() || npc.isCastingNow())
 			return;
 		
 		// Pickup a target if no or dead victim. If Baium was hitting an angel, 50% luck he reconsiders his target. 10% luck he decides to reconsiders his target.
-		if (_actualVictim == null || _actualVictim.isDead()  || (_actualVictim instanceof L2MonsterInstance && Rnd.get(10) < 5) || Rnd.get(10) == 0)
+		if (_actualVictim == null || _actualVictim.isDead() || (_actualVictim instanceof L2MonsterInstance && Rnd.get(10) < 5) || Rnd.get(10) == 0)
 			_actualVictim = getRandomTarget(npc);
 		
 		// If result is null, return directly.
@@ -498,13 +466,7 @@ public class Baium extends AbstractNpcAI
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, _actualVictim, null);
 	}
 	
-	/**
-	 * Pick a random skill through that list.<br>
-	 * If Baium feels surrounded, he will use AoE skills. Same behavior if he is near 2+ angels.<br>
-	 * @param npc baium
-	 * @return a usable skillId
-	 */
-	private int getRandomSkill(L2Npc npc)
+	private static int getRandomSkill(L2Npc npc)
 	{
 		// Baium's selfheal. It happens exceptionaly.
 		if (npc.getCurrentHp() / npc.getMaxHp() < 0.1)
@@ -517,8 +479,8 @@ public class Baium extends AbstractNpcAI
 		final int chance = Rnd.get(100); // Remember, it's 0 to 99, not 1 to 100.
 		
 		// If Baium feels surrounded or see 2+ angels, he unleashes his wrath upon heads :).
-
-		if (getPlayersCountInRadius(600, npc, false) >= 20 || L2World.getInstance().getVisibleObjects(npc, L2MonsterInstance.class,600).size() >= 2)
+		
+		if (getPlayersCountInRadius(600, npc, false) >= 20 || L2World.getInstance().getVisibleObjects(npc, L2MonsterInstance.class, 600).size() >= 2)
 		{
 			if (chance < 25)
 				skill = 4130;

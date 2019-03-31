@@ -11,7 +11,8 @@ public enum Team
 	private Team(int id)
 	{
 		_id = id;
-	}	
+	}
+	
 	public int getId()
 	{
 		return _id;

@@ -1,36 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
-/**
- * @author godson
- */
 package com.l2jhellas.gameserver.model.entity;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
@@ -52,6 +20,20 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.StringUtil;
 import com.l2jhellas.util.database.L2DatabaseFactory;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 public class Hero
 {
@@ -249,10 +231,6 @@ public class Hero
 		return time;
 	}
 	
-	/**
-	 * Restore hero message from Db.
-	 * @param charId
-	 */
 	public void loadMessage(int charId)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -365,8 +343,9 @@ public class Hero
 				if (charId == charOneId)
 				{
 					String name = CharNameTable.getInstance().getNameById(charTwoId);
-					String cls = CharTemplateData.getInstance().getClassNameById(charTwoClass);
-				    if (name != null && cls != null)
+					CharTemplateData.getInstance();
+					String cls = CharTemplateData.getClassNameById(charTwoClass);
+					if (name != null && cls != null)
 					{
 						StatsSet fight = new StatsSet();
 						fight.set("oponent", name);
@@ -401,7 +380,8 @@ public class Hero
 				else if (charId == charTwoId)
 				{
 					String name = CharNameTable.getInstance().getNameById(charOneId);
-					String cls = CharTemplateData.getInstance().getClassNameById(charOneClass);
+					CharTemplateData.getInstance();
+					String cls = CharTemplateData.getClassNameById(charOneClass);
 					if (name != null && cls != null)
 					{
 						StatsSet fight = new StatsSet();
@@ -714,12 +694,10 @@ public class Hero
 	public void updateHeroes(boolean setDefault)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			PreparedStatement statement;
-			
+		{	
 			if (setDefault)
 			{
-				statement = con.prepareStatement(UPDATE_ALL);
+				PreparedStatement statement = con.prepareStatement(UPDATE_ALL);
 				statement.execute();
 				statement.close();
 			}
@@ -731,7 +709,7 @@ public class Hero
 					
 					if (_completeHeroes == null || !_completeHeroes.containsKey(heroId))
 					{
-						statement = con.prepareStatement(INSERT_HERO);
+						PreparedStatement statement = con.prepareStatement(INSERT_HERO);
 						statement.setInt(1, heroId);
 						statement.setInt(2, hero.getInteger(Olympiad.CLASS_ID));
 						statement.setInt(3, hero.getInteger(COUNT));
@@ -780,7 +758,7 @@ public class Hero
 					}
 					else
 					{
-						statement = con.prepareStatement(UPDATE_HERO);
+						PreparedStatement statement = con.prepareStatement(UPDATE_HERO);
 						statement.setInt(1, hero.getInteger(COUNT));
 						statement.setInt(2, hero.getInteger(PLAYED));
 						statement.setInt(3, hero.getInteger(ACTIVE));
@@ -878,11 +856,6 @@ public class Hero
 		}
 	}
 	
-	/**
-	 * Set new hero message for hero
-	 * @param player the player instance
-	 * @param message String to set
-	 */
 	public void setHeroMessage(L2PcInstance player, String message)
 	{
 		_heroMessage.put(player.getObjectId(), message);
@@ -890,10 +863,6 @@ public class Hero
 			_log.info(Hero.class.getSimpleName() + ": Hero message for player: " + player.getName() + ":[" + player.getObjectId() + "] set to: [" + message + "]");
 	}
 	
-	/**
-	 * Update hero message in database
-	 * @param charId character objid
-	 */
 	public void saveHeroMessage(int charId)
 	{
 		if (_heroMessage.get(charId) == null)
@@ -931,10 +900,6 @@ public class Hero
 		}
 	}
 	
-	/**
-	 * Saving task for {@link Hero}<BR>
-	 * Save all hero messages to DB.
-	 */
 	public void shutdown()
 	{
 		for (int charId : _heroMessage.keySet())
@@ -977,7 +942,7 @@ public class Hero
 		L2Clan clan = player.getClan();
 		if (clan != null && clan.getLevel() >= 5)
 		{
-			String name = hero.getString("char_name");	
+			String name = hero.getString("char_name");
 			clan.setReputationScore(clan.getReputationScore() + 1000, true);
 			clan.broadcastToOnlineMembers(new PledgeShowInfoUpdate(clan));
 			clan.broadcastToOnlineMembers(SystemMessage.getSystemMessage(SystemMessageId.CLAN_MEMBER_S1_BECAME_HERO_AND_GAINED_S2_REPUTATION_POINTS).addString(name).addNumber(1000));

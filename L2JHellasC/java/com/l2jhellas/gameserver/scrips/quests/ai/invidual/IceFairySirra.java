@@ -1,22 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
-
-import java.util.ArrayList;
-import java.util.concurrent.Future;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -38,6 +20,10 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
+import java.util.ArrayList;
+import java.util.concurrent.Future;
+import java.util.logging.Logger;
+
 public class IceFairySirra extends AbstractNpcAI
 {
 	private static final Logger _log = Logger.getLogger(IceFairySirra.class.getName());
@@ -45,31 +31,36 @@ public class IceFairySirra extends AbstractNpcAI
 	private static final int SILVER_HEMOCYTE = 8057;
 	L2ZoneType _Zone;
 	private static L2PcInstance _player = null;
-	protected ArrayList<L2Npc> _allMobs = new ArrayList<L2Npc>();
+	protected ArrayList<L2Npc> _allMobs = new ArrayList<>();
 	protected Future<?> _onDeadEventTask = null;
-
+	
 	public IceFairySirra()
 	{
 		super(IceFairySirra.class.getSimpleName(), "ai/individual");
 		int[] mob =
-			{ STEWARD, 22100, 22102, 22104 };
+		{
+			STEWARD,
+			22100,
+			22102,
+			22104
+		};
 		registerMobs(mob);
 		addEventId(STEWARD, QuestEventType.QUEST_START);
 		addEventId(STEWARD, QuestEventType.ON_TALK);
 		addEventId(STEWARD, QuestEventType.ON_FIRST_TALK);
 		init();
 	}
-
+	
 	public void init()
 	{
 		_Zone = ZoneManager.getInstance().getZoneById(110016);
-
+		
 		L2Npc steward = findTemplate(STEWARD);
 		if (steward != null)
 			steward.setBusy(false);
 		openGates();
 	}
-
+	
 	public void cleanUp()
 	{
 		init();
@@ -93,7 +84,7 @@ public class IceFairySirra extends AbstractNpcAI
 		}
 		_allMobs.clear();
 	}
-
+	
 	public L2Npc findTemplate(int npcId)
 	{
 		L2Npc npc = null;
@@ -107,7 +98,7 @@ public class IceFairySirra extends AbstractNpcAI
 		}
 		return npc;
 	}
-
+	
 	protected void openGates()
 	{
 		for (int i = 23140001; i < 23140003; i++)
@@ -130,7 +121,7 @@ public class IceFairySirra extends AbstractNpcAI
 			}
 		}
 	}
-
+	
 	protected void closeGates()
 	{
 		for (int i = 23140001; i < 23140003; i++)
@@ -153,7 +144,7 @@ public class IceFairySirra extends AbstractNpcAI
 			}
 		}
 	}
-
+	
 	public boolean checkItems(L2PcInstance player)
 	{
 		if (player.getParty() != null)
@@ -171,7 +162,7 @@ public class IceFairySirra extends AbstractNpcAI
 			return false;
 		return true;
 	}
-
+	
 	public void destroyItems(L2PcInstance player)
 	{
 		if (player.getParty() != null)
@@ -185,7 +176,7 @@ public class IceFairySirra extends AbstractNpcAI
 		else
 			cleanUp();
 	}
-
+	
 	public void teleportInside(L2PcInstance player)
 	{
 		if (player.getParty() != null)
@@ -193,14 +184,14 @@ public class IceFairySirra extends AbstractNpcAI
 			for (L2PcInstance pc : player.getParty().getPartyMembers())
 			{
 				pc.teleToLocation(113533, -126159, -3488, false);
-
+				
 				((L2BossZone) _Zone).allowPlayerEntry(pc, 2103);
 			}
 		}
 		else
 			cleanUp();
 	}
-
+	
 	public void screenMessage(L2PcInstance player, String text, int time)
 	{
 		if (player.getParty() != null)
@@ -213,17 +204,42 @@ public class IceFairySirra extends AbstractNpcAI
 		else
 			cleanUp();
 	}
-
+	
 	public void doSpawns()
 	{
 		int[][] mobs =
+		{
 			{
-				{ 29060, 102722-50, -127892-50, -2768+30 },
-				{ 29056, 102722, -127892, -2768 },
-				{ 22100, 102722+50, -127892+50, -2768+30 },
-				{ 22102, 102722-100, -127892-100, -2768+30 },
-				{ 22104, 102722+100, -127892+100, -2768+30 }
-			};
+				29060,
+				102722 - 50,
+				-127892 - 50,
+				-2768 + 30
+			},
+			{
+				29056,
+				102722,
+				-127892,
+				-2768
+			},
+			{
+				22100,
+				102722 + 50,
+				-127892 + 50,
+				-2768 + 30
+			},
+			{
+				22102,
+				102722 - 100,
+				-127892 - 100,
+				-2768 + 30
+			},
+			{
+				22104,
+				102722 + 100,
+				-127892 + 100,
+				-2768 + 30
+			}
+		};
 		
 		L2Spawn spawnDat;
 		L2NpcTemplate template;
@@ -258,7 +274,7 @@ public class IceFairySirra extends AbstractNpcAI
 				e.printStackTrace();
 		}
 	}
-
+	
 	public String getHtmlPath(int val)
 	{
 		String pom = "";
@@ -272,7 +288,7 @@ public class IceFairySirra extends AbstractNpcAI
 		// "I have nothing to say to you" is returned
 		return "data/html/npcdefault.htm";
 	}
-
+	
 	public void sendHtml(L2Npc npc, L2PcInstance player, String filename)
 	{
 		NpcHtmlMessage html = new NpcHtmlMessage(npc.getObjectId());
@@ -281,7 +297,7 @@ public class IceFairySirra extends AbstractNpcAI
 		player.sendPacket(html);
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-
+	
 	@Override
 	public String onFirstTalk(L2Npc npc, L2PcInstance player)
 	{
@@ -296,7 +312,7 @@ public class IceFairySirra extends AbstractNpcAI
 		sendHtml(npc, player, filename);
 		return null;
 	}
-
+	
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
@@ -309,7 +325,7 @@ public class IceFairySirra extends AbstractNpcAI
 			{
 				if (checkItems(player) == true)
 				{
-					startQuestTimer("start", 100000, null, player,false);
+					startQuestTimer("start", 100000, null, player, false);
 					_player = player;
 					destroyItems(player);
 					player.getInventory().addItem("Scroll", 8379, 3, player, null);
@@ -338,24 +354,24 @@ public class IceFairySirra extends AbstractNpcAI
 			}
 			closeGates();
 			doSpawns();
-			startQuestTimer("Party_Port", 2000, null, player,false);
-			startQuestTimer("End", 1802000, null, player,false);
+			startQuestTimer("Party_Port", 2000, null, player, false);
+			startQuestTimer("End", 1802000, null, player, false);
 		}
 		else if (event.equalsIgnoreCase("Party_Port"))
 		{
 			teleportInside(player);
 			screenMessage(player, "Steward: Please restore the Queen's appearance!", 10000);
-			startQuestTimer("30MinutesRemaining", 300000, null, player,false);
+			startQuestTimer("30MinutesRemaining", 300000, null, player, false);
 		}
 		else if (event.equalsIgnoreCase("30MinutesRemaining"))
 		{
 			screenMessage(player, "30 minute(s) are remaining.", 10000);
-			startQuestTimer("20minutesremaining", 600000, null, player,false);
+			startQuestTimer("20minutesremaining", 600000, null, player, false);
 		}
 		else if (event.equalsIgnoreCase("20MinutesRemaining"))
 		{
 			screenMessage(player, "20 minute(s) are remaining.", 10000);
-			startQuestTimer("10minutesremaining", 600000, null, player,false);
+			startQuestTimer("10minutesremaining", 600000, null, player, false);
 		}
 		else if (event.equalsIgnoreCase("10MinutesRemaining"))
 		{
@@ -368,7 +384,7 @@ public class IceFairySirra extends AbstractNpcAI
 		}
 		return super.onAdvEvent(event, npc, player);
 	}
-
+	
 	public static void main(String[] args)
 	{
 		new IceFairySirra();

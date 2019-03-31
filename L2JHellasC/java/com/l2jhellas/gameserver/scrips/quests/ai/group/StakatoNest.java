@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.ai.group;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -24,17 +10,6 @@ import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.util.Rnd;
 
-/**
- * This AI handles following behaviors :
- * <ul>
- * <li>Cannibalistic Stakato Leader : try to eat a Follower, if any around, at low HPs.</li>
- * <li>Female Spiked Stakato : when Male dies, summons 3 Spiked Stakato Guards.</li>
- * <li>Male Spiked Stakato : when Female dies, transforms in stronger form.</li>
- * <li>Spiked Stakato Baby : when Spiked Stakato Nurse dies, her baby summons 3 Spiked Stakato Captains.</li>
- * <li>Spiked Stakato Nurse : when Spiked Stakato Baby dies, transforms in stronger form.</li>
- * </ul>
- * As NCSoft implemented it on postIL, but skills exist since IL, I decided to implemented that script to "honor" the idea (which is kinda funny).
- */
 public class StakatoNest extends AbstractNpcAI
 {
 	private static final int SpikedStakatoGuard = 22107;
@@ -64,7 +39,7 @@ public class StakatoNest extends AbstractNpcAI
 		if (npc.getCurrentHp() / npc.getMaxHp() < 0.3 && Rnd.get(100) < 5)
 		{
 			
-			for (L2MonsterInstance follower :L2World.getInstance().getVisibleObjects(npc,L2MonsterInstance.class, 400))
+			for (L2MonsterInstance follower : L2World.getInstance().getVisibleObjects(npc, L2MonsterInstance.class, 400))
 			{
 				if (follower.getNpcId() == StakatoFollower && !follower.isDead())
 				{
@@ -83,7 +58,7 @@ public class StakatoNest extends AbstractNpcAI
 		switch (npc.getNpcId())
 		{
 			case MaleSpikedStakato1:
-				for (L2MonsterInstance angryFemale :L2World.getInstance().getVisibleObjects(npc,L2MonsterInstance.class, 400))
+				for (L2MonsterInstance angryFemale : L2World.getInstance().getVisibleObjects(npc, L2MonsterInstance.class, 400))
 				{
 					if (angryFemale.getNpcId() == FemaleSpikedStakato && !angryFemale.isDead())
 					{
@@ -97,7 +72,7 @@ public class StakatoNest extends AbstractNpcAI
 				break;
 			
 			case FemaleSpikedStakato:
-				for (L2MonsterInstance morphingMale :L2World.getInstance().getVisibleObjects(npc,L2MonsterInstance.class, 400))
+				for (L2MonsterInstance morphingMale : L2World.getInstance().getVisibleObjects(npc, L2MonsterInstance.class, 400))
 				{
 					if (morphingMale.getNpcId() == MaleSpikedStakato1 && !morphingMale.isDead())
 					{
@@ -110,7 +85,7 @@ public class StakatoNest extends AbstractNpcAI
 				break;
 			
 			case SpikedStakatoNurse1:
-				for (L2MonsterInstance baby :L2World.getInstance().getVisibleObjects(npc,L2MonsterInstance.class, 400))
+				for (L2MonsterInstance baby : L2World.getInstance().getVisibleObjects(npc, L2MonsterInstance.class, 400))
 				{
 					if (baby.getNpcId() == SpikedStakatoBaby && !baby.isDead())
 					{
@@ -124,7 +99,7 @@ public class StakatoNest extends AbstractNpcAI
 				break;
 			
 			case SpikedStakatoBaby:
-				for (L2MonsterInstance morphingNurse :L2World.getInstance().getVisibleObjects(npc,L2MonsterInstance.class, 400))
+				for (L2MonsterInstance morphingNurse : L2World.getInstance().getVisibleObjects(npc, L2MonsterInstance.class, 400))
 				{
 					if (morphingNurse.getNpcId() == SpikedStakatoNurse1 && !morphingNurse.isDead())
 					{

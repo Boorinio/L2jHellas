@@ -1,27 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.skills;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 import com.l2jhellas.gameserver.emum.L2ArmorType;
 import com.l2jhellas.gameserver.emum.L2EtcItemType;
@@ -33,53 +10,50 @@ import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
-/**
- * @author mkizub
- */
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+
 final class DocumentItem extends DocumentBase
 {
 	private Item _currentItem = null;
 	private final List<L2Item> _itemsInFile = new ArrayList<>();
 	private Map<Integer, Item> _itemData = new HashMap<>();
-
-
-
-	/**
-	 * @param armorData
-	 * @param f
-	 */
+	
 	public DocumentItem(Map<Integer, Item> pItemData, File file)
 	{
 		super(file);
 		_itemData = pItemData;
 	}
-
-	/**
-	 * @param item
-	 */
+	
 	private void setCurrentItem(Item item)
 	{
 		_currentItem = item;
 	}
-
+	
 	@Override
 	protected StatsSet getStatsSet()
 	{
 		return _currentItem.set;
 	}
-
+	
 	@Override
 	protected String getTableValue(String name)
 	{
 		return _tables.get(name)[_currentItem.currentLevel];
 	}
-
+	
 	@Override
 	protected String getTableValue(String name, int idx)
 	{
 		return _tables.get(name)[idx - 1];
 	}
-
+	
 	@Override
 	protected void parseDocument(Document doc)
 	{
@@ -87,7 +61,7 @@ final class DocumentItem extends DocumentBase
 		{
 			if ("list".equalsIgnoreCase(n.getNodeName()))
 			{
-
+				
 				for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
 				{
 					if ("item".equalsIgnoreCase(d.getNodeName()))
@@ -107,23 +81,25 @@ final class DocumentItem extends DocumentBase
 			}
 		}
 	}
-
+	
+	Item _item;
+	
 	protected void parseItem(Node n)
 	{
 		int itemId = Integer.parseInt(n.getAttributes().getNamedItem("id").getNodeValue());
 		String itemName = n.getAttributes().getNamedItem("name").getNodeValue();
-
+		
 		_currentItem.id = itemId;
 		_currentItem.name = itemName;
-
-		Item item;
-		if ((item = _itemData.get(_currentItem.id)) == null)
+		
+	
+		if ((_item = _itemData.get(_currentItem.id)) == null)
 		{
 			_log.warning(DocumentItem.class.getName() + ": No SQL data for Item ID: " + itemId + " - name: " + itemName);
 		}
-		_currentItem.set = item.set;
-		_currentItem.type = item.type;
-
+		_currentItem.set = _item.set;
+		_currentItem.type = _item.type;
+		
 		Node first = n.getFirstChild();
 		for (n = first; n != null; n = n.getNextSibling())
 		{
@@ -144,7 +120,7 @@ final class DocumentItem extends DocumentBase
 			}
 		}
 	}
-
+	
 	private void makeItem()
 	{
 		if (_currentItem.item != null)
@@ -158,10 +134,7 @@ final class DocumentItem extends DocumentBase
 		else
 			_log.warning(DocumentItem.class.getName() + ": Unknown item type " + _currentItem.type);
 	}
-
-	/**
-	 * @return
-	 */
+	
 	public List<L2Item> getItemList()
 	{
 		return _itemsInFile;

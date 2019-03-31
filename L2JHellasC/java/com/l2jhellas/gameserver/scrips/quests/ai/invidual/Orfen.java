@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
 
 import com.l2jhellas.Config;
@@ -33,10 +19,6 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
 
-/**
- * Orfen AI
- * @author Emperorc, rewrote by Tryskell.
- */
 public class Orfen extends AbstractNpcAI
 {
 	private static final L2BossZone _orfenLair = GrandBossManager.getZoneById(110013);
@@ -267,12 +249,6 @@ public class Orfen extends AbstractNpcAI
 		return super.onKill(npc, killer, isPet);
 	}
 	
-	/**
-	 * This method is used by Orfen in order to move from one location to another.<br>
-	 * Index 0 means a direct teleport to her lair (case where her HPs <= 50%).
-	 * @param npc Orfen in any case.
-	 * @param index 0 for her lair (teleport) or 1-3 (walking through desert).
-	 */
 	private static void goTo(L2Npc npc, int index)
 	{
 		((L2Attackable) npc).clearAggroList();

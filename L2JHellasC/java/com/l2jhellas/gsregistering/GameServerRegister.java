@@ -1,18 +1,10 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gsregistering;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.Server;
+import com.l2jhellas.gameserver.LoginServerThread;
+import com.l2jhellas.loginserver.GameServerTable;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,23 +15,17 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.Server;
-import com.l2jhellas.gameserver.LoginServerThread;
-import com.l2jhellas.loginserver.GameServerTable;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 public class GameServerRegister
 {
 	private static String _choice;
 	private static boolean _choiceOk;
-
+	
 	public static void main(String[] args) throws IOException
 	{
 		Server.serverMode = Server.MODE_LOGINSERVER;
-
+		
 		Config.load();
-
+		
 		LineNumberReader _in = new LineNumberReader(new InputStreamReader(System.in));
 		try
 		{
@@ -89,34 +75,31 @@ public class GameServerRegister
 				{
 					int id = new Integer(_choice).intValue();
 					int size = gameServerTable.getServerNames().size();
-
+					
 					if (size == 0)
 					{
 						System.out.println("No server names avalible, please make sure that servername.xml is in the LoginServer directory.");
 						System.exit(1);
 					}
-
+					
 					String name = gameServerTable.getServerNameById(id);
 					if (name == null)
 					{
 						System.out.println("No name for id: " + id);
 						continue;
 					}
+					if (gameServerTable.hasRegisteredGameServerOnId(id))
+					{
+						System.out.println("This id is not free");
+					}
 					else
 					{
-						if (gameServerTable.hasRegisteredGameServerOnId(id))
-						{
-							System.out.println("This id is not free");
-						}
-						else
-						{
-							byte[] hexId = LoginServerThread.generateHex(16);
-							gameServerTable.registerServerOnDB(id,hexId,"");
-							Config.saveHexid(id, new BigInteger(hexId).toString(16), "hexid(server " + id + ").txt");
-							System.out.println("Server Registered hexid saved to 'hexid(server " + id + ").txt'");
-							System.out.println("Put this file in the /config/Network folder of your gameserver and rename it to 'hexid.txt'");
-							return;
-						}
+						byte[] hexId = LoginServerThread.generateHex(16);
+						gameServerTable.registerServerOnDB(id, hexId, "");
+						Config.saveHexid(id, new BigInteger(hexId).toString(16), "hexid(server " + id + ").txt");
+						System.out.println("Server Registered hexid saved to 'hexid(server " + id + ").txt'");
+						System.out.println("Put this file in the /config/Network folder of your gameserver and rename it to 'hexid.txt'");
+						return;
 					}
 				}
 				catch (NumberFormatException nfe)
@@ -126,7 +109,7 @@ public class GameServerRegister
 			}
 		}
 	}
-
+	
 	public static void cleanRegisteredGameServersFromDB()
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())

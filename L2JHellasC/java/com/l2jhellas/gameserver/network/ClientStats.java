@@ -2,7 +2,6 @@ package com.l2jhellas.gameserver.network;
 
 import com.l2jhellas.Config;
 
-
 public class ClientStats
 {
 	public int processedPackets = 0;
@@ -43,9 +42,6 @@ public class ClientStats
 		_head = BUFFER_SIZE - 1;
 	}
 	
-	/**
-	 * @return true if incoming packet need to be dropped
-	 */
 	protected final boolean dropPacket()
 	{
 		final boolean result = _floodDetected || _queueOverflowDetected;
@@ -56,11 +52,6 @@ public class ClientStats
 		return result;
 	}
 	
-	/**
-	 * Later during flood returns true (and send ActionFailed) once per second.
-	 * @param queueSize
-	 * @return true if flood detected first and ActionFailed packet need to be sent.
-	 */
 	protected final boolean countPacket(int queueSize)
 	{
 		processedPackets++;
@@ -77,9 +68,6 @@ public class ClientStats
 		return countPacket();
 	}
 	
-	/**
-	 * @return Counts unknown packets and return true if threshold is reached.
-	 */
 	protected final boolean countUnknownPacket()
 	{
 		unknownPackets++;
@@ -96,10 +84,6 @@ public class ClientStats
 		return _unknownPacketsInMin > Config.CLIENT_PACKET_QUEUE_MAX_UNKNOWN_PER_MIN;
 	}
 	
-	/**
-	 * @param count - current number of processed packets in burst
-	 * @return burst length and return true if execution of the queue need to be aborted.
-	 */
 	protected final boolean countBurst(int count)
 	{
 		if (count > maxBurstSize)
@@ -116,9 +100,6 @@ public class ClientStats
 		return true;
 	}
 	
-	/**
-	 * @return Counts queue overflows and return true if threshold is reached.
-	 */
 	protected final boolean countQueueOverflow()
 	{
 		_queueOverflowDetected = true;
@@ -136,9 +117,6 @@ public class ClientStats
 		return _overflowsInMin > Config.CLIENT_PACKET_QUEUE_MAX_OVERFLOWS_PER_MIN;
 	}
 	
-	/**
-	 * @return Counts underflow exceptions and return true if threshold is reached.
-	 */
 	protected final boolean countUnderflowException()
 	{
 		totalUnderflowExceptions++;
@@ -155,9 +133,6 @@ public class ClientStats
 		return _underflowReadsInMin > Config.CLIENT_PACKET_QUEUE_MAX_UNDERFLOWS_PER_MIN;
 	}
 	
-	/**
-	 * @return true if maximum number of floods per minute is reached.
-	 */
 	protected final boolean countFloods()
 	{
 		return _floodsInMin > Config.CLIENT_PACKET_QUEUE_MAX_FLOODS_PER_MIN;
@@ -168,10 +143,6 @@ public class ClientStats
 		return (_totalCount / BUFFER_SIZE) > Config.CLIENT_PACKET_QUEUE_MAX_AVERAGE_PACKETS_PER_SECOND;
 	}
 	
-	/**
-	 * Later during flood returns true (and send ActionFailed) once per second.
-	 * @return true if flood detected first and ActionFailed packet need to be sent.
-	 */
 	private final synchronized boolean countPacket()
 	{
 		_totalCount++;

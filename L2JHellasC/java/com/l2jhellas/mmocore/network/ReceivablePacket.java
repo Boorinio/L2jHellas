@@ -2,10 +2,6 @@ package com.l2jhellas.mmocore.network;
 
 import java.nio.ByteBuffer;
 
-/**
- * @author KenM
- * @param <T>
- */
 public abstract class ReceivablePacket<T extends MMOClient<?>> extends AbstractPacket<T> implements Runnable
 {
 	NioNetStringBuffer _sbuf;
@@ -68,12 +64,6 @@ public abstract class ReceivablePacket<T extends MMOClient<?>> extends AbstractP
 		return _sbuf.toString();
 	}
 	
-	/**
-	 * packet forge purpose
-	 * @param data
-	 * @param client
-	 * @param sBuffer
-	 */
 	public void setBuffers(ByteBuffer data, T client, NioNetStringBuffer sBuffer)
 	{
 		_buf = data;

@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
 import com.l2jhellas.gameserver.handler.ISkillHandler;
@@ -27,31 +13,28 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Util;
 
-/**
- * @author _drunk_
- */
 public class TakeCastle implements ISkillHandler
 {
 	private static final L2SkillType[] SKILL_IDS =
 	{
 		L2SkillType.TAKECASTLE
 	};
-
+	
 	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		if (activeChar == null || !(activeChar instanceof L2PcInstance))
 			return;
-
+		
 		L2PcInstance player = (L2PcInstance) activeChar;
-
+		
 		if (player.getClan() == null || player.getClan().getLeaderId() != player.getObjectId())
 			return;
-
+		
 		Castle castle = CastleManager.getInstance().getCastle(player);
 		if (castle == null || !checkIfOkToCastSealOfRule(player, castle, true))
 			return;
-
+		
 		try
 		{
 			if (targets[0] instanceof L2ArtefactInstance)
@@ -61,27 +44,20 @@ public class TakeCastle implements ISkillHandler
 		{
 		}
 	}
-
-	/**
-	 * Return true if character clan place a flag<BR>
-	 * <BR>
-	 * 
-	 * @param activeChar
-	 *        The L2Character of the character placing the flag
-	 */
+	
 	public static boolean checkIfOkToCastSealOfRule(L2Character activeChar, boolean isCheckOnly)
 	{
 		return checkIfOkToCastSealOfRule(activeChar, CastleManager.getInstance().getCastle(activeChar), isCheckOnly);
 	}
-
+	
 	public static boolean checkIfOkToCastSealOfRule(L2Character activeChar, Castle castle, boolean isCheckOnly)
 	{
 		if (activeChar == null || !(activeChar instanceof L2PcInstance))
 			return false;
-
+		
 		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 		L2PcInstance player = (L2PcInstance) activeChar;
-
+		
 		if (castle == null || castle.getCastleId() <= 0)
 			sm.addString("You must be on castle ground to use this skill");
 		else if (player.getTarget() == null && !(player.getTarget() instanceof L2ArtefactInstance))
@@ -98,14 +74,14 @@ public class TakeCastle implements ISkillHandler
 				castle.getSiege().announceToPlayer("Clan " + player.getClan().getName() + " has begun to engrave the ruler.", true);
 			return true;
 		}
-
+		
 		if (!isCheckOnly)
 		{
 			player.sendPacket(sm);
 		}
 		return false;
 	}
-
+	
 	@Override
 	public L2SkillType[] getSkillIds()
 	{

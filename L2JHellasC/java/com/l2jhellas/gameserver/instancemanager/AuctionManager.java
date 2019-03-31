@@ -1,18 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.instancemanager;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.entity.Auction;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,17 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.entity.Auction;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 public class AuctionManager
 {
 	protected static final Logger _log = Logger.getLogger(AuctionManager.class.getName());
-	private final List<Auction> _auctions = new ArrayList<Auction>();
+	private final List<Auction> _auctions = new ArrayList<>();
 	
 	private static final String[] ITEM_INIT_DATA =
-	{/** @formatter:off */
+	{
 		"(23, 0, 'NPC', 'NPC Clan', 'ClanHall', 23, 0, 'Onyx Hall', 1, 20000000, 0, 1164841200000)",
 		"(24, 0, 'NPC', 'NPC Clan', 'ClanHall', 24, 0, 'Topaz Hall', 1, 20000000, 0, 1164841200000)",
 		"(25, 0, 'NPC', 'NPC Clan', 'ClanHall', 25, 0, 'Ruby Hall', 1, 20000000, 0, 1164841200000)",
@@ -74,20 +60,56 @@ public class AuctionManager
 	
 	private static final Integer[] ItemInitDataId =
 	{
-	23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61
-	};/** @formatter:on */
-
+		23,
+		24,
+		25,
+		26,
+		27,
+		28,
+		29,
+		30,
+		31,
+		32,
+		33,
+		36,
+		37,
+		38,
+		39,
+		40,
+		41,
+		42,
+		43,
+		44,
+		45,
+		46,
+		47,
+		48,
+		49,
+		50,
+		51,
+		52,
+		53,
+		54,
+		55,
+		56,
+		57,
+		58,
+		59,
+		60,
+		61
+	};
+	
 	public AuctionManager()
 	{
 		load();
 	}
-
+	
 	public void reload()
 	{
 		_auctions.clear();
 		load();
 	}
-
+	
 	private final void load()
 	{
 		_log.info(AuctionManager.class.getSimpleName() + ": Initializing AuctionManager");
@@ -108,7 +130,7 @@ public class AuctionManager
 				e.printStackTrace();
 		}
 	}
-
+	
 	public final Auction getAuction(int auctionId)
 	{
 		int index = getAuctionIndex(auctionId);
@@ -116,7 +138,7 @@ public class AuctionManager
 			return getAuctions().get(index);
 		return null;
 	}
-
+	
 	public final int getAuctionIndex(int auctionId)
 	{
 		Auction auction;
@@ -128,13 +150,12 @@ public class AuctionManager
 		}
 		return -1;
 	}
-
+	
 	public final List<Auction> getAuctions()
 	{
 		return _auctions;
 	}
-
-	/** Init Clan NPC auction */
+	
 	public void initNPC(int id)
 	{
 		int i = 0;
@@ -155,7 +176,7 @@ public class AuctionManager
 		}
 		catch (SQLException e)
 		{
-			_log.warning(AuctionManager.class.getName() + ": Auction.initNPC(): "+ id);
+			_log.warning(AuctionManager.class.getName() + ": Auction.initNPC(): " + id);
 			if (Config.DEVELOPER)
 				e.printStackTrace();
 		}

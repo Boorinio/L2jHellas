@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
 import com.l2jhellas.Config;
@@ -23,13 +9,10 @@ import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.util.Util;
 
-/**
- * @author: FBIagent / fixed by SqueezeD
- */
 public class AdminCTFEngine implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_ctf",
 		"admin_ctf_name",
 		"admin_ctf_desc",
@@ -64,8 +47,8 @@ public class AdminCTFEngine implements IAdminCommandHandler
 		"admin_ctf_autoevent",
 		"admin_ctf_minplayers",
 		"admin_ctf_maxplayers"
-	};/** @formatter:on */
-
+	};
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -93,15 +76,15 @@ public class AdminCTFEngine implements IAdminCommandHandler
 			else if (command.startsWith("admin_ctf_team_flag "))
 			{
 				String[] params;
-
+				
 				params = command.split(" ");
-
+				
 				if (params.length != 2)
 				{
 					activeChar.sendMessage("Wrong usge: //ctf_team_flag <teamName>");
 					return false;
 				}
-
+				
 				CTF.setTeamFlag(params[1], activeChar);
 				showMainPage(activeChar);
 			}
@@ -193,36 +176,36 @@ public class AdminCTFEngine implements IAdminCommandHandler
 			else if (command.startsWith("admin_ctf_team_add "))
 			{
 				String teamName = command.substring(19);
-
+				
 				CTF.addTeam(teamName);
 				showMainPage(activeChar);
 			}
 			else if (command.startsWith("admin_ctf_team_remove "))
 			{
 				String teamName = command.substring(22);
-
+				
 				CTF.removeTeam(teamName);
 				showMainPage(activeChar);
 			}
 			else if (command.startsWith("admin_ctf_team_pos "))
 			{
 				String teamName = command.substring(19);
-
+				
 				CTF.setTeamPos(teamName, activeChar);
 				showMainPage(activeChar);
 			}
 			else if (command.startsWith("admin_ctf_team_color "))
 			{
 				String[] params;
-
+				
 				params = command.split(" ");
-
+				
 				if (params.length != 3)
 				{
 					activeChar.sendMessage("Wrong usege: //ctf_team_color <colorHex> <teamName>");
 					return false;
 				}
-
+				
 				CTF.setTeamColor(command.substring(params[0].length() + params[1].length() + 2), Integer.decode("0x" + Util.reverseColor(params[1])));
 				showMainPage(activeChar);
 			}
@@ -284,7 +267,7 @@ public class AdminCTFEngine implements IAdminCommandHandler
 			}
 			else if (command.equals("admin_ctf_dump"))
 				CTF.dumpData();
-
+			
 			return true;
 		}
 		catch (Exception e)
@@ -293,18 +276,18 @@ public class AdminCTFEngine implements IAdminCommandHandler
 			return false;
 		}
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
+	
 	public void showEditPage(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		StringBuilder replyMSG = new StringBuilder("<html><body>");
-
+		
 		replyMSG.append("<center><font color=\"LEVEL\">[CTF Engine by Darki699]</font></center><br><br><br>");
 		replyMSG.append("<table><tr><td><edit var=\"input1\" width=\"125\"></td><td><edit var=\"input2\" width=\"125\"></td></tr></table>");
 		replyMSG.append("<table border=\"0\"><tr>");
@@ -338,12 +321,12 @@ public class AdminCTFEngine implements IAdminCommandHandler
 		adminReply.setHtml(replyMSG.toString());
 		activeChar.sendPacket(adminReply);
 	}
-
+	
 	public void showControlPage(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		StringBuilder replyMSG = new StringBuilder("<html><body>");
-
+		
 		replyMSG.append("<center><font color=\"LEVEL\">[CTF Engine by Darki699]</font></center><br><br><br>");
 		replyMSG.append("<table border=\"0\"><tr>");
 		replyMSG.append("<td width=\"100\"><button value=\"Join\" action=\"bypass -h admin_ctf_join\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td>");
@@ -364,20 +347,20 @@ public class AdminCTFEngine implements IAdminCommandHandler
 		adminReply.setHtml(replyMSG.toString());
 		activeChar.sendPacket(adminReply);
 	}
-
+	
 	public void showMainPage(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		StringBuilder replyMSG = new StringBuilder("<html><body>");
-
+		
 		replyMSG.append("<center><font color=\"LEVEL\">[CTF Engine by Darki699]</font></center><br><br><br>");
-
+		
 		replyMSG.append("<table><tr>");
 		if (!CTF._joining && !CTF._started && !CTF._teleport)
 			replyMSG.append("<td width=\"100\"><button value=\"Edit\" action=\"bypass -h admin_ctf_edit\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td>");
 		replyMSG.append("<td width=\"100\"><button value=\"Control\" action=\"bypass -h admin_ctf_control\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td>");
 		replyMSG.append("</tr></table><br>");
-
+		
 		replyMSG.append("<br><font color=\"LEVEL\">Current event...</font><br1>");
 		replyMSG.append("    ... name:&nbsp;<font color=\"00FF00\">" + CTF._eventName + "</font><br1>");
 		replyMSG.append("    ... description:&nbsp;<font color=\"00FF00\">" + CTF._eventDesc + "</font><br1>");
@@ -399,11 +382,11 @@ public class AdminCTFEngine implements IAdminCommandHandler
 		if (CTF._teams != null && !CTF._teams.isEmpty())
 			replyMSG.append("<font color=\"LEVEL\">Current teams:</font><br1>");
 		replyMSG.append("<center><table border=\"0\">");
-
+		
 		for (String team : CTF._teams)
 		{
 			replyMSG.append("<tr><td width=\"100\">Name: <font color=\"FF0000\">" + team + "</font>");
-
+			
 			if (Config.CTF_EVEN_TEAMS.equals("NO") || Config.CTF_EVEN_TEAMS.equals("BALANCE"))
 				replyMSG.append("&nbsp;(" + CTF.teamPlayersCount(team) + " joined)");
 			else if (Config.CTF_EVEN_TEAMS.equals("SHUFFLE"))
@@ -412,12 +395,12 @@ public class AdminCTFEngine implements IAdminCommandHandler
 					replyMSG.append("&nbsp;(" + CTF.teamPlayersCount(team) + " in)");
 			}
 			replyMSG.append("</td></tr><tr><td>");
-
+			
 			String c = Integer.toHexString(CTF._teamColors.get(CTF._teams.indexOf(team)));
 			while (c.length() < 6)
 				c = "0" + c;
 			replyMSG.append("Color: <font color=\"00FF00\">0x" + c.toUpperCase() + "</font><font color=\"" + c + "\"> =) </font>");
-
+			
 			replyMSG.append("</td></tr><tr><td>");
 			replyMSG.append("<button value=\"Tele->Team\" action=\"bypass -h admin_ctf_tele_team " + team + "\" width=90 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\">");
 			replyMSG.append("</td></tr><tr><td>");
@@ -431,9 +414,9 @@ public class AdminCTFEngine implements IAdminCommandHandler
 			if (!CTF._joining && !CTF._started && !CTF._teleport)
 				replyMSG.append("<tr><td width=\"60\"><button value=\"Remove\" action=\"bypass -h admin_ctf_team_remove " + team + "\" width=50 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr><tr></tr>");
 		}
-
+		
 		replyMSG.append("</table></center>");
-
+		
 		if (!CTF._joining && !CTF._started && !CTF._teleport)
 		{
 			if (CTF.startJoinOk())
@@ -456,7 +439,7 @@ public class AdminCTFEngine implements IAdminCommandHandler
 			replyMSG.append(CTF._playersShuffle.size() + " players participating. Waiting to shuffle in teams(done on teleport)!");
 			replyMSG.append("<br><br>");
 		}
-
+		
 		replyMSG.append("</body></html>");
 		adminReply.setHtml(replyMSG.toString());
 		activeChar.sendPacket(adminReply);

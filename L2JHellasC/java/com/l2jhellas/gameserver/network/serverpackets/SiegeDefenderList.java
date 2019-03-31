@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
@@ -19,56 +5,29 @@ import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2SiegeClan;
 import com.l2jhellas.gameserver.model.entity.Castle;
 
-/**
- * Populates the Siege Defender List in the SiegeInfo Window<BR>
- * <BR>
- * packet type id 0xcb<BR>
- * format: cddddddd + dSSdddSSd<BR>
- * <BR>
- * c = 0xcb<BR>
- * d = CastleID<BR>
- * d = unknow (0x00)<BR>
- * d = unknow (0x01)<BR>
- * d = unknow (0x00)<BR>
- * d = Number of Defending Clans?<BR>
- * d = Number of Defending Clans<BR>
- * { //repeats<BR>
- * d = ClanID<BR>
- * S = ClanName<BR>
- * S = ClanLeaderName<BR>
- * d = ClanCrestID<BR>
- * d = signed time (seconds)<BR>
- * d = Type -> Owner = 0x01 || Waiting = 0x02 || Accepted = 0x03<BR>
- * d = AllyID<BR>
- * S = AllyName<BR>
- * S = AllyLeaderName<BR>
- * d = AllyCrestID<BR>
- * 
- * @author KenM
- */
 public class SiegeDefenderList extends L2GameServerPacket
 {
 	private static final String _S__CA_SiegeDefenderList = "[S] cb SiegeDefenderList";
 	private final Castle _castle;
-
+	
 	public SiegeDefenderList(Castle castle)
 	{
 		_castle = castle;
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0xcb);
 		writeD(_castle.getCastleId());
-		writeD(0x00);  // 0
-		writeD(0x01);  // 1
-		writeD(0x00);  // 0
+		writeD(0x00); // 0
+		writeD(0x01); // 1
+		writeD(0x00); // 0
 		int size = _castle.getSiege().getDefenderClans().size() + _castle.getSiege().getDefenderWaitingClans().size();
 		if (size > 0)
 		{
 			L2Clan clan;
-
+			
 			writeD(size);
 			writeD(size);
 			// Listing the Lord and the approved clans
@@ -77,7 +36,7 @@ public class SiegeDefenderList extends L2GameServerPacket
 				clan = ClanTable.getInstance().getClan(siegeclan.getClanId());
 				if (clan == null)
 					continue;
-
+				
 				writeD(clan.getClanId());
 				writeS(clan.getName());
 				writeS(clan.getLeaderName());
@@ -87,16 +46,16 @@ public class SiegeDefenderList extends L2GameServerPacket
 				{
 					case OWNER:
 						writeD(0x01); // owner
-					break;
+						break;
 					case DEFENDER_PENDING:
 						writeD(0x02); // approved
-					break;
+						break;
 					case DEFENDER:
 						writeD(0x03); // waiting approved
-					break;
+						break;
 					default:
 						writeD(0x00);
-					break;
+						break;
 				}
 				writeD(clan.getAllyId());
 				writeS(clan.getAllyName());
@@ -124,7 +83,7 @@ public class SiegeDefenderList extends L2GameServerPacket
 			writeD(0x00);
 		}
 	}
-
+	
 	@Override
 	public String getType()
 	{

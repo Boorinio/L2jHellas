@@ -1,15 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -78,18 +66,6 @@ public class Q373_SupplierOfReagents extends Quest
 	private static final int NIGHTMARE_OIL = 6034;
 	private static final int PURE_SILVER = 6320;
 	
-	/**
-	 * This droplist defines the npcId, the item dropped and the luck.
-	 * <ul>
-	 * <li>HAMES_ORC_SHAMAN : 47% chance to drop - reagent pouch (47%)</li>
-	 * <li>HALLATES_MAID : 84,4% chance to drop - reageant pouch (66,4%) and volcanic ash (18%)</li>
-	 * <li>HALLATES_GUARDIAN : 83,3% chance to drop - demon's blood (72,9%) and moonstone shard (10,4%)</li>
-	 * <li>PLATINUM_GUARDIAN_SHAMAN : 44,2% chance to drop - reagent box (44,2%)</li>
-	 * <li>PLATINUM_TRIBE_SHAMAN : 100% chance to drop - reagent pouch (68%) and quichsilver (32%)</li>
-	 * <li>CRENDION : 100% chance to drop - rotten bone piece (61,8%) and quicksilver (38,2%)</li>
-	 * <li>LAVA_WYRM : 75% chance to drop - wyrm's blood (50,5%) and lava stone (24,5%)</li>
-	 * </ul>
-	 */
 	private static final int[][] DROPLISTS =
 	{
 		{

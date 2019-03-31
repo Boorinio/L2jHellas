@@ -1,9 +1,5 @@
 package Extensions.fake.roboto.ai;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.model.BotSkill;
 import Extensions.fake.roboto.model.HealingSpell;
@@ -17,14 +13,18 @@ import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.util.Rnd;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public abstract class CombatAI extends FakePlayerAI
 {
-
+	
 	public CombatAI(FakePlayer character)
 	{
 		super(character);
 	}
-
+	
 	protected void tryAttackingUsingMageOffensiveSkill()
 	{
 		if (_fakePlayer.getTarget() != null)
@@ -32,7 +32,7 @@ public abstract class CombatAI extends FakePlayerAI
 			BotSkill botSkill = getRandomAvaiableMageSpellForTarget();
 			if (botSkill == null)
 				return;
-
+			
 			L2Skill skill = _fakePlayer.getSkill(botSkill.getSkillId());
 			if (skill != null)
 			{
@@ -40,7 +40,7 @@ public abstract class CombatAI extends FakePlayerAI
 			}
 		}
 	}
-
+	
 	protected void tryAttackingUsingFighterOffensiveSkill()
 	{
 		if (_fakePlayer.getTarget() != null)
@@ -59,13 +59,13 @@ public abstract class CombatAI extends FakePlayerAI
 			}
 		}
 	}
-
+	
 	@Override
 	public void thinkAndAct()
 	{
 		handleDeath();
 	}
-
+	
 	protected int getShotId()
 	{
 		int playerLevel = _fakePlayer.getLevel();
@@ -81,10 +81,10 @@ public abstract class CombatAI extends FakePlayerAI
 			return getShotType() == ShotType.SOULSHOT ? 1466 : 3951;
 		if (playerLevel >= 76)
 			return getShotType() == ShotType.SOULSHOT ? 1467 : 3952;
-
+		
 		return 0;
 	}
-
+	
 	protected int getArrowId()
 	{
 		int playerLevel = _fakePlayer.getLevel();
@@ -100,10 +100,10 @@ public abstract class CombatAI extends FakePlayerAI
 			return 1344; // Mithril Arrow
 		if (playerLevel >= 76)
 			return 1345; // shining
-
+			
 		return 0;
 	}
-
+	
 	protected void handleShots()
 	{
 		if (_fakePlayer.getInventory().getItemByItemId(getShotId()) != null)
@@ -117,52 +117,52 @@ public abstract class CombatAI extends FakePlayerAI
 		{
 			_fakePlayer.getInventory().addItem("", getShotId(), 500, _fakePlayer, null);
 		}
-
+		
 		if (_fakePlayer.getAutoSoulShot().isEmpty())
 		{
 			_fakePlayer.addAutoSoulShot(getShotId());
 			_fakePlayer.rechargeShots(true, true);
 		}
 	}
-
+	
 	public HealingSpell getRandomAvaiableHealingSpellForTarget()
 	{
-
+		
 		if (getHealingSpells().isEmpty())
 			return null;
-
+		
 		List<HealingSpell> spellsOrdered = getHealingSpells().stream().sorted((o1, o2) -> Integer.compare(o1.getPriority(), o2.getPriority())).collect(Collectors.toList());
 		int skillListSize = spellsOrdered.size();
 		BotSkill skill = waitAndPickAvailablePrioritisedSpell(spellsOrdered, skillListSize);
 		return (HealingSpell) skill;
 	}
-
+	
 	protected BotSkill getRandomAvaiableMageSpellForTarget()
 	{
-
+		
 		List<OffensiveSpell> spellsOrdered = getOffensiveSpells().stream().sorted((o1, o2) -> Integer.compare(o1.getPriority(), o2.getPriority())).collect(Collectors.toList());
 		int skillListSize = spellsOrdered.size();
-
+		
 		BotSkill skill = waitAndPickAvailablePrioritisedSpell(spellsOrdered, skillListSize);
-
+		
 		return skill;
 	}
-
+	
 	private BotSkill waitAndPickAvailablePrioritisedSpell(List<? extends BotSkill> spellsOrdered, int skillListSize)
 	{
 		int skillIndex = 0;
 		BotSkill botSkill = spellsOrdered.get(skillIndex);
 		L2Skill skill = _fakePlayer.getSkill(botSkill.getSkillId());
-
+		
 		if (skill.getCastRange() > 0)
 		{
 			if (!GeoEngine.canSeeTarget(_fakePlayer, _fakePlayer.getTarget()))
 			{
-				moveToPawn(_fakePlayer.getTarget(), 100);//skill.getCastRange()
+				moveToPawn(_fakePlayer.getTarget(), 100);// skill.getCastRange()
 				return null;
 			}
 		}
-
+		
 		while (!_fakePlayer.checkUseMagicConditions(skill, true, false))
 		{
 			_isBusyThinking = true;
@@ -180,15 +180,15 @@ public abstract class CombatAI extends FakePlayerAI
 		}
 		return botSkill;
 	}
-
+	
 	protected L2Skill getRandomAvaiableFighterSpellForTarget()
 	{
 		List<OffensiveSpell> spellsOrdered = getOffensiveSpells().stream().sorted((o1, o2) -> Integer.compare(o1.getPriority(), o2.getPriority())).collect(Collectors.toList());
 		int skillIndex = 0;
 		int skillListSize = spellsOrdered.size();
-
+		
 		L2Skill skill = _fakePlayer.getSkill(spellsOrdered.get(skillIndex).getSkillId());
-
+		
 		while (!_fakePlayer.checkUseMagicConditions(skill, true, false))
 		{
 			if ((skillIndex < 0) || (skillIndex >= skillListSize))
@@ -198,30 +198,30 @@ public abstract class CombatAI extends FakePlayerAI
 			skill = _fakePlayer.getSkill(spellsOrdered.get(skillIndex).getSkillId());
 			skillIndex++;
 		}
-
+		
 		if (!_fakePlayer.checkUseMagicConditions(skill, true, false))
 		{
 			_fakePlayer.forceAutoAttack((L2Character) _fakePlayer.getTarget());
 			return null;
 		}
-
+		
 		return skill;
 	}
-
+	
 	protected void selfSupportBuffs()
 	{
 		List<Integer> activeEffects = Arrays.stream(_fakePlayer.getAllEffects()).map(x -> x.getSkill().getId()).collect(Collectors.toList());
-
+		
 		for (SupportSpell selfBuff : getSelfSupportSpells())
 		{
 			if (activeEffects.contains(selfBuff.getSkillId()))
 				continue;
-
+			
 			L2Skill skill = SkillTable.getInstance().getInfo(selfBuff.getSkillId(), _fakePlayer.getSkillLevel(selfBuff.getSkillId()));
-
+			
 			if (!_fakePlayer.checkUseMagicConditions(skill, true, false))
 				continue;
-
+			
 			switch (selfBuff.getCondition())
 			{
 				case LESSHPPERCENT:
@@ -229,37 +229,37 @@ public abstract class CombatAI extends FakePlayerAI
 					{
 						castSelfSpell(skill);
 					}
-				break;
+					break;
 				case MISSINGCP:
 					if (getMissingHealth() >= selfBuff.getConditionValue())
 					{
 						castSelfSpell(skill);
 					}
-				break;
+					break;
 				case NONE:
 					castSelfSpell(skill);
 				default:
-				break;
+					break;
 			}
-
+			
 		}
 	}
-
+	
 	private double getMissingHealth()
 	{
 		return _fakePlayer.getMaxCp() - _fakePlayer.getCurrentCp();
 	}
-
+	
 	protected double changeOfUsingSkill()
 	{
 		return 1.0;
 	}
-
+	
 	protected abstract ShotType getShotType();
-
+	
 	protected abstract List<OffensiveSpell> getOffensiveSpells();
-
+	
 	protected abstract List<HealingSpell> getHealingSpells();
-
+	
 	protected abstract List<SupportSpell> getSelfSupportSpells();
 }

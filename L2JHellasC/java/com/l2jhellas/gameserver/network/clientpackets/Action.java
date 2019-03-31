@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
-
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -24,17 +8,19 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 
+import java.util.logging.Logger;
+
 public final class Action extends L2GameClientPacket
 {
 	private static Logger _log = Logger.getLogger(Action.class.getName());
 	private static final String ACTION__C__04 = "[C] 04 Action";
-
+	
 	// cddddc
 	private int _objectId;
 	@SuppressWarnings("unused")
 	private int _originX, _originY, _originZ;
 	private int _actionId;
-
+	
 	@Override
 	protected void readImpl()
 	{
@@ -44,7 +30,7 @@ public final class Action extends L2GameClientPacket
 		_originZ = readD();
 		_actionId = readC(); // Action identifier : 0-Simple click, 1-Shift click
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
@@ -56,7 +42,7 @@ public final class Action extends L2GameClientPacket
 		
 		if (activeChar == null)
 			return;
-
+		
 		if (activeChar.inObserverMode())
 		{
 			activeChar.sendPacket(SystemMessageId.OBSERVERS_CANNOT_PARTICIPATE);
@@ -70,7 +56,7 @@ public final class Action extends L2GameClientPacket
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-	    
+		
 		// If requested object doesn't exist
 		final L2Object obj = (activeChar.getTargetId() == _objectId) ? activeChar.getTarget() : L2World.getInstance().findObject(_objectId);
 		if (obj == null)
@@ -84,17 +70,18 @@ public final class Action extends L2GameClientPacket
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-
-        if(_actionId == 0)
-        	obj.onAction(activeChar);
-        else if(_actionId ==1)
-        {   
+		
+		if (_actionId == 0)
+			obj.onAction(activeChar);
+		else if (_actionId == 1)
+		{
 			if (!activeChar.isGM() && !(obj instanceof L2Npc && Config.ALT_GAME_VIEWNPC))
 				obj.onAction(activeChar);
 			else
 				obj.onActionShift(activeChar);
-        }
+		}
 	}
+	
 	@Override
 	public String getType()
 	{

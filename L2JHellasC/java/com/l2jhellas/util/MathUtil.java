@@ -3,25 +3,14 @@ package com.l2jhellas.util;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 
-
 public class MathUtil
 {
-	/**
-	 * @param objectsSize : The overall elements size.
-	 * @param pageSize : The number of elements per page.
-	 * @return The number of pages, based on the number of elements and the number of elements we want per page.
-	 */
+	
 	public static int countPagesNumber(int objectsSize, int pageSize)
 	{
 		return objectsSize / pageSize + (objectsSize % pageSize == 0 ? 0 : 1);
 	}
 	
-	/**
-	 * @param numToTest : The number to test.
-	 * @param min : The minimum limit.
-	 * @param max : The maximum limit.
-	 * @return the number or one of the limit (mininum / maximum).
-	 */
 	public static int limit(int numToTest, int min, int max)
 	{
 		return (numToTest > max) ? max : ((numToTest < min) ? min : numToTest);
@@ -104,14 +93,6 @@ public class MathUtil
 		return calculateDistance(obj1.getPosition().getX(), obj1.getPosition().getY(), obj1.getPosition().getZ(), obj2.getPosition().getX(), obj2.getPosition().getY(), obj2.getPosition().getZ(), includeZAxis);
 	}
 	
-	/**
-	 * Faster calculation than checkIfInRange if distance is short and collisionRadius isn't needed. Not for long distance checks (potential teleports, far away castles, etc)
-	 * @param radius The radius to use as check.
-	 * @param obj1 The position 1 to make check on.
-	 * @param obj2 The postion 2 to make check on.
-	 * @param includeZAxis Include Z check or not.
-	 * @return true if both objects are in the given radius.
-	 */
 	public static boolean checkIfInShortRadius(int radius, L2Object obj1, L2Object obj2, boolean includeZAxis)
 	{
 		if (obj1 == null || obj2 == null)
@@ -132,15 +113,6 @@ public class MathUtil
 		return dx * dx + dy * dy <= radius * radius;
 	}
 	
-	/**
-	 * This check includes collision radius of both characters.<br>
-	 * Used for accurate checks (skill casts, knownlist, etc).
-	 * @param range The range to use as check.
-	 * @param obj1 The position 1 to make check on.
-	 * @param obj2 The postion 2 to make check on.
-	 * @param includeZAxis Include Z check or not.
-	 * @return true if both objects are in the given radius.
-	 */
 	public static boolean checkIfInRange(int range, L2Object obj1, L2Object obj2, boolean includeZAxis)
 	{
 		if (obj1 == null || obj2 == null)
@@ -171,13 +143,6 @@ public class MathUtil
 		return d <= range * range + 2 * range * rad + rad * rad;
 	}
 	
-	/**
-	 * Returns the rounded value of val to specified number of digits after the decimal point.<BR>
-	 * (Based on round() in PHP)
-	 * @param val
-	 * @param numPlaces
-	 * @return float roundedVal
-	 */
 	public static float roundTo(float val, int numPlaces)
 	{
 		if (numPlaces <= 1)

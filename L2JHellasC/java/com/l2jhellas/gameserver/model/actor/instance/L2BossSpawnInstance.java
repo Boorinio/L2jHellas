@@ -1,19 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -26,19 +11,18 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
-/**
- * @author Unknown
- * @fixes Nightwolf
- */
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class L2BossSpawnInstance extends L2Npc
 {
 	private static final SimpleDateFormat Time = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
+	
 	public L2BossSpawnInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 	}
-
+	
 	@Override
 	public void onAction(L2PcInstance player)
 	{
@@ -46,11 +30,11 @@ public class L2BossSpawnInstance extends L2Npc
 		{
 			return;
 		}
-
+		
 		if (this != player.getTarget())
 		{
 			player.setTarget(this);
-
+			
 			player.sendPacket(new MyTargetSelected(getObjectId(), 0));
 		}
 		else if (!canInteract(player))
@@ -61,23 +45,23 @@ public class L2BossSpawnInstance extends L2Npc
 		{
 			showHtmlWindow(player);
 		}
-
+		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-
+	
 	private void showHtmlWindow(L2PcInstance activeChar)
 	{
 		showRbInfo(activeChar);
-
+		
 		activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-
+	
 	private final void showRbInfo(L2PcInstance player)
 	{
 		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		StringBuilder tb = new StringBuilder();
 		tb.append("<html><title>Boss Info</title><body><br><center><img src=\"L2UI_CH3.herotower_deco\" width=256 height=32>");
-
+		
 		for (final int boss : Config.BOSS_RESPAWN_INFO)
 		{
 			final String name = NpcData.getInstance().getTemplate(boss).getName();
@@ -105,7 +89,7 @@ public class L2BossSpawnInstance extends L2Npc
 			}
 		}
 		tb.append("<br><img src=\"L2UI_CH3.herotower_deco\" width=256 height=32></center></body></html>");
-
+		
 		html.setHtml(tb.toString());
 		html.replace("%objectId%", String.valueOf(getObjectId()));
 		player.sendPacket(html);

@@ -1,32 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.skills;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.logging.Logger;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.AbnormalEffect;
@@ -71,19 +43,33 @@ import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.logging.Logger;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
 abstract class DocumentBase
 {
 	static Logger _log = Logger.getLogger(DocumentBase.class.getName());
-
+	
 	private final File _file;
 	protected Map<String, String[]> _tables;
-
+	
 	DocumentBase(File pFile)
 	{
 		_file = pFile;
 		_tables = new HashMap<>();
 	}
-
+	
 	Document parse()
 	{
 		Document doc;
@@ -114,25 +100,25 @@ abstract class DocumentBase
 		}
 		return doc;
 	}
-
+	
 	protected abstract void parseDocument(Document doc);
-
+	
 	protected abstract StatsSet getStatsSet();
-
+	
 	protected abstract String getTableValue(String name);
-
+	
 	protected abstract String getTableValue(String name, int idx);
-
+	
 	protected void resetTable()
 	{
 		_tables = new HashMap<>();
 	}
-
+	
 	protected void setTable(String name, String[] table)
 	{
 		_tables.put(name, table);
 	}
-
+	
 	protected void parseTemplate(Node n, Object template)
 	{
 		Condition condition = null;
@@ -171,7 +157,7 @@ abstract class DocumentBase
 			}
 		}
 	}
-
+	
 	protected void attachFunc(Node n, Object template, String name, Condition attachCond)
 	{
 		Stats stat = Stats.valueOfXml(n.getAttributes().getNamedItem("stat").getNodeValue());
@@ -187,7 +173,7 @@ abstract class DocumentBase
 		else if (template instanceof EffectTemplate)
 			((EffectTemplate) template).attach(ft);
 	}
-
+	
 	protected void attachLambdaFunc(Node n, Object template, LambdaCalc calc)
 	{
 		String name = n.getNodeName();
@@ -198,7 +184,7 @@ abstract class DocumentBase
 		FuncTemplate ft = new FuncTemplate(null, null, name, null, calc.funcs.length, lambda);
 		calc.addFunc(ft.getFunc(new Env(), calc));
 	}
-
+	
 	protected void attachEffect(Node n, Object template, Condition attachCond)
 	{
 		NamedNodeMap attrs = n.getAttributes();
@@ -269,7 +255,7 @@ abstract class DocumentBase
 		else if (template instanceof L2Skill && self)
 			((L2Skill) template).attachSelf(lt);
 	}
-
+	
 	protected void attachSkill(Node n, Object template, Condition attachCond)
 	{
 		NamedNodeMap attrs = n.getAttributes();
@@ -308,7 +294,7 @@ abstract class DocumentBase
 			((L2Item) template).attach(skill); // Attach as skill triggered on use
 		}
 	}
-
+	
 	protected Condition parseCondition(Node n, Object template)
 	{
 		while (n != null && n.getNodeType() != Node.ELEMENT_NODE)
@@ -333,7 +319,7 @@ abstract class DocumentBase
 			return parseGameCondition(n);
 		return null;
 	}
-
+	
 	protected Condition parseLogicAnd(Node n, Object template)
 	{
 		ConditionLogicAnd cond = new ConditionLogicAnd();
@@ -346,7 +332,7 @@ abstract class DocumentBase
 			_log.severe("Empty <and> condition in " + _file);
 		return cond;
 	}
-
+	
 	protected Condition parseLogicOr(Node n, Object template)
 	{
 		ConditionLogicOr cond = new ConditionLogicOr();
@@ -359,7 +345,7 @@ abstract class DocumentBase
 			_log.severe("Empty <or> condition in " + _file);
 		return cond;
 	}
-
+	
 	protected Condition parseLogicNot(Node n, Object template)
 	{
 		for (n = n.getFirstChild(); n != null; n = n.getNextSibling())
@@ -372,7 +358,7 @@ abstract class DocumentBase
 		_log.severe("Empty <not> condition in " + _file);
 		return null;
 	}
-
+	
 	protected Condition parsePlayerCondition(Node n)
 	{
 		Condition cond = null;
@@ -480,22 +466,22 @@ abstract class DocumentBase
 				cond = joinAnd(cond, new ConditionPlayerInvSize(size));
 			}
 		}
-
+		
 		// Elemental seed condition processing
-		for (int i = 0; i < ElementSeeds.length; i++)
+		for (int elementSeed : ElementSeeds)
 		{
-			if (ElementSeeds[i] > 0)
+			if (elementSeed > 0)
 			{
 				cond = joinAnd(cond, new ConditionElementSeed(ElementSeeds));
 				break;
 			}
 		}
-
+		
 		if (cond == null)
 			_log.severe("Unrecognized <player> condition in " + _file);
 		return cond;
 	}
-
+	
 	protected Condition parseTargetCondition(Node n, Object template)
 	{
 		Condition cond = null;
@@ -515,7 +501,7 @@ abstract class DocumentBase
 			}
 			else if ("class_id_restriction".equalsIgnoreCase(a.getNodeName()))
 			{
-				ArrayList<Integer> array = new ArrayList<Integer>();
+				ArrayList<Integer> array = new ArrayList<>();
 				StringTokenizer st = new StringTokenizer(a.getNodeValue(), ",");
 				while (st.hasMoreTokens())
 				{
@@ -526,7 +512,7 @@ abstract class DocumentBase
 			}
 			else if ("race_id".equalsIgnoreCase(a.getNodeName()))
 			{
-				ArrayList<Integer> array = new ArrayList<Integer>();
+				ArrayList<Integer> array = new ArrayList<>();
 				StringTokenizer st = new StringTokenizer(a.getNodeValue(), ",");
 				while (st.hasMoreTokens())
 				{
@@ -566,14 +552,14 @@ abstract class DocumentBase
 			_log.severe("Unrecognized <target> condition in " + _file);
 		return cond;
 	}
-
+	
 	protected Condition parseSkillCondition(Node n)
 	{
 		NamedNodeMap attrs = n.getAttributes();
 		Stats stat = Stats.valueOfXml(attrs.getNamedItem("stat").getNodeValue());
 		return new ConditionSkillStats(stat);
 	}
-
+	
 	protected Condition parseUsingCondition(Node n)
 	{
 		Condition cond = null;
@@ -627,7 +613,7 @@ abstract class DocumentBase
 			_log.severe("Unrecognized <using> condition in " + _file);
 		return cond;
 	}
-
+	
 	protected Condition parseGameCondition(Node n)
 	{
 		Condition cond = null;
@@ -655,7 +641,7 @@ abstract class DocumentBase
 			_log.severe("Unrecognized <game> condition in " + _file);
 		return cond;
 	}
-
+	
 	protected void parseTable(Node n)
 	{
 		NamedNodeMap attrs = n.getAttributes();
@@ -663,7 +649,7 @@ abstract class DocumentBase
 		if (name.charAt(0) != '#')
 			_log.warning(DocumentBase.class.getName() + ": Table name must start with #");
 		StringTokenizer data = new StringTokenizer(n.getFirstChild().getNodeValue());
-		List<String> array = new ArrayList<String>();
+		List<String> array = new ArrayList<>();
 		while (data.hasMoreTokens())
 			array.add(data.nextToken());
 		String[] res = new String[array.size()];
@@ -674,7 +660,7 @@ abstract class DocumentBase
 		}
 		setTable(name, res);
 	}
-
+	
 	protected void parseBeanSet(Node n, StatsSet set, Integer level)
 	{
 		String name = n.getAttributes().getNamedItem("name").getNodeValue().trim();
@@ -685,7 +671,8 @@ abstract class DocumentBase
 		else
 			set.set(name, value);
 	}
-
+	
+	@SuppressWarnings("null")
 	protected Lambda getLambda(Node n, Object template)
 	{
 		Node nval = n.getAttributes().getNamedItem("val");
@@ -727,7 +714,7 @@ abstract class DocumentBase
 			n = n.getNextSibling();
 		if (n == null || !"val".equals(n.getNodeName()))
 			_log.warning(DocumentBase.class.getName() + ": Value not specified");
-
+		
 		for (n = n.getFirstChild(); n != null; n = n.getNextSibling())
 		{
 			if (n.getNodeType() != Node.ELEMENT_NODE)
@@ -736,7 +723,7 @@ abstract class DocumentBase
 		}
 		return calc;
 	}
-
+	
 	protected String getValue(String value, Object template)
 	{
 		// is it a table?
@@ -751,7 +738,7 @@ abstract class DocumentBase
 		}
 		return value;
 	}
-
+	
 	protected Condition joinAnd(Condition cond, Condition c)
 	{
 		if (cond == null)

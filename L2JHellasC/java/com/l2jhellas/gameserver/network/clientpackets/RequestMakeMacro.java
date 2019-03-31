@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
@@ -26,24 +12,7 @@ public final class RequestMakeMacro extends L2GameClientPacket
 	private static final int MAX_MACRO_LENGTH = 12;
 	private L2Macro _macro;
 	private int _commandsLenght = 0;
-
-	/**
-	 * packet type id 0xc1<BR>
-	 * sample<BR>
-	 * c1<BR>
-	 * d // id<BR>
-	 * S // macro name<BR>
-	 * S // unknown desc<BR>
-	 * S // unknown acronym<BR>
-	 * c // icon<BR>
-	 * c // count<BR>
-	 * c // entry<BR>
-	 * c // type<BR>
-	 * d // skill id<BR>
-	 * c // shortcut id<BR>
-	 * S // command name<BR>
-	 * format: cdSSScc (ccdcS)
-	 */
+	
 	@Override
 	protected void readImpl()
 	{
@@ -56,7 +25,7 @@ public final class RequestMakeMacro extends L2GameClientPacket
 		
 		if (_count > MAX_MACRO_LENGTH)
 			_count = MAX_MACRO_LENGTH;
-
+		
 		L2MacroCmd[] commands = new L2MacroCmd[_count];
 		
 		if (Config.DEBUG)
@@ -79,7 +48,7 @@ public final class RequestMakeMacro extends L2GameClientPacket
 		
 		_macro = new L2Macro(_id, _icon, _name, _desc, _acronym, commands);
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
@@ -112,7 +81,7 @@ public final class RequestMakeMacro extends L2GameClientPacket
 		}
 		player.registerMacro(_macro);
 	}
-
+	
 	@Override
 	public String getType()
 	{

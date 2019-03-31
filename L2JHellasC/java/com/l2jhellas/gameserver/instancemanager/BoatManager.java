@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.instancemanager;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2World;
@@ -25,6 +8,9 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.templates.L2CharTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class BoatManager
 {
@@ -36,14 +22,14 @@ public class BoatManager
 	public static final int RUNE_HARBOR = 2;
 	
 	public static final int BOAT_BROADCAST_RADIUS = 20000;
-
+	
 	public static final BoatManager getInstance()
 	{
 		return SingletonHolder._instance;
 	}
-
+	
 	public boolean _initialized;
-
+	
 	public BoatManager()
 	{
 		for (int i = 0; i < _docksBusy.length; i++)
@@ -52,30 +38,26 @@ public class BoatManager
 		}
 	}
 	
-	/**
-	 * @param line
-	 * @return
-	 */
 	public L2BoatInstance getNewBoat(int boatId, int x, int y, int z, int heading)
 	{
 		StatsSet npcDat = new StatsSet();
 		npcDat.set("npcId", boatId);
 		npcDat.set("level", 0);
 		npcDat.set("jClass", "boat");
-
+		
 		npcDat.set("baseSTR", 0);
 		npcDat.set("baseCON", 0);
 		npcDat.set("baseDEX", 0);
 		npcDat.set("baseINT", 0);
 		npcDat.set("baseWIT", 0);
 		npcDat.set("baseMEN", 0);
-
+		
 		npcDat.set("baseShldDef", 0);
 		npcDat.set("baseShldRate", 0);
 		npcDat.set("baseAccCombat", 38);
 		npcDat.set("baseEvasRate", 38);
 		npcDat.set("baseCritRate", 38);
-
+		
 		// npcDat.set("name", "");
 		npcDat.set("collision_radius", 0);
 		npcDat.set("collision_height", 0);
@@ -102,10 +84,8 @@ public class BoatManager
 		npcDat.set("basePDef", 100);
 		npcDat.set("baseMDef", 100);
 		
-
-		L2CharTemplate template = new L2CharTemplate(npcDat);	
+		L2CharTemplate template = new L2CharTemplate(npcDat);
 		L2BoatInstance boat = new L2BoatInstance(IdFactory.getInstance().getNextId(), template);
-
 		
 		_boats.put(boat.getObjectId(), boat);
 		
@@ -115,46 +95,27 @@ public class BoatManager
 		return boat;
 	}
 	
-	/**
-	 * @param boatId
-	 * @return
-	 */
 	public L2BoatInstance getBoat(int boatId)
 	{
 		return _boats.get(boatId);
 	}
 	
-	/**
-	 * Lock/unlock dock so only one ship can be docked
-	 * @param h Dock Id
-	 * @param value True if dock is locked
-	 */
 	public void dockShip(int h, boolean value)
 	{
 		_docksBusy[h] = value;
 	}
 	
-	/**
-	 * Check if dock is busy
-	 * @param h Dock Id
-	 * @return Trye if dock is locked
-	 */
 	public boolean dockBusy(int h)
 	{
 		return _docksBusy[h];
 	}
-	/**
-	 * Broadcast one packet in both path points
-	 * @param point1
-	 * @param point2
-	 * @param packet The packet to broadcast.
-	 */
+	
 	public void broadcastPacket(VehiclePathPoint point1, VehiclePathPoint point2, L2GameServerPacket packet)
 	{
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			if (Math.hypot(player.getX() - point1.x, player.getY() - point1.y) < BOAT_BROADCAST_RADIUS)
-				   player.sendPacket(packet);
+				player.sendPacket(packet);
 			else
 			{
 				if (Math.hypot(player.getX() - point2.x, player.getY() - point2.y) < BOAT_BROADCAST_RADIUS)
@@ -163,14 +124,8 @@ public class BoatManager
 		}
 	}
 	
-	/**
-	 * Broadcast several packets in both path points
-	 * @param point1
-	 * @param point2
-	 * @param packets The packets to broadcast.
-	 */
 	public void broadcastPackets(VehiclePathPoint point1, VehiclePathPoint point2, L2GameServerPacket... packets)
-	{	
+	{
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
 			if (Math.hypot(player.getX() - point1.x, player.getY() - point1.y) < BOAT_BROADCAST_RADIUS)

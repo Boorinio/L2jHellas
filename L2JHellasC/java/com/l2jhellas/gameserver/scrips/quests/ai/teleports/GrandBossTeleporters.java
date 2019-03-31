@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.ai.teleports;
-
-import java.util.List;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
@@ -34,24 +18,8 @@ import com.l2jhellas.gameserver.scrips.quests.ai.invidual.Valakas;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 
-/**
- * This script leads behavior of multiple bosses teleporters.
- * <ul>
- * <li>13001, Heart of Warding : Teleport into Lair of Antharas</li>
- * <li>29055, Teleportation Cubic : Teleport out of Baium zone</li>
- * <li>31859, Teleportation Cubic : Teleport out of Lair of Antharas</li>
- * <li>31384, Gatekeeper of Fire Dragon : Opening some doors</li>
- * <li>31385, Heart of Volcano : Teleport into Lair of Valakas</li>
- * <li>31540, Watcher of Valakas Klein : Teleport into Hall of Flames</li>
- * <li>31686, Gatekeeper of Fire Dragon : Opens doors to Heart of Volcano</li>
- * <li>31687, Gatekeeper of Fire Dragon : Opens doors to Heart of Volcano</li>
- * <li>31759, Teleportation Cubic : Teleport out of Lair of Valakas</li>
- * <li>31862, Angelic Vortex : Baium Teleport (3 different HTMs according of situation)</li>
- * <li>32107, Teleportation Cubic : Teleport out of Sailren Nest</li>
- * <li>32109, Shilen's Stone Statue : Teleport to Sailren Nest</li>
- * </ul>
- * @author Plim, original python script by Emperorc
- */
+import java.util.List;
+
 public class GrandBossTeleporters extends Quest
 {
 	private static final String qn = "GrandBossTeleporters";
@@ -117,7 +85,7 @@ public class GrandBossTeleporters extends Quest
 			if (st.hasQuestItems(7267))
 			{
 				st.takeItems(7267, 1);
-				player.teleToLocation(183813, -115157, -3303,false);
+				player.teleToLocation(183813, -115157, -3303, false);
 				st.set("allowEnter", "1");
 			}
 			else

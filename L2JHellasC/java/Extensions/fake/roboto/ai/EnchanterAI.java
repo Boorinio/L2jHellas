@@ -9,23 +9,23 @@ import com.l2jhellas.util.Rnd;
 
 public class EnchanterAI extends FakePlayerAI
 {
-
-	private int _maxEnchant = Config.ENCHANT_MAX_WEAPON;
-
+	
+	private final int _maxEnchant = Config.ENCHANT_MAX_WEAPON;
+	
 	public EnchanterAI(FakePlayer character)
 	{
 		super(character);
 	}
-
+	
 	@Override
 	public void setup()
 	{
 		super.setup();
 		L2ItemInstance weapon = _fakePlayer.getActiveWeaponInstance();
-		weapon = checkIfWeaponIsExistsEquipped(weapon);	
+		weapon = checkIfWeaponIsExistsEquipped(weapon);
 		_fakePlayer.broadcastUserInfo();
 	}
-
+	
 	@Override
 	public void thinkAndAct()
 	{
@@ -37,7 +37,7 @@ public class EnchanterAI extends FakePlayerAI
 			L2ItemInstance weapon = _fakePlayer.getActiveWeaponInstance();
 			weapon = checkIfWeaponIsExistsEquipped(weapon);
 			double chance = getSuccessChance(weapon);
-
+			
 			int currentEnchantLevel = weapon.getEnchantLevel();
 			if (currentEnchantLevel < _maxEnchant || serverHasUnlimitedMax())
 			{
@@ -54,24 +54,24 @@ public class EnchanterAI extends FakePlayerAI
 		}
 		setBusyThinking(false);
 	}
-
+	
 	private void destroyFailedItem(L2ItemInstance weapon)
 	{
 		_fakePlayer.getInventory().destroyItem("Enchant", weapon, _fakePlayer, null);
 		_fakePlayer.broadcastUserInfo();
 		_fakePlayer.setActiveEnchantItem(null);
 	}
-
-	private double getSuccessChance(L2ItemInstance weapon)
+	
+	private static double getSuccessChance(L2ItemInstance weapon)
 	{
 		return (weapon.getEnchantLevel() > 14) ? 75 : 80;
 	}
-
+	
 	private boolean serverHasUnlimitedMax()
 	{
 		return _maxEnchant == 0;
 	}
-
+	
 	private L2ItemInstance checkIfWeaponIsExistsEquipped(L2ItemInstance weapon)
 	{
 		if (weapon == null)
@@ -81,7 +81,7 @@ public class EnchanterAI extends FakePlayerAI
 		}
 		return weapon;
 	}
-
+	
 	@Override
 	protected int[][] getBuffs()
 	{

@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.tools.ngl;
 
 import java.io.File;
@@ -26,26 +12,23 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-/**
- * @author mrTJO
- */
 public class LocalizationParser
 {
 	private String LANGUAGES_DIRECTORY = "../languages/";
 	private final Map<String, String> _msgMap = new HashMap<>();
 	private static final Logger _log = Logger.getLogger(LocalizationParser.class.getName());
 	private final String _baseName;
-
+	
 	public LocalizationParser(String dir, String baseName, Locale locale)
 	{
 		LANGUAGES_DIRECTORY += dir + "/";
 		_baseName = baseName;
-
+		
 		String language = locale.getLanguage();
 		// String script = locale.getScript();
 		String country = locale.getCountry();
 		String variant = locale.getVariant();
-
+		
 		StringBuilder sb = new StringBuilder();
 		sb.append(language);
 		if (!country.isEmpty())
@@ -56,15 +39,13 @@ public class LocalizationParser
 		{
 			sb.append('_' + variant);
 			// Java 7 Function
-			/*
-			 * if (script != "") sb.append('_'+script);
-			 */
+			
 		}
-
+		
 		File xml = getTranslationFile(sb.toString());
 		parseXml(xml);
 	}
-
+	
 	public LocalizationParser(String dir, String baseName, String locale)
 	{
 		LANGUAGES_DIRECTORY += dir + "/";
@@ -72,19 +53,14 @@ public class LocalizationParser
 		File xml = getTranslationFile(locale);
 		parseXml(xml);
 	}
-
-	/**
-	 * Parse translation xml
-	 * 
-	 * @param xml
-	 */
+	
 	private void parseXml(File xml)
 	{
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		factory.setIgnoringComments(true);
 		Document doc = null;
-
+		
 		if (xml.exists())
 		{
 			try
@@ -96,7 +72,7 @@ public class LocalizationParser
 				_log.warning(LocalizationParser.class.getSimpleName() + ": Could not load localization file");
 				return;
 			}
-
+			
 			Node n = doc.getFirstChild();
 			NamedNodeMap docAttr = n.getAttributes();
 			if (docAttr.getNamedItem("extends") != null)
@@ -116,13 +92,7 @@ public class LocalizationParser
 			}
 		}
 	}
-
-	/**
-	 * Search the translation file
-	 * 
-	 * @param language
-	 * @return
-	 */
+	
 	private File getTranslationFile(String language)
 	{
 		File xml = null;
@@ -130,25 +100,19 @@ public class LocalizationParser
 		{
 			xml = new File(LANGUAGES_DIRECTORY + _baseName + '_' + language + ".xml");
 		}
-
+		
 		if ((language.length() > 2) && ((xml == null) || !xml.exists()))
 		{
 			xml = new File(LANGUAGES_DIRECTORY + _baseName + '_' + language.substring(0, 2) + ".xml");
 		}
-
+		
 		if ((xml == null) || !xml.exists())
 		{
 			xml = new File(LANGUAGES_DIRECTORY + _baseName + ".xml");
 		}
 		return xml;
 	}
-
-	/**
-	 * Return string from specified id
-	 * 
-	 * @param id
-	 * @return
-	 */
+	
 	protected String getStringFromId(String id)
 	{
 		return _msgMap.get(id);

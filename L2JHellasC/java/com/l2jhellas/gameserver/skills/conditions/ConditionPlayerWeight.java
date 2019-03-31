@@ -3,19 +3,10 @@ package com.l2jhellas.gameserver.skills.conditions;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.Env;
 
-
-/**
- * The Class ConditionPlayerWeight.
- * @author Kerberos
- */
 public class ConditionPlayerWeight extends Condition
 {
 	private final int _weight;
 	
-	/**
-	 * Instantiates a new condition player weight.
-	 * @param weight the weight
-	 */
 	public ConditionPlayerWeight(int weight)
 	{
 		_weight = weight;

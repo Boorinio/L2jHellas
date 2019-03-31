@@ -1,14 +1,11 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-/**
- * @author AbsolutePower
- */
 public class ShowCastleTrap extends L2GameServerPacket
 {
 	private static final String _S__CF_ShowCastleTrap = "[S] CF ShowCastleTrap";
 	
 	private final int _trapId;
-	private int _active;
+	private final int _active;
 	
 	public ShowCastleTrap(int trapId, int active)
 	{
@@ -24,7 +21,6 @@ public class ShowCastleTrap extends L2GameServerPacket
 		writeC(_active);
 	}
 	
-
 	@Override
 	public String getType()
 	{

@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
-
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.Music;
@@ -28,10 +11,9 @@ import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
 
-/**
- * Core AI
- * @author DrLecter Revised By Emperorc
- */
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 public class Core extends AbstractNpcAI
 {
 	private static final int CORE = 29006;
@@ -42,7 +24,7 @@ public class Core extends AbstractNpcAI
 	private static final byte ALIVE = 0; // Core is spawned.
 	private static final byte DEAD = 1; // Core has been killed.
 	
-	List<L2Attackable> _minions = new CopyOnWriteArrayList<L2Attackable>();
+	List<L2Attackable> _minions = new CopyOnWriteArrayList<>();
 	
 	public Core()
 	{

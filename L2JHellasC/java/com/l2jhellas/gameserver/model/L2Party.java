@@ -1,23 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.concurrent.Future;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSignsFestival;
@@ -45,9 +26,12 @@ import com.l2jhellas.gameserver.network.serverpackets.PartySmallWindowDeleteAll;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
-/**
- * @author nuocnam
- */
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.concurrent.Future;
+
 public class L2Party
 {
 	private static final double[] BONUS_EXP_SP =
@@ -83,11 +67,6 @@ public class L2Party
 	private Future<?> _positionBroadcastTask = null;
 	protected PartyMemberPosition _positionPacket;
 	
-	/**
-	 * constructor ensures party has always one member - leader
-	 * @param leader
-	 * @param itemDistribution
-	 */
 	public L2Party(L2PcInstance leader, int itemDistribution)
 	{
 		_members = new ArrayList<>();
@@ -96,59 +75,32 @@ public class L2Party
 		_partyLvl = leader.getLevel();
 	}
 	
-	/**
-	 * returns number of party members
-	 * @return
-	 */
 	public int getMemberCount()
 	{
 		return getPartyMembers().size();
 	}
 	
-	/**
-	 * Check if another player can start invitation process
-	 * @return boolean if party waits for invitation respond
-	 */
 	public boolean getPendingInvitation()
 	{
 		return _pendingInvitation;
 	}
 	
-	/**
-	 * set invitation process flag and store time for expiration happens when: player join party or player decline to join
-	 * @param val
-	 */
 	public void setPendingInvitation(boolean val)
 	{
 		_pendingInvitation = val;
 		_pendingInviteTimeout = GameTimeController.getInstance().getGameTicks() + L2PcInstance.REQUEST_TIMEOUT * GameTimeController.TICKS_PER_SECOND;
 	}
 	
-	/**
-	 * Check if player invitation is expired
-	 * @return boolean if time is expired
-	 * @see net.sf.l2j.gameserver.model.actor.instance.L2PcInstance#isRequestExpired()
-	 */
 	public boolean isInvitationRequestExpired()
 	{
 		return !(_pendingInviteTimeout > GameTimeController.getInstance().getGameTicks());
 	}
 	
-	/**
-	 * returns all party members
-	 * @return
-	 */
 	public final List<L2PcInstance> getPartyMembers()
 	{
 		return _members;
 	}
 	
-	/**
-	 * get random member from party
-	 * @param ItemId
-	 * @param target
-	 * @return
-	 */
 	private L2PcInstance getRandomMember(int ItemId, L2Character target)
 	{
 		List<L2PcInstance> availableMembers = new ArrayList<>();
@@ -164,12 +116,6 @@ public class L2Party
 		return null;
 	}
 	
-	/**
-	 * get next item looter
-	 * @param ItemId
-	 * @param target
-	 * @return
-	 */
 	private L2PcInstance getNextLooter(int ItemId, L2Character target)
 	{
 		for (int i = 0; i < getMemberCount(); i++)
@@ -185,14 +131,6 @@ public class L2Party
 		return null;
 	}
 	
-	/**
-	 * get next item looter
-	 * @param player
-	 * @param ItemId
-	 * @param spoil
-	 * @param target
-	 * @return
-	 */
 	private L2PcInstance getActualLooter(L2PcInstance player, int ItemId, boolean spoil, L2Character target)
 	{
 		L2PcInstance looter = player;
@@ -218,31 +156,20 @@ public class L2Party
 		if (looter == null)
 		{
 			looter = player;
-		}				
+		}
 		return looter;
 	}
 	
-	/**
-	 * @param player The player to make checks on.
-	 * @return true if player is party leader.
-	 */
 	public boolean isLeader(L2PcInstance player)
 	{
 		return (getLeader().equals(player));
 	}
 	
-	/**
-	 * @return the Object ID for the party leader to be used as a unique identifier of this party
-	 */
 	public int getPartyLeaderOID()
 	{
 		return getLeader().getObjectId();
 	}
 	
-	/**
-	 * Broadcasts packet to every party member.
-	 * @param packet The packet to broadcast.
-	 */
 	public void broadcastToPartyMembers(L2GameServerPacket packet)
 	{
 		for (L2PcInstance member : getPartyMembers())
@@ -274,11 +201,6 @@ public class L2Party
 		}
 	}
 	
-	/**
-	 * Send a packet to all other L2PcInstance of the Party.
-	 * @param player
-	 * @param msg
-	 */
 	public void broadcastToPartyMembers(L2PcInstance player, L2GameServerPacket msg)
 	{
 		for (L2PcInstance member : getPartyMembers())
@@ -288,10 +210,6 @@ public class L2Party
 		}
 	}
 	
-	/**
-	 * adds new member to party
-	 * @param player
-	 */
 	public synchronized void addPartyMember(L2PcInstance player)
 	{
 		if (getPartyMembers().contains(player))
@@ -332,19 +250,11 @@ public class L2Party
 			_positionBroadcastTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new PositionBroadcast(), PARTY_POSITION_BROADCAST / 2, PARTY_POSITION_BROADCAST);
 	}
 	
-	/**
-	 * Remove player from party Overloaded method that takes player's name as parameter
-	 * @param name
-	 */
 	public void removePartyMember(String name)
 	{
 		removePartyMember(getPlayerByName(name));
 	}
 	
-	/**
-	 * Remove player from party
-	 * @param player
-	 */
 	public void removePartyMember(L2PcInstance player)
 	{
 		removePartyMember(player, true);
@@ -361,9 +271,8 @@ public class L2Party
 			if (player.isFestivalParticipant())
 				SevenSignsFestival.getInstance().updateParticipants(player, this);
 			
-
 			DuelManager.getInstance().onPartyEdit(player);
-
+			
 			if (sendMessage)
 			{
 				player.sendPacket(SystemMessageId.YOU_LEFT_PARTY);
@@ -415,10 +324,6 @@ public class L2Party
 		}
 	}
 	
-	/**
-	 * Change party leader (used for string arguments)
-	 * @param name
-	 */
 	public void changePartyLeader(String name)
 	{
 		L2PcInstance player = getPlayerByName(name);
@@ -459,11 +364,6 @@ public class L2Party
 		}
 	}
 	
-	/**
-	 * finds a player in the party by name
-	 * @param name
-	 * @return
-	 */
 	private L2PcInstance getPlayerByName(String name)
 	{
 		for (L2PcInstance member : getPartyMembers())
@@ -474,11 +374,6 @@ public class L2Party
 		return null;
 	}
 	
-	/**
-	 * distribute item(s) to party members
-	 * @param player
-	 * @param item
-	 */
 	public void distributeItem(L2PcInstance player, L2ItemInstance item)
 	{
 		if (item.getItemId() == 57)
@@ -500,13 +395,6 @@ public class L2Party
 			broadcastToPartyMembers(target, SystemMessage.getSystemMessage(SystemMessageId.S1_OBTAINED_S2).addPcName(target).addItemName(item));
 	}
 	
-	/**
-	 * distribute item(s) to party members
-	 * @param player
-	 * @param item
-	 * @param spoil
-	 * @param target
-	 */
 	public void distributeItem(L2PcInstance player, L2Attackable.RewardItem item, boolean spoil, L2Attackable target)
 	{
 		if (item == null)
@@ -541,12 +429,6 @@ public class L2Party
 		msg = null;
 	}
 	
-	/**
-	 * distribute adena to party members
-	 * @param player
-	 * @param adena
-	 * @param target
-	 */
 	public void distributeAdena(L2PcInstance player, int adena, L2Character target)
 	{
 		// Get all the party members
@@ -559,33 +441,18 @@ public class L2Party
 		for (L2PcInstance member : membersList)
 		{
 			if (Util.checkIfInRange(Config.ALT_PARTY_RANGE2, target, member, true))
-			    ToReward.add(member);
+				ToReward.add(member);
 		}
 		
 		if (!ToReward.isEmpty())
 		{
-		   int count = adena / ToReward.size();
-		   
-		   for (L2PcInstance member : ToReward)
-			   member.addAdena("Party", count, player, true);
+			int count = adena / ToReward.size();
+			
+			for (L2PcInstance member : ToReward)
+				member.addAdena("Party", count, player, true);
 		}
 	}
 	
-	/**
-	 * Distribute Experience and SP rewards to L2PcInstance Party members in the known area of the last attacker.<BR>
-	 * <BR>
-	 * <B><U> Actions</U> :</B><BR>
-	 * <BR>
-	 * <li>Get the L2PcInstance owner of the L2SummonInstance (if necessary)</li> <li>Calculate the Experience and SP reward distribution rate</li> <li>Add Experience and SP to the L2PcInstance</li><BR>
-	 * <BR>
-	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : This method DOESN'T GIVE rewards to L2PetInstance</B></FONT><BR>
-	 * <BR>
-	 * Exception are L2PetInstances that leech from the owner's XP; they get the exp indirectly, via the owner's exp gain<BR>
-	 * @param xpReward The Experience reward to distribute
-	 * @param spReward The SP reward to distribute
-	 * @param rewardedMembers The list of L2PcInstance to reward
-	 * @param topLvl
-	 */
 	public void distributeXpAndSp(long xpReward_pr, int spReward_pr, long xpReward, int spReward, List<L2Playable> rewardedMembers, int topLvl)
 	{
 		L2SummonInstance summon = null;
@@ -616,17 +483,17 @@ public class L2Party
 				if (member.isDead())
 					continue;
 				
-                if (member.getPremiumService() == 1)
-                {
-                    xpReward = xpReward_pr;
-                    spReward = spReward_pr;
-                }
-                else
-                {
-                    xpReward = temp_exp;
-                    spReward = temp_sp;
-                }
-                
+				if (member.getPremiumService() == 1)
+				{
+					xpReward = xpReward_pr;
+					spReward = spReward_pr;
+				}
+				else
+				{
+					xpReward = temp_exp;
+					spReward = temp_sp;
+				}
+				
 				penalty = 0;
 				
 				// The L2SummonInstance penalty
@@ -662,9 +529,6 @@ public class L2Party
 		}
 	}
 	
-	/**
-	 * refresh party level
-	 */
 	public void recalculatePartyLevel()
 	{
 		int newLevel = 0;
@@ -822,7 +686,7 @@ public class L2Party
 		{
 			if (_positionPacket == null)
 				_positionPacket = new PartyMemberPosition(L2Party.this);
-
+			
 			broadcastToPartyMembers(_positionPacket);
 		}
 	}
@@ -834,17 +698,11 @@ public class L2Party
 		_mobdmg = d;
 	}
 	
-	/**
-	 * @return
-	 */
 	public double getMobDamage()
 	{
 		return _mobdmg;
 	}
 	
-	/**
-	 * @return
-	 */
 	L2Attackable _mob;
 	public L2PcInstance rewarded = null;
 	

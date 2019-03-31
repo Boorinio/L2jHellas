@@ -1,23 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSignsFestival;
@@ -33,26 +14,31 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+
 public final class Logout extends L2GameClientPacket
 {
 	private static Logger _log = Logger.getLogger(Logout.class.getName());
 	private static final String _C__09_LOGOUT = "[C] 09 Logout";
-
+	
 	@Override
 	protected void readImpl()
 	{
-
+		
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
 		// Don't allow leaving if player is fighting
 		L2PcInstance player = getClient().getActiveChar();
-
+		
 		if (player == null)
 			return;
-
+		
 		if (player.isInBoat())
 		{
 			player.sendPacket(SystemMessageId.NO_LOGOUT_HERE);
@@ -66,24 +52,24 @@ public final class Logout extends L2GameClientPacket
 			{
 				_log.fine("Player " + player.getName() + " tried to logout while fighting.");
 			}
-
+			
 			player.sendPacket(SystemMessageId.CANT_LOGOUT_WHILE_FIGHTING);
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-
+		
 		if (player.atEvent)
 		{
 			player.sendPacket(SystemMessage.sendString("A superior power doesn't allow you to leave the event."));
 			return;
 		}
-
+		
 		if ((player.getOlympiadGameId() > 0) || player.isInOlympiadMode())
 		{
 			player.sendMessage("You can't logout while you are in olympiad.");
 			return;
 		}
-
+		
 		// Prevent player from logging out if they are a festival participant
 		// and it is in progress, otherwise notify party members that the player
 		// is not longer a participant.
@@ -95,7 +81,7 @@ public final class Logout extends L2GameClientPacket
 				return;
 			}
 			L2Party playerParty = player.getParty();
-
+			
 			if (playerParty != null)
 			{
 				player.getParty().broadcastToPartyMembers(SystemMessage.sendString(player.getName() + " has been removed from the upcoming festival."));
@@ -105,19 +91,19 @@ public final class Logout extends L2GameClientPacket
 		{
 			player.removeSkill(SkillTable.getInstance().getInfo(4289, 1));
 		}
-
+		
 		if ((player.isInStoreMode() || (player.isInCraftMode())))
 		{
 			player.sendMessage("You cannot log out while you are on store mode.");
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-			
+		
 		player.endDuel();
 		
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 		
-		// Remove From Boss	
+		// Remove From Boss
 		player.removeFromBossZone();
 		
 		notifyFriends(player);
@@ -125,11 +111,11 @@ public final class Logout extends L2GameClientPacket
 		player.deleteMe();
 		
 		player.closeNetConnection(true);
-
+		
 		RegionBBSManager.getInstance().changeCommunityBoard();
 	}
-
-	private void notifyFriends(L2PcInstance cha)
+	
+	private static void notifyFriends(L2PcInstance cha)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
@@ -137,22 +123,22 @@ public final class Logout extends L2GameClientPacket
 			statement = con.prepareStatement("SELECT friend_name FROM character_friends WHERE char_id=?");
 			statement.setInt(1, cha.getObjectId());
 			ResultSet rset = statement.executeQuery();
-
+			
 			L2PcInstance friend;
 			String friendName;
-
+			
 			while (rset.next())
 			{
 				friendName = rset.getString("friend_name");
-
+				
 				friend = L2World.getInstance().getPlayer(friendName);
-
+				
 				if (friend != null) // friend logged in.
 				{
 					friend.sendPacket(new FriendList(friend));
 				}
 			}
-
+			
 			rset.close();
 			statement.close();
 		}
@@ -163,7 +149,7 @@ public final class Logout extends L2GameClientPacket
 				e.printStackTrace();
 		}
 	}
-
+	
 	@Override
 	public String getType()
 	{

@@ -1,22 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.skills.effects;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.skills.Env;
@@ -24,16 +6,17 @@ import com.l2jhellas.gameserver.skills.conditions.Condition;
 import com.l2jhellas.gameserver.skills.funcs.FuncTemplate;
 import com.l2jhellas.gameserver.skills.funcs.Lambda;
 
-/**
- * @author mkizub
- */
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Logger;
+
 public final class EffectTemplate
 {
 	static Logger _log = Logger.getLogger(EffectTemplate.class.getName());
-
+	
 	private final Class<?> _func;
 	private final Constructor<?> _constructor;
-
+	
 	public final Condition attachCond;
 	public final Condition applayCond;
 	public final Lambda lambda;
@@ -41,11 +24,11 @@ public final class EffectTemplate
 	public int period; // in seconds
 	public final int abnormalEffect;
 	public FuncTemplate[] funcTemplates;
-
+	
 	public final String stackType;
 	public final float stackOrder;
 	public final boolean icon;
-
+	
 	public EffectTemplate(Condition pAttachCond, Condition pApplayCond, String func, Lambda pLambda, int pCounter, int pPeriod, int pAbnormalEffect, String pStackType, float pStackOrder, boolean showicon)
 	{
 		attachCond = pAttachCond;
@@ -74,7 +57,7 @@ public final class EffectTemplate
 			throw new RuntimeException(e);
 		}
 	}
-
+	
 	public L2Effect getEffect(Env env)
 	{
 		if (attachCond != null && !attachCond.test(env))
@@ -102,9 +85,9 @@ public final class EffectTemplate
 			e.getTargetException().printStackTrace();
 			return null;
 		}
-
+		
 	}
-
+	
 	public void attach(FuncTemplate f)
 	{
 		if (funcTemplates == null)

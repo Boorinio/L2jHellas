@@ -1,17 +1,14 @@
 package com.l2jhellas.gameserver.taskmanager;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.util.Rnd;
 
-/**
- * Handles {@link Npc} random social animation after specified time.
- */
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public final class RandomAnimationTaskManager implements Runnable
 {
 	private final Map<L2Npc, Long> _npcs = new ConcurrentHashMap<>();
@@ -25,7 +22,7 @@ public final class RandomAnimationTaskManager implements Runnable
 	{
 		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(this, 1000, 1000);
 	}
-
+	
 	public final void add(L2Npc character, int interval)
 	{
 		_npcs.put(character, System.currentTimeMillis() + interval * 1000);
@@ -65,7 +62,7 @@ public final class RandomAnimationTaskManager implements Runnable
 			
 			if (!(character.isDead() || character.isStunned() || character.isSleeping() || character.isParalyzed()))
 				character.onRandomAnimation();
-
+			
 			final int timer = (character.isMob()) ? Rnd.get(Config.MIN_MONSTER_ANIMATION, Config.MAX_MONSTER_ANIMATION) : Rnd.get(Config.MIN_NPC_ANIMATION, Config.MAX_NPC_ANIMATION);
 			add(character, timer);
 		}

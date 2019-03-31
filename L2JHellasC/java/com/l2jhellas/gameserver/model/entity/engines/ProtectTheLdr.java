@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.entity.engines;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -28,9 +11,9 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-/**
- * @author Boorinio
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProtectTheLdr
 {
 	public static List<L2PcInstance> _Team1 = new ArrayList<>();
@@ -101,7 +84,7 @@ public class ProtectTheLdr
 			member1.setTitle(member1.OriginalTitle);
 			member1.broadcastUserInfo();
 			member1.isinZodiac = false;
-			member1.teleToLocation(82743, 148219, -3470);	
+			member1.teleToLocation(82743, 148219, -3470);
 		}
 		for (L2PcInstance member2 : _Team2)
 		{
@@ -197,6 +180,7 @@ public class ProtectTheLdr
 		}
 		return null;
 	}
+	
 	public static void onDeath(L2PcInstance player)
 	{
 		if (ProtectTheLdr._Team1.contains(player))
@@ -210,6 +194,7 @@ public class ProtectTheLdr
 		player.doRevive();
 		
 	}
+	
 	public static void OnRevive(L2PcInstance player)
 	{
 		player.getStatus().setCurrentHp(player.getMaxHp());

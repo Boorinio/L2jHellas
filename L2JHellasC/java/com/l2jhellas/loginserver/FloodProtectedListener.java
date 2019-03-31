@@ -1,18 +1,6 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.loginserver;
+
+import com.l2jhellas.Config;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -22,19 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
-
-/**
- * @author -Wooden-
- */
 public abstract class FloodProtectedListener extends Thread
 {
 	private final Logger _log = Logger.getLogger(FloodProtectedListener.class.getName());
-	private final Map<String, ForeignConnection> _floodProtection = new HashMap<String, ForeignConnection>();
+	private final Map<String, ForeignConnection> _floodProtection = new HashMap<>();
 	private final String _listenIp;
 	private final int _port;
 	private ServerSocket _serverSocket;
-
+	
 	public FloodProtectedListener(String listenIp, int port) throws IOException
 	{
 		_port = port;
@@ -48,12 +31,13 @@ public abstract class FloodProtectedListener extends Thread
 			_serverSocket = new ServerSocket(_port, 50, InetAddress.getByName(_listenIp));
 		}
 	}
-
+	
+	@SuppressWarnings("resource")
 	@Override
 	public void run()
 	{
 		Socket connection = null;
-
+		
 		while (true)
 		{
 			try
@@ -94,12 +78,13 @@ public abstract class FloodProtectedListener extends Thread
 			{
 				try
 				{
+					if(connection!=null)
 					connection.close();
 				}
 				catch (Exception e2)
 				{
 				}
-				if (this.isInterrupted())
+				if (isInterrupted())
 				{
 					// shutdown?
 					try
@@ -115,25 +100,22 @@ public abstract class FloodProtectedListener extends Thread
 			}
 		}
 	}
-
+	
 	protected static class ForeignConnection
 	{
 		public int connectionNumber;
 		public long lastConnection;
 		public boolean isFlooding = false;
-
-		/**
-		 * @param time
-		 */
+		
 		public ForeignConnection(long time)
 		{
 			lastConnection = time;
 			connectionNumber = 1;
 		}
 	}
-
+	
 	public abstract void addClient(Socket s);
-
+	
 	public void removeFloodProtection(String ip)
 	{
 		if (!Config.FLOOD_PROTECTION)
@@ -152,7 +134,7 @@ public abstract class FloodProtectedListener extends Thread
 			_log.warning(FloodProtectedListener.class.getName() + ": Removing a flood protection for a GameServer that was not in the connection map??? :" + ip);
 		}
 	}
-
+	
 	public void close()
 	{
 		try

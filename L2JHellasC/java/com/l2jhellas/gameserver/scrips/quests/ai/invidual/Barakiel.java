@@ -11,14 +11,19 @@ public class Barakiel extends AbstractNpcAI
 	private final int BARAKIELx1 = 89800;
 	private final int BARAKIELx2 = 93200;
 	private final int BARAKIELy1 = -87038;
-	final int[] BARAKIELLOC ={91008,-85904,-2736};
+	final int[] BARAKIELLOC =
+	{
+		91008,
+		-85904,
+		-2736
+	};
 	
 	public Barakiel()
 	{
 		super("Barakiel", "ai");
 		addEventId(25325, QuestEventType.ON_ATTACK);
 	}
-
+	
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
@@ -29,7 +34,7 @@ public class Barakiel extends AbstractNpcAI
 			
 			if ((x < BARAKIELx1) || (x > BARAKIELx2) || (y < BARAKIELy1))
 			{
-				npc.teleToLocation(BARAKIELLOC[0],BARAKIELLOC[1], BARAKIELLOC[2]);
+				npc.teleToLocation(BARAKIELLOC[0], BARAKIELLOC[1], BARAKIELLOC[2]);
 				npc.getStatus().setCurrentHp(npc.getMaxHp());
 				npc.broadcastStatusUpdate();
 			}

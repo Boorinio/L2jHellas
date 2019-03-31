@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.itemhandlers;
 
 import com.l2jhellas.gameserver.handler.IItemHandler;
@@ -25,11 +11,6 @@ import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Broadcast;
 
-/**
- * Beast SoulShot Handler
- * 
- * @author Tempy
- */
 public class BeastSoulShot implements IItemHandler
 {
 	// All the item IDs that this handler knows.
@@ -37,7 +18,7 @@ public class BeastSoulShot implements IItemHandler
 	{
 		6645
 	};
-
+	
 	@Override
 	public void useItem(L2Playable playable, L2ItemInstance item)
 	{
@@ -110,7 +91,7 @@ public class BeastSoulShot implements IItemHandler
 		activeOwner.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.PET_USES_S1).addItemName(itemId));
 		Broadcast.toSelfAndKnownPlayersInRadius(activeOwner, new MagicSkillUse(activePet, activePet, 2033, 1, 0, 0), 600);
 	}
-
+	
 	@Override
 	public int[] getItemIds()
 	{

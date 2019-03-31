@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.ai.group;
 
 import com.l2jhellas.gameserver.geodata.GeoEngine;
@@ -23,10 +9,6 @@ import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 
-/**
- * AI for mobs in Plains of Dion (near Floran Village)
- * @author Gladicek
- */
 public final class PlainsOfDion extends AbstractNpcAI
 {
 	private static final int MONSTERS[] =
@@ -65,9 +47,9 @@ public final class PlainsOfDion extends AbstractNpcAI
 		{
 			npc.broadcastNpcSay(MONSTERS_MSG[Rnd.get(5)].replace("$s1", player.getName()));
 			
-			for (L2MonsterInstance obj : L2World.getInstance().getVisibleObjects(npc, L2MonsterInstance.class,300))
+			for (L2MonsterInstance obj : L2World.getInstance().getVisibleObjects(npc, L2MonsterInstance.class, 300))
 			{
-				if (Util.contains(MONSTERS, obj.getNpcId()) && !obj.isAttackingNow() && !obj.isDead() && GeoEngine.canSeeTarget(npc, obj,false))
+				if (Util.contains(MONSTERS, obj.getNpcId()) && !obj.isAttackingNow() && !obj.isDead() && GeoEngine.canSeeTarget(npc, obj, false))
 				{
 					attack(obj, player);
 					obj.broadcastNpcSay(MONSTERS_ASSIST_MSG[Rnd.get(3)]);

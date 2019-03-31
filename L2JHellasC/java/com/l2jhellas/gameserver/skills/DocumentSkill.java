@@ -1,18 +1,10 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.skills;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.L2SkillType;
+import com.l2jhellas.gameserver.skills.conditions.Condition;
+import com.l2jhellas.gameserver.templates.StatsSet;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,19 +15,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2SkillType;
-import com.l2jhellas.gameserver.skills.conditions.Condition;
-import com.l2jhellas.gameserver.templates.StatsSet;
-
-/**
- * @author mkizub
- */
 final class DocumentSkill extends DocumentBase
 {
 	protected static final Logger _log = Logger.getLogger(DocumentSkill.class.getName());
-
+	
 	public class Skill
 	{
 		public int id;
@@ -47,31 +30,31 @@ final class DocumentSkill extends DocumentBase
 		public List<L2Skill> skills = new ArrayList<>();
 		public List<L2Skill> currentSkills = new ArrayList<>();
 	}
-
+	
 	private Skill _currentSkill;
 	private final List<L2Skill> _skillsInFile = new ArrayList<>();
-
+	
 	DocumentSkill(File file)
 	{
 		super(file);
 	}
-
+	
 	private void setCurrentSkill(Skill skill)
 	{
 		_currentSkill = skill;
 	}
-
+	
 	@Override
 	protected StatsSet getStatsSet()
 	{
 		return _currentSkill.sets[_currentSkill.currentLevel];
 	}
-
+	
 	protected List<L2Skill> getSkills()
 	{
 		return _skillsInFile;
 	}
-
+	
 	@Override
 	protected String getTableValue(String name)
 	{
@@ -87,7 +70,7 @@ final class DocumentSkill extends DocumentBase
 			return "";
 		}
 	}
-
+	
 	@Override
 	protected String getTableValue(String name, int idx)
 	{
@@ -103,7 +86,7 @@ final class DocumentSkill extends DocumentBase
 			return "";
 		}
 	}
-
+	
 	@Override
 	protected void parseDocument(Document doc)
 	{
@@ -130,7 +113,7 @@ final class DocumentSkill extends DocumentBase
 			}
 		}
 	}
-
+	
 	protected void parseSkill(Node n)
 	{
 		NamedNodeMap attrs = n.getAttributes();
@@ -144,13 +127,13 @@ final class DocumentSkill extends DocumentBase
 			enchantLevels1 = Integer.parseInt(attrs.getNamedItem("enchantLevels1").getNodeValue());
 		if (attrs.getNamedItem("enchantLevels2") != null)
 			enchantLevels2 = Integer.parseInt(attrs.getNamedItem("enchantLevels2").getNodeValue());
-
+		
 		_currentSkill.id = skillId;
 		_currentSkill.name = skillName;
 		_currentSkill.sets = new StatsSet[lastLvl];
 		_currentSkill.enchsets1 = new StatsSet[enchantLevels1];
 		_currentSkill.enchsets2 = new StatsSet[enchantLevels2];
-
+		
 		for (int i = 0; i < lastLvl; i++)
 		{
 			_currentSkill.sets[i] = new StatsSet();
@@ -158,10 +141,10 @@ final class DocumentSkill extends DocumentBase
 			_currentSkill.sets[i].set("level", i + 1);
 			_currentSkill.sets[i].set("name", _currentSkill.name);
 		}
-
+		
 		if (_currentSkill.sets.length != lastLvl)
 			_log.warning(DocumentSkill.class.getName() + ": Skill id=" + skillId + " number of levels missmatch, " + lastLvl + " levels expected");
-
+		
 		Node first = n.getFirstChild();
 		for (n = first; n != null; n = n.getNextSibling())
 		{
@@ -184,23 +167,23 @@ final class DocumentSkill extends DocumentBase
 			_currentSkill.enchsets1[i].set("level", i + 101);
 			_currentSkill.enchsets1[i].set("name", _currentSkill.name);
 			// currentSkill.enchsets1[i].set("skillType", "NOTDONE");
-
+			
 			for (n = first; n != null; n = n.getNextSibling())
 			{
 				if ("set".equalsIgnoreCase(n.getNodeName()))
 					parseBeanSet(n, _currentSkill.enchsets1[i], _currentSkill.sets.length);
 			}
-
+			
 			for (n = first; n != null; n = n.getNextSibling())
 			{
 				if ("enchant1".equalsIgnoreCase(n.getNodeName()))
 					parseBeanSet(n, _currentSkill.enchsets1[i], i + 1);
 			}
 		}
-
+		
 		if (_currentSkill.enchsets1.length != enchantLevels1)
 			_log.warning(DocumentSkill.class.getName() + ": Skill id=" + skillId + " number of levels missmatch, " + enchantLevels1 + " levels expected");
-
+		
 		for (int i = 0; i < enchantLevels2; i++)
 		{
 			_currentSkill.enchsets2[i] = new StatsSet();
@@ -209,23 +192,23 @@ final class DocumentSkill extends DocumentBase
 			_currentSkill.enchsets2[i].set("level", i + 141);
 			_currentSkill.enchsets2[i].set("name", _currentSkill.name);
 			// currentSkill.enchsets2[i].set("skillType", "NOTDONE");
-
+			
 			for (n = first; n != null; n = n.getNextSibling())
 			{
 				if ("set".equalsIgnoreCase(n.getNodeName()))
 					parseBeanSet(n, _currentSkill.enchsets2[i], _currentSkill.sets.length);
 			}
-
+			
 			for (n = first; n != null; n = n.getNextSibling())
 			{
 				if ("enchant2".equalsIgnoreCase(n.getNodeName()))
 					parseBeanSet(n, _currentSkill.enchsets2[i], i + 1);
 			}
 		}
-
+		
 		if (_currentSkill.enchsets2.length != enchantLevels2)
 			_log.warning(DocumentSkill.class.getName() + ": Skill id=" + skillId + " number of levels missmatch, " + enchantLevels2 + " levels expected");
-
+		
 		makeSkills();
 		for (int i = 0; i < lastLvl; i++)
 		{
@@ -265,7 +248,7 @@ final class DocumentSkill extends DocumentBase
 				}
 			}
 			_currentSkill.currentLevel = i - lastLvl;
-
+			
 			for (n = first; n != null; n = n.getNextSibling())
 			{
 				if ("enchant1cond".equalsIgnoreCase(n.getNodeName()))
@@ -319,12 +302,12 @@ final class DocumentSkill extends DocumentBase
 		}
 		_currentSkill.skills.addAll(_currentSkill.currentSkills);
 	}
-
+	
 	private void makeSkills()
 	{
 		int count = 0;
-		_currentSkill.currentSkills = new ArrayList<L2Skill>(_currentSkill.sets.length + _currentSkill.enchsets1.length + _currentSkill.enchsets2.length);
-
+		_currentSkill.currentSkills = new ArrayList<>(_currentSkill.sets.length + _currentSkill.enchsets1.length + _currentSkill.enchsets2.length);
+		
 		for (int i = 0; i < _currentSkill.sets.length; i++)
 		{
 			try

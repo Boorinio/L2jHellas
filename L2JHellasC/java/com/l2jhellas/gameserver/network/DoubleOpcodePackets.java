@@ -1,10 +1,5 @@
 package com.l2jhellas.gameserver.network;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import com.l2jhellas.gameserver.network.L2GameClient.GameClientState;
 import com.l2jhellas.gameserver.network.clientpackets.AnswerJoinPartyRoom;
 import com.l2jhellas.gameserver.network.clientpackets.RequestAskJoinPartyRoom;
@@ -54,61 +49,61 @@ import com.l2jhellas.gameserver.network.clientpackets.RequestWithdrawPartyRoom;
 import com.l2jhellas.gameserver.network.clientpackets.RequestWriteHeroWords;
 import com.l2jhellas.mmocore.network.ReceivablePacket;
 
-/**
- * @author AbsolutePower
- */
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public enum DoubleOpcodePackets implements IPacket
 {
-		RequestOustFromPartyRoom(1,new RequestOustFromPartyRoom(),GameClientState.IN_GAME),
-		RequestDismissPartyRoom(2,new RequestDismissPartyRoom(),GameClientState.IN_GAME),
-		RequestWithdrawPartyRoom(3,new RequestWithdrawPartyRoom(),GameClientState.IN_GAME),
-		RequestChangePartyLeader(4,new RequestChangePartyLeader(),GameClientState.IN_GAME),
-		RequestAutoSoulShot(5,new RequestAutoSoulShot(),GameClientState.IN_GAME),
-		RequestExEnchantSkillInfo(6,new RequestExEnchantSkillInfo(),GameClientState.IN_GAME),
-		RequestExEnchantSkill(7,new RequestExEnchantSkill(),GameClientState.IN_GAME),		
-		RequestManorList(8,new RequestManorList(),GameClientState.ENTERING),
-		RequestProcureCropList( 9,new RequestProcureCropList(),GameClientState.IN_GAME),
-        RequestSetSeed(0x0a,new RequestSetSeed(),GameClientState.IN_GAME),
-		RequestSetCrop(0x0b,new RequestSetCrop(),GameClientState.IN_GAME),	
-		RequestWriteHeroWords(0x0c,new RequestWriteHeroWords(),GameClientState.IN_GAME),			
-		RequestExAskJoinMPCC(0x0d,new RequestExAskJoinMPCC(),GameClientState.IN_GAME),			
-		RequestExAcceptJoinMPCC(0x0e,new RequestExAcceptJoinMPCC(),GameClientState.IN_GAME),		
-		RequestExOustFromMPCC(0x0f,new RequestExOustFromMPCC(),GameClientState.IN_GAME),		
-		RequestExPledgeCrestLarge(0x10,new RequestExPledgeCrestLarge(),GameClientState.IN_GAME),			
-		RequestExSetPledgeCrestLarge(0x11,new RequestExSetPledgeCrestLarge(),GameClientState.IN_GAME),			
-		RequestOlympiadObserverEnd(0x12,new RequestOlympiadObserverEnd(),GameClientState.IN_GAME),
-        RequestOlympiadMatchList(0x13,new RequestOlympiadMatchList(),GameClientState.IN_GAME),	
-		RequestAskJoinPartyRoom(0x14,new RequestAskJoinPartyRoom(),GameClientState.IN_GAME),			
-		AnswerJoinPartyRoom (0x15,new AnswerJoinPartyRoom(),GameClientState.IN_GAME),		
-		RequestListPartyMatchingWaitingRoom(0x16,new RequestListPartyMatchingWaitingRoom(),GameClientState.IN_GAME),		
-		RequestExitPartyMatchingWaitingRoom(0x17,new RequestExitPartyMatchingWaitingRoom(),GameClientState.IN_GAME),
-		RequestGetBossRecord(0x18,new RequestGetBossRecord(),GameClientState.IN_GAME),	
-		RequestPledgeSetAcademyMaster(0x19,new RequestPledgeSetAcademyMaster(),GameClientState.IN_GAME),	
-		RequestPledgePowerGradeList(0x1a,new RequestPledgePowerGradeList(),GameClientState.IN_GAME),	
-		RequestPledgeMemberPowerInfo(0x1b,new RequestPledgeMemberPowerInfo(),GameClientState.IN_GAME),
-		RequestPledgeSetMemberPowerGrade(0x1c,new RequestPledgeSetMemberPowerGrade(),GameClientState.IN_GAME),
-		RequestPledgeMemberInfo(0x1d,new RequestPledgeMemberInfo(),GameClientState.IN_GAME),	
-		RequestPledgeWarList (0x1e,new RequestPledgeWarList(),GameClientState.IN_GAME),			
-		RequestExFishRanking(0x1f,new RequestExFishRanking(),GameClientState.IN_GAME),	
-		RequestPCCafeCouponUse(0x20,new RequestPCCafeCouponUse(),GameClientState.IN_GAME),
-		RequestCursedWeaponList(0x22,new RequestCursedWeaponList(),GameClientState.IN_GAME),	
-		RequestCursedWeaponLocation(0x23,new RequestCursedWeaponLocation(),GameClientState.IN_GAME),	
-		RequestPledgeReorganizeMember(0x24,new RequestPledgeReorganizeMember(),GameClientState.IN_GAME),	
-		RequestExMPCCShowPartyMembersInfo (0x26,new RequestExMPCCShowPartyMembersInfo(),GameClientState.IN_GAME),		
-		RequestDuelStart(0x27,new RequestDuelStart(),GameClientState.IN_GAME),		
-		RequestDuelAnswerStart(0x28,new RequestDuelAnswerStart(),GameClientState.IN_GAME),		
-		RequestConfirmTargetItem(0x29,new RequestConfirmTargetItem(),GameClientState.IN_GAME),	
-		RequestConfirmRefinerItem (0x2a,new RequestConfirmRefinerItem(),GameClientState.IN_GAME),
-		RequestConfirmGemStone(0x2b,new RequestConfirmGemStone(),GameClientState.IN_GAME),	
-		RequestRefine(0x2c,new RequestRefine(),GameClientState.IN_GAME),	
-		RequestConfirmCancelItem(0x2d,new RequestConfirmCancelItem(),GameClientState.IN_GAME),	
-		RequestRefineCancel(0x2e,new RequestRefineCancel(),GameClientState.IN_GAME),	
-		RequestExMagicSkillUseGround(0x2f,new RequestExMagicSkillUseGround(),GameClientState.IN_GAME),				 
-	    RequestDuelSurrender(0x30,new RequestDuelSurrender(),GameClientState.IN_GAME);
+	RequestOustFromPartyRoom(1, new RequestOustFromPartyRoom(), GameClientState.IN_GAME),
+	RequestDismissPartyRoom(2, new RequestDismissPartyRoom(), GameClientState.IN_GAME),
+	RequestWithdrawPartyRoom(3, new RequestWithdrawPartyRoom(), GameClientState.IN_GAME),
+	RequestChangePartyLeader(4, new RequestChangePartyLeader(), GameClientState.IN_GAME),
+	RequestAutoSoulShot(5, new RequestAutoSoulShot(), GameClientState.IN_GAME),
+	RequestExEnchantSkillInfo(6, new RequestExEnchantSkillInfo(), GameClientState.IN_GAME),
+	RequestExEnchantSkill(7, new RequestExEnchantSkill(), GameClientState.IN_GAME),
+	RequestManorList(8, new RequestManorList(), GameClientState.ENTERING),
+	RequestProcureCropList(9, new RequestProcureCropList(), GameClientState.IN_GAME),
+	RequestSetSeed(0x0a, new RequestSetSeed(), GameClientState.IN_GAME),
+	RequestSetCrop(0x0b, new RequestSetCrop(), GameClientState.IN_GAME),
+	RequestWriteHeroWords(0x0c, new RequestWriteHeroWords(), GameClientState.IN_GAME),
+	RequestExAskJoinMPCC(0x0d, new RequestExAskJoinMPCC(), GameClientState.IN_GAME),
+	RequestExAcceptJoinMPCC(0x0e, new RequestExAcceptJoinMPCC(), GameClientState.IN_GAME),
+	RequestExOustFromMPCC(0x0f, new RequestExOustFromMPCC(), GameClientState.IN_GAME),
+	RequestExPledgeCrestLarge(0x10, new RequestExPledgeCrestLarge(), GameClientState.IN_GAME),
+	RequestExSetPledgeCrestLarge(0x11, new RequestExSetPledgeCrestLarge(), GameClientState.IN_GAME),
+	RequestOlympiadObserverEnd(0x12, new RequestOlympiadObserverEnd(), GameClientState.IN_GAME),
+	RequestOlympiadMatchList(0x13, new RequestOlympiadMatchList(), GameClientState.IN_GAME),
+	RequestAskJoinPartyRoom(0x14, new RequestAskJoinPartyRoom(), GameClientState.IN_GAME),
+	AnswerJoinPartyRoom(0x15, new AnswerJoinPartyRoom(), GameClientState.IN_GAME),
+	RequestListPartyMatchingWaitingRoom(0x16, new RequestListPartyMatchingWaitingRoom(), GameClientState.IN_GAME),
+	RequestExitPartyMatchingWaitingRoom(0x17, new RequestExitPartyMatchingWaitingRoom(), GameClientState.IN_GAME),
+	RequestGetBossRecord(0x18, new RequestGetBossRecord(), GameClientState.IN_GAME),
+	RequestPledgeSetAcademyMaster(0x19, new RequestPledgeSetAcademyMaster(), GameClientState.IN_GAME),
+	RequestPledgePowerGradeList(0x1a, new RequestPledgePowerGradeList(), GameClientState.IN_GAME),
+	RequestPledgeMemberPowerInfo(0x1b, new RequestPledgeMemberPowerInfo(), GameClientState.IN_GAME),
+	RequestPledgeSetMemberPowerGrade(0x1c, new RequestPledgeSetMemberPowerGrade(), GameClientState.IN_GAME),
+	RequestPledgeMemberInfo(0x1d, new RequestPledgeMemberInfo(), GameClientState.IN_GAME),
+	RequestPledgeWarList(0x1e, new RequestPledgeWarList(), GameClientState.IN_GAME),
+	RequestExFishRanking(0x1f, new RequestExFishRanking(), GameClientState.IN_GAME),
+	RequestPCCafeCouponUse(0x20, new RequestPCCafeCouponUse(), GameClientState.IN_GAME),
+	RequestCursedWeaponList(0x22, new RequestCursedWeaponList(), GameClientState.IN_GAME),
+	RequestCursedWeaponLocation(0x23, new RequestCursedWeaponLocation(), GameClientState.IN_GAME),
+	RequestPledgeReorganizeMember(0x24, new RequestPledgeReorganizeMember(), GameClientState.IN_GAME),
+	RequestExMPCCShowPartyMembersInfo(0x26, new RequestExMPCCShowPartyMembersInfo(), GameClientState.IN_GAME),
+	RequestDuelStart(0x27, new RequestDuelStart(), GameClientState.IN_GAME),
+	RequestDuelAnswerStart(0x28, new RequestDuelAnswerStart(), GameClientState.IN_GAME),
+	RequestConfirmTargetItem(0x29, new RequestConfirmTargetItem(), GameClientState.IN_GAME),
+	RequestConfirmRefinerItem(0x2a, new RequestConfirmRefinerItem(), GameClientState.IN_GAME),
+	RequestConfirmGemStone(0x2b, new RequestConfirmGemStone(), GameClientState.IN_GAME),
+	RequestRefine(0x2c, new RequestRefine(), GameClientState.IN_GAME),
+	RequestConfirmCancelItem(0x2d, new RequestConfirmCancelItem(), GameClientState.IN_GAME),
+	RequestRefineCancel(0x2e, new RequestRefineCancel(), GameClientState.IN_GAME),
+	RequestExMagicSkillUseGround(0x2f, new RequestExMagicSkillUseGround(), GameClientState.IN_GAME),
+	RequestDuelSurrender(0x30, new RequestDuelSurrender(), GameClientState.IN_GAME);
 	
-		
 	public static final DoubleOpcodePackets[] PACKET_ARRAY;
-
+	
 	static
 	{
 		final short maxPacketId = (short) Arrays.stream(values()).mapToInt(DoubleOpcodePackets::getPacketId).max().orElse(0);
@@ -123,25 +118,22 @@ public enum DoubleOpcodePackets implements IPacket
 	private short _packetId;
 	private ReceivablePacket<L2GameClient> _incomingPacket;
 	private Set<GameClientState> _connectionStates;
-
-
-	DoubleOpcodePackets(int OpCode ,ReceivablePacket<L2GameClient> packet, GameClientState... connectionStates)
-	{	
+	
+	DoubleOpcodePackets(int OpCode, ReceivablePacket<L2GameClient> packet, GameClientState... connectionStates)
+	{
 		_packetId = (short) OpCode;
 		_incomingPacket = packet;
 		_connectionStates = new HashSet<>(Arrays.asList(connectionStates));
 	}
-
-
-	public boolean isInRightState(GameClientState state) 
+	
+	public boolean isInRightState(GameClientState state)
 	{
-	    for (Iterator<GameClientState> it = _connectionStates.iterator(); it.hasNext(); ) 
-	    {
-	    	GameClientState _state = it.next();
-	        if (_state.equals(state))
-	            return true;
-	    }
-	    
+		for (GameClientState _state : _connectionStates)
+		{
+			if (_state.equals(state))
+				return true;
+		}
+		
 		return false;
 	}
 	
@@ -150,13 +142,13 @@ public enum DoubleOpcodePackets implements IPacket
 	{
 		return _incomingPacket;
 	}
-
+	
 	@Override
 	public int getPacketId()
 	{
 		return _packetId;
 	}
-
+	
 	@Override
 	public Set<GameClientState> getState()
 	{

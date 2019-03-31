@@ -1,15 +1,5 @@
 package com.l2jhellas.gameserver.model;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.logging.Logger;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -23,9 +13,19 @@ import com.l2jhellas.gameserver.network.serverpackets.DeleteObject;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Util;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.logging.Logger;
+
 public final class L2World
 {
-		
+	
 	// Geodata min/max tiles
 	public static final int TILE_X_MIN = 15;
 	public static final int TILE_X_MAX = 26;
@@ -45,7 +45,7 @@ public final class L2World
 	public static final int REGION_SIZE = 4096;
 	public static final int REGIONS_X = (WORLD_X_MAX - WORLD_X_MIN) / REGION_SIZE;
 	public static final int REGIONS_Y = (WORLD_Y_MAX - WORLD_Y_MIN) / REGION_SIZE;
-	public static final int REGIONS_Z = (WORLD_Z_MAX - WORLD_Z_MIN) /  REGION_SIZE;
+	public static final int REGIONS_Z = (WORLD_Z_MAX - WORLD_Z_MIN) / REGION_SIZE;
 	
 	private static final int REGION_X_OFFSET = Math.abs(WORLD_X_MIN / REGION_SIZE);
 	private static final int REGION_Y_OFFSET = Math.abs(WORLD_Y_MIN / REGION_SIZE);
@@ -55,26 +55,24 @@ public final class L2World
 	
 	public static final int SHIFT_BY = 11;
 	public static final int SHIFT_BY_Z = 10;
-
-
+	
 	public static final int WORLD_SIZE_X = Config.GEO_X_LAST - Config.GEO_X_FIRST + 1;
 	public static final int WORLD_SIZE_Y = Config.GEO_Y_LAST - Config.GEO_Y_FIRST + 1;
-
 	
-	public static final int REGION_MIN_DIMENSION = Math.min(32768 / (32768 >> SHIFT_BY), 32768 / (32768>> SHIFT_BY));
+	public static final int REGION_MIN_DIMENSION = Math.min(32768 / (32768 >> SHIFT_BY), 32768 / (32768 >> SHIFT_BY));
 	
 	private final Map<Integer, L2PcInstance> _allPlayers = new ConcurrentHashMap<>();
 	private final Map<Integer, L2Object> _allObjects = new ConcurrentHashMap<>();
 	private final Map<Integer, L2PetInstance> _petsInstance = new ConcurrentHashMap<>();
-
+	
 	private final L2WorldRegion[][][] _worldRegions = new L2WorldRegion[REGIONS_X + 1][REGIONS_Y + 1][REGIONS_Z + 1];
 	
 	protected L2World()
 	{
-
+		
 		initRegions();
 	}
-
+	
 	public static L2World getInstance()
 	{
 		return SingletonHolder._instance;
@@ -89,12 +87,12 @@ public final class L2World
 	{
 		return getRegion(point.getX(), point.getY(), point.getZ());
 	}
-
+	
 	public L2WorldRegion getRegion(int x, int y, int z)
 	{
 		return _worldRegions[(x - WORLD_X_MIN) / REGION_SIZE][(y - WORLD_Y_MIN) / REGION_SIZE][(z - WORLD_Z_MIN) / REGION_SIZE];
 	}
-
+	
 	public static int getRegionX(int regionX)
 	{
 		return (regionX - REGION_X_OFFSET) * REGION_SIZE;
@@ -113,7 +111,7 @@ public final class L2World
 	public void storeObject(L2Object object)
 	{
 		_allObjects.putIfAbsent(object.getObjectId(), object);
-
+		
 		if (object instanceof L2PcInstance)
 		{
 			L2PcInstance player = object.getActingPlayer();
@@ -131,7 +129,7 @@ public final class L2World
 		}
 		
 	}
-
+	
 	public void removeObject(L2Object object)
 	{
 		_allObjects.remove(object.getObjectId());
@@ -146,7 +144,7 @@ public final class L2World
 			_allPlayers.remove(object.getObjectId());
 		}
 	}
-
+	
 	public L2Object findObject(int objectId)
 	{
 		return _allObjects.get(objectId);
@@ -161,69 +159,69 @@ public final class L2World
 	{
 		return _allObjects.size();
 	}
-
+	
 	public Map<Integer, L2PcInstance> getAllPlayers()
 	{
 		return _allPlayers;
 	}
-
+	
 	public int getAllPlayersCount()
 	{
 		return _allPlayers.size();
 	}
-
+	
 	public L2PcInstance getPlayer(String name)
 	{
 		return getPlayer(CharNameTable.getInstance().getIdByName(name));
 	}
-
+	
 	public L2PcInstance getPlayer(int objectId)
 	{
 		return _allPlayers.get(objectId);
 	}
-
+	
 	public L2PetInstance getPet(int ownerId)
 	{
 		return _petsInstance.get(ownerId);
 	}
-
+	
 	public L2PetInstance addPet(int ownerId, L2PetInstance pet)
 	{
 		return _petsInstance.putIfAbsent(ownerId, pet);
 	}
-
+	
 	public void removePet(int ownerId)
 	{
 		_petsInstance.remove(ownerId);
 	}
-
+	
 	public void addToAllPlayers(L2PcInstance cha)
 	{
 		_allPlayers.putIfAbsent(cha.getObjectId(), cha);
 	}
-
+	
 	public void removeFromAllPlayers(L2PcInstance cha)
 	{
 		_allPlayers.remove(cha.getObjectId());
 	}
-
+	
 	public L2WorldRegion getRegion(Location point)
 	{
-		return getRegion(point.getX(), point.getY(),point.getZ());
+		return getRegion(point.getX(), point.getY(), point.getZ());
 	}
-
+	
 	public L2WorldRegion[][][] getAllWorldRegions()
 	{
 		return _worldRegions;
 	}
-
+	
 	public static boolean validRegion(int x, int y, int z)
 	{
 		return ((x >= 0) && (x <= REGIONS_X) && (y >= 0) && (y <= REGIONS_Y)) && (z >= 0) && (z <= REGIONS_Z);
 	}
-
+	
 	private void initRegions()
-	{	
+	{
 		for (int x = 0; x <= REGIONS_X; x++)
 		{
 			for (int y = 0; y <= REGIONS_Y; y++)
@@ -234,10 +232,10 @@ public final class L2World
 				}
 			}
 		}
-
-		_log.info("L2World: WorldRegion grid (" + REGIONS_X + " by " + REGIONS_Y +  " by " + REGIONS_Z + ") is now setted up.");
+		
+		_log.info("L2World: WorldRegion grid (" + REGIONS_X + " by " + REGIONS_Y + " by " + REGIONS_Z + ") is now setted up.");
 	}
-
+	
 	public void deleteVisibleNpcSpawns()
 	{
 		_log.info("Deleting all visible NPC's.");
@@ -307,14 +305,13 @@ public final class L2World
 		});
 	}
 	
-
-	public void removeVisibleObject(L2Object object, L2WorldRegion oldRegion)
+	public static void removeVisibleObject(L2Object object, L2WorldRegion oldRegion)
 	{
 		if (object == null)
 		{
 			return;
 		}
-
+		
 		if (oldRegion != null)
 		{
 			oldRegion.removeVisibleObject(object);
@@ -345,7 +342,7 @@ public final class L2World
 						
 						if (object instanceof L2PcInstance)
 						{
-							 ((L2PcInstance) object).sendPacket(new DeleteObject(wo));
+							((L2PcInstance) object).sendPacket(new DeleteObject(wo));
 						}
 					}
 					
@@ -365,7 +362,7 @@ public final class L2World
 						
 						if (wo instanceof L2PcInstance)
 						{
-							((L2PcInstance)wo).sendPacket(new DeleteObject(object));
+							((L2PcInstance) wo).sendPacket(new DeleteObject(object));
 						}
 					}
 				}
@@ -374,7 +371,7 @@ public final class L2World
 		}
 	}
 	
-	public void switchRegion(L2Object object, L2WorldRegion newRegion)
+	public static void switchRegion(L2Object object, L2WorldRegion newRegion)
 	{
 		final L2WorldRegion oldRegion = object.getWorldRegion();
 		if ((oldRegion == null) || (oldRegion == newRegion))
@@ -409,7 +406,7 @@ public final class L2World
 						
 						if (object instanceof L2PcInstance)
 						{
-							 ((L2PcInstance) object).sendPacket(new DeleteObject(wo));
+							((L2PcInstance) object).sendPacket(new DeleteObject(wo));
 						}
 					}
 					
@@ -429,7 +426,7 @@ public final class L2World
 						
 						if (wo instanceof L2PcInstance)
 						{
-							 ((L2PcInstance) wo).sendPacket(new DeleteObject(object));
+							((L2PcInstance) wo).sendPacket(new DeleteObject(object));
 						}
 					}
 				}
@@ -490,7 +487,7 @@ public final class L2World
 				}
 			}
 			return true;
-		});	
+		});
 	}
 	
 	private <T extends L2Object> void forEachVisibleObject(L2Object object, Class<T> clazz, int depth, Consumer<T> c)
@@ -535,7 +532,7 @@ public final class L2World
 	{
 		forEachVisibleObject(object, clazz, 1, c);
 	}
-
+	
 	public <T extends L2Object> void forEachVisibleObjectInRange(L2Object object, Class<T> clazz, int range, Consumer<T> c)
 	{
 		if (object == null)
@@ -561,10 +558,10 @@ public final class L2World
 					final int y1 = (getRegionY(y));
 					final int z1 = (getRegionZ(z));
 					
-					final int x2 = (getRegionX(x+1));
-					final int y2 = (getRegionY(y+1));
-					final int z2 = (getRegionZ(z+1));
-
+					final int x2 = (getRegionX(x + 1));
+					final int y2 = (getRegionY(y + 1));
+					final int z2 = (getRegionZ(z + 1));
+					
 					if (Util.cubeIntersectsSphere(x1, y1, z1, x2, y2, z2, object.getX(), object.getY(), object.getZ(), range))
 					{
 						for (L2Object visibleObject : _worldRegions[x][y][z].getVisibleObjects().values())
@@ -630,7 +627,7 @@ public final class L2World
 		return result;
 	}
 	
-	public  L2PcInstance[] getPlayersSortedBy(Comparator<L2PcInstance> comparator)
+	public L2PcInstance[] getPlayersSortedBy(Comparator<L2PcInstance> comparator)
 	{
 		final L2PcInstance[] players = _allPlayers.values().toArray(new L2PcInstance[_allPlayers.values().size()]);
 		Arrays.sort(players, comparator);

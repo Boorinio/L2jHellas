@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.AbnormalEffect;
@@ -40,25 +24,12 @@ import com.l2jhellas.gameserver.network.serverpackets.SunRise;
 import com.l2jhellas.gameserver.network.serverpackets.SunSet;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
-/**
- * This class handles following admin commands:<br>
- * earthquake = causes an earthquake of a given intensity and duration around you<br>
- * bighead/shrinkhead = changes head size<br>
- * gmspeed = temporary Super Haste effect.<br>
- * para/unpara = paralyze/remove paralysis from target<br>
- * para_all/unpara_all = same as para/unpara, affects the whole world.<br>
- * polyself/unpolyself = makes you look as a specified mob.<br>
- * clearteams/setteam_close/setteam = team related commands<br>
- * social = forces an L2Character instance to broadcast social action packets.<br>
- * effect = forces an L2Character instance to broadcast MSU packets.<br>
- * abnormal = force changes over an L2Character instance's abnormal state.<br>
- * play_sound/play_sounds = Music broadcasting related commands<br>
- * atmosphere = sky change related commands.
- */
+import java.util.StringTokenizer;
+
 public class AdminEffects implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_earthquake",
 		"admin_earthquake_menu",
 		"admin_bighead",
@@ -88,15 +59,13 @@ public class AdminEffects implements IAdminCommandHandler
 		"admin_play_sound",
 		"admin_atmosphere",
 		"admin_atmosphere_menu"
-	};/** @formatter:on */
-
-	@Override
+	};
 	
+	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		StringTokenizer st = new StringTokenizer(command);
 		st.nextToken();
-
 		
 		if (command.startsWith("admin_earthquake"))
 		{
@@ -157,8 +126,8 @@ public class AdminEffects implements IAdminCommandHandler
 					player.startAbnormalEffect(AbnormalEffect.HOLD_2);
 					player.setIsParalyzed(true);
 					player.abortAllAttacks();
-                    player.stopMove(null);
-					player.sendMessage("You are Paralyzed by "+activeChar.getName());
+					player.stopMove(null);
+					player.sendMessage("You are Paralyzed by " + activeChar.getName());
 				});
 			}
 			catch (Exception e)
@@ -188,13 +157,13 @@ public class AdminEffects implements IAdminCommandHandler
 				activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 				return false;
 			}
-					
+			
 			final L2Character player = (L2Character) target;
 			
 			player.startAbnormalEffect(AbnormalEffect.HOLD_2);
 			player.setIsParalyzed(true);
 			player.abortAllAttacks();
-			player.stopMove(null);				
+			player.stopMove(null);
 		}
 		else if (command.startsWith("admin_unpara"))
 		{
@@ -275,11 +244,11 @@ public class AdminEffects implements IAdminCommandHandler
 			{
 				L2World.getInstance().forEachVisibleObject(activeChar, L2PcInstance.class, player ->
 				{
-					//TODO check for zodiac or another event?
-					if(player!=null)
+					// TODO check for zodiac or another event?
+					if (player != null)
 					{
-					  player.setTeam(Team.NONE);
-					  player.broadcastUserInfo();
+						player.setTeam(Team.NONE);
+						player.broadcastUserInfo();
 					}
 				});
 			}
@@ -298,20 +267,20 @@ public class AdminEffects implements IAdminCommandHandler
 				{
 					radius = Integer.parseInt(st.nextToken());
 				}
-
+				
 				L2World.getInstance().forEachVisibleObjectInRange(activeChar, L2PcInstance.class, radius, player ->
 				{
-					if(player!=null)
+					if (player != null)
 					{
-					  Team team = Team.valueOf(val.toUpperCase());
-					  player.setTeam(team);
+						Team team = Team.valueOf(val.toUpperCase());
+						player.setTeam(team);
 						
-					  if (team.getId()>0)
-						  player.sendMessage("You have joined " + team + " team");
-					  else
-						  player.sendMessage("you have left from the team");
-						 
-					  player.broadcastUserInfo();
+						if (team.getId() > 0)
+							player.sendMessage("You have joined " + team + " team");
+						else
+							player.sendMessage("you have left from the team");
+						
+						player.broadcastUserInfo();
 					}
 				});
 			}
@@ -324,23 +293,23 @@ public class AdminEffects implements IAdminCommandHandler
 		{
 			try
 			{
-			  L2Object target = activeChar.getTarget();
-			  L2PcInstance player = null;
-			  
-			  if (target instanceof L2PcInstance)
-			  	  player = (L2PcInstance) target;
-			  else
-				  return false;
-			
-			  Team team = Team.valueOf(st.nextToken().toUpperCase());
-			  player.setTeam(team);
-			
-			  if (team.getId()>0)
-				  player.sendMessage("You have joined " + team + " team");
-			  else
-				  player.sendMessage("you have left from the team");
-			
-			  player.broadcastUserInfo();
+				L2Object target = activeChar.getTarget();
+				L2PcInstance player = null;
+				
+				if (target instanceof L2PcInstance)
+					player = (L2PcInstance) target;
+				else
+					return false;
+				
+				Team team = Team.valueOf(st.nextToken().toUpperCase());
+				player.setTeam(team);
+				
+				if (team.getId() > 0)
+					player.sendMessage("You have joined " + team + " team");
+				else
+					player.sendMessage("you have left from the team");
+				
+				player.broadcastUserInfo();
 			}
 			catch (Exception e)
 			{
@@ -378,7 +347,7 @@ public class AdminEffects implements IAdminCommandHandler
 										performSocial(social, object, activeChar);
 									}
 								});
-
+								
 								activeChar.sendMessage(radius + " units radius affected by your request.");
 							}
 							catch (NumberFormatException nbe)
@@ -393,13 +362,11 @@ public class AdminEffects implements IAdminCommandHandler
 					int social = Integer.parseInt(st.nextToken());
 					if (obj == null)
 						obj = activeChar;
-					if (obj != null)
-					{
-						if (performSocial(social, obj, activeChar))
-							activeChar.sendMessage(obj.getName() + " was affected by your request.");
-						else
-							activeChar.sendPacket(SystemMessageId.NOTHING_HAPPENED);
-					}
+					
+					if (performSocial(social, obj, activeChar))
+						activeChar.sendMessage(obj.getName() + " was affected by your request.");
+					else
+						activeChar.sendPacket(SystemMessageId.NOTHING_HAPPENED);
 				}
 				else if (!command.contains("menu"))
 					activeChar.sendMessage("Usage: //social <social_id> [player_name|radius]");
@@ -446,7 +413,7 @@ public class AdminEffects implements IAdminCommandHandler
 										performAbnormal(abnormal, object);
 									}
 								});
-									
+								
 								activeChar.sendMessage(radius + " units radius affected by your request.");
 							}
 							catch (NumberFormatException nbe)
@@ -461,13 +428,11 @@ public class AdminEffects implements IAdminCommandHandler
 					int abnormal = Integer.decode("0x" + st.nextToken());
 					if (obj == null)
 						obj = activeChar;
-					if (obj != null)
-					{
-						if (performAbnormal(abnormal, obj))
-							activeChar.sendMessage(obj.getName() + "'s abnormal status was affected by your request.");
-						else
-							activeChar.sendPacket(SystemMessageId.NOTHING_HAPPENED);
-					}
+
+					if (performAbnormal(abnormal, obj))
+						activeChar.sendMessage(obj.getName() + "'s abnormal status was affected by your request.");
+					else
+						activeChar.sendPacket(SystemMessageId.NOTHING_HAPPENED);
 				}
 				else if (!command.contains("menu"))
 					activeChar.sendMessage("Usage: //abnormal <abnormal_mask> [player_name|radius]");
@@ -493,16 +458,14 @@ public class AdminEffects implements IAdminCommandHandler
 					hittime = Integer.parseInt(st.nextToken());
 				if (obj == null)
 					obj = activeChar;
-				if (obj != null)
+				
+				if (!(obj instanceof L2Character))
+					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+				else
 				{
-					if (!(obj instanceof L2Character))
-						activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
-					else
-					{
-						L2Character target = (L2Character) obj;
-						target.broadcastPacket(new MagicSkillUse(target, activeChar, skill, level, hittime, 0));
-						activeChar.sendMessage(obj.getName() + " performs MSU " + skill + "/" + level + " by your request.");
-					}
+					L2Character target = (L2Character) obj;
+					target.broadcastPacket(new MagicSkillUse(target, activeChar, skill, level, hittime, 0));
+					activeChar.sendMessage(obj.getName() + " performs MSU " + skill + "/" + level + " by your request.");
 				}
 			}
 			catch (Exception e)
@@ -514,15 +477,8 @@ public class AdminEffects implements IAdminCommandHandler
 			showMainPage(activeChar, command);
 		return true;
 	}
-
-	/**
-	 * @param action
-	 *        bitmask that should be applied over target's abnormal
-	 * @param target
-	 * @return <i>true</i> if target's abnormal state was affected ,
-	 *         <i>false</i> otherwise.
-	 */
-	private boolean performAbnormal(int action, L2Object target)
+	
+	private static boolean performAbnormal(int action, L2Object target)
 	{
 		if (target instanceof L2Character)
 		{
@@ -535,8 +491,8 @@ public class AdminEffects implements IAdminCommandHandler
 		}
 		return false;
 	}
-
-	private boolean performSocial(int action, L2Object target, L2PcInstance activeChar)
+	
+	private static boolean performSocial(int action, L2Object target, L2PcInstance activeChar)
 	{
 		try
 		{
@@ -568,17 +524,11 @@ public class AdminEffects implements IAdminCommandHandler
 		}
 		return true;
 	}
-
-	/**
-	 * @param type
-	 *        - atmosphere type (signssky,sky)
-	 * @param state
-	 *        - atmosphere state(night,day)
-	 */
-	private void adminAtmosphere(String type, String state, L2PcInstance activeChar)
+	
+	private static void adminAtmosphere(String type, String state, L2PcInstance activeChar)
 	{
 		L2GameServerPacket packet = null;
-
+		
 		if (type.equals("signsky"))
 		{
 			if (state.equals("dawn"))
@@ -601,21 +551,21 @@ public class AdminEffects implements IAdminCommandHandler
 			for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 				player.sendPacket(packet);
 	}
-
-	private void playAdminSound(L2PcInstance activeChar, String sound)
+	
+	private static void playAdminSound(L2PcInstance activeChar, String sound)
 	{
 		final PlaySound _snd = (sound.contains(".")) ? PlaySound.createSound(sound) : new PlaySound(1, sound, 0);
 		activeChar.broadcastPacket(_snd);
 		activeChar.sendMessage("Playing " + sound + ".");
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
-	private void showMainPage(L2PcInstance activeChar, String command)
+	
+	private static void showMainPage(L2PcInstance activeChar, String command)
 	{
 		String filename = "effects_menu";
 		if (command.contains("abnormal"))

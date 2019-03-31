@@ -31,7 +31,7 @@ public class Q407_PathToAnElvenScout extends Quest
 	
 	public Q407_PathToAnElvenScout()
 	{
-		super(407,qn, "Path to an Elven Scout");
+		super(407, qn, "Path to an Elven Scout");
 		
 		setItemsIds(REISA_LETTER, PRIAS_TORN_LETTER_1, PRIAS_TORN_LETTER_2, PRIAS_TORN_LETTER_3, PRIAS_TORN_LETTER_4, MORETTI_HERB, MORETTI_LETTER, PRIAS_LETTER, HONORARY_GUARD, RUSTED_KEY);
 		
@@ -42,7 +42,7 @@ public class Q407_PathToAnElvenScout extends Quest
 	}
 	
 	@Override
-	public String onAdvEvent(String event, L2Npc npc,L2PcInstance player)
+	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = event;
 		QuestState st = player.getQuestState(qn);
@@ -76,7 +76,7 @@ public class Q407_PathToAnElvenScout extends Quest
 	}
 	
 	@Override
-	public String onTalk(L2Npc npc,L2PcInstance player)
+	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
 		String htmltext = getNoQuestMsg();
 		QuestState st = player.getQuestState(qn);
@@ -176,7 +176,7 @@ public class Q407_PathToAnElvenScout extends Quest
 	}
 	
 	@Override
-	public String onKill(L2Npc npc,L2PcInstance player, boolean isPet)
+	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
 		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)

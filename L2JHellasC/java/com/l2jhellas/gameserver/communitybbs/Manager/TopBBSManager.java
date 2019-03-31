@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.communitybbs.Manager;
-
-import java.io.File;
-import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -30,20 +13,23 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
 
+import java.io.File;
+import java.util.StringTokenizer;
+
 public class TopBBSManager extends BaseBBSManager
 {
-
+	
 	private TopBBSManager()
 	{
 	}
-
+	
 	@Override
 	public void parsecmd(String command, L2PcInstance activeChar)
 	{
 		String path = "data/html/CommunityBoard/";
 		String filepath = "";
 		String content = "";
-
+		
 		if (command.equals("_bbstop") | command.equals("_bbshome"))
 		{
 			filepath = path + "index.htm";
@@ -57,7 +43,7 @@ public class TopBBSManager extends BaseBBSManager
 			String file = st.nextToken();
 			filepath = path + file + ".htm";
 			File filecom = new File(filepath);
-
+			
 			if (!(filecom.exists()))
 			{
 				content = "<html><body><br><br><center>The command " + command + " points to file(" + filepath + ") that NOT exists.</center></body></html>";
@@ -65,44 +51,44 @@ public class TopBBSManager extends BaseBBSManager
 				return;
 			}
 			content = HtmCache.getInstance().getHtm(filepath);
-
+			
 			if (content.isEmpty())
 				content = "<html><body><br><br><center>Content Empty: The command " + command + " points to an invalid or empty html file(" + filepath + ").</center></body></html>";
-
+			
 			switch (file)
 			{
 				case "toppvp":
 					TopPlayers pvp = new TopPlayers(file);
 					content = content.replaceAll("%toppvp%", pvp.loadTopList());
-				break;
+					break;
 				case "toppk":
 					TopPlayers pk = new TopPlayers(file);
 					content = content.replaceAll("%toppk%", pk.loadTopList());
-				break;
+					break;
 				case "toprbrank":
 					TopPlayers raid = new TopPlayers(file);
 					content = content.replaceAll("%toprbrank%", raid.loadTopList());
-				break;
+					break;
 				case "topadena":
 					TopPlayers adena = new TopPlayers(file);
 					content = content.replaceAll("%topadena%", adena.loadTopList());
-				break;
+					break;
 				case "toponline":
 					TopPlayers online = new TopPlayers(file);
 					content = content.replaceAll("%toponline%", online.loadTopList());
-				break;
+					break;
 				case "heroes":
 					HeroeList hr = new HeroeList();
 					content = content.replaceAll("%heroelist%", hr.loadHeroeList());
-				break;
+					break;
 				case "castle":
 					CastleStatus status = new CastleStatus();
 					content = content.replaceAll("%castle%", status.loadCastleList());
-				break;
+					break;
 				case "boss":
 					GrandBossList gb = new GrandBossList();
 					content = content.replaceAll("%gboss%", gb.loadGrandBossList());
-				break;
+					break;
 				case "stats":
 					content = content.replace("%online%", Integer.toString(L2World.getInstance().getAllPlayersCount()));
 					content = content.replace("%servercapacity%", Integer.toString(Config.MAXIMUM_ONLINE_USERS));
@@ -111,10 +97,10 @@ public class TopBBSManager extends BaseBBSManager
 						content = content.replace("%serveronline%", getRealOnline());
 					else
 						content = content.replace("%serveronline%", "");
-				break;
+					break;
 				default:
-				break;
-
+					break;
+			
 			}
 			if (file.startsWith("clan"))
 			{
@@ -142,23 +128,20 @@ public class TopBBSManager extends BaseBBSManager
 			activeChar.sendPacket(new ShowBoard(null, "103"));
 		}
 	}
-
+	
 	@Override
 	public void parsewrite(String ar1, String ar2, String ar3, String ar4, String ar5, L2PcInstance activeChar)
 	{
-
+		
 	}
-
+	
 	private static TopBBSManager _instance = new TopBBSManager();
-
-	/**
-	 * @return
-	 */
+	
 	public static TopBBSManager getInstance()
 	{
 		return _instance;
 	}
-
+	
 	public String getServerRunTime()
 	{
 		int timeSeconds = (GameTimeController.getInstance().getGameTicks() - 36000) / 10;
@@ -169,7 +152,7 @@ public class TopBBSManager extends BaseBBSManager
 			timeResult = Integer.toString(timeSeconds / 3600) + " Hours " + Integer.toString((timeSeconds % 3600) / 60) + " mins";
 		return timeResult;
 	}
-
+	
 	public String getRealOnline()
 	{
 		int counter = 0;

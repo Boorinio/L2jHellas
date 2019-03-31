@@ -1,18 +1,9 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.templates.L2Item;
+import com.l2jhellas.util.XMLDocumentFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,15 +15,6 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.templates.L2Item;
-import com.l2jhellas.util.XMLDocumentFactory;
-
-/**
- * Service class for manor
- * @author l3x
- */
 public class L2Manor
 {
 	private static final Logger _log = Logger.getLogger(L2Manor.class.getName());
@@ -101,11 +83,6 @@ public class L2Manor
 		return 0;
 	}
 	
-	/**
-	 * Returns price which lord pays to buy one seed
-	 * @param seedId
-	 * @return seed price
-	 */
 	public int getSeedBuyPrice(int seedId)
 	{
 		int buyPrice = getSeedBasicPrice(seedId) / 10;
@@ -188,11 +165,6 @@ public class L2Manor
 		return 0;
 	}
 	
-	/**
-	 * Return all crops which can be purchased by given castle
-	 * @param castleId
-	 * @return
-	 */
 	public List<Integer> getCropsForCastle(int castleId)
 	{
 		List<Integer> crops = new ArrayList<>();
@@ -204,11 +176,6 @@ public class L2Manor
 		return crops;
 	}
 	
-	/**
-	 * Return list of seed ids, which belongs to castle with given id
-	 * @param castleId - id of the castle
-	 * @return seedIds - list of seed ids
-	 */
 	public List<Integer> getSeedsForCastle(int castleId)
 	{
 		List<Integer> seedsID = new ArrayList<>();
@@ -220,11 +187,6 @@ public class L2Manor
 		return seedsID;
 	}
 	
-	/**
-	 * Returns castle id where seed can be sowned<br>
-	 * @param seedId
-	 * @return castleId
-	 */
 	public int getCastleIdForSeed(int seedId)
 	{
 		SeedData seed = _seeds.get(seedId);

@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.ai.group;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -26,13 +9,13 @@ import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.util.Rnd;
 
-/**
- * @author Slyce
- */
+import java.util.HashMap;
+import java.util.Map;
+
 public class PolymorphingOnAttack extends AbstractNpcAI
 {
-
-	private static final Map<Integer,int[]> MOBSPAWNS = new HashMap<Integer,int[]>();
+	
+	private static final Map<Integer, int[]> MOBSPAWNS = new HashMap<>();
 	{
 		MOBSPAWNS.put(21258, new int[]
 		{
@@ -148,12 +131,12 @@ public class PolymorphingOnAttack extends AbstractNpcAI
 			"You have more skill than I thought"
 		}
 	};
-		
+	
 	public PolymorphingOnAttack()
 	{
 		super(PolymorphingOnAttack.class.getSimpleName(), "ai/group");
 		for (int[] spawns : MOBSPAWNS.values())
-		registerMobs(spawns, QuestEventType.ON_ATTACK);
+			registerMobs(spawns, QuestEventType.ON_ATTACK);
 	}
 	
 	@Override

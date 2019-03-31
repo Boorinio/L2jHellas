@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -25,7 +11,7 @@ public class PrivateStoreManageListBuy extends L2GameServerPacket
 	private final int _playerAdena;
 	private final L2ItemInstance[] _itemList;
 	private final TradeList.TradeItem[] _buyList;
-
+	
 	public PrivateStoreManageListBuy(L2PcInstance player)
 	{
 		_activeChar = player;
@@ -33,7 +19,7 @@ public class PrivateStoreManageListBuy extends L2GameServerPacket
 		_itemList = _activeChar.getInventory().getUniqueItems(false, true);
 		_buyList = _activeChar.getBuyList().getItems();
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -41,7 +27,7 @@ public class PrivateStoreManageListBuy extends L2GameServerPacket
 		// section 1
 		writeD(_activeChar.getObjectId());
 		writeD(_playerAdena);
-
+		
 		// section2
 		writeD(_itemList.length); // inventory items for potential buy
 		for (L2ItemInstance item : _itemList)
@@ -54,7 +40,7 @@ public class PrivateStoreManageListBuy extends L2GameServerPacket
 			writeD(item.getItem().getBodyPart());
 			writeH(item.getItem().getType2());
 		}
-
+		
 		// section 3
 		writeD(_buyList.length); // count for all items already added for buy
 		for (TradeList.TradeItem item : _buyList)
@@ -70,7 +56,7 @@ public class PrivateStoreManageListBuy extends L2GameServerPacket
 			writeD(item.getItem().getReferencePrice());// fixed store price
 		}
 	}
-
+	
 	@Override
 	public String getType()
 	{

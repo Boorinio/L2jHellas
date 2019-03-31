@@ -1,44 +1,25 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
-
-import java.util.List;
 
 import com.l2jhellas.gameserver.model.Location;
 
-/**
- * Format: (ch) d[ddddd]
- * 
- * @author -Wooden-
- */
+import java.util.List;
+
 public class ExCursedWeaponLocation extends L2GameServerPacket
 {
 	private static final String _S__FE_46_EXCURSEDWEAPONLOCATION = "[S] FE:46 ExCursedWeaponLocation";
 	private final List<CursedWeaponInfo> _cursedWeaponInfo;
-
+	
 	public ExCursedWeaponLocation(List<CursedWeaponInfo> cursedWeaponInfo)
 	{
 		_cursedWeaponInfo = cursedWeaponInfo;
 	}
-
+	
 	@Override
 	protected void writeImpl()
 	{
 		writeC(0xfe);
 		writeH(0x46);
-
+		
 		if (!_cursedWeaponInfo.isEmpty())
 		{
 			writeD(_cursedWeaponInfo.size());
@@ -46,7 +27,7 @@ public class ExCursedWeaponLocation extends L2GameServerPacket
 			{
 				writeD(w.id);
 				writeD(w.activated);
-
+				
 				writeD(w.pos.getX());
 				writeD(w.pos.getY());
 				writeD(w.pos.getZ());
@@ -58,19 +39,19 @@ public class ExCursedWeaponLocation extends L2GameServerPacket
 			writeD(0);
 		}
 	}
-
+	
 	@Override
 	public String getType()
 	{
 		return _S__FE_46_EXCURSEDWEAPONLOCATION;
 	}
-
+	
 	public static class CursedWeaponInfo
 	{
 		public Location pos;
 		public int id;
 		public int activated; // 0 - not activated ? 1 - activated
-
+		
 		public CursedWeaponInfo(Location pos2, int ID, int status)
 		{
 			pos = pos2;

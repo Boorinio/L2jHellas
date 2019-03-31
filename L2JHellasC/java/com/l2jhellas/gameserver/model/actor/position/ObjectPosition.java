@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.position;
 
 import com.l2jhellas.gameserver.model.L2Object;
@@ -21,7 +7,7 @@ import com.l2jhellas.gameserver.model.Location;
 
 public class ObjectPosition
 {
-
+	
 	private final L2Object _activeObject;
 	private int _heading = 0;
 	private Location _worldPosition;
@@ -33,16 +19,10 @@ public class ObjectPosition
 		setWorldRegion(L2World.getInstance().getRegion(getWorldPosition()));
 	}
 	
-	/**
-	 * Set the x,y,z position of the L2Object and if necessary modify its _worldRegion.
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
 	public final void setXYZ(int x, int y, int z)
 	{
 		setWorldPosition(x, y, z);
-
+		
 		final L2WorldRegion oldRegion = getWorldRegion();
 		final L2WorldRegion newRegion = L2World.getInstance().getRegion(getWorldPosition());
 		
@@ -53,17 +33,11 @@ public class ObjectPosition
 				oldRegion.removeVisibleObject(getActiveObject());
 			}
 			newRegion.addVisibleObject(getActiveObject());
-			L2World.getInstance().switchRegion(getActiveObject(), newRegion);
+			L2World.switchRegion(getActiveObject(), newRegion);
 			setWorldRegion(newRegion);
-		}	
+		}
 	}
-
-	/**
-	 * Set the x,y,z position of the L2Object and make it invisible. A L2Object is invisble if <B>_hidden</B>=true or <B>_worldregion</B>==null
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
+	
 	public final void setXYZInvisible(int x, int y, int z)
 	{
 		if (x > L2World.WORLD_X_MAX)
@@ -87,25 +61,16 @@ public class ObjectPosition
 		return _activeObject;
 	}
 	
-	/**
-	 * @return the x position of the L2Object.
-	 */
 	public final int getX()
 	{
 		return getWorldPosition().getX();
 	}
 	
-	/**
-	 * @return the y position of the L2Object.
-	 */
 	public final int getY()
 	{
 		return getWorldPosition().getY();
 	}
 	
-	/**
-	 * @return the z position of the L2Object.
-	 */
 	public final int getZ()
 	{
 		return getWorldPosition().getZ();
@@ -136,14 +101,14 @@ public class ObjectPosition
 	
 	public void setWorldRegion(L2WorldRegion newRegion)
 	{
-		_worldRegion = newRegion;	
+		_worldRegion = newRegion;
 	}
-
+	
 	public final int getHeading()
 	{
 		return _heading;
 	}
-
+	
 	public final void setHeading(int value)
 	{
 		_heading = value;

@@ -1,25 +1,11 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.voicedcommandhandlers;
-
-import java.text.SimpleDateFormat;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
+
+import java.text.SimpleDateFormat;
 
 public class PremiumCmd implements IVoicedCommandHandler
 {
@@ -27,7 +13,7 @@ public class PremiumCmd implements IVoicedCommandHandler
 	{
 		"premium"
 	};
-
+	
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
@@ -57,7 +43,7 @@ public class PremiumCmd implements IVoicedCommandHandler
 				html3.append("<tr><td> <font color=\"70FFCA\">3.Does not effect Party members.</font></td></tr>");
 				html3.append("</table>");
 				html3.append("</center></body></html>");
-
+				
 				preReply.setHtml(html3.toString());
 				activeChar.sendPacket(preReply);
 			}
@@ -66,7 +52,7 @@ public class PremiumCmd implements IVoicedCommandHandler
 				long _end_prem_date = 0L;
 				_end_prem_date = Extensions.PremiumService.Prem.getInstance().getPremServiceData(activeChar.getAccountName());
 				NpcHtmlMessage preReply = new NpcHtmlMessage(5);
-
+				
 				StringBuilder html3 = new StringBuilder("<html><body><title>Premium Account Details</title><center>");
 				html3.append("<table>");
 				html3.append("<tr><td><center>Thank you for supporting YOUR server.<br><br></td></tr>");
@@ -83,14 +69,14 @@ public class PremiumCmd implements IVoicedCommandHandler
 				html3.append("<tr><td><font color=\"70FFCA\">3.Does not effect Party members.<br><br></font></td></tr>");
 				html3.append("</table>");
 				html3.append("</center></body></html>");
-
+				
 				preReply.setHtml(html3.toString());
 				activeChar.sendPacket(preReply);
 			}
 		}
 		return true;
 	}
-
+	
 	@Override
 	public String[] getVoicedCommandList()
 	{

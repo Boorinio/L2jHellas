@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.voicedcommandhandlers;
-
-import java.io.File;
-import java.util.logging.Logger;
 
 import com.PackRoot;
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
@@ -30,23 +13,24 @@ import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadManager;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
-/**
- * @author Boorinio
- */
+import java.io.File;
+import java.util.logging.Logger;
+
 public class ZodiacRegistrationCmd implements IVoicedCommandHandler
 {
 	private static Logger _log = Logger.getLogger(ZodiacRegistrationCmd.class.getName());
 	private static final String[] VOICED_COMMANDS =
 	{
-	"join", "leave"
+		"join",
+		"leave"
 	};
-
+	
 	@Override
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
 		final String Ip = activeChar.getClient().getConnection().getInetAddress().getHostAddress();
-
-		if(OlympiadManager.getInstance().isRegisteredInComp(activeChar) || activeChar.isInOlympiadMode() || activeChar.getOlympiadGameId() >0)
+		
+		if (OlympiadManager.getInstance().isRegisteredInComp(activeChar) || activeChar.isInOlympiadMode() || activeChar.getOlympiadGameId() > 0)
 		{
 			activeChar.sendMessage("You can't register while you are in olympiad!");
 			return false;
@@ -116,7 +100,7 @@ public class ZodiacRegistrationCmd implements IVoicedCommandHandler
 				html.setFile(Capture_Path);
 				activeChar.sendPacket(html);
 			}
-			else if(ChaosEvent._isChaosActive)
+			else if (ChaosEvent._isChaosActive)
 			{
 				ChaosEvent.registerToChaos(activeChar);
 				return true;
@@ -124,7 +108,7 @@ public class ZodiacRegistrationCmd implements IVoicedCommandHandler
 		}
 		if ((command.startsWith(VOICED_COMMANDS[1]) && activeChar.isinZodiac))
 		{
-			if(!ZodiacMain.ZodiacRegisterActive)
+			if (!ZodiacMain.ZodiacRegisterActive)
 			{
 				activeChar.sendMessage("You can't unregister while an event is running");
 				return true;
@@ -132,12 +116,12 @@ public class ZodiacRegistrationCmd implements IVoicedCommandHandler
 			activeChar.isinZodiac = false;
 			activeChar.sendMessage("You are now unregistered!");
 			ZodiacMain.Ips.remove(Ip);
-			if(ChaosEvent._isChaosActive)
+			if (ChaosEvent._isChaosActive)
 				ChaosEvent.removeFromChaos(activeChar);
 		}
 		return true;
 	}
-
+	
 	@Override
 	public String[] getVoicedCommandList()
 	{

@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor.instance;
-
-import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.TeleportLocationData;
@@ -24,34 +8,30 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-/**
- * @author NightMarez
- */
+import java.util.StringTokenizer;
+
 public final class L2CastleTeleporterInstance extends L2NpcInstance
 {
 	private static final int COND_ALL_FALSE = 0;
 	private static final int COND_BUSY_BECAUSE_OF_SIEGE = 1;
 	private static final int COND_OWNER = 2;
 	private static final int COND_REGULAR = 3;
-
-	/**
-	 * @param template
-	 */
+	
 	public L2CastleTeleporterInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 	}
-
+	
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
 	{
 		int condition = validateCondition(player);
 		if (condition <= COND_BUSY_BECAUSE_OF_SIEGE)
 			return;
-
+		
 		StringTokenizer st = new StringTokenizer(command, " ");
 		String actualCommand = st.nextToken(); // Get actual command
-
+		
 		if (actualCommand.equalsIgnoreCase("goto"))
 		{
 			if (st.countTokens() <= 0)
@@ -81,7 +61,7 @@ public final class L2CastleTeleporterInstance extends L2NpcInstance
 		else
 			super.onBypassFeedback(player, command);
 	}
-
+	
 	@Override
 	public String getHtmlPath(int npcId, int val)
 	{
@@ -94,15 +74,15 @@ public final class L2CastleTeleporterInstance extends L2NpcInstance
 		{
 			pom = npcId + "-" + val;
 		}
-
+		
 		return "data/html/teleporter/" + pom + ".htm";
 	}
-
+	
 	@Override
 	public void showChatWindow(L2PcInstance player)
 	{
 		String filename = "data/html/teleporter/castleteleporter-no.htm";
-
+		
 		int condition = validateCondition(player);
 		if (condition == COND_REGULAR)
 		{
@@ -113,17 +93,17 @@ public final class L2CastleTeleporterInstance extends L2NpcInstance
 		{
 			if (condition == COND_BUSY_BECAUSE_OF_SIEGE)
 				filename = "data/html/teleporter/castleteleporter-busy.htm"; // Busy because of siege
-			else if (condition == COND_OWNER)                                // Clan owns castle
-				filename = "data/html/teleporter/" + getNpcId() + ".htm";    // Owner message window
+			else if (condition == COND_OWNER) // Clan owns castle
+				filename = "data/html/teleporter/" + getNpcId() + ".htm"; // Owner message window
 		}
-
+		
 		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
 		html.setFile(filename);
 		html.replace("%objectId%", String.valueOf(getObjectId()));
 		html.replace("%npcname%", getName());
 		player.sendPacket(html);
 	}
-
+	
 	private void doTeleport(L2PcInstance player, int val)
 	{
 		L2TeleportLocation list = TeleportLocationData.getInstance().getTemplate(val);
@@ -133,7 +113,7 @@ public final class L2CastleTeleporterInstance extends L2NpcInstance
 			{
 				if (Config.DEBUG)
 					_log.fine("Teleporting player " + player.getName() + " to new location: " + list.getLocX() + ":" + list.getLocY() + ":" + list.getLocZ());
-
+				
 				// teleport
 				player.teleToLocation(list.getLocX(), list.getLocY(), list.getLocZ(), true);
 				player.stopMove(new L2CharPosition(list.getLocX(), list.getLocY(), list.getLocZ(), player.getHeading()));
@@ -145,17 +125,17 @@ public final class L2CastleTeleporterInstance extends L2NpcInstance
 		}
 		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-
+	
 	private int validateCondition(L2PcInstance player)
 	{
 		if ((player.getClan() != null) && (getCastle() != null))
 		{
 			if (getCastle().getSiege().getIsInProgress())
-				return COND_BUSY_BECAUSE_OF_SIEGE;                    // Busy because of siege
-			else if (getCastle().getOwnerId() == player.getClanId())  // Clan owns castle
-				return COND_OWNER;	// Owner
+				return COND_BUSY_BECAUSE_OF_SIEGE; // Busy because of siege
+			else if (getCastle().getOwnerId() == player.getClanId()) // Clan owns castle
+				return COND_OWNER; // Owner
 		}
-
+		
 		return COND_ALL_FALSE;
 	}
 }

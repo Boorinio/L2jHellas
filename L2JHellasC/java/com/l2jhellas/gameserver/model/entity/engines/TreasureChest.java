@@ -1,8 +1,5 @@
 package com.l2jhellas.gameserver.model.entity.engines;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
@@ -15,14 +12,17 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TreasureChest
 {
 	public static boolean TreasureRunning = false;
-	private static int LuckyChest=0,Counter=0;
+	private static int LuckyChest = 0, Counter = 0;
 	private static List<L2PcInstance> _players = new ArrayList<>();
 	public static List<L2Npc> _Npcs = new ArrayList<>();
 	private static int x = 87377, y = 20459, z = -5270, i;
-
+	
 	public static void registration()
 	{
 		ZodiacMain.ZodiacRegisterActive = true;
@@ -42,16 +42,16 @@ public class TreasureChest
 			startevent();
 		else
 			Announcements.getInstance().announceToAll("Event was cancelled due to lack of participation!");
-
+		
 	}
-
+	
 	public static void startevent()
 	{
 		ZodiacMain.ZodiacRegisterActive = false;
 		TreasureRunning = true;
 		for (L2PcInstance players : _players)
 		{
-			if(players == null)
+			if (players == null)
 				continue;
 			
 			players.teleToLocation(x, y, z, true);
@@ -65,20 +65,23 @@ public class TreasureChest
 			_Npcs.add(npcs);
 		}
 	}
+	
 	public static void onDeath(L2PcInstance player)
 	{
 		player.teleToLocation(x, y, z);
 		player.doRevive();
 		
 	}
+	
 	public static void onRevive(L2PcInstance player)
 	{
 		player.setCurrentHp(player.getMaxHp());
 		player.setCurrentMp(player.getMaxMp());
 		player.setCurrentCp(player.getMaxCp());
 		L2Skill skill = SkillTable.getInstance().getInfo(1323, 1);
-		skill.getEffects(player, player);	
+		skill.getEffects(player, player);
 	}
+	
 	public static void LuckyOne(L2PcInstance killer)
 	{
 		Counter++;
@@ -89,7 +92,7 @@ public class TreasureChest
 			cleanthemess();
 		}
 	}
-
+	
 	public static void cleanthemess()
 	{
 		for (L2PcInstance players : _players)
@@ -100,13 +103,13 @@ public class TreasureChest
 		{
 			npc.deleteMe();
 		}
-		Counter=0;
-		LuckyChest=0;
+		Counter = 0;
+		LuckyChest = 0;
 		TreasureRunning = false;
 		_players.clear();
 		_Npcs.clear();
 	}
-
+	
 	public static void waitSecs(int i)
 	{
 		try
@@ -118,7 +121,7 @@ public class TreasureChest
 			ie.printStackTrace();
 		}
 	}
-
+	
 	private static L2Npc addSpawn(int npcId, int x, int y, int z)
 	{
 		L2Npc result = null;

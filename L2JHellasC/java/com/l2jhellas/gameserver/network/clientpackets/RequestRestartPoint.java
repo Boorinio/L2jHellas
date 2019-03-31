@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
-
-import java.util.logging.Logger;
 
 import Extensions.RaidEvent.L2RaidEvent;
 
@@ -34,9 +18,11 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
+import java.util.logging.Logger;
+
 public final class RequestRestartPoint extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(RequestRestartPoint.class.getName());
+	static Logger _log = Logger.getLogger(RequestRestartPoint.class.getName());
 	private static final String _C__6d_REQUESTRESTARTPOINT = "[C] 6d RequestRestartPoint";
 	
 	protected int _requestedPointType;
@@ -71,7 +57,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 					_requestedPointType = 4;
 				
 				if (activeChar.getKarma() > 0)
-					loc = new Location(17836, 170178, -3507); //Should teleport to floran vilage
+					loc = new Location(17836, 170178, -3507); // Should teleport to floran vilage
 				else
 				{
 					switch (_requestedPointType)
@@ -90,7 +76,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 							{
 								activeChar.restoreExp(ClanHallManager.getInstance().getClanHallByOwner(activeChar.getClan()).getFunction(ClanHall.FUNC_RESTORE_EXP).getLvl());
 							}
-						break;
+							break;
 						
 						case 2: // to castle
 							Boolean isInDefense = false;
@@ -109,7 +95,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 								return;
 							}
 							loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.CASTLE);
-						break;
+							break;
 						
 						case 3: // to siege HQ
 							L2SiegeClan siegeClan = null;
@@ -126,7 +112,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 								return;
 							}
 							loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.SIEGE_FLAG);
-						break;
+							break;
 						
 						case 4: // Fixed or Player is a festival participant
 							if (!activeChar.isGM() && !activeChar.isFestivalParticipant())
@@ -137,27 +123,27 @@ public final class RequestRestartPoint extends L2GameClientPacket
 								return;
 							}
 							loc = new Location(activeChar.getX(), activeChar.getY(), activeChar.getZ()); // spawn them where they died
-						break;
+							break;
 						
 						case 27: // to jail
 							if (!activeChar.isInJail())
 								return;
 							loc = new Location(-114356, -249645, -2984);
-						break;
+							break;
 						
 						default:
 							if (Config.ALT_RESPAWN_POINT)
 								loc = new Location(Config.ALT_RESPAWN_POINT_X, Config.ALT_RESPAWN_POINT_Y, Config.ALT_RESPAWN_POINT_Z);
 							else
 								loc = MapRegionTable.getInstance().getTeleToLocation(activeChar, MapRegionTable.TeleportWhereType.TOWN);
-						break;
+							break;
 					}
 				}
-
-				activeChar.setIsIn7sDungeon(false);					
+				
+				activeChar.setIsIn7sDungeon(false);
 				
 				if (activeChar.isDead())
-					activeChar.doRevive();	
+					activeChar.doRevive();
 				
 				activeChar.teleToLocation(loc, true);
 			}
@@ -177,7 +163,7 @@ public final class RequestRestartPoint extends L2GameClientPacket
 		
 		if (activeChar == null)
 			return;
-
+		
 		if (activeChar.isFakeDeath())
 		{
 			activeChar.stopFakeDeath(null);

@@ -1,22 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.entity.engines;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.PackRoot;
 import com.l2jhellas.Config;
@@ -34,9 +16,10 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-/**
- * @author Boorinio
- */
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 public class CaptureThem
 {
 	public static boolean CaptureThemRunning = false;
@@ -48,11 +31,27 @@ public class CaptureThem
 	public static L2PcInstance MostPointsPlayer;
 	private static int[] flagsx =
 	{
-	149506, 149412, 150025, 148741, 149999, 150110, 150121, 149550, 149235,
+		149506,
+		149412,
+		150025,
+		148741,
+		149999,
+		150110,
+		150121,
+		149550,
+		149235,
 	};
 	private static int[] flagsy =
 	{
-	47471, 46144, 46670, 46750, 46221, 46464, 46872, 47105, 47871,
+		47471,
+		46144,
+		46670,
+		46750,
+		46221,
+		46464,
+		46872,
+		47105,
+		47871,
 	};
 	private static int flagsz = -3413;
 	
@@ -75,24 +74,24 @@ public class CaptureThem
 		Announcements.getInstance().announceToAll("CaptureThem Registration is Over!");
 		String Capture_Path = "data/html/zodiac/CaptureThem.htm";
 		// TODO check this if work like that
-		/* File mainText = */new File(PackRoot.DATAPACK_ROOT, Capture_Path);
+		new File(PackRoot.DATAPACK_ROOT, Capture_Path);
 		NpcHtmlMessage html = new NpcHtmlMessage(1);
 		html.setFile(Capture_Path);
 		
-		ZodiacMain.ZodiacRegisterActive = false;	
+		ZodiacMain.ZodiacRegisterActive = false;
 		
 		for (L2PcInstance players : L2World.getInstance().getAllPlayers().values())
 		{
-			if(players == null)
-				continue;		
+			if (players == null)
+				continue;
 			
 			if (players.isinZodiac)
-			{			
+			{
 				players.sendPacket(html);
-				_players.add(players);				
+				_players.add(players);
 			}
-		}	
-			
+		}
+		
 		waitSecs(20);
 		if (_players != null)
 			StartEvent();
@@ -181,14 +180,16 @@ public class CaptureThem
 		CaptureThemRunning = false;
 		
 	}
+	
 	public static void OnRevive(L2PcInstance player)
 	{
 		player.setCurrentHp(player.getMaxHp());
 		player.setCurrentMp(player.getMaxMp());
 		player.setCurrentCp(player.getMaxCp());
 		L2Skill skill = SkillTable.getInstance().getInfo(1323, 1);
-		skill.getEffects(player, player);		
+		skill.getEffects(player, player);
 	}
+	
 	public static void onDeath(L2PcInstance player, L2PcInstance killer)
 	{
 		if (killer == null)
@@ -196,12 +197,12 @@ public class CaptureThem
 		if (killer.isinZodiac)
 		{
 			killer.ZodiacPoints++;
-			killer.sendPacket(new ExShowScreenMessage("You have "+killer.ZodiacPoints+" Points.", 3000, SMPOS.BOTTOM_RIGHT, true));
+			killer.sendPacket(new ExShowScreenMessage("You have " + killer.ZodiacPoints + " Points.", 3000, SMPOS.BOTTOM_RIGHT, true));
 		}
 		if (player == null)
 			return;
 		player.teleToLocation(149722, 46700, -3413);
-		player.doRevive();		
+		player.doRevive();
 	}
 	
 	public static void waitSecs(int i)

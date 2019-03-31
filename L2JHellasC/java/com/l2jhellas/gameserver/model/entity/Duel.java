@@ -1,12 +1,5 @@
 package com.l2jhellas.gameserver.model.entity;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.concurrent.Future;
-
-
-
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.emum.DuelResult;
@@ -27,6 +20,11 @@ import com.l2jhellas.gameserver.network.serverpackets.ExDuelUpdateUserInfo;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.Future;
 
 public class Duel
 {
@@ -86,9 +84,6 @@ public class Duel
 		_checkTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CheckTask(), 1000, 1000);
 	}
 	
-	/**
-	 * This class hold important player informations, which will be restored on duel end.
-	 */
 	private static class PlayerCondition
 	{
 		private L2PcInstance _player;
@@ -160,14 +155,6 @@ public class Duel
 		}
 	}
 	
-	/**
-	 * This task makes the countdown, both for party and 1vs1 cases.
-	 * <ul>
-	 * <li>For 1vs1, the timer begins to 5 (messages then start duel process).</li>
-	 * <li>For party duel, the timer begins to 35 (2sec break, teleport parties, 3sec break, messages then start duel process).</li>
-	 * </ul>
-	 * The task is running until countdown reaches -1 (0 being startDuel).
-	 */
 	private class StartTask implements Runnable
 	{
 		public StartTask()
@@ -217,13 +204,6 @@ public class Duel
 		}
 	}
 	
-	/**
-	 * This task listens the different ways to disturb the duel. Two cases are possible :
-	 * <ul>
-	 * <li>DuelResult is under CONTINUE state, nothing happens. The task will continue to run every second.</li>
-	 * <li>DuelResult is anything except CONTINUE, then the duel ends. Animations are played on any duel end cases, except CANCELED.</li>
-	 * </ul>
-	 */
 	private class CheckTask implements Runnable
 	{
 		public CheckTask()
@@ -260,9 +240,6 @@ public class Duel
 		}
 	}
 	
-	/**
-	 * Stops all players from attacking. Used for duel timeout / interrupt.
-	 */
 	protected void stopFighting()
 	{
 		if (_partyDuel)
@@ -299,11 +276,6 @@ public class Duel
 		}
 	}
 	
-	/**
-	 * Starts the duel.<br>
-	 * Save players conditions, cancel active trade, set the team color and all duel start packets.<br>
-	 * Handle the duel task, which checks if the duel ends in one way or another.
-	 */
 	protected void startDuel()
 	{
 		if (_partyDuel)
@@ -381,9 +353,6 @@ public class Duel
 		broadcastToTeam2(DUELSOUND);
 	}
 	
-	/**
-	 * Save the current player condition: hp, mp, cp, location
-	 */
 	private void savePlayerConditions()
 	{
 		if (_partyDuel)
@@ -401,10 +370,6 @@ public class Duel
 		}
 	}
 	
-	/**
-	 * Restore player conditions.
-	 * @param abnormalEnd : true if the duel was canceled.
-	 */
 	private void restorePlayerConditions(boolean abnormalEnd)
 	{
 		if (_partyDuel)
@@ -459,52 +424,31 @@ public class Duel
 		}
 	}
 	
-	/**
-	 * @return the duel id.
-	 */
 	public int getId()
 	{
 		return _duelId;
 	}
 	
-	/**
-	 * @return the remaining time.
-	 */
 	public int getRemainingTime()
 	{
 		return (int) (_duelEndTime.getTimeInMillis() - Calendar.getInstance().getTimeInMillis());
 	}
 	
-	/**
-	 * @return the player that requested the duel.
-	 */
 	public L2PcInstance getPlayerA()
 	{
 		return _playerA;
 	}
 	
-	/**
-	 * @return the player that was challenged.
-	 */
 	public L2PcInstance getPlayerB()
 	{
 		return _playerB;
 	}
 	
-	/**
-	 * @return true if the duel was a party duel, false otherwise.
-	 */
 	public boolean isPartyDuel()
 	{
 		return _partyDuel;
 	}
 	
-	/**
-	 * Teleport all players to the given coordinates. Used by party duel only.
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
 	protected void teleportPlayers(int x, int y, int z)
 	{
 		// TODO: adjust the values if needed... or implement something better (especially using more then 1 arena)
@@ -528,10 +472,6 @@ public class Duel
 		}
 	}
 	
-	/**
-	 * Broadcast a packet to the challenger team.
-	 * @param packet : The packet to send.
-	 */
 	public void broadcastToTeam1(L2GameServerPacket packet)
 	{
 		if (_partyDuel && _playerA.getParty() != null)
@@ -543,10 +483,6 @@ public class Duel
 			_playerA.sendPacket(packet);
 	}
 	
-	/**
-	 * Broadcast a packet to the challenged team.
-	 * @param packet : The packet to send.
-	 */
 	public void broadcastToTeam2(L2GameServerPacket packet)
 	{
 		if (_partyDuel && _playerB.getParty() != null)
@@ -558,13 +494,9 @@ public class Duel
 			_playerB.sendPacket(packet);
 	}
 	
-	/**
-	 * Playback the bow animation for loosers, victory pose for winners.<br>
-	 * The method works even if other side is null or offline.
-	 */
 	protected void playAnimations()
 	{
-		if (_playerA !=null )
+		if (_playerA != null)
 		{
 			if (_playerA.getDuelState() == DuelState.WINNER)
 			{
@@ -613,10 +545,6 @@ public class Duel
 		}
 	}
 	
-	/**
-	 * This method ends a duel, sending messages to each team, end duel packet, cleaning player conditions and then removing duel from manager.
-	 * @param result : The duel result.
-	 */
 	@SuppressWarnings("incomplete-switch")
 	protected void endDuel(DuelResult result)
 	{
@@ -659,22 +587,18 @@ public class Duel
 		DuelManager.getInstance().removeDuel(_duelId);
 	}
 	
-	/**
-	 * This method checks all possible scenari which can disturb a duel, and return the appropriate status.
-	 * @return DuelResult : The duel status.
-	 */
 	protected DuelResult checkEndDuelCondition()
 	{
-		if (_playerA.isOnline()==0 && _playerB.isOnline()==0)
+		if (_playerA.isOnline() == 0 && _playerB.isOnline() == 0)
 			return DuelResult.CANCELED;
 		
-		if (_playerA.isOnline()==0)
+		if (_playerA.isOnline() == 0)
 		{
 			onPlayerDefeat(_playerA);
 			return DuelResult.TEAM_1_SURRENDER;
 		}
 		
-		if (_playerB.isOnline()==0)
+		if (_playerB.isOnline() == 0)
 		{
 			onPlayerDefeat(_playerB);
 			return DuelResult.TEAM_2_SURRENDER;
@@ -748,10 +672,6 @@ public class Duel
 		return DuelResult.CONTINUE;
 	}
 	
-	/**
-	 * Register a surrender request. It updates DuelState of players.
-	 * @param player : The player who surrenders.
-	 */
 	public void doSurrender(L2PcInstance player)
 	{
 		if (_surrenderRequest != 0)
@@ -800,10 +720,6 @@ public class Duel
 		}
 	}
 	
-	/**
-	 * This method is called whenever a player was defeated in a duel. It updates DuelState of players.
-	 * @param player : The defeated player.
-	 */
 	public void onPlayerDefeat(L2PcInstance player)
 	{
 		player.setDuelState(DuelState.DEAD);
@@ -839,9 +755,6 @@ public class Duel
 		}
 	}
 	
-	/**
-	 * This method is called when a player join/leave a party during a Duel, and enforce Duel cancellation.
-	 */
 	public void onPartyEdit()
 	{
 		if (!_partyDuel)
@@ -856,11 +769,6 @@ public class Duel
 		endDuel(DuelResult.CANCELED);
 	}
 	
-	/**
-	 * This method is called to register an effect.
-	 * @param player : The player condition to affect.
-	 * @param effect : The effect to register.
-	 */
 	public void onBuff(L2PcInstance player, L2Effect effect)
 	{
 		for (PlayerCondition cond : _playerConditions)

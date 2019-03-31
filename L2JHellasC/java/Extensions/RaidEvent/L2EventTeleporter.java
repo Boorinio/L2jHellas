@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package Extensions.RaidEvent;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -28,23 +14,7 @@ public class L2EventTeleporter implements Runnable
 	private int _coordinateY = 0;
 	private int _coordinateZ = 0;
 	boolean _removeBuffs;
-
-	/**
-	 * Manages all Teleports done within a Raid Event.
-	 * 
-	 * @param player
-	 *        --> Player being teleported
-	 * @param coordinateX
-	 *        --> CX
-	 * @param coordinateY
-	 *        --> CY
-	 * @param coordinateZ
-	 *        --> CZ
-	 * @param delay
-	 *        --> Delay to do the actual teleport.
-	 * @param removeBuffs
-	 *        --> Boolean to allow removal of buffs.
-	 */
+	
 	public L2EventTeleporter(L2PcInstance player, int coordinateX, int coordinateY, int coordinateZ, int delay, boolean removeBuffs)
 	{
 		_player = player;
@@ -58,14 +28,14 @@ public class L2EventTeleporter implements Runnable
 			_delay = 0;
 		ThreadPoolManager.getInstance().scheduleGeneral(this, _delay);
 	}
-
+	
 	@Override
 	public void run()
 	{
 		if (_player == null)
 			return;
-
-		if(_player.getActiveTradeList() !=null)
+		
+		if (_player.getActiveTradeList() != null)
 			_player.cancelActiveTrade();
 		
 		if (_player.isMounted())

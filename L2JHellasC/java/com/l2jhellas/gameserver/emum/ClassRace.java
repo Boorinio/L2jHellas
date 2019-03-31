@@ -1,8 +1,5 @@
 package com.l2jhellas.gameserver.emum;
 
-/**
- * This class defines all races that a player can choose.
- */
 public enum ClassRace
 {
 	HUMAN(1),
@@ -18,9 +15,6 @@ public enum ClassRace
 		_breathMultiplier = breathMultiplier;
 	}
 	
-	/**
-	 * @return the breath multiplier.
-	 */
 	public double getBreathMultiplier()
 	{
 		return _breathMultiplier;

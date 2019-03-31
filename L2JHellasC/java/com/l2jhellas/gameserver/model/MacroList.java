@@ -1,18 +1,9 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model;
+
+import com.l2jhellas.gameserver.model.L2Macro.L2MacroCmd;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.serverpackets.SendMacroList;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,42 +15,37 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.model.L2Macro.L2MacroCmd;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.SendMacroList;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 public class MacroList
 {
 	private static Logger _log = Logger.getLogger(MacroList.class.getName());
-
+	
 	private final L2PcInstance _owner;
 	private int _revision;
 	private int _macroId;
-	private final Map<Integer, L2Macro> _macroses = new HashMap<Integer, L2Macro>();
-
+	private final Map<Integer, L2Macro> _macroses = new HashMap<>();
+	
 	public MacroList(L2PcInstance owner)
 	{
 		_owner = owner;
 		_revision = 1;
 		_macroId = 1000;
 	}
-
+	
 	public int getRevision()
 	{
 		return _revision;
 	}
-
+	
 	public L2Macro[] getAllMacroses()
 	{
 		return _macroses.values().toArray(new L2Macro[_macroses.size()]);
 	}
-
+	
 	public L2Macro getMacro(int id)
 	{
 		return _macroses.get(id - 1);
 	}
-
+	
 	public void registerMacro(L2Macro macro)
 	{
 		if (macro.id == 0)
@@ -79,7 +65,7 @@ public class MacroList
 		}
 		sendUpdate();
 	}
-
+	
 	public void deleteMacro(int id)
 	{
 		L2Macro toRemove = _macroses.get(id);
@@ -88,17 +74,17 @@ public class MacroList
 			deleteMacroFromDb(toRemove);
 		}
 		_macroses.remove(id);
-
+		
 		L2ShortCut[] allShortCuts = _owner.getAllShortCuts();
 		for (L2ShortCut sc : allShortCuts)
 		{
 			if (sc.getId() == id && sc.getType() == L2ShortCut.TYPE_MACRO)
 				_owner.deleteShortCut(sc.getSlot(), sc.getPage());
 		}
-
+		
 		sendUpdate();
 	}
-
+	
 	public void sendUpdate()
 	{
 		_revision++;
@@ -115,7 +101,7 @@ public class MacroList
 			}
 		}
 	}
-
+	
 	private void registerMacroInDb(L2Macro macro)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -146,10 +132,7 @@ public class MacroList
 			_log.warning(MacroList.class.getSimpleName() + ": could not store macro:");
 		}
 	}
-
-	/**
-	 * @param shortcut
-	 */
+	
 	private void deleteMacroFromDb(L2Macro macro)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -165,7 +148,7 @@ public class MacroList
 			_log.warning(MacroList.class.getSimpleName() + ": could not delete macro:");
 		}
 	}
-
+	
 	public void restore()
 	{
 		_macroses.clear();
@@ -181,7 +164,7 @@ public class MacroList
 				String name = rset.getString("name");
 				String descr = rset.getString("descr");
 				String acronym = rset.getString("acronym");
-				List<L2MacroCmd> commands = new ArrayList<L2MacroCmd>();
+				List<L2MacroCmd> commands = new ArrayList<>();
 				StringTokenizer st1 = new StringTokenizer(rset.getString("commands"), ";");
 				while (st1.hasMoreTokens())
 				{
@@ -197,7 +180,7 @@ public class MacroList
 					L2MacroCmd mcmd = new L2MacroCmd(commands.size(), type, d1, d2, cmd);
 					commands.add(mcmd);
 				}
-
+				
 				L2Macro m = new L2Macro(id, icon, name, descr, acronym, commands.toArray(new L2MacroCmd[commands.size()]));
 				_macroses.put(m.id, m);
 			}

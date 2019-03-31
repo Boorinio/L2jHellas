@@ -1,53 +1,12 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.l2jhellas.gameserver.model.PartyMatchRoom;
 import com.l2jhellas.gameserver.model.PartyMatchRoomList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- * sample
- * af
- * 02 00 00 00 count
- * 71 b3 70 4b object id
- * 44 00 79 00 66 00 65 00 72 00 00 00 name
- * 14 00 00 00 level
- * 0f 00 00 00 class id
- * 00 00 00 00 sex ??
- * 00 00 00 00 clan id
- * 02 00 00 00 ??
- * 6f 5f 00 00 x
- * af a9 00 00 y
- * f7 f1 ff ff z
- * c1 9c c0 4b object id
- * 43 00 6a 00 6a 00 6a 00 6a 00 6f 00 6e 00 00 00
- * 0b 00 00 00 level
- * 12 00 00 00 class id
- * 00 00 00 00 sex ??
- * b1 01 00 00 clan id
- * 00 00 00 00
- * 13 af 00 00
- * 38 b8 00 00
- * 4d f4 ff ff
- * *
- * format d (dSdddddddd)
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class PartyMatchList extends L2GameServerPacket
 {
 	private static final String _S__AF_PARTYMATCHLIST = "[S] 96 PartyMatchList";
@@ -72,7 +31,7 @@ public class PartyMatchList extends L2GameServerPacket
 		
 		for (PartyMatchRoom room : PartyMatchRoomList.getInstance().getRooms())
 		{
-			if (room.getMembers() < 1 || room.getOwner() == null || room.getOwner().isOnline()==0 || room.getOwner().getPartyRoom() != room.getId())
+			if (room.getMembers() < 1 || room.getOwner() == null || room.getOwner().isOnline() == 0 || room.getOwner().getPartyRoom() != room.getId())
 			{
 				PartyMatchRoomList.getInstance().deleteRoom(room.getId());
 				continue;
@@ -102,7 +61,7 @@ public class PartyMatchList extends L2GameServerPacket
 			writeS(room.getOwner().getName());
 		}
 	}
-
+	
 	@Override
 	public String getType()
 	{

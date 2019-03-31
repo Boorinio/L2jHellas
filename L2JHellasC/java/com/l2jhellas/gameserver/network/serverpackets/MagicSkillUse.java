@@ -1,27 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.actor.L2Character;
 
-/**
- * sample
- * 0000: 5a d8 a8 10 48 d8 a8 10 48 10 04 00 00 01 00 00 Z...H...H.......
- * 0010: 00 f0 1a 00 00 68 28 00 00 .....h(..
- * format dddddd dddh (h)
- */
 public class MagicSkillUse extends L2GameServerPacket
 {
 	private static final String _S__5A_MAGICSKILLUSER = "[S] 5A MagicSkillUser";
@@ -54,7 +34,7 @@ public class MagicSkillUse extends L2GameServerPacket
 		_targety = target.getY();
 		_targetz = target.getZ();
 	}
-
+	
 	public MagicSkillUse(L2Character cha, int skillId, int skillLevel, int hitTime, int reuseDelay)
 	{
 		_charObjId = cha.getObjectId();
@@ -70,7 +50,7 @@ public class MagicSkillUse extends L2GameServerPacket
 		_targety = cha.getY();
 		_targetz = cha.getZ();
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -97,7 +77,7 @@ public class MagicSkillUse extends L2GameServerPacket
 		writeD(_targety);
 		writeD(_targetz);
 	}
-
+	
 	@Override
 	public String getType()
 	{

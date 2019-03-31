@@ -1,18 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.datatables.xml;
+
+import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.model.L2LvlupData;
+import com.l2jhellas.gameserver.model.base.ClassId;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,29 +11,25 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import com.l2jhellas.gameserver.engines.DocumentParser;
-import com.l2jhellas.gameserver.model.L2LvlupData;
-import com.l2jhellas.gameserver.model.base.ClassId;
-
 public class LevelUpData implements DocumentParser
 {
 	private static final Logger _log = Logger.getLogger(LevelUpData.class.getName());
-
+	
 	private static final String CLASS_LVL = "class_lvl", CLASS_ID = "classid";
 	private static final String MP_MOD = "mpmod", MP_ADD = "mpadd", MP_BASE = "mpbase";
 	private static final String HP_MOD = "hpmod", HP_ADD = "hpadd", HP_BASE = "hpbase";
 	private static final String CP_MOD = "cpmod", CP_ADD = "cpadd", CP_BASE = "cpbase";
-
-	private Map<Integer, L2LvlupData> _lvlTable = new HashMap<>();
-
+	
+	private final Map<Integer, L2LvlupData> _lvlTable = new HashMap<>();
+	
 	public void reload()
 	{
 		load();
 	}
-
-	private LevelUpData()
+	
+	protected LevelUpData()
 	{
-       load();
+		load();
 	}
 	
 	@Override
@@ -52,7 +38,7 @@ public class LevelUpData implements DocumentParser
 		_lvlTable.clear();
 		parseDatapackFile("data/xml/lvl_up_data.xml");
 		_log.info(LevelUpData.class.getSimpleName() + ": LevelUpData: Loaded " + _lvlTable.size() + " character level up templates.");
-
+		
 	}
 	
 	@Override
@@ -80,7 +66,7 @@ public class LevelUpData implements DocumentParser
 						float MP_BASE1 = Float.valueOf(d.getAttributes().getNamedItem(MP_BASE).getNodeValue());
 						float MP_ADD1 = Float.valueOf(d.getAttributes().getNamedItem(MP_ADD).getNodeValue());
 						float MP_MOD1 = Float.valueOf(d.getAttributes().getNamedItem(MP_MOD).getNodeValue());
-
+						
 						lvlDat.setClassid(CLASS1_ID);
 						lvlDat.setClassLvl(CLASS1_LVL);
 						lvlDat.setClassHpBase(HP_BASE1);
@@ -92,19 +78,19 @@ public class LevelUpData implements DocumentParser
 						lvlDat.setClassMpBase(MP_BASE1);
 						lvlDat.setClassMpAdd(MP_ADD1);
 						lvlDat.setClassMpModifier(MP_MOD1);
-
+						
 						_lvlTable.put(new Integer(lvlDat.getClassid()), lvlDat);
 					}
 				}
 			}
-		}		
+		}
 	}
-
+	
 	public L2LvlupData getTemplate(int classId)
 	{
 		return _lvlTable.get(classId);
 	}
-
+	
 	public L2LvlupData getTemplate(ClassId classId)
 	{
 		return _lvlTable.get(classId.getId());

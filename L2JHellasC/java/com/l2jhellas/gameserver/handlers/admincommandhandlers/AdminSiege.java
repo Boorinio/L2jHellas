@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -31,14 +15,12 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * This class handles all siege commands:
- * Todo: change the class name, and neaten it up
- */
+import java.util.StringTokenizer;
+
 public class AdminSiege implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_siege",
 		"admin_add_attacker",
 		"admin_add_defender",
@@ -57,17 +39,19 @@ public class AdminSiege implements IAdminCommandHandler
 		"admin_clanhallopendoors",
 		"admin_clanhallclosedoors",
 		"admin_clanhallteleportself"
-	};/** @formatter:off */
+	};
+	
 
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		StringTokenizer st = new StringTokenizer(command, " ");
 		command = st.nextToken(); // Get actual command
-
 		// Get castle
 		Castle castle = null;
 		ClanHall clanhall = null;
+
 		if (command.startsWith("admin_clanhall"))
 			clanhall = ClanHallManager.getInstance().getClanHallById(Integer.parseInt(st.nextToken()));
 		else if (st.hasMoreTokens())
@@ -81,11 +65,25 @@ public class AdminSiege implements IAdminCommandHandler
 			showCastleSelectPage(activeChar);
 		else
 		{
+			if(castle == null)
+			{
+				activeChar.sendMessage("no castle found");
+				return false;
+			}
+			
+			if(clanhall == null)
+			{
+				activeChar.sendMessage("no clanhall found");
+				showSiegePage(activeChar, castle.getName());
+				return false;
+			}
+			
+			
 			L2Object target = activeChar.getTarget();
 			L2PcInstance player = null;
 			if (target instanceof L2PcInstance)
 				player = (L2PcInstance) target;
-
+			
 			if (command.equalsIgnoreCase("admin_add_attacker"))
 			{
 				if (player == null)
@@ -193,15 +191,13 @@ public class AdminSiege implements IAdminCommandHandler
 			{
 				castle.getSiege().startSiege();
 			}
-			if (clanhall != null)
-				showClanHallPage(activeChar, clanhall);
-			else
-				showSiegePage(activeChar, castle.getName());
+			
+			showClanHallPage(activeChar, clanhall);
 		}
 		return true;
 	}
-
-	private void showCastleSelectPage(L2PcInstance activeChar)
+	
+	private static void showCastleSelectPage(L2PcInstance activeChar)
 	{
 		int i = 0;
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
@@ -258,16 +254,16 @@ public class AdminSiege implements IAdminCommandHandler
 		adminReply.replace("%freeclanhalls%", cList2.toString());
 		activeChar.sendPacket(adminReply);
 	}
-
-	private void showSiegePage(L2PcInstance activeChar, String castleName)
+	
+	private static void showSiegePage(L2PcInstance activeChar, String castleName)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		adminReply.setFile("data/html/admin/castle.htm");
 		adminReply.replace("%castleName%", castleName);
 		activeChar.sendPacket(adminReply);
 	}
-
-	private void showClanHallPage(L2PcInstance activeChar, ClanHall clanhall)
+	
+	private static void showClanHallPage(L2PcInstance activeChar, ClanHall clanhall)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		adminReply.setFile("data/html/admin/clanhall.htm");
@@ -280,7 +276,7 @@ public class AdminSiege implements IAdminCommandHandler
 			adminReply.replace("%clanhallOwner%", owner.getName());
 		activeChar.sendPacket(adminReply);
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{

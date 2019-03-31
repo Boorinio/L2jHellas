@@ -13,11 +13,6 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-/**
- * Parts of design based on networkcore from WoodenGil
- * @param <T>
- * @author KenM
- */
 public final class SelectorThread<T extends MMOClient<?>> extends Thread
 {
 	// default BYTE_ORDER
@@ -92,6 +87,7 @@ public final class SelectorThread<T extends MMOClient<?>> extends Thread
 		_selector = Selector.open();
 	}
 	
+	@SuppressWarnings("resource")
 	public final void openServerSocket(InetAddress address, int tcpPort) throws IOException
 	{
 		ServerSocketChannel selectable = ServerSocketChannel.open();
@@ -233,6 +229,7 @@ public final class SelectorThread<T extends MMOClient<?>> extends Thread
 		}
 	}
 	
+	@SuppressWarnings("resource")
 	private final void acceptConnection(final SelectionKey key, MMOConnection<T> con)
 	{
 		ServerSocketChannel ssc = (ServerSocketChannel) key.channel();
@@ -338,7 +335,7 @@ public final class SelectorThread<T extends MMOClient<?>> extends Thread
 			case 0:
 				// buffer is full nothing to read
 				return false;
-			
+				
 			case 1:
 				// we don`t have enough data for header so we need to read
 				key.interestOps(key.interestOps() | SelectionKey.OP_READ);
@@ -351,7 +348,7 @@ public final class SelectorThread<T extends MMOClient<?>> extends Thread
 					// move the first byte to the beginning :)
 					buf.compact();
 				return false;
-			
+				
 			default:
 				// data size excluding header size :>
 				final int dataPending = (buf.getShort() & 0xFFFF) - HEADER_SIZE;

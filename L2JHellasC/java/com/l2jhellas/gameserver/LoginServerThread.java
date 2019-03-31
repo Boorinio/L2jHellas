@@ -1,38 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver;
-
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.math.BigInteger;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.security.GeneralSecurityException;
-import java.security.KeyFactory;
-import java.security.interfaces.RSAPublicKey;
-import java.security.spec.RSAKeyGenParameterSpec;
-import java.security.spec.RSAPublicKeySpec;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2World;
@@ -59,6 +25,26 @@ import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.crypt.NewCrypt;
 
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.math.BigInteger;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.security.GeneralSecurityException;
+import java.security.KeyFactory;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.RSAKeyGenParameterSpec;
+import java.security.spec.RSAPublicKeySpec;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class LoginServerThread extends Thread
 {
 	protected static final Logger _log = Logger.getLogger(LoginServerThread.class.getName());
@@ -71,15 +57,6 @@ public class LoginServerThread extends Thread
 	private InputStream _in;
 	private OutputStream _out;
 	
-	/**
-	 * The BlowFish engine used to encrypt packets<br>
-	 * It is first initialized with a unified key:<br>
-	 * "_;v.]05-31!|+-%xT!^[$\00"<br>
-	 * <br>
-	 * and then after handshake, with a new key sent by<br>
-	 * loginserver during the handshake. This new key is stored<br>
-	 * in {@link #_blowfishKey}
-	 */
 	private NewCrypt _blowfish;
 	private byte[] _blowfishKey;
 	private byte[] _hexID;
@@ -89,7 +66,7 @@ public class LoginServerThread extends Thread
 	private final boolean _reserveHost;
 	private int _maxPlayer;
 	private final Map<String, L2GameClient> _waitingClients = new ConcurrentHashMap<>();
-
+	
 	private int _status;
 	private String _serverName;
 	private final String _gameExternalHost;
@@ -117,7 +94,7 @@ public class LoginServerThread extends Thread
 		_gameInternalHost = Config.INTERNAL_HOSTNAME;
 		_maxPlayer = Config.MAXIMUM_ONLINE_USERS;
 	}
-
+	
 	@Override
 	public void run()
 	{
@@ -180,7 +157,7 @@ public class LoginServerThread extends Thread
 					}
 					
 					if (Config.DEBUG)
-						_log.warning("[C]\n" + Util.printData(decrypt,0));
+						_log.warning("[C]\n" + Util.printData(decrypt, 0));
 					
 					int packetType = decrypt[0] & 0xff;
 					switch (packetType)
@@ -277,7 +254,7 @@ public class LoginServerThread extends Thread
 						case 0x03:
 							PlayerAuthResponse par = new PlayerAuthResponse(decrypt);
 							final L2GameClient wcToRemove = _waitingClients.get(par.getAccount());
-
+							
 							if (wcToRemove != null)
 							{
 								if (par.isAuthed())
@@ -285,8 +262,8 @@ public class LoginServerThread extends Thread
 									sendPacket(new PlayerInGame(par.getAccount()));
 									
 									wcToRemove.setState(GameClientState.AUTHED);
-									wcToRemove.sendPacket(new CharSelectInfo(par.getAccount(),wcToRemove.getSessionId().playOkID1));
-
+									wcToRemove.sendPacket(new CharSelectInfo(par.getAccount(), wcToRemove.getSessionId().playOkID1));
+									
 								}
 								else
 								{
@@ -397,14 +374,14 @@ public class LoginServerThread extends Thread
 	{
 		return new BigInteger(hex).toString(16);
 	}
-
-	 public void doKickPlayer(String account)
-	 {
-			final L2GameClient client = _waitingClients.get(account);
-			if (client != null)
-				client.closeNow();
-	 }
-	 
+	
+	public void doKickPlayer(String account)
+	{
+		final L2GameClient client = _waitingClients.get(account);
+		if (client != null)
+			client.closeNow();
+	}
+	
 	public static byte[] generateHex(int size)
 	{
 		byte[] array = new byte[size];
@@ -421,7 +398,7 @@ public class LoginServerThread extends Thread
 		byte[] data = sl.getContent();
 		NewCrypt.appendChecksum(data);
 		if (Config.DEBUG)
-			_log.finest("[S]\n" + Util.printData(data,0));
+			_log.finest("[S]\n" + Util.printData(data, 0));
 		
 		data = _blowfish.crypt(data);
 		
@@ -540,7 +517,7 @@ public class LoginServerThread extends Thread
 			return "PlayOk: " + playOkID1 + " " + playOkID2 + " LoginOk:" + loginOkID1 + " " + loginOkID2;
 		}
 	}
-
+	
 	public static LoginServerThread getInstance()
 	{
 		return SingletonHolder.INSTANCE;

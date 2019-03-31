@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.Config;
@@ -34,11 +20,11 @@ public class UserInfo extends L2GameServerPacket
 	private int _relation;
 	private final float _moveMultiplier;
 	public boolean _critical_test = false;
-
+	
 	public UserInfo(L2PcInstance character)
 	{
 		_activeChar = character;
-
+		
 		_moveMultiplier = _activeChar.getMovementSpeedMultiplier();
 		_runSpd = (int) (_activeChar.getRunSpeed() / _moveMultiplier);
 		_walkSpd = (int) (_activeChar.getWalkSpeed() / _moveMultiplier);
@@ -55,30 +41,30 @@ public class UserInfo extends L2GameServerPacket
 			_relation |= 0x80;
 		}
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
 		
-		if(_activeChar==null)
+		if (_activeChar == null)
 			return;
-
-		if(_activeChar!=getClient().getActiveChar())
+		
+		if (_activeChar != getClient().getActiveChar())
 			return;
 		
 		writeC(0x04);
-
+		
 		writeD(_activeChar.getX());
 		writeD(_activeChar.getY());
 		writeD(_activeChar.getZ());
 		writeD(_activeChar.getHeading());
-
+		
 		writeD(_activeChar.getObjectId());
 		writeS(_activeChar.getName());
 		writeD(_activeChar.getRace().ordinal());
 		writeD(_activeChar.getAppearance().getSex().ordinal());
-		writeD(_activeChar.getClassIndex() == 0 ? _activeChar.getClassId().getId():_activeChar.getBaseClass());
-
+		writeD(_activeChar.getClassIndex() == 0 ? _activeChar.getClassId().getId() : _activeChar.getBaseClass());
+		
 		writeD(_activeChar.getLevel());
 		writeQ(_activeChar.getExp());
 		writeD(_activeChar.getSTR());
@@ -94,10 +80,10 @@ public class UserInfo extends L2GameServerPacket
 		writeD(_activeChar.getSp());
 		writeD(_activeChar.getCurrentLoad());
 		writeD(_activeChar.getMaxLoad());
-
-		//writeD(0x28); // unknown
+		
+		// writeD(0x28); // unknown
 		writeD(_activeChar.getActiveWeaponItem() != null ? 40 : 20); // 20 no weapon, 40 weapon equipped
-
+		
 		writeD(_activeChar.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_DHAIR));
 		writeD(_activeChar.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_REAR));
 		writeD(_activeChar.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_LEAR));
@@ -115,7 +101,7 @@ public class UserInfo extends L2GameServerPacket
 		writeD(_activeChar.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_LRHAND));
 		writeD(_activeChar.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_HAIR));
 		writeD(_activeChar.getInventory().getPaperdollObjectId(Inventory.PAPERDOLL_FACE));
-
+		
 		writeD(_activeChar.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_DHAIR));
 		writeD(_activeChar.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_REAR));
 		writeD(_activeChar.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_LEAR));
@@ -133,7 +119,7 @@ public class UserInfo extends L2GameServerPacket
 		writeD(_activeChar.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_LRHAND));
 		writeD(_activeChar.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_HAIR));
 		writeD(_activeChar.getInventory().getPaperdollItemId(Inventory.PAPERDOLL_FACE));
-
+		
 		// c6 new h's
 		writeH(0x00);
 		writeH(0x00);
@@ -168,7 +154,7 @@ public class UserInfo extends L2GameServerPacket
 		writeH(0x00);
 		writeH(0x00);
 		// end of c6 new h's
-
+		
 		writeD(_activeChar.getPAtk(null));
 		writeD(_activeChar.getPAtkSpd());
 		writeD(_activeChar.getPDef(null));
@@ -176,15 +162,15 @@ public class UserInfo extends L2GameServerPacket
 		writeD(_activeChar.getAccuracy());
 		writeD(_activeChar.getCriticalHit(null, null));
 		writeD(_activeChar.getMAtk(null, null));
-
+		
 		writeD(_activeChar.getMAtkSpd());
 		writeD(_activeChar.getPAtkSpd());
-
+		
 		writeD(_activeChar.getMDef(null, null));
-
+		
 		writeD(_activeChar.getPvpFlag()); // 0-non-pvp 1-pvp = violett name
 		writeD(_activeChar.getKarma());
-
+		
 		writeD(_runSpd);
 		writeD(_walkSpd);
 		writeD(_swimRunSpd); // swimspeed
@@ -195,7 +181,7 @@ public class UserInfo extends L2GameServerPacket
 		writeD(_flyWalkSpd);
 		writeF(_moveMultiplier);
 		writeF(_activeChar.getAttackSpeedMultiplier());
-
+		
 		L2Summon pet = _activeChar.getPet();
 		if (_activeChar.getMountType() != 0 && pet != null)
 		{
@@ -207,19 +193,19 @@ public class UserInfo extends L2GameServerPacket
 			writeF(_activeChar.getBaseTemplate().getCollisionRadius(_activeChar.getAppearance().getSex()));
 			writeF(_activeChar.getBaseTemplate().getCollisionHeight(_activeChar.getAppearance().getSex()));
 		}
-
+		
 		writeD(_activeChar.getAppearance().getHairStyle());
 		writeD(_activeChar.getAppearance().getHairColor());
 		writeD(_activeChar.getAppearance().getFace());
 		writeD(_activeChar.isGM() ? 1 : 0); // builder level
-
+		
 		String title = _activeChar.getTitle();
 		
 		if (_activeChar.getAppearance().getInvisible() && _activeChar.isGM())
 			title = "Invisible";
 		
 		writeS((_activeChar.getPoly().isMorphed()) ? "Morphed" : title);
-
+		
 		writeD(_activeChar.getClanId());
 		writeD(_activeChar.getClanCrestId());
 		writeD(_activeChar.getAllyId());
@@ -232,7 +218,7 @@ public class UserInfo extends L2GameServerPacket
 		writeC(_activeChar.hasDwarvenCraft() ? 1 : 0);
 		writeD(_activeChar.getPkKills());
 		writeD(_activeChar.getPvpKills());
-
+		
 		writeH(_activeChar.getCubics().size());
 		
 		for (int id : _activeChar.getCubics().keySet())
@@ -240,48 +226,48 @@ public class UserInfo extends L2GameServerPacket
 		
 		writeC(_activeChar.isInPartyMatchRoom() ? 1 : 0);
 		
-		writeD(_activeChar.getAppearance().getInvisible() && _activeChar.isGM() ? _activeChar.getAbnormalEffect() | AbnormalEffect.STEALTH.getMask():_activeChar.getAbnormalEffect());
+		writeD(_activeChar.getAppearance().getInvisible() && _activeChar.isGM() ? _activeChar.getAbnormalEffect() | AbnormalEffect.STEALTH.getMask() : _activeChar.getAbnormalEffect());
 		
 		writeC(_activeChar.isInsideZone(ZoneId.WATER) ? 1 : _activeChar.isFlying() ? 2 : 0);
-
+		
 		writeD(_activeChar.getClanPrivileges());
-
+		
 		writeH(_activeChar.getRecomLeft()); // c2 recommendations remaining
 		writeH(_activeChar.getRecomHave()); // c2 recommendations received
 		writeD(_activeChar.getMountObjectID() > 0 ? _activeChar.getMountObjectID() + 1000000 : 0);
 		writeH(_activeChar.getInventoryLimit());
-
+		
 		writeD(_activeChar.getClassId().getId());
 		writeD(0x00); // special effects? circles around player...
 		writeD(_activeChar.getMaxCp());
 		writeD((int) _activeChar.getCurrentCp());
 		writeC(_activeChar.isMounted() ? 0 : _activeChar.getEnchantEffect());
-
+		
 		writeC(_activeChar.getTeam().getId());
-
+		
 		writeD(_activeChar.getClanCrestLargeId());
 		writeC(_activeChar.isNoble() ? 1 : 0); // 0x01: symbol on char menu ctrl+I
 		writeC((_activeChar.isHero() || (_activeChar.isGM() && Config.GM_HERO_AURA)) ? 1 : 0); // 0x01: Hero Aura
-
+		
 		writeC(_activeChar.isFishing() ? 1 : 0); // Fishing Mode
 		writeD(_activeChar.GetFishx()); // fishing x
 		writeD(_activeChar.GetFishy()); // fishing y
 		writeD(_activeChar.GetFishz()); // fishing z
 		
 		writeD(_activeChar.getAppearance().getNameColor());
-
+		
 		writeC(_activeChar.isRunning() ? 0x01 : 0x00); // changes the Speed display on Status Window
-
+		
 		writeD(_activeChar.getPledgeClass()); // changes the text above CP on Status Window
 		writeD(_activeChar.getPledgeType());
-
+		
 		writeD(_activeChar.getAppearance().getTitleColor());
-
+		
 		// writeD(0x00); // ??
-
-		writeC(_activeChar.isCursedWeaponEquiped() ? CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()) : 0);		
+		
+		writeC(_activeChar.isCursedWeaponEquiped() ? CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()) : 0);
 	}
-
+	
 	@Override
 	public String getType()
 	{

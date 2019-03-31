@@ -1,18 +1,9 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.communitybbs.Manager;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.communitybbs.BB.Forum;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,11 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.communitybbs.BB.Forum;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 public class ForumsBBSManager extends BaseBBSManager
 {
 	private static Logger _log = Logger.getLogger(ForumsBBSManager.class.getName());
@@ -35,7 +21,7 @@ public class ForumsBBSManager extends BaseBBSManager
 	private final List<Forum> _table;
 	private static ForumsBBSManager _instance;
 	private int _lastid = 1;
-
+	
 	public static ForumsBBSManager getInstance()
 	{
 		if (_instance == null)
@@ -45,23 +31,23 @@ public class ForumsBBSManager extends BaseBBSManager
 		}
 		return _instance;
 	}
-
+	
 	private ForumsBBSManager()
 	{
-		_root = new HashMap<Integer, Forum>();
-		_table = new ArrayList<Forum>();
+		_root = new HashMap<>();
+		_table = new ArrayList<>();
 	}
-
+	
 	public void addForum(Forum ff)
 	{
 		_table.add(ff);
-
+		
 		if (ff.getID() > _lastid)
 		{
 			_lastid = ff.getID();
 		}
 	}
-
+	
 	private void load()
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -83,12 +69,12 @@ public class ForumsBBSManager extends BaseBBSManager
 				e.printStackTrace();
 		}
 	}
-
+	
 	@Override
 	public void parsecmd(String command, L2PcInstance activeChar)
 	{
 	}
-
+	
 	public Forum getForumByName(String Name)
 	{
 		for (Forum f : _table)
@@ -100,12 +86,7 @@ public class ForumsBBSManager extends BaseBBSManager
 		}
 		return null;
 	}
-
-	/**
-	 * @param name
-	 * @param forumByName
-	 * @return
-	 */
+	
 	public Forum createNewForum(String name, Forum parent, int type, int perm, int oid)
 	{
 		Forum forum;
@@ -113,7 +94,6 @@ public class ForumsBBSManager extends BaseBBSManager
 		forum.insertindb();
 		return forum;
 	}
-
 	
 	@SuppressWarnings("unused")
 	public int getANewID()
@@ -126,11 +106,7 @@ public class ForumsBBSManager extends BaseBBSManager
 			return _lastid++;
 		return _lastid;
 	}
-
-	/**
-	 * @param idf
-	 * @return
-	 */
+	
 	public Forum getForumByID(int idf)
 	{
 		for (Forum f : _table)
@@ -142,7 +118,7 @@ public class ForumsBBSManager extends BaseBBSManager
 		}
 		return null;
 	}
-
+	
 	@Override
 	public void parsewrite(String ar1, String ar2, String ar3, String ar4, String ar5, L2PcInstance activeChar)
 	{

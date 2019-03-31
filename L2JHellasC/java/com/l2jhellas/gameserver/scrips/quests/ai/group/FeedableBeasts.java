@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.ai.group;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
@@ -34,6 +17,9 @@ import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FeedableBeasts extends AbstractNpcAI
 {
@@ -120,7 +106,7 @@ public class FeedableBeasts extends AbstractNpcAI
 	// Alpen Kookaburra, Buffalo, Cougar
 	};
 	
-	private static final Map<Integer, Integer> MAD_COW_POLYMORPH = new HashMap<Integer, Integer>();
+	private static final Map<Integer, Integer> MAD_COW_POLYMORPH = new HashMap<>();
 	{
 		MAD_COW_POLYMORPH.put(21824, 21468);
 		MAD_COW_POLYMORPH.put(21825, 21469);
@@ -160,15 +146,15 @@ public class FeedableBeasts extends AbstractNpcAI
 		}
 	};
 	
-	private static Map<Integer, Integer> _FeedInfo = new HashMap<Integer, Integer>();
-	private static Map<Integer, GrowthCapableMob> _GrowthCapableMobs = new HashMap<Integer, GrowthCapableMob>();
+	private static Map<Integer, Integer> _FeedInfo = new HashMap<>();
+	private static Map<Integer, GrowthCapableMob> _GrowthCapableMobs = new HashMap<>();
 	
 	private static class GrowthCapableMob
 	{
 		private final int _growthLevel;
 		private final int _chance;
 		
-		private final Map<Integer, int[][]> _spiceToMob = new HashMap<Integer, int[][]>();
+		private final Map<Integer, int[][]> _spiceToMob = new HashMap<>();
 		
 		public GrowthCapableMob(int growthLevel, int chance)
 		{
@@ -579,9 +565,7 @@ public class FeedableBeasts extends AbstractNpcAI
 			}
 			else
 			{
-				/*
-				 * If not tamed, there is a small chance that have "mad cow" disease. that is a stronger-than-normal animal that attacks its feeder
-				 */
+				
 				if (Rnd.get(5) == 0)
 					nextNpcId = _GrowthCapableMobs.get(npcId).getMob(food, 0, 1);
 				else
@@ -725,7 +709,7 @@ public class FeedableBeasts extends AbstractNpcAI
 			food = CRYSTAL_SPICE;
 		
 		// Display the social action of the beast eating the food.
-		npc.broadcastPacket(new SocialAction(npc.getObjectId(), 2),1200);
+		npc.broadcastPacket(new SocialAction(npc.getObjectId(), 2), 1200);
 		
 		// If the pet can grow
 		if (_GrowthCapableMobs.containsKey(npcId))

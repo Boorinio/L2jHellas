@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.ai.group;
 
 import com.l2jhellas.gameserver.ai.CtrlEvent;
@@ -31,10 +17,6 @@ import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Util;
 
-/**
- * Behavior for basic monsters.
- * @author Fulminus
- */
 public final class L2AttackableAIScript extends Quest
 {
 	public L2AttackableAIScript()
@@ -148,9 +130,9 @@ public final class L2AttackableAIScript extends Quest
 		{
 			final L2MonsterInstance mob = (L2MonsterInstance) npc;
 			if (mob.getLeader() != null)
-				((L2MonsterInstance) mob.getLeader()).getMinionList().onMinionDie(mob, -1);
+				mob.getLeader().getMinionList().onMinionDie(mob, -1);
 			if (mob.hasMinions())
-				 mob.getMinionList().onMasterDie(false);
+				mob.getMinionList().onMasterDie(false);
 		}
 		return null;
 	}

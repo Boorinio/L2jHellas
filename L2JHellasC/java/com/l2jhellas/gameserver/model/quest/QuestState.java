@@ -1,25 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.quest;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -42,9 +21,13 @@ import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
-/**
- * @author Luis Arias
- */
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public final class QuestState
 {
 	protected static final Logger _log = Logger.getLogger(Quest.class.getName());
@@ -73,15 +56,6 @@ public final class QuestState
 	private byte _state;
 	private final Map<String, String> _vars = new HashMap<>();
 	
-	/**
-	 * Constructor of the QuestState : save the quest in the list of quests of the player.<BR/>
-	 * <BR/>
-	 * <U><I>Actions :</U></I><BR/>
-	 * <LI>Save informations in the object QuestState created (Quest, Player, Completion, State)</LI> <LI>Add the QuestState in the player's list of quests by using setQuestState()</LI> <LI>Add drops gotten by the quest</LI> <BR/>
-	 * @param quest : quest associated with the QuestState
-	 * @param player : L2PcInstance pointing out the player
-	 * @param state : state of the quest
-	 */
 	QuestState(L2PcInstance player, Quest quest, byte state)
 	{
 		_player = player;
@@ -91,71 +65,36 @@ public final class QuestState
 		_player.setQuestState(this);
 	}
 	
-	/**
-	 * Return the L2PcInstance
-	 * @return L2PcInstance
-	 */
 	public L2PcInstance getPlayer()
 	{
 		return _player;
 	}
 	
-	/**
-	 * Return the quest
-	 * @return Quest
-	 */
 	public Quest getQuest()
 	{
 		return _quest;
 	}
 	
-	/**
-	 * Return the state of the quest
-	 * @return State
-	 */
 	public byte getState()
 	{
 		return _state;
 	}
 	
-	/**
-	 * Return true if quest just created, false otherwise
-	 * @return
-	 */
 	public boolean isCreated()
 	{
 		return (_state == Quest.STATE_CREATED);
 	}
 	
-	/**
-	 * Return true if quest completed, false otherwise
-	 * @return boolean
-	 */
 	public boolean isCompleted()
 	{
 		return (_state == Quest.STATE_COMPLETED);
 	}
 	
-	/**
-	 * Return true if quest started, false otherwise
-	 * @return boolean
-	 */
 	public boolean isStarted()
 	{
 		return (_state == Quest.STATE_STARTED);
 	}
 	
-	/**
-	 * Set state of the quest.
-	 * <ul>
-	 * <li>Remove drops from previous state</li>
-	 * <li>Set new state of the quest</li>
-	 * <li>Add drop for new state</li>
-	 * <li>Update information in database</li>
-	 * <li>Send packet QuestList to client</li>
-	 * </ul>
-	 * @param state
-	 */
 	public void setState(byte state)
 	{
 		if (_state != state)
@@ -168,10 +107,6 @@ public final class QuestState
 		}
 	}
 	
-	/**
-	 * Destroy element used by quest when quest is exited
-	 * @param repeatable
-	 */
 	public void exitQuest(boolean repeatable)
 	{
 		if (!isStarted())
@@ -219,25 +154,12 @@ public final class QuestState
 		}
 	}
 	
-	/**
-	 * Add player to get notification of characters death
-	 */
 	public void addNotifyOfDeath()
 	{
 		if (_player != null)
 			_player.addNotifyQuestOfDeath(this);
 	}
 	
-	/**
-	 * Return value of parameter "val" after adding the couple (var,val) in class variable "vars".<BR>
-	 * <BR>
-	 * <U><I>Actions :</I></U><BR>
-	 * <LI>Initialize class variable "vars" if is null</LI> <LI>Initialize parameter "val" if is null</LI> <LI>Add/Update couple (var,val) in class variable HashMap "vars"</LI> <LI>If the key represented by "var" exists in HashMap "vars", the couple (var,val) is updated in the database. The key is
-	 * known as existing if the preceding value of the key (given as result of function put()) is not null.<BR>
-	 * If the key doesn't exist, the couple is added/created in the database</LI>
-	 * @param var : String indicating the name of the variable for quest
-	 * @param value : String indicating the value of the variable for quest
-	 */
 	public void set(String var, String value)
 	{
 		if (var == null || var.isEmpty() || value == null || value.isEmpty())
@@ -270,11 +192,6 @@ public final class QuestState
 		}
 	}
 	
-	/**
-	 * Add parameter used in quests.
-	 * @param var : String pointing out the name of the variable for quest
-	 * @param value : String pointing out the value of the variable for quest
-	 */
 	public void setInternal(String var, String value)
 	{
 		if (var == null || var.isEmpty() || value == null || value.isEmpty())
@@ -283,15 +200,6 @@ public final class QuestState
 		_vars.put(var, value);
 	}
 	
-	/**
-	 * Internally handles the progression of the quest so that it is ready for sending appropriate packets to the client<BR>
-	 * <BR>
-	 * <U><I>Actions :</I></U><BR>
-	 * <LI>Check if the new progress number resets the quest to a previous (smaller) step</LI> <LI>If not, check if quest progress steps have been skipped</LI> <LI>If skipped, prepare the variable completedStateFlags appropriately to be ready for sending to clients</LI> <LI>If no steps were skipped,
-	 * flags do not need to be prepared...</LI> <LI>If the passed step resets the quest to a previous step, reset such that steps after the parameter are not considered, while skipped steps before the parameter, if any, maintain their info</LI>
-	 * @param cond : int indicating the step number for the current quest progress (as will be shown to the client)
-	 * @param old : int indicating the previously noted step For more info on the variable communicating the progress steps to the client, please see
-	 */
 	private void setCond(int cond, int old)
 	{
 		// if there is no change since last setting, there is nothing to do here
@@ -369,33 +277,17 @@ public final class QuestState
 			_player.sendPacket(new ExShowQuestMark(_quest.getQuestId()));
 	}
 	
-	/**
-	 * Remove the variable of quest from the list of variables for the quest.<BR>
-	 * <BR>
-	 * <U><I>Concept : </I></U> Remove the variable of quest represented by "var" from the class variable HashMap "vars" and from the database.
-	 * @param var : String designating the variable for the quest to be deleted
-	 */
 	public void unset(String var)
 	{
 		if (_vars.remove(var) != null)
 			removeQuestVarInDb(var);
 	}
 	
-	/**
-	 * Return the value of the variable of quest represented by "var"
-	 * @param var : name of the variable of quest
-	 * @return String
-	 */
 	public String get(String var)
 	{
 		return _vars.get(var);
 	}
 	
-	/**
-	 * Return the value of the variable of quest represented by "var"
-	 * @param var : String designating the variable for the quest
-	 * @return int
-	 */
 	public int getInt(String var)
 	{
 		final String variable = _vars.get(var);
@@ -415,11 +307,6 @@ public final class QuestState
 		return value;
 	}
 	
-	/**
-	 * Set in the database the quest for the player.
-	 * @param var : String designating the name of the variable for the quest
-	 * @param value : String designating the value of the variable for the quest
-	 */
 	private void setQuestVarInDb(String var, String value)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -438,10 +325,6 @@ public final class QuestState
 		}
 	}
 	
-	/**
-	 * Delete a variable of player's quest from the database.
-	 * @param var : String designating the variable characterizing the quest
-	 */
 	private void removeQuestVarInDb(String var)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -459,21 +342,11 @@ public final class QuestState
 		}
 	}
 	
-	/**
-	 * Check for an item in player's inventory.
-	 * @param itemId the ID of the item to check for
-	 * @return {@code true} if the item exists in player's inventory, {@code false} otherwise
-	 */
 	public boolean hasQuestItems(int itemId)
 	{
 		return _player.getInventory().getItemByItemId(itemId) != null;
 	}
 	
-	/**
-	 * Check for multiple items in player's inventory.
-	 * @param itemIds a list of item IDs to check for
-	 * @return {@code true} if all items exist in player's inventory, {@code false} otherwise
-	 */
 	public boolean hasQuestItems(int... itemIds)
 	{
 		final PcInventory inv = _player.getInventory();
@@ -485,20 +358,11 @@ public final class QuestState
 		return true;
 	}
 	
-	/**
-	 * Check if player possesses at least one given item.
-	 * @param itemIds a list of item IDs to check for
-	 * @return {@code true} if at least one item exists in player's inventory, {@code false} otherwise
-	 */
 	public boolean hasAtLeastOneQuestItem(int... itemIds)
 	{
 		return _player.getInventory().hasAtLeastOneItem(itemIds);
 	}
 	
-	/**
-	 * @param itemId : ID of the item wanted to be count
-	 * @return the quantity of one sort of item hold by the player
-	 */
 	public int getQuestItemsCount(int itemId)
 	{
 		int count = 0;
@@ -510,20 +374,11 @@ public final class QuestState
 		return count;
 	}
 	
-	/**
-	 * @param loc A paperdoll slot to check.
-	 * @return the id of the item in the loc paperdoll slot.
-	 */
 	public int getItemEquipped(int loc)
 	{
 		return _player.getInventory().getPaperdollItemId(loc);
 	}
 	
-	/**
-	 * Return the level of enchantment on the weapon of the player(Done specifically for weapon SA's)
-	 * @param itemId : ID of the item to check enchantment
-	 * @return int
-	 */
 	public int getEnchantLevel(int itemId)
 	{
 		final L2ItemInstance enchanteditem = _player.getInventory().getItemByItemId(itemId);
@@ -533,22 +388,11 @@ public final class QuestState
 		return enchanteditem.getEnchantLevel();
 	}
 	
-	/**
-	 * Give items to the player's inventory.
-	 * @param itemId : Identifier of the item.
-	 * @param itemCount : Quantity of items to add.
-	 */
 	public void giveItems(int itemId, int itemCount)
 	{
 		giveItems(itemId, itemCount, 0);
 	}
 	
-	/**
-	 * Give items to the player's inventory.
-	 * @param itemId : Identifier of the item.
-	 * @param itemCount : Quantity of items to add.
-	 * @param enchantLevel : Enchant level of items to add.
-	 */
 	public void giveItems(int itemId, int itemCount, int enchantLevel)
 	{
 		// Incorrect amount.
@@ -594,11 +438,6 @@ public final class QuestState
 		_player.sendPacket(su);
 	}
 	
-	/**
-	 * Remove items from the player's inventory.
-	 * @param itemId : Identifier of the item.
-	 * @param itemCount : Quantity of items to destroy.
-	 */
 	public void takeItems(int itemId, int itemCount)
 	{
 		// Find item in player's inventory.
@@ -626,40 +465,16 @@ public final class QuestState
 		_player.destroyItemByItemId("Quest", itemId, itemCount, _player, true);
 	}
 	
-	/**
-	 * Drop items to the player's inventory. Rate is 100%, amount is affected by Config.RATE_QUEST_DROP.
-	 * @param itemId : Identifier of the item to be dropped.
-	 * @param count : Quantity of items to be dropped.
-	 * @param neededCount : Quantity of items needed to complete the task. If set to 0, unlimited amount is collected.
-	 * @return boolean : Indicating whether item quantity has been reached.
-	 */
 	public boolean dropItemsAlways(int itemId, int count, int neededCount)
 	{
 		return dropItems(itemId, count, neededCount, L2DropData.MAX_CHANCE, DROP_FIXED_RATE);
 	}
 	
-	/**
-	 * Drop items to the player's inventory. Rate and amount is affected by DIVMOD of Config.RATE_QUEST_DROP.
-	 * @param itemId : Identifier of the item to be dropped.
-	 * @param count : Quantity of items to be dropped.
-	 * @param neededCount : Quantity of items needed to complete the task. If set to 0, unlimited amount is collected.
-	 * @param dropChance : Item drop rate (100% chance is defined by the L2DropData.MAX_CHANCE = 1.000.000).
-	 * @return boolean : Indicating whether item quantity has been reached.
-	 */
 	public boolean dropItems(int itemId, int count, int neededCount, int dropChance)
 	{
 		return dropItems(itemId, count, neededCount, dropChance, DROP_DIVMOD);
 	}
 	
-	/**
-	 * Drop items to the player's inventory.
-	 * @param itemId : Identifier of the item to be dropped.
-	 * @param count : Quantity of items to be dropped.
-	 * @param neededCount : Quantity of items needed to complete the task. If set to 0, unlimited amount is collected.
-	 * @param dropChance : Item drop rate (100% chance is defined by the L2DropData.MAX_CHANCE = 1.000.000).
-	 * @param type : Item drop behavior: DROP_DIVMOD (rate and), DROP_FIXED_RATE, DROP_FIXED_COUNT or DROP_FIXED_BOTH
-	 * @return boolean : Indicating whether item quantity has been reached.
-	 */
 	public boolean dropItems(int itemId, int count, int neededCount, int dropChance, byte type)
 	{
 		// Get current amount of item.
@@ -719,22 +534,11 @@ public final class QuestState
 		return neededCount > 0 && reached;
 	}
 	
-	/**
-	 * Drop multiple items to the player's inventory. Rate and amount is affected by DIVMOD of Config.RATE_QUEST_DROP.
-	 * @param rewardsInfos : Infos regarding drops (itemId, count, neededCount, dropChance).
-	 * @return boolean : Indicating whether item quantity has been reached.
-	 */
 	public boolean dropMultipleItems(int[][] rewardsInfos)
 	{
 		return dropMultipleItems(rewardsInfos, DROP_DIVMOD);
 	}
 	
-	/**
-	 * Drop items to the player's inventory.
-	 * @param rewardsInfos : Infos regarding drops (itemId, count, neededCount, dropChance).
-	 * @param type : Item drop behavior: DROP_DIVMOD (rate and), DROP_FIXED_RATE, DROP_FIXED_COUNT or DROP_FIXED_BOTH
-	 * @return boolean : Indicating whether item quantity has been reached.
-	 */
 	public boolean dropMultipleItems(int[][] rewardsInfos, byte type)
 	{
 		// Used for the sound.
@@ -813,21 +617,11 @@ public final class QuestState
 		return reached;
 	}
 	
-	/**
-	 * Reward player with items. The amount is affected by Config.RATE_QUEST_REWARD or Config.RATE_QUEST_REWARD_ADENA.
-	 * @param itemId : Identifier of the item.
-	 * @param itemCount : Quantity of item to reward before applying multiplier.
-	 */
 	public void rewardItems(int itemId, int itemCount)
 	{
 		giveItems(itemId, (int) (itemCount * Config.RATE_QUESTS_REWARD), 0);
 	}
 	
-	/**
-	 * Reward player with EXP and SP. The amount is affected by Config.RATE_QUEST_REWARD_XP and Config.RATE_QUEST_REWARD_SP
-	 * @param exp : Experience amount.
-	 * @param sp : Skill point amount.
-	 */
 	public void rewardExpAndSp(long exp, int sp)
 	{
 		_player.addExpAndSp((long) getPlayer().calcStat(Stats.EXPSP_RATE, exp * Config.RATE_QUESTS_REWARD, null, null), (int) getPlayer().calcStat(Stats.EXPSP_RATE, sp * Config.RATE_QUESTS_REWARD, null, null));
@@ -853,10 +647,6 @@ public final class QuestState
 	
 	// END STUFF THAT WILL PROBABLY BE CHANGED
 	
-	/**
-	 * Send a packet in order to play sound at client terminal
-	 * @param sound
-	 */
 	public void playSound(String sound)
 	{
 		PlaySound _snd = PlaySound.createSound(sound);
@@ -876,7 +666,7 @@ public final class QuestState
 	
 	public void showTutorialHTML(String html)
 	{
-		_player.sendPacket(new TutorialShowHtml(HtmCache.getInstance().getHtmForce("data/scripts/quests/Tutorial/" + html)));
+		_player.sendPacket(new TutorialShowHtml(HtmCache.getInstance().getHtmForce("data/html/scripts/quests/Q255_Tutorial/" + html)));
 	}
 	
 	public void closeTutorialHtml()
@@ -888,18 +678,18 @@ public final class QuestState
 	{
 		_player.sendPacket(new TutorialEnableClientEvent(number));
 	}
-
+	
 	// discover the string representation of the state, for readable DB storage
-		public static String getStateName(byte state)
+	public static String getStateName(byte state)
+	{
+		switch (state)
 		{
-			switch (state)
-			{
-				case 1:
-					return "Started";
-				case 2:
-					return "Completed";
-				default:
-					return "Start";
-			}
+			case 1:
+				return "Started";
+			case 2:
+				return "Completed";
+			default:
+				return "Start";
 		}
+	}
 }

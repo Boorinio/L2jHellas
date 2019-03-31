@@ -1,24 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 
-/**
- * @author Velvet
- */
 public class MxCPolyInfo extends L2GameServerPacket
 {
 	private final L2Npc _activeChar;
@@ -30,7 +13,7 @@ public class MxCPolyInfo extends L2GameServerPacket
 	private int _flyWalkSpd;
 	private final float _moveMultiplier;
 	private final int _maxCp;
-
+	
 	public MxCPolyInfo(L2Npc cha)
 	{
 		_activeChar = cha;
@@ -45,7 +28,7 @@ public class MxCPolyInfo extends L2GameServerPacket
 		_swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
 		_maxCp = _activeChar.getMaxCp();
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -126,7 +109,7 @@ public class MxCPolyInfo extends L2GameServerPacket
 		writeD(_activeChar.getMxcPoly().getTitleColor());
 		writeD(0x00);
 	}
-
+	
 	private final void write(char type, int value, int times)
 	{
 		for (int i = 0; i < times; i++)
@@ -135,20 +118,20 @@ public class MxCPolyInfo extends L2GameServerPacket
 			{
 				case 'C':
 					writeC(value);
-				break;
+					break;
 				case 'D':
 					writeD(value);
-				break;
+					break;
 				case 'F':
 					writeF(value);
-				break;
+					break;
 				case 'H':
 					writeH(value);
-				break;
+					break;
 			}
 		}
 	}
-
+	
 	@Override
 	public String getType()
 	{

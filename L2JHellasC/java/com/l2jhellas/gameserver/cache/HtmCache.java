@@ -1,18 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.cache;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.util.UnicodeReader;
+import com.l2jhellas.util.filters.file.HtmFilter;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,10 +12,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import com.l2jhellas.Config;
-import com.l2jhellas.util.UnicodeReader;
-import com.l2jhellas.util.filters.file.HtmFilter;
 
 public class HtmCache
 {
@@ -44,29 +30,18 @@ public class HtmCache
 		reload();
 	}
 	
-	/**
-	 * Cleans HtmCache.
-	 */
 	public void reload()
 	{
 		_log.info("HtmCache: Cache cleared, had " + _htmCache.size() + " entries.");
 		_htmCache.clear();
 	}
 	
-	/**
-	 * Reloads given directory. All sub-directories are parsed, all html files are loaded to HtmCache.
-	 * @param path : Directory to be reloaded.
-	 */
 	public void reloadPath(String path)
 	{
 		parseDir(new File(path));
 		_log.info("HtmCache: Reloaded specified " + path + " path.");
 	}
 	
-	/**
-	 * Parse given directory, all html files are loaded to HtmCache.
-	 * @param dir : Directory to be parsed.
-	 */
 	private static void parseDir(File dir)
 	{
 		for (File file : dir.listFiles(_htmFilter))
@@ -78,16 +53,13 @@ public class HtmCache
 		}
 	}
 	
-	/**
-	 * Loads html file content to HtmCache.
-	 * @param file : File to be cached.
-	 * @return String : Content of the file.
-	 */
 	private static String loadFile(File file)
 	{
 		if (file.exists() && _htmFilter.accept(file) && !file.isDirectory())
 		{
-			try (FileInputStream fis = new FileInputStream(file); UnicodeReader ur = new UnicodeReader(fis, "UTF-8"); BufferedReader br = new BufferedReader(ur))
+			try (FileInputStream fis = new FileInputStream(file);
+				UnicodeReader ur = new UnicodeReader(fis, "UTF-8");
+				BufferedReader br = new BufferedReader(ur))
 			{
 				StringBuilder sb = new StringBuilder();
 				String line;
@@ -111,21 +83,11 @@ public class HtmCache
 		return null;
 	}
 	
-	/**
-	 * Check if an HTM exists and can be loaded. If so, it is loaded into HtmCache.
-	 * @param path The path to the HTM
-	 * @return true if the HTM can be loaded.
-	 */
 	public boolean isLoadable(String path)
 	{
 		return loadFile(new File(path)) != null;
 	}
 	
-	/**
-	 * Return content of html message given by filename.
-	 * @param filename : Desired html filename.
-	 * @return String : Returns content if filename exists, otherwise returns null.
-	 */
 	public String getHtm(String filename)
 	{
 		if (filename == null || filename.isEmpty())
@@ -138,11 +100,6 @@ public class HtmCache
 		return content;
 	}
 	
-	/**
-	 * Return content of html message given by filename. In case filename does not exist, returns notice.
-	 * @param filename : Desired html filename.
-	 * @return String : Returns content if filename exists, otherwise returns notice.
-	 */
 	public String getHtmForce(String filename)
 	{
 		String content = getHtm(filename);

@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.ai.teleports;
 
 import com.l2jhellas.gameserver.model.Location;
@@ -293,7 +279,7 @@ public class OracleTeleport extends Quest
 		else if (event.equalsIgnoreCase("Dimensional"))
 		{
 			htmltext = "oracle.htm";
-			player.teleToLocation(-114755, -179466, -6752,false);
+			player.teleToLocation(-114755, -179466, -6752, false);
 		}
 		else if (event.equalsIgnoreCase("5.htm"))
 		{
@@ -374,7 +360,7 @@ public class OracleTeleport extends Quest
 			
 			st.set("id", Integer.toString(i));
 			st.playSound(QuestState.SOUND_ACCEPT);
-			player.teleToLocation(-80157, 111344, -4901,false);
+			player.teleToLocation(-80157, 111344, -4901, false);
 			player.setIsIn7sDungeon(true);
 		}
 		
@@ -392,7 +378,7 @@ public class OracleTeleport extends Quest
 			
 			st.set("id", Integer.toString(i));
 			st.playSound(QuestState.SOUND_ACCEPT);
-			player.teleToLocation(-81261, 86531, -5157,false);
+			player.teleToLocation(-81261, 86531, -5157, false);
 			player.setIsIn7sDungeon(true);
 		}
 		else if (npcId >= 31494 && npcId <= 31507)

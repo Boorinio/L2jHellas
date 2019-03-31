@@ -1,23 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model;
-
-import java.util.ArrayList;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -36,17 +17,22 @@ import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.gameserver.skills.funcs.FuncTemplate;
 import com.l2jhellas.gameserver.skills.funcs.Lambda;
 
+import java.util.ArrayList;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
+
 public abstract class L2Effect
 {
 	static final Logger _log = Logger.getLogger(L2Effect.class.getName());
-
+	
 	public static enum EffectState
-	{/** @formatter:off */
+	{
 		CREATED,
 		ACTING,
 		FINISHING
 	}
-
+	
 	public static enum EffectType
 	{
 		SIGNET_EFFECT,
@@ -89,50 +75,50 @@ public abstract class L2Effect
 		INVINCIBLE,
 		SPOIL,
 		PROTECTION_BLESSING
-	}/** @formatter:on */
-
+	}
+	
 	private static final Func[] _emptyFunctionSet = new Func[0];
-
-	//member _effector is the instance of L2Character that cast/used the spell/skill that is
-	//causing this effect.  Do not confuse with the instance of L2Character that
-	//is being affected by this effect.
+	
+	// member _effector is the instance of L2Character that cast/used the spell/skill that is
+	// causing this effect. Do not confuse with the instance of L2Character that
+	// is being affected by this effect.
 	private final L2Character _effector;
-
-	//member _effected is the instance of L2Character that was affected
-	//by this effect.  Do not confuse with the instance of L2Character that
-	//catsed/used this effect.
+	
+	// member _effected is the instance of L2Character that was affected
+	// by this effect. Do not confuse with the instance of L2Character that
+	// catsed/used this effect.
 	private final L2Character _effected;
-
-	//the skill that was used.
+	
+	// the skill that was used.
 	private final L2Skill _skill;
-
-	//or the items that was used.
-	//private final L2Item _item;
-
+	
+	// or the items that was used.
+	// private final L2Item _item;
+	
 	// the value of an update
 	private final Lambda _lambda;
-
+	
 	// the current state
 	private EffectState _state;
-
+	
 	// period, seconds
 	private final int _period;
 	private int _periodStartTicks;
 	private int _periodfirsttime;
-
+	
 	// function templates
 	private final FuncTemplate[] _funcTemplates;
-
-	//initial count
+	
+	// initial count
 	private final int _totalCount;
 	// counter
 	private int _count;
-
+	
 	// abnormal effect mask
 	private final int _abnormalEffect;
-
+	
 	public boolean preventExitUpdate;
-
+	
 	public final class EffectTask implements Runnable
 	{
 		@Override
@@ -152,26 +138,21 @@ public abstract class L2Effect
 			}
 		}
 	}
-
+	
 	private ScheduledFuture<?> _currentFuture;
 	
-	@SuppressWarnings("unused")
-	private EffectTask _currentTask;
-
-	/** The Identifier of the stack group */
 	private final String _stackType;
-
-	/** The position of the effect in the stack group */
+	
 	private final float _stackOrder;
-
+	
 	private boolean _inUse = false;
 	private boolean _startConditionsCorrect = true;
-
+	
 	protected L2Effect(Env env, EffectTemplate template)
 	{
 		_state = EffectState.CREATED;
 		_skill = env.skill;
-		//_item = env._item == null ? null : env._item.getItem();
+		// _item = env._item == null ? null : env._item.getItem();
 		_effected = env.target;
 		_effector = env.player;
 		_lambda = template.lambda;
@@ -192,55 +173,50 @@ public abstract class L2Effect
 		_periodStartTicks = GameTimeController.getInstance().getGameTicks();
 		_periodfirsttime = 0;
 	}
-
+	
 	public int getCount()
 	{
 		return _count;
 	}
-
+	
 	public int getTotalCount()
 	{
 		return _totalCount;
 	}
-
+	
 	public void setCount(int newcount)
 	{
 		_count = Math.min(newcount, _totalCount);
 	}
-
+	
 	public void setFirstTime(int newfirsttime)
 	{
 		_periodfirsttime = Math.min(newfirsttime, _period);
 		_periodStartTicks -= _periodfirsttime * GameTimeController.TICKS_PER_SECOND;
 	}
-
+	
 	public int getPeriod()
 	{
 		return _period;
 	}
-
+	
 	public int getTime()
 	{
 		return (GameTimeController.getInstance().getGameTicks() - _periodStartTicks) / GameTimeController.TICKS_PER_SECOND;
 	}
-
-	/**
-	 * Returns the elapsed time of the task.
-	 * 
-	 * @return Time in seconds.
-	 */
+	
 	public int getTaskTime()
 	{
 		if (_count == _totalCount)
 			return 0;
 		return (Math.abs(_count - _totalCount + 1) * _period) + getTime() + 1;
 	}
-
+	
 	public boolean getInUse()
 	{
 		return _inUse;
 	}
-
+	
 	public boolean setInUse(boolean inUse)
 	{
 		_inUse = inUse;
@@ -251,45 +227,45 @@ public abstract class L2Effect
 		
 		return _startConditionsCorrect;
 	}
-
+	
 	public String getStackType()
 	{
 		return _stackType;
 	}
-
+	
 	public float getStackOrder()
 	{
 		return _stackOrder;
 	}
-
+	
 	public final L2Skill getSkill()
 	{
 		return _skill;
 	}
-
+	
 	public final L2Character getEffector()
 	{
 		return _effector;
 	}
-
+	
 	public final L2Character getEffected()
 	{
 		return _effected;
 	}
-
+	
 	public boolean isSelfEffect()
 	{
 		return _skill._effectTemplatesSelf != null;
 	}
-
+	
 	public boolean isHerbEffect()
 	{
 		if (getSkill().getName().contains("Herb"))
 			return true;
-
+		
 		return false;
 	}
-
+	
 	public final double calc()
 	{
 		Env env = new Env();
@@ -318,35 +294,19 @@ public abstract class L2Effect
 				_effected.addEffect(this);
 		}
 	}
-
-	/**
-	 * Stop the L2Effect task and send Server->Client update packet.<BR>
-	 * <BR>
-	 * <B><U> Actions</U> :</B><BR>
-	 * <BR>
-	 * <li>Cancel the effect in the the abnormal effect map of the L2Character</li> <li>Stop the task of the L2Effect, remove it and update client magic icon</li><BR>
-	 * <BR>
-	 */
+	
 	public final void exit()
 	{
 		this.exit(false);
 	}
-
+	
 	public final void exit(boolean preventUpdate)
 	{
 		preventExitUpdate = preventUpdate;
 		_state = EffectState.FINISHING;
 		scheduleEffect();
 	}
-
-	/**
-	 * Stop the task of the L2Effect, remove it and update client magic icon.<BR>
-	 * <BR>
-	 * <B><U> Actions</U> :</B><BR>
-	 * <BR>
-	 * <li>Cancel the task</li> <li>Stop and remove L2Effect from L2Character and update client magic icon</li><BR>
-	 * <BR>
-	 */
+	
 	public synchronized void stopEffectTask()
 	{
 		// Cancel the task
@@ -354,8 +314,6 @@ public abstract class L2Effect
 		{
 			_currentFuture.cancel(false);
 			_currentFuture = null;
-			_currentTask = null;
-
 			// To avoid possible NPE caused by player crash
 			if (isSelfEffect() && getEffector() != null)
 				getEffector().removeEffect(this);
@@ -363,31 +321,24 @@ public abstract class L2Effect
 				getEffected().removeEffect(this);
 		}
 	}
-
-	/** returns effect type */
+	
 	public abstract EffectType getEffectType();
-
-	/** Notify started */
+	
 	public boolean onStart()
 	{
 		if (_abnormalEffect != 0)
 			getEffected().startAbnormalEffect(_abnormalEffect);
 		return true;
 	}
-
-	/**
-	 * Cancel the effect in the the abnormal effect map of the effected L2Character.<BR>
-	 * <BR>
-	 */
+	
 	public void onExit()
 	{
 		if (_abnormalEffect != 0)
 			getEffected().stopAbnormalEffect(_abnormalEffect);
 	}
-
-	/** Return true for continuation of this effect */
+	
 	public abstract boolean onActionTime();
-
+	
 	public final void rescheduleEffect()
 	{
 		if (_state != EffectState.ACTING)
@@ -401,7 +352,7 @@ public abstract class L2Effect
 			}
 		}
 	}
-
+	
 	public final void scheduleEffect()
 	{
 		switch (_state)
@@ -448,8 +399,8 @@ public abstract class L2Effect
 				if (_count == 0 && getEffected() instanceof L2PcInstance)
 				{
 					SystemMessage smsg3 = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_WORN_OFF);
-				    smsg3.addString(_skill.getName());
-				    getEffected().sendPacket(smsg3);
+					smsg3.addString(_skill.getName());
+					getEffected().sendPacket(smsg3);
 				}
 				// if task is null - stopEffectTask does not remove effect
 				if (_currentFuture == null && getEffected() != null)
@@ -465,7 +416,7 @@ public abstract class L2Effect
 			}
 		}
 	}
-
+	
 	public Func[] getStatFuncs()
 	{
 		if (_funcTemplates == null)
@@ -489,7 +440,7 @@ public abstract class L2Effect
 		
 		return funcs.toArray(new Func[funcs.size()]);
 	}
-
+	
 	public final void addIcon(MagicEffectIcons mi)
 	{
 		if (_state != EffectState.ACTING)
@@ -509,7 +460,7 @@ public abstract class L2Effect
 		else if (_period == -1)
 			mi.addEffect(sk.getId(), getLevel(), _period);
 	}
-
+	
 	public final void addPartySpelledIcon(PartySpelled ps)
 	{
 		if (_state != EffectState.ACTING)
@@ -522,7 +473,7 @@ public abstract class L2Effect
 		else if (_period == -1)
 			ps.addPartySpelledEffect(sk.getId(), getLevel(), _period);
 	}
-
+	
 	public final void addOlympiadSpelledIcon(ExOlympiadSpelledInfo os)
 	{
 		if (_state != EffectState.ACTING)
@@ -535,27 +486,27 @@ public abstract class L2Effect
 		else if (_period == -1)
 			os.addEffect(sk.getId(), getLevel(), _period);
 	}
-
+	
 	public int getLevel()
 	{
 		return getSkill().getLevel();
 	}
-
+	
 	public int getPeriodfirsttime()
 	{
 		return _periodfirsttime;
 	}
-
+	
 	public void setPeriodfirsttime(int periodfirsttime)
 	{
 		_periodfirsttime = periodfirsttime;
 	}
-
+	
 	public int getPeriodStartTicks()
 	{
 		return _periodStartTicks;
 	}
-
+	
 	public void setPeriodStartTicks(int periodStartTicks)
 	{
 		_periodStartTicks = periodStartTicks;

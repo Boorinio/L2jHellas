@@ -1,4 +1,3 @@
-
 package com.l2jhellas.gameserver.model.zone.type;
 
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -10,10 +9,10 @@ import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.serverpackets.ShowCastleTrap;
 
 public class L2SwampZone extends L2CastleZoneType
-{	
+{
 	private int _moveBonus;
 	private int _castleId;
-	private int _castlTrapeId;	
+	private int _castlTrapeId;
 	
 	public L2SwampZone(int id)
 	{
@@ -22,7 +21,7 @@ public class L2SwampZone extends L2CastleZoneType
 		_moveBonus = -50;
 		
 		_castleId = 0;
-		_castlTrapeId =0;	
+		_castlTrapeId = 0;
 	}
 	
 	@Override
@@ -40,20 +39,20 @@ public class L2SwampZone extends L2CastleZoneType
 		else
 			super.setParameter(name, value);
 	}
-	 
+	
 	@Override
 	protected void onEnter(L2Character character)
-	{	
-		 //Castle traps are active only during siege, or if they're activated.
-		//if (getCastle() != null && (!isEnabled() || !getCastle().getSiege().getIsInProgress()))
-			//return;		
+	{
+		// Castle traps are active only during siege, or if they're activated.
+		// if (getCastle() != null && (!isEnabled() || !getCastle().getSiege().getIsInProgress()))
+		// return;
 		
-        //Active only for attacker? part1 for tests
-		if(character instanceof L2PcInstance && ActiveonlyForAttacker(((L2PcInstance) character)))
+		// Active only for attacker? part1 for tests
+		if (character instanceof L2PcInstance && ActiveonlyForAttacker((character)))
 		{
-		  character.setInsideZone(ZoneId.SWAMP, true);
-		  ((L2PcInstance) character).sendPacket(new ShowCastleTrap(_castlTrapeId,1));				
-		  ((L2PcInstance) character).broadcastUserInfo();	
+			character.setInsideZone(ZoneId.SWAMP, true);
+			((L2PcInstance) character).sendPacket(new ShowCastleTrap(_castlTrapeId, 1));
+			((L2PcInstance) character).broadcastUserInfo();
 		}
 	}
 	
@@ -63,32 +62,32 @@ public class L2SwampZone extends L2CastleZoneType
 		return CastleManager.getInstance().getCastleById(_castleId);
 	}
 	
-	//Active only for attacker? part1 for tests
-	private boolean  ActiveonlyForAttacker(L2Character attacker)
+	// Active only for attacker? part1 for tests
+	private boolean ActiveonlyForAttacker(L2Character attacker)
 	{
 		return (_castlTrapeId > 0 && attacker != null && getCastle() != null && getCastle().getCastleId() > 0 && getCastle().getSiege().getIsInProgress() && getCastle().getSiege().checkIsAttacker(((L2PcInstance) attacker).getClan()));
-	}	
-	//Active only for attacker? testActive part1
-	//private boolean  ActiveonlyForTest(L2Character attacker)
-	//{
-		//return (_castlTrapeId > 0 && attacker != null && getCastle() != null);
-	//}
-
+	}
+	
+	// Active only for attacker? testActive part1
+	// private boolean ActiveonlyForTest(L2Character attacker)
+	// {
+	// return (_castlTrapeId > 0 && attacker != null && getCastle() != null);
+	// }
+	
 	@Override
 	protected void onExit(L2Character character)
 	{
 		// don't broadcast info if not needed
 		if (character.isInsideZone(ZoneId.SWAMP))
-		{			
-			if(ActiveonlyForAttacker(((L2PcInstance) character)))
+		{
+			if (ActiveonlyForAttacker((character)))
 			{
-			   character.setInsideZone(ZoneId.SWAMP,false);
-			   ((L2PcInstance) character).sendPacket(new ShowCastleTrap(_castlTrapeId,0));				
-			   ((L2PcInstance) character).broadcastUserInfo();
+				character.setInsideZone(ZoneId.SWAMP, false);
+				((L2PcInstance) character).sendPacket(new ShowCastleTrap(_castlTrapeId, 0));
+				((L2PcInstance) character).broadcastUserInfo();
 			}
 		}
 	}
-
 	
 	public int getMoveBonus()
 	{

@@ -1,15 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
 
 import com.l2jhellas.gameserver.instancemanager.FourSepulchersManager;
@@ -270,12 +258,7 @@ public class Q620_FourGoblets extends Quest
 		return null;
 	}
 	
-	/**
-	 * Calculate boxes rewards, then return if there was a reward.
-	 * @param st the QuestState of the player, used to reward him.
-	 * @return true if there was a reward, false if not (used to call a "no-reward" html)
-	 */
-	private boolean calculateBoxReward(QuestState st)
+	private static boolean calculateBoxReward(QuestState st)
 	{
 		boolean reward = false;
 		int rnd = Rnd.get(5);

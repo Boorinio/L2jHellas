@@ -1,15 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -76,9 +64,6 @@ public class Q337_AudienceWithTheLandDragon extends Quest
 	private static final int THIRD_FRAGMENT_OF_ABYSS_JEWEL = 3861; // 3rd abyssal
 	private static final int PORTAL_STONE = 3865;
 	
-	/**
-	 * 0..npcId, 1..cond, 2..cond2, 3..chance, 4..itemId
-	 */
 	private static final int[][] DROPS_ON_KILL =
 	{
 		{
@@ -139,9 +124,6 @@ public class Q337_AudienceWithTheLandDragon extends Quest
 		}
 	};
 	
-	/**
-	 * 0..npcId, 1..cond, 2..cond2, 3..itemId, 4..amount of mobs, 5..mob
-	 */
 	private static final int[][] DROP_ON_ATTACK =
 	{
 		{

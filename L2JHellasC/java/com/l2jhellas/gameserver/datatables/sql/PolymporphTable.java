@@ -1,18 +1,9 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.datatables.sql;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.L2MaxPolyModel;
+import com.l2jhellas.gameserver.templates.StatsSet;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,19 +13,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2MaxPolyModel;
-import com.l2jhellas.gameserver.templates.StatsSet;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 public class PolymporphTable
 {
 	private final Logger _log = Logger.getLogger(PolymporphTable.class.getName());
-
+	
 	private final Map<Integer, L2MaxPolyModel> _map = new HashMap<>();
 	
 	private final String SQL_SELECT = "SELECT * FROM max_poly";
-
+	
 	public PolymporphTable()
 	{
 		_map.clear();
@@ -43,12 +29,14 @@ public class PolymporphTable
 	
 	private void load()
 	{
-		PreparedStatement st = null;
+		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			st = con.prepareStatement(SQL_SELECT);
+			PreparedStatement st = con.prepareStatement(SQL_SELECT);
 			ResultSet rs = st.executeQuery();
 			restore(rs);
+			rs.close();
+			st.close();
 		}
 		catch (Exception e)
 		{
@@ -57,11 +45,11 @@ public class PolymporphTable
 				e.printStackTrace();
 		}
 	}
-
+	
 	private void restore(ResultSet data) throws SQLException
 	{
 		StatsSet set = new StatsSet();
-
+		
 		while (data.next())
 		{
 			set.set("name", data.getString("name"));
@@ -92,13 +80,13 @@ public class PolymporphTable
 			set.set("pledge", data.getInt("pledge"));
 			set.set("nameColor", data.getInt("nameColor"));
 			set.set("titleColor", data.getInt("titleColor"));
-
+			
 			L2MaxPolyModel poly = new L2MaxPolyModel(set);
 			_map.put(poly.getNpcId(), poly);// xD
 		}
 		_log.info(PolymporphTable.class.getSimpleName() + ": Loaded " + _map.size() + " npc to pc entries.");
 	}
-
+	
 	public L2MaxPolyModel getModelForID(int key)
 	{
 		return _map.get(key);

@@ -1,28 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -36,6 +12,16 @@ import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.MagicEffectIcons;
 import com.l2jhellas.gameserver.network.serverpackets.PartySpelled;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 
 public class CharEffectList
 {
@@ -91,10 +77,6 @@ public class CharEffectList
 		_owner = owner;
 	}
 	
-	/**
-	 * Returns all effects affecting stored in this CharEffectList
-	 * @return
-	 */
 	public final L2Effect[] getAllEffects()
 	{
 		// If no effect is active, return EMPTY_EFFECTS
@@ -125,11 +107,6 @@ public class CharEffectList
 		}
 	}
 	
-	/**
-	 * Returns the first effect matching the given EffectType
-	 * @param tp
-	 * @return
-	 */
 	public final L2Effect getFirstEffect(L2Effect.EffectType tp)
 	{
 		L2Effect effectNotInUse = null;
@@ -170,11 +147,6 @@ public class CharEffectList
 		return effectNotInUse;
 	}
 	
-	/**
-	 * Returns the first effect matching the given L2Skill
-	 * @param skill
-	 * @return
-	 */
 	public final L2Effect getFirstEffect(L2Skill skill)
 	{
 		L2Effect effectNotInUse = null;
@@ -220,10 +192,6 @@ public class CharEffectList
 		return effectNotInUse;
 	}
 	
-	/**
-	 * @param skillId The skill id to check.
-	 * @return the first effect matching the given skillId.
-	 */
 	public final L2Effect getFirstEffect(int skillId)
 	{
 		L2Effect effectNotInUse = null;
@@ -263,11 +231,6 @@ public class CharEffectList
 		return effectNotInUse;
 	}
 	
-	/**
-	 * Checks if the given skill stacks with an existing one.
-	 * @param checkSkill the skill to be checked
-	 * @return Returns whether or not this skill will stack
-	 */
 	private boolean doesStack(L2Skill checkSkill)
 	{
 		if ((_buffs == null || _buffs.isEmpty()) || checkSkill._effectTemplates == null || checkSkill._effectTemplates.length < 1 || checkSkill._effectTemplates[0].stackType == null || "none".equals(checkSkill._effectTemplates[0].stackType))
@@ -285,10 +248,6 @@ public class CharEffectList
 		return false;
 	}
 	
-	/**
-	 * Return the number of buffs in this CharEffectList not counting Songs/Dances
-	 * @return
-	 */
 	public int getBuffCount()
 	{
 		if (_buffs == null || _buffs.isEmpty())
@@ -314,10 +273,6 @@ public class CharEffectList
 		return buffCount;
 	}
 	
-	/**
-	 * Return the number of Songs/Dances in this CharEffectList
-	 * @return
-	 */
 	public int getDanceCount()
 	{
 		if (_buffs == null || _buffs.isEmpty())
@@ -332,9 +287,6 @@ public class CharEffectList
 		return danceCount;
 	}
 	
-	/**
-	 * Exits all effects in this CharEffectList
-	 */
 	public final void stopAllEffects()
 	{
 		// Get all active skills effects from this list
@@ -348,9 +300,6 @@ public class CharEffectList
 		}
 	}
 	
-	/**
-	 * Exits all effects in this CharEffectList
-	 */
 	public final void stopAllEffectsExceptThoseThatLastThroughDeath()
 	{
 		// Get all active skills effects from this list
@@ -364,9 +313,6 @@ public class CharEffectList
 		}
 	}
 	
-	/**
-	 * Exit all toggle-type effects
-	 */
 	public void stopAllToggles()
 	{
 		if (_buffs != null && !_buffs.isEmpty())
@@ -379,10 +325,6 @@ public class CharEffectList
 		}
 	}
 	
-	/**
-	 * Exit all effects having a specified type
-	 * @param type
-	 */
 	public final void stopEffects(L2Effect type)
 	{
 		if (_buffs != null && !_buffs.isEmpty())
@@ -406,10 +348,6 @@ public class CharEffectList
 		}
 	}
 	
-	/**
-	 * Exits all effects created by a specific skillId
-	 * @param skillId
-	 */
 	public final void stopSkillEffects(int skillId)
 	{
 		if (_buffs != null && !_buffs.isEmpty())
@@ -431,11 +369,6 @@ public class CharEffectList
 		}
 	}
 	
-	/**
-	 * Exits all effects created by a specific skill type
-	 * @param skillType skill type
-	 * @param negateLvl
-	 */
 	public final void stopSkillEffects(L2SkillType skillType, int negateLvl)
 	{
 		if (_buffs != null && !_buffs.isEmpty())
@@ -457,9 +390,6 @@ public class CharEffectList
 		}
 	}
 	
-	/**
-	 * Exits all buffs effects of the skills with "removedOnAnyAction" set. Called on any action except movement (attack, cast).
-	 */
 	public void stopEffectsOnAction()
 	{
 		if (_hasBuffsRemovedOnAnyAction)
@@ -892,10 +822,10 @@ public class CharEffectList
 			{
 				if (e == null)
 					continue;
-
-				if (e.getSkill().getSkillType()== L2SkillType.SLEEP)
+				
+				if (e.getSkill().getSkillType() == L2SkillType.SLEEP)
 					foundRemovedOnDamage = true;
-
+				
 				switch (e.getEffectType())
 				{
 					case SIGNET_GROUND:
@@ -928,10 +858,10 @@ public class CharEffectList
 			{
 				if (e == null)
 					continue;
-
-				if (e.getSkill().getSkillType()== L2SkillType.SLEEP)
+				
+				if (e.getSkill().getSkillType() == L2SkillType.SLEEP)
 					foundRemovedOnDamage = true;
-
+				
 				switch (e.getEffectType())
 				{
 					case SIGNET_GROUND:
@@ -981,16 +911,16 @@ public class CharEffectList
 		{
 			final Olympiad game = new Olympiad();
 			
-			if (game != null && game.playerInStadia((L2PcInstance) _owner) && ((L2PcInstance) _owner).getOlympiadGameId() > 0);
-				broadcastPacketToObservers(os,_owner.getActingPlayer());
+			if (game.playerInStadia((L2PcInstance) _owner) && ((L2PcInstance) _owner).getOlympiadGameId() > 0)
+			   broadcastPacketToObservers(os, _owner.getActingPlayer());
 		}
 	}
 	
-	public final void broadcastPacketToObservers(L2GameServerPacket packet,L2PcInstance player)
+	public final static void broadcastPacketToObservers(L2GameServerPacket packet, L2PcInstance player)
 	{
 		final Olympiad game = new Olympiad();
-						
-		if(game!=null && game.playerInStadia(player) && player.inObserverMode())
+		
+		if (game.playerInStadia(player) && player.inObserverMode())
 		{
 			player.sendPacket(packet);
 		}
@@ -1007,7 +937,7 @@ public class CharEffectList
 			{
 				if (e == null)
 					continue;
-
+				
 				if (e.getSkill().getSkillType() == L2SkillType.SLEEP)
 					foundRemovedOnDamage = true;
 			}
@@ -1030,11 +960,6 @@ public class CharEffectList
 		_hasDebuffsRemovedOnDamage = foundRemovedOnDamage;
 	}
 	
-	/**
-	 * Returns effect if contains in _buffs or _debuffs and null if not found
-	 * @param effect
-	 * @return
-	 */
 	private L2Effect listsContains(L2Effect effect)
 	{
 		if (_buffs != null && !_buffs.isEmpty() && _buffs.contains(effect))
@@ -1045,10 +970,6 @@ public class CharEffectList
 		return null;
 	}
 	
-	/**
-	 * Recalculate effect bits flag.<br>
-	 * Please no concurrency access
-	 */
 	private final void computeEffectFlags()
 	{
 		int flags = 0;
@@ -1078,19 +999,11 @@ public class CharEffectList
 		_effectFlags = flags;
 	}
 	
-	/**
-	 * Check if target is affected with special buff
-	 * @param bitFlag flag of special buff
-	 * @return boolean true if affected
-	 */
 	public boolean isAffected(int bitFlag)
 	{
 		return (_effectFlags & bitFlag) != 0;
 	}
 	
-	/**
-	 * Clear and null all queues and lists Use only during delete character from the world.
-	 */
 	public void clear()
 	{
 		_addQueue = null;

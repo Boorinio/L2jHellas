@@ -6,7 +6,7 @@ import com.l2jhellas.gameserver.model.L2ItemInstance;
 
 public interface IConsumableSpender
 {
-
+	
 	default void handleConsumable(FakePlayer fakePlayer, int consumableId)
 	{
 		if (fakePlayer.getInventory().getItemByItemId(consumableId) != null)

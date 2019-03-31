@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -25,21 +8,22 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
-/**
- * This class handles following admin commands: <li>add_exp_sp_to_character <i>shows menu for add or remove</i> <li>add_exp_sp exp sp <i>Adds exp & sp to target, displays menu if a
- * parameter is missing</i> <li>remove_exp_sp exp sp <i>Removes exp & sp from target, displays menu if a parameter is missing</i>
- */
+import java.util.StringTokenizer;
+import java.util.logging.Logger;
+
 public class AdminExpSp implements IAdminCommandHandler
 {
 	private static Logger _log = Logger.getLogger(AdminExpSp.class.getName());
-
+	
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_add_exp_sp_to_character",
 		"admin_add_exp_sp",
 		"admin_remove_exp_sp"
-	};/** @formatter:on */
+	};
 
+	private static L2PcInstance player;
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -52,7 +36,7 @@ public class AdminExpSp implements IAdminCommandHandler
 					activeChar.sendMessage("Usage: //add_exp_sp exp sp");
 			}
 			catch (StringIndexOutOfBoundsException e)
-			{	// Case of missing parameter
+			{ // Case of missing parameter
 				activeChar.sendMessage("Usage: //add_exp_sp exp sp");
 			}
 		}
@@ -65,24 +49,24 @@ public class AdminExpSp implements IAdminCommandHandler
 					activeChar.sendMessage("Usage: //remove_exp_sp exp sp");
 			}
 			catch (StringIndexOutOfBoundsException e)
-			{   // Case of missing parameter
+			{ // Case of missing parameter
 				activeChar.sendMessage("Usage: //remove_exp_sp exp sp");
 			}
 		}
 		addExpSp(activeChar);
 		return true;
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
-	private void addExpSp(L2PcInstance activeChar)
+	
+	private static void addExpSp(L2PcInstance activeChar)
 	{
 		L2Object target = activeChar.getTarget();
-		L2PcInstance player = null;
+		player = null;
 		if (target != null & target instanceof L2PcInstance)
 			player = (L2PcInstance) target;
 		else
@@ -98,8 +82,8 @@ public class AdminExpSp implements IAdminCommandHandler
 		adminReply.replace("%class%", player.getTemplate().className);
 		activeChar.sendPacket(adminReply);
 	}
-
-	private boolean adminAddExpSp(L2PcInstance activeChar, String ExpSp)
+	
+	private static boolean adminAddExpSp(L2PcInstance activeChar, String ExpSp)
 	{
 		L2Object target = activeChar.getTarget();
 		L2PcInstance player = null;
@@ -129,24 +113,17 @@ public class AdminExpSp implements IAdminCommandHandler
 		{
 			return false;
 		}
-		/**
-		 * Anti-Corrupt GMs Protection.
-		 * If GMEdit enabled, a GM won't be able to Add Exp or SP to any
-		 * other
-		 * player that's NOT a GM character. And in addition.. both player
-		 * and
-		 * GM WILL be banned.
-		 */
+		
 		if (Config.GM_EDIT && (expval != 0 || spval != 0) && !player.isGM())
 		{
 			// Warn the player about his inmediate ban.
 			player.sendMessage("A GM tried to edit you in " + expval + " exp points and " + spval + " sp points.You will both be banned.");
 			Util.handleIllegalPlayerAction(player, "The player " + player.getName() + " has been edited. BANNED!!", IllegalPlayerAction.PUNISH_KICKBAN);
-
+			
 			// Warn the GM about his inmediate ban.
 			activeChar.sendMessage("You tried to edit " + player.getName() + " by " + expval + " exp points and " + spval + ". You will both be banned.Q_Q");
 			Util.handleIllegalPlayerAction(activeChar, "GM " + activeChar.getName() + " tried to edit " + player.getName() + ". BANNED!!", IllegalPlayerAction.PUNISH_KICKBAN);
-
+			
 			_log.info(AdminExpSp.class.getSimpleName() + ": GM " + activeChar.getName() + " tried to edit " + player.getName() + ". They both have been Banned. Q_Q");
 		}
 		else if (expval != 0 || spval != 0)
@@ -160,8 +137,8 @@ public class AdminExpSp implements IAdminCommandHandler
 		}
 		return true;
 	}
-
-	private boolean adminRemoveExpSP(L2PcInstance activeChar, String ExpSp)
+	
+	private static boolean adminRemoveExpSP(L2PcInstance activeChar, String ExpSp)
 	{
 		L2Object target = activeChar.getTarget();
 		L2PcInstance player = null;

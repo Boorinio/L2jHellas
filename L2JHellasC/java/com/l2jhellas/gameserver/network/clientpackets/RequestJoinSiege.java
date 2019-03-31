@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -19,17 +5,14 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 
-/**
- * @author KenM
- */
 public final class RequestJoinSiege extends L2GameClientPacket
 {
 	private static final String _C__A4_RequestJoinSiege = "[C] a4 RequestJoinSiege";
-
+	
 	private int _castleId;
 	private int _isAttacker;
 	private int _isJoining;
-
+	
 	@Override
 	protected void readImpl()
 	{
@@ -37,7 +20,7 @@ public final class RequestJoinSiege extends L2GameClientPacket
 		_isAttacker = readD();
 		_isJoining = readD();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
@@ -50,12 +33,12 @@ public final class RequestJoinSiege extends L2GameClientPacket
 			activeChar.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
 			return;
 		}
-
+		
 		final Castle castle = CastleManager.getInstance().getCastleById(_castleId);
 		
 		if (castle == null)
 			return;
-
+		
 		if (_isJoining == 1)
 		{
 			if (System.currentTimeMillis() < activeChar.getClan().getDissolvingExpiryTime())
@@ -70,10 +53,10 @@ public final class RequestJoinSiege extends L2GameClientPacket
 		}
 		else
 			castle.getSiege().removeSiegeClan(activeChar);
-
+		
 		castle.getSiege().listRegisterClan(activeChar);
 	}
-
+	
 	@Override
 	public String getType()
 	{

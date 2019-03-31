@@ -1,33 +1,16 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.ai.group;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 
-/**
- * Angel spawns... When one of the angels in the keys dies, the other angel will spawn.
- */
+import java.util.HashMap;
+import java.util.Map;
+
 public class PolymorphingAngel extends AbstractNpcAI
 {
-	private static final Map<Integer, Integer> ANGELSPAWNS = new HashMap<Integer, Integer>();
+	private static final Map<Integer, Integer> ANGELSPAWNS = new HashMap<>();
 	{
 		ANGELSPAWNS.put(20830, 20859);
 		ANGELSPAWNS.put(21067, 21068);

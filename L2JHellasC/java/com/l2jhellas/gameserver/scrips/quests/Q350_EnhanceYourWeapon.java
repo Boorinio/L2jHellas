@@ -1,15 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
 
 import com.l2jhellas.gameserver.datatables.xml.LevelingInfo;
@@ -174,15 +162,8 @@ public class Q350_EnhanceYourWeapon extends Quest
 		return null;
 	}
 	
-	/**
-	 * Define the Soul Crystal and try to stage it. Checks for quest enabled, crystal(s) in inventory, required usage of crystal, mob's ability to level crystal and mob vs player level gap.
-	 * @param player : The player to make checks on.
-	 * @param mob : The mob to make checks on.
-	 * @param npcInfo : The mob's leveling informations.
-	 * @param chance : Input variable used to determine keep/stage/break of the crystal.
-	 * @return Returns true only, when crystal is staged or broken (aka any type of crystal change is made), else returns false.
-	 */
-	private void tryToStageCrystal(L2PcInstance player, L2Attackable mob, LevelingInfo npcInfo, int chance)
+	@SuppressWarnings("static-access")
+	private static void tryToStageCrystal(L2PcInstance player, L2Attackable mob, LevelingInfo npcInfo, int chance)
 	{
 		SoulCrystalData crystalData = null;
 		L2ItemInstance crystalItem = null;
@@ -202,7 +183,7 @@ public class Q350_EnhanceYourWeapon extends Quest
 				{
 					// Absorb list contains killer and his AbsorbInfo is registered.
 					final AbsorberInfo ai = mob.getAbsorbersList().get(player.getObjectId());
-			
+					
 					if (ai != null && ai.isRegistered())
 						player.sendPacket(SystemMessageId.SOUL_CRYSTAL_ABSORBING_FAILED_RESONATION);
 				}
@@ -261,13 +242,7 @@ public class Q350_EnhanceYourWeapon extends Quest
 			player.sendPacket(SystemMessageId.SOUL_CRYSTAL_ABSORBING_FAILED);
 	}
 	
-	/**
-	 * Remove the old crystal and add new one if stage, broken crystal if break. Send messages in both cases.
-	 * @param player : The player to check on (inventory and send messages).
-	 * @param scd : SoulCrystalData of to take information form.
-	 * @param stage : Switch to determine success or fail.
-	 */
-	private void exchangeCrystal(L2PcInstance player, SoulCrystalData scd, boolean stage)
+	private static void exchangeCrystal(L2PcInstance player, SoulCrystalData scd, boolean stage)
 	{
 		QuestState st = player.getQuestState(qn);
 		

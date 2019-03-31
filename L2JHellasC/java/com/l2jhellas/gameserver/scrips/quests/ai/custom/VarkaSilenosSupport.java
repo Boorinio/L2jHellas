@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests.ai.custom;
 
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData.FrequentSkill;
@@ -31,13 +17,6 @@ import com.l2jhellas.gameserver.network.serverpackets.WareHouseWithdrawalList;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.util.Util;
 
-/**
- * This script supports :
- * <ul>
- * <li>Varka Orc Village functions</li>
- * <li>Quests failures && alliance downgrade if you kill an allied mob.</li>
- * </ul>
- */
 public class VarkaSilenosSupport extends Quest
 {
 	private static final String qn = "VarkaSilenosSupport";
@@ -122,9 +101,6 @@ public class VarkaSilenosSupport extends Quest
 	// Haste: Requires 6 Nepenthese Seeds
 	};
 	
-	/**
-	 * Names of missions which will be automatically dropped if the alliance is broken.
-	 */
 	private static final String[] varkaMissions =
 	{
 		"Q611_AllianceWithVarkaSilenos",
@@ -381,11 +357,6 @@ public class VarkaSilenosSupport extends Quest
 		return super.onSkillSee(npc, caster, skill, targets, isPet);
 	}
 	
-	/**
-	 * That method drops current alliance and retrograde badge.<BR>
-	 * If any Varka quest is in progress, it stops the quest (and drop all related qItems) :
-	 * @param player The player to check.
-	 */
 	private static void testVarkaDemote(L2PcInstance player)
 	{
 		if (player.isAlliedWithVarka())

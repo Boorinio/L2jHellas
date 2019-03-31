@@ -1,4 +1,4 @@
-NOTE: This short guide is for a L2J Server. http://l2jserver.com
+NOTE: This short guide is for a L2J Server.
 
 If you received this file as a part of a packaged or bundled build:
  
@@ -149,14 +149,6 @@ described in the 'game/config/accessLevels.xml' table.
 
 To adjust the allowed admin commands for an access level take a look into
 'game/config/adminCommands.xml'.  
- 
-More info can be found in the community wiki.
- 
-Admin commands implemented:
-(Please see https://l2jserver.com/trac/wiki/GmCommands for more complete list.)
-//admin = main GM interface
-//gmchat = will send a message to all online GMs
-//invul = makes your character untouchable
 
 ====================
 VI. PLAYER's GUIDE
@@ -223,24 +215,6 @@ SOLUTION
 
 Further help available at the wiki sites and the forums.
 
-
-====================
-IX. CONTACT
-====================
-
-Website: http://www.l2jserver.com
-Forum: http://www.l2jserver.com/forum
-IRC: #l2j @ Freenode (irc.freenode.net)
-
-Please note that L2J Devs can't help players with connecting issues or
-anything related to playing on private servers. If you can't connect,
-you should contact your server GM's. We can solve only L2J server
-~software~ related issues. We don't have any backdoors or anything
-that would enable us GM accounts on every server using L2J, so there's
-no point in coming to our channel if you need items/adena/whatever
-ingame.
-
-
 ====================
 X. CONTRIBUTING
 ====================
@@ -262,7 +236,6 @@ XI. BUG REPORTING
 ====================
 
 Bugs can be reported on our wiki site.
-http://l2jserver.com/trac/newticket
 Basic rules for reporting are:
     Please report only one bug/issue per ticket!!
     You must include the revision (changeset) number when reporting a bug!
@@ -278,19 +251,3 @@ Please use the datapacks bugtracker for reporting datapack bugs.
 Please do NOT report bugs related to unofficial add-ons to L2J. L2J
 bugtracker is NOT a place to fix that. Contact the person who made
 modification instead.
-
-
-====================
-XII. CREDITS
-====================
-
-Dev team: 
-http://www.l2jserver.com/forum/memberlist.php?mode=leaders
-
-Have fun playing L2J ;)
-Dev Team
-
-    L2J Server, Copyright (C) 2004-2012 
-    L2J Server comes with ABSOLUTELY NO WARRANTY.
-    This is free software, and you are welcome to redistribute it
-    under certain conditions.

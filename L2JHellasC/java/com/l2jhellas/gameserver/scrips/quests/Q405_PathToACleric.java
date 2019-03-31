@@ -35,7 +35,7 @@ public class Q405_PathToACleric extends Quest
 	
 	public Q405_PathToACleric()
 	{
-		super(405,qn, "Path to a Cleric");
+		super(405, qn, "Path to a Cleric");
 		
 		setItemsIds(LETTER_OF_ORDER_1, BOOK_OF_SIMPLON, BOOK_OF_PRAGA, BOOK_OF_VIVYAN, NECKLACE_OF_MOTHER, PENDANT_OF_MOTHER, LETTER_OF_ORDER_2, LIONEL_BOOK, CERTIFICATE_OF_GALLINT, LIONEL_COVENANT);
 		

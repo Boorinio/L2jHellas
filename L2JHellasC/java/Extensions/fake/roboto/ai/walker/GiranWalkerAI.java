@@ -8,18 +8,18 @@ import com.l2jhellas.util.Rnd;
 
 public class GiranWalkerAI extends WalkerAI
 {
-
+	
 	public GiranWalkerAI(FakePlayer character)
 	{
 		super(character);
 	}
-
+	
 	@Override
 	protected WalkerType getWalkerType()
 	{
 		return WalkerType.RANDOM;
 	}
-
+	
 	@Override
 	protected void setWalkNodes()
 	{

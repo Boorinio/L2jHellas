@@ -1,24 +1,12 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.quests;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Q039_RedEyedInvaders extends Quest
 {
@@ -41,7 +29,7 @@ public class Q039_RedEyedInvaders extends Quest
 	private static final int GEM_OF_MAILLE = 7181;
 	
 	// First droplist
-	private static final Map<Integer, int[]> FIRST_DP = new HashMap<Integer, int[]>();
+	private static final Map<Integer, int[]> FIRST_DP = new HashMap<>();
 	{
 		FIRST_DP.put(M_LIZARDMAN_GUARD, new int[]
 		{
@@ -70,7 +58,7 @@ public class Q039_RedEyedInvaders extends Quest
 	}
 	
 	// Second droplist
-	private static final Map<Integer, int[]> SECOND_DP = new HashMap<Integer, int[]>();
+	private static final Map<Integer, int[]> SECOND_DP = new HashMap<>();
 	{
 		SECOND_DP.put(ARANEID, new int[]
 		{

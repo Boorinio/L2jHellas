@@ -17,15 +17,14 @@ public final class L2FenceInstance extends L2Object
 	private final int _xMax;
 	private final int _yMin;
 	private final int _yMax;
-
+	
 	private final int _width;
 	private final int _length;
-
+	
 	private FenceState _state;
 	private int[] _heightFences;
-
 	
-	public L2FenceInstance(String name,int x, int y, int width, int length, int height, FenceState state)
+	public L2FenceInstance(String name, int x, int y, int width, int length, int height, FenceState state)
 	{
 		super(IdFactory.getInstance().getNextId());
 		
@@ -34,7 +33,7 @@ public final class L2FenceInstance extends L2Object
 		_xMax = x + (width / 2);
 		_yMin = y - (length / 2);
 		_yMax = y + (length / 2);
-
+		
 		_width = width;
 		_length = length;
 		
@@ -49,7 +48,6 @@ public final class L2FenceInstance extends L2Object
 			}
 		}
 	}
-
 	
 	public void setFenceName(String name)
 	{
@@ -60,6 +58,7 @@ public final class L2FenceInstance extends L2Object
 	{
 		return _name;
 	}
+	
 	public int getId()
 	{
 		return getObjectId();
@@ -74,7 +73,7 @@ public final class L2FenceInstance extends L2Object
 		return false;
 	}
 	
-	public boolean deleteAllFence()
+	public static boolean deleteAllFence()
 	{
 		FenceManager.getInstance().deleteAllFence();
 		return false;
@@ -131,7 +130,7 @@ public final class L2FenceInstance extends L2Object
 	@Override
 	public void sendInfo(L2PcInstance activeChar)
 	{
-		activeChar.sendPacket(new ExColosseumFenceInfo(getId(),this));
+		activeChar.sendPacket(new ExColosseumFenceInfo(getId(), this));
 		
 		if (_heightFences != null)
 		{
@@ -153,7 +152,7 @@ public final class L2FenceInstance extends L2Object
 				deleteObjects[i] = new DeleteObject(_heightFences[i]);
 			}
 			
-			L2World.getInstance().forEachVisibleObject(this,L2PcInstance.class, player -> player.sendPacket(deleteObjects));
+			L2World.getInstance().forEachVisibleObject(this, L2PcInstance.class, player -> player.sendPacket(deleteObjects));
 		}
 		
 		super.decayMe();

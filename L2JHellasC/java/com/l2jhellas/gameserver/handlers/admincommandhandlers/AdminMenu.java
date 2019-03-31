@@ -1,25 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.LoginServerThread;
@@ -33,16 +12,19 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
-/**
- * This class handles following admin commands:
- * - handles every admin menu command
- */
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.StringTokenizer;
+import java.util.logging.Logger;
+
 public class AdminMenu implements IAdminCommandHandler
 {
 	private static final Logger _log = Logger.getLogger(AdminMenu.class.getName());
-
+	
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_char_manage",
 		"admin_teleport_character_to_menu",
 		"admin_recall_char_menu",
@@ -53,8 +35,8 @@ public class AdminMenu implements IAdminCommandHandler
 		"admin_kill_menu",
 		"admin_ban_menu",
 		"admin_unban_menu"
-	};/** @formatter:on */
-
+	};
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -129,8 +111,8 @@ public class AdminMenu implements IAdminCommandHandler
 					return true;
 				}
 				L2PcInstance[] members = clan.getOnlineMembers();
-				for (int i = 0; i < members.length; i++)
-					teleportCharacter(members[i], x, y, z, activeChar, "Your clan is being teleported by an Admin.");
+				for (L2PcInstance member : members)
+					teleportCharacter(member, x, y, z, activeChar, "Your clan is being teleported by an Admin.");
 			}
 			catch (Exception e)
 			{
@@ -201,19 +183,19 @@ public class AdminMenu implements IAdminCommandHandler
 		}
 		return true;
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
-	private void handleKill(L2PcInstance activeChar)
+	
+	private static void handleKill(L2PcInstance activeChar)
 	{
 		handleKill(activeChar, null);
 	}
-
-	private void handleKill(L2PcInstance activeChar, String player)
+	
+	private static void handleKill(L2PcInstance activeChar, String player)
 	{
 		L2Object obj = activeChar.getTarget();
 		L2Character target = (L2Character) obj;
@@ -223,7 +205,7 @@ public class AdminMenu implements IAdminCommandHandler
 			L2PcInstance plyr = L2World.getInstance().getPlayer(player);
 			if (plyr != null)
 				target = plyr;
-			activeChar.sendMessage("You killed " + plyr.getName());
+			activeChar.sendMessage("You killed " + target.getName());
 		}
 		if (target != null)
 		{
@@ -243,8 +225,8 @@ public class AdminMenu implements IAdminCommandHandler
 		}
 		AdminHelpPage.showHelpPage(activeChar, filename);
 	}
-
-	private void teleportCharacter(L2PcInstance player, int x, int y, int z, L2PcInstance activeChar, String message)
+	
+	private static void teleportCharacter(L2PcInstance player, int x, int y, int z, L2PcInstance activeChar, String message)
 	{
 		if (player != null)
 		{
@@ -253,8 +235,8 @@ public class AdminMenu implements IAdminCommandHandler
 		}
 		showMainPage(activeChar);
 	}
-
-	private void teleportToCharacter(L2PcInstance activeChar, L2Object target)
+	
+	private static void teleportToCharacter(L2PcInstance activeChar, L2Object target)
 	{
 		L2PcInstance player = null;
 		if (target != null && target instanceof L2PcInstance)
@@ -270,19 +252,16 @@ public class AdminMenu implements IAdminCommandHandler
 		}
 		showMainPage(activeChar);
 	}
-
-	/**
-	 * @param activeChar
-	 */
-	private void showMainPage(L2PcInstance activeChar)
+	
+	private static void showMainPage(L2PcInstance activeChar)
 	{
 		AdminHelpPage.showHelpPage(activeChar, "charmanage.htm");
 	}
-
-	private void setAccountAccessLevel(String player, L2PcInstance activeChar, int banLevel)
+	
+	private static void setAccountAccessLevel(String player, L2PcInstance activeChar, int banLevel)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("SELECT account_name FROM characters WHERE char_name=?"))
+			PreparedStatement statement = con.prepareStatement("SELECT account_name FROM characters WHERE char_name=?"))
 		{
 			statement.setString(1, player);
 			try (ResultSet result = statement.executeQuery())

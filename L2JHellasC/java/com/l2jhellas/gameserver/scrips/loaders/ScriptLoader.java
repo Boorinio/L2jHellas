@@ -1,25 +1,6 @@
-/*
- * Copyright (C) 2012-2016 L2JHellasD
- * 
- * This file is part of L2JHellasD.
- * 
- * L2JHellasD is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * L2JHellasD is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.scrips.loaders;
 
-import java.util.logging.Logger;
-
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.scrips.quests.*;
 import com.l2jhellas.gameserver.scrips.quests.ai.custom.EchoCrystals;
 import com.l2jhellas.gameserver.scrips.quests.ai.custom.HeroCirclet;
@@ -101,9 +82,8 @@ import com.l2jhellas.gameserver.scrips.quests.vehicles.BoatInnadrilTour;
 import com.l2jhellas.gameserver.scrips.quests.vehicles.BoatRunePrimeval;
 import com.l2jhellas.gameserver.scrips.quests.vehicles.BoatTalkingGludin;
 
-/**
- * @author AbsolutePower
- */
+import java.util.logging.Logger;
+
 public class ScriptLoader
 {
 	private static final Logger _log = Logger.getLogger(ScriptLoader.class.getName());
@@ -117,10 +97,10 @@ public class ScriptLoader
 	{
 		teleiwne();
 	}
-
+	
 	private static final Class<?>[] Quests =
 	{
-		//quests
+		// quests
 		Q001_LettersOfLove.class,
 		Q002_WhatWomenWant.class,
 		Q003_WillTheSealBeBroken.class,
@@ -227,7 +207,7 @@ public class ScriptLoader
 		Q223_TestOfTheChampion.class,
 		Q224_TestOfSagittarius.class,
 		Q225_TestOfTheSearcher.class,
-	    Q226_TestOfTheHealer.class,
+		Q226_TestOfTheHealer.class,
 		Q228_TestOfMagus.class,
 		Q230_TestOfTheSummoner.class,
 		Q231_TestOfTheMaestro.class,
@@ -239,6 +219,7 @@ public class ScriptLoader
 		Q242_PossessorOfAPreciousSoul.class,
 		Q246_PossessorOfAPreciousSoul.class,
 		Q247_PossessorOfAPreciousSoul.class,
+		(Config.ALLOW_TUTORIAL ? Q255_Tutorial.class : null),
 		Q257_TheGuardIsBusy.class,
 		Q258_BringWolfPelts.class,
 		Q259_RanchersPlea.class,
@@ -410,6 +391,7 @@ public class ScriptLoader
 		Q662_AGameOfCards.class,
 		Q663_SeductiveWhispers.class,
 		Q688_DefeatTheElrokianRaiders.class,
+		(Config.ALLOW_TUTORIAL ? Q999_T1Tutorial.class : null),
 		
 		AncientEGG.class,
 		CatsEyeBandit.class,
@@ -446,7 +428,7 @@ public class ScriptLoader
 		TurekOrcWarlord.class,
 		VarkaKetraAlly.class,
 		
-		//customs
+		// customs
 		EchoCrystals.class,
 		HeroCirclet.class,
 		HeroWeapon.class,
@@ -456,8 +438,8 @@ public class ScriptLoader
 		RaidbossInfo.class,
 		ShadowWeapon.class,
 		VarkaSilenosSupport.class,
-			
-		//teleports	
+		
+		// teleports
 		ElrokiTeleporters.class,
 		GatekeeperSpirit.class,
 		GrandBossTeleporters.class,
@@ -470,13 +452,13 @@ public class ScriptLoader
 		TeleportWithCharm.class,
 		ToIVortex.class,
 		
-		//VilageMaster
+		// VilageMaster
 		Alliance.class,
 		Clan.class,
 		FirstClassChange.class,
 		SecondClassChange.class,
 		
-		//bosses
+		// bosses
 		Anays.class,
 		Antharas.class,
 		Baium.class,
@@ -493,18 +475,20 @@ public class ScriptLoader
 		Valakas.class,
 		VanHalter.class,
 		Zaken.class,
-
+		
 		BoatGiranTalking.class,
 		BoatGludinRune.class,
 		BoatInnadrilTour.class,
 		BoatRunePrimeval.class,
-		BoatTalkingGludin.class	
+		BoatTalkingGludin.class
 	};
 	
 	private static void teleiwne()
 	{
 		for (Class<?> _qs : Quests)
 		{
+			if (_qs == null)
+				continue;
 			try
 			{
 				_qs.newInstance();
@@ -516,7 +500,6 @@ public class ScriptLoader
 			}
 		}
 	}
-	
 	
 	private static class SingletonHolder
 	{

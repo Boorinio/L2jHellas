@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.entity.engines;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -26,9 +9,9 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-/**
- * @author Boorinio
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class PeloponnesianWar
 {
 	private static boolean alaksokolies = true;
@@ -47,15 +30,36 @@ public class PeloponnesianWar
 	private static int protectors = 30627;
 	private static int[] protectorsx =
 	{
-	72931, 72995, 73011, 73070, -87921, -87998, -87908, -87836,
+		72931,
+		72995,
+		73011,
+		73070,
+		-87921,
+		-87998,
+		-87908,
+		-87836,
 	};
 	private static int[] protectorsy =
 	{
-	143270, 143250, 142272, 142282, 142707, 142679, 141758, 141777,
+		143270,
+		143250,
+		142272,
+		142282,
+		142707,
+		142679,
+		141758,
+		141777,
 	};
 	private static int[] protectorsz =
 	{
-	-3773, -3773, -3773, -3773, -3646, -3646, -3646, -3646,
+		-3773,
+		-3773,
+		-3773,
+		-3773,
+		-3646,
+		-3646,
+		-3646,
+		-3646,
 	};
 	
 	public static void startevent()
@@ -98,7 +102,7 @@ public class PeloponnesianWar
 				
 			}
 		}
-		if(_participants.size()<2)
+		if (_participants.size() < 2)
 		{
 			Announcements.getInstance().announceToAll("Event canceled due to lack of participation.");
 			cleanthemess();
@@ -107,7 +111,8 @@ public class PeloponnesianWar
 		spawnProtectors();
 		teleportplayers();
 		Announcements.getInstance().announceToAll("Civil War round started!");
-		Announcements.getInstance().announceToAll("You have 3 minutes to fight! The one who survives will face the opponent race!!");		waitSecs(180);
+		Announcements.getInstance().announceToAll("You have 3 minutes to fight! The one who survives will face the opponent race!!");
+		waitSecs(180);
 		for (L2PcInstance finals : _athenians)
 		{
 			if (finals.isinZodiac)
@@ -120,7 +125,8 @@ public class PeloponnesianWar
 		}
 		if (countA > 1)
 		{
-			Announcements.getInstance().announceToAll("Athenians cheated and tried to send more than two players. Spartans won!");			reward(false);
+			Announcements.getInstance().announceToAll("Athenians cheated and tried to send more than two players. Spartans won!");
+			reward(false);
 		}
 		else if (countS > 1)
 		{
@@ -149,7 +155,7 @@ public class PeloponnesianWar
 				participant.teleToLocation(82698, 148638, -3473);
 			}
 			participant.isinZodiac = false;
-			}
+		}
 		for (L2Npc protectors : _protectors)
 		{
 			protectors.deleteMe();
@@ -170,8 +176,8 @@ public class PeloponnesianWar
 			for (L2PcInstance athenians : _athenians)
 			{
 				
-				if(athenians!=null)
-				athenians.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, athenians, true);
+				if (athenians != null)
+					athenians.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, athenians, true);
 				
 			}
 		}
@@ -179,8 +185,8 @@ public class PeloponnesianWar
 		{
 			for (L2PcInstance spartans : _spartans)
 			{
-				if(spartans!=null)
-				spartans.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, spartans, true);
+				if (spartans != null)
+					spartans.addItem("Reward", Config.ZODIAC_REWARD, Config.ZODIAC_REWARD_COUN, spartans, true);
 				
 			}
 		}
@@ -215,7 +221,8 @@ public class PeloponnesianWar
 		{
 			if (athenian.isinZodiac)
 			{
-				athenian.sendMessage("You are the best of the Athenians. You will now face the best of the Spartans.");				athenian.setTitle("FinalAthenian");
+				athenian.sendMessage("You are the best of the Athenians. You will now face the best of the Spartans.");
+				athenian.setTitle("FinalAthenian");
 				athenian.setCurrentHp(athenian.getMaxHp());
 				athenian.setCurrentMp(athenian.getMaxMp());
 				athenian.setCurrentCp(athenian.getMaxCp());
@@ -227,7 +234,8 @@ public class PeloponnesianWar
 		{
 			if (spartan.isinZodiac)
 			{
-				spartan.sendMessage("You are the best of the Spartans. You will now face the best of the Athenians.");				spartan.setTitle("FinalSpartan");
+				spartan.sendMessage("You are the best of the Spartans. You will now face the best of the Athenians.");
+				spartan.setTitle("FinalSpartan");
 				spartan.setCurrentHp(spartan.getMaxHp());
 				spartan.setCurrentMp(spartan.getMaxMp());
 				spartan.setCurrentCp(spartan.getMaxCp());
@@ -241,7 +249,7 @@ public class PeloponnesianWar
 	{
 		for (L2PcInstance player : _participants)
 		{
-			if(player == null)
+			if (player == null)
 				return;
 			
 			if (_athenians.contains(player))

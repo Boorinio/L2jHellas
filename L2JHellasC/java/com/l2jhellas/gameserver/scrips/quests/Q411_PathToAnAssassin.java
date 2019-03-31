@@ -26,7 +26,7 @@ public class Q411_PathToAnAssassin extends Quest
 	
 	public Q411_PathToAnAssassin()
 	{
-		super(411,qn, "Path to an Assassin");
+		super(411, qn, "Path to an Assassin");
 		
 		setItemsIds(SHILEN_CALL, ARKENIA_LETTER, LEIKAN_NOTE, MOONSTONE_BEAST_MOLAR, SHILEN_TEARS, ARKENIA_RECOMMENDATION);
 		

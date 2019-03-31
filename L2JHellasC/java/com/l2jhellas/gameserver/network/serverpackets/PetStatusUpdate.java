@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.actor.L2Summon;
@@ -20,11 +6,11 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 public class PetStatusUpdate extends L2GameServerPacket
 {
 	private static final String _S__CE_PETSTATUSSHOW = "[S] B5 PetStatusUpdate";
-
+	
 	private final L2Summon _summon;
 	private final int _maxHp, _maxMp;
 	private int _maxFed, _curFed;
-
+	
 	public PetStatusUpdate(L2Summon summon)
 	{
 		_summon = summon;
@@ -37,7 +23,7 @@ public class PetStatusUpdate extends L2GameServerPacket
 			_maxFed = pet.getMaxFed(); // max fed it can be
 		}
 	}
-
+	
 	@Override
 	protected final void writeImpl()
 	{
@@ -59,7 +45,7 @@ public class PetStatusUpdate extends L2GameServerPacket
 		writeQ(_summon.getExpForThisLevel());// 0% absolute value
 		writeQ(_summon.getExpForNextLevel());// 100% absolute value
 	}
-
+	
 	@Override
 	public String getType()
 	{

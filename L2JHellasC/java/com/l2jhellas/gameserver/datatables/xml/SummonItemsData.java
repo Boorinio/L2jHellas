@@ -1,18 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.datatables.xml;
+
+import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.model.L2SummonItem;
 
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -20,20 +9,17 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import com.l2jhellas.gameserver.engines.DocumentParser;
-import com.l2jhellas.gameserver.model.L2SummonItem;
-
 public class SummonItemsData implements DocumentParser
 {
 	protected static final Logger _log = Logger.getLogger(SummonItemsData.class.getName());
-
-	private HashMap<Integer, L2SummonItem> _summonitems = new HashMap<>();
+	
+	private final HashMap<Integer, L2SummonItem> _summonitems = new HashMap<>();
 	
 	public SummonItemsData()
 	{
-       load();
+		load();
 	}
-
+	
 	@Override
 	public void load()
 	{
@@ -64,19 +50,20 @@ public class SummonItemsData implements DocumentParser
 					}
 				}
 			}
-		}		
+		}
 	}
+	
 	public L2SummonItem getSummonItem(int itemId)
 	{
 		return _summonitems.get(itemId);
 	}
-
+	
 	public int[] itemIDs()
 	{
 		int size = _summonitems.size();
 		int[] result = new int[size];
 		int i = 0;
-
+		
 		for (L2SummonItem si : _summonitems.values())
 		{
 			result[i] = si.getItemId();

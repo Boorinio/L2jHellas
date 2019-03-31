@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -22,20 +6,16 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.templates.L2Item;
 
-/**
- * This class handles following admin commands:
- * - itemcreate = show menu
- * - create_item <id> [num] = creates num items with respective id, if num is
- * not specified, assumes 1.
- */
+import java.util.StringTokenizer;
+
 public class AdminCreateItem implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_itemcreate",
 		"admin_create_item"
-	};/** @formatter:on */
-
+	};
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -50,7 +30,7 @@ public class AdminCreateItem implements IAdminCommandHandler
 				String val = command.substring(17);
 				StringTokenizer st = new StringTokenizer(val);
 				L2PcInstance target;
-				if ((L2PcInstance) activeChar.getTarget() instanceof L2PcInstance && (L2PcInstance) activeChar.getTarget() != null)
+				if (activeChar.getTarget() != null && activeChar.getTarget() instanceof L2PcInstance)
 				{
 					target = (L2PcInstance) activeChar.getTarget();
 				}
@@ -84,14 +64,14 @@ public class AdminCreateItem implements IAdminCommandHandler
 		}
 		return true;
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
-	private void createItem(L2PcInstance activeChar, int id, int num)
+	
+	private static void createItem(L2PcInstance activeChar, int id, int num)
 	{
 		if (num > 20)
 		{
@@ -102,12 +82,12 @@ public class AdminCreateItem implements IAdminCommandHandler
 				return;
 			}
 		}
-
+		
 		activeChar.getInventory().addItem("Admin", id, num, activeChar, null);
-
+		
 		ItemList il = new ItemList(activeChar, true);
 		activeChar.sendPacket(il);
-
+		
 		activeChar.sendMessage("You have spawned " + num + " item(s) number " + id + " in your inventory.");
 	}
 }

@@ -31,7 +31,7 @@ public class Q410_PathToAPalusKnight extends Quest
 	
 	public Q410_PathToAPalusKnight()
 	{
-		super(410,qn, "Path to a Palus Knight");
+		super(410, qn, "Path to a Palus Knight");
 		
 		setItemsIds(PALUS_TALISMAN, LYCANTHROPE_SKULL, VIRGIL_LETTER, MORTE_TALISMAN, PREDATOR_CARAPACE, ARACHNID_TRACKER_SILK, COFFIN_OF_ETERNAL_REST);
 		

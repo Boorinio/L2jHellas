@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.communitybbs.Manager;
-
-import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.model.L2Clan;
@@ -22,19 +6,21 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.util.StringUtil;
 
+import java.util.StringTokenizer;
+
 public class ClanBBSManager extends BaseBBSManager
 {
 	private ClanBBSManager()
 	{
 	}
-
+	
 	private static ClanBBSManager _instance = new ClanBBSManager();
-
+	
 	public static ClanBBSManager getInstance()
 	{
 		return _instance;
 	}
-
+	
 	@Override
 	public void parsecmd(String command, L2PcInstance activeChar)
 	{
@@ -104,7 +90,7 @@ public class ClanBBSManager extends BaseBBSManager
 			separateAndSend("<html><body><br><br><center>Command : " + command + " needs core development</center><br><br></body></html>", activeChar);
 		}
 	}
-
+	
 	private void clanNotice(L2PcInstance activeChar, int clanId)
 	{
 		L2Clan cl = ClanTable.getInstance().getClan(clanId);
@@ -121,12 +107,12 @@ public class ClanBBSManager extends BaseBBSManager
 				if (activeChar.isClanLeader())
 				{
 					StringUtil.append(html, "<br><br><center>" + "<table width=610 border=0 cellspacing=0 cellpadding=0>" + "<tr><td fixwidth=610><font color=\"AAAAAA\">The Clan Notice function allows the clan leader to send messages through a pop-up window to clan members at login.</font> </td></tr>" + "<tr><td height=20></td></tr>");
-
+					
 					if (activeChar.getClan().isNoticeEnabled())
 						StringUtil.append(html, "<tr><td fixwidth=610> Clan Notice Function:&nbsp;&nbsp;&nbsp;on&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;<a action=\"bypass _bbsclan_clannotice_disable\">off</a>");
 					else
 						StringUtil.append(html, "<tr><td fixwidth=610> Clan Notice Function:&nbsp;&nbsp;&nbsp;<a action=\"bypass _bbsclan_clannotice_enable\">on</a>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;off");
-
+					
 					StringUtil.append(html, "</td></tr>" + "</table>" + "<img src=\"L2UI.Squaregray\" width=\"610\" height=\"1\">" + "<br> <br>" + "<table width=610 border=0 cellspacing=2 cellpadding=0>" + "<tr><td>Edit Notice: </td></tr>" + "<tr><td height=5></td></tr>" + "<tr><td>" + "<MultiEdit var =\"Content\" width=610 height=100>" + "</td></tr>" + "</table>" + "<br>" + "<table width=610 border=0 cellspacing=0 cellpadding=0>" + "<tr><td height=5></td></tr>" + "<tr>" + "<td align=center FIXWIDTH=65><button value=\"&$140;\" action=\"Write Notice Set _ Content Content Content\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\" ></td>" + "<td align=center FIXWIDTH=45></td>" + "<td align=center FIXWIDTH=500></td>" + "</tr>" + "</table>" + "</center>" + "</body>" + "</html>");
 					send1001(html.toString(), activeChar);
 					send1002(activeChar, activeChar.getClan().getNotice(), " ", "0");
@@ -144,7 +130,7 @@ public class ClanBBSManager extends BaseBBSManager
 			}
 		}
 	}
-
+	
 	private void clanlist(L2PcInstance activeChar, int index)
 	{
 		if (index < 1)
@@ -235,7 +221,7 @@ public class ClanBBSManager extends BaseBBSManager
 			{
 				html.append("<td><a action=\"bypass _bbsclan_clanlist;" + i + "\"> " + i + " </a></td>");
 			}
-
+			
 		}
 		if (index == nbp)
 		{
@@ -258,12 +244,12 @@ public class ClanBBSManager extends BaseBBSManager
 		html.append("</html>");
 		separateAndSend(html.toString(), activeChar);
 	}
-
+	
 	private void clanhome(L2PcInstance activeChar)
 	{
 		clanhome(activeChar, activeChar.getClan().getClanId());
 	}
-
+	
 	private void clanhome(L2PcInstance activeChar, int clanId)
 	{
 		L2Clan cl = ClanTable.getInstance().getClan(clanId);
@@ -326,12 +312,7 @@ public class ClanBBSManager extends BaseBBSManager
 				html.append("</tr>");
 				html.append("<tr><td height=7></td></tr>");
 				// ADMINISTRATOR ??
-				/*
-				 * html.append("<tr>");
-				 * html.append("<td fixWIDTH=100 align=left>ADMINISTRATOR</td>");
-				 * html.append("<td fixWIDTH=195 align=left height=16>"+cl.getLeaderName()+"</td>");
-				 * html.append("</tr>");
-				 */
+				
 				html.append("<tr><td height=7></td></tr>");
 				html.append("<tr>");
 				html.append("<td fixWIDTH=100 align=left>ALLIANCE</td>");
@@ -355,7 +336,7 @@ public class ClanBBSManager extends BaseBBSManager
 			}
 		}
 	}
-
+	
 	@Override
 	public void parsewrite(String ar1, String ar2, String ar3, String ar4, String ar5, L2PcInstance activeChar)
 	{

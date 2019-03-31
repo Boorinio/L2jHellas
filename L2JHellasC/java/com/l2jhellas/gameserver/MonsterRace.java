@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver;
-
-import java.lang.reflect.Constructor;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
@@ -23,6 +7,8 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 
+import java.lang.reflect.Constructor;
+
 public class MonsterRace
 {
 	private final L2Npc[] _monsters;
@@ -30,7 +16,7 @@ public class MonsterRace
 	private Constructor<?> _constructor;
 	private int[][] _speeds;
 	private final int[] _first, _second;
-
+	
 	private MonsterRace()
 	{
 		_monsters = new L2Npc[8];
@@ -38,19 +24,19 @@ public class MonsterRace
 		_first = new int[2];
 		_second = new int[2];
 	}
-
+	
 	public static MonsterRace getInstance()
 	{
 		if (_instance == null)
 			_instance = new MonsterRace();
-
+		
 		return _instance;
 	}
-
+	
 	public void newRace()
 	{
 		int random = 0;
-
+		
 		for (int i = 0; i < 8; i++)
 		{
 			int id = 31003;
@@ -82,7 +68,7 @@ public class MonsterRace
 		}
 		newSpeeds();
 	}
-
+	
 	public void newSpeeds()
 	{
 		_speeds = new int[8][20];
@@ -114,28 +100,22 @@ public class MonsterRace
 			}
 		}
 	}
-
-	/**
-	 * @return Returns the monsters.
-	 */
+	
 	public L2Npc[] getMonsters()
 	{
 		return _monsters;
 	}
-
-	/**
-	 * @return Returns the speeds.
-	 */
+	
 	public int[][] getSpeeds()
 	{
 		return _speeds;
 	}
-
+	
 	public int getFirstPlace()
 	{
 		return _first[0];
 	}
-
+	
 	public int getSecondPlace()
 	{
 		return _second[0];

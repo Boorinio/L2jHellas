@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
@@ -41,10 +27,9 @@ public final class UseItem extends L2GameClientPacket
 {
 	private static final String _C__14_USEITEM = "[C] 14 UseItem";
 	
-	private int _objectId;
+	protected int _objectId;
 	private int _itemId;
 	
-	/** Weapon Equip Task */
 	public class WeaponEquipTask implements Runnable
 	{
 		L2ItemInstance item;
@@ -60,8 +45,8 @@ public final class UseItem extends L2GameClientPacket
 		public void run()
 		{
 			
-            final L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
-
+			final L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
+			
 			if (item == null || activeChar.isAttackingNow())
 				return;
 			
@@ -81,14 +66,12 @@ public final class UseItem extends L2GameClientPacket
 	{
 		final L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
-			return
-			;
+			return;
 		
 		// Flood protect UseItem
 		if (!activeChar.getAntiFlood().getUseItem().tryPerformAction("use item"))
 			return;
-
-
+		
 		if (activeChar.getPrivateStoreType() != 0)
 		{
 			activeChar.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
@@ -122,7 +105,7 @@ public final class UseItem extends L2GameClientPacket
 			activeChar.sendMessage(item.getItemName() + " cannot be used right now!");
 			return;
 		}
-
+		
 		if (item.getItem().getType2() == L2Item.TYPE2_QUEST)
 		{
 			activeChar.sendMessage("You can't use quest items.");
@@ -152,13 +135,13 @@ public final class UseItem extends L2GameClientPacket
 			
 			if ((_itemId >= 7117 && _itemId <= 7135) || (_itemId >= 7554 && _itemId <= 7559))
 				return;
-		}	
+		}
 		
 		final int itemId = item.getItemId();
 		
-		if(itemId==0)
+		if (itemId == 0)
 			return;
-
+		
 		final L2Clan cl = activeChar.getClan();
 		
 		if (((cl == null) || cl.hasCastle() == 0) && itemId == 7015 && Config.CASTLE_SHIELD)
@@ -169,8 +152,7 @@ public final class UseItem extends L2GameClientPacket
 			sm = null;
 			return;
 		}
-
-
+		
 		if ((itemId >= 7860 && itemId <= 7879) && Config.APELLA_ARMORS && (cl == null || activeChar.getPledgeClass() < 5))
 		{
 			// Apella armor used by clan members may be worn by a Baron or a higher level Aristocrat.
@@ -179,7 +161,7 @@ public final class UseItem extends L2GameClientPacket
 			sm = null;
 			return;
 		}
-
+		
 		if ((itemId >= 7850 && itemId <= 7859) && Config.OATH_ARMORS && (cl == null))
 		{
 			// Clan Oath armor used by all clan members
@@ -188,7 +170,7 @@ public final class UseItem extends L2GameClientPacket
 			sm = null;
 			return;
 		}
-
+		
 		if (itemId == 6841 && Config.CASTLE_CROWN && (cl == null || (cl.hasCastle() == 0 || !activeChar.isClanLeader())))
 		{
 			// The Lord's Crown used by castle lords only
@@ -197,7 +179,7 @@ public final class UseItem extends L2GameClientPacket
 			sm = null;
 			return;
 		}
-
+		
 		// Castle circlets used by the members of a clan that owns a castle, academy members are excluded.
 		if (Config.CASTLE_CIRCLETS && ((itemId >= 6834 && itemId <= 6840) || itemId == 8182 || itemId == 8183))
 		{
@@ -208,16 +190,13 @@ public final class UseItem extends L2GameClientPacket
 				sm = null;
 				return;
 			}
-			else
+			int circletId = CastleManager.getInstance().getCircletByCastleId(cl.hasCastle());
+			if (activeChar.getPledgeType() == -1 || circletId != itemId)
 			{
-				int circletId = CastleManager.getInstance().getCircletByCastleId(cl.hasCastle());
-				if (activeChar.getPledgeType() == -1 || circletId != itemId)
-				{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
-					activeChar.sendPacket(sm);
-					sm = null;
-					return;
-				}
+				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
+				activeChar.sendPacket(sm);
+				sm = null;
+				return;
 			}
 		}
 		final L2Weapon curwep = activeChar.getActiveWeaponItem();
@@ -254,7 +233,7 @@ public final class UseItem extends L2GameClientPacket
 				return;
 			}
 		}
-
+		
 		if (activeChar.isFishing() && (_itemId < 6535 || _itemId > 6540))
 		{
 			// You cannot do anything else while fishing
@@ -270,7 +249,7 @@ public final class UseItem extends L2GameClientPacket
 			sm = null;
 			return;
 		}
-		if (activeChar.isFishing() && (item.getItemId()< 6535 || item.getItemId() > 6540))
+		if (activeChar.isFishing() && (item.getItemId() < 6535 || item.getItemId() > 6540))
 		{
 			// You cannot do anything else while fishing
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_DO_WHILE_FISHING_3);
@@ -278,9 +257,7 @@ public final class UseItem extends L2GameClientPacket
 			sm = null;
 			return;
 		}
-		/*
-		 * The player can't use pet items if no pet is currently summoned. If a pet is summoned and player uses the item directly, it will be used by the pet.
-		 */
+		
 		if (item.isPetItem())
 		{
 			L2Summon summon = activeChar.getPet();
@@ -337,7 +314,7 @@ public final class UseItem extends L2GameClientPacket
 		
 		if (!item.isEquipped())
 		{
-			if ((item.isHeroItem()) && ((activeChar instanceof L2PcInstance) && activeChar.getActingPlayer().isInOlympiadMode()))				
+			if ((item.isHeroItem()) && (activeChar.isInOlympiadMode()))
 				return;
 		}
 		
@@ -418,7 +395,7 @@ public final class UseItem extends L2GameClientPacket
 					}
 					break;
 				}
-
+				
 			}
 			if (!Config.ALLOW_DAGGERS_WEAR_HEAVY)
 				if ((activeChar.getClassId().getId() == 93) || (activeChar.getClassId().getId() == 108) || (activeChar.getClassId().getId() == 101) || (activeChar.getClassId().getId() == 8) || (activeChar.getClassId().getId() == 23) || (activeChar.getClassId().getId() == 36))
@@ -429,7 +406,7 @@ public final class UseItem extends L2GameClientPacket
 						return;
 					}
 				}
-
+			
 			if (!Config.ALLOW_ARCHERS_WEAR_HEAVY)
 				if ((activeChar.getClassId().getId() == 9) || (activeChar.getClassId().getId() == 92) || (activeChar.getClassId().getId() == 24) || (activeChar.getClassId().getId() == 102) || (activeChar.getClassId().getId() == 37) || (activeChar.getClassId().getId() == 109))
 				{
@@ -480,8 +457,7 @@ public final class UseItem extends L2GameClientPacket
 			}
 		}
 	}
-
-
+	
 	@Override
 	public String getType()
 	{

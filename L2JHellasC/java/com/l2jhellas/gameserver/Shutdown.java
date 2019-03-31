@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver;
-
-import java.util.Collection;
-import java.util.logging.Logger;
 
 import Extensions.RankSystem.PvpTable;
 
@@ -41,9 +24,9 @@ import com.l2jhellas.util.Broadcast;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
-/**
- * This class provides functions for shutting down and restarting the server. It closes all client connections and saves data.
- */
+import java.util.Collection;
+import java.util.logging.Logger;
+
 public class Shutdown extends Thread
 {
 	private static Logger _log = Logger.getLogger(Shutdown.class.getName());
@@ -58,7 +41,10 @@ public class Shutdown extends Thread
 	public static final int ABORT = 3;
 	private static final String[] MODE_TEXT =
 	{
-	"SIGTERM", "shutting down", "restarting", "aborting"
+		"SIGTERM",
+		"shutting down",
+		"restarting",
+		"aborting"
 	};
 	
 	public void autoRestart(int time)
@@ -77,23 +63,12 @@ public class Shutdown extends Thread
 		Broadcast.toAllOnlinePlayers(sysm);
 	}
 	
-	/**
-	 * Default constructor is only used internal to create the shutdown-hook instance
-	 */
 	protected Shutdown()
 	{
 		_secondsShut = -1;
 		_shutdownMode = SIGTERM;
 	}
 	
-	/**
-	 * This creates a countdown instance of Shutdown.
-	 * 
-	 * @param seconds
-	 *        how many seconds until shutdown
-	 * @param restart
-	 *        true is the server shall restart after shutdown
-	 */
 	public Shutdown(int seconds, boolean restart)
 	{
 		if (seconds < 0)
@@ -107,22 +82,11 @@ public class Shutdown extends Thread
 			_shutdownMode = GM_SHUTDOWN;
 	}
 	
-	/**
-	 * get the shutdown-hook instance the shutdown-hook instance is created by the first call of this function, but it has to be registrered externaly.
-	 * 
-	 * @return instance of Shutdown, to be used as shutdown hook
-	 */
 	public static Shutdown getInstance()
 	{
 		return SingletonHolder._instance;
 	}
 	
-	/**
-	 * this function is called, when a new thread starts if this thread is the thread of getInstance, then this is the shutdown hook and we save all data and disconnect all
-	 * clients. after this thread ends, the server will completely exit if this is not the thread of getInstance, then this is a
-	 * countdown thread. we start the countdown, and when we finished it, and it was not aborted, we tell the shutdown-hook why we call exit, and then call exit when the exit
-	 * status of the server is 1, startServer.sh / startServer.bat will restart the server.
-	 */
 	@Override
 	public void run()
 	{
@@ -132,7 +96,7 @@ public class Shutdown extends Thread
 			TimeCounter tc1 = new TimeCounter();
 			
 			Util.printSection("Under " + MODE_TEXT[_shutdownMode] + " process");
-
+			
 			// disconnect players
 			try
 			{
@@ -219,9 +183,9 @@ public class Shutdown extends Thread
 			{
 				int[] up = PvpTable.getInstance().updateDB();
 				
-				if(up[0] == 0)
+				if (up[0] == 0)
 				{
-					_log.info("PvpTable: Data saved ["+up[1]+" inserts and "+up[2]+" updates] in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+					_log.info("PvpTable: Data saved [" + up[1] + " inserts and " + up[2] + " updates] in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
 				}
 			}
 			
@@ -278,29 +242,16 @@ public class Shutdown extends Thread
 					SingletonHolder._instance.setMode(GM_SHUTDOWN);
 					SingletonHolder._instance.run();
 					System.exit(0);
-				break;
+					break;
 				case GM_RESTART:
 					SingletonHolder._instance.setMode(GM_RESTART);
 					SingletonHolder._instance.run();
 					System.exit(2);
-				break;
+					break;
 			}
 		}
 	}
 	
-	/**
-	 * This functions starts a shutdown countdown.<br>
-	 * A choice must be made between activeChar or ghostEntity.
-	 * 
-	 * @param activeChar
-	 *        GM who issued the shutdown command
-	 * @param ghostEntity
-	 *        the entity who issued the shutdown command
-	 * @param seconds
-	 *        seconds until shutdown
-	 * @param restart
-	 *        true if the server will restart after shutdown
-	 */
 	public void startShutdown(L2PcInstance activeChar, String ghostEntity, int seconds, boolean restart)
 	{
 		if (restart)
@@ -333,7 +284,7 @@ public class Shutdown extends Thread
 				case 3:
 				case 2:
 				case 1:
-				break;
+					break;
 				default:
 					SendServerQuit(seconds);
 			}
@@ -347,12 +298,6 @@ public class Shutdown extends Thread
 		_counterInstance.start();
 	}
 	
-	/**
-	 * This function aborts a running countdown
-	 * 
-	 * @param activeChar
-	 *        GM who issued the abort command
-	 */
 	public void abort(L2PcInstance activeChar)
 	{
 		if (_counterInstance != null)
@@ -367,28 +312,16 @@ public class Shutdown extends Thread
 		}
 	}
 	
-	/**
-	 * set the shutdown mode
-	 * 
-	 * @param mode
-	 *        what mode shall be set
-	 */
 	private void setMode(int mode)
 	{
 		_shutdownMode = mode;
 	}
 	
-	/**
-	 * set shutdown mode to ABORT
-	 */
 	private void _abort()
 	{
 		_shutdownMode = ABORT;
 	}
 	
-	/**
-	 * this counts the countdown and reports it to all players countdown is aborted if mode changes to ABORT
-	 */
 	private void countdown()
 	{
 		try
@@ -399,54 +332,54 @@ public class Shutdown extends Thread
 				{
 					case 540:
 						SendServerQuit(540);
-					break;
+						break;
 					case 480:
 						SendServerQuit(480);
-					break;
+						break;
 					case 420:
 						SendServerQuit(420);
-					break;
+						break;
 					case 360:
 						SendServerQuit(360);
-					break;
+						break;
 					case 300:
 						SendServerQuit(300);
-					break;
+						break;
 					case 240:
 						SendServerQuit(240);
-					break;
+						break;
 					case 180:
 						SendServerQuit(180);
-					break;
+						break;
 					case 120:
 						SendServerQuit(120);
-					break;
+						break;
 					case 60:
 						// avoids new players from logging in
 						LoginServerThread.getInstance().setServerStatus(ServerStatus.STATUS_DOWN);
 						SendServerQuit(60);
-					break;
+						break;
 					case 30:
 						SendServerQuit(30);
-					break;
+						break;
 					case 10:
 						SendServerQuit(10);
-					break;
+						break;
 					case 5:
 						SendServerQuit(5);
-					break;
+						break;
 					case 4:
 						SendServerQuit(4);
-					break;
+						break;
 					case 3:
 						SendServerQuit(3);
-					break;
+						break;
 					case 2:
 						SendServerQuit(2);
-					break;
+						break;
 					case 1:
 						SendServerQuit(1);
-					break;
+						break;
 				}
 				
 				_secondsShut--;
@@ -468,18 +401,11 @@ public class Shutdown extends Thread
 		}
 	}
 	
-	/**
-	 * A simple class used to track down the estimated time of method
-	 * executions.
-	 * Once this class is created, it saves the start time, and when you want to
-	 * get
-	 * the estimated time, use the getEstimatedTime() method.
-	 */
 	private static final class TimeCounter
 	{
 		private long _startTime;
 		
-		private TimeCounter()
+		TimeCounter()
 		{
 			restartCounter();
 		}
@@ -489,22 +415,19 @@ public class Shutdown extends Thread
 			_startTime = System.currentTimeMillis();
 		}
 		
-		private long getEstimatedTimeAndRestartCounter()
+		long getEstimatedTimeAndRestartCounter()
 		{
 			final long toReturn = System.currentTimeMillis() - _startTime;
 			restartCounter();
 			return toReturn;
 		}
 		
-		private long getEstimatedTime()
+		long getEstimatedTime()
 		{
 			return System.currentTimeMillis() - _startTime;
 		}
 	}
 	
-	/**
-	 * Disconnects all clients from the server
-	 */
 	private static void disconnectAllCharacters()
 	{
 		final Collection<L2PcInstance> pls = L2World.getInstance().getAllPlayers().values();
@@ -523,9 +446,8 @@ public class Shutdown extends Thread
 			
 			player.deleteMe();
 		}
-
+		
 	}
-	
 	
 	private static class SingletonHolder
 	{

@@ -1,18 +1,8 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.datatables.xml;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.model.L2Skill;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,24 +11,20 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.engines.DocumentParser;
-import com.l2jhellas.gameserver.model.L2Skill;
-
 public class SkillSpellbookData implements DocumentParser
 {
 	protected static final Logger _log = Logger.getLogger(FishTable.class.getName());
-
+	
 	private static Map<Integer, Integer> _skillSpellbooks = new HashMap<>();
-
-	private SkillSpellbookData()
+	
+	protected SkillSpellbookData()
 	{
 		if (!Config.SP_BOOK_NEEDED)
 			return;
-
-         load();
+		
+		load();
 	}
-
+	
 	@Override
 	public void load()
 	{
@@ -62,8 +48,9 @@ public class SkillSpellbookData implements DocumentParser
 					}
 				}
 			}
-		}		
+		}
 	}
+	
 	public int getBookForSkill(int skillId, int level)
 	{
 		if (skillId == L2Skill.SKILL_DIVINE_INSPIRATION && level != -1)
@@ -82,18 +69,18 @@ public class SkillSpellbookData implements DocumentParser
 					return -1;
 			}
 		}
-
+		
 		if (!_skillSpellbooks.containsKey(skillId))
 			return -1;
-
+		
 		return _skillSpellbooks.get(skillId);
 	}
-
+	
 	public int getBookForSkill(L2Skill skill)
 	{
 		return getBookForSkill(skill.getId(), -1);
 	}
-
+	
 	public int getBookForSkill(L2Skill skill, int level)
 	{
 		return getBookForSkill(skill.getId(), level);

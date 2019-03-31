@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.skills.l2skills;
 
 import com.l2jhellas.Config;
@@ -36,16 +22,16 @@ public class L2SkillSummon extends L2Skill
 	private final int _npcId;
 	private final float _expPenalty;
 	private final boolean _isCubic;
-
+	
 	public L2SkillSummon(StatsSet set)
 	{
 		super(set);
-
+		
 		_npcId = set.getInteger("npcId", 0); // default for undescribed skills
 		_expPenalty = set.getFloat("expPenalty", 0.f);
 		_isCubic = set.getBool("isCubic", false);
 	}
-
+	
 	public boolean checkCondition(L2Character activeChar)
 	{
 		if (activeChar instanceof L2PcInstance)
@@ -84,19 +70,19 @@ public class L2SkillSummon extends L2Skill
 		}
 		return super.checkCondition(activeChar, null, false);
 	}
-
+	
 	@Override
 	public void useSkill(L2Character caster, L2Object[] targets)
 	{
 		if (caster.isAlikeDead() || !(caster instanceof L2PcInstance))
 			return;
-
+		
 		L2PcInstance activeChar = (L2PcInstance) caster;
-
-        // Skill 2046 only used for animation
-        if(getId() == 2046)
-            return;
-
+		
+		// Skill 2046 only used for animation
+		if (getId() == 2046)
+			return;
+		
 		if (_npcId == 0)
 		{
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
@@ -104,7 +90,7 @@ public class L2SkillSummon extends L2Skill
 			activeChar.sendPacket(sm);
 			return;
 		}
-
+		
 		if (_isCubic)
 		{
 			if (targets.length > 1) // Mass cubic skill
@@ -141,41 +127,38 @@ public class L2SkillSummon extends L2Skill
 					}
 					else
 					{
-
+						
 						player.addCubic(_npcId, getLevel());
 						player.broadcastUserInfo();
 					}
 				}
 				return;
 			}
-			else
-			// normal cubic skill
+			
+			int mastery = activeChar.getSkillLevel(L2Skill.SKILL_CUBIC_MASTERY);
+			if (mastery < 0)
 			{
-				int mastery = activeChar.getSkillLevel(L2Skill.SKILL_CUBIC_MASTERY);
-				if (mastery < 0)
+				mastery = 0;
+			}
+			if (activeChar.getCubics().size() > mastery)
+			{
+				if (Config.DEBUG)
 				{
-					mastery = 0;
+					_log.fine("player can't summon any more cubics. ignore summon skill");
 				}
-				if (activeChar.getCubics().size() > mastery)
-				{
-					if (Config.DEBUG)
-					{
-						_log.fine("player can't summon any more cubics. ignore summon skill");
-					}
-					activeChar.sendPacket(SystemMessageId.CUBIC_SUMMONING_FAILED);
-					return;
-				}
-				if (activeChar.getCubics().containsKey(_npcId))
-				{
-					activeChar.sendMessage("You already have such cubic");
-					return;
-				}
-				activeChar.addCubic(_npcId, getLevel());
-				activeChar.broadcastUserInfo();
+				activeChar.sendPacket(SystemMessageId.CUBIC_SUMMONING_FAILED);
 				return;
 			}
+			if (activeChar.getCubics().containsKey(_npcId))
+			{
+				activeChar.sendMessage("You already have such cubic");
+				return;
+			}
+			activeChar.addCubic(_npcId, getLevel());
+			activeChar.broadcastUserInfo();
+			return;
 		}
-
+		
 		if (activeChar.getPet() != null || activeChar.isMounted())
 		{
 			if (Config.DEBUG)
@@ -184,7 +167,7 @@ public class L2SkillSummon extends L2Skill
 			}
 			return;
 		}
-
+		
 		L2SummonInstance summon;
 		L2NpcTemplate summonTemplate = NpcData.getInstance().getTemplate(_npcId);
 		if (summonTemplate.type.equalsIgnoreCase("L2SiegeSummon"))
@@ -195,13 +178,13 @@ public class L2SkillSummon extends L2Skill
 		{
 			summon = new L2SummonInstance(IdFactory.getInstance().getNextId(), summonTemplate, activeChar, this);
 		}
-
+		
 		summon.setName(summonTemplate.name);
 		summon.setTitle(activeChar.getName());
 		summon.setExpPenalty(_expPenalty);
 		if (summon.getLevel() >= Experience.MAX_LEVEL)
 		{
-			summon.getStat().setExp(Experience.LEVEL[Experience.MAX_LEVEL-1]);
+			summon.getStat().setExp(Experience.LEVEL[Experience.MAX_LEVEL - 1]);
 			_log.warning(L2SkillSummon.class.getName() + ": Summon (" + summon.getName() + ") NpcID: " + summon.getNpcId() + " has a level above 75. Please rectify.");
 		}
 		else
@@ -213,13 +196,13 @@ public class L2SkillSummon extends L2Skill
 		summon.setHeading(activeChar.getHeading());
 		summon.setRunning();
 		activeChar.setPet(summon);
-
+		
 		summon.spawnMe(activeChar.getX() + 50, activeChar.getY() + 100, activeChar.getZ());
-
+		
 		summon.setFollowStatus(true);
 		summon.setShowSummonAnimation(false); // addVisibleObject created the info packets with summon animation
 	}
-
+	
 	public final boolean isCubic()
 	{
 		return _isCubic;

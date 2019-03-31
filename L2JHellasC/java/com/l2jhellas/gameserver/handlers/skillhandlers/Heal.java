@@ -1,15 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
 import com.l2jhellas.gameserver.handler.ISkillHandler;
@@ -32,9 +20,11 @@ public class Heal implements ISkillHandler
 {
 	private static final L2SkillType[] SKILL_IDS =
 	{
-	L2SkillType.HEAL, L2SkillType.HEAL_PERCENT, L2SkillType.HEAL_STATIC
+		L2SkillType.HEAL,
+		L2SkillType.HEAL_PERCENT,
+		L2SkillType.HEAL_STATIC
 	};
-
+	
 	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
@@ -43,29 +33,29 @@ public class Heal implements ISkillHandler
 		try
 		{
 			ISkillHandler handler = SkillHandler.getInstance().getHandler(L2SkillType.BUFF);
-
+			
 			if (handler != null)
 				handler.useSkill(activeChar, skill, targets);
 		}
 		catch (Exception e)
 		{
 		}
-
+		
 		L2Character target = null;
 		L2ItemInstance weaponInst = activeChar.getActiveWeaponInstance();
-
+		
 		L2PcInstance player = null;
 		if (activeChar instanceof L2PcInstance)
 			player = (L2PcInstance) activeChar;
-
-		for (int index = 0; index < targets.length; index++)
+		
+		for (L2Object target2 : targets)
 		{
-			target = (L2Character) targets[index];
-
+			target = (L2Character) target2;
+			
 			// We should not heal if char is dead
 			if (target == null || target.isDead())
 				continue;
-
+			
 			// We should not heal walls and door
 			if (target instanceof L2DoorInstance)
 				continue;
@@ -90,9 +80,9 @@ public class Heal implements ISkillHandler
 				else if (player != null && player.isCursedWeaponEquiped())
 					continue;
 			}
-
+			
 			double hp = skill.getPower();
-
+			
 			if (skill.getSkillType() == L2SkillType.HEAL_PERCENT)
 			{
 				hp = target.getMaxHp() * hp / 100.0;
@@ -117,7 +107,7 @@ public class Heal implements ISkillHandler
 				else if (activeChar instanceof L2Summon)
 				{
 					L2Summon activeSummon = (L2Summon) activeChar;
-
+					
 					if (activeSummon.getChargedSpiritShot() == L2ItemInstance.CHARGED_BLESSED_SPIRITSHOT)
 					{
 						hp *= 1.5;
@@ -130,21 +120,21 @@ public class Heal implements ISkillHandler
 					}
 				}
 			}
-
+			
 			// int cLev = activeChar.getLevel();
-			// hp += skill.getPower()/*+(Math.sqrt(cLev)*cLev)+cLev*/;
+			// hp += skill.getPower();
 			if (skill.getSkillType() == L2SkillType.HEAL_STATIC)
 				hp = skill.getPower();
 			else if (skill.getSkillType() != L2SkillType.HEAL_PERCENT)
 				hp *= target.calcStat(Stats.HEAL_EFFECTIVNESS, 100, null, null) / 100;
 			hp *= activeChar.calcStat(Stats.HEAL_PROFICIENCY, 100, null, null) / 100; // Healer proficiency (since CT1)
-
+			
 			target.setCurrentHp(hp + target.getCurrentHp());
 			target.setLastHealAmount((int) hp);
 			StatusUpdate su = new StatusUpdate(target.getObjectId());
 			su.addAttribute(StatusUpdate.CUR_HP, (int) target.getCurrentHp());
 			target.sendPacket(su);
-
+			
 			if (target instanceof L2PcInstance)
 			{
 				if (skill.getId() == 4051)
@@ -171,7 +161,7 @@ public class Heal implements ISkillHandler
 			}
 		}
 	}
-
+	
 	@Override
 	public L2SkillType[] getSkillIds()
 	{

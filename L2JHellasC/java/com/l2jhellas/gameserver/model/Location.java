@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model;
 
 import com.l2jhellas.gameserver.templates.StatsSet;
@@ -20,14 +6,14 @@ public class Location
 {
 	public volatile int _x, _y, _z;
 	private int _heading;
-
+	
 	public Location(int x, int y, int z)
 	{
 		_x = x;
 		_y = y;
 		_z = z;
 	}
-
+	
 	public Location(int x, int y, int z, int heading)
 	{
 		_x = x;
@@ -42,27 +28,27 @@ public class Location
 		_y = loc.getInteger("y");
 		_z = loc.getInteger("z");
 	}
-
+	
 	public int getX()
 	{
 		return _x;
 	}
-
+	
 	public int getY()
 	{
 		return _y;
 	}
-
+	
 	public int getZ()
 	{
 		return _z;
 	}
-
+	
 	public int getHeading()
 	{
 		return _heading;
 	}
-
+	
 	public void setXYZ(int x, int y, int z)
 	{
 		_x = x;
@@ -70,19 +56,20 @@ public class Location
 		_z = z;
 	}
 	
-    public Location world2geo()
-    {
-        _x = _x - L2World.WORLD_X_MIN >> 4;
-        _y = _y - L2World.WORLD_Y_MIN >> 4;
-        return this;
-    }
-
-    public Location geo2world()
-    {
-        _x = (_x << 4) + L2World.WORLD_X_MIN + 8;
-        _y = (_y << 4) + L2World.WORLD_Y_MIN + 8;
-        return this;
-    }
+	public Location world2geo()
+	{
+		_x = _x - L2World.WORLD_X_MIN >> 4;
+		_y = _y - L2World.WORLD_Y_MIN >> 4;
+		return this;
+	}
+	
+	public Location geo2world()
+	{
+		_x = (_x << 4) + L2World.WORLD_X_MIN + 8;
+		_y = (_y << 4) + L2World.WORLD_Y_MIN + 8;
+		return this;
+	}
+	
 	@Override
 	public String toString()
 	{
@@ -95,26 +82,25 @@ public class Location
 		return _x ^ _y ^ _z;
 	}
 	
-	
 	public Location setH(int h)
 	{
-		this._heading = h;
+		_heading = h;
 		return this;
 	}
-
+	
 	public void set(int x, int y, int z, int h)
 	{
-		this._x = x;
-		this._y = y;
-		this._z = z;
-		this._heading = h;
+		_x = x;
+		_y = y;
+		_z = z;
+		_heading = h;
 	}
-
+	
 	public void set(int x, int y, int z)
 	{
-		this._x = x;
-		this._y = y;
-		this._z = z;
+		_x = x;
+		_y = y;
+		_z = z;
 	}
 	
 	public void set(Location loc)
@@ -152,7 +138,7 @@ public class Location
 		double dx = location.getX() - getX();
 		double dy = location.getY() - getY();
 		double dz = location.getZ() - getZ();
-
+		
 		return Math.sqrt(dx * dx + dy * dy + dz * dz);
 	}
 	

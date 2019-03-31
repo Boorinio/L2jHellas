@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -29,33 +13,31 @@ import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
-/**
- * This class handles following admin commands:
- * - enchant_armor
- */
+import java.util.logging.Logger;
+
 public class AdminEnchant implements IAdminCommandHandler
 {
 	protected static final Logger _log = Logger.getLogger(AdminEnchant.class.getName());
-
+	
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
-		"admin_seteh",//6
-		"admin_setec",//10
-		"admin_seteg",//9
-		"admin_setel",//11
-		"admin_seteb",//12
-		"admin_setew",//7
-		"admin_setes",//8
-		"admin_setle",//1
-		"admin_setre",//2
-		"admin_setlf",//4
-		"admin_setrf",//5
-		"admin_seten",//3
-		"admin_setun",//0
-		"admin_setba",//13
+	{
+		"admin_seteh",// 6
+		"admin_setec",// 10
+		"admin_seteg",// 9
+		"admin_setel",// 11
+		"admin_seteb",// 12
+		"admin_setew",// 7
+		"admin_setes",// 8
+		"admin_setle",// 1
+		"admin_setre",// 2
+		"admin_setlf",// 4
+		"admin_setrf",// 5
+		"admin_seten",// 3
+		"admin_setun",// 0
+		"admin_setba",// 13
 		"admin_enchant"
-	};/** @formatter:on */
-
+	};
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -66,7 +48,7 @@ public class AdminEnchant implements IAdminCommandHandler
 		else
 		{
 			int armorType = -1;
-
+			
 			if (command.startsWith("admin_seteh"))
 			{
 				armorType = Inventory.PAPERDOLL_HEAD;
@@ -123,19 +105,19 @@ public class AdminEnchant implements IAdminCommandHandler
 			{
 				armorType = Inventory.PAPERDOLL_BACK;
 			}
-
+			
 			if (armorType == Inventory.PAPERDOLL_NULL)
 			{
 				activeChar.sendMessage("Your target has no item equipted in your selected slot.");
 				armorType = -1;
 			}
-
+			
 			if ((armorType != -1))
 			{
 				try
 				{
 					int ench = Integer.parseInt(command.substring(12));
-
+					
 					// check value
 					if (ench < 0 || ench > 65535)
 					{
@@ -150,7 +132,7 @@ public class AdminEnchant implements IAdminCommandHandler
 							player.sendMessage("A GM tried to overenchant you. You will both be banned.");
 							Util.handleIllegalPlayerAction(player, "The player " + player.getName() + " has been edited. BAN!", IllegalPlayerAction.PUNISH_KICKBAN);
 							activeChar.sendMessage("You tried to overenchant somebody. You will both be banned.");
-							Util.handleIllegalPlayerAction(activeChar, "The GM " + activeChar.getName() + " has overenchanted the player " + player.getName() + ". BAN!", IllegalPlayerAction.PUNISH_KICKBAN);;
+							Util.handleIllegalPlayerAction(activeChar, "The GM " + activeChar.getName() + " has overenchanted the player " + player.getName() + ". BAN!", IllegalPlayerAction.PUNISH_KICKBAN);
 						}
 						else
 						{
@@ -178,8 +160,8 @@ public class AdminEnchant implements IAdminCommandHandler
 		}
 		return true;
 	}
-
-	private void setEnchant(L2PcInstance activeChar, int ench, int armorType)
+	
+	private static void setEnchant(L2PcInstance activeChar, int ench, int armorType)
 	{
 		// get the target
 		L2Object target = activeChar.getTarget();
@@ -188,7 +170,7 @@ public class AdminEnchant implements IAdminCommandHandler
 			target = activeChar;
 		}
 		L2PcInstance player = null;
-
+		
 		if (target instanceof L2PcInstance)
 		{
 			player = (L2PcInstance) target;
@@ -198,11 +180,11 @@ public class AdminEnchant implements IAdminCommandHandler
 			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			return;
 		}
-
+		
 		// now we need to find the equipped weapon of the targeted character...
 		int curEnchant = 0; // display purposes only
 		L2ItemInstance itemInstance = null;
-
+		
 		// only attempt to enchant if there is a weapon equipped
 		L2ItemInstance parmorInstance = player.getInventory().getPaperdollItem(armorType);
 		if (parmorInstance != null && parmorInstance.getEquipSlot() == armorType)
@@ -218,7 +200,7 @@ public class AdminEnchant implements IAdminCommandHandler
 				itemInstance = parmorInstance;
 			}
 		}
-
+		
 		// set enchant value
 		if (itemInstance == null)
 		{
@@ -229,24 +211,24 @@ public class AdminEnchant implements IAdminCommandHandler
 		curEnchant = itemInstance.getEnchantLevel();
 		itemInstance.setEnchantLevel(ench);
 		player.getInventory().equipItemAndRecord(itemInstance);
-
+		
 		// send packets
 		InventoryUpdate iu = new InventoryUpdate();
 		iu.addModifiedItem(itemInstance);
 		player.sendPacket(iu);
 		player.broadcastPacket(new CharInfo(player));
 		player.sendPacket(new UserInfo(player));
-
+		
 		// informations
 		activeChar.sendMessage("Changed enchantment of " + player.getName() + "'s " + itemInstance.getItem().getItemName() + " from " + curEnchant + " to " + ench + ".");
 		player.sendMessage("Admin has changed the enchantment of your " + itemInstance.getItem().getItemName() + " from " + curEnchant + " to " + ench + ".");
 	}
-
-	private void showMainPage(L2PcInstance activeChar)
+	
+	private static void showMainPage(L2PcInstance activeChar)
 	{
 		AdminHelpPage.showHelpPage(activeChar, "enchant.htm");
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{

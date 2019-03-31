@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
@@ -29,15 +12,13 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
-/**
- * This class handles following admin commands: - show_spawns = shows menu -
- * spawn_index lvl = shows menu for monsters with respective level -
- * spawn_monster id = spawns monster id on target
- */
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
+
 public class AdminSpawn implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_show_spawns",
 		"admin_spawn",
 		"admin_spawn_monster",
@@ -47,8 +28,8 @@ public class AdminSpawn implements IAdminCommandHandler
 		"admin_show_npcs",
 		"admin_spawnnight",
 		"admin_spawnday"
-	};/** @formatter:on */
-
+	};
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -131,7 +112,7 @@ public class AdminSpawn implements IAdminCommandHandler
 				}
 			}
 			catch (Exception e)
-			{	// Case of wrong or missing monster data
+			{ // Case of wrong or missing monster data
 				AdminHelpPage.showHelpPage(activeChar, "spawns.htm");
 			}
 		}
@@ -143,17 +124,17 @@ public class AdminSpawn implements IAdminCommandHandler
 		{
 			DayNightSpawnManager.getInstance().spawnNightCreatures();
 		}
-
+		
 		return true;
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
-	private void spawnMonster(L2PcInstance activeChar, String monsterId, int respawnTime, int mobCount, boolean permanent)
+	
+	private static void spawnMonster(L2PcInstance activeChar, String monsterId, int respawnTime, int mobCount, boolean permanent)
 	{
 		L2Object target = activeChar.getTarget();
 		if (target == null)
@@ -162,7 +143,7 @@ public class AdminSpawn implements IAdminCommandHandler
 		}
 		if (target != activeChar)
 			return;
-
+		
 		L2NpcTemplate template1;
 		if (monsterId.matches("[0-9]*"))
 		{
@@ -176,7 +157,7 @@ public class AdminSpawn implements IAdminCommandHandler
 			monsterId = monsterId.replace('_', ' ');
 			template1 = NpcData.getInstance().getTemplateByName(monsterId);
 		}
-
+		
 		try
 		{
 			L2Spawn spawn = new L2Spawn(template1);
@@ -213,34 +194,34 @@ public class AdminSpawn implements IAdminCommandHandler
 			activeChar.sendPacket(SystemMessageId.TARGET_CANT_FOUND);
 		}
 	}
-
-	private void showMonsters(L2PcInstance activeChar, int level, int from)
+	
+	private static void showMonsters(L2PcInstance activeChar, int level, int from)
 	{
 		StringBuilder tb = new StringBuilder();
-
+		
 		L2NpcTemplate[] mobs = NpcData.getInstance().getAllMonstersOfLevel(level);
-
+		
 		// Start
 		tb.append("<html><title>Spawn Monster:</title><body><p> Level " + level + ":<br>Total Npc's : " + mobs.length + "<br>");
 		String end1 = "<br><center><button value=\"Next\" action=\"bypass -h admin_spawn_index " + level + " $from$\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center></body></html>";
 		String end2 = "<br><center><button value=\"Back\" action=\"bypass -h admin_show_spawns\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center></body></html>";
-
+		
 		// Loop
 		boolean ended = true;
 		for (int i = from; i < mobs.length; i++)
 		{
 			String txt = "<a action=\"bypass -h admin_spawn_monster " + mobs[i].npcId + "\">" + mobs[i].name + "</a><br1>";
-
+			
 			if ((tb.length() + txt.length() + end2.length()) > 8192)
 			{
 				end1 = end1.replace("$from$", "" + i);
 				ended = false;
 				break;
 			}
-
+			
 			tb.append(txt);
 		}
-
+		
 		// End
 		if (ended)
 		{
@@ -250,11 +231,11 @@ public class AdminSpawn implements IAdminCommandHandler
 		{
 			tb.append(end1);
 		}
-
+		
 		activeChar.sendPacket(new NpcHtmlMessage(5, tb.toString()));
 	}
-
-	private void showNpcs(L2PcInstance activeChar, String starting, int from)
+	
+	private static void showNpcs(L2PcInstance activeChar, String starting, int from)
 	{
 		StringBuilder tb = new StringBuilder();
 		L2NpcTemplate[] mobs = NpcData.getInstance().getAllNpcStartingWith(starting);
@@ -267,7 +248,7 @@ public class AdminSpawn implements IAdminCommandHandler
 		for (int i = from; i < mobs.length; i++)
 		{
 			String txt = "<a action=\"bypass -h admin_spawn_monster " + mobs[i].npcId + "\">" + mobs[i].name + "</a><br1>";
-
+			
 			if ((tb.length() + txt.length() + end2.length()) > 8192)
 			{
 				end1 = end1.replace("$from$", "" + i);

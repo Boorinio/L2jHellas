@@ -1,29 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.loginserver.clientpackets;
-
-import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.crypto.Cipher;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
-import com.l2jhellas.loginserver.HackingException;
 import com.l2jhellas.loginserver.L2LoginClient;
 import com.l2jhellas.loginserver.L2LoginClient.LoginClientState;
 import com.l2jhellas.loginserver.LoginController;
@@ -34,11 +12,12 @@ import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
 import com.l2jhellas.loginserver.serverpackets.LoginOk;
 import com.l2jhellas.loginserver.serverpackets.ServerList;
 
-/**
- * Format: x
- * 0 (a leading null)
- * x: the rsa encrypted block with the login an password
- */
+import java.security.GeneralSecurityException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.crypto.Cipher;
+
 public class RequestAuthLogin extends L2LoginClientPacket
 {
 	private static Logger _log = Logger.getLogger(RequestAuthLogin.class.getName());
@@ -108,18 +87,8 @@ public class RequestAuthLogin extends L2LoginClientPacket
 		
 		final LoginController lc = LoginController.getInstance();
 		AuthLoginResult result = null;
-		try
-		{
-			result = lc.tryAuthLogin(_user, _password, client);
-		}
-		catch (NoSuchAlgorithmException e)
-		{
-			e.printStackTrace();
-		}
-		catch (HackingException e)
-		{
-			e.printStackTrace();
-		}
+		result = lc.tryAuthLogin(_user, _password, client);
+		if(result!=null)
 		switch (result)
 		{
 			case AUTH_SUCCESS:
@@ -159,7 +128,7 @@ public class RequestAuthLogin extends L2LoginClientPacket
 					client.close(LoginFailReason.REASON_ACCOUNT_IN_USE);
 					// kick from there
 					if (gsi.isAuthed())
-						gsi.getGameServerThread().kickPlayer(_user);			
+						gsi.getGameServerThread().kickPlayer(_user);
 				}
 				break;
 		}

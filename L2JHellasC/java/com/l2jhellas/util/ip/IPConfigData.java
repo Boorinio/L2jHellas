@@ -1,18 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.util.ip;
+
+import com.PackRoot;
+import com.l2jhellas.Config;
 
 import info.tak11.subnet.Subnet;
 
@@ -33,9 +22,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
-
-import com.PackRoot;
-import com.l2jhellas.Config;
 
 public class IPConfigData
 {
@@ -77,7 +63,7 @@ public class IPConfigData
 			autoIpConfig();
 		}
 	}
-
+	
 	public static void autoIpConfig()
 	{
 		try
@@ -95,32 +81,32 @@ public class IPConfigData
 			if (Config.DEVELOPER)
 				e.printStackTrace();
 		}
-
+		
 		try
 		{
 			Enumeration<NetworkInterface> niList = NetworkInterface.getNetworkInterfaces();
-
+			
 			while (niList.hasMoreElements())
 			{
 				NetworkInterface ni = niList.nextElement();
-
+				
 				if (!ni.isUp() || ni.isVirtual())
 				{
 					continue;
 				}
-
+				
 				if (!ni.isLoopback() && ((ni.getHardwareAddress() == null) || (ni.getHardwareAddress().length != 6)))
 				{
 					continue;
 				}
-
+				
 				for (InterfaceAddress ia : ni.getInterfaceAddresses())
 				{
 					if (ia.getAddress() instanceof Inet6Address)
 					{
 						continue;
 					}
-
+					
 					sub.setIPAddress(ia.getAddress().getHostAddress());
 					sub.setMaskedBits(ia.getNetworkPrefixLength());
 					String subnet = sub.getSubnetAddress() + '/' + sub.getMaskedBits();
@@ -132,7 +118,7 @@ public class IPConfigData
 					}
 				}
 			}
-
+			
 			// External host and subnet
 			_hosts.add(externalIp);
 			_subnets.add("0.0.0.0/0");
@@ -141,12 +127,12 @@ public class IPConfigData
 		catch (SocketException e)
 		{
 			_log.warning("Network Config: Configuration failed please configure manually using IPGameServer.ini and IPLoginServer.ini");
-			if(Config.DEVELOPER)
+			if (Config.DEVELOPER)
 				e.printStackTrace();
 			System.exit(0);
 		}
 	}
-
+	
 	protected List<String> getSubnets()
 	{
 		if (_subnets.isEmpty())
@@ -155,7 +141,7 @@ public class IPConfigData
 		}
 		return _subnets;
 	}
-
+	
 	protected List<String> getHosts()
 	{
 		if (_hosts.isEmpty())

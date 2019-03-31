@@ -1,7 +1,5 @@
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
-import java.util.logging.Logger;
-
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.holder.IntIntHolder;
 import com.l2jhellas.gameserver.model.L2ExtractableProductItem;
@@ -14,11 +12,12 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.util.Rnd;
 
+import java.util.logging.Logger;
 
 public class Extractable implements ISkillHandler
 {
 	private static Logger _log = Logger.getLogger(Extractable.class.getName());
-
+	
 	private static final L2SkillType[] SKILL_IDS =
 	{
 		L2SkillType.EXTRACTABLE,

@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.taskmanager;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class PvpFlagTaskManager implements Runnable
 {
@@ -19,12 +19,12 @@ public final class PvpFlagTaskManager implements Runnable
 	{
 		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(this, 1000, 1000);
 	}
-
+	
 	public final void add(L2PcInstance player, long time)
 	{
 		_players.put(player, System.currentTimeMillis() + time);
 	}
-
+	
 	public final void remove(L2PcInstance player)
 	{
 		_players.remove(player);

@@ -1,18 +1,13 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.datatables.xml;
+
+import com.PackRoot;
+import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.idfactory.IdFactory;
+import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
+import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
+import com.l2jhellas.gameserver.model.entity.ClanHall;
+import com.l2jhellas.gameserver.templates.L2CharTemplate;
+import com.l2jhellas.gameserver.templates.StatsSet;
 
 import java.io.File;
 import java.util.Collection;
@@ -24,32 +19,24 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import com.PackRoot;
-import com.l2jhellas.gameserver.engines.DocumentParser;
-import com.l2jhellas.gameserver.idfactory.IdFactory;
-import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
-import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
-import com.l2jhellas.gameserver.model.entity.ClanHall;
-import com.l2jhellas.gameserver.templates.L2CharTemplate;
-import com.l2jhellas.gameserver.templates.StatsSet;
-
 public class DoorData implements DocumentParser
 {
 	protected static Logger _log = Logger.getLogger(DoorData.class.getName());
-
+	
 	private final Map<Integer, L2DoorInstance> _doors = new HashMap<>();
-
+	
 	public DoorData()
 	{
 		load();
 		onStart();
 	}
-
+	
 	@Override
 	public void load()
 	{
 		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/doors.xml"));
-		_log.info("DoorTable: Loaded " + _doors.size() + " door templates.");	}
+		_log.info("DoorTable: Loaded " + _doors.size() + " door templates.");
+	}
 	
 	@Override
 	public void parseDocument(Document doc)
@@ -84,7 +71,7 @@ public class DoorData implements DocumentParser
 							_log.warning(DoorData.class.getName() + ": DoorTable: Error on rangeY min/max, ID:" + id);
 						if (rangeZMin > rangeZMax)
 							_log.warning(DoorData.class.getName() + ": DoorTable: Error on rangeZ min/max, ID:" + id);
-
+						
 						StatsSet npcDat = new StatsSet();
 						npcDat.set("npcId", id);
 						npcDat.set("level", 0);
@@ -125,7 +112,7 @@ public class DoorData implements DocumentParser
 						npcDat.set("baseMpReg", 3.e-3f);
 						npcDat.set("basePDef", pdef);
 						npcDat.set("baseMDef", mdef);
-
+						
 						L2CharTemplate template = new L2CharTemplate(npcDat);
 						L2DoorInstance door = new L2DoorInstance(IdFactory.getInstance().getNextId(), template, id, name, unlockable);
 						door.setRange(rangeXMin, rangeYMin, rangeZMin, rangeXMax, rangeYMax, rangeZMax);
@@ -151,7 +138,7 @@ public class DoorData implements DocumentParser
 					}
 				}
 			}
-		}		
+		}
 	}
 	
 	public void reloadAll()
@@ -160,11 +147,11 @@ public class DoorData implements DocumentParser
 		load();
 		onStart();
 	}
-
+	
 	public static L2DoorInstance parseList(String line)
 	{
 		StringTokenizer st = new StringTokenizer(line, ";");
-
+		
 		String name = st.nextToken();
 		int id = Integer.parseInt(st.nextToken());
 		int x = Integer.parseInt(st.nextToken());
@@ -179,39 +166,39 @@ public class DoorData implements DocumentParser
 		int hp = Integer.parseInt(st.nextToken());
 		int pdef = Integer.parseInt(st.nextToken());
 		int mdef = Integer.parseInt(st.nextToken());
-
+		
 		boolean unlockable = false;
-
+		
 		if (st.hasMoreTokens())
 		{
 			unlockable = Boolean.parseBoolean(st.nextToken());
 		}
 		boolean autoOpen = false;
-
+		
 		if (st.hasMoreTokens())
 		{
 			autoOpen = Boolean.parseBoolean(st.nextToken());
 		}
-
+		
 		st = null;
-
+		
 		if (rangeXMin > rangeXMax)
 		{
 			_log.warning(DoorData.class.getSimpleName() + ": Error in door data, ID:" + id);
 		}
-
+		
 		if (rangeYMin > rangeYMax)
 		{
 			_log.warning(DoorData.class.getSimpleName() + ": Error in door data, ID:" + id);
 		}
-
+		
 		if (rangeZMin > rangeZMax)
 		{
 			_log.warning(DoorData.class.getSimpleName() + ": Error in door data, ID:" + id);
 		}
-
+		
 		int collisionRadius;
-
+		
 		if (rangeXMax - rangeXMin > rangeYMax - rangeYMin)
 		{
 			collisionRadius = rangeYMax - rangeYMin;
@@ -220,7 +207,7 @@ public class DoorData implements DocumentParser
 		{
 			collisionRadius = rangeXMax - rangeXMin;
 		}
-
+		
 		StatsSet npcDat = new StatsSet();
 		npcDat.set("npcId", id);
 		npcDat.set("level", 0);
@@ -261,7 +248,7 @@ public class DoorData implements DocumentParser
 		npcDat.set("baseMpReg", 3.e-3f);
 		npcDat.set("basePDef", pdef);
 		npcDat.set("baseMDef", mdef);
-
+		
 		L2CharTemplate template = new L2CharTemplate(npcDat);
 		L2DoorInstance door = new L2DoorInstance(IdFactory.getInstance().getNextId(), template, id, name, unlockable);
 		door.setRange(rangeXMin, rangeYMin, rangeZMin, rangeXMax, rangeYMax, rangeZMax);
@@ -281,24 +268,24 @@ public class DoorData implements DocumentParser
 		door.setXYZInvisible(x, y, z);
 		return door;
 	}
-
+	
 	public boolean isInitialized()
 	{
 		return _initialized;
 	}
-
-	private boolean _initialized = true;
-
+	
+	private final boolean _initialized = true;
+	
 	public L2DoorInstance getDoor(Integer id)
 	{
 		return _doors.get(id);
 	}
-
+	
 	public void putDoor(L2DoorInstance door)
 	{
 		_doors.put(door.getDoorId(), door);
 	}
-
+	
 	public Collection<L2DoorInstance> getDoors()
 	{
 		return _doors.values();
@@ -322,7 +309,7 @@ public class DoorData implements DocumentParser
 			}
 		}
 	}
-
+	
 	private void onStart()
 	{
 		try
@@ -337,7 +324,7 @@ public class DoorData implements DocumentParser
 			getDoor(23180004).openMe();
 			getDoor(23180005).openMe();
 			getDoor(23180006).openMe();
-
+			
 			checkAutoOpen();
 		}
 		catch (NullPointerException e)
@@ -345,7 +332,7 @@ public class DoorData implements DocumentParser
 			_log.warning(DoorData.class.getSimpleName() + ": There are errors in your Doors.xml file.");
 		}
 	}
-
+	
 	public int checkIfDoorsBetween(int x, int y, int z, int tx, int ty, int tz)
 	{
 		int region;
@@ -356,10 +343,10 @@ public class DoorData implements DocumentParser
 		catch (Exception e)
 		{
 			e.printStackTrace();
-
+			
 			return 0;
 		}
-
+		
 		for (L2DoorInstance doorInst : getDoors())
 		{
 			if (doorInst.getMapRegion() != region)
@@ -370,14 +357,14 @@ public class DoorData implements DocumentParser
 			{
 				continue;
 			}
-
+			
 			// line segment goes through box
 			// heavy approximation disabling some shooting angles especially near 2-piece doors
 			// but most calculations should stop short
 			// phase 1, x
 			if (x <= doorInst.getXMax() && tx >= doorInst.getXMin() || tx <= doorInst.getXMax() && x >= doorInst.getXMin())
 			{
-				//phase 2, y
+				// phase 2, y
 				if (y <= doorInst.getYMax() && ty >= doorInst.getYMin() || ty <= doorInst.getYMax() && y >= doorInst.getYMin())
 				{
 					// phase 3, basically only z remains but now we calculate it with another formula (by rage)
@@ -391,27 +378,27 @@ public class DoorData implements DocumentParser
 						int px2 = doorInst.getXMax();
 						int py2 = doorInst.getYMax();
 						int pz2 = doorInst.getZMax();
-
+						
 						int l = tx - x;
 						int m = ty - y;
 						int n = tz - z;
-
+						
 						int dk;
-
+						
 						if ((dk = (doorInst.getA() * l + doorInst.getB() * m + doorInst.getC() * n)) == 0)
 						{
 							continue; // Parallel
 						}
-
+						
 						float p = (float) (doorInst.getA() * x + doorInst.getB() * y + doorInst.getC() * z + doorInst.getD()) / (float) dk;
-
+						
 						int fx = (int) (x - l * p);
 						int fy = (int) (y - m * p);
 						int fz = (int) (z - n * p);
-
+						
 						if ((Math.min(x, tx) <= fx && fx <= Math.max(x, tx)) && (Math.min(y, ty) <= fy && fy <= Math.max(y, ty)) && (Math.min(z, tz) <= fz && fz <= Math.max(z, tz)))
 						{
-
+							
 							if (((fx >= px1 && fx <= px2) || (fx >= px2 && fx <= px1)) && ((fy >= py1 && fy <= py2) || (fy >= py2 && fy <= py1)) && ((fz >= pz1 && fz <= pz2) || (fz >= pz2 && fz <= pz1)))
 								return doorInst.getTemplate().getCollisionRadius(); // Door between
 						}
@@ -421,7 +408,7 @@ public class DoorData implements DocumentParser
 		}
 		return 0;
 	}
-
+	
 	public static DoorData getInstance()
 	{
 		return SingletonHolder.INSTANCE;

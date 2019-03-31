@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.ai;
 
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ACTIVE;
@@ -21,8 +7,6 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_INTERACT;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_PICK_UP;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_REST;
-
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.DuelState;
@@ -36,11 +20,12 @@ import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
+import java.util.logging.Logger;
 
 public class L2PlayerAI extends L2CharacterAI
 {
 	protected static final Logger _log = Logger.getLogger(L2PlayerAI.class.getName());
-
+	
 	private boolean _thinking; // to prevent recursive thinking
 	
 	private IntentionCommand _nextIntention = null;
@@ -49,84 +34,58 @@ public class L2PlayerAI extends L2CharacterAI
 	{
 		_nextIntention = new IntentionCommand(intention, arg0, arg1);
 	}
-
+	
 	public L2PlayerAI(AIAccessor accessor)
 	{
 		super(accessor);
 	}
-
-	/**
-	 * Saves the current Intention for this L2PlayerAI if necessary and calls changeIntention in AbstractAI.<BR>
-	 * <BR>
-	 * 
-	 * @param intention
-	 *        The new Intention to set to the AI
-	 * @param arg0
-	 *        The first parameter of the Intention
-	 * @param arg1
-	 *        The second parameter of the Intention
-	 */
+	
 	@Override
 	synchronized void changeIntention(CtrlIntention intention, Object arg0, Object arg1)
 	{
-		if (intention != AI_INTENTION_CAST || (arg0 != null &&  _skill.isOffensive()))
+		if (intention != AI_INTENTION_CAST || (arg0 != null && _skill.isOffensive()))
 		{
 			_nextIntention = null;
 			super.changeIntention(intention, arg0, arg1);
 			return;
-		}	
+		}
 		// do nothing if next intention is same as current one.
 		if ((intention == _intention) && (arg0 == _intentionArg0) && (arg1 == _intentionArg1))
 		{
 			super.changeIntention(intention, arg0, arg1);
 			return;
-		}					
+		}
 		// save current intention so it can be used after cast
 		if ((_intention != AI_INTENTION_ACTIVE) && (_intention != AI_INTENTION_IDLE))
-		     saveNextIntention(_intention, _intentionArg0, _intentionArg1);
+			saveNextIntention(_intention, _intentionArg0, _intentionArg1);
 		
 		super.changeIntention(intention, arg0, arg1);
 	}
-
+	
 	@Override
 	protected void onEvtAttacked(L2Character target)
-	{		
-		if(target == null || _actor.isDead())
+	{
+		if (target == null || _actor.isDead())
 			return;
-
-		if (_actor.getActingPlayer().getPet()!=null)
+		
+		if (_actor.getActingPlayer().getPet() != null)
 		{
 			_actor.getActingPlayer().getPet().getAI().clientStartAutoAttack();
 		}
 	}
 	
-	/**
-	 * Finalize the casting of a skill. This method overrides L2CharacterAI method.<BR>
-	 * <BR>
-	 * <B>What it does:</B>
-	 * Check if actual intention is set to CAST and, if so, retrieves latest intention
-	 * before the actual CAST and set it as the current intention for the player
-	 */
 	@Override
 	protected void onEvtFinishCasting()
 	{
 		if (getIntention() == CtrlIntention.AI_INTENTION_CAST)
 		{
-			if (_nextIntention !=null && _nextIntention.getCtrlIntention() != CtrlIntention.AI_INTENTION_CAST) 
+			if (_nextIntention != null && _nextIntention.getCtrlIntention() != CtrlIntention.AI_INTENTION_CAST)
 				setIntention(_nextIntention.getCtrlIntention(), _nextIntention._arg0, _nextIntention._arg1);
 			else
 				setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		}
 	}
-
-	/**
-	 * Launch actions corresponding to the Event ReadyToAct.<BR>
-	 * <BR>
-	 * <B><U> Actions</U> :</B><BR>
-	 * <BR>
-	 * <li>Launch actions corresponding to the Event Think</li><BR>
-	 * <BR>
-	 */
+	
 	@Override
 	protected void onEvtReadyToAct()
 	{
@@ -160,7 +119,7 @@ public class L2PlayerAI extends L2CharacterAI
 			clientStopMoving(null);
 		}
 	}
-
+	
 	@Override
 	protected void onIntentionActive()
 	{
@@ -178,20 +137,20 @@ public class L2PlayerAI extends L2CharacterAI
 			}
 		}
 	}
-
+	
 	@Override
 	protected void clientNotifyDead()
 	{
 		_clientMovingToPawnOffset = 0;
 		_clientMoving = false;
-
+		
 		super.clientNotifyDead();
 	}
-
+	
 	private void thinkAttack()
 	{
 		L2Character target = getAttackTarget();
-
+		
 		if (target == null)
 		{
 			setTarget(null);
@@ -199,16 +158,13 @@ public class L2PlayerAI extends L2CharacterAI
 			return;
 		}
 
-		if (maybeMoveToPawn(target, _actor.getPhysicalAttackRange()))
-			return;
-		
 		if (checkTargetLostOrDead(target))
 			return;
-		
-		clientStopMoving(null);
-		_actor.doAttack(target);
-	}
 
+		if (!maybeMoveToPawn(target, _actor.getPhysicalAttackRange()))		
+			_actor.doAttack(target,false);
+	}
+	
 	private void thinkCast()
 	{
 		L2Character target = getCastTarget();
@@ -259,19 +215,7 @@ public class L2PlayerAI extends L2CharacterAI
 
 		return;
 	}
-
-
 	
-	/**
-	 * Manage the Move To Intention : Stop current Attack and Launch a Move to Location Task.<BR>
-	 * <BR>
-	 * <B><U> Actions</U> : </B><BR>
-	 * <BR>
-	 * <li>Stop the actor auto-attack server side AND client side by sending Server->Client packet AutoAttackStop (broadcast)</li>
-	 * <li>Set the Intention of this AI to MOVE_TO</li>
-	 * <li>Move the actor to Location (x,y,z) server side AND client side by sending Server->Client packet MoveToLocation (broadcast)</li><BR>
-	 * <BR>
-	 */
 	@Override
 	protected void onIntentionMoveTo(L2CharPosition loc)
 	{
@@ -298,10 +242,10 @@ public class L2PlayerAI extends L2CharacterAI
 		changeIntention(CtrlIntention.AI_INTENTION_MOVE_TO, loc, null);
 		
 		// Stop the actor auto-attack client side by sending Server->Client packet AutoAttackStop (broadcast)
-		clientStopAutoAttack();
+		//clientStopAutoAttack();
 		
 		// Abort the attack of the L2Character and send Server->Client ActionFailed packet
-		_actor.abortAttack();
+		//_actor.abortAttack();
 		
 		// Move the actor to Location (x,y,z) server side AND client side by sending Server->Client packet CharMoveToLocation (broadcast)
 		moveTo(loc.x, loc.y, loc.z);
@@ -320,7 +264,7 @@ public class L2PlayerAI extends L2CharacterAI
 		((L2PcInstance.AIAccessor) _accessor).doPickupItem(target);
 		return;
 	}
-
+	
 	@Override
 	protected void onIntentionInteract(L2Object object)
 	{
@@ -343,6 +287,12 @@ public class L2PlayerAI extends L2CharacterAI
 		moveToPawn(object, 60);
 	}
 	
+	@Override
+	protected void onIntentionAttack(L2Character target)
+	{
+		super.onIntentionAttack(target);
+	}
+	
 	private void thinkInteract()
 	{
 		if (_actor.isAllSkillsDisabled() || _actor.isCastingNow())
@@ -357,21 +307,21 @@ public class L2PlayerAI extends L2CharacterAI
 			return;
 		
 		if (!(target instanceof L2StaticObjectInstance))
-		_actor.getActingPlayer().doInteract((L2Character) target);
+			_actor.getActingPlayer().doInteract((L2Character) target);
 		
 		setIntention(AI_INTENTION_IDLE);
 	}
-
+	
 	@Override
 	protected void onEvtThink()
 	{
-
+		
 		if (_thinking || _actor.isCastingNow() || _actor.isAllSkillsDisabled())
 			return;
 		
 		if (Config.DEBUG)
 			_log.warning(L2PlayerAI.class.getName() + ": onEvtThink -> Check intention");
-
+		
 		_thinking = true;
 		try
 		{
@@ -389,11 +339,11 @@ public class L2PlayerAI extends L2CharacterAI
 			_thinking = false;
 		}
 	}
-
+	
 	@Override
 	protected void onEvtArrivedRevalidate()
 	{
-		//_actor.getKnownList().refreshInfos();
+		// _actor.getKnownList().refreshInfos();
 		super.onEvtArrivedRevalidate();
 	}
 	
@@ -411,7 +361,7 @@ public class L2PlayerAI extends L2CharacterAI
 			setIntention(_nextIntention._crtlIntention, _nextIntention._arg0, _nextIntention._arg1);
 			_nextIntention = null;
 		}
-
+		
 		super.onEvtArrived();
-	}	
+	}
 }

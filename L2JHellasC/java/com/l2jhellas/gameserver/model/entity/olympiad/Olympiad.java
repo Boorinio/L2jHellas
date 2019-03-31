@@ -1,22 +1,15 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
-/**
- * @author godson
- */
 package com.l2jhellas.gameserver.model.entity.olympiad;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.Announcements;
+import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.instancemanager.ZoneManager;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.entity.Hero;
+import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.gameserver.templates.StatsSet;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,17 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Logger;
-
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.Announcements;
-import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.instancemanager.ZoneManager;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.Hero;
-import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.templates.StatsSet;
-import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class Olympiad
 {
@@ -69,7 +51,7 @@ public class Olympiad
 	private static final String SELECT_OLYMPIAD_POINTS = "SELECT olympiad_points FROM olympiad_nobles_eom WHERE char_id=?";
 	
 	private static final int[] HERO_IDS =
-	{/**@formatter:off*/
+	{
 		88,
 		89,
 		90,
@@ -101,7 +83,7 @@ public class Olympiad
 		116,
 		117,
 		118
-	};/**@formatter:on*/
+	};
 	
 	private static final int COMP_START = Config.ALT_OLY_START_TIME; // 6PM
 	private static final int COMP_MIN = Config.ALT_OLY_MIN; // 00 mins
@@ -124,11 +106,6 @@ public class Olympiad
 	protected long _olympiadEnd;
 	protected long _validationEnd;
 	
-	/**
-	 * The current period of the olympiad.<br>
-	 * <b>0 -</b> Competition period<br>
-	 * <b>1 -</b> Validation Period
-	 */
 	protected int _period;
 	protected long _nextWeeklyChange;
 	protected int _currentCycle;
@@ -145,15 +122,15 @@ public class Olympiad
 	protected ScheduledFuture<?> _gameManager = null;
 	protected ScheduledFuture<?> _gameAnnouncer = null;
 	
-    private static class SingletonHolder
-    {
-       protected static final Olympiad _instance = new Olympiad();
-    }
-    
-    public static Olympiad getInstance()
-    {
-       return SingletonHolder._instance;
-    }
+	private static class SingletonHolder
+	{
+		protected static final Olympiad _instance = new Olympiad();
+	}
+	
+	public static Olympiad getInstance()
+	{
+		return SingletonHolder._instance;
+	}
 	
 	public Olympiad()
 	{
@@ -284,12 +261,12 @@ public class Olympiad
 	
 	public void loadNoblesRank()
 	{
-		if(_noblesRank!=null)
-		_noblesRank.clear();
-
+		if (_noblesRank != null)
+			_noblesRank.clear();
+		
 		Map<Integer, Integer> tmpPlace;
-		tmpPlace = new HashMap<Integer, Integer>();
-
+		tmpPlace = new HashMap<>();
+		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement(GET_ALL_CLASSIFIED_NOBLESS);
@@ -624,9 +601,6 @@ public class Olympiad
 		return ZoneManager.getOlympiadStadium(player) != null;
 	}
 	
-	/**
-	 * Save noblesse data to database
-	 */
 	protected synchronized void saveNobleData()
 	{
 		if (_nobles == null || _nobles.isEmpty())
@@ -686,9 +660,6 @@ public class Olympiad
 		}
 	}
 	
-	/**
-	 * Save current olympiad status and update noblesse table in database
-	 */
 	public void saveOlympiadStatus()
 	{
 		saveNobleData();
@@ -752,7 +723,7 @@ public class Olympiad
 					continue;
 			}
 		}
-
+		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement(OLYMPIAD_GET_HEROS);
@@ -912,11 +883,6 @@ public class Olympiad
 		_nobles.clear();
 	}
 	
-	/**
-	 * @param charId the noble object Id.
-	 * @param data the stats set data to add.
-	 * @return the old stats set if the noble is already present, null otherwise.
-	 */
 	protected static StatsSet addNobleStats(int charId, StatsSet data)
 	{
 		return _nobles.put(Integer.valueOf(charId), data);

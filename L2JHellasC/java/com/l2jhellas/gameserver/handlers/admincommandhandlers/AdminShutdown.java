@@ -1,21 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Shutdown;
@@ -25,19 +8,18 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 
-/**
- * This class handles following admin commands:
- * - server_shutdown [sec] = shows menu or shuts down server in sec seconds
- */
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class AdminShutdown implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_server_shutdown",
 		"admin_server_restart",
 		"admin_server_abort"
-	};/** @formatter:on */
-
+	};
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -69,17 +51,17 @@ public class AdminShutdown implements IAdminCommandHandler
 		{
 			serverAbort(activeChar);
 		}
-
+		
 		return true;
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
-	private void sendHtmlForm(L2PcInstance activeChar)
+	
+	private static void sendHtmlForm(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		int t = GameTimeController.getInstance().getGameTime();
@@ -99,13 +81,13 @@ public class AdminShutdown implements IAdminCommandHandler
 		adminReply.replace("%time%", String.valueOf(format.format(cal.getTime())));
 		activeChar.sendPacket(adminReply);
 	}
-
-	private void serverShutdown(L2PcInstance activeChar, int seconds, boolean restart)
+	
+	private static void serverShutdown(L2PcInstance activeChar, int seconds, boolean restart)
 	{
 		Shutdown.getInstance().startShutdown(activeChar, null, seconds, restart);
 	}
-
-	private void serverAbort(L2PcInstance activeChar)
+	
+	private static void serverAbort(L2PcInstance activeChar)
 	{
 		Shutdown.getInstance().abort(activeChar);
 	}

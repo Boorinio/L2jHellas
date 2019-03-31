@@ -1,18 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.communitybbs;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,70 +10,67 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 public class TopPlayers
 {
 	protected static final Logger _log = Logger.getLogger(TopPlayers.class.getName());
-
+	
 	private static final String SELECT_CHARS = "SELECT SUM(chr.points), SUM(it.count), ch.char_name, ch.pkkills, ch.pvpkills, ch.onlinetime, ch.base_class, ch.online FROM characters ch LEFT JOIN character_raid_points chr ON ch.obj_Id=ch.obj_Id LEFT OUTER JOIN items it ON ch.obj_Id=it.owner_id WHERE item_id=57 GROUP BY ch.obj_Id ORDER BY ";
 	
 	private int pos;
 	private final StringBuilder _topList = new StringBuilder();
 	String sort = "";
-
+	
 	public TopPlayers(String file)
 	{
 		loadDB(file);
 	}
-
+	
 	private void loadDB(String file)
 	{
 		switch (file)
 		{
 			case "toppvp":
 				sort = "pvpkills";
-			break;
+				break;
 			case "toppk":
 				sort = "pkkills";
-			break;
+				break;
 			case "topadena":
 				sort = "SUM(it.count)";
-			break;
+				break;
 			case "toprbrank":
 				sort = "SUM(chr.points)";
-			break;
+				break;
 			case "toponline":
 				sort = "onlinetime";
-			break;
+				break;
 			default:
-			break;
-
+				break;
+		
 		}
-
+		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			pos = 0;
 			PreparedStatement statement = con.prepareStatement(SELECT_CHARS + sort + " DESC LIMIT " + Config.TOP_PLAYER_RESULTS);
-
+			
 			ResultSet result = statement.executeQuery();
-
+			
 			while (result.next())
 			{
 				boolean status = false;
 				pos++;
-
+				
 				if (result.getInt("online") == 1)
 				{
 					status = true;
 				}
 				String timeon = getPlayerRunTime(result.getInt("ch.onlinetime"));
 				String adenas = getAdenas(result.getLong("SUM(it.count)"));
-
+				
 				addChar(pos, result.getString("ch.char_name"), result.getInt("base_class"), result.getInt("ch.pvpkills"), result.getInt("ch.pkkills"), result.getInt("SUM(chr.points)"), adenas, timeon, status);
 			}
-
+			
 			result.close();
 			statement.close();
 		}
@@ -95,12 +81,12 @@ public class TopPlayers
 				e.printStackTrace();
 		}
 	}
-
+	
 	public String loadTopList()
 	{
 		return _topList.toString();
 	}
-
+	
 	private void addChar(int position, String name, int classid, int pvp, int pk, int raid, String adenas, String online, boolean isOnline)
 	{
 		_topList.append("<table border=0 cellspacing=0 cellpadding=2 bgcolor=050505 height=" + Config.TOP_PLAYER_ROW_HEIGHT + "><tr><td FIXWIDTH=5></td>");
@@ -115,11 +101,11 @@ public class TopPlayers
 		_topList.append("<td FIXWIDTH=65>" + ((isOnline) ? "<font color=99FF00>Online</font>" : "<font color=CC0000>Offline</font>") + "</td>");
 		_topList.append("</tr></table><img src=\"L2UI.Squaregray\" width=\"610\" height=\"1\">");
 	}
-
+	
 	public final static String className(int classid)
 	{
 		Map<Integer, String> classList;
-		classList = new HashMap<Integer, String>();
+		classList = new HashMap<>();
 		classList.put(0, "Fighter");
 		classList.put(1, "Warrior");
 		classList.put(2, "Gladiator");
@@ -209,10 +195,10 @@ public class TopPlayers
 		classList.put(116, "Doomcryer");
 		classList.put(117, "Fortune Seeker");
 		classList.put(118, "Maestro");
-
+		
 		return classList.get(classid);
 	}
-
+	
 	public String getPlayerRunTime(int secs)
 	{
 		String timeResult = "";
@@ -226,7 +212,7 @@ public class TopPlayers
 		}
 		return timeResult;
 	}
-
+	
 	public String getAdenas(Long adena)
 	{
 		String adenas = "";

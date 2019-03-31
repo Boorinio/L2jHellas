@@ -1,41 +1,22 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.effects.EffectCharge;
 
-/**
- * Packet format: F3 XX000000 YY000000 ZZ000000
- * 
- * @author Luca Baldi
- */
 public class EtcStatusUpdate extends L2GameServerPacket
 {
 	private static final String _S__F3_ETCSTATUSUPDATE = "[S] F3 EtcStatusUpdate";
-
+	
 	private final L2PcInstance _activeChar;
 	private final EffectCharge _effect;
-
+	
 	public EtcStatusUpdate(L2PcInstance activeChar)
 	{
 		_activeChar = activeChar;
 		_effect = (EffectCharge) _activeChar.getFirstEffect(L2Effect.EffectType.CHARGE);
 	}
-
+	
 	@Override
 	protected void writeImpl()
 	{
@@ -51,7 +32,7 @@ public class EtcStatusUpdate extends L2GameServerPacket
 		writeD(_activeChar.getCharmOfCourage() ? 1 : 0); // 1 = charm of courage (no xp loss in siege..)
 		writeD(_activeChar.getDeathPenaltyBuffLevel()); // 1-15 death penalty, lvl (combat ability decreased due to death)
 	}
-
+	
 	@Override
 	public String getType()
 	{

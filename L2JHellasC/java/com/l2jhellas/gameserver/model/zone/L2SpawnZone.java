@@ -1,33 +1,19 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.zone;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.util.Rnd;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class L2SpawnZone extends L2ZoneType
 {
-	private static Location[] _coords = new Location [22];
+	private static Location[] _coords = new Location[22];
 	private List<Location> _chaoticSpawnLocs = null;
 	private List<Location> _spawnLocs = null;
 	
-	public static final void STADIUMSADD() 
+	public static final void STADIUMSADD()
 	{
 		_coords[0] = new Location(-20814, -21189, -3030);
 		_coords[1] = new Location(-120324, -225077, -3331);
@@ -65,8 +51,8 @@ public abstract class L2SpawnZone extends L2ZoneType
 	
 	public void addSpectator(int id, L2PcInstance spec)
 	{
-		if(spec!=null)
-		spec.enterOlympiadObserverMode(getCoordinates(id).getX(), getCoordinates(id).getY(), getCoordinates(id).getZ(), id);
+		if (spec != null)
+			spec.enterOlympiadObserverMode(getCoordinates(id).getX(), getCoordinates(id).getY(), getCoordinates(id).getZ(), id);
 	}
 	
 	public final void addSpawn(int x, int y, int z)
@@ -97,11 +83,11 @@ public abstract class L2SpawnZone extends L2ZoneType
 	
 	public void clearSpawnZone()
 	{
-		if(_spawnLocs !=null && !_spawnLocs.isEmpty())
-		_spawnLocs.clear();
+		if (_spawnLocs != null && !_spawnLocs.isEmpty())
+			_spawnLocs.clear();
 		
-		if(_chaoticSpawnLocs !=null && !_chaoticSpawnLocs.isEmpty())
-		_chaoticSpawnLocs.clear();
+		if (_chaoticSpawnLocs != null && !_chaoticSpawnLocs.isEmpty())
+			_chaoticSpawnLocs.clear();
 	}
 	
 	public final Location getChaoticSpawnLoc()

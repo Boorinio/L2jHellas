@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.zone.type;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -29,10 +15,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadUserInfo;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
-/**
- * An olympiad stadium
- * @author durgus, DS
- */
 public class L2OlympiadStadiumZone extends L2SpawnZone
 {
 	OlympiadGameTask _task = null;
@@ -50,7 +32,7 @@ public class L2OlympiadStadiumZone extends L2SpawnZone
 	
 	public final void broadcastStatusUpdate(L2PcInstance player)
 	{
-		final ExOlympiadUserInfo packet = new ExOlympiadUserInfo(player,2);
+		final ExOlympiadUserInfo packet = new ExOlympiadUserInfo(player, 2);
 		for (L2PcInstance plyr : getKnownTypeInside(L2PcInstance.class))
 		{
 			if (plyr.inObserverMode() || plyr.getOlympiadSide() != player.getOlympiadSide())
@@ -198,11 +180,6 @@ public class L2OlympiadStadiumZone extends L2SpawnZone
 			super.setParameter(name, value);
 	}
 	
-	/**
-	 * Returns this zones stadium id (if any)
-	 * 
-	 * @return
-	 */
 	public int getStadiumId()
 	{
 		return _stadiumId;

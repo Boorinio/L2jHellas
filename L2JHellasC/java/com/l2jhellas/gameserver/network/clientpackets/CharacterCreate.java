@@ -1,23 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
-
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
@@ -43,6 +24,11 @@ import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
 import com.l2jhellas.util.Util;
 
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
 @SuppressWarnings("unused")
 public final class CharacterCreate extends L2GameClientPacket
 {
@@ -62,8 +48,7 @@ public final class CharacterCreate extends L2GameClientPacket
 	private byte _hairStyle;
 	private byte _hairColor;
 	private byte _face;
-	private long _exp;
-
+	
 	@Override
 	protected void readImpl()
 	{
@@ -81,7 +66,7 @@ public final class CharacterCreate extends L2GameClientPacket
 		_hairColor = (byte) readD();
 		_face = (byte) readD();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
@@ -103,12 +88,12 @@ public final class CharacterCreate extends L2GameClientPacket
 			sendPacket(ccf);
 			return;
 		}
-
+		
 		if (_face > 2 || _face < 0 || _race > 4 || _race < 0)
 		{
 			sendPacket(new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED));
 			return;
-		}	
+		}
 		
 		if (_hairStyle < 0 || (_sex == 0 && _hairStyle > 4) || (_sex != 0 && _hairStyle > 6))
 		{
@@ -121,7 +106,7 @@ public final class CharacterCreate extends L2GameClientPacket
 			sendPacket(new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED));
 			return;
 		}
-
+		
 		L2PcTemplate template = CharTemplateData.getInstance().getTemplate(_classId);
 		
 		if (template == null || template.classBaseLevel > 1)
@@ -130,10 +115,10 @@ public final class CharacterCreate extends L2GameClientPacket
 			sendPacket(ccf);
 			return;
 		}
-
+		
 		int objectId = IdFactory.getInstance().getNextId();
 		
-		L2PcInstance newChar = L2PcInstance.create(objectId, template, getClient().getAccountName(), _name, _hairStyle, _hairColor, _face,  Sex.values()[_sex]);
+		L2PcInstance newChar = L2PcInstance.create(objectId, template, getClient().getAccountName(), _name, _hairStyle, _hairColor, _face, Sex.values()[_sex]);
 		
 		if (newChar == null)
 		{
@@ -145,15 +130,15 @@ public final class CharacterCreate extends L2GameClientPacket
 		newChar.setCurrentCp(0);
 		newChar.setCurrentHp(newChar.getMaxHp());
 		newChar.setCurrentMp(newChar.getMaxMp());
-
+		
 		// send acknowledgment
 		CharCreateOk cco = new CharCreateOk();
 		sendPacket(cco);
-
+		
 		initNewChar(getClient(), newChar);
 	}
-
-	private boolean isValidName(String text)
+	
+	private static boolean isValidName(String text)
 	{
 		boolean result = true;
 		String test = text;
@@ -174,16 +159,16 @@ public final class CharacterCreate extends L2GameClientPacket
 		}
 		return result;
 	}
-
+	
 	private void initNewChar(L2GameClient client, L2PcInstance newChar)
 	{
 		L2World.getInstance().storeObject(newChar);
-
+		
 		L2PcTemplate template = newChar.getTemplate();
-
+		
 		newChar.addAdena("Init", Config.STARTING_ADENA, null, false);
 		newChar.addAncientAdena("Init", Config.STARTING_ANCIENT, null, false);
-
+		
 		newChar.getAppearance().setInvisible();
 		newChar.getPosition().setXYZ(template.spawnX, template.spawnY, template.spawnZ);
 		
@@ -196,16 +181,16 @@ public final class CharacterCreate extends L2GameClientPacket
 		{
 			newChar.setTitle(Config.ADD_CHAR_TITLE);
 		}
-
+		
 		newChar.registerShortCut(new L2ShortCut(0, 0, 3, 2, -1, 1));
 		newChar.registerShortCut(new L2ShortCut(3, 0, 3, 5, -1, 1));
 		newChar.registerShortCut(new L2ShortCut(10, 0, 3, 0, -1, 1));
-
-		ItemTable itemTable = ItemTable.getInstance();
+		
+		ItemTable.getInstance();
 		L2Item[] items = template.getItems();
-		for (int i = 0; i < items.length; i++)
+		for (L2Item item2 : items)
 		{
-			L2ItemInstance item = newChar.getInventory().addItem("Init", items[i].getItemId(), 1, newChar, null);
+			L2ItemInstance item = newChar.getInventory().addItem("Init", item2.getItemId(), 1, newChar, null);
 			
 			if (item.getItemId() == 5588)
 				newChar.registerShortCut(new L2ShortCut(11, 0, 1, item.getObjectId(), -1, 1));
@@ -218,36 +203,43 @@ public final class CharacterCreate extends L2GameClientPacket
 				}
 			}
 		}
-
+		
 		L2SkillLearn[] startSkills = SkillTreeData.getInstance().getAvailableSkills(newChar, newChar.getClassId());
-		for (int i = 0; i < startSkills.length; i++)
+		for (L2SkillLearn startSkill : startSkills)
 		{
-			newChar.addSkill(SkillTable.getInstance().getInfo(startSkills[i].getId(), startSkills[i].getLevel()), true);
-			if (startSkills[i].getId() == 1001 || startSkills[i].getId() == 1177)
+			newChar.addSkill(SkillTable.getInstance().getInfo(startSkill.getId(), startSkill.getLevel()), true);
+			if (startSkill.getId() == 1001 || startSkill.getId() == 1177)
 			{
-				newChar.registerShortCut(new L2ShortCut(1, 0, 2, startSkills[i].getId(), 1, 1));
+				newChar.registerShortCut(new L2ShortCut(1, 0, 2, startSkill.getId(), 1, 1));
 			}
-			if (startSkills[i].getId() == 1216)
+			if (startSkill.getId() == 1216)
 			{
-				newChar.registerShortCut(new L2ShortCut(10, 0, 2, startSkills[i].getId(), 1, 1));
+				newChar.registerShortCut(new L2ShortCut(10, 0, 2, startSkill.getId(), 1, 1));
 			}
 		}
 		
-		startTutorialQuest(newChar);
+		if (Config.ALLOW_TUTORIAL)
+			startTutorialQuest(newChar);
+		
 		newChar.store();
 		newChar.deleteMe(); // release the world of this character and it's inventory
-
+		
 		// send char list
 		CharSelectInfo cl = new CharSelectInfo(client.getAccountName(), client.getSessionId().playOkID1);
 		client.getConnection().sendPacket(cl);
 		getClient().setCharSelectSlot(cl.getCharacterSlots());
 	}
-	public void startTutorialQuest(L2PcInstance player)
+	
+	public static void startTutorialQuest(L2PcInstance player)
 	{
-		Quest qest = QuestManager.getInstance().getQuest("255_Tutorial");
-		if (qest != null)
-			qest.newQuestState(player);
+		if (player.getQuestState("Q255_Tutorial") == null)
+		{
+			final Quest quest = QuestManager.getInstance().getQuest(255);
+			if (quest != null)
+				quest.newQuestState(player).setState(Quest.STATE_STARTED);
+		}
 	}
+	
 	@Override
 	public String getType()
 	{

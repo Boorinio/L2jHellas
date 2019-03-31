@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
 import com.l2jhellas.gameserver.ai.CtrlEvent;
@@ -36,48 +22,52 @@ import com.l2jhellas.gameserver.skills.Formulas;
 public class Continuous implements ISkillHandler
 {
 	private static final L2SkillType[] SKILL_IDS =
-	{/** @formatter:off */
-	L2SkillType.BUFF,
-	L2SkillType.DEBUFF,
-	L2SkillType.DOT,
-	L2SkillType.MDOT,
-	L2SkillType.POISON,
-	L2SkillType.BLEED,
-	L2SkillType.HOT,
-	L2SkillType.CPHOT,
-	L2SkillType.MPHOT,
-	L2SkillType.FEAR,
-	L2SkillType.CONT,
-	L2SkillType.WEAKNESS,
-	L2SkillType.REFLECT,
-	L2SkillType.UNDEAD_DEFENSE,
-	L2SkillType.AGGDEBUFF,
-	L2SkillType.FORCE_BUFF
-	};/** @formatter:on */
-
+	{
+		L2SkillType.BUFF,
+		L2SkillType.DEBUFF,
+		L2SkillType.DOT,
+		L2SkillType.MDOT,
+		L2SkillType.POISON,
+		L2SkillType.BLEED,
+		L2SkillType.HOT,
+		L2SkillType.CPHOT,
+		L2SkillType.MPHOT,
+		L2SkillType.FEAR,
+		L2SkillType.CONT,
+		L2SkillType.WEAKNESS,
+		L2SkillType.REFLECT,
+		L2SkillType.UNDEAD_DEFENSE,
+		L2SkillType.AGGDEBUFF,
+		L2SkillType.FORCE_BUFF
+	};
+	private L2PcInstance player;
+	
 	@Override
 	public void useSkill(L2Character activeChar, L2Skill skill, L2Object[] targets)
 	{
 		L2Character target = null;
-
-		L2PcInstance player = null;
+		
+		player = null;
 		if (activeChar instanceof L2PcInstance)
 			player = (L2PcInstance) activeChar;
-
-		for (int index = 0; index < targets.length; index++)
+		
+		for (L2Object target2 : targets)
 		{
-			target = (L2Character) targets[index];
-
+			target = (L2Character) target2;
+			
+			if (target == null)
+				continue;
+			
 			if (skill.getSkillType() != L2SkillType.BUFF && skill.getSkillType() != L2SkillType.HOT && skill.getSkillType() != L2SkillType.CPHOT && skill.getSkillType() != L2SkillType.MPHOT && skill.getSkillType() != L2SkillType.UNDEAD_DEFENSE && skill.getSkillType() != L2SkillType.AGGDEBUFF && skill.getSkillType() != L2SkillType.CONT)
 			{
 				if (target.reflectSkill(skill))
 					target = activeChar;
 			}
-
+			
 			// Walls and Door should not be buffed
 			if (target instanceof L2DoorInstance && (skill.getSkillType() == L2SkillType.BUFF || skill.getSkillType() == L2SkillType.HOT))
 				continue;
-
+			
 			// Player holding a cursed weapon can't be buffed and can't buff
 			if (skill.getSkillType() == L2SkillType.BUFF)
 			{
@@ -89,10 +79,10 @@ public class Continuous implements ISkillHandler
 						continue;
 				}
 			}
-
+			
 			if (skill.isOffensive())
 			{
-
+				
 				boolean ss = false;
 				boolean sps = false;
 				boolean bss = false;
@@ -146,7 +136,7 @@ public class Continuous implements ISkillHandler
 						activeSummon.setChargedSoulShot(L2ItemInstance.CHARGED_NONE);
 					}
 				}
-
+				
 				Formulas.getInstance();
 				boolean acted = Formulas.calcSkillSuccess(activeChar, target, skill, ss, sps, bss);
 				if (!acted)
@@ -154,15 +144,18 @@ public class Continuous implements ISkillHandler
 					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ATTACK_FAILED));
 					continue;
 				}
-
+				
 			}
 			boolean stopped = false;
-			L2Effect[] effects = target.getAllEffects();
-			if (effects != null)
+			
+			if (target == null)
+				continue;
+			
+			if (target.getAllEffects() != null)
 			{
-				for (L2Effect e : effects)
+				for (L2Effect e : target.getAllEffects())
 				{
-					if (e != null && skill != null)
+					if (e != null)
 						if (e.getSkill().getId() == skill.getId())
 						{
 							e.exit();
@@ -172,7 +165,7 @@ public class Continuous implements ISkillHandler
 			}
 			if (skill.isToggle() && stopped)
 				return;
-
+			
 			// if this is a debuff let the duel manager know about it
 			// so the debuff can be removed after the duel
 			// (player & target must be in the same duel)
@@ -185,7 +178,7 @@ public class Continuous implements ISkillHandler
 			}
 			else
 				skill.getEffects(activeChar, target);
-
+			
 			if (skill.getSkillType() == L2SkillType.AGGDEBUFF)
 			{
 				if (target instanceof L2Attackable)
@@ -208,7 +201,7 @@ public class Continuous implements ISkillHandler
 		}
 		skill.getEffectsSelf(activeChar);
 	}
-
+	
 	@Override
 	public L2SkillType[] getSkillIds()
 	{

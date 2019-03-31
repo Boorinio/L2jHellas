@@ -1,18 +1,15 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.datatables.xml;
+
+import com.PackRoot;
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.model.L2AccessLevel;
+import com.l2jhellas.gameserver.model.L2AdminCommandAccessRight;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
+import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.gameserver.templates.StatsSet;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,38 +24,20 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import com.PackRoot;
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.engines.DocumentParser;
-import com.l2jhellas.gameserver.model.L2AccessLevel;
-import com.l2jhellas.gameserver.model.L2AdminCommandAccessRight;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.templates.StatsSet;
-
-/**
- * @author UnAfraid
- */
 public class AdminData implements DocumentParser
 {
 	private static final Logger _log = Logger.getLogger(AdminData.class.getName());
-
+	
 	private final Map<Integer, L2AccessLevel> _accessLevels = new HashMap<>();
 	private final Map<String, L2AdminCommandAccessRight> _adminCommandAccessRights = new HashMap<>();
 	private final Map<L2PcInstance, Boolean> _gmList = new ConcurrentHashMap<>();
 	private int _highestLevel = 0;
 	
-	/** 
-	 * Instantiates a new admin table. 
-	 */ 
 	protected AdminData()
 	{
 		load();
 	}
-
-
+	
 	@Override
 	public void load()
 	{
@@ -69,7 +48,7 @@ public class AdminData implements DocumentParser
 		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/adminCommands.xml"));
 		_log.info(AdminData.class.getSimpleName() + ": Loaded: " + _adminCommandAccessRights.size() + " Access Commands.");
 	}
-
+	
 	@Override
 	public void parseDocument(Document doc)
 	{
@@ -92,7 +71,7 @@ public class AdminData implements DocumentParser
 							set.set(attr.getNodeName(), attr.getNodeValue());
 						}
 						final L2AccessLevel level = new L2AccessLevel(set);
-						if (level.getLevel() >  _highestLevel)
+						if (level.getLevel() > _highestLevel)
 						{
 							_highestLevel = level.getLevel();
 						}
@@ -121,15 +100,7 @@ public class AdminData implements DocumentParser
 		_adminCommandAccessRights.clear();
 		load();
 	}
-
-
-	/**
-	 * Returns the access level by characterAccessLevel<br>
-	 * <br>
-	 * @param accessLevelNum as int<br>
-	 * <br>
-	 * @return AccessLevel: AccessLevel instance by char access level<br>
-	 */
+	
 	public L2AccessLevel getAccessLevel(int accessLevelNum)
 	{
 		if (accessLevelNum < 0)
@@ -140,21 +111,21 @@ public class AdminData implements DocumentParser
 		}
 		return _accessLevels.get(accessLevelNum);
 	}
-
+	
 	public L2AccessLevel getMasterAccessLevel()
 	{
 		return _accessLevels.get(_highestLevel);
 	}
-
+	
 	public boolean hasAccessLevel(int id)
 	{
 		return _accessLevels.containsKey(id);
 	}
-
+	
 	public boolean hasAccess(String adminCommand, L2AccessLevel accessLevel)
 	{
 		L2AdminCommandAccessRight acar = _adminCommandAccessRights.get(adminCommand);
-
+		
 		if (acar == null)
 		{
 			// Trying to avoid the spam for next time when the gm would try to use the same command
@@ -170,10 +141,10 @@ public class AdminData implements DocumentParser
 				return false;
 			}
 		}
-
+		
 		return acar.hasAccess(accessLevel);
 	}
-
+	
 	public boolean requireConfirm(String command)
 	{
 		L2AdminCommandAccessRight acar = _adminCommandAccessRights.get(command);
@@ -184,11 +155,11 @@ public class AdminData implements DocumentParser
 		}
 		return acar.getRequireConfirm();
 	}
-
+	
 	public List<L2PcInstance> getAllGms(boolean includeHidden)
 	{
 		final List<L2PcInstance> tmpGmList = new ArrayList<>();
-
+		
 		for (Entry<L2PcInstance, Boolean> entry : _gmList.entrySet())
 		{
 			if (includeHidden || !entry.getValue())
@@ -196,14 +167,14 @@ public class AdminData implements DocumentParser
 				tmpGmList.add(entry.getKey());
 			}
 		}
-
+		
 		return tmpGmList;
 	}
-
+	
 	public List<String> getAllGmNames(boolean includeHidden)
 	{
 		final List<String> tmpGmList = new ArrayList<>();
-
+		
 		for (Entry<L2PcInstance, Boolean> entry : _gmList.entrySet())
 		{
 			if (!entry.getValue())
@@ -215,16 +186,10 @@ public class AdminData implements DocumentParser
 				tmpGmList.add(entry.getKey().getName() + " (invis)");
 			}
 		}
-
+		
 		return tmpGmList;
 	}
-
-
-	/**
-	 * Add a L2PcInstance player to the Set _gmList
-	 * @param player
-	 * @param hidden
-	 */
+	
 	public void addGm(L2PcInstance player, boolean hidden)
 	{
 		if (Config.DEBUG)
@@ -233,21 +198,17 @@ public class AdminData implements DocumentParser
 		}
 		_gmList.put(player, hidden);
 	}
-
+	
 	public void deleteGm(L2PcInstance player)
 	{
 		if (Config.DEBUG)
 		{
 			_log.fine("deleted gm: " + player.getName());
 		}
-
+		
 		_gmList.remove(player);
 	}
-
-	/**
-	 * GM will be displayed on clients gmlist
-	 * @param player
-	 */
+	
 	public void showGm(L2PcInstance player)
 	{
 		if (_gmList.containsKey(player))
@@ -255,11 +216,7 @@ public class AdminData implements DocumentParser
 			_gmList.put(player, false);
 		}
 	}
-
-	/**
-	 * GM will no longer be displayed on clients gmlist
-	 * @param player
-	 */
+	
 	public void hideGm(L2PcInstance player)
 	{
 		if (_gmList.containsKey(player))
@@ -267,7 +224,7 @@ public class AdminData implements DocumentParser
 			_gmList.put(player, true);
 		}
 	}
-
+	
 	public boolean isGmOnline(boolean includeHidden)
 	{
 		for (Entry<L2PcInstance, Boolean> entry : _gmList.entrySet())
@@ -275,17 +232,17 @@ public class AdminData implements DocumentParser
 			if (includeHidden || !entry.getValue())
 				return true;
 		}
-
+		
 		return false;
 	}
-
+	
 	public void sendListToPlayer(L2PcInstance player)
 	{
 		if (isGmOnline(player.isGM()))
 		{
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.GM_LIST);
 			player.sendPacket(sm);
-
+			
 			for (String name : getAllGmNames(player.isGM()))
 			{
 				sm = SystemMessage.getSystemMessage(SystemMessageId.GM_S1);
@@ -298,7 +255,7 @@ public class AdminData implements DocumentParser
 			player.sendPacket(SystemMessageId.NO_GM_PROVIDING_SERVICE_NOW);
 		}
 	}
-
+	
 	public void broadcastToGMs(L2GameServerPacket packet)
 	{
 		for (L2PcInstance gm : getAllGms(true))
@@ -306,7 +263,7 @@ public class AdminData implements DocumentParser
 			gm.sendPacket(packet);
 		}
 	}
-
+	
 	public void broadcastMessageToGMs(String message)
 	{
 		for (L2PcInstance gm : getAllGms(true))
@@ -314,10 +271,7 @@ public class AdminData implements DocumentParser
 			gm.sendMessage(message);
 		}
 	}
-
-	/**
-	 * @return AccessLevels: the one and only instance of this class<br>
-	 */
+	
 	public static AdminData getInstance()
 	{
 		return SingletonHolder._instance;

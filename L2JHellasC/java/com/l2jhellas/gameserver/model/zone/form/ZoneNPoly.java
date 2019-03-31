@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.zone.form;
-
-import java.awt.Polygon;
 
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.Inventory;
@@ -22,22 +6,14 @@ import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.zone.L2ZoneForm;
 import com.l2jhellas.util.Rnd;
 
-/**
- * A not so primitive npoly zone
- * @author durgus
- */
+import java.awt.Polygon;
+
 public class ZoneNPoly extends L2ZoneForm
 {
 	private final Polygon _p;
 	private final int _z1;
 	private final int _z2;
 	
-	/**
-	 * @param x
-	 * @param y
-	 * @param z1
-	 * @param z2
-	 */
 	public ZoneNPoly(int[] x, int[] y, int z1, int z2)
 	{
 		_p = new Polygon(x, y, x.length);

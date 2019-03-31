@@ -1,30 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -45,16 +19,25 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
-/**
- * @author terry
- */
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.logging.Logger;
+
 public class AdminEditNpc implements IAdminCommandHandler
 {
 	private static Logger _log = Logger.getLogger(AdminEditChar.class.getName());
 	private final static int PAGE_LIMIT = 7;
-
+	
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_edit_npc",
 		"admin_save_npc",
 		"admin_show_droplist",
@@ -71,8 +54,8 @@ public class AdminEditNpc implements IAdminCommandHandler
 		"admin_add_skill_npc",
 		"admin_edit_skill_npc",
 		"admin_del_skill_npc"
-	};/** @formatter:on */
-
+	};
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{// TODO: Tokenize and protect arguments parsing. Externalize HTML.
@@ -112,7 +95,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 			catch (Exception e)
 			{
 			}
-
+			
 			if (npcId > 0)
 				showNpcDropList(activeChar, npcId);
 			else
@@ -175,7 +158,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 						int min = Integer.parseInt(st.nextToken());
 						int max = Integer.parseInt(st.nextToken());
 						int chance = Integer.parseInt(st.nextToken());
-
+						
 						updateDropData(activeChar, npcId, itemId, min, max, category, chance);
 					}
 					catch (Exception e)
@@ -211,7 +194,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 					catch (Exception e)
 					{
 					}
-
+					
 					if (npcId > 0)
 					{
 						L2NpcTemplate npcData = NpcData.getInstance().getTemplate(npcId);
@@ -228,7 +211,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 						int min = Integer.parseInt(st.nextToken());
 						int max = Integer.parseInt(st.nextToken());
 						int chance = Integer.parseInt(st.nextToken());
-
+						
 						addDropData(activeChar, npcId, itemId, min, max, category, chance);
 					}
 					catch (Exception e)
@@ -262,7 +245,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 			catch (Exception e)
 			{
 			}
-
+			
 			if (npcId > 0)
 				deleteDropData(activeChar, npcId, itemId, category);
 			else
@@ -280,13 +263,13 @@ public class AdminEditNpc implements IAdminCommandHandler
 				if (st.hasMoreTokens())
 					page = Integer.parseInt(st.nextToken());
 			}
-
+			
 			if (npcId > 0)
 				showNpcSkillList(activeChar, npcId, page);
 			else
 				activeChar.sendMessage("Usage: //show_skilllist_npc <npc_id> <page>");
 		}
-		else if(command.startsWith("admin_edit_skill_npc "))
+		else if (command.startsWith("admin_edit_skill_npc "))
 		{
 			int npcId = -1, skillId = -1;
 			try
@@ -300,8 +283,9 @@ public class AdminEditNpc implements IAdminCommandHandler
 						skillId = Integer.parseInt(st.nextToken());
 						showNpcSkillEdit(activeChar, npcId, skillId);
 					}
-					catch(Exception e)
-					{}
+					catch (Exception e)
+					{
+					}
 				}
 				else if (st.countTokens() == 3)
 				{
@@ -313,7 +297,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 						
 						updateNpcSkillData(activeChar, npcId, skillId, level);
 					}
-					catch(Exception e)
+					catch (Exception e)
 					{
 						_log.fine("admin_edit_skill_npc parements error: " + command);
 					}
@@ -346,7 +330,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 					catch (Exception e)
 					{
 					}
-
+					
 					if (npcId > 0)
 					{
 						L2NpcTemplate npcData = NpcData.getInstance().getTemplate(npcId);
@@ -360,7 +344,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 						npcId = Integer.parseInt(st.nextToken());
 						skillId = Integer.parseInt(st.nextToken());
 						int level = Integer.parseInt(st.nextToken());
-
+						
 						addNpcSkillData(activeChar, npcId, skillId, level);
 					}
 					catch (Exception e)
@@ -393,7 +377,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 			catch (Exception e)
 			{
 			}
-
+			
 			if (npcId > 0)
 			{
 				deleteNpcSkillData(activeChar, npcId, skillId);
@@ -404,37 +388,37 @@ public class AdminEditNpc implements IAdminCommandHandler
 			}
 			showNpcSkillList(activeChar, npcId, -1);
 		}
-
+		
 		return true;
 	}
-
-	private void editShopItem(L2PcInstance activeChar, String[] args)
+	
+	private static void editShopItem(L2PcInstance activeChar, String[] args)
 	{
 		int tradeListID = Integer.parseInt(args[1]);
 		int itemID = Integer.parseInt(args[2]);
 		L2TradeList tradeList = TradeController.getInstance().getBuyList(tradeListID);
-
+		
 		L2Item item = ItemTable.getInstance().getTemplate(itemID);
 		if (tradeList.getPriceForItemId(itemID) < 0)
 		{
 			return;
 		}
-
+		
 		if (args.length > 3)
 		{
 			int price = Integer.parseInt(args[3]);
 			int order = findOrderTradeList(itemID, tradeList.getPriceForItemId(itemID), tradeListID);
-
+			
 			tradeList.replaceItem(itemID, Integer.parseInt(args[3]));
 			updateTradeList(itemID, price, tradeListID, order);
-
+			
 			activeChar.sendMessage("Updated price for " + item.getItemName() + " in Trade List " + tradeListID);
 			showShopList(activeChar, tradeListID, 1);
 			return;
 		}
-
+		
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-
+		
 		StringBuilder replyMSG = new StringBuilder();
 		replyMSG.append("<html><title>Merchant Shop Item Edit</title>");
 		replyMSG.append("<body>");
@@ -450,34 +434,34 @@ public class AdminEditNpc implements IAdminCommandHandler
 		replyMSG.append("<br><button value=\"Back\" action=\"bypass admin_showShopList " + tradeListID + " 1\"  width=100 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 		replyMSG.append("</center>");
 		replyMSG.append("</body></html>");
-
+		
 		adminReply.setHtml(replyMSG.toString());
 		activeChar.sendPacket(adminReply);
 	}
-
-	private void delShopItem(L2PcInstance activeChar, String[] args)
+	
+	private static void delShopItem(L2PcInstance activeChar, String[] args)
 	{
 		int tradeListID = Integer.parseInt(args[1]);
 		int itemID = Integer.parseInt(args[2]);
 		L2TradeList tradeList = TradeController.getInstance().getBuyList(tradeListID);
-
+		
 		if (tradeList.getPriceForItemId(itemID) < 0)
 			return;
-
+		
 		if (args.length > 3)
 		{
 			int order = findOrderTradeList(itemID, tradeList.getPriceForItemId(itemID), tradeListID);
-
+			
 			tradeList.removeItem(itemID);
 			deleteTradeList(tradeListID, order);
-
+			
 			activeChar.sendMessage("Deleted " + ItemTable.getInstance().getTemplate(itemID).getItemName() + " from Trade List " + tradeListID);
 			showShopList(activeChar, tradeListID, 1);
 			return;
 		}
-
+		
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-
+		
 		StringBuilder replyMSG = new StringBuilder();
 		replyMSG.append("<html><title>Merchant Shop Item Delete</title>");
 		replyMSG.append("<body>");
@@ -493,41 +477,41 @@ public class AdminEditNpc implements IAdminCommandHandler
 		replyMSG.append("<br><button value=\"Back\" action=\"bypass admin_showShopList " + tradeListID + " 1\"  width=100 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 		replyMSG.append("</center>");
 		replyMSG.append("</body></html>");
-
+		
 		adminReply.setHtml(replyMSG.toString());
 		activeChar.sendPacket(adminReply);
 	}
-
-	private void addShopItem(L2PcInstance activeChar, String[] args)
+	
+	private static void addShopItem(L2PcInstance activeChar, String[] args)
 	{
 		int tradeListID = Integer.parseInt(args[1]);
-
+		
 		L2TradeList tradeList = TradeController.getInstance().getBuyList(tradeListID);
 		if (tradeList == null)
 		{
 			activeChar.sendMessage("TradeList not found!");
 			return;
 		}
-
+		
 		if (args.length > 3)
 		{
 			int order = tradeList.getItems().size() + 1; // last item order + 1
 			int itemID = Integer.parseInt(args[2]);
 			int price = Integer.parseInt(args[3]);
-
+			
 			L2ItemInstance newItem = ItemTable.getInstance().createDummyItem(itemID);
 			newItem.setPriceToSell(price);
 			newItem.setCount(-1);
 			tradeList.addItem(newItem);
 			storeTradeList(itemID, price, tradeListID, order);
-
+			
 			activeChar.sendMessage("Added " + newItem.getItem().getItemName() + " to Trade List " + tradeList.getListId());
 			showShopList(activeChar, tradeListID, 1);
 			return;
 		}
-
+		
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-
+		
 		StringBuilder replyMSG = new StringBuilder();
 		replyMSG.append("<html><title>Merchant Shop Item Add</title>");
 		replyMSG.append("<body>");
@@ -543,29 +527,29 @@ public class AdminEditNpc implements IAdminCommandHandler
 		replyMSG.append("<br><button value=\"Back\" action=\"bypass admin_showShopList " + tradeListID + " 1\"  width=100 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 		replyMSG.append("</center>");
 		replyMSG.append("</body></html>");
-
+		
 		adminReply.setHtml(replyMSG.toString());
 		activeChar.sendPacket(adminReply);
 	}
-
-	private void showShopList(L2PcInstance activeChar, int tradeListID, int page)
+	
+	private static void showShopList(L2PcInstance activeChar, int tradeListID, int page)
 	{
 		L2TradeList tradeList = TradeController.getInstance().getBuyList(tradeListID);
 		if (page > tradeList.getItems().size() / PAGE_LIMIT + 1 || page < 1)
 			return;
-
+		
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		StringBuilder html = itemListHtml(tradeList, page);
-
+		
 		adminReply.setHtml(html.toString());
 		activeChar.sendPacket(adminReply);
-
+		
 	}
-
-	private StringBuilder itemListHtml(L2TradeList tradeList, int page)
+	
+	private static StringBuilder itemListHtml(L2TradeList tradeList, int page)
 	{
 		StringBuilder replyMSG = new StringBuilder();
-
+		
 		replyMSG.append("<html><title>Merchant Shop List Page: " + page + "</title>");
 		replyMSG.append("<body>");
 		replyMSG.append("<br>Edit, add or delete entries in a merchantList.");
@@ -599,11 +583,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 		replyMSG.append("<button value=\"Add\" action=\"bypass admin_addShopItem " + tradeList.getListId() + "\" width=100 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 		replyMSG.append("<button value=\"Close\" action=\"bypass admin_close_window\" width=100 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 		replyMSG.append("</center></body></html>");
-
+		
 		return replyMSG;
 	}
-
-	private void showShop(L2PcInstance activeChar, int merchantID)
+	
+	private static void showShop(L2PcInstance activeChar, int merchantID)
 	{
 		List<L2TradeList> tradeLists = getTradeLists(merchantID);
 		if (tradeLists == null)
@@ -611,34 +595,34 @@ public class AdminEditNpc implements IAdminCommandHandler
 			activeChar.sendMessage("Unknown npc template ID" + merchantID);
 			return;
 		}
-
+		
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-
+		
 		StringBuilder replyMSG = new StringBuilder("<html><title>Merchant Shop Lists</title>");
 		replyMSG.append("<body>");
 		replyMSG.append("<br>Select a list to view");
 		replyMSG.append("<table>");
 		replyMSG.append("<tr><td>Mecrchant List ID</td></tr>");
-
+		
 		for (L2TradeList tradeList : tradeLists)
 		{
 			if (tradeList != null)
 				replyMSG.append("<tr><td><a action=\"bypass admin_showShopList " + tradeList.getListId() + " 1\">Trade List " + tradeList.getListId() + "</a></td></tr>");
 		}
-
+		
 		replyMSG.append("</table>");
 		replyMSG.append("<center>");
 		replyMSG.append("<button value=\"Close\" action=\"bypass admin_close_window\" width=100 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 		replyMSG.append("</center></body></html>");
-
+		
 		adminReply.setHtml(replyMSG.toString());
 		activeChar.sendPacket(adminReply);
 	}
-
-	private void storeTradeList(int itemID, int price, int tradeListID, int order)
+	
+	private static void storeTradeList(int itemID, int price, int tradeListID, int order)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stmt = con.prepareStatement("INSERT INTO merchant_buylists (`item_id`,`price`,`shop_id`,`order`) VALUES (" + itemID + "," + price + "," + tradeListID + "," + order + ")"))
+			PreparedStatement stmt = con.prepareStatement("INSERT INTO merchant_buylists (`item_id`,`price`,`shop_id`,`order`) VALUES (" + itemID + "," + price + "," + tradeListID + "," + order + ")"))
 		{
 			stmt.execute();
 		}
@@ -649,11 +633,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 				e.printStackTrace();
 		}
 	}
-
-	private void updateTradeList(int itemID, int price, int tradeListID, int order)
+	
+	private static void updateTradeList(int itemID, int price, int tradeListID, int order)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stmt = con.prepareStatement("UPDATE merchant_buylists SET `price`='" + price + "' WHERE `shop_id`='" + tradeListID + "' AND `order`='" + order + "'"))
+			PreparedStatement stmt = con.prepareStatement("UPDATE merchant_buylists SET `price`='" + price + "' WHERE `shop_id`='" + tradeListID + "' AND `order`='" + order + "'"))
 		{
 			stmt.execute();
 		}
@@ -664,11 +648,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 				e.printStackTrace();
 		}
 	}
-
-	private void deleteTradeList(int tradeListID, int order)
+	
+	private static void deleteTradeList(int tradeListID, int order)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stmt = con.prepareStatement("DELETE FROM merchant_buylists WHERE `shop_id`='" + tradeListID + "' AND `order`='" + order + "'"))
+			PreparedStatement stmt = con.prepareStatement("DELETE FROM merchant_buylists WHERE `shop_id`='" + tradeListID + "' AND `order`='" + order + "'"))
 		{
 			stmt.execute();
 		}
@@ -679,12 +663,12 @@ public class AdminEditNpc implements IAdminCommandHandler
 				e.printStackTrace();
 		}
 	}
-
-	private int findOrderTradeList(int itemID, int price, int tradeListID)
+	
+	private static int findOrderTradeList(int itemID, int price, int tradeListID)
 	{
 		int order = 0;
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement stmt = con.prepareStatement("SELECT * FROM merchant_buylists WHERE `shop_id`='" + tradeListID + "' AND `item_id` ='" + itemID + "' AND `price` = '" + price + "'"))
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM merchant_buylists WHERE `shop_id`='" + tradeListID + "' AND `item_id` ='" + itemID + "' AND `price` = '" + price + "'"))
 		{
 			try (ResultSet rs = stmt.executeQuery())
 			{
@@ -700,22 +684,22 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		return order;
 	}
-
-	private List<L2TradeList> getTradeLists(int merchantID)
+	
+	private static List<L2TradeList> getTradeLists(int merchantID)
 	{
 		String target = "npc_%objectId%_Buy";
-
+		
 		String content = HtmCache.getInstance().getHtm("data/html/merchant/" + merchantID + ".htm");
-
+		
 		content = HtmCache.getInstance().getHtm("data/html/merchant/30001.htm");
 		if (content == null)
 			return null;
 		
-		List<L2TradeList> tradeLists = new ArrayList<L2TradeList>();
-
+		List<L2TradeList> tradeLists = new ArrayList<>();
+		
 		String[] lines = content.split("\n");
 		int pos = 0;
-
+		
 		for (String line : lines)
 		{
 			pos = line.indexOf(target);
@@ -727,18 +711,18 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		return tradeLists;
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
-	private void Show_Npc_Property(L2PcInstance activeChar, L2NpcTemplate npc)
+	
+	private static void Show_Npc_Property(L2PcInstance activeChar, L2NpcTemplate npc)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		String content = HtmCache.getInstance().getHtm("data/html/admin/editnpc.htm");
-
+		
 		adminReply.setHtml(content);
 		adminReply.replace("%npcId%", String.valueOf(npc.npcId));
 		adminReply.replace("%templateId%", String.valueOf(npc.idTemplate));
@@ -782,29 +766,29 @@ public class AdminEditNpc implements IAdminCommandHandler
 		adminReply.replace("%absorbLevel%", String.valueOf(npc.absorbLevel));
 		activeChar.sendPacket(adminReply);
 	}
-
-	private void save_npc_property(L2PcInstance activeChar, String command)
+	
+	private static void save_npc_property(L2PcInstance activeChar, String command)
 	{
 		String[] commandSplit = command.split(" ");
-
+		
 		if (commandSplit.length < 4)
 			return;
-
+		
 		StatsSet newNpcData = new StatsSet();
-
+		
 		try
 		{
 			newNpcData.set("npcId", commandSplit[1]);
-
+			
 			String statToSet = commandSplit[2];
 			String value = commandSplit[3];
-
+			
 			if (commandSplit.length > 4)
 			{
 				for (int i = 0; i < commandSplit.length - 3; i++)
 					value += " " + commandSplit[i + 4];
 			}
-
+			
 			if (statToSet.equals("templateId"))
 				newNpcData.set("idTemplate", Integer.valueOf(value));
 			else if (statToSet.equals("name"))
@@ -897,16 +881,16 @@ public class AdminEditNpc implements IAdminCommandHandler
 			if (Config.DEVELOPER)
 				e.printStackTrace();
 		}
-
+		
 		NpcData.getInstance().saveNpc(newNpcData);
-
+		
 		int npcId = newNpcData.getInteger("npcId");
-
+		
 		NpcData.getInstance().reloadNpc(npcId);
 		Show_Npc_Property(activeChar, NpcData.getInstance().getTemplate(npcId));
 	}
-
-	private void showNpcDropList(L2PcInstance activeChar, int npcId)
+	
+	private static void showNpcDropList(L2PcInstance activeChar, int npcId)
 	{
 		L2NpcTemplate npcData = NpcData.getInstance().getTemplate(npcId);
 		if (npcData == null)
@@ -914,46 +898,46 @@ public class AdminEditNpc implements IAdminCommandHandler
 			activeChar.sendMessage("unknown npc template id" + npcId);
 			return;
 		}
-
+		
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-
+		
 		StringBuilder replyMSG = new StringBuilder("<html><title>NPC: " + npcData.name + "(" + npcData.npcId + ") 's drop manage</title>");
 		replyMSG.append("<body><center>");
 		replyMSG.append("<br1>Note: click[Item ID]to show the detail of drop data,<br1>click[Del] to delete the drop data!");
 		replyMSG.append("<br1>Note: Type equals (S)weep (Q)uest and (D)rop!");
 		replyMSG.append("<table width=270 border=1>");
 		replyMSG.append("<tr><td>NPC Id</td><td>Item ID</td><td>Category</td><td>Type</td><td>Del</td></tr>");
-
+		
 		if (npcData.getDropData() != null)
 			for (L2DropCategory cat : npcData.getDropData())
 				for (L2DropData drop : cat.getAllDrops())
 				{
 					replyMSG.append("<tr><td>" + npcData.npcId + "</td><td><a action=\"bypass admin_edit_drop " + npcData.npcId + " " + drop.getItemId() + " " + cat.getCategoryType() + "\">" + ItemTable.getInstance().getTemplate(drop.getItemId()).getItemName() + "[" + drop.getItemId() + "]" + "</a></td><td>" + cat.getCategoryType() + "</td><td>" + (drop.isQuestDrop() ? "Q" : (cat.isSweep() ? "S" : "D")) + "</td><td>" + "<a action=\"bypass admin_del_drop " + npcData.npcId + " " + drop.getItemId() + " " + cat.getCategoryType() + "\">Del</a></td></tr>");
 				}
-
+		
 		replyMSG.append("</table><br>");
 		replyMSG.append("<center>");
 		replyMSG.append("<button value=\"Add DropData\" action=\"bypass admin_add_drop " + npcId + "\" width=100 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\"><br>");
 		replyMSG.append("<button value=\"Add Skill\" action=\"bypass admin_add_skill_npc " + npcId + "\" width=100 height=20 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 		replyMSG.append("</center></body></html>");
-
+		
 		adminReply.setHtml(replyMSG.toString());
 		activeChar.sendPacket(adminReply);
 	}
-
-	private void showEditDropData(L2PcInstance activeChar, int npcId, int itemId, int category)
+	
+	private static void showEditDropData(L2PcInstance activeChar, int npcId, int itemId, int category)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("SELECT mobId, itemId, min, max, category, chance FROM droplist WHERE mobId=" + npcId + " AND itemId=" + itemId + " AND category=" + category))
+			PreparedStatement statement = con.prepareStatement("SELECT mobId, itemId, min, max, category, chance FROM droplist WHERE mobId=" + npcId + " AND itemId=" + itemId + " AND category=" + category))
 		{
 			
 			try (ResultSet dropData = statement.executeQuery())
 			{
 				NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-	
+				
 				StringBuilder replyMSG = new StringBuilder("<html><title>the detail of dropdata: (" + npcId + " " + itemId + " " + category + ")</title>");
 				replyMSG.append("<body><center>");
-	
+				
 				if (dropData.next())
 				{
 					replyMSG.append("<table width=270>");
@@ -964,7 +948,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 					replyMSG.append("<tr><td>MAX(" + dropData.getInt("max") + ")</td><td><edit var=\"max\" width=80></td></tr>");
 					replyMSG.append("<tr><td>CHANCE(" + dropData.getInt("chance") + ")</td><td><edit var=\"chance\" width=80></td></tr>");
 					replyMSG.append("</table><br>");
-	
+					
 					replyMSG.append("<center>");
 					replyMSG.append("<button value=\"Save Modify\" action=\"bypass admin_edit_drop " + npcId + " " + itemId + " " + category + " $min $max $chance\"  width=100 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 					replyMSG.append("<br><button value=\"DropList\" action=\"bypass admin_show_droplist " + dropData.getInt("mobId") + "\"  width=100 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
@@ -972,7 +956,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 				}
 				replyMSG.append("</body></html>");
 				adminReply.setHtml(replyMSG.toString());
-
+				
 				activeChar.sendPacket(adminReply);
 			}
 		}
@@ -983,11 +967,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 				e.printStackTrace();
 		}
 	}
-
-	private void showAddDropData(L2PcInstance activeChar, L2NpcTemplate npcData)
+	
+	private static void showAddDropData(L2PcInstance activeChar, L2NpcTemplate npcData)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-
+		
 		StringBuilder replyMSG = new StringBuilder("<html><title>Add dropdata to " + npcData.name + "(" + npcData.npcId + ")</title>");
 		replyMSG.append("<body><center>");
 		
@@ -1004,14 +988,14 @@ public class AdminEditNpc implements IAdminCommandHandler
 		replyMSG.append("</center>");
 		replyMSG.append("</body></html>");
 		adminReply.setHtml(replyMSG.toString());
-
+		
 		activeChar.sendPacket(adminReply);
 	}
-
-	private void updateDropData(L2PcInstance activeChar, int npcId, int itemId, int min, int max, int category, int chance)
+	
+	private static void updateDropData(L2PcInstance activeChar, int npcId, int itemId, int min, int max, int category, int chance)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("UPDATE droplist SET min=?, max=?, chance=? WHERE mobId=? AND itemId=? AND category=?"))
+			PreparedStatement statement = con.prepareStatement("UPDATE droplist SET min=?, max=?, chance=? WHERE mobId=? AND itemId=? AND category=?"))
 		{
 			statement.setInt(1, min);
 			statement.setInt(2, max);
@@ -1030,11 +1014,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 				e.printStackTrace();
 		}
 	}
-
-	private void addDropData(L2PcInstance activeChar, int npcId, int itemId, int min, int max, int category, int chance)
+	
+	private static void addDropData(L2PcInstance activeChar, int npcId, int itemId, int min, int max, int category, int chance)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("INSERT INTO droplist(mobId, itemId, min, max, category, chance) VALUES (?,?,?,?,?,?)"))
+			PreparedStatement statement = con.prepareStatement("INSERT INTO droplist(mobId, itemId, min, max, category, chance) VALUES (?,?,?,?,?,?)"))
 		{
 			statement.setInt(1, npcId);
 			statement.setInt(2, itemId);
@@ -1054,11 +1038,11 @@ public class AdminEditNpc implements IAdminCommandHandler
 				e.printStackTrace();
 		}
 	}
-
-	private void deleteDropData(L2PcInstance activeChar, int npcId, int itemId, int category)
+	
+	private static void deleteDropData(L2PcInstance activeChar, int npcId, int itemId, int category)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement2 = con.prepareStatement("DELETE FROM droplist WHERE mobId=? AND itemId=? AND category=?"))
+			PreparedStatement statement2 = con.prepareStatement("DELETE FROM droplist WHERE mobId=? AND itemId=? AND category=?"))
 		{
 			if (npcId > 0)
 			{
@@ -1077,19 +1061,19 @@ public class AdminEditNpc implements IAdminCommandHandler
 				e.printStackTrace();
 		}
 	}
-
-	private void reLoadNpcDropList(int npcId)
+	
+	private static void reLoadNpcDropList(int npcId)
 	{
 		L2NpcTemplate npcData = NpcData.getInstance().getTemplate(npcId);
 		if (npcData == null)
 			return;
-
+		
 		// reset the drop lists
 		npcData.clearAllDropData();
 		npcData.getDropData().clear();
 		// get the drops
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("SELECT mobId,itemId,min,max,category,chance FROM droplist WHERE mobId=?"))
+			PreparedStatement statement = con.prepareStatement("SELECT mobId,itemId,min,max,category,chance FROM droplist WHERE mobId=?"))
 		{
 			statement.setInt(1, npcId);
 			try (ResultSet dropDataList = statement.executeQuery())
@@ -1097,12 +1081,12 @@ public class AdminEditNpc implements IAdminCommandHandler
 				while (dropDataList.next())
 				{
 					L2DropData dropData = new L2DropData();
-	
+					
 					dropData.setItemId(dropDataList.getInt("itemId"));
 					dropData.setMinDrop(dropDataList.getInt("min"));
 					dropData.setMaxDrop(dropDataList.getInt("max"));
 					dropData.setChance(dropDataList.getInt("chance"));
-	
+					
 					int category = dropDataList.getInt("category");
 					npcData.addDropData(dropData, category);
 				}
@@ -1116,7 +1100,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 	}
 	
-	private void showNpcSkillList(L2PcInstance activeChar, int npcId, int page)
+	private static void showNpcSkillList(L2PcInstance activeChar, int npcId, int page)
 	{
 		L2NpcTemplate npcData = NpcData.getInstance().getTemplate(npcId);
 		if (npcData == null)
@@ -1124,32 +1108,31 @@ public class AdminEditNpc implements IAdminCommandHandler
 			activeChar.sendMessage("Template id unknown: " + npcId);
 			return;
 		}
-
+		
 		Map<Integer, L2Skill> skills = npcData.getSkills();
 		
 		int _skillsize = 0;
 		
-		if(skills != null)
+		if (skills != null)
 			_skillsize = skills.size();
 		else
 			_skillsize = 0;
 		
-
 		int MaxSkillsPerPage = 10;
 		int MaxPages = _skillsize / MaxSkillsPerPage;
 		if (_skillsize > MaxSkillsPerPage * MaxPages)
 			MaxPages++;
-
+		
 		if (page > MaxPages)
 			page = MaxPages;
-
+		
 		int SkillsStart = MaxSkillsPerPage * page;
 		int SkillsEnd = _skillsize;
 		if (SkillsEnd - SkillsStart > MaxSkillsPerPage)
 			SkillsEnd = SkillsStart + MaxSkillsPerPage;
-
+		
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-
+		
 		StringBuffer replyMSG = new StringBuffer("");
 		replyMSG.append("<html><title>" + npcData.getName() + " (" + npcData.getNpcId() + ") skill list</title>");
 		replyMSG.append("<body>");
@@ -1169,15 +1152,15 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 		pages += "</tr></table></center>";
 		replyMSG.append(pages);
-
+		
 		replyMSG.append("<table width=270>");
-
+		
 		if (skills != null)
 		{
 			Set<Integer> skillset = skills.keySet();
 			Iterator<Integer> skillite = skillset.iterator();
 			Object skillobj = null;
-
+			
 			for (int i = 0; i < SkillsStart; i++)
 			{
 				if (skillite.hasNext())
@@ -1185,7 +1168,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 					skillobj = skillite.next();
 				}
 			}
-
+			
 			int cnt = SkillsStart;
 			while (skillite.hasNext())
 			{
@@ -1196,7 +1179,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 				}
 				skillobj = skillite.next();
 				replyMSG.append("<tr><td><a action=\"bypass admin_edit_skill_npc " + npcId + " " + skills.get(skillobj).getId() + "\">" + skills.get(skillobj).getName() + " [" + skills.get(skillobj).getId() + "]" + "</a></td>" + "<td>" + skills.get(skillobj).getLevel() + "</td>" + "<td><a action=\"bypass admin_del_skill_npc " + npcData.getNpcId() + " " + skillobj + "\">Delete</a></td></tr>");
-
+				
 			}
 		}
 		replyMSG.append("</table>");
@@ -1205,33 +1188,33 @@ public class AdminEditNpc implements IAdminCommandHandler
 		replyMSG.append("<button value=\"Add Skill\" action=\"bypass admin_add_skill_npc " + npcId + "\" width=100 height=20 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 		replyMSG.append("<button value=\"Droplist\" action=\"bypass admin_show_droplist " + npcId + "\" width=100 height=20 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 		replyMSG.append("</center></body></html>");
-
+		
 		adminReply.setHtml(replyMSG.toString());
 		activeChar.sendPacket(adminReply);
 	}
-
-	private void showNpcSkillEdit(L2PcInstance activeChar, int npcId, int skillId)
+	
+	private static void showNpcSkillEdit(L2PcInstance activeChar, int npcId, int skillId)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("SELECT npcid, skillid, level FROM npcskills WHERE npcid=" + npcId + " AND skillid=" + skillId))
+			PreparedStatement statement = con.prepareStatement("SELECT npcid, skillid, level FROM npcskills WHERE npcid=" + npcId + " AND skillid=" + skillId))
 		{
 			try (ResultSet skillData = statement.executeQuery())
 			{
 				NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-	
+				
 				StringBuffer replyMSG = new StringBuffer("<html><title>(NPC:" + npcId + " SKILL:" + skillId + ")</title>");
 				replyMSG.append("<body>");
-	
+				
 				if (skillData.next())
 				{
 					L2Skill skill = SkillTable.getInstance().getInfo(skillData.getInt("skillid"), skillData.getInt("level"));
-	
+					
 					replyMSG.append("<table>");
 					replyMSG.append("<tr><td>NPC</td><td>" + NpcData.getInstance().getTemplate(skillData.getInt("npcid")).getName() + "</td></tr>");
 					replyMSG.append("<tr><td>SKILL</td><td>" + skill.getName() + "(" + skillData.getInt("skillid") + ")</td></tr>");
 					replyMSG.append("<tr><td>Lvl(" + skill.getLevel() + ")</td><td><edit var=\"level\" width=50></td></tr>");
 					replyMSG.append("</table>");
-	
+					
 					replyMSG.append("<center>");
 					replyMSG.append("<button value=\"Edit Skill\" action=\"bypass admin_edit_skill_npc " + npcId + " " + skillId + " $level\"  width=100 height=20 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 					replyMSG.append("<br><button value=\"Back to Skillist\" action=\"bypass admin_show_skilllist_npc " + npcId + "\"  width=100 height=20 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
@@ -1239,7 +1222,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 				}
 				replyMSG.append("</body></html>");
 				adminReply.setHtml(replyMSG.toString());
-	
+				
 				activeChar.sendPacket(adminReply);
 			}
 		}
@@ -1251,41 +1234,40 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 	}
 	
-
-	private void updateNpcSkillData(L2PcInstance activeChar, int npcId, int skillId, int level)
+	private static void updateNpcSkillData(L2PcInstance activeChar, int npcId, int skillId, int level)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("UPDATE npcskills SET level=? WHERE npcid=? AND skillid=?"))
+			PreparedStatement statement = con.prepareStatement("UPDATE npcskills SET level=? WHERE npcid=? AND skillid=?"))
 		{
-			L2Skill skillData = SkillTable.getInstance().getInfo(skillId,level);
+			L2Skill skillData = SkillTable.getInstance().getInfo(skillId, level);
 			if (skillData == null)
 			{
 				NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 				StringBuffer replyMSG = new StringBuffer("<html><title>Update Npc Skill Data</title>");
 				replyMSG.append("<body>");
-				replyMSG.append("<center><button value=\"Back to Skillist\" action=\"bypass admin_show_skilllist_npc "+ npcId + "\" width=100 height=20 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center>");
+				replyMSG.append("<center><button value=\"Back to Skillist\" action=\"bypass admin_show_skilllist_npc " + npcId + "\" width=100 height=20 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center>");
 				replyMSG.append("</body></html>");
-
+				
 				adminReply.setHtml(replyMSG.toString());
 				activeChar.sendPacket(adminReply);
 				return;
 			}
-
+			
 			statement.setInt(1, level);
 			statement.setInt(2, npcId);
 			statement.setInt(3, skillId);
 			statement.execute();
-
-			if(npcId > 0)
+			
+			if (npcId > 0)
 			{
 				reLoadNpcSkillList(npcId);
-
+				
 				NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 				StringBuffer replyMSG = new StringBuffer("<html><title>Update Npc Skill Data</title>");
 				replyMSG.append("<body>");
-				replyMSG.append("<center><button value=\"Back to Skillist\" action=\"bypass admin_show_skilllist_npc "+ npcId + "\" width=100 height=20 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center>");
+				replyMSG.append("<center><button value=\"Back to Skillist\" action=\"bypass admin_show_skilllist_npc " + npcId + "\" width=100 height=20 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center>");
 				replyMSG.append("</body></html>");
-
+				
 				adminReply.setHtml(replyMSG.toString());
 				activeChar.sendPacket(adminReply);
 			}
@@ -1293,9 +1275,9 @@ public class AdminEditNpc implements IAdminCommandHandler
 			{
 				activeChar.sendMessage("Unknown error");
 			}
-
+			
 		}
-		catch(SQLException e)
+		catch (SQLException e)
 		{
 			_log.warning(AdminEditNpc.class.getName() + ": Could not update npc skill edit ");
 			if (Config.DEVELOPER)
@@ -1303,15 +1285,15 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 	}
 	
-	private void reLoadNpcSkillList(int npcId)
+	private static void reLoadNpcSkillList(int npcId)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("SELECT npcid, skillid, level FROM npcskills WHERE npcid=? AND (skillid NOT BETWEEN 4290 AND 4302)"))
+			PreparedStatement statement = con.prepareStatement("SELECT npcid, skillid, level FROM npcskills WHERE npcid=? AND (skillid NOT BETWEEN 4290 AND 4302)"))
 		{
 			L2NpcTemplate npcData = NpcData.getInstance().getTemplate(npcId);
 			if (npcData.getSkills() != null)
 				npcData.getSkills().clear();
-
+			
 			// with out race
 			
 			statement.setInt(1, npcId);
@@ -1337,30 +1319,30 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 	}
 	
-	private void showNpcSkillAdd(L2PcInstance activeChar, L2NpcTemplate npcData)
+	private static void showNpcSkillAdd(L2PcInstance activeChar, L2NpcTemplate npcData)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
-
+		
 		StringBuffer replyMSG = new StringBuffer("<html><title>Add Skill to " + npcData.getName() + "(ID:" + npcData.getNpcId() + ")</title>");
 		replyMSG.append("<body><br><center>");
 		replyMSG.append("<table>");
 		replyMSG.append("<tr><td width=60>SkillId </td><td><edit var=\"skillId\" width=80></td></tr>");
 		replyMSG.append("<tr><td width=60>Level </td><td><edit var=\"level\" width=80></td></tr>");
 		replyMSG.append("</table><br><br>");
-
+		
 		replyMSG.append("<button value=\"Add Skill\" action=\"bypass admin_add_skill_npc " + npcData.getNpcId() + " $skillId $level\"  width=100 height=20 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 		replyMSG.append("<br><button value=\"Back to Skillist\" action=\"bypass admin_show_skilllist_npc " + npcData.getNpcId() + "\"  width=100 height=20 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 		replyMSG.append("</center>");
 		replyMSG.append("</body></html>");
 		adminReply.setHtml(replyMSG.toString());
-
+		
 		activeChar.sendPacket(adminReply);
 	}
 	
-	private void addNpcSkillData(L2PcInstance activeChar, int npcId, int skillId, int level)
+	private static void addNpcSkillData(L2PcInstance activeChar, int npcId, int skillId, int level)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement = con.prepareStatement("INSERT INTO npcskills(npcid, skillid, level) values(?,?,?)"))
+			PreparedStatement statement = con.prepareStatement("INSERT INTO npcskills(npcid, skillid, level) values(?,?,?)"))
 		{
 			// skill check
 			L2Skill skillData = SkillTable.getInstance().getInfo(skillId, level);
@@ -1371,26 +1353,26 @@ public class AdminEditNpc implements IAdminCommandHandler
 				replyMSG.append("<body>");
 				replyMSG.append("<center><button value=\"Back to Skillist\" action=\"bypass admin_show_skilllist_npc " + npcId + "\" width=100 height=20 back=\"sek.cbui94\" fore=\"sek.cbui92\"></center>");
 				replyMSG.append("</body></html>");
-
+				
 				adminReply.setHtml(replyMSG.toString());
 				activeChar.sendPacket(adminReply);
 				return;
 			}
-
+			
 			statement.setInt(1, npcId);
 			statement.setInt(2, skillId);
 			statement.setInt(3, level);
 			statement.execute();
-
+			
 			reLoadNpcSkillList(npcId);
-
+			
 			NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 			StringBuffer replyMSG = new StringBuffer("<html><title>Add Skill to Npc (" + npcId + ", " + skillId + ", " + level + ")</title>");
 			replyMSG.append("<body>");
 			replyMSG.append("<center><button value=\"Add Skill\" action=\"bypass admin_add_skill_npc " + npcId + "\" width=100 height=20 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 			replyMSG.append("<br><br><button value=\"Back to Skillist\" action=\"bypass admin_show_skilllist_npc " + npcId + "\" width=100 height=20 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 			replyMSG.append("</center></body></html>");
-
+			
 			adminReply.setHtml(replyMSG.toString());
 			activeChar.sendPacket(adminReply);
 		}
@@ -1402,21 +1384,21 @@ public class AdminEditNpc implements IAdminCommandHandler
 		}
 	}
 	
-	private void deleteNpcSkillData(L2PcInstance activeChar, int npcId, int skillId)
+	private static void deleteNpcSkillData(L2PcInstance activeChar, int npcId, int skillId)
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection();
-				PreparedStatement statement2 = con.prepareStatement("DELETE FROM npcskills WHERE npcid=? AND skillid=?"))
+			PreparedStatement statement2 = con.prepareStatement("DELETE FROM npcskills WHERE npcid=? AND skillid=?"))
 		{
-			if(npcId > 0)
+			if (npcId > 0)
 			{
 				statement2.setInt(1, npcId);
 				statement2.setInt(2, skillId);
 				statement2.execute();
-
+				
 				reLoadNpcSkillList(npcId);
 			}
 		}
-		catch(SQLException e)
+		catch (SQLException e)
 		{
 			_log.warning(AdminEditNpc.class.getName() + ": Could not delete npc skill data ");
 			if (Config.DEVELOPER)

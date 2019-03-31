@@ -1,56 +1,29 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package Extensions.RankSystem;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
-/**
- * @author Masterio
- */
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class RPSBypass
 {
 	public static final Logger log = Logger.getLogger(RPSBypass.class.getSimpleName());
-
+	
 	public static void executeCommand(L2PcInstance activeChar, String command)
 	{
-		/*
-		 * Commands:
-		 * 
-		 * RPS.PS - PvP Status window.
-		 * RPS.DS - Death Status window.
-		 * RPS.RPC:<pageNo> - RPS Exchange window (default page number is: 1).
-		 * RPS.RPCReward:<rewardId>,<pageNo> - Give RPC Reward for current player, and show RPC Exchange on pageNo. [The reward list is constant]
-		 * RPS.RPCRewardConfirm:<rewardId>,<pageNo> - Confirm page for get reward.
-		 * RPS.RewardList:<rankId>,<pageNo> - Rank Reward List for kill player with rank id, and show at pageNo.
-		 */
-
+		
 		if (!Config.RANK_PVP_SYSTEM_ENABLED)
 			return;
-
+		
 		String param = command.split("\\.", 2)[1];
-
+		
 		RPSCookie pc = activeChar.getRPSCookie();
-
+		
 		// reset death status:
 		if (!activeChar.isDead())
 			pc.setDeathStatus(null);
-
+		
 		if (param.equals("PS")) // PvP Status
 		{
 			RPSHtmlPvpStatus.sendPage(activeChar, pc.getTarget());
@@ -84,12 +57,12 @@ public class RPSBypass
 			{
 				log.log(Level.WARNING, e.getMessage());
 			}
-
+			
 			if (pageNo < 1)
 			{
 				pageNo = 1;
 			}
-
+			
 			RPSHtmlRPCRewardList.sendPage(activeChar, pageNo);
 		}
 		else if (param.startsWith("RPCReward:"))
@@ -98,11 +71,11 @@ public class RPSBypass
 			{
 				int rpcRewardId = Integer.valueOf(command.split(":", 2)[1].trim().split(",", 2)[0].trim());
 				int pageNo = Integer.valueOf(command.split(":", 2)[1].trim().split(",", 2)[1].trim());
-
+				
 				RPCReward rpcReward = RPCRewardTable.getInstance().getRpcRewardList().get(rpcRewardId);
-
+				
 				RPCRewardTable.getInstance().giveReward(activeChar, rpcReward);
-
+				
 				RPSHtmlRPCRewardList.sendPage(activeChar, pageNo);
 			}
 			catch (Exception e)
@@ -116,7 +89,7 @@ public class RPSBypass
 			{
 				int rpcRewardId = Integer.valueOf(command.split(":", 2)[1].trim().split(",", 2)[0].trim());
 				int pageNo = Integer.valueOf(command.split(":", 2)[1].trim().split(",", 2)[1].trim());
-
+				
 				RPSHtmlRPCRewardList.getConfirmPage(activeChar, pageNo, rpcRewardId);
 			}
 			catch (Exception e)
@@ -130,7 +103,7 @@ public class RPSBypass
 			{
 				int rankId = Integer.valueOf(command.split(":", 2)[1].trim().split(",", 2)[0].trim());
 				int pageNo = Integer.valueOf(command.split(":", 2)[1].trim().split(",", 2)[1].trim());
-
+				
 				RPCHtmlRewardList.sendPage(activeChar, pageNo, rankId);
 			}
 			catch (Exception e)

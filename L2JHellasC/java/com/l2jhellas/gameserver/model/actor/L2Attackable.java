@@ -1,24 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 
 import Extensions.RaidEvent.L2RaidEvent;
 
@@ -63,20 +43,17 @@ import com.l2jhellas.shield.antibot.PrivateAntiBot;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 
-/**
- * This class manages all NPC that can be attacked, such as :
- * <ul>
- * <li>L2ArtefactInstance</li>
- * <li>L2FriendlyMobInstance</li>
- * <li>L2MonsterInstance</li>
- * <li>L2SiegeGuardInstance</li>
- * </ul>
- */
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+
 public class L2Attackable extends L2Npc
 {
 	private boolean _isRaid = false;
 	private boolean _isRaidMinion = false;
-
+	
 	AttackableType _type;
 	
 	public enum AttackableType
@@ -84,292 +61,267 @@ public class L2Attackable extends L2Npc
 		ATTACKABLE_NPC,
 		ANIMATED_BOT;
 	}
-
-		/**
-		 * Add damage and hate to the attacker AggroInfo of the L2Attackable _aggroList.<BR><BR>
-		 *
-		 * @param attacker The L2Character that gave damages to this L2Attackable
-		 * @param damage The number of damages given by the attacker L2Character
-		 * @param aggro The hate (=damage) given by the attacker L2Character
-		 *
-		 */
-		public void addDamageHate(L2Character attacker, int damage, int aggro)
+	
+	public void addDamageHate(L2Character attacker, int damage, int aggro)
+	{
+		
+		if (attacker == null)
+			return;
+		
+		final L2PcInstance targetPlayer = attacker.getActingPlayer();
+		
+		// Get the AggroInfo of the attacker L2Character from the _aggroList of the L2Attackable
+		AggroInfo ai = _aggroListPro.get(attacker);
+		
+		if (ai == null)
 		{
-			
-			if (attacker == null)
-				return;
-			
-			final L2PcInstance targetPlayer = attacker.getActingPlayer();
-			
-			// Get the AggroInfo of the attacker L2Character from the _aggroList of the L2Attackable
-			 AggroInfo ai = _aggroListPro.get(attacker);;
-			
-			if (ai == null)
-			{
-				ai = new AggroInfo(attacker);
-				_aggroListPro.put(attacker, ai);
-			}
-			
-			ai.addDamage(damage);
-			
-			// If aggro is negative, its comming from SEE_SPELL, buffs use constant 150
-			if (targetPlayer != null && aggro == 0 && _type == AttackableType.ATTACKABLE_NPC)
-			{
-				if (getTemplate().getEventQuests(QuestEventType.ON_AGGRO_RANGE_ENTER) != null)
-					for (Quest quest : getTemplate().getEventQuests(QuestEventType.ON_AGGRO_RANGE_ENTER))
-						quest.notifyAggroRangeEnter(this, targetPlayer, (attacker instanceof L2Summon));
-			}
-			else if (aggro < 0)
-			{
-				aggro = 1;
-				ai.addHate(1);
-			}
-			else
-				ai.addHate((aggro * 100) / (getLevel() + 7));
-			
-			// Set the intention to the L2Attackable to AI_INTENTION_ACTIVE
-			if (aggro > 0 && getAI().getIntention() == CtrlIntention.AI_INTENTION_IDLE)
-				getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-			
-			// Notify the L2Attackable AI with EVT_ATTACKED
-			if (damage > 0)
-			{
-				getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, attacker);
-				
-				if(_type == AttackableType.ATTACKABLE_NPC)
-				{
-					try
-					{
-						if (attacker instanceof L2PcInstance || attacker instanceof L2Summon)
-						{
-							L2PcInstance player = attacker instanceof L2PcInstance ? (L2PcInstance) attacker : ((L2Summon) attacker).getOwner();
-							
-							if (getTemplate().getEventQuests(QuestEventType.ON_ATTACK) != null)
-								for (Quest quest : getTemplate().getEventQuests(QuestEventType.ON_ATTACK))
-								{
-									if (quest != null)
-										quest.notifyAttack(this, player, damage, attacker instanceof L2Summon);
-								}
-						}
-					}
-					catch (Exception e)
-					{
-						_log.severe("Could not set attackable script aggro!!");
-						for(StackTraceElement stack : e.getStackTrace())
-							_log.severe(stack.toString());
-					}
-				}
-			}
+			ai = new AggroInfo(attacker);
+			_aggroListPro.put(attacker, ai);
 		}
 		
-		public void reduceHate(L2Character target, int amount)
+		ai.addDamage(damage);
+		
+		// If aggro is negative, its comming from SEE_SPELL, buffs use constant 150
+		if (targetPlayer != null && aggro == 0 && _type == AttackableType.ATTACKABLE_NPC)
 		{
-			if (getAI() instanceof L2SiegeGuardAI)
-			{
-				// TODO: this just prevents error until siege guards are handled properly
-				stopHating(target);
-				setTarget(null);
-				getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-				return;
-			}
+			if (getTemplate().getEventQuests(QuestEventType.ON_AGGRO_RANGE_ENTER) != null)
+				for (Quest quest : getTemplate().getEventQuests(QuestEventType.ON_AGGRO_RANGE_ENTER))
+					quest.notifyAggroRangeEnter(this, targetPlayer, (attacker instanceof L2Summon));
+		}
+		else if (aggro < 0)
+		{
+			aggro = 1;
+			ai.addHate(1);
+		}
+		else
+			ai.addHate((aggro * 100) / (getLevel() + 7));
+		
+		// Set the intention to the L2Attackable to AI_INTENTION_ACTIVE
+		if (aggro > 0 && getAI().getIntention() == CtrlIntention.AI_INTENTION_IDLE)
+			getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+		
+		// Notify the L2Attackable AI with EVT_ATTACKED
+		if (damage > 0)
+		{
+			getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, attacker);
 			
-			if (target == null) // whole aggrolist
+			if (_type == AttackableType.ATTACKABLE_NPC)
 			{
-				L2Character mostHated = getMostHated();
-				
-				if (mostHated == null) // makes target passive for a moment more
+				try
 				{
-					getAI().setGlobalAggro(-25);
-					return;
-				}
-				else
-				{
-					for (L2Character aggroed : _aggroListPro.keySet())
+					if (attacker instanceof L2PcInstance || attacker instanceof L2Summon)
 					{
-						AggroInfo ai = _aggroListPro.get(aggroed);
+						L2PcInstance player = attacker instanceof L2PcInstance ? (L2PcInstance) attacker : ((L2Summon) attacker).getOwner();
 						
-						if (ai == null)
-							return;
-						ai.addHate(-amount);
+						if (getTemplate().getEventQuests(QuestEventType.ON_ATTACK) != null)
+							for (Quest quest : getTemplate().getEventQuests(QuestEventType.ON_ATTACK))
+							{
+								if (quest != null)
+									quest.notifyAttack(this, player, damage, attacker instanceof L2Summon);
+							}
 					}
 				}
+				catch (Exception e)
+				{
+					_log.severe("Could not set attackable script aggro!!");
+					for (StackTraceElement stack : e.getStackTrace())
+						_log.severe(stack.toString());
+				}
+			}
+		}
+	}
+	
+	public void reduceHate(L2Character target, int amount)
+	{
+		if (getAI() instanceof L2SiegeGuardAI)
+		{
+			// TODO: this just prevents error until siege guards are handled properly
+			stopHating(target);
+			setTarget(null);
+			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+			return;
+		}
+		
+		if (target == null) // whole aggrolist
+		{
+			L2Character mostHated = getMostHated();
+			
+			if (mostHated == null) // makes target passive for a moment more
+			{
+				getAI().setGlobalAggro(-25);
+				return;
+			}
+			for (L2Character aggroed : _aggroListPro.keySet())
+			{
+				AggroInfo ai = _aggroListPro.get(aggroed);
 				
-				amount = getHating(mostHated);
+				if (ai == null)
+					return;
+				ai.addHate(-amount);
+			}
+			
+			amount = getHating(mostHated);
+			
+			if (amount <= 0)
+			{
+				getAI().setGlobalAggro(-25);
+				clearAggroList();
+				getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+				setWalking();
+			}
+			return;
+		}
+		AggroInfo ai = _aggroListPro.get(target);
+		
+		if (ai == null)
+			return;
+		ai.addHate(-amount);
+		
+		if (ai.getHate() <= 0)
+		{
+			if (getMostHated() == null)
+			{
+				getAI().setGlobalAggro(-25);
+				clearAggroList();
+				getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+				setWalking();
+			}
+		}
+	}
+	
+	public void stopHating(L2Character target)
+	{
+		if (target == null)
+			return;
+		AggroInfo ai = _aggroListPro.get(target);
+		if (ai != null)
+			ai.stopHate();
+	}
+	
+	public L2Character getMostHated()
+	{
+		if (_aggroListPro.isEmpty() || isAlikeDead())
+			return null;
+		
+		L2Character mostHated = null;
+		int maxHate = 0;
+		
+		// While Interating over This Map Removing Object is Not Allowed
+		synchronized (this)
+		{
+			// Go through the aggroList of the L2Attackable
+			for (AggroInfo ai : _aggroListPro.values())
+			{
+				if (ai == null)
+					continue;
 				
-				if (amount <= 0)
+				if (ai.checkHate(this) > maxHate)
 				{
-					getAI().setGlobalAggro(-25);
-					clearAggroList();
-					getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-					setWalking();
-				}
-				return;
-			}
-			AggroInfo ai = _aggroListPro.get(target);
-			
-			if (ai == null)
-				return;
-			ai.addHate(-amount);
-			
-			if (ai.getHate() <= 0)
-			{
-				if (getMostHated() == null)
-				{
-					getAI().setGlobalAggro(-25);
-					clearAggroList();
-					getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-					setWalking();
+					mostHated = ai.getAttacker();
+					maxHate = ai.getHate();
 				}
 			}
 		}
+		return mostHated;
+	}
+	
+	public List<L2Character> get2MostHated()
+	{
+		if (_aggroListPro.isEmpty() || isAlikeDead())
+			return null;
 		
-		/**
-		 * Clears _aggroList hate of the L2Character without removing from the list.
-		 */
-		public void stopHating(L2Character target)
-		{
-			if (target == null)
-				return;
-			AggroInfo ai = _aggroListPro.get(target);
-			if (ai != null)
-				ai.stopHate();
-		}
+		L2Character mostHated = null;
+		L2Character secondMostHated = null;
+		int maxHate = 0;
+		List<L2Character> result = new ArrayList<>();
 		
-		/**
-		 * Return the most hated L2Character of the L2Attackable _aggroList.
-		 */
-		public L2Character getMostHated()
+		// While iterating over this map removing objects is not allowed
+		synchronized (this)
 		{
-			if (_aggroListPro.isEmpty() || isAlikeDead())
-				return null;
-			
-			L2Character mostHated = null;
-			int maxHate = 0;
-			
-			// While Interating over This Map Removing Object is Not Allowed
-			synchronized (this)
+			// Go through the aggroList of the L2Attackable
+			for (AggroInfo ai : _aggroListPro.values())
 			{
-				// Go through the aggroList of the L2Attackable
-				for (AggroInfo ai : _aggroListPro.values())
+				if (ai == null)
+					continue;
+				
+				if (ai.checkHate(this) > maxHate)
 				{
-					if (ai == null)
-						continue;
-					
-					if (ai.checkHate(this) > maxHate)
-					{
-						mostHated = ai.getAttacker();
-						maxHate = ai.getHate();
-					}
+					secondMostHated = mostHated;
+					mostHated = ai.getAttacker();
+					maxHate = ai.getHate();
 				}
 			}
-			return mostHated;
+		}
+		result.add(mostHated);
+		
+		if (getAttackByList().contains(secondMostHated))
+			result.add(secondMostHated);
+		else
+			result.add(null);
+		return result;
+	}
+	
+	public List<L2Character> getHateList()
+	{
+		if (_aggroListPro.isEmpty() || isAlikeDead())
+			return null;
+		
+		List<L2Character> result = new ArrayList<>();
+		
+		synchronized (this)
+		{
+			for (AggroInfo ai : _aggroListPro.values())
+			{
+				if (ai == null)
+					continue;
+				
+				ai.checkHate(this);
+				
+				result.add(ai.getAttacker());
+			}
 		}
 		
-		/**
-		 * Return the 2 most hated L2Character of the L2Attackable _aggroList.
-		 */
-		public List<L2Character> get2MostHated()
+		return result;
+	}
+	
+	public int getHating(final L2Character target)
+	{
+		if (_aggroListPro.isEmpty() || target == null)
+			return 0;
+		
+		AggroInfo ai = _aggroListPro.get(target);
+		
+		if (ai == null)
+			return 0;
+		
+		if (ai.getAttacker() instanceof L2PcInstance && (((L2PcInstance) ai.getAttacker()).getAppearance().getInvisible() || ai.getAttacker().isInvul()))
 		{
-			if (_aggroListPro.isEmpty() || isAlikeDead())
-				return null;
-			
-			L2Character mostHated = null;
-			L2Character secondMostHated = null;
-			int maxHate = 0;
-			List<L2Character> result = new ArrayList<L2Character>();
-			
-			// While iterating over this map removing objects is not allowed
-			synchronized (this)
-			{
-				// Go through the aggroList of the L2Attackable
-				for (AggroInfo ai : _aggroListPro.values())
-				{
-					if (ai == null)
-						continue;
-					
-					if (ai.checkHate(this) > maxHate)
-					{
-						secondMostHated = mostHated;
-						mostHated = ai.getAttacker();
-						maxHate = ai.getHate();
-					}
-				}
-			}
-			result.add(mostHated);
-			
-			if (getAttackByList().contains(secondMostHated))
-				result.add(secondMostHated);
-			else
-				result.add(null);
-			return result;
+			// Remove Object Should Use This Method and Can be Blocked While Interating
+			_aggroListPro.remove(target);
+			return 0;
 		}
 		
-		public List<L2Character> getHateList()
+		if (!ai.getAttacker().isVisible())
 		{
-			if (_aggroListPro.isEmpty() || isAlikeDead())
-				return null;
-			
-			List<L2Character> result = new ArrayList<L2Character>();
-			
-			synchronized (this)
-			{
-				for (AggroInfo ai : _aggroListPro.values())
-				{
-					if (ai == null)
-						continue;
-					
-					ai.checkHate(this);
-					
-					result.add(ai.getAttacker());
-				}
-			}
-			
-			return result;
+			_aggroListPro.remove(target);
+			return 0;
 		}
 		
-		/**
-		 * Return the hate level of the L2Attackable against this L2Character contained in _aggroList.
-		 *
-		 * @param target The L2Character whose hate level must be returned
-		 */
-		public int getHating(final L2Character target)
+		if (ai.getAttacker().isAlikeDead())
 		{
-			if (_aggroListPro.isEmpty() || target == null)
-				return 0;
-			
-			AggroInfo ai = _aggroListPro.get(target);
-			
-			if (ai == null)
-				return 0;
-			
-			if (ai.getAttacker() instanceof L2PcInstance && (((L2PcInstance) ai.getAttacker()).getAppearance().getInvisible() || ai.getAttacker().isInvul()))
-			{
-				//Remove Object Should Use This Method and Can be Blocked While Interating
-				_aggroListPro.remove(target);
-				return 0;
-			}
-			
-			if (!ai.getAttacker().isVisible())
-			{
-				_aggroListPro.remove(target);
-				return 0;
-			}
-			
-			if (ai.getAttacker().isAlikeDead())
-			{
-				ai.stopHate();
-				return 0;
-			}
-			return ai.getHate();
+			ai.stopHate();
+			return 0;
 		}
-		
-		public L2PcInstance getAnimtated()
-		{
-			if(_type == AttackableType.ANIMATED_BOT)
-				return getActingPlayer();
-			else
-				throw new ClassCastException("Cannot cast L2Bot to a L2Attackable! StackTrace: ");
-		}
+		return ai.getHate();
+	}
+	
+	public L2PcInstance getAnimtated()
+	{
+		if (_type == AttackableType.ANIMATED_BOT)
+			return getActingPlayer();
+
+		throw new ClassCastException("Cannot cast L2Bot to a L2Attackable! StackTrace: ");
+	}
 	
 	public final class AggroInfo
 	{
@@ -437,14 +389,8 @@ public class L2Attackable extends L2Npc
 		{
 			return _attacker.getObjectId();
 		}
-	}	
-	/**
-	 * This class contains all RewardInfo of the L2Attackable against the any attacker L2Character, based on amount of damage done.<BR>
-	 * <BR>
-	 * <B><U> Data</U> :</B><BR>
-	 * <BR>
-	 * <li>attacker : The attaker L2Character concerned by this RewardInfo of this L2Attackable</li> <li>dmg : Total amount of damage done by the attacker to this L2Attackable (summon + own)</li>
-	 */
+	}
+	
 	protected static final class RewardInfo
 	{
 		protected L2Character _attacker;
@@ -480,9 +426,6 @@ public class L2Attackable extends L2Npc
 		}
 	}
 	
-	/**
-	 * This class contains all AbsorberInfo of the L2Attackable against the absorber L2Character. Data: absorber : The attacker L2Character concerned by this AbsorberInfo of this L2Attackable
-	 */
 	public static final class AbsorberInfo
 	{
 		public int _objId;
@@ -506,7 +449,7 @@ public class L2Attackable extends L2Npc
 			return false;
 		}
 		
-		public boolean isRegistered()
+		public static boolean isRegistered()
 		{
 			return isAbsorbed();
 		}
@@ -522,11 +465,7 @@ public class L2Attackable extends L2Npc
 			return _objId;
 		}
 	}
-
-	/**
-	 * This class is used to create item reward lists instead of creating item instances.<BR>
-	 * <BR>
-	 */
+	
 	public static final class RewardItem
 	{
 		protected int _itemId;
@@ -596,28 +535,13 @@ public class L2Attackable extends L2Npc
 	private static boolean _absorbed;
 	private final Map<Integer, AbsorberInfo> _absorbersList = new ConcurrentHashMap<>();
 	
-	/**
-	 * Constructor of L2Attackable (use L2Character and L2Npc constructor).<BR>
-	 * <BR>
-	 * <B><U> Actions</U> :</B><BR>
-	 * <BR>
-	 * <li>Call the L2Character constructor to set the _template of the L2Attackable (copy skills from template to object and link _calculators to NPC_STD_CALCULATOR)</li> <li>Set the name of the L2Attackable</li> <li>Create a RandomAnimation Task that will be launched after the calculated delay if
-	 * the server allow it</li><BR>
-	 * <BR>
-	 * @param objectId Identifier of the object to initialized
-	 * @param template Template to apply to the NPC
-	 */
 	public L2Attackable(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
 		_mustGiveExpSp = true;
 		
 	}
-
-	/**
-	 * Return the L2Character AI of the L2Attackable and if its null create a new one.<BR>
-	 * <BR>
-	 */
+	
 	@Override
 	public L2CharacterAI getAI()
 	{
@@ -674,23 +598,12 @@ public class L2Attackable extends L2Npc
 		getAI().setIntention(CtrlIntention.AI_INTENTION_CAST, skill, target);
 	}
 	
-	/**
-	 * Reduce the current HP of the L2Attackable.<BR>
-	 * <BR>
-	 * @param damage The HP decrease value
-	 * @param attacker The L2Character who attacks
-	 */
 	@Override
 	public void reduceCurrentHp(double damage, L2Character attacker)
 	{
 		reduceCurrentHp(damage, attacker, true);
 	}
 	
-	/**
-	 * Reduce the current HP of the L2Attackable, update its _aggroList and launch the doDie Task if necessary.
-	 * @param attacker The L2Character who attacks
-	 * @param awake The awake state (If True : stop sleeping)
-	 */
 	@Override
 	public void reduceCurrentHp(double damage, L2Character attacker, boolean awake)
 	{
@@ -724,7 +637,7 @@ public class L2Attackable extends L2Npc
 		// If this L2Attackable is a L2MonsterInstance and it has spawned minions, call its minions to battle
 		if (this instanceof L2MonsterInstance)
 		{
-            L2MonsterInstance master = (L2MonsterInstance) this;
+			L2MonsterInstance master = (L2MonsterInstance) this;
 			
 			if (master.hasMinions())
 				master.getMinionList().onAssist(this, attacker);
@@ -737,17 +650,6 @@ public class L2Attackable extends L2Npc
 		super.reduceCurrentHp(damage, attacker, awake);
 	}
 	
-	/**
-	 * Kill the L2Attackable (the corpse disappeared after 7 seconds), distribute rewards (EXP, SP, Drops...) and notify Quest Engine.<BR>
-	 * <BR>
-	 * <B><U> Actions</U> :</B><BR>
-	 * <BR>
-	 * <li>Distribute Exp and SP rewards to L2PcInstance (including Summon owner) that hit the L2Attackable and to their Party members</li> <li>Notify the Quest Engine of the L2Attackable death if necessary</li> <li>Kill the L2Npc (the corpse disappeared after 7 seconds)</li><BR>
-	 * <BR>
-	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : This method DOESN'T GIVE rewards to L2PetInstance</B></FONT><BR>
-	 * <BR>
-	 * @param killer The L2Character that has killed the L2Attackable
-	 */
 	@Override
 	public boolean doDie(L2Character killer)
 	{
@@ -807,18 +709,6 @@ public class L2Attackable extends L2Npc
 		}
 	}
 	
-	/**
-	 * Distribute Exp and SP rewards to L2PcInstance (including Summon owner) that hit the L2Attackable and to their Party members.<BR>
-	 * <BR>
-	 * <B><U> Actions</U> :</B><BR>
-	 * <BR>
-	 * <li>Get the L2PcInstance owner of the L2SummonInstance (if necessary) and L2Party in progress</li> <li>Calculate the Experience and SP rewards in function of the level difference</li> <li>Add Exp and SP rewards to L2PcInstance (including Summon penalty) and to Party members in the known area
-	 * of the last attacker</li><BR>
-	 * <BR>
-	 * <FONT COLOR=#FF0000><B> <U>Caution</U> : This method DOESN'T GIVE rewards to L2PetInstance</B></FONT><BR>
-	 * <BR>
-	 * @param lastAttacker The L2Character that has killed the L2Attackable
-	 */
 	@Override
 	protected void calculateRewards(L2Character lastAttacker)
 	{
@@ -879,7 +769,7 @@ public class L2Attackable extends L2Npc
 			}
 			
 			// Manage Base, Quests and Sweep drops of the L2Attackable
-			doItemDrop(maxDealer != null && maxDealer.isOnline()==1 ? maxDealer : lastAttacker);
+			doItemDrop(maxDealer != null && maxDealer.isOnline() == 1 ? maxDealer : lastAttacker);
 			
 			if (lastAttacker == null)
 				return;
@@ -889,7 +779,6 @@ public class L2Attackable extends L2Npc
 			
 			if (!rewards.isEmpty())
 			{
-				L2Party attackerParty;
 				long exp, exp_premium = 0;
 				int levelDiff, partyDmg, partyLvl, sp, sp_premium;
 				float partyMul, penalty;
@@ -930,49 +819,49 @@ public class L2Attackable extends L2Npc
 					if (attackerParty == null && isInSurroundingRegion(attacker))
 					{
 						// Calculate Exp and SP rewards
-							// Calculate the difference of level between this attacker (L2PcInstance or L2SummonInstance owner) and the L2Attackable
-							// mob = 24, atk = 10, diff = -14 (full xp)
-							// mob = 24, atk = 28, diff = 4 (some xp)
-							// mob = 24, atk = 50, diff = 26 (no xp)
-							levelDiff = attacker.getLevel() - getLevel();
-							
-							tmp = calculateExpAndSp(levelDiff, damage, attacker.getPremiumService());
-							exp = tmp[0];
-							exp *= 1 - penalty;
-							sp = tmp[1];
-							
-							if (isChampion())
+						// Calculate the difference of level between this attacker (L2PcInstance or L2SummonInstance owner) and the L2Attackable
+						// mob = 24, atk = 10, diff = -14 (full xp)
+						// mob = 24, atk = 28, diff = 4 (some xp)
+						// mob = 24, atk = 50, diff = 26 (no xp)
+						levelDiff = attacker.getLevel() - getLevel();
+						
+						tmp = calculateExpAndSp(levelDiff, damage, attacker.getPremiumService());
+						exp = tmp[0];
+						exp *= 1 - penalty;
+						sp = tmp[1];
+						
+						if (isChampion())
+						{
+							exp *= Config.CHAMPION_REWARDS;
+							sp *= Config.CHAMPION_REWARDS;
+						}
+						
+						// Check for an over-hit enabled strike
+						if (attacker instanceof L2PcInstance)
+						{
+							L2PcInstance player = (L2PcInstance) attacker;
+							if (isPrivateEventMob)
 							{
-								exp *= Config.CHAMPION_REWARDS;
-								sp *= Config.CHAMPION_REWARDS;
+								L2RaidEvent.expHandOut();
+								exp = L2RaidEvent.exp;
+								sp = L2RaidEvent.sp;
+								if (L2RaidEvent.checkPossibleReward())
+								{
+									L2RaidEvent.chooseReward(player);
+								}
+								deleteMe();
 							}
-							
-							// Check for an over-hit enabled strike
-							if (attacker instanceof L2PcInstance)
+							if (isOverhit() && attacker == getOverhitAttacker())
 							{
-								L2PcInstance player = (L2PcInstance) attacker;
-								if (this.isPrivateEventMob)
-								{
-									L2RaidEvent.expHandOut();
-									exp = L2RaidEvent.exp;
-									sp = L2RaidEvent.sp;
-									if (L2RaidEvent.checkPossibleReward())
-									{
-										L2RaidEvent.chooseReward(player);
-									}
-									this.deleteMe();
-								}
-								if (isOverhit() && attacker == getOverhitAttacker())
-								{
-									((L2PcInstance) attacker).sendPacket(SystemMessageId.OVER_HIT);
-									exp += calculateOverhitExp(exp);
-									exp_premium += calculateOverhitExp(exp_premium);
-								}
+								((L2PcInstance) attacker).sendPacket(SystemMessageId.OVER_HIT);
+								exp += calculateOverhitExp(exp);
+								exp_premium += calculateOverhitExp(exp_premium);
 							}
-							
-							// Distribute the Exp and SP between the L2PcInstance and its L2Summon
-							if (!attacker.isDead())
-								attacker.addExpAndSp(Math.round(exp), sp);
+						}
+						
+						// Distribute the Exp and SP between the L2PcInstance and its L2Summon
+						if (!attacker.isDead())
+							attacker.addExpAndSp(Math.round(exp), sp);
 					}
 					else
 					{
@@ -1071,7 +960,7 @@ public class L2Attackable extends L2Npc
 						tmp = calculateExpAndSp(levelDiff, partyDmg, 0);
 						exp = tmp[0];
 						sp = tmp[1];
-
+						
 						if (isChampion())
 						{
 							exp *= Config.CHAMPION_REWARDS;
@@ -1088,7 +977,7 @@ public class L2Attackable extends L2Npc
 						if (attacker instanceof L2PcInstance)
 						{
 							L2PcInstance player = (L2PcInstance) attacker;
-							if (this.isPrivateEventMob)
+							if (isPrivateEventMob)
 							{
 								L2RaidEvent.expHandOut();
 								exp = L2RaidEvent.exp;
@@ -1097,7 +986,7 @@ public class L2Attackable extends L2Npc
 								{
 									L2RaidEvent.chooseReward(player);
 								}
-								this.deleteMe();
+								deleteMe();
 							}
 							if (isOverhit() && attacker == getOverhitAttacker())
 							{
@@ -1108,7 +997,8 @@ public class L2Attackable extends L2Npc
 						
 						// Distribute Experience and SP rewards to L2PcInstance Party members in the known area of the last attacker
 						if (partyDmg > 0)
-							attackerParty.distributeXpAndSp(exp_premium, sp_premium, exp, sp, rewardedMembers, partyLvl);					}
+							attackerParty.distributeXpAndSp(exp_premium, sp_premium, exp, sp, rewardedMembers, partyLvl);
+					}
 				}
 			}
 			rewards = null;
@@ -1120,7 +1010,7 @@ public class L2Attackable extends L2Npc
 				e.printStackTrace();
 		}
 	}
-
+	
 	@Override
 	public void addAttackerToAttackByList(L2Character player)
 	{
@@ -1129,15 +1019,7 @@ public class L2Attackable extends L2Npc
 		
 		getAttackByList().add(player);
 	}
-
-	/**
-	 * Calculates quantity of items for specific drop according to current situation.
-	 * @param drop The L2DropData count is being calculated for
-	 * @param lastAttacker The L2PcInstance that has killed the L2Attackable
-	 * @param levelModifier level modifier in %'s (will be subtracted from drop chance)
-	 * @param isSweep if true, use spoil drop chance.
-	 * @return the RewardItem.
-	 */
+	
 	private RewardItem calculateRewardItem(L2PcInstance lastAttacker, L2DropData drop, int levelModifier, boolean isSweep)
 	{
 		// Get default drop chance
@@ -1168,11 +1050,10 @@ public class L2Attackable extends L2Npc
 			dropChance *= (lastAttacker.getPremiumService() == 1 ? Config.PREMIUM_RATE_DROP_ADENA : Config.RATE_DROP_ADENA);
 		else if (isSweep)
 			dropChance *= (lastAttacker.getPremiumService() == 1 ? Config.PREMIUM_RATE_DROP_SPOIL : Config.RATE_DROP_SPOIL);
+		else if (lastAttacker.getPremiumService() == 1)
+			dropChance *= isRaid() && !isRaidMinion() ? Config.PREMIUM_RATE_DROP_ITEMS_BY_RAID : Config.PREMIUM_RATE_DROP_ITEMS;
 		else
-			if (lastAttacker.getPremiumService() == 1)
-				dropChance *= isRaid() && !isRaidMinion() ? Config.PREMIUM_RATE_DROP_ITEMS_BY_RAID : Config.PREMIUM_RATE_DROP_ITEMS;
-			else	
-				dropChance *= isRaid() && !isRaidMinion() ? Config.RATE_DROP_ITEMS_BY_RAID : Config.RATE_DROP_ITEMS;
+			dropChance *= isRaid() && !isRaidMinion() ? Config.RATE_DROP_ITEMS_BY_RAID : Config.RATE_DROP_ITEMS;
 		
 		if (isChampion())
 			dropChance *= Config.CHAMPION_REWARDS;
@@ -1214,14 +1095,6 @@ public class L2Attackable extends L2Npc
 		return null;
 	}
 	
-	/**
-	 * Calculates quantity of items for specific drop CATEGORY according to current situation <br>
-	 * Only a max of ONE item from a category is allowed to be dropped.
-	 * @param lastAttacker The L2PcInstance that has killed the L2Attackable
-	 * @param categoryDrops The category to make checks on.
-	 * @param levelModifier level modifier in %'s (will be subtracted from drop chance)
-	 * @return the RewardItem.
-	 */
 	private RewardItem calculateCategorizedRewardItem(L2PcInstance lastAttacker, L2DropCategory categoryDrops, int levelModifier)
 	{
 		if (categoryDrops == null)
@@ -1274,11 +1147,10 @@ public class L2Attackable extends L2Npc
 			
 			if (drop.getItemId() == 57)
 				dropChance *= (lastAttacker.getPremiumService() == 1 ? Config.PREMIUM_RATE_DROP_ADENA : Config.RATE_DROP_ADENA);
+			else if (lastAttacker.getPremiumService() == 1)
+				dropChance *= isRaid() && !isRaidMinion() ? Config.PREMIUM_RATE_DROP_ITEMS_BY_RAID : Config.PREMIUM_RATE_DROP_ITEMS;
 			else
-				if (lastAttacker.getPremiumService() == 1)
-					dropChance *= isRaid() && !isRaidMinion() ? Config.PREMIUM_RATE_DROP_ITEMS_BY_RAID : Config.PREMIUM_RATE_DROP_ITEMS;
-				else	
-					dropChance *= isRaid() && !isRaidMinion() ? Config.RATE_DROP_ITEMS_BY_RAID : Config.RATE_DROP_ITEMS;
+				dropChance *= isRaid() && !isRaidMinion() ? Config.RATE_DROP_ITEMS_BY_RAID : Config.RATE_DROP_ITEMS;
 			
 			if (isChampion())
 				dropChance *= Config.CHAMPION_REWARDS;
@@ -1319,10 +1191,6 @@ public class L2Attackable extends L2Npc
 		return null;
 	}
 	
-	/**
-	 * @param lastAttacker The L2PcInstance that has killed the L2Attackable
-	 * @return the level modifier for drop
-	 */
 	private int calculateLevelModifierForDrop(L2PcInstance lastAttacker)
 	{
 		if (Config.DEEPBLUE_DROP_RULES)
@@ -1343,42 +1211,12 @@ public class L2Attackable extends L2Npc
 		}
 		return 0;
 	}
-		
-	/**
-	 * Manage Base & Quests drops of L2Attackable (called by calculateRewards).<BR>
-	 * <BR>
-	 * <B><U> Actions</U> : </B><BR>
-	 * <BR>
-	 * <li>Get all possible drops of this L2Attackable from L2NpcTemplate and add it Quest drops</li> <li>For each possible drops (base + quests), calculate which one must be dropped (random)</li> <li>Get each Item quantity dropped (random)</li> <li>Create this or these L2ItemInstance corresponding
-	 * to each Item Identifier dropped</li> <li>If the autoLoot mode is actif and if the L2Character that has killed the L2Attackable is a L2PcInstance, give this or these Item(s) to the L2PcInstance that has killed the L2Attackable</li> <li>If the autoLoot mode isn't actif or if the L2Character
-	 * that has killed the L2Attackable is not a L2PcInstance, add this or these Item(s) in the world as a visible object at the position where mob was last</li><BR>
-	 * <BR>
-	 * @param mainDamageDealer The L2Character that made the most damage.
-	 */
+	
 	public void doItemDrop(L2Character mainDamageDealer)
 	{
 		doItemDrop(getTemplate(), mainDamageDealer);
 	}
 	
-	/**
-	 * Manage Base, Quests and Special Events drops of L2Attackable (called by calculateRewards).
-	 *
-	 * Concept:
-	 * During a Special Event all L2Attackable can drop extra Items.
-	 * Those extra Items are defined in the table allNpcDateDrops of the EventDroplist.
-	 * Each Special Event has a start and end date to stop to drop extra Items automaticaly.
-	 *
-	 * Actions:
-	 * Manage drop of Special Events created by GM for a defined period
-	 * Get all possible drops of this L2Attackable from L2NpcTemplate and add it Quest drops
-	 * For each possible drops (base + quests), calculate which one must be dropped (random)
-	 * Get each Item quantity dropped (random)
-	 * Create this or these L2ItemInstance corresponding to each Item Identifier dropped
-	 * If the autoLoot mode is actif and if the L2Character that has killed the L2Attackable is a L2PcInstance, Give the item(s) to the L2PcInstance that has killed the L2Attackable
-	 * If the autoLoot mode isn't actif or if the L2Character that has killed the L2Attackable is not a L2PcInstance, add this or these item(s) in the world as a visible object at the position where mob was last
-	 *
-	 * @param lastAttacker The L2Character that has killed the L2Attackable
-	 */
 	public void doItemDrop(L2NpcTemplate npcTemplate, L2Character lastAttacker)
 	{
 		L2PcInstance player = null;
@@ -1393,10 +1231,10 @@ public class L2Attackable extends L2Npc
 		
 		if (player == null)
 			return; // Don't drop anything if the last attacker or ownere isn't
-					// L2PcInstance
-			
-		final int levelModifier = calculateLevelModifierForDrop(player);          // level
-
+		// L2PcInstance
+		
+		final int levelModifier = calculateLevelModifierForDrop(player); // level
+		
 		// Check the drop of a cursed weapon
 		if (levelModifier == 0 && player.getLevel() > 20)
 		{
@@ -1404,89 +1242,89 @@ public class L2Attackable extends L2Npc
 		}
 		
 		// now throw all categorized drops and handle spoil.
-		if (npcTemplate.getDropData() != null)		
-		// now throw all categorized drops and handle spoil.
-		for (L2DropCategory cat : npcTemplate.getDropData())
-		{
-			RewardItem item = null;
-			if (cat.isSweep())
+		if (npcTemplate.getDropData() != null)
+			// now throw all categorized drops and handle spoil.
+			for (L2DropCategory cat : npcTemplate.getDropData())
 			{
-				// according to sh1ny, seeded mobs CAN be spoiled and swept.
-				if (isSpoil()/* && !isSeeded() */)
+				RewardItem item = null;
+				if (cat.isSweep())
 				{
-					ArrayList<RewardItem> sweepList = new ArrayList<RewardItem>();
-					
-					for (L2DropData drop : cat.getAllDrops())
+					// according to sh1ny, seeded mobs CAN be spoiled and swept.
+					if (isSpoil())
 					{
-						item = calculateRewardItem(player, drop, levelModifier, true);
-						if (item == null)
+						ArrayList<RewardItem> sweepList = new ArrayList<>();
+						
+						for (L2DropData drop : cat.getAllDrops())
+						{
+							item = calculateRewardItem(player, drop, levelModifier, true);
+							if (item == null)
+							{
+								continue;
+							}
+							
+							if (Config.DEBUG)
+							{
+								_log.log(Level.FINE, getClass().getName() + ": item id to spoil: " + item.getItemId() + " amount: " + item.getCount());
+							}
+							sweepList.add(item);
+						}
+						
+						// Set the table _sweepItems of this L2Attackable
+						if (!sweepList.isEmpty())
+						{
+							_sweepItems = sweepList.toArray(new RewardItem[sweepList.size()]);
+						}
+					}
+				}
+				else
+				{
+					if (isSeeded())
+					{
+						L2DropData drop = cat.dropSeedAllowedDropsOnly();
+						if (drop == null)
 						{
 							continue;
 						}
 						
+						item = calculateRewardItem(player, drop, levelModifier, false);
+					}
+					else
+					{
+						item = calculateCategorizedRewardItem(player, cat, levelModifier);
+					}
+					
+					if (item != null)
+					{
 						if (Config.DEBUG)
 						{
-							_log.log(Level.FINE, getClass().getName() + ": item id to spoil: " + item.getItemId() + " amount: " + item.getCount());
+							_log.fine("Item id to drop: " + item.getItemId() + " amount: " + item.getCount());
 						}
-						sweepList.add(item);
-					}
-					
-					// Set the table _sweepItems of this L2Attackable
-					if (!sweepList.isEmpty())
-					{
-						_sweepItems = sweepList.toArray(new RewardItem[sweepList.size()]);
-					}
-				}
-			}
-			else
-			{
-				if (isSeeded())
-				{
-					L2DropData drop = cat.dropSeedAllowedDropsOnly();
-					if (drop == null)
-					{
-						continue;
-					}
-					
-					item = calculateRewardItem(player, drop, levelModifier, false);
-				}
-				else
-				{
-					item = calculateCategorizedRewardItem(player, cat, levelModifier);
-				}
-				
-				if (item != null)
-				{
-					if (Config.DEBUG)
-					{
-						_log.fine("Item id to drop: " + item.getItemId() + " amount: " + item.getCount());
-					}
-					
-					// Check if the autoLoot mode is active
-					if (Config.AUTO_LOOT && !(this instanceof L2RaidBossInstance) && !(this instanceof L2MinionInstance) && !(this instanceof L2GrandBossInstance))
-					{
-						player.doAutoLoot(this, item); // Give this or these Item(s) to the L2PcInstance that has killed the L2Attackable
-					}
-					else if (Config.AUTO_LOOT_RAID && this instanceof L2RaidBossInstance && !(this instanceof L2MinionInstance))
-						player.doAutoLoot(this, item);
-					else if (Config.AUTO_LOOT_GRAND && this instanceof L2GrandBossInstance)
-						player.doAutoLoot(this, item);
-					else
-						dropItem(player, item); // drop the item on the ground
 						
-					// Broadcast message if RaidBoss was defeated
-					// if(this instanceof L2RaidBossInstance)
-					if (isRaid() && !isRaidMinion())
-					{
-						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DIED_DROPPED_S3_S2);
-						sm.addString(getName());
-						sm.addItemName(item.getItemId());
-						sm.addNumber(item.getCount());
-						broadcastPacket(sm);
+						// Check if the autoLoot mode is active
+						if (Config.AUTO_LOOT && !(this instanceof L2RaidBossInstance) && !(this instanceof L2MinionInstance) && !(this instanceof L2GrandBossInstance))
+						{
+							player.doAutoLoot(this, item); // Give this or these Item(s) to the L2PcInstance that has killed the L2Attackable
+						}
+						else if (Config.AUTO_LOOT_RAID && this instanceof L2RaidBossInstance && !(this instanceof L2MinionInstance))
+							player.doAutoLoot(this, item);
+						else if (Config.AUTO_LOOT_GRAND && this instanceof L2GrandBossInstance)
+							player.doAutoLoot(this, item);
+						else
+							dropItem(player, item); // drop the item on the ground
+							
+						// Broadcast message if RaidBoss was defeated
+						// if(this instanceof L2RaidBossInstance)
+						if (isRaid() && !isRaidMinion())
+						{
+							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_DIED_DROPPED_S3_S2);
+							sm.addString(getName());
+							sm.addItemName(item.getItemId());
+							sm.addNumber(item.getCount());
+							broadcastPacket(sm);
+						}
 					}
 				}
 			}
-		}
 		
 		// Apply Special Item drop with rnd qty for champions
 		if (isChampion() && Math.abs(getLevel() - player.getLevel()) <= Config.CHAMPION_SPCL_LVL_DIFF && !getTemplate().isQuestMonster() && Config.CHAMPION_SPCL_CHANCE > 0 && Rnd.get(100) < Config.CHAMPION_SPCL_CHANCE)
@@ -1536,7 +1374,7 @@ public class L2Attackable extends L2Npc
 					random = Rnd.get(100);
 					if (random < Config.RATE_DROP_COMMON_HERBS)
 					{
-						RewardItem item = null;
+						item = null;
 						if (i == 0)
 						{
 							item = new RewardItem(8606, 1); // Herb of Power
@@ -1548,7 +1386,7 @@ public class L2Attackable extends L2Npc
 						if (i == 2)
 						{
 							item = new RewardItem(8610, 1); // Herb of Critical
-															// Attack
+							// Attack
 						}
 						
 						if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
@@ -1586,24 +1424,24 @@ public class L2Attackable extends L2Npc
 					random = Rnd.get(100);
 					if (random < Config.RATE_DROP_COMMON_HERBS)
 					{
-						RewardItem item = null;
+						item2 = null;
 						if (i == 0)
 						{
-							item = new RewardItem(8607, 1); // Herb of Magic
+							item2 = new RewardItem(8607, 1); // Herb of Magic
 						}
 						if (i == 1)
 						{
-							item = new RewardItem(8609, 1); // Herb of Casting
-															// Speed
+							item2 = new RewardItem(8609, 1); // Herb of Casting
+							// Speed
 						}
 						
 						if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 						{
-							player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
+							player.addItem("Loot", item2.getItemId(), item2.getCount(), this, true);
 						}
 						else
 						{
-							dropItem(player, item);
+							dropItem(player, item2);
 						}
 						break;
 					}
@@ -1651,7 +1489,7 @@ public class L2Attackable extends L2Npc
 				if (random < Config.RATE_DROP_GREATER_HERBS)
 				{
 					RewardItem item = new RewardItem(8601, 1); // Greater Herb
-																// of Life
+					// of Life
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
@@ -1669,7 +1507,7 @@ public class L2Attackable extends L2Npc
 				if (random < Config.RATE_DROP_SUPERIOR_HERBS)
 				{
 					RewardItem item = new RewardItem(8602, 1); // Superior Herb
-																// of Life
+					// of Life
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
@@ -1704,7 +1542,7 @@ public class L2Attackable extends L2Npc
 				if (random < Config.RATE_DROP_GREATER_HERBS)
 				{
 					RewardItem item = new RewardItem(8604, 1); // Greater Herb
-																// of Mana
+					// of Mana
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
@@ -1722,7 +1560,7 @@ public class L2Attackable extends L2Npc
 				if (random < Config.RATE_DROP_SUPERIOR_HERBS)
 				{
 					RewardItem item = new RewardItem(8605, 1); // Superior Herb
-																// of Mana
+					// of Mana
 					if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 					{
 						player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
@@ -1737,7 +1575,7 @@ public class L2Attackable extends L2Npc
 			random = Rnd.get(100);
 			if (random < Config.RATE_DROP_COMMON_HERBS)
 			{
-				RewardItem item = new RewardItem(8611, 1);  // Herb of Speed
+				RewardItem item = new RewardItem(8611, 1); // Herb of Speed
 				if (Config.AUTO_LOOT && Config.AUTO_LOOT_HERBS)
 				{
 					player.addItem("Loot", item.getItemId(), item.getCount(), this, true);
@@ -1751,16 +1589,11 @@ public class L2Attackable extends L2Npc
 		
 		if (Rnd.get(100) <= Config.ENCHANT_BOT_CHANCE && Config.ALLOW_PRIVATE_ANTI_BOT)
 		{
-			PrivateAntiBot.privateantibot(player);//Anti bot security question
+			PrivateAntiBot.privateantibot(player);// Anti bot security question
 		}
 		
 	}
-	/**
-	 * Drop reward item.
-	 * @param mainDamageDealer The player who made highest damage.
-	 * @param item The RewardItem.
-	 * @return the dropped item instance.
-	 */
+	
 	public L2ItemInstance dropItem(L2PcInstance mainDamageDealer, RewardItem item)
 	{
 		int randDropLim = 70;
@@ -1802,51 +1635,31 @@ public class L2Attackable extends L2Npc
 		return dropItem(lastAttacker, new RewardItem(itemId, itemCount));
 	}
 	
-	/**
-	 * @return the active weapon of this L2Attackable (= null).
-	 */
 	public L2ItemInstance getActiveWeapon()
 	{
 		return null;
 	}
 	
-	/**
-	 * @return True if the _aggroList of this L2Attackable is Empty.
-	 */
 	public boolean gotNoTarget()
 	{
 		return _aggroListPro.isEmpty();
 	}
 	
-	/**
-	 * @param player The L2Character searched in the _aggroList of the L2Attackable
-	 * @return True if the _aggroList of this L2Attackable contains the L2Character.
-	 */
 	public boolean containsTarget(L2Character player)
 	{
 		return _aggroListPro.containsKey(player);
 	}
 	
-	/**
-	 * Clear the _aggroList of the L2Attackable.<BR>
-	 * <BR>
-	 */
 	public void clearAggroList()
 	{
 		_aggroListPro.clear();
 	}
 	
-	/**
-	 * @return True if a Dwarf use Sweep on the L2Attackable and if item can be spoiled.
-	 */
 	public boolean isSweepActive()
 	{
 		return _sweepItems != null;
 	}
 	
-	/**
-	 * @return array containing all L2ItemInstance that can be spoiled.
-	 */
 	public synchronized RewardItem[] takeSweep()
 	{
 		RewardItem[] sweep = _sweepItems;
@@ -1854,9 +1667,6 @@ public class L2Attackable extends L2Npc
 		return sweep;
 	}
 	
-	/**
-	 * @return array containing all L2ItemInstance that can be harvested.
-	 */
 	public synchronized RewardItem[] takeHarvest()
 	{
 		RewardItem[] harvest = _harvestItems;
@@ -1864,20 +1674,11 @@ public class L2Attackable extends L2Npc
 		return harvest;
 	}
 	
-	/**
-	 * Set the over-hit flag on the L2Attackable.
-	 * @param status The status of the over-hit flag
-	 */
 	public void overhitEnabled(boolean status)
 	{
 		_overhit = status;
 	}
 	
-	/**
-	 * Set the over-hit values like the attacker who did the strike and the amount of damage done by the skill.
-	 * @param attacker The L2Character who hit on the L2Attackable using the over-hit enabled skill
-	 * @param damage The ammount of damage done by the over-hit enabled skill on the L2Attackable
-	 */
 	public void setOverhitValues(L2Character attacker, double damage)
 	{
 		// Calculate the over-hit damage
@@ -1897,53 +1698,31 @@ public class L2Attackable extends L2Npc
 		_overhitAttacker = attacker;
 	}
 	
-	/**
-	 * Return the L2Character who hit on the L2Attackable using an over-hit enabled skill.
-	 * @return L2Character attacker
-	 */
 	public L2Character getOverhitAttacker()
 	{
 		return _overhitAttacker;
 	}
 	
-	/**
-	 * Return the amount of damage done on the L2Attackable using an over-hit enabled skill.
-	 * @return double damage
-	 */
 	public double getOverhitDamage()
 	{
 		return _overhitDamage;
 	}
 	
-	/**
-	 * @return True if the L2Attackable was hit by an over-hit enabled skill.
-	 */
 	public boolean isOverhit()
 	{
 		return _overhit;
 	}
 	
-	/**
-	 * Activate the absorbed soul condition on the L2Attackable.
-	 */
 	public void absorbSoul()
 	{
 		_absorbed = true;
 	}
 	
-	/**
-	 * @return True if the L2Attackable had his soul absorbed.
-	 */
 	public static boolean isAbsorbed()
 	{
 		return _absorbed;
 	}
 	
-	/**
-	 * Adds an attacker that successfully absorbed the soul of this L2Attackable into the _absorbersList. Params: attacker - a valid L2PcInstance condition - an integer indicating the event when mob dies. This should be: = 0 - "the crystal scatters"; = 1 -
-	 * "the crystal failed to absorb. nothing happens"; = 2 - "the crystal resonates because you got more than 1 crystal on you"; = 3 - "the crystal cannot absorb the soul because the mob level is too low"; = 4 - "the crystal successfuly absorbed the soul";
-	 * @param attacker The L2PcInstance who attacked the monster.
-	 */
 	public void addAbsorber(L2PcInstance attacker)
 	{
 		// If we have no _absorbersList initiated, do it
@@ -1976,16 +1755,9 @@ public class L2Attackable extends L2Npc
 		return _absorbersList;
 	}
 	
-	/**
-	 * Calculate the Experience and SP to distribute to attacker (L2PcInstance, L2SummonInstance or L2Party) of the L2Attackable.<BR>
-	 * <BR>
-	 * @param diff The difference of level between attacker (L2PcInstance, L2SummonInstance or L2Party) and the L2Attackable
-	 * @param damage The damages given by the attacker (L2PcInstance, L2SummonInstance or L2Party)
-	 * @return an array consisting of xp and sp values.
-	 */
 	private int[] calculateExpAndSp(int diff, int damage, int IsPremium)
 	{
-
+		
 		double xp;
 		double sp;
 		
@@ -2027,7 +1799,8 @@ public class L2Attackable extends L2Npc
 		
 		int[] tmp =
 		{
-		(int) xp, (int) sp
+			(int) xp,
+			(int) sp
 		};
 		
 		return tmp;
@@ -2084,21 +1857,12 @@ public class L2Attackable extends L2Npc
 		}
 	}
 	
-	/**
-	 * Sets state of the mob to seeded.
-	 * @param seeder
-	 */
 	public void setSeeded(L2PcInstance seeder)
 	{
 		if (_seedType != 0 && _seederObjId == seeder.getObjectId())
 			setSeeded(_seedType, seeder.getLevel());
 	}
 	
-	/**
-	 * Sets the seed parametrs, but not the seed state
-	 * @param id - id of the seed
-	 * @param seeder - player who is sowind the seed
-	 */
 	public void setSeeded(int id, L2PcInstance seeder)
 	{
 		if (_seedType == 0)
@@ -2170,11 +1934,6 @@ public class L2Attackable extends L2Npc
 		return _seedType > 0;
 	}
 	
-	/**
-	 * Check if the server allows Random Animation.<BR>
-	 * <BR>
-	 * This is located here because L2Monster and L2FriendlyMob both extend this class. The other non-pc instances extend either L2Npc or L2MonsterInstance.
-	 */
 	@Override
 	public boolean hasRandomAnimation()
 	{
@@ -2226,9 +1985,6 @@ public class L2Attackable extends L2Npc
 			_monster = monster;
 		}
 		
-		/**
-		 * @see java.lang.Runnable#run()
-		 */
 		@Override
 		public void run()
 		{
@@ -2245,8 +2001,8 @@ public class L2Attackable extends L2Npc
 	
 	public boolean returnHome()
 	{
-
-		if (hasAI() && !isDead() && !isInCombat()  && getMoveSpeed() > 0 && getSpawn() != null && !isInsideRadius(getSpawn().getLocx(), getSpawn().getLocy(), Config.MAX_DRIFT_RANGE, false))
+		
+		if (hasAI() && !isDead() && !isInCombat() && getMoveSpeed() > 0 && getSpawn() != null && !isInsideRadius(getSpawn().getLocx(), getSpawn().getLocy(), Config.MAX_DRIFT_RANGE, false))
 		{
 			clearAggroList();
 			setIsReturningToSpawnPoint(true);
@@ -2258,28 +2014,18 @@ public class L2Attackable extends L2Npc
 		return false;
 	}
 	
-	/** Return True if the L2Character is RaidBoss or his minion. */
 	@Override
 	public boolean isRaid()
 	{
 		return _isRaid;
 	}
 	
-	/**
-	 * Set this Npc as a Raid instance.<BR>
-	 * <BR>
-	 * @param isRaid
-	 */
 	@Override
 	public void setIsRaid(boolean isRaid)
 	{
 		_isRaid = isRaid;
 	}
 	
-	/**
-	 * Set this Npc as a Minion instance.
-	 * @param val
-	 */
 	@Override
 	public void setIsRaidMinion(boolean val)
 	{
@@ -2298,9 +2044,6 @@ public class L2Attackable extends L2Npc
 		return getLeader() != null;
 	}
 	
-	/**
-	 * @return leader of this minion or null.
-	 */
 	public L2Attackable getLeader()
 	{
 		return null;
@@ -2314,7 +2057,8 @@ public class L2Attackable extends L2Npc
 		
 		super.moveToLocation(x, y, z, offset);
 	}
-private boolean _canReturnToSpawnPoint = true;
+	
+	private boolean _canReturnToSpawnPoint = true;
 	
 	public final boolean canReturnToSpawnPoint()
 	{
@@ -2325,19 +2069,12 @@ private boolean _canReturnToSpawnPoint = true;
 	{
 		_canReturnToSpawnPoint = value;
 	}
+	
 	public boolean isGuard()
 	{
 		return false;
 	}
 	
-	/**
-	 * Calculate the leveling chance of Soul Crystals based on the attacker that
-	 * killed this L2Attackable
-	 * 
-	 * @param attacker
-	 *        The player that last killed this L2Attackable
-	 *        $ Rewrite 06.12.06 - Yesod
-	 */
 	private void levelSoulCrystals(L2Character attacker)
 	{
 		// Only L2PcInstance can absorb a soul
@@ -2376,7 +2113,7 @@ private boolean _canReturnToSpawnPoint = true;
 		{
 			// Fail if this L2Attackable isn't absorbed or there's no one in its
 			// _absorbersList
-			if (!isAbsorbed() /* || _absorbersList == null */)
+			if (!isAbsorbed())
 			{
 				resetAbsorbList();
 				return;
@@ -2423,7 +2160,7 @@ private boolean _canReturnToSpawnPoint = true;
 		// 4- Everything is correct, the crystal level up. A sound event is
 		// played. (32.5%)
 		
-		List<L2PcInstance> players = new ArrayList<L2PcInstance>();
+		List<L2PcInstance> players = new ArrayList<>();
 		
 		if (absorbType == L2NpcTemplate.AbsorbCrystalType.FULL_PARTY && ((attacker instanceof L2Summon) ? ((L2Summon) attacker).getOwner() : (L2PcInstance) attacker).isInParty())
 		{
@@ -2499,12 +2236,12 @@ private boolean _canReturnToSpawnPoint = true;
 								// level crystals
 								if (crystalLVL > 9)
 								{
-									for (int i = 0; i < SoulCrystal.HighSoulConvert.length; i++)
+									for (int[] element : SoulCrystal.HighSoulConvert)
 										// Get the next stage above 10 using
 										// array.
-										if (id == SoulCrystal.HighSoulConvert[i][0])
+										if (id == element[0])
 										{
-											crystalNEW = SoulCrystal.HighSoulConvert[i][1];
+											crystalNEW = element[1];
 											break;
 										}
 								}
@@ -2575,17 +2312,6 @@ private boolean _canReturnToSpawnPoint = true;
 				continue;
 			}
 			
-			/*
-			 * TODO: Confirm boss chance for crystal level up and for crystal
-			 * breaking.
-			 * It is known that bosses with FULL_PARTY crystal level ups have
-			 * 100% success rate, but this is not
-			 * the case for the other bosses (one-random or last-hit).
-			 * While not confirmed, it is most reasonable that crystals leveled
-			 * up at bosses will never break.
-			 * Also, the chance to level up is guessed as around 70% if not
-			 * higher.
-			 */
 			int chanceLevelUp = isBossMob ? 70 : SoulCrystal.LEVEL_CHANCE;
 			
 			// If succeeds or it is a full party absorb, level up the crystal.
@@ -2659,6 +2385,9 @@ private boolean _canReturnToSpawnPoint = true;
 	}
 	
 	private boolean _mustGiveExpSp;
+	private L2Party attackerParty;
+	private RewardItem item;
+	private RewardItem item2;
 	
 	public synchronized void setMustRewardExpSp(boolean value)
 	{

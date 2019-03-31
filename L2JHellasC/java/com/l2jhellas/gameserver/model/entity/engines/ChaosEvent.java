@@ -1,22 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.entity.engines;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ScheduledFuture;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -32,10 +14,10 @@ import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
-/**
- * @author Anarchy
- * Implemented to zodiac by Boorinio
- */
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ScheduledFuture;
+
 public class ChaosEvent
 {
 	public static List<L2PcInstance> _players = new ArrayList<>();
@@ -72,7 +54,7 @@ public class ChaosEvent
 	public static void cleanPlayers()
 	{
 		for (L2PcInstance player : _players)
-		{			
+		{
 			player.isinZodiac = false;
 			player.ZodiacPoints = 0;
 			_topkills = 0;
@@ -82,7 +64,7 @@ public class ChaosEvent
 	
 	public static void registerToChaos(L2PcInstance player)
 	{
-		if(player == null)
+		if (player == null)
 			return;
 		if (!registerToChaosOk(player))
 		{
@@ -100,7 +82,7 @@ public class ChaosEvent
 	
 	public static void addSuperHaste(L2PcInstance player)
 	{
-		if(player == null)
+		if (player == null)
 			return;
 		final L2Skill skill = SkillTable.getInstance().getInfo(7029, 4);
 		if (skill != null)
@@ -262,63 +244,62 @@ public class ChaosEvent
 			killer.ZodiacPoints++;
 	}
 	
-    private static ScheduledFuture<?> _BossChecker;
-   	
-    static class checkBossZone implements Runnable
-     {
-
+	private static ScheduledFuture<?> _BossChecker;
+	
+	static class checkBossZone implements Runnable
+	{
+		
 		@Override
 		public void run()
-		{     
+		{
 			
-			if(_isChaosActive)
+			if (_isChaosActive)
 			{
-			try
-			{
-			  for(L2PcInstance player: _players)
-			  {
-					
-				if(player==null)
-					continue;
-				
-				for (L2BossZone zone : GrandBossManager.getInstance().getZones())
+				try
 				{
-					if(player.isinZodiac && zone.isCharacterInZone(player));
+					for (L2PcInstance player : _players)
 					{
-					   zone.removePlayer(player);
-					   player.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
-					}											
+						
+						if (player == null)
+							continue;
+						
+						for (L2BossZone zone : GrandBossManager.getInstance().getZones())
+						{
+							if (player.isinZodiac && zone.isCharacterInZone(player))
+							{
+								zone.removePlayer(player);
+								player.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
+							}
+						}
+					}
+					
 				}
-			  }
-			  
-			}
-			catch (Exception e)
-			{
-				if (Config.DEVELOPER)
+				catch (Exception e)
 				{
-					e.printStackTrace();
+					if (Config.DEVELOPER)
+					{
+						e.printStackTrace();
+					}
 				}
-			}
-			
-			StartcheckBoss();
-			
+				
+				StartcheckBoss();
+				
 			}
 			else
 				stopcheckBoss();
-		
 			
-     }
-     }
-     
-     static void stopcheckBoss()
-     {
-  	   if(_BossChecker!=null)
-  		 _BossChecker.cancel(true);
-  	 _BossChecker = null;
-     }
-     
-     static void StartcheckBoss()
-     {
-    	 _BossChecker = ThreadPoolManager.getInstance().scheduleGeneral(new checkBossZone(), seconds* 1000);	
-     }
+		}
+	}
+	
+	static void stopcheckBoss()
+	{
+		if (_BossChecker != null)
+			_BossChecker.cancel(true);
+		_BossChecker = null;
+	}
+	
+	static void StartcheckBoss()
+	{
+		_BossChecker = ThreadPoolManager.getInstance().scheduleGeneral(new checkBossZone(), seconds * 1000);
+	}
 }

@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.network.clientpackets;
-
-import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Clan;
@@ -24,19 +8,21 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListDelete;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
+import java.util.logging.Logger;
+
 public final class RequestOustPledgeMember extends L2GameClientPacket
 {
 	static Logger _log = Logger.getLogger(RequestOustPledgeMember.class.getName());
 	private static final String _C__27_REQUESTOUSTPLEDGEMEMBER = "[C] 27 RequestOustPledgeMember";
-
+	
 	private String _target;
-
+	
 	@Override
 	protected void readImpl()
 	{
 		_target = readS();
 	}
-
+	
 	@Override
 	protected void runImpl()
 	{
@@ -60,9 +46,9 @@ public final class RequestOustPledgeMember extends L2GameClientPacket
 			activeChar.sendPacket(SystemMessageId.YOU_CANNOT_DISMISS_YOURSELF);
 			return;
 		}
-
+		
 		L2Clan clan = activeChar.getClan();
-
+		
 		L2ClanMember member = clan.getClanMember(_target);
 		if (member == null)
 		{
@@ -74,29 +60,29 @@ public final class RequestOustPledgeMember extends L2GameClientPacket
 			activeChar.sendPacket(SystemMessageId.CLAN_MEMBER_CANNOT_BE_DISMISSED_DURING_COMBAT);
 			return;
 		}
-
+		
 		// this also updates the database
 		clan.removeClanMember(_target, System.currentTimeMillis() + Config.ALT_CLAN_JOIN_DAYS * 86400000L); // 24*60*60*1000 = 86400000
 		clan.setCharPenaltyExpiryTime(System.currentTimeMillis() + Config.ALT_CLAN_JOIN_DAYS * 86400000L); // 24*60*60*1000 = 86400000
 		clan.updateClanInDB();
-
+		
 		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.CLAN_MEMBER_S1_EXPELLED);
 		sm.addString(member.getName());
 		clan.broadcastToOnlineMembers(sm);
 		sm = null;
 		activeChar.sendPacket(SystemMessageId.YOU_HAVE_SUCCEEDED_IN_EXPELLING_CLAN_MEMBER);
 		activeChar.sendPacket(SystemMessageId.YOU_MUST_WAIT_BEFORE_ACCEPTING_A_NEW_MEMBER);
-
+		
 		// Remove the Player From the Member list
 		clan.broadcastToOnlineMembers(new PledgeShowMemberListDelete(_target));
-
+		
 		if (member.isOnline())
 		{
 			L2PcInstance player = member.getPlayerInstance();
 			player.sendPacket(SystemMessageId.CLAN_MEMBERSHIP_TERMINATED);
 		}
 	}
-
+	
 	@Override
 	public String getType()
 	{

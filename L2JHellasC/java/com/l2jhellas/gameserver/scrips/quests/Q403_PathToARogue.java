@@ -31,7 +31,7 @@ public class Q403_PathToARogue extends Quest
 	
 	public Q403_PathToARogue()
 	{
-		super(403,qn, "Path to a Rogue");
+		super(403, qn, "Path to a Rogue");
 		
 		setItemsIds(BEZIQUE_LETTER, NETI_BOW, NETI_DAGGER, SPARTOI_BONES, HORSESHOE_OF_LIGHT, MOST_WANTED_LIST, STOLEN_JEWELRY, STOLEN_TOMES, STOLEN_RING, STOLEN_NECKLACE);
 		
@@ -150,7 +150,7 @@ public class Q403_PathToARogue extends Quest
 	}
 	
 	@Override
-	public String onKill( L2Npc npc, L2PcInstance player, boolean isPet)
+	public String onKill(L2Npc npc, L2PcInstance player, boolean isPet)
 	{
 		QuestState st = checkPlayerState(player, npc, STATE_STARTED);
 		if (st == null)

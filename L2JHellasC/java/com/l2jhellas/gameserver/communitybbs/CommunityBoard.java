@@ -1,20 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.communitybbs;
-
-import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.communitybbs.Manager.ClanBBSManager;
@@ -31,24 +15,26 @@ import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 
+import java.util.StringTokenizer;
+
 public class CommunityBoard
 {
 	private static CommunityBoard _instance;
-
+	
 	private CommunityBoard()
 	{
 	}
-
+	
 	public static CommunityBoard getInstance()
 	{
 		if (_instance == null)
 		{
 			_instance = new CommunityBoard();
 		}
-
+		
 		return _instance;
 	}
-
+	
 	// Protections
 	public boolean checkPlayerConditions(L2PcInstance player)
 	{
@@ -119,18 +105,18 @@ public class CommunityBoard
 		}
 		return true;
 	}
-
+	
 	public void handleCommands(L2GameClient client, String command)
 	{
 		L2PcInstance activeChar = client.getActiveChar();
 		if (activeChar == null)
 			return;
-
+		
 		if (!checkPlayerConditions(activeChar))
 		{
 			return;
 		}
-
+		
 		if (Config.COMMUNITY_TYPE.equals("full"))
 		{
 			if (command.startsWith("_bbsclan"))
@@ -176,9 +162,9 @@ public class CommunityBoard
 				ShopBBSManager.getInstance().parsecmd("_bbsshop;" + st.nextToken(), activeChar);
 				MultisellData.getInstance().SeparateAndSend(Integer.parseInt(st.nextToken()), activeChar, false, 0);
 			}
-			else if(command.startsWith("_bbsrps"))
-			{ 
-				   RPSBBSManager.getInstance().parsecmd(command, activeChar);
+			else if (command.startsWith("_bbsrps"))
+			{
+				RPSBBSManager.getInstance().parsecmd(command, activeChar);
 			}
 		}
 		else if (Config.COMMUNITY_TYPE.equals("old"))
@@ -192,22 +178,13 @@ public class CommunityBoard
 		
 		activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-
-	/**
-	 * @param client
-	 * @param url
-	 * @param arg1
-	 * @param arg2
-	 * @param arg3
-	 * @param arg4
-	 * @param arg5
-	 */
+	
 	public void handleWriteCommands(L2GameClient client, String url, String arg1, String arg2, String arg3, String arg4, String arg5)
 	{
 		L2PcInstance activeChar = client.getActiveChar();
 		if (activeChar == null)
 			return;
-
+		
 		if (Config.COMMUNITY_TYPE.equals("Full"))
 		{
 			if (url.equals("Topic"))

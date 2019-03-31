@@ -1,23 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
-
-/**
- * @author: FBIagent / fixed by SqueezeD
- */
-import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -28,10 +9,12 @@ import com.l2jhellas.gameserver.model.entity.engines.TvT;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.util.Util;
 
+import java.util.StringTokenizer;
+
 public class AdminTvTEngine implements IAdminCommandHandler
 {
 	private static final String[] ADMIN_COMMANDS =
-	{/** @formatter:off */
+	{
 		"admin_tvt",
 		"admin_tvt_name",
 		"admin_tvt_desc",
@@ -61,8 +44,8 @@ public class AdminTvTEngine implements IAdminCommandHandler
 		"admin_tvt_minplayers",
 		"admin_tvt_maxplayers",
 		"admin_tvtkick",
-	};/** @formatter:on */
-
+	};
+	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
@@ -140,36 +123,36 @@ public class AdminTvTEngine implements IAdminCommandHandler
 		else if (command.startsWith("admin_tvt_team_add "))
 		{
 			String teamName = command.substring(19);
-
+			
 			TvT.addTeam(teamName);
 			showMainPage(activeChar);
 		}
 		else if (command.startsWith("admin_tvt_team_remove "))
 		{
 			String teamName = command.substring(22);
-
+			
 			TvT.removeTeam(teamName);
 			showMainPage(activeChar);
 		}
 		else if (command.startsWith("admin_tvt_team_pos "))
 		{
 			String teamName = command.substring(19);
-
+			
 			TvT.setTeamPos(teamName, activeChar);
 			showMainPage(activeChar);
 		}
 		else if (command.startsWith("admin_tvt_team_color "))
 		{
 			String[] params;
-
+			
 			params = command.split(" ");
-
+			
 			if (params.length != 3)
 			{
 				activeChar.sendMessage("Wrong usege: //tvt_team_color <colorHex> <teamName>");
 				return false;
 			}
-
+			
 			TvT.setTeamColor(command.substring(params[0].length() + params[1].length() + 2), Integer.decode("0x" + Util.reverseColor(params[1])));
 			showMainPage(activeChar);
 		}
@@ -250,18 +233,18 @@ public class AdminTvTEngine implements IAdminCommandHandler
 		}
 		return true;
 	}
-
+	
 	@Override
 	public String[] getAdminCommandList()
 	{
 		return ADMIN_COMMANDS;
 	}
-
+	
 	public void showMainPage(L2PcInstance activeChar)
 	{
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		StringBuilder replyMSG = new StringBuilder("<html><body>");
-
+		
 		replyMSG.append("<center><font color=\"LEVEL\">[TvT Engine]</font></center><br><br><br>");
 		replyMSG.append("<table><tr><td><edit var=\"input1\" width=\"125\"></td><td><edit var=\"input2\" width=\"125\"></td></tr></table>");
 		replyMSG.append("<table border=\"0\"><tr>");
@@ -325,11 +308,11 @@ public class AdminTvTEngine implements IAdminCommandHandler
 		replyMSG.append("    ... Event Timer:&nbsp;<font color=\"00FF00\">" + TvT._eventTime + "</font><br><br>");
 		replyMSG.append("Current teams:<br1>");
 		replyMSG.append("<center><table border=\"0\">");
-
+		
 		for (String team : TvT._teams)
 		{
 			replyMSG.append("<tr><td width=\"100\"><font color=\"LEVEL\">" + team + "</font>");
-
+			
 			if (Config.TVT_EVEN_TEAMS.equals("NO") || Config.TVT_EVEN_TEAMS.equals("BALANCE"))
 				replyMSG.append("&nbsp;(" + TvT.teamPlayersCount(team) + " joined)");
 			else if (Config.TVT_EVEN_TEAMS.equals("SHUFFLE"))
@@ -337,16 +320,16 @@ public class AdminTvTEngine implements IAdminCommandHandler
 				if (TvT._teleport || TvT._started)
 					replyMSG.append("&nbsp;(" + TvT.teamPlayersCount(team) + " in)");
 			}
-
+			
 			replyMSG.append("</td></tr><tr><td>");
 			replyMSG.append(TvT._teamColors.get(TvT._teams.indexOf(team)));
 			replyMSG.append("</td></tr><tr><td>");
 			replyMSG.append(TvT._teamsX.get(TvT._teams.indexOf(team)) + ", " + TvT._teamsY.get(TvT._teams.indexOf(team)) + ", " + TvT._teamsZ.get(TvT._teams.indexOf(team)));
 			replyMSG.append("</td></tr><tr><td width=\"60\"><button value=\"Remove\" action=\"bypass -h admin_tvt_team_remove " + team + "\" width=50 height=15 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\"></td></tr>");
 		}
-
+		
 		replyMSG.append("</table></center>");
-
+		
 		if (Config.TVT_EVEN_TEAMS.equals("SHUFFLE"))
 		{
 			if (!TvT._started)
@@ -356,7 +339,7 @@ public class AdminTvTEngine implements IAdminCommandHandler
 				replyMSG.append("<br><br>");
 			}
 		}
-
+		
 		replyMSG.append("</body></html>");
 		adminReply.setHtml(replyMSG.toString());
 		activeChar.sendPacket(adminReply);

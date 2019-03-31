@@ -1,18 +1,11 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.communitybbs.Manager;
+
+import com.l2jhellas.gameserver.communitybbs.BB.Forum;
+import com.l2jhellas.gameserver.communitybbs.BB.Post;
+import com.l2jhellas.gameserver.communitybbs.BB.Topic;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -23,19 +16,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import com.l2jhellas.gameserver.communitybbs.BB.Forum;
-import com.l2jhellas.gameserver.communitybbs.BB.Post;
-import com.l2jhellas.gameserver.communitybbs.BB.Topic;
-import com.l2jhellas.gameserver.datatables.sql.ClanTable;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
-
 public class TopicBBSManager extends BaseBBSManager
 {
 	private final List<Topic> _table;
 	private final Map<Forum, Integer> _maxId;
 	private static TopicBBSManager _instance;
-
+	
 	public static TopicBBSManager getInstance()
 	{
 		if (_instance == null)
@@ -44,32 +30,29 @@ public class TopicBBSManager extends BaseBBSManager
 		}
 		return _instance;
 	}
-
+	
 	private TopicBBSManager()
 	{
-		_table = new ArrayList<Topic>();
-		_maxId = new HashMap<Forum, Integer>();
+		_table = new ArrayList<>();
+		_maxId = new HashMap<>();
 	}
-
+	
 	public void addTopic(Topic tt)
 	{
 		_table.add(tt);
 	}
-
-	/**
-	 * @param topic
-	 */
+	
 	public void delTopic(Topic topic)
 	{
 		_table.remove(topic);
 	}
-
+	
 	public void setMaxID(int id, Forum f)
 	{
 		_maxId.remove(f);
 		_maxId.put(f, id);
 	}
-
+	
 	public int getMaxID(Forum f)
 	{
 		Integer i = _maxId.get(f);
@@ -79,7 +62,7 @@ public class TopicBBSManager extends BaseBBSManager
 		}
 		return i;
 	}
-
+	
 	public Topic getTopicByID(int idf)
 	{
 		for (Topic t : _table)
@@ -91,7 +74,7 @@ public class TopicBBSManager extends BaseBBSManager
 		}
 		return null;
 	}
-
+	
 	@Override
 	public void parsewrite(String ar1, String ar2, String ar3, String ar4, String ar5, L2PcInstance activeChar)
 	{
@@ -115,7 +98,7 @@ public class TopicBBSManager extends BaseBBSManager
 				PostBBSManager.getInstance().addPostByTopic(p, t);
 				parsecmd("_bbsmemo", activeChar);
 			}
-
+			
 		}
 		else if (ar1.equals("del"))
 		{
@@ -158,7 +141,7 @@ public class TopicBBSManager extends BaseBBSManager
 			activeChar.sendPacket(new ShowBoard(null, "103"));
 		}
 	}
-
+	
 	@Override
 	public void parsecmd(String command, L2PcInstance activeChar)
 	{
@@ -242,12 +225,7 @@ public class TopicBBSManager extends BaseBBSManager
 			activeChar.sendPacket(new ShowBoard(null, "103"));
 		}
 	}
-
-	/**
-	 * @param forumByID
-	 * @param activeChar
-	 * @param idf
-	 */
+	
 	private void showNewTopic(Forum forum, L2PcInstance activeChar, int idf)
 	{
 		if (forum == null)
@@ -269,11 +247,7 @@ public class TopicBBSManager extends BaseBBSManager
 			activeChar.sendPacket(new ShowBoard(null, "103"));
 		}
 	}
-
-	/**
-	 * @param forum
-	 * @param activeChar
-	 */
+	
 	private void showMemoNewTopics(Forum forum, L2PcInstance activeChar)
 	{
 		StringBuilder html = new StringBuilder("<html>");
@@ -321,10 +295,7 @@ public class TopicBBSManager extends BaseBBSManager
 		send1001(html.toString(), activeChar);
 		send1002(activeChar);
 	}
-
-	/**
-	 * @param memo
-	 */
+	
 	private void showTopics(Forum forum, L2PcInstance activeChar, int index, int idf)
 	{
 		if (forum == null)
@@ -346,11 +317,7 @@ public class TopicBBSManager extends BaseBBSManager
 			activeChar.sendPacket(new ShowBoard(null, "103"));
 		}
 	}
-
-	/**
-	 * @param forum
-	 * @param activeChar
-	 */
+	
 	private void showMemoTopics(Forum forum, L2PcInstance activeChar, int index)
 	{
 		forum.vload();
@@ -369,7 +336,7 @@ public class TopicBBSManager extends BaseBBSManager
 		html.append("<td FIXWIDTH=70 align=center>&$418;</td>");
 		html.append("</tr>");
 		html.append("</table>");
-
+		
 		for (int i = 0, j = getMaxID(forum) + 1; i < 12 * index; j--)
 		{
 			if (j < 0)
@@ -394,7 +361,7 @@ public class TopicBBSManager extends BaseBBSManager
 				i++;
 			}
 		}
-
+		
 		html.append("<br>");
 		html.append("<table width=610 cellspace=0 cellpadding=0>");
 		html.append("<tr>");
@@ -403,7 +370,7 @@ public class TopicBBSManager extends BaseBBSManager
 		html.append("</td>");
 		html.append("<td width=510 align=center>");
 		html.append("<table border=0><tr>");
-
+		
 		if (index == 1)
 		{
 			html.append("<td><button action=\"\" back=\"l2ui_ch3.prev1_down\" fore=\"l2ui_ch3.prev1\" width=16 height=16 ></td>");
@@ -437,7 +404,7 @@ public class TopicBBSManager extends BaseBBSManager
 		{
 			html.append("<td><button action=\"bypass _bbstopics;read;" + forum.getID() + ";" + (index + 1) + "\" back=\"l2ui_ch3.next1_down\" fore=\"l2ui_ch3.next1\" width=16 height=16 ></td>");
 		}
-
+		
 		html.append("</tr></table> </td> ");
 		html.append("<td align=right><button value = \"&$421;\" action=\"bypass _bbstopics;crea;" + forum.getID() + "\" back=\"l2ui_ch3.smallbutton2_down\" width=65 height=20 fore=\"l2ui_ch3.smallbutton2\" ></td></tr>");
 		html.append("<tr><td><img src=\"l2ui.mini_logo\" width=5 height=10></td></tr>");

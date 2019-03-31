@@ -1,22 +1,4 @@
-/*
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.l2jhellas.gameserver.model.actor;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -42,10 +24,14 @@ import com.l2jhellas.gameserver.templates.L2CharTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.util.Util;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public abstract class L2Vehicle extends L2Character
 {
 	protected int _dockId = 0;
-	protected final List<L2PcInstance> _passengers = new ArrayList<L2PcInstance>();
+	protected final List<L2PcInstance> _passengers = new ArrayList<>();
 	protected Location _oustLoc = null;
 	private Runnable _engine = null;
 	
@@ -124,8 +110,7 @@ public abstract class L2Vehicle extends L2Character
 			getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(point.x, point.y, point.z, 0));
 			return;
 		}
-
-
+		
 		getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 	}
 	
@@ -171,7 +156,7 @@ public abstract class L2Vehicle extends L2Character
 						_move = m;
 						
 						GameTimeController.getInstance().registerMovingObject(this);
-						broadcastPacket(new VehicleDeparture((L2BoatInstance)this));
+						broadcastPacket(new VehicleDeparture((L2BoatInstance) this));
 						return true;
 					}
 				}
@@ -183,7 +168,7 @@ public abstract class L2Vehicle extends L2Character
 		runEngine(10);
 		return false;
 	}
-
+	
 	public boolean isInDock()
 	{
 		return _dockId > 0;
@@ -281,17 +266,9 @@ public abstract class L2Vehicle extends L2Character
 		}
 	}
 	
-	/**
-	 * Consume ticket(s) and teleport player from boat if no correct ticket
-	 * @param itemId Ticket itemId
-	 * @param count Ticket count
-	 * @param oustX
-	 * @param oustY
-	 * @param oustZ
-	 */
 	public void payForRide(int itemId, int count, int oustX, int oustY, int oustZ)
 	{
-		L2World.getInstance().forEachVisibleObjectInRange(this, L2PcInstance.class,1000, player ->
+		L2World.getInstance().forEachVisibleObjectInRange(this, L2PcInstance.class, 1000, player ->
 		{
 			if (player.isInBoat() && player.getBoat() == this)
 			{
@@ -373,20 +350,21 @@ public abstract class L2Vehicle extends L2Character
 	public void deleteMe()
 	{
 		_engine = null;
-
+		
 		if (isMoving())
-			stopMove(null);	
-
+			stopMove(null);
+		
 		oustPlayers();
-
+		
 		final ZoneRegion oldZoneRegion = ZoneManager.getInstance().getRegion(this);
-
+		
 		decayMe();
-	
+		
 		oldZoneRegion.removeFromZones(this);
 		
 		super.deleteMe();
 	}
+	
 	@Override
 	public void updateAbnormalEffect()
 	{
@@ -434,13 +412,13 @@ public abstract class L2Vehicle extends L2Character
 		if (_ai == null)
 			_ai = newAI;
 	}
-
+	
 	public class AIAccessor extends L2Character.AIAccessor
 	{
 		public AIAccessor()
 		{
 		}
-
+		
 		@Override
 		public void detachAI()
 		{
@@ -451,8 +429,8 @@ public abstract class L2Vehicle extends L2Character
 		{
 			return L2Vehicle.this;
 		}
-
-	}	
+		
+	}
 	
 	@Override
 	public void sendInfo(L2PcInstance activeChar)
