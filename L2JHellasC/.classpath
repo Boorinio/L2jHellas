@@ -6,7 +6,7 @@
 	<classpathentry exported="true" kind="lib" path="libs/mail.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/jna-3.5.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/mchange-commons-java-0.2.6.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/mysql-connector-java-5.1.33-bin.jar"/>
 	<classpathentry kind="lib" path="libs/c3p0-0.9.5-pre5.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/mysql-connector-java-8.0.15.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

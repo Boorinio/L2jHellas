@@ -13140,12 +13140,7 @@ public class L2PcInstance extends L2Playable
 		
 		final L2ItemInstance item = getInventory().getItemByObjectId(sc.getId());
 		
-		int augmentationId = 0;
-		
-		if (item != null && item.isAugmented())
-			augmentationId = item.getAugmentation().getAugmentationId();
-		
-		return augmentationId;
+		return item == null || !item.isAugmented()? 0 : item.getAugmentation().getAugmentationId();
 	}
 	
 	public void showFishingHelp()

@@ -8,7 +8,6 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_INTERACT;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_PICK_UP;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_REST;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.DuelState;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -169,9 +168,6 @@ public class L2PlayerAI extends L2CharacterAI
 	{
 		L2Character target = getCastTarget();
 
-		if (Config.DEBUG)
-			_log.warning(L2PlayerAI.class.getName() + ": thinkCast -> Start");
-
 		if (_skill.getTargetType() == L2SkillTargetType.TARGET_SIGNET_GROUND && _actor instanceof L2PcInstance)
 		{
 			if (maybeMoveToPosition(((L2PcInstance) _actor).getCurrentSkillWorldPosition(), _actor.getMagicalAttackRange(_skill)))
@@ -189,7 +185,7 @@ public class L2PlayerAI extends L2CharacterAI
 				return;
 			}
 
-			if (target != null && maybeMoveToPawn(target, _actor.getMagicalAttackRange(_skill)))
+			if (target != null && maybeMoveToPawn(target, _actor.getMagicalAttackRange(_skill)+10))
 				return;
 		}
 
@@ -240,13 +236,7 @@ public class L2PlayerAI extends L2CharacterAI
 		
 		// Set the Intention of this AbstractAI to AI_INTENTION_MOVE_TO
 		changeIntention(CtrlIntention.AI_INTENTION_MOVE_TO, loc, null);
-		
-		// Stop the actor auto-attack client side by sending Server->Client packet AutoAttackStop (broadcast)
-		//clientStopAutoAttack();
-		
-		// Abort the attack of the L2Character and send Server->Client ActionFailed packet
-		//_actor.abortAttack();
-		
+
 		// Move the actor to Location (x,y,z) server side AND client side by sending Server->Client packet CharMoveToLocation (broadcast)
 		moveTo(loc.x, loc.y, loc.z);
 	}
@@ -318,11 +308,9 @@ public class L2PlayerAI extends L2CharacterAI
 		
 		if (_thinking || _actor.isCastingNow() || _actor.isAllSkillsDisabled())
 			return;
-		
-		if (Config.DEBUG)
-			_log.warning(L2PlayerAI.class.getName() + ": onEvtThink -> Check intention");
-		
+
 		_thinking = true;
+		
 		try
 		{
 			if (getIntention() == AI_INTENTION_ATTACK)
@@ -343,7 +331,6 @@ public class L2PlayerAI extends L2CharacterAI
 	@Override
 	protected void onEvtArrivedRevalidate()
 	{
-		// _actor.getKnownList().refreshInfos();
 		super.onEvtArrivedRevalidate();
 	}
 	

@@ -622,10 +622,7 @@ public class L2CharacterAI extends AbstractAI
 	{
 		if (target == null || offset < 0)
 			return false;
-		
-		if (target instanceof L2Character)
-			offset += ((L2Character) target).getTemplate().getCollisionRadius();
-		
+
 		if (!_actor.isInsideRadius(target, offset, false, false))
 		{
 			if (isFollowing())

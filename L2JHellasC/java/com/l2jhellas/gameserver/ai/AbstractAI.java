@@ -540,7 +540,7 @@ abstract class AbstractAI implements Ctrl
 					return;
 				}
 				
-				if (!_actor.isAttackingNow() && !_actor.isInsideRadius(_followTarget, _range, true, false))
+				if (!_actor.isAttackingNow() && !_actor.isCastingNow() && !_actor.isInsideRadius(_followTarget, _range, true, false))
 					moveToPawn(_followTarget, _range);
 			}
 			catch (Throwable t)

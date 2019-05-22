@@ -17,7 +17,7 @@ public abstract class SendablePacket<T extends MMOClient<?>> extends AbstractPac
 		_buf.putFloat(value);
 	}
 	
-	protected final void writeC(final int data)
+	public final void writeC(final int data)
 	{
 		_buf.put((byte) data);
 	}
@@ -32,7 +32,7 @@ public abstract class SendablePacket<T extends MMOClient<?>> extends AbstractPac
 		_buf.putShort((short) value);
 	}
 	
-	protected final void writeD(final int value)
+	public final void writeD(final int value)
 	{
 		_buf.putInt(value);
 	}

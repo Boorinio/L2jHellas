@@ -46,32 +46,7 @@ public class SendMacroList extends L2GameServerPacket
 				writeC(cmd.d2); // shortcut id
 				writeS(cmd.cmd); // command name
 			}
-		}
-		
-		// writeD(1); //unknown change of Macro edit,add,delete
-		// writeC(0); //unknown
-		// writeC(1); //count of Macros
-		// writeC(1); //unknown
-		//
-		// writeD(1430); //Macro ID
-		// writeS("Admin"); //Macro Name
-		// writeS("Admin Command"); //Desc
-		// writeS("ADM"); //acronym
-		// writeC(0); //icon
-		// writeC(2); //count
-		//
-		// writeC(1); //i of count
-		// writeC(3); //type 1 = skill, 3 = action, 4 = shortcut
-		// writeD(0); // skill id
-		// writeC(0); // shortcut id
-		// writeS("/loc"); // command name
-		//
-		// writeC(2); //i of count
-		// writeC(3); //type 1 = skill, 3 = action, 4 = shortcut
-		// writeD(0); // skill id
-		// writeC(0); // shortcut id
-		// writeS("//admin"); // command name
-		
+		}	
 	}
 	
 	@Override

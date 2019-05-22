@@ -44,7 +44,7 @@ public class L2DatabaseFactory
 			_source.setMaxStatementsPerConnection(100);
 			
 			_source.setBreakAfterAcquireFailure(false);
-			_source.setDriverClass("com.mysql.jdbc.Driver");
+			_source.setDriverClass("com.mysql.cj.jdbc.Driver");
 			_source.setJdbcUrl(Config.DATABASE_URL);
 			_source.setUser(Config.DATABASE_LOGIN);
 			_source.setPassword(Config.DATABASE_PASSWORD);

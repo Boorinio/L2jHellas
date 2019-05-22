@@ -60,13 +60,12 @@ public class ValidatePosition extends L2GameClientPacket
 			activeChar.setClientHeading(_heading);
 			int realX = activeChar.getX();
 			int realY = activeChar.getY();
-			
+
 			// int realZ = activeChar.getZ();
 			double dx = _x - realX;
 			double dy = _y - realY;
 			double diffSq = Math.sqrt(dx * dx + dy * dy);
-			// double dz = realZ - _z;
-			
+
 			if (!activeChar.isFlying() && !activeChar.isInsideZone(ZoneId.WATER))
 			{
 				
