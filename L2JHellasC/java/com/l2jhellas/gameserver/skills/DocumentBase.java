@@ -1,5 +1,19 @@
 package com.l2jhellas.gameserver.skills;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.logging.Logger;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.AbnormalEffect;
 import com.l2jhellas.gameserver.emum.ClassRace;
@@ -42,20 +56,6 @@ import com.l2jhellas.gameserver.skills.funcs.LambdaStats;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.StatsSet;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.logging.Logger;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 abstract class DocumentBase
 {

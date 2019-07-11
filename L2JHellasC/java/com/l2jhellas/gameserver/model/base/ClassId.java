@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.model.base;
 
+import java.util.EnumSet;
+
 import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.emum.ClassType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
-import java.util.EnumSet;
 
 public enum ClassId
 {

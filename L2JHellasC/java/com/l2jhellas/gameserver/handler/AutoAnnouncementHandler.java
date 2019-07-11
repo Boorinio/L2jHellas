@@ -1,12 +1,5 @@
 package com.l2jhellas.gameserver.handler;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.Announcements;
-import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.Announcements;
+import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class AutoAnnouncementHandler
 {

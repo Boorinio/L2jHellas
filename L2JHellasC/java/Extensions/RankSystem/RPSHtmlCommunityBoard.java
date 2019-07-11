@@ -1,13 +1,13 @@
 package Extensions.RankSystem;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import Extensions.RankSystem.Util.RPSUtil;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
-import java.util.Map;
-import java.util.Map.Entry;
 
 public final class RPSHtmlCommunityBoard
 {

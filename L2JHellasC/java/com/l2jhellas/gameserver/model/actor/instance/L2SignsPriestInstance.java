@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.StringTokenizer;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.cache.HtmCache;
@@ -12,9 +15,6 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-
-import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 public class L2SignsPriestInstance extends L2NpcInstance
 {

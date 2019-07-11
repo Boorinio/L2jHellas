@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.skills.effects;
 
+import java.util.ArrayList;
+
 import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -14,8 +16,6 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.Formulas;
-
-import java.util.ArrayList;
 
 final class EffectSignetMDam extends EffectSignet
 {

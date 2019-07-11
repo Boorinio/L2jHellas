@@ -1,13 +1,13 @@
 package com.l2jhellas.gameserver.instancemanager;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.gameserver.datatables.CrownTable;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Castle;
-
-import java.util.logging.Logger;
 
 public class CrownManager
 {

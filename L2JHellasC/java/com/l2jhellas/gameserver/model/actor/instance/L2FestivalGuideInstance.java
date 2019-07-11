@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.Calendar;
+import java.util.List;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.SevenSignsFestival;
@@ -11,9 +14,6 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
-
-import java.util.Calendar;
-import java.util.List;
 
 public final class L2FestivalGuideInstance extends L2NpcInstance
 {

@@ -1,18 +1,18 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.datatables.sql.ClanTable;
-import com.l2jhellas.gameserver.model.CharSelectInfoPackage;
-import com.l2jhellas.gameserver.model.Inventory;
-import com.l2jhellas.gameserver.model.L2Clan;
-import com.l2jhellas.gameserver.network.L2GameClient;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
+import com.l2jhellas.gameserver.model.CharSelectInfoPackage;
+import com.l2jhellas.gameserver.model.Inventory;
+import com.l2jhellas.gameserver.model.L2Clan;
+import com.l2jhellas.gameserver.network.L2GameClient;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class CharSelectInfo extends L2GameServerPacket
 {

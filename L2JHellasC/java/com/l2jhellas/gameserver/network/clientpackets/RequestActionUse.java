@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2CharPosition;
@@ -20,8 +22,6 @@ import com.l2jhellas.gameserver.network.serverpackets.Ride;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.util.Util;
-
-import java.util.logging.Logger;
 
 public final class RequestActionUse extends L2GameClientPacket
 {

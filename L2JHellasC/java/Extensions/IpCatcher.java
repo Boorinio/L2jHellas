@@ -1,9 +1,5 @@
 package Extensions;
 
-import com.PackRoot;
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -15,6 +11,10 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+
+import com.PackRoot;
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class IpCatcher
 {

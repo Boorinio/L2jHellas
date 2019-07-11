@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -9,8 +11,6 @@ import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ShowTownMap;
 import com.l2jhellas.gameserver.network.serverpackets.StaticObject;
-
-import java.util.logging.Logger;
 
 public class L2StaticObjectInstance extends L2Object
 {

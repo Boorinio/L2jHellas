@@ -1,11 +1,11 @@
 package com.l2jhellas.util;
 
-import com.l2jhellas.gameserver.ThreadPoolManager;
-
 import java.lang.reflect.Method;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import com.l2jhellas.gameserver.ThreadPoolManager;
 
 public class ParallelExecutor
 {

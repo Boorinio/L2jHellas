@@ -1,5 +1,8 @@
 package Extensions.fake.roboto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import Extensions.fake.roboto.helpers.FakeHelpers;
 
 import com.l2jhellas.Config;
@@ -7,9 +10,6 @@ import com.l2jhellas.gameserver.datatables.xml.MapRegionTable.TeleportWhereType;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public enum FakePlayerManager
 {

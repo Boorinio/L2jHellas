@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.group;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -17,9 +20,6 @@ import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class FeedableBeasts extends AbstractNpcAI
 {

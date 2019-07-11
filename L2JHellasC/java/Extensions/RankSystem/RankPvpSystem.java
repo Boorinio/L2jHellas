@@ -1,10 +1,10 @@
 package Extensions.RankSystem;
 
+import java.util.Calendar;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
-
-import java.util.Calendar;
 
 public class RankPvpSystem
 {

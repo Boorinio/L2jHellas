@@ -1,9 +1,9 @@
 package Extensions.RaidEvent;
 
+import java.util.List;
+
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
-import java.util.List;
 
 public class L2EventChecks
 {

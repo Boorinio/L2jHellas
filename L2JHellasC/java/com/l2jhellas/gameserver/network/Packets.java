@@ -1,12 +1,12 @@
 package com.l2jhellas.gameserver.network;
 
-import com.l2jhellas.gameserver.network.L2GameClient.GameClientState;
-import com.l2jhellas.gameserver.network.clientpackets.*;
-import com.l2jhellas.mmocore.network.ReceivablePacket;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.l2jhellas.gameserver.network.L2GameClient.GameClientState;
+import com.l2jhellas.gameserver.network.clientpackets.*;
+import com.l2jhellas.mmocore.network.ReceivablePacket;
 
 public enum Packets implements IPacket
 {

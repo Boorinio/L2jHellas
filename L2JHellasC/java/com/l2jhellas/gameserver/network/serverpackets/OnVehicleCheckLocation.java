@@ -1,31 +1,25 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+
 
 public class OnVehicleCheckLocation extends L2GameServerPacket
 {
-	private final L2BoatInstance _boat;
-	private final int _x;
-	private final int _y;
-	private final int _z;
+	private final L2Character _boat;
 	
-	public OnVehicleCheckLocation(L2BoatInstance instance, int x, int y, int z)
+	public OnVehicleCheckLocation(L2Character boat)
 	{
-		_boat = instance;
-		_x = x;
-		_y = y;
-		_z = z;
+		_boat = boat;
 	}
 	
 	@Override
 	protected void writeImpl()
 	{
-		
 		writeC(0x5b);
 		writeD(_boat.getObjectId());
-		writeD(_x);
-		writeD(_y);
-		writeD(_z);
+		writeD(_boat.getX());
+		writeD(_boat.getY());
+		writeD(_boat.getZ());
 		writeD(_boat.getHeading());
 	}
 	

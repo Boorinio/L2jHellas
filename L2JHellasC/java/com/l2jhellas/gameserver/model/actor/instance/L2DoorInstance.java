@@ -1,5 +1,10 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.concurrent.ScheduledFuture;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -25,11 +30,6 @@ import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2CharTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Logger;
 
 public class L2DoorInstance extends L2Character
 {

@@ -1,8 +1,5 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
-import com.l2jhellas.gameserver.engines.DocumentParser;
-import com.l2jhellas.gameserver.model.L2NpcWalkerNode;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,6 +10,9 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+
+import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.model.L2NpcWalkerNode;
 
 public class NpcWalkerRoutesData implements DocumentParser
 {

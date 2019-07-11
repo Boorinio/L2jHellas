@@ -1,7 +1,5 @@
 package com.l2jhellas.loginserver;
 
-import com.l2jhellas.Config;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -9,6 +7,8 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
 
 public abstract class FloodProtectedListener extends Thread
 {

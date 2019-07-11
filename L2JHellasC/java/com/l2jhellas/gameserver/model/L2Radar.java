@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.RadarControl;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class L2Radar
 {

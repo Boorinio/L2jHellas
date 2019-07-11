@@ -1,12 +1,12 @@
 package Extensions.fake.roboto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import Extensions.fake.roboto.task.AITask;
 import Extensions.fake.roboto.task.AITaskRunner;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public enum FakePlayerTaskManager
 {

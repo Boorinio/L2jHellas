@@ -1,14 +1,5 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
-import com.PackRoot;
-import com.l2jhellas.gameserver.engines.DocumentParser;
-import com.l2jhellas.gameserver.idfactory.IdFactory;
-import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
-import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
-import com.l2jhellas.gameserver.model.entity.ClanHall;
-import com.l2jhellas.gameserver.templates.L2CharTemplate;
-import com.l2jhellas.gameserver.templates.StatsSet;
-
 import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,6 +9,15 @@ import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
+import com.PackRoot;
+import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.idfactory.IdFactory;
+import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
+import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
+import com.l2jhellas.gameserver.model.entity.ClanHall;
+import com.l2jhellas.gameserver.templates.L2CharTemplate;
+import com.l2jhellas.gameserver.templates.StatsSet;
 
 public class DoorData implements DocumentParser
 {

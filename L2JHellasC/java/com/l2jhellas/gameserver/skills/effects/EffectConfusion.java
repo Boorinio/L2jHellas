@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.skills.effects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2Effect;
@@ -9,9 +12,6 @@ import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.util.Rnd;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class EffectConfusion extends L2Effect
 {

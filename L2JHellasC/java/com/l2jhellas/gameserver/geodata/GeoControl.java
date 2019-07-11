@@ -1,8 +1,8 @@
 package com.l2jhellas.gameserver.geodata;
 
-import com.l2jhellas.gameserver.geometry.Polygon;
-
 import java.util.HashMap;
+
+import com.l2jhellas.gameserver.geometry.Polygon;
 
 public interface GeoControl
 {

@@ -1,14 +1,14 @@
 package com.l2jhellas.loginserver.serverpackets;
 
-import com.l2jhellas.loginserver.GameServerTable;
-import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
-import com.l2jhellas.loginserver.L2LoginClient;
-import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.l2jhellas.loginserver.GameServerTable;
+import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
+import com.l2jhellas.loginserver.L2LoginClient;
+import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
 
 public final class ServerList extends L2LoginServerPacket
 {

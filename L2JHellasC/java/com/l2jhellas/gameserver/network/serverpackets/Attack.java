@@ -1,12 +1,12 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.Hit;
-import com.l2jhellas.gameserver.model.Location;
-import com.l2jhellas.gameserver.model.actor.L2Character;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import com.l2jhellas.gameserver.model.Hit;
+import com.l2jhellas.gameserver.model.Location;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 
 public class Attack extends L2GameServerPacket
 {

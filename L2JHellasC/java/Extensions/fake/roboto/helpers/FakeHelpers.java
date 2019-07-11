@@ -1,5 +1,11 @@
 package Extensions.fake.roboto.helpers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.FakePlayerNameManager;
 import Extensions.fake.roboto.ai.AdventurerAI;
@@ -32,12 +38,6 @@ import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
 import com.l2jhellas.util.Rnd;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class FakeHelpers
 {

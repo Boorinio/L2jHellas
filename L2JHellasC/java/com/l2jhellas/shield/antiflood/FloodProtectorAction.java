@@ -1,11 +1,11 @@
 package com.l2jhellas.shield.antiflood;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
+
 import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.util.StringUtil;
-
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
 
 public final class FloodProtectorAction
 {

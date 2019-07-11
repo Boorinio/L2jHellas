@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.List;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -16,9 +19,6 @@ import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
-
-import java.util.List;
-import java.util.logging.Logger;
 
 public final class L2GuardInstance extends L2Attackable
 {

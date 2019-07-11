@@ -1,16 +1,18 @@
 package com.l2jhellas.gameserver.model.actor;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2SummonAI;
+import com.l2jhellas.gameserver.emum.L2SkillTargetType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.PetInventory;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
@@ -19,6 +21,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.stat.SummonStat;
 import com.l2jhellas.gameserver.model.actor.status.SummonStatus;
 import com.l2jhellas.gameserver.model.base.Experience;
+import com.l2jhellas.gameserver.model.zone.ZoneRegion;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
@@ -34,8 +37,6 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.taskmanager.DecayTaskManager;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
-
-import java.util.logging.Logger;
 
 public abstract class L2Summon extends L2Playable
 {
@@ -774,5 +775,22 @@ public abstract class L2Summon extends L2Playable
 		}
 		else
 			activeChar.sendPacket(new NpcInfo(this, activeChar));
+	}
+	
+	@Override
+	public void setXYZ(int x, int y, int z)
+	{
+		
+		final ZoneRegion oldZoneRegion = ZoneManager.getInstance().getRegion(this);
+		final ZoneRegion newZoneRegion = ZoneManager.getInstance().getRegion(x, y);
+		
+		if (oldZoneRegion != newZoneRegion)
+		{
+			oldZoneRegion.removeFromZones(this);
+			newZoneRegion.revalidateZones(this);
+		}
+		
+		super.setXYZ(x, y, z);
+		
 	}
 }

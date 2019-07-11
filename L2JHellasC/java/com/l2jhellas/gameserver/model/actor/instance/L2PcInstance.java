@@ -1,5 +1,30 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import Extensions.IpCatcher;
 import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.RaidEvent.L2EventChecks;
@@ -43,6 +68,8 @@ import com.l2jhellas.gameserver.emum.ClassType;
 import com.l2jhellas.gameserver.emum.DuelState;
 import com.l2jhellas.gameserver.emum.L2ArmorType;
 import com.l2jhellas.gameserver.emum.L2EtcItemType;
+import com.l2jhellas.gameserver.emum.L2SkillTargetType;
+import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.emum.Music;
 import com.l2jhellas.gameserver.emum.PolyType;
@@ -87,8 +114,6 @@ import com.l2jhellas.gameserver.model.L2Request;
 import com.l2jhellas.gameserver.model.L2ShortCut;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillLearn;
-import com.l2jhellas.gameserver.model.L2SkillTargetType;
-import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.MacroList;
@@ -230,31 +255,6 @@ import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
-
-import java.io.File;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class L2PcInstance extends L2Playable
 {
@@ -3872,7 +3872,7 @@ public class L2PcInstance extends L2Playable
 	{
 		sendPacket(SystemMessage.getSystemMessage(id));
 	}
-	
+
 	public void doInteract(L2Character target)
 	{
 		if (target instanceof L2PcInstance)
@@ -3880,26 +3880,26 @@ public class L2PcInstance extends L2Playable
 			L2PcInstance temp = (L2PcInstance) target;
 			sendPacket(new MoveToPawn(this, temp, L2Npc.INTERACTION_DISTANCE));
 			
-			if (temp.getPrivateStoreType() == STORE_PRIVATE_SELL || temp.getPrivateStoreType() == STORE_PRIVATE_PACKAGE_SELL)
+			switch (temp.getPrivateStoreType())
 			{
-				sendPacket(new PrivateStoreListSell(this, temp));
-			}
-			else if (temp.getPrivateStoreType() == STORE_PRIVATE_BUY)
-			{
-				sendPacket(new PrivateStoreListBuy(this, temp));
-			}
-			else if (temp.getPrivateStoreType() == STORE_PRIVATE_MANUFACTURE)
-			{
-				sendPacket(new RecipeShopSellList(this, temp));
+				case STORE_PRIVATE_SELL:
+				case STORE_PRIVATE_PACKAGE_SELL:
+					sendPacket(new PrivateStoreListSell(this, temp));
+					break;
+				
+				case STORE_PRIVATE_BUY:
+					sendPacket(new PrivateStoreListBuy(this, temp));
+					break;
+				
+				case STORE_PRIVATE_MANUFACTURE:
+					sendPacket(new RecipeShopSellList(this, temp));
+			    break;
 			}
 		}
 		else
 		{
-			// _interactTarget=null should never happen but one never knows ^^;
 			if (target != null)
-			{
 				target.onAction(this);
-			}
 		}
 	}
 	
@@ -9238,9 +9238,9 @@ public class L2PcInstance extends L2Playable
 	@Override
 	public void doRevive(double revivePower)
 	{
+		doRevive();
 		// Restore the player's lost experience, depending on the % return of the skill used (based on its power).
 		restoreExp(revivePower);
-		doRevive();
 	}
 	
 	public void reviveRequest(L2PcInstance Reviver, L2Skill skill, boolean Pet)

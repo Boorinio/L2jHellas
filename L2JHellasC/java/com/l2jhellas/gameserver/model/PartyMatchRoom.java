@@ -1,13 +1,13 @@
 package com.l2jhellas.gameserver.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ExManagePartyRoomMember;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PartyMatchRoom
 {

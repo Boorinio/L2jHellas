@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
 
+import java.util.Map;
+
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.emum.Music;
@@ -12,8 +14,6 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.SpecialCamera;
-
-import java.util.Map;
 
 public class DrChaos extends Quest
 {

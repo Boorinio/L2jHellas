@@ -1,8 +1,8 @@
 package com.l2jhellas.gameserver.model;
 
-import com.l2jhellas.gameserver.templates.L2NpcTemplate.AIType;
-
 import java.util.ArrayList;
+
+import com.l2jhellas.gameserver.templates.L2NpcTemplate.AIType;
 
 // This Data is for NPC Attributes and AI relate stuffs...
 // Still need to finish...Update later...

@@ -1,8 +1,8 @@
 package com.l2jhellas.gameserver.model;
 
-import com.l2jhellas.gameserver.holder.IntIntHolder;
-
 import java.util.List;
+
+import com.l2jhellas.gameserver.holder.IntIntHolder;
 
 public class L2ExtractableProductItem
 {

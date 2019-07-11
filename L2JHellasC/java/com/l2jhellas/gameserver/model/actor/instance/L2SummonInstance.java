@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.concurrent.Future;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -14,9 +17,6 @@ import com.l2jhellas.gameserver.network.serverpackets.PetItemList;
 import com.l2jhellas.gameserver.network.serverpackets.SetSummonRemainTime;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-
-import java.util.concurrent.Future;
-import java.util.logging.Logger;
 
 public class L2SummonInstance extends L2Summon
 {

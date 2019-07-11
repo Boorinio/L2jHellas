@@ -1,5 +1,8 @@
 package com.l2jhellas.loginserver;
 
+import java.nio.ByteBuffer;
+import java.util.logging.Logger;
+
 import com.l2jhellas.loginserver.L2LoginClient.LoginClientState;
 import com.l2jhellas.loginserver.clientpackets.AuthGameGuard;
 import com.l2jhellas.loginserver.clientpackets.RequestAuthLogin;
@@ -7,9 +10,6 @@ import com.l2jhellas.loginserver.clientpackets.RequestServerList;
 import com.l2jhellas.loginserver.clientpackets.RequestServerLogin;
 import com.l2jhellas.mmocore.network.IPacketHandler;
 import com.l2jhellas.mmocore.network.ReceivablePacket;
-
-import java.nio.ByteBuffer;
-import java.util.logging.Logger;
 
 public final class L2LoginPacketHandler implements IPacketHandler<L2LoginClient>
 {

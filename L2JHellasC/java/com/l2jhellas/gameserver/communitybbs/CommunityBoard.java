@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.communitybbs;
 
+import java.util.StringTokenizer;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.communitybbs.Manager.ClanBBSManager;
 import com.l2jhellas.gameserver.communitybbs.Manager.ClassBBSManager;
@@ -14,8 +16,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-
-import java.util.StringTokenizer;
 
 public class CommunityBoard
 {

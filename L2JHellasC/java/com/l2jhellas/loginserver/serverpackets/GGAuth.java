@@ -1,8 +1,8 @@
 package com.l2jhellas.loginserver.serverpackets;
 
-import com.l2jhellas.Config;
-
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
 
 public final class GGAuth extends L2LoginServerPacket
 {

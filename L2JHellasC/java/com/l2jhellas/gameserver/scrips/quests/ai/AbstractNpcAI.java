@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.scrips.quests.ai;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
@@ -11,9 +14,6 @@ import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class AbstractNpcAI extends Quest
 {

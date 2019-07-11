@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.Map;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.PcFreight;
@@ -10,8 +12,6 @@ import com.l2jhellas.gameserver.network.serverpackets.PackageToList;
 import com.l2jhellas.gameserver.network.serverpackets.WareHouseDepositList;
 import com.l2jhellas.gameserver.network.serverpackets.WareHouseWithdrawalList;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-
-import java.util.Map;
 
 public final class L2WarehouseInstance extends L2NpcInstance
 {

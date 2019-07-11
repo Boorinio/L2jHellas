@@ -1,9 +1,9 @@
 package com;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GameServer;
-
-import java.util.logging.Logger;
 
 public class L2JHellasInfo
 {

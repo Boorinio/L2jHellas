@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance.TimeStamp;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance.TimeStamp;
 
 public class SkillCoolTime extends L2GameServerPacket
 {

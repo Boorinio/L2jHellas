@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.mmocore.network.SendablePacket;
-
-import java.util.logging.Logger;
 
 public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
 {

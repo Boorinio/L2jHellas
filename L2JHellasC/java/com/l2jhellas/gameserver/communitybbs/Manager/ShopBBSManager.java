@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.communitybbs.Manager;
 
+import java.util.StringTokenizer;
+
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
-
-import java.util.StringTokenizer;
 
 public class ShopBBSManager extends BaseBBSManager
 {

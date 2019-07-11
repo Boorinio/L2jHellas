@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.L2Party;
@@ -11,8 +13,6 @@ import com.l2jhellas.gameserver.model.entity.engines.TvT;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.AskJoinParty;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-
-import java.util.logging.Logger;
 
 public final class RequestJoinParty extends L2GameClientPacket
 {

@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.network.serverpackets.CharDeleteFail;
 import com.l2jhellas.gameserver.network.serverpackets.CharDeleteOk;
 import com.l2jhellas.gameserver.network.serverpackets.CharSelectInfo;
-
-import java.util.logging.Logger;
 
 public final class CharacterDelete extends L2GameClientPacket
 {

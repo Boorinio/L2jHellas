@@ -1,11 +1,11 @@
 package Extensions.RankSystem;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import Extensions.RankSystem.Util.ServerSideImage;
 
 import com.l2jhellas.Config;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public final class RankLoader
 {

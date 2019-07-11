@@ -1,12 +1,12 @@
 package com.l2jhellas.gameserver.model;
 
+import java.lang.reflect.Constructor;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
-
-import java.lang.reflect.Constructor;
 
 public class L2GroupSpawn extends L2Spawn
 {

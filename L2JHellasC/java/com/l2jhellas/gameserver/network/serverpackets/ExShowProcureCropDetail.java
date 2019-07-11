@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.HashMap;
+
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager.CropProcure;
 import com.l2jhellas.gameserver.model.entity.Castle;
-
-import java.util.HashMap;
 
 public class ExShowProcureCropDetail extends L2GameServerPacket
 {

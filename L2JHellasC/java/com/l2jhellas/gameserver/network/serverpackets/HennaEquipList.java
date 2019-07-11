@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.List;
+
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.templates.L2Henna;
-
-import java.util.List;
 
 public class HennaEquipList extends L2GameServerPacket
 {

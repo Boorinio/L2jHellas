@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.skills.conditions;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.effects.EffectSeed;
-
-import java.util.logging.Logger;
 
 public class ConditionElementSeed extends Condition
 {

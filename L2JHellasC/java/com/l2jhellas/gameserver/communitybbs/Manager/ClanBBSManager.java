@@ -1,12 +1,12 @@
 package com.l2jhellas.gameserver.communitybbs.Manager;
 
+import java.util.StringTokenizer;
+
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.util.StringUtil;
-
-import java.util.StringTokenizer;
 
 public class ClanBBSManager extends BaseBBSManager
 {

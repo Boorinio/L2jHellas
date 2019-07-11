@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.concurrent.ScheduledFuture;
+
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -15,8 +17,6 @@ import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-
-import java.util.concurrent.ScheduledFuture;
 
 public class L2CabaleBufferInstance extends L2Npc
 {

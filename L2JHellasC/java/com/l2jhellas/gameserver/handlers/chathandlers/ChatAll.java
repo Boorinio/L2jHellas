@@ -1,5 +1,9 @@
 package com.l2jhellas.gameserver.handlers.chathandlers;
 
+import java.util.Collection;
+import java.util.StringTokenizer;
+import java.util.logging.Logger;
+
 import com.l2jhellas.gameserver.handler.IChatHandler;
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.handler.VoicedCommandHandler;
@@ -7,10 +11,6 @@ import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
-
-import java.util.Collection;
-import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 public class ChatAll implements IChatHandler
 {

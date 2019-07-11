@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.L2EtcItemType;
 import com.l2jhellas.gameserver.model.ClanWarehouse;
@@ -16,8 +18,6 @@ import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
-
-import java.util.logging.Logger;
 
 public final class SendWareHouseDepositList extends L2GameClientPacket
 {

@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.custom;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -10,9 +13,6 @@ import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Util;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class RaidbossInfo extends Quest
 {

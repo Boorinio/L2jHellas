@@ -1,8 +1,8 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
 import java.util.List;
+
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class ShowBoard extends L2GameServerPacket
 {

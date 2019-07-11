@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.CrestCache.CrestType;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeCrest;
-
-import java.util.logging.Logger;
 
 public final class RequestPledgeCrest extends L2GameClientPacket
 {

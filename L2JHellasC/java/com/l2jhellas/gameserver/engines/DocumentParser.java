@@ -1,8 +1,5 @@
 package com.l2jhellas.gameserver.engines;
 
-import com.PackRoot;
-import com.l2jhellas.util.filters.file.XMLFilter;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.util.logging.Logger;
@@ -15,6 +12,9 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXParseException;
+
+import com.PackRoot;
+import com.l2jhellas.util.filters.file.XMLFilter;
 
 public interface DocumentParser
 {

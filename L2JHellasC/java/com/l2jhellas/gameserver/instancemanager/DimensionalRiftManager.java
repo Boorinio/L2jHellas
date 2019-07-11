@@ -1,5 +1,18 @@
 package com.l2jhellas.gameserver.instancemanager;
 
+import java.awt.Polygon;
+import java.awt.Shape;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
@@ -14,19 +27,6 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.XMLDocumentFactory;
-
-import java.awt.Polygon;
-import java.awt.Shape;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 public class DimensionalRiftManager
 {

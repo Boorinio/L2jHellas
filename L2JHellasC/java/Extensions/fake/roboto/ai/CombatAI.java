@@ -1,5 +1,9 @@
 package Extensions.fake.roboto.ai;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.model.BotSkill;
 import Extensions.fake.roboto.model.HealingSpell;
@@ -12,10 +16,6 @@ import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.util.Rnd;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class CombatAI extends FakePlayerAI
 {

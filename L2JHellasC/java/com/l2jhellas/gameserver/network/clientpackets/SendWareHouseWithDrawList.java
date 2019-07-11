@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.ClanWarehouse;
 import com.l2jhellas.gameserver.model.ItemContainer;
@@ -14,8 +16,6 @@ import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-
-import java.util.logging.Logger;
 
 public final class SendWareHouseWithDrawList extends L2GameClientPacket
 {

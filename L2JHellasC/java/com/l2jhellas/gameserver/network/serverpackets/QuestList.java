@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.List;
+
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-
-import java.util.List;
 
 public class QuestList extends L2GameServerPacket
 {

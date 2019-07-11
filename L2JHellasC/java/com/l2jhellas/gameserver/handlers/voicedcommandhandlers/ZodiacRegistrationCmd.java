@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.handlers.voicedcommandhandlers;
 
+import java.io.File;
+import java.util.logging.Logger;
+
 import com.PackRoot;
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -12,9 +15,6 @@ import com.l2jhellas.gameserver.model.entity.engines.TreasureChest;
 import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadManager;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-
-import java.io.File;
-import java.util.logging.Logger;
 
 public class ZodiacRegistrationCmd implements IVoicedCommandHandler
 {

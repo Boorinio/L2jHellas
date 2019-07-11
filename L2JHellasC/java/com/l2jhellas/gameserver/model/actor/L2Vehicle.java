@@ -1,7 +1,12 @@
 package com.l2jhellas.gameserver.model.actor;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.ai.L2BoatAI;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
@@ -11,28 +16,26 @@ import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
-import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.stat.VehicleStat;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.model.zone.ZoneRegion;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
+import com.l2jhellas.gameserver.network.serverpackets.OnVehicleCheckLocation;
+import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.VehicleDeparture;
 import com.l2jhellas.gameserver.network.serverpackets.VehicleInfo;
+import com.l2jhellas.gameserver.network.serverpackets.VehicleStarted;
 import com.l2jhellas.gameserver.templates.L2CharTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.util.Util;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-public abstract class L2Vehicle extends L2Character
+public class L2Vehicle extends L2Character
 {
 	protected int _dockId = 0;
 	protected final List<L2PcInstance> _passengers = new ArrayList<>();
-	protected Location _oustLoc = null;
 	private Runnable _engine = null;
 	
 	protected VehiclePathPoint[] _currentPath = null;
@@ -41,6 +44,7 @@ public abstract class L2Vehicle extends L2Character
 	public L2Vehicle(int objectId, L2CharTemplate template)
 	{
 		super(objectId, template);
+		setAI(new L2BoatAI(new AIAccessor()));
 	}
 	
 	@Override
@@ -73,6 +77,13 @@ public abstract class L2Vehicle extends L2Character
 	private int _moveSpeed = 0;
 	private int _rotationSpeed = 0;
 	
+    @Override
+    public void setXYZ(int x, int y, int z)
+    {
+    	super.setXYZ(x, y, z);
+    	updatePeopleInTheBoat(x, y, z);
+    }
+    
 	@Override
 	public int getMoveSpeed()
 	{
@@ -102,15 +113,15 @@ public abstract class L2Vehicle extends L2Character
 		if (_currentPath != null && _currentPath.length > 0)
 		{
 			final VehiclePathPoint point = _currentPath[0];
-			if (point.moveSpeed > 0)
-				setMoveSpeed(point.moveSpeed);
-			if (point.rotationSpeed > 0)
-				setRotationSpeed(point.rotationSpeed);
 			
-			getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(point.x, point.y, point.z, 0));
+			if (point.getMoveSpeed() > 0)
+				getStat().setMoveSpeed(point.getMoveSpeed());
+			if (point.getRotationSpeed() > 0)
+				getStat().setRotationSpeed(point.getRotationSpeed());
+			
+			getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(point.getX(), point.getY(), point.getZ(), 0));
 			return;
 		}
-		
 		getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 	}
 	
@@ -127,36 +138,38 @@ public abstract class L2Vehicle extends L2Character
 				final VehiclePathPoint point = _currentPath[_runState];
 				if (!isMovementDisabled())
 				{
-					if (point.moveSpeed == 0)
+					if (point.getMoveSpeed() == 0)
 					{
-						teleToLocation(point.x, point.y, point.z, false);
+						teleToLocation(point.getX(), point.getY(), point.getZ(), false);
 						_currentPath = null;
 					}
 					else
 					{
-						if (point.moveSpeed > 0)
-							setMoveSpeed(point.moveSpeed);
-						if (point.rotationSpeed > 0)
-							setRotationSpeed(point.rotationSpeed);
+						if (point.getMoveSpeed() > 0)
+							getStat().setMoveSpeed(point.getMoveSpeed());
+						if (point.getRotationSpeed() > 0)
+							getStat().setRotationSpeed(point.getRotationSpeed());
 						
 						MoveData m = new MoveData();
+						m.disregardingGeodata = false;
 						m.onGeodataPathIndex = -1;
-						m._xDestination = point.x;
-						m._yDestination = point.y;
-						m._zDestination = point.z;
+						m._xDestination = point.getX();
+						m._yDestination = point.getY();
+						m._zDestination = point.getZ();
 						m._heading = 0;
 						
-						final double dx = point.x - getX();
-						final double dy = point.y - getY();
+						final double dx = point.getX() - getX();
+						final double dy = point.getY() - getY();
 						final double distance = Math.sqrt(dx * dx + dy * dy);
+						
 						if (distance > 1) // vertical movement heading check
-							setHeading(Util.calculateHeadingFrom(getX(), getY(), point.x, point.y));
+							setHeading(Util.calculateHeadingFrom(getX(), getY(), point.getX(), point.getY()));
 						
 						m._moveStartTime = GameTimeController.getInstance().getGameTicks();
 						_move = m;
 						
 						GameTimeController.getInstance().registerMovingObject(this);
-						broadcastPacket(new VehicleDeparture((L2BoatInstance) this));
+						broadcastPacket(new VehicleDeparture(this));
 						return true;
 					}
 				}
@@ -168,7 +181,17 @@ public abstract class L2Vehicle extends L2Character
 		runEngine(10);
 		return false;
 	}
-	
+
+	@Override
+	public final VehicleStat getStat()
+	{
+		if (super.getStat() == null || !(super.getStat() instanceof VehicleStat))
+		{
+			setStat(new VehicleStat(this));
+		}
+		return (VehicleStat) super.getStat();
+	}
+
 	public boolean isInDock()
 	{
 		return _dockId > 0;
@@ -182,16 +205,6 @@ public abstract class L2Vehicle extends L2Character
 	public void setInDock(int d)
 	{
 		_dockId = d;
-	}
-	
-	public void setOustLoc(Location loc)
-	{
-		_oustLoc = loc;
-	}
-	
-	public Location getOustLoc()
-	{
-		return _oustLoc != null ? _oustLoc : MapRegionTable.getInstance().getTeleToLocation(this, MapRegionTable.TeleportWhereType.TOWN);
 	}
 	
 	public void oustPlayers()
@@ -216,6 +229,13 @@ public abstract class L2Vehicle extends L2Character
 		
 		player.setInsideZone(ZoneId.PEACE, false);
 		player.sendPacket(SystemMessageId.EXIT_PEACEFUL_ZONE);
+		
+		final Location loc = MapRegionTable.getInstance().getTeleToLocation(this, MapRegionTable.TeleportWhereType.TOWN);
+		
+		if (player.isOnline()==1)
+			player.teleToLocation(loc.getX(), loc.getY(), loc.getZ(), false);
+		else
+			player.setXYZInvisible(loc.getX(), loc.getY(), loc.getZ()); // disconnects handling
 	}
 	
 	public boolean addPassenger(L2PcInstance player)
@@ -275,10 +295,11 @@ public abstract class L2Vehicle extends L2Character
 				if (itemId > 0)
 				{
 					final L2ItemInstance ticket = player.getInventory().getItemByItemId(itemId);
+					
 					if (ticket == null || player.getInventory().destroyItem("Boat", ticket.getItemId(), count, player, this) == null)
 					{
-						player.sendPacket(SystemMessageId.NOT_CORRECT_BOAT_TICKET);
 						player.teleToLocation(oustX, oustY, oustZ, true);
+						player.sendPacket(SystemMessageId.NOT_CORRECT_BOAT_TICKET);
 						return;
 					}
 					
@@ -289,6 +310,12 @@ public abstract class L2Vehicle extends L2Character
 						iu.addModifiedItem(ticket);
 					
 					player.sendPacket(iu);
+					
+					if (count > 1)
+						player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S2_S1_DISAPPEARED).addItemName(itemId).addItemNumber(count));
+					else
+						player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_DISAPPEARED).addItemName(itemId));
+
 				}
 				addPassenger(player);
 			}
@@ -305,6 +332,10 @@ public abstract class L2Vehicle extends L2Character
 			if (player != null && player.getVehicle() == this)
 			{
 				player.setXYZ(getX(), getY(), getZ());
+				
+				if(player.getPet()!=null)
+					player.getPet().setXYZ(getX(), getY(), getZ());
+
 				player.revalidateZone(false);
 			}
 		}
@@ -344,6 +375,9 @@ public abstract class L2Vehicle extends L2Character
 			setHeading(pos.heading);
 			revalidateZone(true);
 		}
+		
+		broadcastPacket(new VehicleStarted(this, 0));
+		broadcastPacket(new VehicleInfo(this));
 	}
 	
 	@Override
@@ -412,7 +446,7 @@ public abstract class L2Vehicle extends L2Character
 		if (_ai == null)
 			_ai = newAI;
 	}
-	
+
 	public class AIAccessor extends L2Character.AIAccessor
 	{
 		public AIAccessor()
@@ -430,6 +464,26 @@ public abstract class L2Vehicle extends L2Character
 			return L2Vehicle.this;
 		}
 		
+	}	
+	
+	protected void updatePeopleInTheBoat(int x, int y, int z)
+	{
+		for(L2PcInstance player : _passengers)
+		{
+			if (player != null && player.getVehicle() == this)
+			{
+			    player.setXYZ(x, y, z);
+				player.revalidateZone(false);
+				
+				if(player.getPet()!=null)
+				{
+					player.getPet().setXYZ(getX(), getY(), getZ());
+					player.getPet().revalidateZone(false);
+				}
+			}
+		}
+		
+		broadcastToPassengers(new OnVehicleCheckLocation(this));
 	}
 	
 	@Override

@@ -1,12 +1,12 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.StringTokenizer;
+
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-
-import java.util.StringTokenizer;
 
 public final class L2ObservationInstance extends L2NpcInstance
 {

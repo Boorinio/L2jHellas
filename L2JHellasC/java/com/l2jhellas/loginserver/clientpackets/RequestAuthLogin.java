@@ -1,5 +1,11 @@
 package com.l2jhellas.loginserver.clientpackets;
 
+import java.security.GeneralSecurityException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.crypto.Cipher;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
 import com.l2jhellas.loginserver.L2LoginClient;
@@ -11,12 +17,6 @@ import com.l2jhellas.loginserver.serverpackets.AccountKicked.AccountKickedReason
 import com.l2jhellas.loginserver.serverpackets.LoginFail.LoginFailReason;
 import com.l2jhellas.loginserver.serverpackets.LoginOk;
 import com.l2jhellas.loginserver.serverpackets.ServerList;
-
-import java.security.GeneralSecurityException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.crypto.Cipher;
 
 public class RequestAuthLogin extends L2LoginClientPacket
 {

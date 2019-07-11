@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.communitybbs.Manager;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import Extensions.RankSystem.RPSHtmlCommunityBoard;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class RPSBBSManager extends BaseBBSManager
 {

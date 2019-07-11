@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.StringTokenizer;
+
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -9,8 +11,6 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.StringUtil;
-
-import java.util.StringTokenizer;
 
 public final class L2BufferInstance extends L2NpcInstance
 {

@@ -1,16 +1,16 @@
 package com.l2jhellas.tools.ngl;
 
-import com.l2jhellas.util.osnative.CodePage;
-import com.l2jhellas.util.osnative.WinConsole;
-import com.sun.jna.Platform;
-import com.sun.jna.Pointer;
-import com.sun.jna.ptr.IntByReference;
-
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.Scanner;
+
+import com.l2jhellas.util.osnative.CodePage;
+import com.l2jhellas.util.osnative.WinConsole;
+import com.sun.jna.Platform;
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.IntByReference;
 
 public class ConsoleLocalizator extends LocalizationParser
 {

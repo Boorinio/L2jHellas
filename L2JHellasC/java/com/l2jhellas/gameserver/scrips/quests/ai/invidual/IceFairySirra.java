@@ -1,5 +1,9 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
 
+import java.util.ArrayList;
+import java.util.concurrent.Future;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
@@ -19,10 +23,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-
-import java.util.ArrayList;
-import java.util.concurrent.Future;
-import java.util.logging.Logger;
 
 public class IceFairySirra extends AbstractNpcAI
 {

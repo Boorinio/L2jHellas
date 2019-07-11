@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.geodata.loader;
 
-import com.l2jhellas.gameserver.geodata.GeoEngine;
-
 import java.io.ByteArrayOutputStream;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
+import com.l2jhellas.gameserver.geodata.GeoEngine;
 
 public class OffGeoLoader extends AbstractGeoLoader
 {

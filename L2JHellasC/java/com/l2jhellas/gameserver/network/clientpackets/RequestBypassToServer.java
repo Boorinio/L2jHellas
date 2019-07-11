@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.StringTokenizer;
+import java.util.logging.Logger;
+
 import Extensions.Balancer.Balancer;
 import Extensions.Balancer.BalancerEdit;
 import Extensions.RankSystem.RPSBypass;
@@ -29,9 +32,6 @@ import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadManager;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-
-import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 public final class RequestBypassToServer extends L2GameClientPacket
 {

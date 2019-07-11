@@ -1,12 +1,12 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.Calendar;
+import java.util.logging.Logger;
+
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Castle;
-
-import java.util.Calendar;
-import java.util.logging.Logger;
 
 public class SiegeInfo extends L2GameServerPacket
 {

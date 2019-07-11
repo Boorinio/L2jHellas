@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.handlers.itemhandlers;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -10,8 +12,6 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
-
-import java.util.logging.Logger;
 
 public class Crystals implements IItemHandler
 {

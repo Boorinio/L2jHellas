@@ -1,5 +1,11 @@
 package com.l2jhellas.gameserver.templates;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import com.l2jhellas.gameserver.model.L2DropCategory;
 import com.l2jhellas.gameserver.model.L2DropData;
 import com.l2jhellas.gameserver.model.L2MinionData;
@@ -9,12 +15,6 @@ import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.skills.Stats;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
 
 public final class L2NpcTemplate extends L2CharTemplate
 {

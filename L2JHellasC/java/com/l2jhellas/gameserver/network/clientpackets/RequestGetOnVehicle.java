@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.instancemanager.BoatManager;
-import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
+import com.l2jhellas.gameserver.model.actor.L2Vehicle;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.GetOnVehicle;
@@ -32,10 +32,10 @@ public final class RequestGetOnVehicle extends L2GameClientPacket
 		if (activeChar == null)
 			return;
 		
-		L2BoatInstance boat;
+		L2Vehicle boat;
 		if (activeChar.isInBoat())
 		{
-			boat = (L2BoatInstance) activeChar.getBoat();
+			boat = activeChar.getBoat();
 			if (boat.getObjectId() != _boatId)
 			{
 				sendPacket(ActionFailed.STATIC_PACKET);

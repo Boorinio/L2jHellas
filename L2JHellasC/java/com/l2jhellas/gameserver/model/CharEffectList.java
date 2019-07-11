@@ -1,6 +1,17 @@
 package com.l2jhellas.gameserver.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
@@ -12,16 +23,6 @@ import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.MagicEffectIcons;
 import com.l2jhellas.gameserver.network.serverpackets.PartySpelled;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Logger;
 
 public class CharEffectList
 {

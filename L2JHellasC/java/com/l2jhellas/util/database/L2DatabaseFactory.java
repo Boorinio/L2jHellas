@@ -1,11 +1,11 @@
 package com.l2jhellas.util.database;
 
-import com.l2jhellas.Config;
-import com.mchange.v2.c3p0.ComboPooledDataSource;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 public class L2DatabaseFactory
 {

@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
@@ -19,9 +22,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Armor;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
-
-import java.util.ArrayList;
-import java.util.logging.Logger;
 
 public class MultiSellChoose extends L2GameClientPacket
 {

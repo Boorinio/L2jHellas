@@ -1,13 +1,13 @@
 package com.l2jhellas.gameserver.model.zone;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.zone.type.L2DerbyTrackZone;
 import com.l2jhellas.gameserver.model.zone.type.L2PeaceZone;
 import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ZoneRegion
 {

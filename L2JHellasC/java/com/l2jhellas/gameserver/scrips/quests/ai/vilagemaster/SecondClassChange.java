@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.vilagemaster;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -7,9 +10,6 @@ import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.serverpackets.HennaInfo;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SecondClassChange extends Quest
 {

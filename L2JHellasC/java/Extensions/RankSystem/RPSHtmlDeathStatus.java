@@ -1,5 +1,8 @@
 package Extensions.RankSystem;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import Extensions.RankSystem.Util.RPSUtil;
 
 import com.l2jhellas.Config;
@@ -7,9 +10,6 @@ import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class RPSHtmlDeathStatus
 {

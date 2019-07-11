@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.StringTokenizer;
+
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
 import com.l2jhellas.gameserver.model.L2Augmentation;
@@ -19,8 +21,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
-
-import java.util.StringTokenizer;
 
 public final class L2FastAugByAbsoInstance extends L2NpcInstance
 {

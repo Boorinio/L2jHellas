@@ -1,11 +1,5 @@
 package com.l2jhellas.gameserver.model;
 
-import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
+
+import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class BlockList
 {

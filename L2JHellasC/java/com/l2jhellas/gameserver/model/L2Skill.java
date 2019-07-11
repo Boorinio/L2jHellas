@@ -1,8 +1,15 @@
 package com.l2jhellas.gameserver.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.emum.L2ArmorType;
+import com.l2jhellas.gameserver.emum.L2SkillTargetType;
+import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.holder.IntIntHolder;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
@@ -39,11 +46,6 @@ import com.l2jhellas.gameserver.templates.L2Armor;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Util;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 public abstract class L2Skill
 {

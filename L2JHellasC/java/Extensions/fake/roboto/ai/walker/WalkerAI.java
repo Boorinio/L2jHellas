@@ -1,14 +1,14 @@
 package Extensions.fake.roboto.ai.walker;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.ai.FakePlayerAI;
 import Extensions.fake.roboto.model.WalkNode;
 import Extensions.fake.roboto.model.WalkerType;
 
 import com.l2jhellas.util.Rnd;
-
-import java.util.LinkedList;
-import java.util.Queue;
 
 public abstract class WalkerAI extends FakePlayerAI
 {

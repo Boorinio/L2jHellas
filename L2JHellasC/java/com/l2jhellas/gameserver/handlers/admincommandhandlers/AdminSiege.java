@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
+import java.util.StringTokenizer;
+
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.AuctionManager;
@@ -14,8 +16,6 @@ import com.l2jhellas.gameserver.model.zone.type.L2ClanHallZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-
-import java.util.StringTokenizer;
 
 public class AdminSiege implements IAdminCommandHandler
 {

@@ -1,9 +1,5 @@
 package com.l2jhellas.gameserver.geodata;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.util.GArray;
-
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
@@ -11,6 +7,10 @@ import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 import java.util.logging.Logger;
 import java.util.zip.CRC32;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.util.GArray;
 
 public class GeoOptimizer
 {

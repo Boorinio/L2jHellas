@@ -1,12 +1,12 @@
 package com.l2jhellas.loginserver.gameserverpackets;
 
-import com.l2jhellas.loginserver.clientpackets.ClientBasePacket;
-
 import java.security.GeneralSecurityException;
 import java.security.interfaces.RSAPrivateKey;
 import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
+
+import com.l2jhellas.loginserver.clientpackets.ClientBasePacket;
 
 public class BlowFishKey extends ClientBasePacket
 {

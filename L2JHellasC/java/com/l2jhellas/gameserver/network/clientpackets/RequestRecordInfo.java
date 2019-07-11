@@ -7,7 +7,7 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
-import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
+import com.l2jhellas.gameserver.model.actor.L2Vehicle;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
@@ -68,12 +68,12 @@ public class RequestRecordInfo extends L2GameClientPacket
 					_activeChar.sendPacket(new DoorInfo((L2DoorInstance) object));
 					_activeChar.sendPacket(new DoorStatusUpdate((L2DoorInstance) object));
 				}
-				else if (object instanceof L2BoatInstance)
+				else if (object instanceof L2Vehicle)
 				{
 					if (!_activeChar.isInBoat() && object != _activeChar.getBoat())
 					{
-						_activeChar.sendPacket(new VehicleInfo((L2BoatInstance) object));
-						_activeChar.sendPacket(new VehicleDeparture((L2BoatInstance) object));
+						_activeChar.sendPacket(new VehicleInfo((L2Vehicle) object));
+						_activeChar.sendPacket(new VehicleDeparture((L2Vehicle) object));
 					}
 				}
 				else if (object instanceof L2StaticObjectInstance)

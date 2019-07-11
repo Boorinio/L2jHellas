@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.ArrayList;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager.SeedProduction;
-
-import java.util.ArrayList;
 
 public class RequestSetSeed extends L2GameClientPacket
 {

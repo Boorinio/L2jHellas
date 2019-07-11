@@ -1,5 +1,10 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Future;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
@@ -12,11 +17,6 @@ import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 import com.l2jhellas.util.Rnd;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Future;
-import java.util.logging.Logger;
 
 public class L2CubicInstance
 {

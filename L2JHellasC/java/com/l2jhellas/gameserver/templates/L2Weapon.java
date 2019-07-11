@@ -1,5 +1,11 @@
 package com.l2jhellas.gameserver.templates;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
@@ -7,7 +13,6 @@ import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -19,11 +24,6 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.conditions.ConditionGameChance;
 import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.gameserver.skills.funcs.FuncTemplate;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public final class L2Weapon extends L2Item
 {

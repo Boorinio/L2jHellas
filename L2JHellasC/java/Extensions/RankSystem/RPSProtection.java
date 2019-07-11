@@ -1,13 +1,13 @@
 package Extensions.RankSystem;
 
+import java.util.Map;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
-
-import java.util.Map;
 
 public class RPSProtection
 {

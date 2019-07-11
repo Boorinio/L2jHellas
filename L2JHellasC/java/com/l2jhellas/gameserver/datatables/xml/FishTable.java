@@ -1,9 +1,5 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
-import com.l2jhellas.gameserver.engines.DocumentParser;
-import com.l2jhellas.gameserver.model.FishData;
-import com.l2jhellas.gameserver.templates.StatsSet;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +9,10 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+
+import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.model.FishData;
+import com.l2jhellas.gameserver.templates.StatsSet;
 
 public class FishTable implements DocumentParser
 {

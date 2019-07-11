@@ -3,11 +3,11 @@ package Extensions.fake.roboto;
 import Extensions.fake.roboto.ai.FakePlayerAI;
 import Extensions.fake.roboto.helpers.FakeHelpers;
 
+import com.l2jhellas.gameserver.emum.L2SkillTargetType;
+import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2SkillTargetType;
-import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.appearance.PcAppearance;

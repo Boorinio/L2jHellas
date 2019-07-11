@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.model.entity.olympiad;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Party;
@@ -18,8 +20,6 @@ import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
-
-import java.util.logging.Logger;
 
 public abstract class AbstractOlympiadGame
 {

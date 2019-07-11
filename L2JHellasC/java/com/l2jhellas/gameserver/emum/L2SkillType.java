@@ -1,5 +1,8 @@
-package com.l2jhellas.gameserver.model;
+package com.l2jhellas.gameserver.emum;
 
+import java.lang.reflect.Constructor;
+
+import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.skills.l2skills.L2SkillCharge;
 import com.l2jhellas.gameserver.skills.l2skills.L2SkillChargeDmg;
 import com.l2jhellas.gameserver.skills.l2skills.L2SkillChargeEffect;
@@ -13,8 +16,6 @@ import com.l2jhellas.gameserver.skills.l2skills.L2SkillSignetCasttime;
 import com.l2jhellas.gameserver.skills.l2skills.L2SkillSpawn;
 import com.l2jhellas.gameserver.skills.l2skills.L2SkillSummon;
 import com.l2jhellas.gameserver.templates.StatsSet;
-
-import java.lang.reflect.Constructor;
 
 public enum L2SkillType
 {

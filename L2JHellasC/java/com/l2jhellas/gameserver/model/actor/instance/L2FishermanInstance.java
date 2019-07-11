@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.StringTokenizer;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.controllers.TradeController;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
@@ -15,8 +17,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SellList;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-
-import java.util.StringTokenizer;
 
 public class L2FishermanInstance extends L2NpcInstance
 {

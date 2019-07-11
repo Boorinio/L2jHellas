@@ -1,5 +1,9 @@
 package com.l2jhellas.gameserver.model.entity.engines;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
@@ -15,10 +19,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage.SMPOS;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CaptureThem
 {

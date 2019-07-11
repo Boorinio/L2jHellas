@@ -1,13 +1,13 @@
 package com.l2jhellas.gameserver.handlers.usercommandhandlers;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.handler.IUserCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Time implements IUserCommandHandler
 {

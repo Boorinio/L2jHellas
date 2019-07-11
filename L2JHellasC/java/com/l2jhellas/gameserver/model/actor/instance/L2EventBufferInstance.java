@@ -1,14 +1,14 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.ArrayList;
+
 import com.l2jhellas.gameserver.datatables.sql.BuffTemplateTable;
+import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2BuffTemplate;
-
-import java.util.ArrayList;
 
 public class L2EventBufferInstance
 {

@@ -1,8 +1,5 @@
 package com.l2jhellas.gameserver.instancemanager;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +13,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
+
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class RaidBossPointsManager
 {

@@ -4,6 +4,9 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_FOLLOW;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
 
+import java.util.concurrent.Future;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
@@ -22,9 +25,6 @@ import com.l2jhellas.gameserver.network.serverpackets.MoveToLocationInVehicle;
 import com.l2jhellas.gameserver.network.serverpackets.MoveToPawn;
 import com.l2jhellas.gameserver.network.serverpackets.StopMove;
 import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
-
-import java.util.concurrent.Future;
-import java.util.logging.Logger;
 
 abstract class AbstractAI implements Ctrl
 {

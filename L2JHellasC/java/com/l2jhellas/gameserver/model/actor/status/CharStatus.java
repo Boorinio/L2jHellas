@@ -1,5 +1,10 @@
 package com.l2jhellas.gameserver.model.actor.status;
 
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Future;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -14,11 +19,6 @@ import com.l2jhellas.gameserver.model.actor.stat.CharStat;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.util.Rnd;
-
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Future;
-import java.util.logging.Logger;
 
 public class CharStatus
 {

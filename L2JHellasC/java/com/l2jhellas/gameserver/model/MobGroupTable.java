@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.model;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2ControllableMobInstance;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.l2jhellas.gameserver.model.actor.instance.L2ControllableMobInstance;
 
 public class MobGroupTable
 {

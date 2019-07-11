@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.templates.L2PcTemplate;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.l2jhellas.gameserver.templates.L2PcTemplate;
 
 public class CharTemplates extends L2GameServerPacket
 {

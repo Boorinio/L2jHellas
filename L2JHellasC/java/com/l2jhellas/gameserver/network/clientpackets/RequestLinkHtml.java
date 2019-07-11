@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-
-import java.util.logging.Logger;
 
 public final class RequestLinkHtml extends L2GameClientPacket
 {

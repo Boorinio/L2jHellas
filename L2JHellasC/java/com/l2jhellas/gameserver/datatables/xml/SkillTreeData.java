@@ -1,15 +1,5 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
-import com.PackRoot;
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2EnchantSkillLearn;
-import com.l2jhellas.gameserver.model.L2PledgeSkillLearn;
-import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2SkillLearn;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.base.ClassId;
-import com.l2jhellas.gameserver.skills.SkillTable;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -30,6 +20,16 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import com.PackRoot;
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.L2EnchantSkillLearn;
+import com.l2jhellas.gameserver.model.L2PledgeSkillLearn;
+import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.L2SkillLearn;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.base.ClassId;
+import com.l2jhellas.gameserver.skills.SkillTable;
 
 public class SkillTreeData
 {

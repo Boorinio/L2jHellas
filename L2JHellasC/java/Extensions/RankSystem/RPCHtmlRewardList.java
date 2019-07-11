@@ -1,5 +1,7 @@
 package Extensions.RankSystem;
 
+import java.util.Map;
+
 import Extensions.RankSystem.RewardTable.Reward;
 import Extensions.RankSystem.Util.RPSUtil;
 
@@ -7,8 +9,6 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-
-import java.util.Map;
 
 public class RPCHtmlRewardList
 {

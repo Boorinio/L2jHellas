@@ -1,12 +1,12 @@
 package com.l2jhellas.gameserver.model.zone.form;
 
+import java.awt.Rectangle;
+
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.zone.L2ZoneForm;
 import com.l2jhellas.util.Rnd;
-
-import java.awt.Rectangle;
 
 public class ZoneCuboid extends L2ZoneForm
 {

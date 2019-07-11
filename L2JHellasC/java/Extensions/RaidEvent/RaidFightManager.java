@@ -1,11 +1,11 @@
 package Extensions.RaidEvent;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2EventManagerInstance;
-
-import java.util.logging.Logger;
 
 public class RaidFightManager
 {

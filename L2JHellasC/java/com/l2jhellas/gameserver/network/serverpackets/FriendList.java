@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FriendList extends L2GameServerPacket
 {

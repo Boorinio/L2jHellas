@@ -1,13 +1,13 @@
 package com.l2jhellas.gameserver.model.entity.olympiad;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class OlympiadAnnouncer implements Runnable
 {

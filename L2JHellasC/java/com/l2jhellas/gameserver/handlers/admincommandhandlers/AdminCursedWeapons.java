@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
+import java.util.StringTokenizer;
+
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.CursedWeapon;
@@ -8,8 +10,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-
-import java.util.StringTokenizer;
 
 public class AdminCursedWeapons implements IAdminCommandHandler
 {

@@ -1,21 +1,5 @@
 package com.l2jhellas.gameserver.instancemanager;
 
-import com.PackRoot;
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.CursedWeapon;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.actor.L2Attackable;
-import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.actor.instance.L2FestivalMonsterInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2RiftInvaderInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
-import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,6 +16,22 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+
+import com.PackRoot;
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.CursedWeapon;
+import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.instance.L2FestivalMonsterInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2RiftInvaderInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class CursedWeaponsManager
 {

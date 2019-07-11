@@ -1,9 +1,5 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
-import com.PackRoot;
-import com.l2jhellas.gameserver.engines.DocumentParser;
-import com.l2jhellas.gameserver.model.L2ArmorSet;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +7,10 @@ import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
+import com.PackRoot;
+import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.model.L2ArmorSet;
 
 public class ArmorSetsData implements DocumentParser
 {

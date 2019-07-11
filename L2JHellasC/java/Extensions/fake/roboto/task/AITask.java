@@ -1,9 +1,9 @@
 package Extensions.fake.roboto.task;
 
+import java.util.List;
+
 import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.FakePlayerManager;
-
-import java.util.List;
 
 public class AITask implements Runnable
 {

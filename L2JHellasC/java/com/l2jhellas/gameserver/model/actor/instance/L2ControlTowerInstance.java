@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -9,9 +12,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class L2ControlTowerInstance extends L2Npc
 {

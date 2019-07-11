@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.instancemanager.CastleManorManager.SeedProduction;
-import com.l2jhellas.gameserver.model.L2Manor;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.l2jhellas.gameserver.instancemanager.CastleManorManager.SeedProduction;
+import com.l2jhellas.gameserver.model.L2Manor;
 
 public class ExShowSeedInfo extends L2GameServerPacket
 {

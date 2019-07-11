@@ -1,8 +1,8 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.Location;
-
 import java.util.List;
+
+import com.l2jhellas.gameserver.model.Location;
 
 public class ExCursedWeaponLocation extends L2GameServerPacket
 {

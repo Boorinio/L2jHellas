@@ -1,14 +1,14 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.CursedWeapon;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.network.serverpackets.ExCursedWeaponLocation;
 import com.l2jhellas.gameserver.network.serverpackets.ExCursedWeaponLocation.CursedWeaponInfo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class RequestCursedWeaponLocation extends L2GameClientPacket
 {

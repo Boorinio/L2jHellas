@@ -4,7 +4,7 @@ import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.instancemanager.BoatManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
-import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
+import com.l2jhellas.gameserver.model.actor.L2Vehicle;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -67,10 +67,10 @@ public final class RequestMoveToLocationInVehicle extends L2GameClientPacket
 			return;
 		}
 		
-		final L2BoatInstance boat;
+		final L2Vehicle boat;
 		if (activeChar.isInBoat())
 		{
-			boat = (L2BoatInstance) activeChar.getBoat();
+			boat = activeChar.getBoat();
 			if (boat.getObjectId() != _boatId)
 			{
 				activeChar.sendPacket(ActionFailed.STATIC_PACKET);

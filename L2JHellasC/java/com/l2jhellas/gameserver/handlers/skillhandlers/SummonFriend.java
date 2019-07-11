@@ -1,10 +1,13 @@
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
+import java.util.Collection;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -13,9 +16,6 @@ import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Util;
-
-import java.util.Collection;
-import java.util.logging.Logger;
 
 public class SummonFriend implements ISkillHandler
 {

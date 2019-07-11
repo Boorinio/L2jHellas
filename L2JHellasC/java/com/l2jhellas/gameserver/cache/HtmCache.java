@@ -1,9 +1,5 @@
 package com.l2jhellas.gameserver.cache;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.util.UnicodeReader;
-import com.l2jhellas.util.filters.file.HtmFilter;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
@@ -12,6 +8,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.util.UnicodeReader;
+import com.l2jhellas.util.filters.file.HtmFilter;
 
 public class HtmCache
 {

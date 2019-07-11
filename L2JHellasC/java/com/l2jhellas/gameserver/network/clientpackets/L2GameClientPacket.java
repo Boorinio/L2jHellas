@@ -1,13 +1,13 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.nio.BufferUnderflowException;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.mmocore.network.ReceivablePacket;
-
-import java.nio.BufferUnderflowException;
-import java.util.logging.Logger;
 
 public abstract class L2GameClientPacket extends ReceivablePacket<L2GameClient>
 {

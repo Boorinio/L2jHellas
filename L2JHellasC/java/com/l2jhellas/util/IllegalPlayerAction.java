@@ -1,12 +1,12 @@
 package com.l2jhellas.util;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.datatables.xml.AdminData;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.datatables.xml.AdminData;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public final class IllegalPlayerAction implements Runnable
 {

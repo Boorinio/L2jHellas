@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.communitybbs.Manager;
 
+import java.util.StringTokenizer;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
@@ -9,8 +11,6 @@ import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.util.Util;
-
-import java.util.StringTokenizer;
 
 public class ClassBBSManager extends BaseBBSManager
 {

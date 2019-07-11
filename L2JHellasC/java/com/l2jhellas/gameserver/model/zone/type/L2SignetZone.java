@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.model.zone.type;
 
+import java.util.ArrayList;
+
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2WorldRegion;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
-
-import java.util.ArrayList;
 
 public class L2SignetZone extends L2ZoneType
 {

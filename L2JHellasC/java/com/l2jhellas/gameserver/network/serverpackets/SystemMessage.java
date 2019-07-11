@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.Arrays;
+
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -10,8 +12,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-
-import java.util.Arrays;
 
 public final class SystemMessage extends L2GameServerPacket
 {

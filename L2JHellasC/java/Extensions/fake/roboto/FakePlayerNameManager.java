@@ -1,8 +1,5 @@
 package Extensions.fake.roboto;
 
-import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
-import com.l2jhellas.util.Rnd;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -11,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
+import com.l2jhellas.util.Rnd;
 
 public enum FakePlayerNameManager
 {

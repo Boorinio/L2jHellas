@@ -3,6 +3,10 @@ package com.l2jhellas.gameserver.ai;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ACTIVE;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_ATTACK;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.MobGroup;
@@ -17,10 +21,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 public class L2ControllableMobAI extends L2AttackableAI
 {

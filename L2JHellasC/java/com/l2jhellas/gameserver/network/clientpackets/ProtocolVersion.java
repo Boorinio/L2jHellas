@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.network.serverpackets.KeyPacket;
-
-import java.util.logging.Logger;
 
 public final class ProtocolVersion extends L2GameClientPacket
 {

@@ -1,13 +1,13 @@
 package com.l2jhellas.gameserver.model.zone.type;
 
+import java.util.concurrent.Future;
+
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2WorldRegion;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
-
-import java.util.concurrent.Future;
 
 public class L2DynamicZone extends L2ZoneType
 {

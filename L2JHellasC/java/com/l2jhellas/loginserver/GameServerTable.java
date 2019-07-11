@@ -1,11 +1,5 @@
 package com.l2jhellas.loginserver;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
-import com.l2jhellas.util.Rnd;
-import com.l2jhellas.util.XMLDocumentFactory;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.io.File;
 import java.math.BigInteger;
 import java.security.GeneralSecurityException;
@@ -27,6 +21,12 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.loginserver.gameserverpackets.ServerStatus;
+import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.XMLDocumentFactory;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class GameServerTable
 {

@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.StringTokenizer;
+
 import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.AchievmentsEngine.base.Achievement;
 import Extensions.AchievmentsEngine.base.Condition;
@@ -10,8 +12,6 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-
-import java.util.StringTokenizer;
 
 public class L2AchievementsInstance extends L2Npc
 {

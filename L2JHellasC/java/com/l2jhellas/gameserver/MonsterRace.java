@@ -1,13 +1,13 @@
 package com.l2jhellas.gameserver;
 
+import java.lang.reflect.Constructor;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
-
-import java.lang.reflect.Constructor;
 
 public class MonsterRace
 {

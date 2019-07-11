@@ -1,5 +1,10 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ScheduledFuture;
+import java.util.logging.Logger;
+
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.NpcBufferSkillIdsTable;
 import com.l2jhellas.gameserver.model.L2Effect;
@@ -11,11 +16,6 @@ import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Logger;
 
 public class L2NpcBufferInstance extends L2Npc
 {

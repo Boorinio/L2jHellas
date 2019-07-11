@@ -1,5 +1,10 @@
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.StringTokenizer;
+
 import Extensions.IpCatcher;
 
 import com.l2jhellas.Config;
@@ -11,11 +16,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ServerClose;
 import com.l2jhellas.util.database.L2DatabaseFactory;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.StringTokenizer;
 
 public class AdminBan implements IAdminCommandHandler
 {

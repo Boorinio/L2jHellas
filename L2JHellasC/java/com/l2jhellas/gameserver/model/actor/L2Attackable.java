@@ -1,5 +1,11 @@
 package com.l2jhellas.gameserver.model.actor;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+
 import Extensions.RaidEvent.L2RaidEvent;
 
 import com.l2jhellas.Config;
@@ -42,12 +48,6 @@ import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.shield.antibot.PrivateAntiBot;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 
 public class L2Attackable extends L2Npc
 {

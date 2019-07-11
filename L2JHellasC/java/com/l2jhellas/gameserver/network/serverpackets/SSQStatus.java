@@ -1,13 +1,13 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.templates.StatsSet;
-
-import java.util.logging.Logger;
 
 public class SSQStatus extends L2GameServerPacket
 {

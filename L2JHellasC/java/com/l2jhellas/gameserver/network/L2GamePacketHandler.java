@@ -1,12 +1,12 @@
 package com.l2jhellas.gameserver.network;
 
+import java.nio.ByteBuffer;
+
 import com.l2jhellas.mmocore.network.IClientFactory;
 import com.l2jhellas.mmocore.network.IMMOExecutor;
 import com.l2jhellas.mmocore.network.IPacketHandler;
 import com.l2jhellas.mmocore.network.MMOConnection;
 import com.l2jhellas.mmocore.network.ReceivablePacket;
-
-import java.nio.ByteBuffer;
 
 public final class L2GamePacketHandler implements IPacketHandler<L2GameClient>, IClientFactory<L2GameClient>, IMMOExecutor<L2GameClient>
 {

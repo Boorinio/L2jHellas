@@ -1,11 +1,5 @@
 package com.l2jhellas.gsregistering;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.Server;
-import com.l2jhellas.gameserver.LoginServerThread;
-import com.l2jhellas.loginserver.GameServerTable;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
@@ -14,6 +8,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.Server;
+import com.l2jhellas.gameserver.LoginServerThread;
+import com.l2jhellas.loginserver.GameServerTable;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class GameServerRegister
 {

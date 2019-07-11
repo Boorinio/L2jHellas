@@ -1,5 +1,10 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
@@ -13,11 +18,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 import com.l2jhellas.util.database.L2DatabaseFactory;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.logging.Logger;
 
 public final class Logout extends L2GameClientPacket
 {

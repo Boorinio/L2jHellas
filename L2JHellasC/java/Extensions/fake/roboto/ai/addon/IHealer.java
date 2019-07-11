@@ -1,15 +1,15 @@
 package Extensions.fake.roboto.ai.addon;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.ai.CombatAI;
 import Extensions.fake.roboto.model.HealingSpell;
 
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public interface IHealer
 {

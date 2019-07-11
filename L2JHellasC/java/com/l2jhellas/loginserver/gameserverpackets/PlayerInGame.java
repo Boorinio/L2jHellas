@@ -1,9 +1,9 @@
 package com.l2jhellas.loginserver.gameserverpackets;
 
-import com.l2jhellas.loginserver.clientpackets.ClientBasePacket;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.l2jhellas.loginserver.clientpackets.ClientBasePacket;
 
 public class PlayerInGame extends ClientBasePacket
 {

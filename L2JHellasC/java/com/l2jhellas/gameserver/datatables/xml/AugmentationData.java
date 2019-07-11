@@ -1,16 +1,5 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
-import com.PackRoot;
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.holder.IntIntHolder;
-import com.l2jhellas.gameserver.model.L2Augmentation;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.network.clientpackets.AbstractRefinePacket;
-import com.l2jhellas.gameserver.skills.SkillTable;
-import com.l2jhellas.gameserver.skills.Stats;
-import com.l2jhellas.util.Rnd;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +16,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+
+import com.PackRoot;
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.holder.IntIntHolder;
+import com.l2jhellas.gameserver.model.L2Augmentation;
+import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.network.clientpackets.AbstractRefinePacket;
+import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.gameserver.skills.Stats;
+import com.l2jhellas.util.Rnd;
 
 public class AugmentationData
 {

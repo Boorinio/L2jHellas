@@ -1,15 +1,15 @@
 package com.l2jhellas.util.hexid;
 
-import com.PackRoot;
-import com.l2jhellas.Config;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import com.PackRoot;
+import com.l2jhellas.Config;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class HexId
 {

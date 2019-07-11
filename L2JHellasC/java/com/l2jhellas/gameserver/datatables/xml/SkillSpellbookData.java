@@ -1,15 +1,15 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.engines.DocumentParser;
-import com.l2jhellas.gameserver.model.L2Skill;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.model.L2Skill;
 
 public class SkillSpellbookData implements DocumentParser
 {

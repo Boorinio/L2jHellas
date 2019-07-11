@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.CrestCache;
 import com.l2jhellas.gameserver.cache.CrestCache.CrestType;
 import com.l2jhellas.gameserver.network.serverpackets.AllyCrest;
-
-import java.util.logging.Logger;
 
 public final class RequestAllyCrest extends L2GameClientPacket
 {

@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.group;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -8,9 +11,6 @@ import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.util.Rnd;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class PolymorphingOnAttack extends AbstractNpcAI
 {

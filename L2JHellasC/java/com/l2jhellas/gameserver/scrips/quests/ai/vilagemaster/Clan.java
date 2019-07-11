@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.vilagemaster;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class Clan extends Quest
 {

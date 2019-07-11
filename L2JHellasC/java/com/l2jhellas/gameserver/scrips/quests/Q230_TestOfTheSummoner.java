@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.scrips.quests;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -10,9 +13,6 @@ import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.util.Rnd;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Q230_TestOfTheSummoner extends Quest
 {

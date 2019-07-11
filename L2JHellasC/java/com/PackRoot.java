@@ -1,14 +1,14 @@
 package com;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.Server;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.Server;
 
 public final class PackRoot
 {

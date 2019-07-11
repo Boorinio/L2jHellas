@@ -1,8 +1,5 @@
 package com.l2jhellas.util.ip;
 
-import com.PackRoot;
-import com.l2jhellas.Config;
-
 import info.tak11.subnet.Subnet;
 
 import java.io.BufferedReader;
@@ -22,6 +19,9 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import com.PackRoot;
+import com.l2jhellas.Config;
 
 public class IPConfigData
 {

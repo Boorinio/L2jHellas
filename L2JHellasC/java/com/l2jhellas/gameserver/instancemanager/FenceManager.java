@@ -1,15 +1,15 @@
 package com.l2jhellas.gameserver.instancemanager;
 
-import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
-import com.l2jhellas.gameserver.emum.FenceState;
-import com.l2jhellas.gameserver.model.actor.instance.L2FenceInstance;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
+
+import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
+import com.l2jhellas.gameserver.emum.FenceState;
+import com.l2jhellas.gameserver.model.actor.instance.L2FenceInstance;
 
 public final class FenceManager
 {

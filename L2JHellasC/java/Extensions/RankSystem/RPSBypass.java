@@ -1,10 +1,10 @@
 package Extensions.RankSystem;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class RPSBypass
 {

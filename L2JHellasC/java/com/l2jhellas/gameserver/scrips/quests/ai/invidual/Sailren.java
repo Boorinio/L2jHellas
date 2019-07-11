@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
@@ -14,9 +17,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SpecialCamera;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
-
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Sailren extends AbstractNpcAI
 {

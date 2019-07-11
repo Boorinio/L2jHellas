@@ -1,5 +1,9 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.PetData;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
@@ -12,10 +16,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.util.logging.Logger;
 
 public final class RequestDestroyItem extends L2GameClientPacket
 {

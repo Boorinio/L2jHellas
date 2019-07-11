@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.taskmanager;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
@@ -7,9 +10,6 @@ import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2CubicInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.AutoAttackStop;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class AttackStanceTaskManager implements Runnable
 {

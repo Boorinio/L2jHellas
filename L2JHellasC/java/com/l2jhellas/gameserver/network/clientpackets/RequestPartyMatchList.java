@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.gameserver.model.PartyMatchRoom;
 import com.l2jhellas.gameserver.model.PartyMatchRoomList;
 import com.l2jhellas.gameserver.model.PartyMatchWaitingList;
@@ -7,8 +9,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ExPartyRoomMember;
 import com.l2jhellas.gameserver.network.serverpackets.PartyMatchDetail;
-
-import java.util.logging.Logger;
 
 public class RequestPartyMatchList extends L2GameClientPacket
 {

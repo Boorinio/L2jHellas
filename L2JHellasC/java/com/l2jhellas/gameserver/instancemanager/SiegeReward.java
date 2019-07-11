@@ -1,11 +1,5 @@
 package com.l2jhellas.gameserver.instancemanager;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2Clan;
-import com.l2jhellas.gameserver.model.L2ClanMember;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
@@ -17,6 +11,12 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.L2Clan;
+import com.l2jhellas.gameserver.model.L2ClanMember;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class SiegeReward
 {

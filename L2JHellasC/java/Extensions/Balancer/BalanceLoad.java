@@ -1,13 +1,13 @@
 package Extensions.Balancer;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class BalanceLoad
 {

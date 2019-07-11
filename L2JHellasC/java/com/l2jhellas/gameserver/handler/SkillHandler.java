@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.handler;
 
-import com.l2jhellas.gameserver.model.L2SkillType;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.l2jhellas.gameserver.emum.L2SkillType;
 
 public class SkillHandler implements IHandler<ISkillHandler, L2SkillType>
 {

@@ -1,11 +1,5 @@
 package Extensions.RankSystem;
 
-import Extensions.RankSystem.Util.RPSUtil;
-
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +9,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import Extensions.RankSystem.Util.RPSUtil;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class TopTable
 {

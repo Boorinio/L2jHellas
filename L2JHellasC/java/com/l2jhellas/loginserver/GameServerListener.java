@@ -1,12 +1,12 @@
 package com.l2jhellas.loginserver;
 
-import com.l2jhellas.Config;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
 
 public class GameServerListener extends FloodProtectedListener
 {

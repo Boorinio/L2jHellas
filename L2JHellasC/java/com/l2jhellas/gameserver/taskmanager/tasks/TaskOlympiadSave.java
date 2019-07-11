@@ -1,13 +1,13 @@
 package com.l2jhellas.gameserver.taskmanager.tasks;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.taskmanager.Task;
 import com.l2jhellas.gameserver.taskmanager.TaskManager;
 import com.l2jhellas.gameserver.taskmanager.TaskManager.ExecutedTask;
 import com.l2jhellas.gameserver.taskmanager.TaskTypes;
-
-import java.util.logging.Logger;
 
 public class TaskOlympiadSave extends Task
 {

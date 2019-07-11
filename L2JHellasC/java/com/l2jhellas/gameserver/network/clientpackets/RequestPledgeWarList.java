@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.List;
+
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeReceiveWarList;
-
-import java.util.List;
 
 public final class RequestPledgeWarList extends L2GameClientPacket
 {

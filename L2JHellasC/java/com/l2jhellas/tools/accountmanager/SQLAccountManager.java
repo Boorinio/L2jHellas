@@ -1,11 +1,5 @@
 package com.l2jhellas.tools.accountmanager;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.Server;
-import com.l2jhellas.tools.ngl.ConsoleLocalizator;
-import com.l2jhellas.tools.ngl.LocaleCodes;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -17,6 +11,12 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Locale;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.Server;
+import com.l2jhellas.tools.ngl.ConsoleLocalizator;
+import com.l2jhellas.tools.ngl.LocaleCodes;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class SQLAccountManager
 {

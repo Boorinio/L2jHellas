@@ -1,5 +1,10 @@
 package com.l2jhellas.gameserver.model.entity;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.Future;
+
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.emum.DuelResult;
@@ -20,11 +25,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ExDuelUpdateUserInfo;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.concurrent.Future;
 
 public class Duel
 {

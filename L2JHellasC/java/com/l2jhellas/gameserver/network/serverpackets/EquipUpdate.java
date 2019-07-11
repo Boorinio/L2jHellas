@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.templates.L2Item;
-
-import java.util.logging.Logger;
 
 public class EquipUpdate extends L2GameServerPacket
 {

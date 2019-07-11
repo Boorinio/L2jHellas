@@ -1,5 +1,9 @@
 package com.l2jhellas.gameserver.network;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.l2jhellas.gameserver.network.L2GameClient.GameClientState;
 import com.l2jhellas.gameserver.network.clientpackets.AnswerJoinPartyRoom;
 import com.l2jhellas.gameserver.network.clientpackets.RequestAskJoinPartyRoom;
@@ -48,10 +52,6 @@ import com.l2jhellas.gameserver.network.clientpackets.RequestSetSeed;
 import com.l2jhellas.gameserver.network.clientpackets.RequestWithdrawPartyRoom;
 import com.l2jhellas.gameserver.network.clientpackets.RequestWriteHeroWords;
 import com.l2jhellas.mmocore.network.ReceivablePacket;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 public enum DoubleOpcodePackets implements IPacket
 {

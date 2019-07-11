@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.skills.effects;
 
+import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.model.L2Effect;
-import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;

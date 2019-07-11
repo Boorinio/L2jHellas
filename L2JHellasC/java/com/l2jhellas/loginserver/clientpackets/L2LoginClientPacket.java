@@ -1,9 +1,9 @@
 package com.l2jhellas.loginserver.clientpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.loginserver.L2LoginClient;
 import com.l2jhellas.mmocore.network.ReceivablePacket;
-
-import java.util.logging.Logger;
 
 public abstract class L2LoginClientPacket extends ReceivablePacket<L2LoginClient>
 {

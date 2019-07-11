@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver;
 
+import java.util.Collection;
+import java.util.logging.Logger;
+
 import Extensions.RankSystem.PvpTable;
 
 import com.l2jhellas.Config;
@@ -23,9 +26,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Broadcast;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
-
-import java.util.Collection;
-import java.util.logging.Logger;
 
 public class Shutdown extends Thread
 {

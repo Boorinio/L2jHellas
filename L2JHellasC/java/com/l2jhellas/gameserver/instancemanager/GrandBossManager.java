@@ -1,13 +1,5 @@
 package com.l2jhellas.gameserver.instancemanager;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
-import com.l2jhellas.gameserver.templates.StatsSet;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,6 +10,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
+import com.l2jhellas.gameserver.templates.StatsSet;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class GrandBossManager
 {

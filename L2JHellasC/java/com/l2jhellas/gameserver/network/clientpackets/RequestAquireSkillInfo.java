@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.SkillSpellbookData;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
@@ -11,8 +13,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.AquireSkillInfo;
 import com.l2jhellas.gameserver.skills.SkillTable;
-
-import java.util.logging.Logger;
 
 public class RequestAquireSkillInfo extends L2GameClientPacket
 {

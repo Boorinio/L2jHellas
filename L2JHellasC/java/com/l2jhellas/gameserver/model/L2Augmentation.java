@@ -1,5 +1,10 @@
 package com.l2jhellas.gameserver.model;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.List;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
 import com.l2jhellas.gameserver.datatables.xml.AugmentationData.AugStat;
@@ -10,11 +15,6 @@ import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.skills.funcs.FuncAdd;
 import com.l2jhellas.gameserver.skills.funcs.LambdaConst;
 import com.l2jhellas.util.database.L2DatabaseFactory;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.util.List;
-import java.util.logging.Logger;
 
 public final class L2Augmentation
 {

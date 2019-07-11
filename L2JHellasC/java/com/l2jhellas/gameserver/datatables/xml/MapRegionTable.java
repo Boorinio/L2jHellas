@@ -1,5 +1,14 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
+import java.io.File;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -16,15 +25,6 @@ import com.l2jhellas.gameserver.model.zone.type.L2ArenaZone;
 import com.l2jhellas.gameserver.model.zone.type.L2ClanHallZone;
 import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
 import com.l2jhellas.util.XMLDocumentFactory;
-
-import java.io.File;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 public class MapRegionTable
 {

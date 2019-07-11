@@ -1,5 +1,13 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.nio.BufferUnderflowException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.ChatHandler;
 import com.l2jhellas.gameserver.handler.IChatHandler;
@@ -12,14 +20,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
-
-import java.nio.BufferUnderflowException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.logging.Logger;
 
 public final class Say2 extends L2GameClientPacket
 {

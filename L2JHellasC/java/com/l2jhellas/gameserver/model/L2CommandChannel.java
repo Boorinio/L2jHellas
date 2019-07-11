@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -8,9 +11,6 @@ import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.ExCloseMPCC;
 import com.l2jhellas.gameserver.network.serverpackets.ExOpenMPCC;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class L2CommandChannel
 {

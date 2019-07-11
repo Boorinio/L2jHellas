@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.logging.Logger;
+
 import Extensions.RaidEvent.L2RaidEvent;
 
 import com.l2jhellas.Config;
@@ -17,8 +19,6 @@ import com.l2jhellas.gameserver.network.serverpackets.Revive;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
-
-import java.util.logging.Logger;
 
 public final class RequestRestartPoint extends L2GameClientPacket
 {

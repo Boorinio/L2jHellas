@@ -1,12 +1,5 @@
 package com.l2jhellas.gameserver.communitybbs.Manager;
 
-import com.l2jhellas.gameserver.communitybbs.BB.Forum;
-import com.l2jhellas.gameserver.communitybbs.BB.Post;
-import com.l2jhellas.gameserver.communitybbs.BB.Topic;
-import com.l2jhellas.gameserver.datatables.sql.ClanTable;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
-
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,6 +8,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+
+import com.l2jhellas.gameserver.communitybbs.BB.Forum;
+import com.l2jhellas.gameserver.communitybbs.BB.Post;
+import com.l2jhellas.gameserver.communitybbs.BB.Topic;
+import com.l2jhellas.gameserver.datatables.sql.ClanTable;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
 
 public class TopicBBSManager extends BaseBBSManager
 {

@@ -1,12 +1,12 @@
 package com.l2jhellas.gameserver.model.entity.olympiad;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-
-import java.util.logging.Logger;
 
 public final class OlympiadGameTask implements Runnable
 {

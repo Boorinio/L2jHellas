@@ -1,15 +1,15 @@
 package com.l2jhellas.gameserver.communitybbs.BB;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.communitybbs.Manager.PostBBSManager;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.communitybbs.Manager.PostBBSManager;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class Post
 {

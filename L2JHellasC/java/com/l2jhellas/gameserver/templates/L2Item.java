@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.templates;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.L2ArmorType;
 import com.l2jhellas.gameserver.emum.L2EtcItemType;
@@ -16,9 +19,6 @@ import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.effects.EffectTemplate;
 import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.gameserver.skills.funcs.FuncTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class L2Item
 {

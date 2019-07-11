@@ -1,13 +1,16 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.text.SimpleDateFormat;
+import java.util.StringTokenizer;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.controllers.TradeController;
 import com.l2jhellas.gameserver.datatables.xml.TeleportLocationData;
+import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.L2TeleportLocation;
 import com.l2jhellas.gameserver.model.L2TradeList;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
@@ -21,9 +24,6 @@ import com.l2jhellas.gameserver.network.serverpackets.WareHouseDepositList;
 import com.l2jhellas.gameserver.network.serverpackets.WareHouseWithdrawalList;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-
-import java.text.SimpleDateFormat;
-import java.util.StringTokenizer;
 
 public class L2ClanHallManagerInstance extends L2NpcInstance
 {

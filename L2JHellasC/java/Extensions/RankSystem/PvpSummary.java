@@ -1,9 +1,9 @@
 package Extensions.RankSystem;
 
-import com.l2jhellas.Config;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.l2jhellas.Config;
 
 public class PvpSummary
 {

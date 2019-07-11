@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.emum.Music;
@@ -22,9 +25,6 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Baium extends AbstractNpcAI
 {

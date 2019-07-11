@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.clientpackets.RequestBypassToServer;
-
-import java.util.logging.Logger;
 
 public class NpcHtmlMessage extends L2GameServerPacket
 {

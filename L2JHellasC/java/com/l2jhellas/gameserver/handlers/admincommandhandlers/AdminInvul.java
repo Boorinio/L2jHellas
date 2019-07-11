@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
-import java.util.logging.Logger;
 
 public class AdminInvul implements IAdminCommandHandler
 {

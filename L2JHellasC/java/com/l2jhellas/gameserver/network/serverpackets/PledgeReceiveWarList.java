@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.List;
+
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.model.L2Clan;
-
-import java.util.List;
 
 public class PledgeReceiveWarList extends L2GameServerPacket
 {

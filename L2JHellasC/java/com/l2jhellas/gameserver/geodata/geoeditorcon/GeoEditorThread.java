@@ -1,7 +1,5 @@
 package com.l2jhellas.gameserver.geodata.geoeditorcon;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -9,6 +7,8 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class GeoEditorThread extends Thread
 {

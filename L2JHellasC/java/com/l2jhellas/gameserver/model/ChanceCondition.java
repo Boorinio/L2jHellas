@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.model;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
-
-import java.util.logging.Logger;
 
 public final class ChanceCondition
 {

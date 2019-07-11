@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.ArrayList;
+
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.templates.L2Item;
-
-import java.util.ArrayList;
 
 public class WareHouseDepositList extends L2GameServerPacket
 {

@@ -1,13 +1,13 @@
 package com.l2jhellas.gameserver.scrips.quests;
 
+import java.util.HashMap;
+import java.util.Set;
+
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.util.Rnd;
-
-import java.util.HashMap;
-import java.util.Set;
 
 public class Q605_AllianceWithKetraOrcs extends Quest
 {

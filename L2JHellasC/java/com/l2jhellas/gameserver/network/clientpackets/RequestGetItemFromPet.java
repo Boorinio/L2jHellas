@@ -1,13 +1,13 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
-
-import java.util.logging.Logger;
 
 public final class RequestGetItemFromPet extends L2GameClientPacket
 {

@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.handlers.chathandlers;
 
+import java.util.Collection;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.handler.IChatHandler;
@@ -7,8 +9,6 @@ import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
-
-import java.util.Collection;
 
 public class ChatShout implements IChatHandler
 {

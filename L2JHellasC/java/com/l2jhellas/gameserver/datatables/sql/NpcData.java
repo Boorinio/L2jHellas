@@ -1,18 +1,5 @@
 package com.l2jhellas.gameserver.datatables.sql;
 
-import com.PackRoot;
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.cache.InfoCache;
-import com.l2jhellas.gameserver.model.L2DropData;
-import com.l2jhellas.gameserver.model.L2MinionData;
-import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.base.ClassId;
-import com.l2jhellas.gameserver.skills.SkillTable;
-import com.l2jhellas.gameserver.skills.Stats;
-import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.gameserver.templates.StatsSet;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -35,6 +22,19 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import com.PackRoot;
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.cache.InfoCache;
+import com.l2jhellas.gameserver.model.L2DropData;
+import com.l2jhellas.gameserver.model.L2MinionData;
+import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.base.ClassId;
+import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.gameserver.skills.Stats;
+import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+import com.l2jhellas.gameserver.templates.StatsSet;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class NpcData
 {

@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.gameserver.model.PartyMatchRoom;
 import com.l2jhellas.gameserver.model.PartyMatchRoomList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PartyMatchList extends L2GameServerPacket
 {

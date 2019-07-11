@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
+import java.util.StringTokenizer;
+
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
@@ -11,8 +13,6 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.skills.Formulas;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
-
-import java.util.StringTokenizer;
 
 public class AdminFightCalculator implements IAdminCommandHandler
 {
@@ -211,8 +211,8 @@ public class AdminFightCalculator implements IAdminCommandHandler
 		double dmg2 = 0;
 		
 		// ATTACK speed in milliseconds
-		int sAtk1 = npc1.calculateTimeBetweenAttacks(npc2, null);
-		int sAtk2 = npc2.calculateTimeBetweenAttacks(npc1, null);
+		int sAtk1 = Formulas.calculateTimeBetweenAttacks(npc2.getPAtkSpd());
+		int sAtk2 = Formulas.calculateTimeBetweenAttacks(npc1.getPAtkSpd());
 		// number of ATTACK per 100 seconds
 		sAtk1 = 100000 / sAtk1;
 		sAtk2 = 100000 / sAtk2;

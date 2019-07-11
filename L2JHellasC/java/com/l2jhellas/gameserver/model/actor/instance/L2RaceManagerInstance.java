@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.MonsterRace;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -19,9 +22,6 @@ import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Broadcast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class L2RaceManagerInstance extends L2Npc
 {

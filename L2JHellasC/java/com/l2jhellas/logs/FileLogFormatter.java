@@ -1,11 +1,11 @@
 package com.l2jhellas.logs;
 
-import com.l2jhellas.Config;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
+
+import com.l2jhellas.Config;
 
 public class FileLogFormatter extends Formatter
 {

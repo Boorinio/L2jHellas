@@ -1,9 +1,9 @@
 package com.l2jhellas.util;
 
-import com.l2jhellas.gameserver.model.Location;
-
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
+import com.l2jhellas.gameserver.model.Location;
 
 public final class Rnd
 {

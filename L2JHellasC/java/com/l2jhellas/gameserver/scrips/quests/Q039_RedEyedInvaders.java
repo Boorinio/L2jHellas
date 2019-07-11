@@ -1,12 +1,12 @@
 package com.l2jhellas.gameserver.scrips.quests;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class Q039_RedEyedInvaders extends Quest
 {

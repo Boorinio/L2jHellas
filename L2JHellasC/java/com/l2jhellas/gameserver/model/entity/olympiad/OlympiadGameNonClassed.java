@@ -1,8 +1,8 @@
 package com.l2jhellas.gameserver.model.entity.olympiad;
 
-import com.l2jhellas.Config;
-
 import java.util.List;
+
+import com.l2jhellas.Config;
 
 public class OlympiadGameNonClassed extends OlympiadGameNormal
 {

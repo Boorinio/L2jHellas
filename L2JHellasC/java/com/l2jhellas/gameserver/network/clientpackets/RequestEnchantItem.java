@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
@@ -18,8 +20,6 @@ import com.l2jhellas.shield.antibot.PrivateAntiBot;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
-
-import java.util.logging.Logger;
 
 public final class RequestEnchantItem extends L2GameClientPacket
 {

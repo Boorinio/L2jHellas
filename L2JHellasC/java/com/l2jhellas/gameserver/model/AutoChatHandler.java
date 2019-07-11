@@ -1,15 +1,5 @@
 package com.l2jhellas.gameserver.model;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.SevenSigns;
-import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.model.actor.L2Npc;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
-import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
-import com.l2jhellas.util.Rnd;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +10,16 @@ import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.SevenSigns;
+import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
+import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
+import com.l2jhellas.util.Rnd;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class AutoChatHandler implements SpawnListener
 {

@@ -1,12 +1,12 @@
 package com.l2jhellas.gameserver.model.zone.form;
 
+import java.awt.Polygon;
+
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.zone.L2ZoneForm;
 import com.l2jhellas.util.Rnd;
-
-import java.awt.Polygon;
 
 public class ZoneNPoly extends L2ZoneForm
 {

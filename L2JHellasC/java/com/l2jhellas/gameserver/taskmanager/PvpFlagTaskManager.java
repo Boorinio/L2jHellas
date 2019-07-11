@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.taskmanager;
 
-import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public final class PvpFlagTaskManager implements Runnable
 {

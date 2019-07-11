@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.Threads;
 
-import com.l2jhellas.util.ArrayUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
+
+import com.l2jhellas.util.ArrayUtils;
 
 public final class RunnableStatsManager
 {

@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.geodata;
 
+import java.util.ArrayList;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.Location;
-
-import java.util.ArrayList;
 
 public class GeoMove
 {

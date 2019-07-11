@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.communitybbs.Manager;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
 
 public abstract class BaseBBSManager
 {

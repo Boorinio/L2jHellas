@@ -1,12 +1,12 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.concurrent.ScheduledFuture;
+
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.MinionList;
-
-import java.util.concurrent.ScheduledFuture;
 
 public class L2MonsterInstance extends L2Attackable
 {

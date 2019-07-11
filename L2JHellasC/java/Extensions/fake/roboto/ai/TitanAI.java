@@ -1,5 +1,9 @@
 package Extensions.fake.roboto.ai;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.helpers.FakeHelpers;
 import Extensions.fake.roboto.model.HealingSpell;
@@ -8,10 +12,6 @@ import Extensions.fake.roboto.model.SpellUsageCondition;
 import Extensions.fake.roboto.model.SupportSpell;
 
 import com.l2jhellas.gameserver.emum.ShotType;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class TitanAI extends CombatAI
 {

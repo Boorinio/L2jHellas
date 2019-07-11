@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.RecipeData;
 import com.l2jhellas.gameserver.model.L2RecipeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
-import java.util.logging.Logger;
 
 public class RecipeItemMakeInfo extends L2GameServerPacket
 {

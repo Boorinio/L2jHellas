@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.skills.conditions;
 
+import java.util.ArrayList;
+
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.Env;
-
-import java.util.ArrayList;
 
 public class ConditionTargetClassIdRestriction extends Condition
 {

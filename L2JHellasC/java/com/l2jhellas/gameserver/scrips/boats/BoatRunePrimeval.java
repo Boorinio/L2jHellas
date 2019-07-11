@@ -1,21 +1,20 @@
-package com.l2jhellas.gameserver.scrips.quests.vehicles;
+package com.l2jhellas.gameserver.scrips.boats;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.emum.Sound;
 import com.l2jhellas.gameserver.instancemanager.BoatManager;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
-import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
+import com.l2jhellas.gameserver.model.actor.L2Vehicle;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class BoatRunePrimeval implements Runnable
 {
 	private static final Logger _log = Logger.getLogger(BoatRunePrimeval.class.getName());
-	private static final L2BoatInstance _boat = BoatManager.getInstance().getNewBoat(5, 34381, -37680, -3610, 40785);
 	
 	// Time: 239s
 	private static final VehiclePathPoint[] RUNE_TO_PRIMEVAL =
@@ -54,6 +53,7 @@ public class BoatRunePrimeval implements Runnable
 	
 	private static final VehiclePathPoint PRIMEVAL_DOCK = RUNE_TO_PRIMEVAL[RUNE_TO_PRIMEVAL.length - 1];
 	
+	private final L2Vehicle _boat;
 	private int _cycle = 0;
 	private int _shoutCount = 0;
 	
@@ -65,8 +65,9 @@ public class BoatRunePrimeval implements Runnable
 	private final CreatureSay LEAVING_PRIMEVAL;
 	private final CreatureSay BUSY_RUNE;
 	
-	public BoatRunePrimeval()
+	public BoatRunePrimeval(L2Vehicle boat)
 	{
+		_boat = boat;
 		
 		ARRIVED_AT_RUNE = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.ARRIVED_AT_RUNE);
 		ARRIVED_AT_RUNE_2 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVING_FOR_PRIMEVAL_3_MINUTES);
@@ -137,12 +138,13 @@ public class BoatRunePrimeval implements Runnable
 		}
 	}
 	
-	public static void main(String[] args)
+	public static void load()
 	{
-		if (_boat != null)
+		final L2Vehicle boat = BoatManager.getInstance().getNewBoat(5, 34381, -37680, -3610, 40785);
+		if (boat != null)
 		{
-			_boat.registerEngine(new BoatRunePrimeval());
-			_boat.runEngine(180000);
+			boat.registerEngine(new BoatRunePrimeval(boat));
+			boat.runEngine(180000);
 			BoatManager.getInstance().dockShip(BoatManager.RUNE_HARBOR, true);
 		}
 	}

@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.taskmanager.tasks;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
@@ -7,8 +9,6 @@ import com.l2jhellas.gameserver.taskmanager.Task;
 import com.l2jhellas.gameserver.taskmanager.TaskManager;
 import com.l2jhellas.gameserver.taskmanager.TaskManager.ExecutedTask;
 import com.l2jhellas.gameserver.taskmanager.TaskTypes;
-
-import java.util.logging.Logger;
 
 public class TaskRecom extends Task
 {

@@ -1,11 +1,5 @@
 package com.l2jhellas.gameserver.skills;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2SkillType;
-import com.l2jhellas.gameserver.skills.conditions.Condition;
-import com.l2jhellas.gameserver.templates.StatsSet;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +8,12 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.L2SkillType;
+import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.skills.conditions.Condition;
+import com.l2jhellas.gameserver.templates.StatsSet;
 
 final class DocumentSkill extends DocumentBase
 {

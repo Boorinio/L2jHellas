@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.concurrent.Future;
+
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.instancemanager.FourSepulchersManager;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -8,8 +10,6 @@ import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-
-import java.util.concurrent.Future;
 
 public class L2SepulcherMonsterInstance extends L2MonsterInstance
 {

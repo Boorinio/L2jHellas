@@ -1,13 +1,13 @@
 package com.l2jhellas.gameserver.instancemanager;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Duel;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DuelManager
 {

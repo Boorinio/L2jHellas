@@ -1,13 +1,5 @@
 package com.l2jhellas;
 
-import Extensions.RankSystem.Rank;
-import Extensions.RankSystem.RankTable;
-
-import com.l2jhellas.gameserver.geodata.PathFindBuffers;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.shield.antiflood.FloodProtectorConfig;
-import com.l2jhellas.util.StringUtil;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,6 +19,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import Extensions.RankSystem.Rank;
+import Extensions.RankSystem.RankTable;
+
+import com.l2jhellas.gameserver.geodata.PathFindBuffers;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.shield.antiflood.FloodProtectorConfig;
+import com.l2jhellas.util.StringUtil;
 
 public final class Config
 {

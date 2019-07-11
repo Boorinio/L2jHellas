@@ -1,5 +1,14 @@
 package com.l2jhellas.gameserver.skills;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+
 import com.l2jhellas.gameserver.emum.L2ArmorType;
 import com.l2jhellas.gameserver.emum.L2EtcItemType;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
@@ -9,15 +18,6 @@ import com.l2jhellas.gameserver.templates.L2EtcItem;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.StatsSet;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 final class DocumentItem extends DocumentBase
 {

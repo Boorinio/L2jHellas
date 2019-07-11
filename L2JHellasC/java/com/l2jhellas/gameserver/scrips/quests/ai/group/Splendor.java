@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.group;
 
+import java.util.HashMap;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
@@ -8,8 +10,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.util.Rnd;
-
-import java.util.HashMap;
 
 public class Splendor extends AbstractNpcAI
 {

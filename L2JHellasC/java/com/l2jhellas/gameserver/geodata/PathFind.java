@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.geodata;
 
+import java.util.ArrayList;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.geodata.PathFindBuffers.GeoNode;
 import com.l2jhellas.gameserver.geodata.PathFindBuffers.PathFindBuffer;
@@ -7,8 +9,6 @@ import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
-
-import java.util.ArrayList;
 
 public class PathFind
 {

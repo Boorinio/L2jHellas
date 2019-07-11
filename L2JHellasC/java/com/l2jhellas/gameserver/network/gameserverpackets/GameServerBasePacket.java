@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.network.gameserverpackets;
 
-import com.l2jhellas.gameserver.TaskPriority;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import com.l2jhellas.gameserver.TaskPriority;
 
 public abstract class GameServerBasePacket
 {

@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver;
 
-import com.l2jhellas.Config;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
 
 public class Restart
 {

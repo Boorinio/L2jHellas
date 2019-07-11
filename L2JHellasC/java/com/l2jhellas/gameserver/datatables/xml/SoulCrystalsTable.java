@@ -1,8 +1,5 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
-import com.l2jhellas.gameserver.datatables.xml.LevelingInfo.AbsorbCrystalType;
-import com.l2jhellas.gameserver.engines.DocumentParser;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -10,6 +7,9 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+
+import com.l2jhellas.gameserver.datatables.xml.LevelingInfo.AbsorbCrystalType;
+import com.l2jhellas.gameserver.engines.DocumentParser;
 
 public class SoulCrystalsTable implements DocumentParser
 {

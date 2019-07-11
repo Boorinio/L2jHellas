@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.model;
 
+import java.util.ArrayList;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.util.Rnd;
-
-import java.util.ArrayList;
 
 public class L2DropCategory
 {

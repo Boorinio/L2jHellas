@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.teleports;
 
+import java.util.List;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
@@ -17,8 +19,6 @@ import com.l2jhellas.gameserver.scrips.quests.ai.invidual.Sailren;
 import com.l2jhellas.gameserver.scrips.quests.ai.invidual.Valakas;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
-
-import java.util.List;
 
 public class GrandBossTeleporters extends Quest
 {

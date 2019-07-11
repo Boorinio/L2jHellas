@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.skills;
 
-import com.l2jhellas.gameserver.skills.funcs.Func;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.l2jhellas.gameserver.skills.funcs.Func;
 
 public final class Calculator
 {

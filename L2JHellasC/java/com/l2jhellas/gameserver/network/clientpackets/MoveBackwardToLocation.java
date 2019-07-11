@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.nio.BufferUnderflowException;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.TaskPriority;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -12,8 +14,6 @@ import com.l2jhellas.gameserver.network.serverpackets.PartyMemberPosition;
 import com.l2jhellas.gameserver.network.serverpackets.StopMove;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
-
-import java.nio.BufferUnderflowException;
 
 public class MoveBackwardToLocation extends L2GameClientPacket
 {

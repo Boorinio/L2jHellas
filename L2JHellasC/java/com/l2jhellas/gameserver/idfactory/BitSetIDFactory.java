@@ -1,12 +1,12 @@
 package com.l2jhellas.gameserver.idfactory;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.util.PrimeFinder;
-
 import java.util.BitSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.util.PrimeFinder;
 
 public class BitSetIDFactory extends IdFactory
 {

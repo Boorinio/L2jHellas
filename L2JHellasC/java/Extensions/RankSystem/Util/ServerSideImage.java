@@ -1,15 +1,15 @@
 package Extensions.RankSystem.Util;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import Extensions.RankSystem.Rank;
 import Extensions.RankSystem.RankTable;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
 
 public class ServerSideImage
 {

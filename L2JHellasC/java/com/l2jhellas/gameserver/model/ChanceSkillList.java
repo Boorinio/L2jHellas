@@ -1,14 +1,14 @@
 package com.l2jhellas.gameserver.model;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillLaunched;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.skills.SkillTable;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class ChanceSkillList extends ConcurrentHashMap<L2Skill, ChanceCondition>
 {

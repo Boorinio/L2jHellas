@@ -1,13 +1,13 @@
 package com.l2jhellas.gameserver.ai;
 
+import java.util.List;
+
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.xml.NpcWalkerRoutesData;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2NpcWalkerNode;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcWalkerInstance;
-
-import java.util.List;
 
 public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 {

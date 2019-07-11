@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.SystemMessageId;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
 
 public class CreatureSay extends L2GameServerPacket
 {

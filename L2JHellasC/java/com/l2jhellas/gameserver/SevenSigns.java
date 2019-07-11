@@ -1,5 +1,15 @@
 package com.l2jhellas.gameserver;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -13,16 +23,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SignsSky;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.database.L2DatabaseFactory;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
 
 public class SevenSigns
 {

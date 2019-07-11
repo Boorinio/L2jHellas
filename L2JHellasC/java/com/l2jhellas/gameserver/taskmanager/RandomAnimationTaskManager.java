@@ -1,13 +1,13 @@
 package com.l2jhellas.gameserver.taskmanager;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.util.Rnd;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public final class RandomAnimationTaskManager implements Runnable
 {

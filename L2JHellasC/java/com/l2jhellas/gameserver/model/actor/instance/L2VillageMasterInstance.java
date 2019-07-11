@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
@@ -26,9 +29,6 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Util;
-
-import java.util.Iterator;
-import java.util.Set;
 
 public class L2VillageMasterInstance extends L2NpcInstance
 {

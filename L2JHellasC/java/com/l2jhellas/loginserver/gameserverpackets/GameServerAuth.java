@@ -1,8 +1,8 @@
 package com.l2jhellas.loginserver.gameserverpackets;
 
-import com.l2jhellas.loginserver.clientpackets.ClientBasePacket;
-
 import java.util.logging.Logger;
+
+import com.l2jhellas.loginserver.clientpackets.ClientBasePacket;
 
 public class GameServerAuth extends ClientBasePacket
 {

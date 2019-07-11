@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.geodata;
 
+import java.util.HashMap;
+
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.util.GArray;
 import com.l2jhellas.util.StrTable;
-
-import java.util.HashMap;
 
 public class PathFindBuffers
 {

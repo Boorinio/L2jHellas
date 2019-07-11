@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.Map;
+
 import com.l2jhellas.gameserver.instancemanager.RaidBossPointsManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ExGetBossRecord;
-
-import java.util.Map;
 
 public class RequestGetBossRecord extends L2GameClientPacket
 {

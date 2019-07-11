@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.skills.l2skills;
 
+import java.util.logging.Level;
+
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -12,8 +14,6 @@ import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
-
-import java.util.logging.Level;
 
 public class L2SkillSpawn extends L2Skill
 {

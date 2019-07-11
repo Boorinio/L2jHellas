@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.model;
 
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Logger;
+
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class CharSelectInfoPackage
 {

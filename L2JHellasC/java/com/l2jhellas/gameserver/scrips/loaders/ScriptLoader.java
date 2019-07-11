@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.scrips.loaders;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.scrips.quests.*;
 import com.l2jhellas.gameserver.scrips.quests.ai.custom.EchoCrystals;
@@ -76,13 +78,6 @@ import com.l2jhellas.gameserver.scrips.quests.ai.vilagemaster.Alliance;
 import com.l2jhellas.gameserver.scrips.quests.ai.vilagemaster.Clan;
 import com.l2jhellas.gameserver.scrips.quests.ai.vilagemaster.FirstClassChange;
 import com.l2jhellas.gameserver.scrips.quests.ai.vilagemaster.SecondClassChange;
-import com.l2jhellas.gameserver.scrips.quests.vehicles.BoatGiranTalking;
-import com.l2jhellas.gameserver.scrips.quests.vehicles.BoatGludinRune;
-import com.l2jhellas.gameserver.scrips.quests.vehicles.BoatInnadrilTour;
-import com.l2jhellas.gameserver.scrips.quests.vehicles.BoatRunePrimeval;
-import com.l2jhellas.gameserver.scrips.quests.vehicles.BoatTalkingGludin;
-
-import java.util.logging.Logger;
 
 public class ScriptLoader
 {
@@ -474,13 +469,7 @@ public class ScriptLoader
 		Sailren.class,
 		Valakas.class,
 		VanHalter.class,
-		Zaken.class,
-		
-		BoatGiranTalking.class,
-		BoatGludinRune.class,
-		BoatInnadrilTour.class,
-		BoatRunePrimeval.class,
-		BoatTalkingGludin.class
+		Zaken.class
 	};
 	
 	private static void teleiwne()

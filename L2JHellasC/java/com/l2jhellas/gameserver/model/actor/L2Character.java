@@ -2,6 +2,15 @@ package com.l2jhellas.gameserver.model.actor;
 
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_FOLLOW;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlEvent;
@@ -15,6 +24,8 @@ import com.l2jhellas.gameserver.datatables.xml.MapRegionTable.TeleportWhereType;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData.FrequentSkill;
 import com.l2jhellas.gameserver.emum.AbnormalEffect;
 import com.l2jhellas.gameserver.emum.DuelState;
+import com.l2jhellas.gameserver.emum.L2SkillTargetType;
+import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.geodata.GeoMove;
@@ -34,13 +45,10 @@ import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2SkillTargetType;
-import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.L2WorldRegion;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.instance.L2ArtefactInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2GuardInstance;
@@ -96,15 +104,6 @@ import com.l2jhellas.util.Broadcast;
 import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Future;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public abstract class L2Character extends L2Object
 {
@@ -332,6 +331,12 @@ public abstract class L2Character extends L2Object
 	
 	public void teleToLocation(int x, int y, int z, boolean allowRandomOffset)
 	{
+		if(this instanceof L2PcInstance)
+		{
+			final L2PcInstance player = (L2PcInstance) this;
+			if(player.getActiveTradeList()!=null)
+				player.cancelActiveTrade();
+		}
 		// Stop movement
 		stopMove(null);
 		abortAttack();
@@ -596,16 +601,16 @@ public abstract class L2Character extends L2Object
 		
 		// Verify if soulshots are charged.
 		boolean wasSSCharged;
-		
+		final boolean isBlunt = (weaponItem != null) && (weaponItem.getBodyPart() == L2Item.SLOT_LR_HAND);
+
 		if (this instanceof L2Summon && !(this instanceof L2PetInstance))
 			wasSSCharged = (((L2Summon) this).getChargedSoulShot() != L2ItemInstance.CHARGED_NONE);
 		else
 			wasSSCharged = (weaponInst != null && weaponInst.getChargedSoulshot() != L2ItemInstance.CHARGED_NONE);
 		
-		// Get the Attack Speed of the L2Character (delay (in milliseconds) before next attack)
-		int timeAtk = calculateTimeBetweenAttacks(target, weaponType);
-		// the hit is calculated to happen halfway to the animation - might need further tuning e.g. in bow case
-		int timeToHit = timeAtk / 2;
+		final int timeAtk = Formulas.calculateTimeBetweenAttacks(getPAtkSpd());
+		final int timeToHit = Formulas.calculateTimeToHit(timeAtk, weaponType, isBlunt, false);
+
 		_attackEndTime = GameTimeController.getInstance().getGameTicks();
 		_attackEndTime += (timeAtk / GameTimeController.MILLIS_IN_TICK);
 		_attackEndTime -= 1;
@@ -645,7 +650,8 @@ public abstract class L2Character extends L2Object
 			case DUAL:
 			case DUALFIST:
 			{
-				hitted = doAttackHitByDual(attack, target, timeToHit);
+				final int timeToHitDual = Formulas.calculateTimeToHit(timeAtk, weaponType, isBlunt, true) - timeToHit;
+				hitted = doAttackHitByDual(attack, target, timeToHitDual);
 				break;
 			}
 			case FIST:
@@ -2943,7 +2949,7 @@ public abstract class L2Character extends L2Object
 		// Z coordinate will follow geodata or client values
 		if (Config.GEODATA && Config.COORD_SYNCHRONIZE == 2 && !isFlying() && !isInsideZone(ZoneId.WATER) && !m.disregardingGeodata && GameTimeController.getInstance().getGameTicks() % 10 == 0 // once a second to reduce possible cpu load
 			// && GeoData.getInstance().hasGeo(xPrev, yPrev)
-			&& !(this instanceof L2BoatInstance))
+			&& !(this instanceof L2Vehicle))
 		{
 			int geoHeight = GeoEngine.getHeight(xPrev, yPrev, zPrev);
 			dz = m._zDestination - geoHeight;
@@ -2965,9 +2971,9 @@ public abstract class L2Character extends L2Object
 			dz = m._zDestination - zPrev;
 		
 		float speed;
-		if (this instanceof L2BoatInstance)
+		if (this instanceof L2Vehicle)
 		{
-			speed = ((L2BoatInstance) this).boatSpeed;
+			speed = ((L2Vehicle) this).getStat().getMoveSpeed();
 		}
 		else
 		{
@@ -2988,9 +2994,9 @@ public abstract class L2Character extends L2Object
 		{
 			// Set the position of the L2Character to the destination
 			super.setXYZ(m._xDestination, m._yDestination, m._zDestination);
-			if (this instanceof L2BoatInstance)
+			if (this instanceof L2Vehicle)
 			{
-				((L2BoatInstance) this).updatePeopleInTheBoat(m._xDestination, m._yDestination, m._zDestination);
+				((L2Vehicle) this).updatePeopleInTheBoat(m._xDestination, m._yDestination, m._zDestination);
 			}
 			
 			revalidateZone(false);
@@ -3002,9 +3008,9 @@ public abstract class L2Character extends L2Object
 			
 			// Set the position of the L2Character to estimated after parcial move
 			super.setXYZ((int) (m._xAccurate), (int) (m._yAccurate), zPrev + (int) (dz * distFraction + 0.5));
-			if (this instanceof L2BoatInstance)
+			if (this instanceof L2Vehicle)
 			{
-				((L2BoatInstance) this).updatePeopleInTheBoat((int) (m._xAccurate), (int) (m._yAccurate), zPrev + (int) (dz * distFraction + 0.5));
+				((L2Vehicle) this).updatePeopleInTheBoat((int) (m._xAccurate), (int) (m._yAccurate), zPrev + (int) (dz * distFraction + 0.5));
 			}
 		}
 		
@@ -3980,19 +3986,7 @@ public abstract class L2Character extends L2Object
 	{
 		return null;
 	}
-	
-	public int calculateTimeBetweenAttacks(L2Character target, L2WeaponType weaponType)
-	{
-		switch (weaponType)
-		{
-			case BOW:
-				return 1500 * 345 / getStat().getPAtkSpd();
-			
-			default:
-				return Formulas.calcPAtkSpd(this, target, getStat().getPAtkSpd());
-		}
-	}
-	
+
 	public int calculateReuseTime(L2Character target, L2Weapon weapon)
 	{
 		if (weapon == null)

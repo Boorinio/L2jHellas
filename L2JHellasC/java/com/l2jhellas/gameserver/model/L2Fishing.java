@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.model;
 
+import java.util.concurrent.Future;
+
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.emum.Music;
@@ -11,8 +13,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ExFishingStartCombat;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
-
-import java.util.concurrent.Future;
 
 public class L2Fishing implements Runnable
 {

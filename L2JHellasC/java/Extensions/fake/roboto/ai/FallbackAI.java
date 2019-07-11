@@ -1,5 +1,9 @@
 package Extensions.fake.roboto.ai;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.model.HealingSpell;
 import Extensions.fake.roboto.model.OffensiveSpell;
@@ -11,10 +15,6 @@ import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.util.Rnd;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class FallbackAI extends CombatAI
 {

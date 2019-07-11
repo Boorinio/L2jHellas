@@ -1,8 +1,8 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.L2Manor;
-
 import java.util.List;
+
+import com.l2jhellas.gameserver.model.L2Manor;
 
 public class ExShowManorDefaultInfo extends L2GameServerPacket
 {

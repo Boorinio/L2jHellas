@@ -1,13 +1,13 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class AbstractRefinePacket extends L2GameClientPacket
 {

@@ -1,4 +1,4 @@
-package com.l2jhellas.gameserver.model;
+package com.l2jhellas.gameserver.emum;
 
 public enum L2SkillTargetType
 {

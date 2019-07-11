@@ -1,12 +1,5 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
-import com.PackRoot;
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.engines.DocumentParser;
-import com.l2jhellas.gameserver.model.base.ClassId;
-import com.l2jhellas.gameserver.templates.L2PcTemplate;
-import com.l2jhellas.gameserver.templates.StatsSet;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +7,13 @@ import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
+import com.PackRoot;
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.model.base.ClassId;
+import com.l2jhellas.gameserver.templates.L2PcTemplate;
+import com.l2jhellas.gameserver.templates.StatsSet;
 
 public class CharTemplateData implements DocumentParser
 {

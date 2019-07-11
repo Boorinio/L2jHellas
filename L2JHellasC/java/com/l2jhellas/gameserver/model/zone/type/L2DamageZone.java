@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.model.zone.type;
 
+import java.util.concurrent.Future;
+
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -9,8 +11,6 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.EtcStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Stats;
-
-import java.util.concurrent.Future;
 
 public class L2DamageZone extends L2CastleZoneType
 {

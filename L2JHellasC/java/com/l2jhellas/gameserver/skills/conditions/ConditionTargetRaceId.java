@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.skills.conditions;
 
+import java.util.ArrayList;
+
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.skills.Env;
-
-import java.util.ArrayList;
 
 public class ConditionTargetRaceId extends Condition
 {

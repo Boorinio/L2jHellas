@@ -1,9 +1,5 @@
 package com.l2jhellas.gameserver.instancemanager;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.entity.Auction;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.entity.Auction;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class AuctionManager
 {

@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.model;
 
-import com.l2jhellas.gameserver.model.L2ItemInstance.ItemLocation;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.l2jhellas.gameserver.model.L2ItemInstance.ItemLocation;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class PcFreight extends ItemContainer
 {

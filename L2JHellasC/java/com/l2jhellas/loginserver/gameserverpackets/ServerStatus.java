@@ -1,10 +1,10 @@
 package com.l2jhellas.loginserver.gameserverpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.loginserver.GameServerTable;
 import com.l2jhellas.loginserver.GameServerTable.GameServerInfo;
 import com.l2jhellas.loginserver.clientpackets.ClientBasePacket;
-
-import java.util.logging.Logger;
 
 public class ServerStatus extends ClientBasePacket
 {

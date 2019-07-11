@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.skills.funcs;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.skills.conditions.Condition;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 public final class FuncTemplate
 {

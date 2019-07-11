@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ClanMember;
@@ -7,8 +9,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeShowMemberListDelete;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-
-import java.util.logging.Logger;
 
 public final class RequestOustPledgeMember extends L2GameClientPacket
 {

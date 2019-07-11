@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.taskmanager;
 
-import com.l2jhellas.gameserver.taskmanager.TaskManager.ExecutedTask;
-
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Logger;
+
+import com.l2jhellas.gameserver.taskmanager.TaskManager.ExecutedTask;
 
 public abstract class Task
 {

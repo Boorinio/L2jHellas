@@ -1,5 +1,8 @@
 package Extensions.RankSystem;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import Extensions.RankSystem.Util.RPSUtil;
 import Extensions.RankSystem.Util.ServerSideImage;
 
@@ -7,9 +10,6 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class RPSHtmlPvpStatus
 {

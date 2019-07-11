@@ -1,8 +1,8 @@
 package com.l2jhellas.util.crypt;
 
-import com.l2jhellas.util.Rnd;
-
 import java.io.IOException;
+
+import com.l2jhellas.util.Rnd;
 
 public class LoginCrypt
 {

@@ -1,5 +1,17 @@
 package com.l2jhellas.gameserver;
 
+import java.awt.Toolkit;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 import Extensions.IpCatcher;
 import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.Balancer.BalanceLoad;
@@ -88,6 +100,11 @@ import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameManager;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.L2GamePacketHandler;
+import com.l2jhellas.gameserver.scrips.boats.BoatGiranTalking;
+import com.l2jhellas.gameserver.scrips.boats.BoatGludinRune;
+import com.l2jhellas.gameserver.scrips.boats.BoatInnadrilTour;
+import com.l2jhellas.gameserver.scrips.boats.BoatRunePrimeval;
+import com.l2jhellas.gameserver.scrips.boats.BoatTalkingGludin;
 import com.l2jhellas.gameserver.scrips.loaders.MasterHandler;
 import com.l2jhellas.gameserver.scrips.loaders.ScriptLoader;
 import com.l2jhellas.gameserver.skills.HeroSkillTable;
@@ -106,18 +123,6 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 import com.l2jhellas.util.hexid.HexId;
 import com.l2jhellas.util.ip.GameServerIP;
 import com.l2jhellas.util.ip.IPConfigData;
-
-import java.awt.Toolkit;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 public class GameServer
 {
@@ -266,11 +271,6 @@ public class GameServer
 		
 		DoorData.getInstance();
 		
-		if (Config.ALLOW_BOAT)
-		{
-			BoatManager.getInstance();
-		}
-		
 		Util.printSection("Tasks");
 		TaskManager.getInstance();
 		PvpFlagTaskManager.getInstance();
@@ -300,6 +300,16 @@ public class GameServer
 		else
 		{
 			_log.info(GameServer.class.getSimpleName() + ": Scripts are disabled by Config.");
+		}
+		
+		if (Config.ALLOW_BOAT)
+		{
+			BoatManager.getInstance();
+			BoatGiranTalking.load();
+			BoatGludinRune.load();
+			BoatInnadrilTour.load();
+			BoatRunePrimeval.load();
+			BoatTalkingGludin.load();
 		}
 		
 		Util.printSection("Customs");

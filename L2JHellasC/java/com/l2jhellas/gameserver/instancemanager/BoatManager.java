@@ -1,27 +1,28 @@
 package com.l2jhellas.gameserver.instancemanager;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
-import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
+import com.l2jhellas.gameserver.model.actor.L2Vehicle;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.templates.L2CharTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class BoatManager
 {
-	public final Map<Integer, L2BoatInstance> _boats = new HashMap<>();
-	private final boolean[] _docksBusy = new boolean[3];
+	public final Map<Integer, L2Vehicle> _boats = new HashMap<>();
 	
 	public static final int TALKING_ISLAND = 0;
 	public static final int GLUDIN_HARBOR = 1;
 	public static final int RUNE_HARBOR = 2;
 	
 	public static final int BOAT_BROADCAST_RADIUS = 20000;
+	
+	private final boolean[] _docksBusy = new boolean[3];
 	
 	public static final BoatManager getInstance()
 	{
@@ -38,7 +39,7 @@ public class BoatManager
 		}
 	}
 	
-	public L2BoatInstance getNewBoat(int boatId, int x, int y, int z, int heading)
+	public L2Vehicle getNewBoat(int boatId, int x, int y, int z, int heading)
 	{
 		StatsSet npcDat = new StatsSet();
 		npcDat.set("npcId", boatId);
@@ -85,7 +86,7 @@ public class BoatManager
 		npcDat.set("baseMDef", 100);
 		
 		L2CharTemplate template = new L2CharTemplate(npcDat);
-		L2BoatInstance boat = new L2BoatInstance(IdFactory.getInstance().getNextId(), template);
+		L2Vehicle boat = new L2Vehicle(IdFactory.getInstance().getNextId(), template);
 		
 		_boats.put(boat.getObjectId(), boat);
 		
@@ -95,7 +96,7 @@ public class BoatManager
 		return boat;
 	}
 	
-	public L2BoatInstance getBoat(int boatId)
+	public L2Vehicle getBoat(int boatId)
 	{
 		return _boats.get(boatId);
 	}
@@ -114,11 +115,17 @@ public class BoatManager
 	{
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
-			if (Math.hypot(player.getX() - point1.x, player.getY() - point1.y) < BOAT_BROADCAST_RADIUS)
+			double dx = (double) player.getX() - point1.getX();
+			double dy = (double) player.getY() - point1.getY();
+			
+			if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
 				player.sendPacket(packet);
 			else
 			{
-				if (Math.hypot(player.getX() - point2.x, player.getY() - point2.y) < BOAT_BROADCAST_RADIUS)
+				dx = (double) player.getX() - point2.getX();
+				dy = (double) player.getY() - point2.getY();
+				
+				if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
 					player.sendPacket(packet);
 			}
 		}
@@ -128,18 +135,22 @@ public class BoatManager
 	{
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
-			if (Math.hypot(player.getX() - point1.x, player.getY() - point1.y) < BOAT_BROADCAST_RADIUS)
+			double dx = (double) player.getX() - point1.getX();
+			double dy = (double) player.getY() - point1.getY();
+			
+			if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
 			{
 				for (L2GameServerPacket p : packets)
 					player.sendPacket(p);
 			}
 			else
 			{
-				if (Math.hypot(player.getX() - point2.x, player.getY() - point2.y) < BOAT_BROADCAST_RADIUS)
-				{
+				dx = (double) player.getX() - point2.getX();
+				dy = (double) player.getY() - point2.getY();
+				
+				if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
 					for (L2GameServerPacket p : packets)
 						player.sendPacket(p);
-				}
 			}
 		}
 	}

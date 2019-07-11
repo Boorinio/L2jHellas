@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.model;
 
-import com.l2jhellas.gameserver.model.actor.L2Npc;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 
 public class L2SiegeClan
 {

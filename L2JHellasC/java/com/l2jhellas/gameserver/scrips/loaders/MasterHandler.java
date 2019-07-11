@@ -1,5 +1,11 @@
 package com.l2jhellas.gameserver.scrips.loaders;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Logger;
+
 import Extensions.Balancer.Balancer;
 import Extensions.fake.roboto.admincommands.AdminFakePlayers;
 
@@ -190,12 +196,6 @@ import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.VipTeleportCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.VoiceInfoCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.WeddingCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.ZodiacRegistrationCmd;
-
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.logging.Logger;
 
 public class MasterHandler
 {

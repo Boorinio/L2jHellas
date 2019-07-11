@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.scrips.quests;
 
+import java.util.HashMap;
+
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-
-import java.util.HashMap;
 
 public class Q385_YokeOfThePast extends Quest
 {

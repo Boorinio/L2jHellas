@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.instancemanager;
 
-import com.l2jhellas.gameserver.model.quest.Quest;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import com.l2jhellas.gameserver.model.quest.Quest;
 
 public class QuestManager
 {

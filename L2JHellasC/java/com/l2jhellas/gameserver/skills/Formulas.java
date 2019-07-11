@@ -1,9 +1,12 @@
 package com.l2jhellas.gameserver.skills;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
+import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
@@ -11,7 +14,6 @@ import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2SiegeClan;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.L2SkillType;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
@@ -33,8 +35,6 @@ import com.l2jhellas.gameserver.templates.L2PcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
-
-import java.util.logging.Logger;
 
 public final class Formulas
 {
@@ -1106,7 +1106,7 @@ public final class Formulas
 				// damage /= 1; // 1.3
 			}
 		}
-		return damage < 1 ? 1. : damage;
+		return damage < 1 ? 1 : damage;
 	}
 	
 	@SuppressWarnings("incomplete-switch")
@@ -1131,7 +1131,7 @@ public final class Formulas
 				break;
 			}
 			case 2: // perfect block
-				return 1.;
+				return 1;
 		}
 		
 		if (ss)
@@ -1220,14 +1220,7 @@ public final class Formulas
 		}
 		
 		damage += Rnd.nextDouble() * damage / 10;
-		
-		if (shld > 0 && Config.ALT_GAME_SHIELD_BLOCKS)
-		{
-			damage -= target.getShldDef();
-			if (damage < 0)
-				damage = 0;
-		}
-		
+
 		if (target instanceof L2Npc)
 		{
 			switch (((L2Npc) target).getTemplate().getRace())
@@ -1259,15 +1252,6 @@ public final class Formulas
 			}
 		}
 		
-		if (damage > 0 && damage < 1)
-		{
-			damage = 1;
-		}
-		else if (damage < 0)
-		{
-			damage = 0;
-		}
-		
 		// Dmg bonuses in PvP fight
 		if ((attacker instanceof L2PcInstance || attacker instanceof L2Summon) && (target instanceof L2PcInstance || target instanceof L2Summon))
 		{
@@ -1277,7 +1261,7 @@ public final class Formulas
 				damage *= attacker.calcStat(Stats.PVP_PHYS_SKILL_DMG, 1, null, null);
 		}
 		
-		return damage;
+		return Math.max(damage, 1);
 	}
 	
 	public final static double calcMagicDam(L2Character attacker, L2Character target, L2Skill skill, boolean ss, boolean bss, boolean mcrit)
@@ -1415,34 +1399,33 @@ public final class Formulas
 		double rate = target.calcStat(Stats.ATTACK_CANCEL, init, null, null);
 		
 		// Adjust the rate to be between 1 and 99
-		if (rate > 99)
-			rate = 99;
-		else if (rate < 1)
-			rate = 1;
+		rate = Math.max(Math.min(rate, 99), 1);
 		
 		return Rnd.get(100) < rate;
 	}
 	
-	public final static int calcPAtkSpd(L2Character attacker, L2Character target, double rate)
+	public static int calculateTimeBetweenAttacks(int attackSpeed)
 	{
-		if (rate < 2)
-			return 2700;
-		
-		return (int) (470000 / rate);
+		return Math.max(50, (500000 / attackSpeed));
 	}
 	
-	public final static int calcMAtkSpd(L2Character attacker, L2Character target, L2Skill skill, double skillTime)
-	{
-		if (skill.isMagic())
-			return (int) (skillTime * 333 / attacker.getMAtkSpd());
-		return (int) (skillTime * 333 / attacker.getPAtkSpd());
+	public static int calculateTimeToHit(int totalAttackTime, L2WeaponType attackType, boolean isblunt, boolean secondHit)
+	{	
+		switch (attackType)
+		{
+			case BOW:
+				return (int) (totalAttackTime * 0.95);
+			case DUAL:
+			case DUALFIST:
+				return secondHit? (int) (totalAttackTime * 0.6) : (int) (totalAttackTime * 0.2726);
+			default:
+				return isblunt? (int) (totalAttackTime * 0.735) : (int) (totalAttackTime * 0.644);
+		}
 	}
 	
 	public final static int calcMAtkSpd(L2Character attacker, L2Skill skill, double skillTime)
 	{
-		if (skill.isMagic())
-			return (int) (skillTime * 333 / attacker.getMAtkSpd());
-		return (int) (skillTime * 333 / attacker.getPAtkSpd());
+		return skill.isMagic()? (int) (skillTime * 333 / attacker.getMAtkSpd()) : (int) (skillTime * 333 / attacker.getPAtkSpd());
 	}
 	
 	public static boolean calcHitMiss(L2Character attacker, L2Character target)
@@ -1538,12 +1521,13 @@ public final class Formulas
 			return false; // these skills should have only 1/1000 chance on raid, now it's 0.
 			
 		double defence = 0;
-		// TODO: CHECK/FIX THIS FORMULA UP!!
+		
 		if (skill.isActive() && skill.isOffensive())
 			defence = target.getMDef(actor, skill);
+		
 		double attack = 2 * actor.getMAtk(target, skill) * calcSkillVulnerability(target, skill);
-		double d = attack - defence;
-		d /= attack + defence;
+		double d = (attack - defence) / (attack + defence);
+		
 		d += 0.5 * Rnd.nextGaussian();
 		return d > 0;
 	}
@@ -1717,7 +1701,7 @@ public final class Formulas
 		
 		return Math.max(0, multiplier);
 	}
-	
+
 	public static boolean calcSkillSuccess(L2Character attacker, L2Character target, L2Skill skill, boolean ss, boolean sps, boolean bss)
 	{
 		L2SkillType type = skill.getSkillType();

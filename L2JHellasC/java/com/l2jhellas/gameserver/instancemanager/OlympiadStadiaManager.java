@@ -1,10 +1,10 @@
 package com.l2jhellas.gameserver.instancemanager;
 
-import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 
 public class OlympiadStadiaManager
 {

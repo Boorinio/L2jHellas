@@ -1,10 +1,5 @@
 package com.l2jhellas.gameserver.communitybbs.BB;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
-import com.l2jhellas.gameserver.communitybbs.Manager.TopicBBSManager;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
+import com.l2jhellas.gameserver.communitybbs.Manager.TopicBBSManager;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class Forum
 {

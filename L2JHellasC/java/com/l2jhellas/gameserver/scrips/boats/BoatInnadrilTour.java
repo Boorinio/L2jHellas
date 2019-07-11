@@ -1,21 +1,20 @@
-package com.l2jhellas.gameserver.scrips.quests.vehicles;
+package com.l2jhellas.gameserver.scrips.boats;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.emum.Sound;
 import com.l2jhellas.gameserver.instancemanager.BoatManager;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
-import com.l2jhellas.gameserver.model.actor.instance.L2BoatInstance;
+import com.l2jhellas.gameserver.model.actor.L2Vehicle;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class BoatInnadrilTour implements Runnable
 {
 	private static final Logger _log = Logger.getLogger(BoatInnadrilTour.class.getName());
-	private static final L2BoatInstance _boat = BoatManager.getInstance().getNewBoat(4, 111264, 226240, -3610, 32768);
 	
 	// Time: 1867s
 	private static final VehiclePathPoint[] TOUR =
@@ -56,6 +55,7 @@ public class BoatInnadrilTour implements Runnable
 	
 	private static final VehiclePathPoint DOCK = TOUR[TOUR.length - 1];
 	
+	private final L2Vehicle _boat;
 	private int _cycle = 0;
 	
 	private final CreatureSay ARRIVED_AT_INNADRIL;
@@ -70,8 +70,10 @@ public class BoatInnadrilTour implements Runnable
 	private final CreatureSay ARRIVAL5;
 	private final CreatureSay ARRIVAL1;
 	
-	public BoatInnadrilTour()
+	public BoatInnadrilTour(L2Vehicle boat)
 	{
+		_boat = boat;
+		
 		ARRIVED_AT_INNADRIL = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.INNADRIL_BOAT_ANCHOR_10_MINUTES);
 		LEAVE_INNADRIL5 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.INNADRIL_BOAT_LEAVE_IN_5_MINUTES);
 		LEAVE_INNADRIL1 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.INNADRIL_BOAT_LEAVE_IN_1_MINUTE);
@@ -145,13 +147,14 @@ public class BoatInnadrilTour implements Runnable
 			_log.log(Level.WARNING, e.getMessage());
 		}
 	}
-	
-	public static void main(String[] args)
+
+	public static void load()
 	{
-		if (_boat != null)
+		final L2Vehicle boat = BoatManager.getInstance().getNewBoat(4, 111264, 226240, -3610, 32768);
+		if (boat != null)
 		{
-			_boat.registerEngine(new BoatInnadrilTour());
-			_boat.runEngine(180000);
+			boat.registerEngine(new BoatInnadrilTour(boat));
+			boat.runEngine(180000);
 		}
 	}
 }

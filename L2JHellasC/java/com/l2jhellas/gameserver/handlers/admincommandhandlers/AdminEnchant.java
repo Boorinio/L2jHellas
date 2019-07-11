@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
+import java.util.logging.Logger;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.Inventory;
@@ -12,8 +14,6 @@ import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
-
-import java.util.logging.Logger;
 
 public class AdminEnchant implements IAdminCommandHandler
 {

@@ -1,5 +1,9 @@
 package Extensions.fake.roboto.ai;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.ai.addon.IHealer;
 import Extensions.fake.roboto.helpers.FakeHelpers;
@@ -7,12 +11,8 @@ import Extensions.fake.roboto.model.HealingSpell;
 import Extensions.fake.roboto.model.OffensiveSpell;
 import Extensions.fake.roboto.model.SupportSpell;
 
+import com.l2jhellas.gameserver.emum.L2SkillTargetType;
 import com.l2jhellas.gameserver.emum.ShotType;
-import com.l2jhellas.gameserver.model.L2SkillTargetType;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class CardinalAI extends CombatAI implements IHealer
 {

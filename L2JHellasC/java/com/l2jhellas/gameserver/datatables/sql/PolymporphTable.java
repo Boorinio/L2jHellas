@@ -1,10 +1,5 @@
 package com.l2jhellas.gameserver.datatables.sql;
 
-import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2MaxPolyModel;
-import com.l2jhellas.gameserver.templates.StatsSet;
-import com.l2jhellas.util.database.L2DatabaseFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +7,11 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.L2MaxPolyModel;
+import com.l2jhellas.gameserver.templates.StatsSet;
+import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class PolymporphTable
 {
