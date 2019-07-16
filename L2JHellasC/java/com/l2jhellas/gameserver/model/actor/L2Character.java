@@ -5491,7 +5491,7 @@ public abstract class L2Character extends L2Object
 	{
 		_effects.stopEffectsOnDamage(awake);
 	}
-	
+
 	@Override
 	public void setXYZ(int x, int y, int z)
 	{

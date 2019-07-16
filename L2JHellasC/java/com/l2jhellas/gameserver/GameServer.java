@@ -116,7 +116,6 @@ import com.l2jhellas.gameserver.taskmanager.RandomAnimationTaskManager;
 import com.l2jhellas.gameserver.taskmanager.TaskManager;
 import com.l2jhellas.mmocore.network.SelectorConfig;
 import com.l2jhellas.mmocore.network.SelectorThread;
-import com.l2jhellas.shield.antibot.AntiAfk;
 import com.l2jhellas.shield.antibot.AntiBot;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -418,10 +417,7 @@ public class GameServer
 		{
 			AntiBot.getInstance();
 		}
-		if (Config.ALLOW_ANTI_AFK)
-		{
-			AntiAfk.getInstance();
-		}
+
 		if (Config.RESTART_BY_TIME_OF_DAY)
 		{
 			_log.info(GameServer.class.getSimpleName() + "Restart System: Auto Restart System is Enabled.");

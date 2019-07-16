@@ -12,10 +12,13 @@ import com.l2jhellas.gameserver.emum.DuelState;
 import com.l2jhellas.gameserver.emum.Music;
 import com.l2jhellas.gameserver.emum.Team;
 import com.l2jhellas.gameserver.instancemanager.DuelManager;
+import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.L2Effect;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
+import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ExDuelEnd;
@@ -25,10 +28,14 @@ import com.l2jhellas.gameserver.network.serverpackets.ExDuelUpdateUserInfo;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.util.Rnd;
 
 public class Duel
 {
 	private final List<PlayerCondition> _playerConditions = new ArrayList<>();
+	
+	private static final int PARTY_DUEL_DURATION = 300;
+	private static final int PLAYER_DUEL_DURATION = 120;
 	
 	private final int _duelId;
 	private final boolean _partyDuel;
@@ -43,7 +50,7 @@ public class Duel
 	protected Future<?> _startTask = null;
 	protected Future<?> _checkTask = null;
 	
-	protected int _countdown = 5;
+	protected int _countdown = 4;
 	
 	final PlaySound DUELSOUND = Music.B04_S01.getPacket();
 	
@@ -55,33 +62,32 @@ public class Duel
 		_partyDuel = isPartyDuel;
 		
 		_duelEndTime = Calendar.getInstance();
-		_duelEndTime.add(Calendar.SECOND, 120);
+		_duelEndTime.add(Calendar.SECOND, _partyDuel ? PARTY_DUEL_DURATION : PLAYER_DUEL_DURATION);
+
 		
 		if (_partyDuel)
 		{
-			_countdown = 35;
+			_countdown++;
 			
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.IN_A_MOMENT_YOU_WILL_BE_TRANSPORTED_TO_THE_SITE_WHERE_THE_DUEL_WILL_TAKE_PLACE);
 			broadcastToTeam1(sm);
 			broadcastToTeam2(sm);
 			
-			for (L2PcInstance partyPlayer : _playerA.getParty().getPartyMembers())
-				partyPlayer.setIsInDuel(_duelId);
+			for (L2PcInstance partyPlayerA : _playerA.getParty().getPartyMembers())
+				partyPlayerA.setIsInDuel(_duelId);
 			
-			for (L2PcInstance partyPlayer : _playerB.getParty().getPartyMembers())
-				partyPlayer.setIsInDuel(_duelId);
+			for (L2PcInstance partyPlayerB : _playerB.getParty().getPartyMembers())
+				partyPlayerB.setIsInDuel(_duelId);
 		}
 		else
 		{
-			_playerA.setIsInDuel(_duelId);
+			_playerA.setIsInDuel(_duelId);		
 			_playerB.setIsInDuel(_duelId);
 		}
 		
 		savePlayerConditions();
 		
-		_startTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new StartTask(), 1000, 1000);
-		
-		_checkTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CheckTask(), 1000, 1000);
+		_startTask = ThreadPoolManager.getInstance().scheduleGeneral(new StartTask(this), 2500);				
 	}
 	
 	private static class PlayerCondition
@@ -155,66 +161,65 @@ public class Duel
 		}
 	}
 	
+	public int countdown()
+	{
+		_countdown--;
+		
+		if (_countdown > 3)
+			return _countdown;
+		
+		SystemMessage sm = null;
+		
+		if (_countdown > 0)
+			sm = SystemMessage.getSystemMessage(SystemMessageId.THE_DUEL_WILL_BEGIN_IN_S1_SECONDS).addNumber(_countdown);
+		else
+			sm = SystemMessage.getSystemMessage(SystemMessageId.LET_THE_DUEL_BEGIN);
+		
+		broadcastToTeam1(sm);
+		broadcastToTeam2(sm);
+		
+		return _countdown;
+	}
+	
 	private class StartTask implements Runnable
 	{
-		public StartTask()
+		private final Duel _duel;
+		
+		public StartTask(Duel duel)
 		{
-			
+			_duel = duel;
 		}
 		
 		@Override
 		public void run()
 		{
-			if (_countdown < 0)
-			{
-				_startTask.cancel(true);
-				_startTask = null;
-			}
+			int count = _duel.countdown();
 			
-			switch (_countdown)
-			{
-				case 33:
-					teleportPlayers(-83760, -238825, -3331);
-					break;
-				
-				case 30:
-				case 20:
-				case 15:
-				case 10:
-				case 5:
-				case 4:
-				case 3:
-				case 2:
-				case 1:
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.THE_DUEL_WILL_BEGIN_IN_S1_SECONDS).addNumber(_countdown);
-					broadcastToTeam1(sm);
-					broadcastToTeam2(sm);
-					break;
-				
-				case 0:
-					sm = SystemMessage.getSystemMessage(SystemMessageId.LET_THE_DUEL_BEGIN);
-					broadcastToTeam1(sm);
-					broadcastToTeam2(sm);
-					
-					startDuel();
-					break;
+			if (count == 4)
+			{	
+				_duel.teleportPlayers();				
+				ThreadPoolManager.getInstance().scheduleGeneral(this, 20000);
 			}
-			
-			_countdown--;
+			else if (count > 0)
+				ThreadPoolManager.getInstance().scheduleGeneral(this, 1000);
+			else
+				_duel.startDuel();	
 		}
 	}
 	
 	private class CheckTask implements Runnable
 	{
-		public CheckTask()
+		private final Duel _duel;
+		
+		public CheckTask(Duel duel)
 		{
-			
+			_duel = duel;
 		}
 		
 		@Override
 		public void run()
 		{
-			final DuelResult status = checkEndDuelCondition();
+			final DuelResult status = _duel.checkEndDuelCondition();
 			
 			if (status != DuelResult.CONTINUE)
 			{
@@ -230,13 +235,32 @@ public class Duel
 					_checkTask = null;
 				}
 				
-				stopFighting();
+				_duel.stopFighting();
 				
 				if (status != DuelResult.CANCELED)
-					playAnimations();
+					_duel.playAnimations();
 				
-				endDuel(status);
+				ThreadPoolManager.getInstance().scheduleGeneral(new EndDuel(_duel,status), 4000);
 			}
+		}
+	}
+	
+	
+	private class EndDuel implements Runnable
+	{
+		private final Duel _duel;
+		private final DuelResult _result;
+		
+		public EndDuel(Duel duel,DuelResult result)
+		{
+			_duel = duel;
+			_result = result;
+		}
+		
+		@Override
+		public void run()
+		{
+			_duel.endDuel(_result);
 		}
 	}
 	
@@ -351,6 +375,9 @@ public class Duel
 		
 		broadcastToTeam1(DUELSOUND);
 		broadcastToTeam2(DUELSOUND);
+		
+		_checkTask = ThreadPoolManager.getInstance().scheduleGeneralAtFixedRate(new CheckTask(this), 1000, 1000);
+
 	}
 	
 	private void savePlayerConditions()
@@ -449,26 +476,33 @@ public class Duel
 		return _partyDuel;
 	}
 	
-	protected void teleportPlayers(int x, int y, int z)
+	protected void teleportPlayers()
 	{
-		// TODO: adjust the values if needed... or implement something better (especially using more then 1 arena)
 		if (!_partyDuel)
 			return;
 		
-		int offset = 0;
+		final L2OlympiadStadiumZone zone = ZoneManager.getInstance().getAllZones(L2OlympiadStadiumZone.class).stream().filter(stad -> stad.getCharactersInside().size() == 0).findFirst().orElse(null);
 		
-		for (L2PcInstance partyPlayer : _playerA.getParty().getPartyMembers())
+		if (zone == null)
 		{
-			partyPlayer.teleToLocation(x + offset - 180, y - 150, z, false);
-			offset += 40;
+			SystemMessage sm = SystemMessage.sendString("The arena is full, you will fight here.");
+			broadcastToTeam1(sm);
+			broadcastToTeam2(sm);
+			return;
 		}
 		
-		offset = 0;
+		final List<Location> spawns = zone.getSpawns();
 		
-		for (L2PcInstance partyPlayer : _playerB.getParty().getPartyMembers())
+		final Location spawn1 = spawns.get(Rnd.get(spawns.size() / 2));
+		for (L2PcInstance partyPlayerA : _playerA.getParty().getPartyMembers())
 		{
-			partyPlayer.teleToLocation(x + offset - 180, y + 150, z);
-			offset += 40;
+			partyPlayerA.teleToLocation(spawn1.getX(), spawn1.getY(), spawn1.getZ());
+		}
+		
+		final Location spawn2 = spawns.get(Rnd.get(spawns.size() / 2, spawns.size()));
+		for (L2PcInstance partyPlayerB : _playerB.getParty().getPartyMembers())
+		{
+			partyPlayerB.teleToLocation(spawn2.getX(), spawn2.getY(), spawn2.getZ());
 		}
 	}
 	
@@ -545,7 +579,6 @@ public class Duel
 		}
 	}
 	
-	@SuppressWarnings("incomplete-switch")
 	protected void endDuel(DuelResult result)
 	{
 		SystemMessage sm = null;

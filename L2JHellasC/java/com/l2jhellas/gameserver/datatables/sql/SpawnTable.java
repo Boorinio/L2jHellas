@@ -47,13 +47,10 @@ public class SpawnTable
 		{
 			PreparedStatement statement = con.prepareStatement("SELECT * FROM spawnlist");
 			ResultSet rset = statement.executeQuery();
-			
-			L2Spawn spawnDat;
-			L2NpcTemplate template1;
-			
+
 			while (rset.next())
 			{
-				template1 = NpcData.getInstance().getTemplate(rset.getInt("npc_templateid"));
+				final L2NpcTemplate template1 = NpcData.getInstance().getTemplate(rset.getInt("npc_templateid"));
 				if (template1 != null)
 				{
 					if (template1.type.equalsIgnoreCase("L2SiegeGuard"))
@@ -74,7 +71,7 @@ public class SpawnTable
 					}
 					else
 					{
-						spawnDat = new L2Spawn(template1);
+						final L2Spawn spawnDat = new L2Spawn(template1);
 						spawnDat.setId(rset.getInt("id"));
 						spawnDat.setAmount(rset.getInt("count"));
 						spawnDat.setLocx(rset.getInt("locx"));

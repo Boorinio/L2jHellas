@@ -405,9 +405,7 @@ public final class Config
 	public static long LOGIN_SERVER_SCHEDULE_RESTART_TIME;
 	public static boolean ALLOW_PRIVATE_ANTI_BOT;
 	public static boolean ALLOW_SEQURITY_QUE;
-	public static boolean ALLOW_ANTI_AFK;
 	public static int ENCHANT_BOT_CHANCE;
-	public static int MINUTES_AFK_PLAYERS;
 	public static int SECURITY_QUE_TIME;
 	public static boolean ALLOW_HOPZONE_VOTE_REWARD;
 	public static String HOPZONE_SERVER_LINK;
@@ -2051,8 +2049,6 @@ public final class Config
 			TOPZONE_REWARD_CHECK_TIME = Integer.parseInt(autoSettings.getProperty("TopzoneRewardCheckTime", "5"));
 			TOPZONE_REWARD = parseItemsList(autoSettings.getProperty("TopzoneReward", "57,100000000"));
 			TOPZONE_BOXES_ALLOWED = Integer.parseInt(autoSettings.getProperty("TopzoneDualboxesAllowed", "1"));
-			ALLOW_ANTI_AFK = Boolean.valueOf(autoSettings.getProperty("AllowAntiAfk", "True"));
-			MINUTES_AFK_PLAYERS = Integer.parseInt(autoSettings.getProperty("AntiAfkMinutes", "20"));
 			ALLOW_PRIVATE_ANTI_BOT = Boolean.valueOf(autoSettings.getProperty("AllowPrivateAntiBot", "False"));
 			ENCHANT_BOT_CHANCE = Integer.parseInt(autoSettings.getProperty("PrivateBotChance", "15"));
 			

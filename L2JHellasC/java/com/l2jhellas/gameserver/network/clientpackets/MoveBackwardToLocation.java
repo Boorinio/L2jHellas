@@ -164,7 +164,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 			}
 						
 			activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(_targetX, _targetY, _targetZ, 0));
-			
+				
 			if (activeChar.isSpawnProtected())
 				activeChar.onActionRequest();
 			

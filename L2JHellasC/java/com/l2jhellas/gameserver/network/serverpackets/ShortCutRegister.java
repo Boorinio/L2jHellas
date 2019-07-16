@@ -23,10 +23,10 @@ public class ShortCutRegister extends L2GameServerPacket
 		
 		writeD(_shortcut.getType());
 		writeD(_shortcut.getSlot() + _shortcut.getPage() * 12); // C4 Client
-		writeD(_shortcut.getId());
 		
 		if (_shortcut.getType() == L2ShortCut.TYPE_ITEM)
 		{
+			writeD(_shortcut.getId());
 			writeD(_shortcut.getCharacterType());
 			writeD(0x00); // SharedReuseGroup
 			writeD(0x00); // Remaining time
@@ -35,12 +35,14 @@ public class ShortCutRegister extends L2GameServerPacket
 		}
 		else if (_shortcut.getType() == L2ShortCut.TYPE_SKILL)
 		{
+			writeD(_shortcut.getId());
 			writeD(_shortcut.getLevel());
 			writeC(0x00); // C5
 			writeD(_shortcut.getCharacterType());
 		}
 		else
 		{
+			writeD(_shortcut.getId());
 			writeD(_shortcut.getCharacterType());
 		}
 	}

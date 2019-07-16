@@ -74,7 +74,7 @@ public class L2OlympiadStadiumZone extends L2SpawnZone
 			if (player != null)
 			{
 				// only participants, observers and GMs allowed
-				if (!player.isGM() && !player.isInOlympiadMode() && !player.inObserverMode())
+				if (!player.isGM() && !player.isInOlympiadMode() && !player.inObserverMode() && !player.isInDuel())
 					ThreadPoolManager.getInstance().executeTask(new KickPlayer(player));
 			}
 		}

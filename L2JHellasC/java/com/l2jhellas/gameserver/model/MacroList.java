@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -22,7 +22,7 @@ public class MacroList
 	private final L2PcInstance _owner;
 	private int _revision;
 	private int _macroId;
-	private final Map<Integer, L2Macro> _macroses = new HashMap<>();
+	private final Map<Integer, L2Macro> _macroses = new LinkedHashMap<>();
 	
 	public MacroList(L2PcInstance owner)
 	{
@@ -43,36 +43,38 @@ public class MacroList
 	
 	public L2Macro getMacro(int id)
 	{
-		return _macroses.get(id - 1);
+		return _macroses.get(id);
 	}
-	
+
 	public void registerMacro(L2Macro macro)
 	{
 		if (macro.id == 0)
 		{
 			macro.id = _macroId++;
+			
 			while (_macroses.get(macro.id) != null)
 				macro.id = _macroId++;
+			
 			_macroses.put(macro.id, macro);
-			registerMacroInDb(macro);
 		}
 		else
 		{
-			L2Macro old = _macroses.put(macro.id, macro);
+			final L2Macro old = _macroses.put(macro.id, macro);
 			if (old != null)
 				deleteMacroFromDb(old);
-			registerMacroInDb(macro);
 		}
+		
+		registerMacroInDb(macro);
 		sendUpdate();
 	}
 	
 	public void deleteMacro(int id)
 	{
-		L2Macro toRemove = _macroses.get(id);
+		final L2Macro toRemove = _macroses.get(id);
+		
 		if (toRemove != null)
-		{
 			deleteMacroFromDb(toRemove);
-		}
+		
 		_macroses.remove(id);
 		
 		L2ShortCut[] allShortCuts = _owner.getAllShortCuts();
@@ -88,11 +90,11 @@ public class MacroList
 	public void sendUpdate()
 	{
 		_revision++;
+		
 		L2Macro[] all = getAllMacroses();
+		
 		if (all.length == 0)
-		{
 			_owner.sendPacket(new SendMacroList(_revision, all.length, null));
-		}
 		else
 		{
 			for (L2Macro m : all)

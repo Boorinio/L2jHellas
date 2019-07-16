@@ -247,21 +247,24 @@ public class PcInventory extends Inventory
 	{
 		L2ItemInstance item = super.addItem(process, itemId, count, actor, reference);
 		
-		if (item != null && item.getItemId() == ADENA_ID && !item.equals(_adena))
-			_adena = item;
-		
-		if (item != null && item.getItemId() == ANCIENT_ADENA_ID && !item.equals(_ancientAdena))
-			_ancientAdena = item;
-		
-		if (actor != null)
+		if (item != null)
 		{
-			InventoryUpdate playerIU = new InventoryUpdate();
-			playerIU.addItem(item);
-			actor.sendPacket(playerIU);
+		   if (item.getItemId() == ADENA_ID && !item.equals(_adena))
+			  _adena = item;
+		
+		   if (item.getItemId() == ANCIENT_ADENA_ID && !item.equals(_ancientAdena))
+			 _ancientAdena = item;
+		
+		   if (actor != null)
+		   {
+			   InventoryUpdate playerIU = new InventoryUpdate();
+			   playerIU.addItem(item);
+			   actor.sendPacket(playerIU);
 			
-			StatusUpdate su = new StatusUpdate(actor.getObjectId());
-			su.addAttribute(StatusUpdate.CUR_LOAD, actor.getCurrentLoad());
-			actor.sendPacket(su);
+			   StatusUpdate su = new StatusUpdate(actor.getObjectId());
+			   su.addAttribute(StatusUpdate.CUR_LOAD, actor.getCurrentLoad());
+			   actor.sendPacket(su);
+		   }
 		}
 		
 		return item;

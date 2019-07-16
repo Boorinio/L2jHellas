@@ -1,6 +1,5 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2Macro;
 import com.l2jhellas.gameserver.model.L2Macro.L2MacroCmd;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -27,10 +26,7 @@ public final class RequestMakeMacro extends L2GameClientPacket
 			_count = MAX_MACRO_LENGTH;
 		
 		L2MacroCmd[] commands = new L2MacroCmd[_count];
-		
-		if (Config.DEBUG)
-			_log.config(RequestMakeMacro.class.getName() + ": Make macro id:" + _id + "\tname:" + _name + "\tdesc:" + _desc + "\tacronym:" + _acronym + "\ticon:" + _icon + "\tcount:" + _count);
-		
+
 		for (int i = 0; i < _count; i++)
 		{
 			int entry = readC();
@@ -40,10 +36,7 @@ public final class RequestMakeMacro extends L2GameClientPacket
 			String command = readS();
 			
 			_commandsLenght += command.length();
-			commands[i] = new L2MacroCmd(entry, type, d1, d2, command);
-			
-			if (Config.DEBUG)
-				_log.config(RequestMakeMacro.class.getName() + ": entry:" + entry + "\ttype:" + type + "\td1:" + d1 + "\td2:" + d2 + "\tcommand:" + command);
+			commands[i] = new L2MacroCmd(entry, type, d1, d2, command);			
 		}
 		
 		_macro = new L2Macro(_id, _icon, _name, _desc, _acronym, commands);

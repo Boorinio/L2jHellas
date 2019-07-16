@@ -30,10 +30,10 @@ public class ShortCutInit extends L2GameServerPacket
 		{
 			writeD(sc.getType());
 			writeD(sc.getSlot() + sc.getPage() * 12);
-			writeD(sc.getId());
 			
 			if (sc.getType() == L2ShortCut.TYPE_ITEM)
 			{
+				writeD(sc.getId());
 				writeD(sc.getCharacterType());
 				writeD(0x00); // SharedReuseGroup
 				writeD(0x00); // Remaining time
@@ -42,12 +42,14 @@ public class ShortCutInit extends L2GameServerPacket
 			}
 			else if (sc.getType() == L2ShortCut.TYPE_SKILL)
 			{
+				writeD(sc.getId());
 				writeD(sc.getLevel());
 				writeC(0x00); // C5
 				writeD(0x01); // C6
 			}
 			else
 			{
+				writeD(sc.getId());
 				writeD(0x01); // C6
 			}
 		}

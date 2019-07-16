@@ -21,7 +21,6 @@ import com.l2jhellas.gameserver.model.actor.stat.VehicleStat;
 import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.model.zone.ZoneRegion;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.OnVehicleCheckLocation;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -51,11 +50,6 @@ public class L2Vehicle extends L2Character
 	public boolean isFlying()
 	{
 		return true;
-	}
-	
-	public boolean isBoat()
-	{
-		return false;
 	}
 	
 	public boolean canBeControlled()
@@ -289,27 +283,17 @@ public class L2Vehicle extends L2Character
 	public void payForRide(int itemId, int count, int oustX, int oustY, int oustZ)
 	{
 		L2World.getInstance().forEachVisibleObjectInRange(this, L2PcInstance.class, 1000, player ->
-		{
+		{		
 			if (player.isInBoat() && player.getBoat() == this)
-			{
+			{				
 				if (itemId > 0)
 				{
-					final L2ItemInstance ticket = player.getInventory().getItemByItemId(itemId);
-					
-					if (ticket == null || player.getInventory().destroyItem("Boat", ticket.getItemId(), count, player, this) == null)
+					if (!player.destroyItemByItemId("Boat", itemId, count, this, false))
 					{
-						player.teleToLocation(oustX, oustY, oustZ, true);
+						oustPlayer(player);
 						player.sendPacket(SystemMessageId.NOT_CORRECT_BOAT_TICKET);
 						return;
 					}
-					
-					final InventoryUpdate iu = new InventoryUpdate();
-					if (ticket.getCount() == 0)
-						iu.addRemovedItem(ticket);
-					else
-						iu.addModifiedItem(ticket);
-					
-					player.sendPacket(iu);
 					
 					if (count > 1)
 						player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S2_S1_DISAPPEARED).addItemName(itemId).addItemNumber(count));

@@ -55,6 +55,7 @@ import Extensions.AchievmentsEngine.conditions.events;
 import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class AchievementsManager
@@ -133,7 +134,7 @@ public class AchievementsManager
 		{
 			int count = achievement.getRewardList().get(id).intValue();
 			player.addItem(achievement.getName(), id, count, player, true);
-			
+			player.sendPacket(new ItemList(player, true));		
 		}
 	}
 	

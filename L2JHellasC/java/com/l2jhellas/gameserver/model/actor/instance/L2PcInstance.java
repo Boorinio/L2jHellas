@@ -2814,25 +2814,11 @@ public class L2PcInstance extends L2Playable
 			if (sendMessage)
 			{
 				if (item.getCount() > 1)
-				{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_PICKED_UP_S1_S2);
-					sm.addItemName(item.getItemId());
-					sm.addNumber(item.getCount());
-					sendPacket(sm);
-				}
+					sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_PICKED_UP_S1_S2).addItemName(item).addNumber(item.getCount()));
 				else if (item.getEnchantLevel() > 0)
-				{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_PICKED_UP_A_S1_S2);
-					sm.addNumber(item.getEnchantLevel());
-					sm.addItemName(item.getItemId());
-					sendPacket(sm);
-				}
+					sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_PICKED_UP_A_S1_S2).addNumber(item.getEnchantLevel()).addItemName(item));
 				else
-				{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_PICKED_UP_S1);
-					sm.addItemName(item.getItemId());
-					sendPacket(sm);
-				}
+					sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_PICKED_UP_S1).addItemName(item));
 			}
 			
 			// Add the item to inventory
@@ -6971,62 +6957,49 @@ public class L2PcInstance extends L2Playable
 	{
 		return _chatBanned;
 	}
-	
+
 	@Override
 	public boolean isAutoAttackable(L2Character attacker)
 	{
-		if ((attacker instanceof L2PcInstance && ((L2PcInstance) attacker).isinZodiac) && isinZodiac)
-			return true;
-		
 		// Check if the attacker isn't the L2PcInstance Pet
 		if (attacker == this || attacker == getPet())
 			return false;
 		
-		// TODO: check for friendly mobs
-		// Check if the attacker is a L2MonsterInstance
+		// Check if the attacker is monster
 		if (attacker instanceof L2MonsterInstance)
 			return true;
 		
-		// Check if the attacker is not in the same party, excluding duels like L2OFF
-		if (getParty() != null && getParty().getPartyMembers().contains(attacker) && !(getDuelState() == DuelState.DUELLING && getDuelId() == ((L2PcInstance) attacker).getDuelId()))
+		// Check if the attacker is not in the same party
+		if (getParty() != null && getParty().getPartyMembers().contains(attacker))
 			return false;
 		
-		// Check if the attacker is in olympia and olympia start
-		if (attacker instanceof L2PcInstance && ((L2PcInstance) attacker).isInOlympiadMode())
+		// Check if the attacker is a L2Playable
+		if (attacker instanceof L2Playable)
 		{
-			if (isInOlympiadMode() && isOlympiadStart() && ((L2PcInstance) attacker).getOlympiadGameId() == getOlympiadGameId())
-				return true;
-			if (isFakeDeath())
+			if (isInsideZone(ZoneId.PEACE))
 				return false;
-		}
-		
-		// Check if the attacker is not in the same clan, excluding duels like L2OFF
-		if ((getClan() != null) && (attacker != null) && (getClan().isMember(attacker.getName())) && !(getDuelState() == DuelState.DUELLING && getDuelId() == ((L2PcInstance) attacker).getDuelId()))
-			return false;
-		
-		if (attacker instanceof L2Playable && isInsideZone(ZoneId.PEACE))
-			return false;
-		
-		// Check if the L2PcInstance has Karma
-		if (getKarma() > 0 || getPvpFlag() > 0)
-			return true;
-		
-		// Check if the attacker is a L2PcInstance
-		if (attacker instanceof L2PcInstance)
-		{
-			// is AutoAttackable if both players are in the same duel and the
-			// duel is still going on
-			if (getDuelState() == DuelState.DUELLING && getDuelId() == ((L2PcInstance) attacker).getDuelId())
-				return true;
-			// Check if the L2PcInstance is in an arena or a siege area
-			if (isInsideZone(ZoneId.PVP) && ((L2PcInstance) attacker).isInsideZone(ZoneId.PVP))
+			
+			final L2PcInstance cha = attacker.getActingPlayer();
+			
+			// Check if the attacker is in olympiad and olympiad start
+			if (attacker instanceof L2PcInstance && cha.isInOlympiadMode())
+			{
+				if (isInOlympiadMode() && isOlympiadStart() && cha.getOlympiadGameId() == getOlympiadGameId())
+					return true;
+				
+				return false;
+			}
+			
+			// is AutoAttackable if both players are in the same duel and the duel is still going on
+			if (getDuelState() == DuelState.DUELLING && getDuelId() == cha.getDuelId())
 				return true;
 			
 			if (getClan() != null)
 			{
-				Siege siege = SiegeManager.getSiege(getX(), getY(), getZ());
+				final Siege siege = SiegeManager.getSiege(getX(), getY(), getZ());
+
 				if (siege != null)
-				{
+				{			
 					// Check if a siege is in progress and if attacker and the L2PcInstance aren't in the Defender clan
 					if (siege.checkIsDefender(((L2PcInstance) attacker).getClan()) && siege.checkIsDefender(getClan()))
 						return false;
@@ -7037,9 +7010,23 @@ public class L2PcInstance extends L2Playable
 				}
 				
 				// Check if clan is at war
-				if (getClan() != null && ((L2PcInstance) attacker).getClan() != null && (getClan().isAtWarWith(((L2PcInstance) attacker).getClanId()) && ((L2PcInstance) attacker).getClan().isAtWarWith(getClanId()) && getWantsPeace() == 0 && ((L2PcInstance) attacker).getWantsPeace() == 0 && !isAcademyMember()))
+				if (((L2PcInstance) attacker).getClan() != null && (getClan().isAtWarWith(((L2PcInstance) attacker).getClanId()) && ((L2PcInstance) attacker).getClan().isAtWarWith(getClanId()) && getWantsPeace() == 0 && ((L2PcInstance) attacker).getWantsPeace() == 0 && !isAcademyMember()))
 					return true;
 			}
+
+			if (isInsideZone(ZoneId.PVP) && !isInsideZone(ZoneId.SIEGE))		
+				return true;
+			
+			// Check if the attacker is not in the same clan.
+			if (getClan() != null && getClan().isMember(cha.getName()))
+				return false;
+			
+			// Check if the attacker is not in the same ally.
+			if (getAllyId() != 0 && getAllyId() == cha.getAllyId())
+				return false;
+					
+			if (isInsideZone(ZoneId.PVP) && !isInsideZone(ZoneId.SIEGE))
+				return true;
 		}
 		else if (attacker instanceof L2SiegeGuardInstance)
 		{
@@ -7049,6 +7036,10 @@ public class L2PcInstance extends L2Playable
 				return (siege != null && siege.checkIsAttacker(getClan()));
 			}
 		}
+		
+		// Check if the Player has Karma
+		if (getKarma() > 0 || getPvpFlag() > 0)
+			return true;
 		
 		return false;
 	}
@@ -12466,7 +12457,7 @@ public class L2PcInstance extends L2Playable
 	
 	public boolean isInBoat()
 	{
-		return _vehicle != null && _vehicle.isBoat();
+		return _vehicle != null;
 	}
 	
 	public L2Vehicle getBoat()
