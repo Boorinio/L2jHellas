@@ -219,8 +219,8 @@ public class RaidBossSpawnManager
 			
 			if (raidboss != null)
 			{
-				raidboss.setCurrentHp(currentHP);
-				raidboss.setCurrentMp(currentMP);
+				raidboss.setCurrentHp(currentHP == 0 ? raidboss.getMaxHp() : currentHP);
+				raidboss.setCurrentMp(currentMP == 0 ? raidboss.getMaxMp() : currentMP);						
 				raidboss.setRaidStatus(StatusEnum.ALIVE);
 				
 				_bosses.put(bossId, raidboss);

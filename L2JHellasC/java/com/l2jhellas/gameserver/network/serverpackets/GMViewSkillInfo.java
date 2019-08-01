@@ -13,8 +13,6 @@ public class GMViewSkillInfo extends L2GameServerPacket
 	{
 		_activeChar = cha;
 		_skills = _activeChar.getAllSkills();
-		if (_skills.length == 0)
-			_skills = new L2Skill[0];
 	}
 	
 	@Override
@@ -24,12 +22,14 @@ public class GMViewSkillInfo extends L2GameServerPacket
 		writeS(_activeChar.getName());
 		writeD(_skills.length);
 		
+		boolean isDisabled = (_activeChar.getClan() != null) && (_activeChar.getClan().getReputationScore() < 0);
+		
 		for (L2Skill skill : _skills)
 		{
 			writeD(skill.isPassive() ? 1 : 0);
 			writeD(skill.getLevel());
 			writeD(skill.getId());
-			writeC(0x00); // c5
+			writeC(_activeChar.isWearingFormalWear() || (skill.isClanSkill() && isDisabled) ? 1 : 0);
 		}
 	}
 	

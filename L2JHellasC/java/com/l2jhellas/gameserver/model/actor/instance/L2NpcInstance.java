@@ -2,11 +2,11 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
+import com.l2jhellas.gameserver.emum.ClassId;
 import com.l2jhellas.gameserver.model.L2EnchantSkillLearn;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillLearn;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
-import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.AquireSkillList;

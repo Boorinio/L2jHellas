@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.model.base;
 
+import com.l2jhellas.gameserver.emum.ClassId;
+
 public final class SubClass
 {
 	private ClassId _class;

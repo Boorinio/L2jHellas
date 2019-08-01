@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
 
 public class ChangeMoveType extends L2GameServerPacket
 {

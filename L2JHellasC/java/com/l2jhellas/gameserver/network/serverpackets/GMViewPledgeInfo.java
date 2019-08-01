@@ -50,7 +50,7 @@ public class GMViewPledgeInfo extends L2GameServerPacket
 			writeD(0);
 			writeD(1);
 			writeD(member.isOnline() ? member.getObjectId() : 0);
-			writeD(0);
+			writeD(member.getSponsor() != 0 ? 1 : 0);
 		}
 	}
 	

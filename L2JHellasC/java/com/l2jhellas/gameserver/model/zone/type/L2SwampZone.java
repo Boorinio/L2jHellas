@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.model.zone.type;
 
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.zone.L2CastleZoneType;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.serverpackets.ShowCastleTrap;
 
 public class L2SwampZone extends L2CastleZoneType

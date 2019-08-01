@@ -312,9 +312,8 @@ public class CursedWeaponsManager
 	
 	public int getLevel(int itemId)
 	{
-		CursedWeapon cw = _cursedWeapons.get(itemId);
-		
-		return cw.getLevel();
+		final CursedWeapon cw = _cursedWeapons.get(itemId);
+		return (cw == null) ? 0 : cw.getLevel();
 	}
 	
 	public static void announce(SystemMessage sm)

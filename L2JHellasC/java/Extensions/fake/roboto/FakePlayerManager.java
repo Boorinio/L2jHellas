@@ -7,9 +7,9 @@ import Extensions.fake.roboto.helpers.FakeHelpers;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable.TeleportWhereType;
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
 
 public enum FakePlayerManager
 {

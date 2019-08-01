@@ -8,6 +8,7 @@ import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
@@ -22,7 +23,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
 import com.l2jhellas.gameserver.model.entity.Siege;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.model.zone.type.L2MotherTreeZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -814,58 +814,57 @@ public final class Formulas
 		return std;
 	}
 	
-	public static void addFuncsToNewCharacter(L2Character cha)
+	public static void addFuncsToNewSummon(L2Summon summon)
 	{
-		if (cha instanceof L2PcInstance)
-		{
-			cha.addStatFunc(FuncMaxHpAdd.getInstance());
-			cha.addStatFunc(FuncMaxHpMul.getInstance());
-			cha.addStatFunc(FuncMaxCpAdd.getInstance());
-			cha.addStatFunc(FuncMaxCpMul.getInstance());
-			cha.addStatFunc(FuncMaxMpAdd.getInstance());
-			cha.addStatFunc(FuncMaxMpMul.getInstance());
-			// cha.addStatFunc(FuncMultRegenResting.getInstance(Stats.REGENERATE_HP_RATE));
-			// cha.addStatFunc(FuncMultRegenResting.getInstance(Stats.REGENERATE_CP_RATE));
-			// cha.addStatFunc(FuncMultRegenResting.getInstance(Stats.REGENERATE_MP_RATE));
-			cha.addStatFunc(FuncBowAtkRange.getInstance());
-			// cha.addStatFunc(FuncMultLevelMod.getInstance(Stats.POWER_ATTACK));
-			// cha.addStatFunc(FuncMultLevelMod.getInstance(Stats.POWER_DEFENCE));
-			// cha.addStatFunc(FuncMultLevelMod.getInstance(Stats.MAGIC_DEFENCE));
-			cha.addStatFunc(FuncPAtkMod.getInstance());
-			cha.addStatFunc(FuncMAtkMod.getInstance());
-			cha.addStatFunc(FuncPDefMod.getInstance());
-			cha.addStatFunc(FuncMDefMod.getInstance());
-			cha.addStatFunc(FuncAtkCritical.getInstance());
-			cha.addStatFunc(FuncMAtkCritical.getInstance());
-			cha.addStatFunc(FuncAtkAccuracy.getInstance());
-			cha.addStatFunc(FuncAtkEvasion.getInstance());
-			cha.addStatFunc(FuncPAtkSpeed.getInstance());
-			cha.addStatFunc(FuncMAtkSpeed.getInstance());
-			cha.addStatFunc(FuncMoveSpeed.getInstance());
-			
-			cha.addStatFunc(FuncHennaSTR.getInstance());
-			cha.addStatFunc(FuncHennaDEX.getInstance());
-			cha.addStatFunc(FuncHennaINT.getInstance());
-			cha.addStatFunc(FuncHennaMEN.getInstance());
-			cha.addStatFunc(FuncHennaCON.getInstance());
-			cha.addStatFunc(FuncHennaWIT.getInstance());
-		}
-		else if (cha instanceof L2PetInstance)
-		{
-			cha.addStatFunc(FuncPAtkMod.getInstance());
-			cha.addStatFunc(FuncMAtkMod.getInstance());
-			cha.addStatFunc(FuncPDefMod.getInstance());
-			cha.addStatFunc(FuncMDefMod.getInstance());
-		}
-		else if (cha instanceof L2Summon)
-		{
-			// cha.addStatFunc(FuncMultRegenResting.getInstance(Stats.REGENERATE_HP_RATE));
-			// cha.addStatFunc(FuncMultRegenResting.getInstance(Stats.REGENERATE_MP_RATE));
-			cha.addStatFunc(FuncAtkCritical.getInstance());
-			cha.addStatFunc(FuncMAtkCritical.getInstance());
-			cha.addStatFunc(FuncAtkAccuracy.getInstance());
-			cha.addStatFunc(FuncAtkEvasion.getInstance());
-		}
+		summon.addStatFunc(FuncMaxHpMul.getInstance());
+		summon.addStatFunc(FuncMaxMpMul.getInstance());
+		summon.addStatFunc(FuncPAtkMod.getInstance());
+		summon.addStatFunc(FuncMAtkMod.getInstance());
+		summon.addStatFunc(FuncPDefMod.getInstance());
+		summon.addStatFunc(FuncMDefMod.getInstance());
+		summon.addStatFunc(FuncAtkCritical.getInstance());
+		summon.addStatFunc(FuncMAtkCritical.getInstance());
+		summon.addStatFunc(FuncAtkAccuracy.getInstance());
+		summon.addStatFunc(FuncAtkEvasion.getInstance());
+		summon.addStatFunc(FuncMoveSpeed.getInstance());
+		summon.addStatFunc(FuncPAtkSpeed.getInstance());
+		summon.addStatFunc(FuncMAtkSpeed.getInstance());
+	}
+	
+	
+	public static void addFuncsToNewPlayer(L2PcInstance player)
+	{
+		player.addStatFunc(FuncMaxHpAdd.getInstance());
+		player.addStatFunc(FuncMaxHpMul.getInstance());
+		player.addStatFunc(FuncMaxCpAdd.getInstance());
+		player.addStatFunc(FuncMaxCpMul.getInstance());
+		player.addStatFunc(FuncMaxMpAdd.getInstance());
+		player.addStatFunc(FuncMaxMpMul.getInstance());
+		// cha.addStatFunc(FuncMultRegenResting.getInstance(Stats.REGENERATE_HP_RATE));
+		// cha.addStatFunc(FuncMultRegenResting.getInstance(Stats.REGENERATE_CP_RATE));
+		// cha.addStatFunc(FuncMultRegenResting.getInstance(Stats.REGENERATE_MP_RATE));
+		player.addStatFunc(FuncBowAtkRange.getInstance());
+		// cha.addStatFunc(FuncMultLevelMod.getInstance(Stats.POWER_ATTACK));
+		// cha.addStatFunc(FuncMultLevelMod.getInstance(Stats.POWER_DEFENCE));
+		// cha.addStatFunc(FuncMultLevelMod.getInstance(Stats.MAGIC_DEFENCE));
+		player.addStatFunc(FuncPAtkMod.getInstance());
+		player.addStatFunc(FuncMAtkMod.getInstance());
+		player.addStatFunc(FuncPDefMod.getInstance());
+		player.addStatFunc(FuncMDefMod.getInstance());
+		player.addStatFunc(FuncAtkCritical.getInstance());
+		player.addStatFunc(FuncMAtkCritical.getInstance());
+		player.addStatFunc(FuncAtkAccuracy.getInstance());
+		player.addStatFunc(FuncAtkEvasion.getInstance());
+		player.addStatFunc(FuncPAtkSpeed.getInstance());
+		player.addStatFunc(FuncMAtkSpeed.getInstance());
+		player.addStatFunc(FuncMoveSpeed.getInstance());
+		
+		player.addStatFunc(FuncHennaSTR.getInstance());
+		player.addStatFunc(FuncHennaDEX.getInstance());
+		player.addStatFunc(FuncHennaINT.getInstance());
+		player.addStatFunc(FuncHennaMEN.getInstance());
+		player.addStatFunc(FuncHennaCON.getInstance());
+		player.addStatFunc(FuncHennaWIT.getInstance());
 	}
 	
 	public final static double calcHpRegen(L2Character cha)

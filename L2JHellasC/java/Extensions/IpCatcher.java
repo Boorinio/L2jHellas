@@ -10,6 +10,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import com.PackRoot;
@@ -18,7 +19,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class IpCatcher
 {
-	public static ArrayList<String> ips = new ArrayList<>();
+	public static List<String> ips = new ArrayList<>();
 	static File file = new File(PackRoot.DATAPACK_ROOT, "data/ips.txt");
 	
 	public String getMacAddr(L2PcInstance p)

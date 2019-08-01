@@ -12,7 +12,7 @@ import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillLaunched;
-import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
+import com.l2jhellas.gameserver.network.serverpackets.AbstractNpcInfo.SummonInfo;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.Formulas;
@@ -113,7 +113,7 @@ final class EffectSignetMDam extends EffectSignet
 				if (target instanceof L2Summon)
 				{
 					caster.equals(((L2Summon) target).getOwner());
-					caster.sendPacket(new NpcInfo((L2Summon) target, caster));
+					caster.sendPacket(new SummonInfo((L2Summon) target, caster,0));
 				}
 				
 				if (mdam > 0)

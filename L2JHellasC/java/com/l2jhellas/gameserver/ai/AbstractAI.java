@@ -42,8 +42,6 @@ abstract class AbstractAI implements Ctrl
 	
 	protected boolean _clientMoving;
 	
-	protected boolean _clientAutoAttacking;
-	
 	protected int _clientMovingToPawnOffset;
 	
 	private L2Object _target;
@@ -435,43 +433,29 @@ abstract class AbstractAI implements Ctrl
 		}
 		_clientMoving = false;
 	}
-	
-	public boolean isAutoAttacking()
-	{
-		return _clientAutoAttacking;
-	}
-	
-	public void setAutoAttacking(boolean isAutoAttacking)
-	{
-		_clientAutoAttacking = isAutoAttacking;
-	}
-	
+
 	public void clientStartAutoAttack()
 	{
-		if (!isAutoAttacking())
+		if (!AttackStanceTaskManager.getInstance().isInAttackStance(_actor))
 		{
-			if (_actor instanceof L2PcInstance && ((L2PcInstance) _actor).getPet() != null)
-				((L2PcInstance) _actor).getPet().broadcastPacket(new AutoAttackStart(((L2PcInstance) _actor).getPet().getObjectId()));
-			
-			// Send a Server->Client packet AutoAttackStart to the actor and all L2PcInstance in its _knownPlayers
 			_actor.broadcastPacket(new AutoAttackStart(_actor.getObjectId()));
-			setAutoAttacking(true);
+			
+			if (_actor instanceof L2PcInstance && ((L2PcInstance) _actor).getPet() != null)
+				((L2PcInstance) _actor).getPet().broadcastPacket(new AutoAttackStart(((L2PcInstance) _actor).getPet().getObjectId()));		
 		}
+		
 		AttackStanceTaskManager.getInstance().add(_actor);
 	}
 	
 	public void clientStopAutoAttack()
-	{
-		if (_actor instanceof L2PcInstance)
-		{
-			if (!AttackStanceTaskManager.getInstance().isInAttackStance(_actor) && isAutoAttacking())
-				AttackStanceTaskManager.getInstance().add(_actor);
-			
-		}
-		else if (isAutoAttacking())
+	{		
+		if (AttackStanceTaskManager.getInstance().remove(_actor))
 		{
 			_actor.broadcastPacket(new AutoAttackStop(_actor.getObjectId()));
-			setAutoAttacking(false);
+			
+			if (_actor instanceof L2PcInstance && ((L2PcInstance) _actor).getPet() != null)
+				((L2PcInstance) _actor).getPet().broadcastPacket(new AutoAttackStop(((L2PcInstance) _actor).getPet().getObjectId()));
+
 		}
 	}
 	

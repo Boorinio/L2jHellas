@@ -38,7 +38,6 @@ import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcBufferSkillIdsTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
-import com.l2jhellas.gameserver.datatables.sql.PolymporphTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.datatables.xml.ArmorSetsData;
@@ -148,66 +147,52 @@ public class GameServer
 		ThreadPoolManager.getInstance();
 		
 		Util.printSection("Chache");
-		// Call to load caches
 		HtmCache.getInstance();
 		CrestCache.load();
-		
-		Util.printSection("Geodata");
-		if (Config.GEODATA)
-			GeoEngine.loadGeo();
-		else
-			_log.info(GameServer.class.getSimpleName() + ":GeoEngine disabled by Config.");
-		
+
 		Util.printSection("World");
 		GameTimeController.init();
 		L2World.getInstance();
 		MapRegionTable.getInstance();
-		Announcements.getInstance();
-		AutoAnnouncementHandler.getInstance();
-		AutoSpawnHandler.getInstance();
-		DayNightSpawnManager.getInstance();
-		AutoChatHandler.getInstance();
 		StaticObjData.getInstance();
 		TeleportLocationData.getInstance();
-		CharNameTable.getInstance();
-		DuelManager.getInstance();
+		
+		Util.printSection("Announcements-AutoSpawn-Chat");
+		Announcements.getInstance();
+		AutoAnnouncementHandler.getInstance();
+		AutoChatHandler.getInstance();
 		
 		Util.printSection("Skills");
-		if (!SkillTable.getInstance().isInitialized())
-		{
-			_log.warning(GameServer.class.getSimpleName() + ": Could not find the extraced files. Please Check Your Data.");
-		}
+		SkillTable.getInstance();
 		SkillTreeData.getInstance();
 		SkillSpellbookData.getInstance();
 		NobleSkillTable.getInstance();
 		HeroSkillTable.getInstance();
 		NpcBufferSkillIdsTable.getInstance();
 		
+		Util.printSection("Zone");
+		ZoneManager.getInstance();
+					
 		Util.printSection("Items");
-		if (!ItemTable.getInstance().isInitialized())
-		{
-			_log.warning(GameServer.class.getSimpleName() + ": Could not find the extraced files. Please Check Your Data.");
-		}
+		ItemTable.getInstance();
 		ArmorSetsData.getInstance();
 		SummonItemsData.getInstance();
-		
-		if (Config.ALLOWFISHING)
-			FishTable.getInstance();
-		
 		SoulCrystalsTable.getInstance();
-		
+				
 		Util.printSection("Npc");
 		NpcData.getInstance();
+		
+		Util.printSection("Characters");
+		if (Config.COMMUNITY_TYPE.equals("Full"))
+			ForumsBBSManager.getInstance();
+
+		if (Config.ALLOWFISHING)
+			FishTable.getInstance();
 		
 		if (Config.ALLOW_NPC_WALKERS)
 			NpcWalkerRoutesData.getInstance();
 		
-		Util.printSection("Characters");
-		if (Config.COMMUNITY_TYPE.equals("Full"))
-		{
-			ForumsBBSManager.getInstance();
-		}
-		
+		CharNameTable.getInstance();
 		ClanTable.getInstance();
 		CharTemplateData.getInstance();
 		LevelUpData.getInstance();
@@ -218,24 +203,29 @@ public class GameServer
 		BuffTemplateTable.getInstance();
 		PartyMatchWaitingList.getInstance();
 		PartyMatchRoomList.getInstance();
+		DuelManager.getInstance();
+	
+		Util.printSection("Spawn");
+		SpawnTable.getInstance();
+		DayNightSpawnManager.getInstance().notifyChangeMode();
+		AutoSpawnHandler.getInstance();
 		
 		Util.printSection("Economy");
 		TradeController.getInstance();
-		MultisellData.getInstance();
+		MultisellData.getInstance();		
+		
+		DoorData.getInstance();
 		
 		Util.printSection("Clan Halls");
 		ClanHallManager.getInstance();
 		AuctionManager.getInstance();
 		
-		Util.printSection("Zone");
-		ZoneManager.getInstance();
 		Util.printSection("Castles");
 		CastleManager.getInstance();
 		SiegeManager.getInstance();
 		SiegeReward.getInstance();
 		
-		SpawnTable.getInstance();
-		
+		Util.printSection("RaidBos");
 		RaidBossSpawnManager.getInstance();
 		GrandBossManager.getInstance();
 		RaidBossPointsManager.getInstance();
@@ -256,20 +246,12 @@ public class GameServer
 		PetData.getInstance();
 		
 		if (Config.ACCEPT_GEOEDITOR_CONN)
-		{
 			GeoEditorListener.getInstance();
-		}
 		if (Config.SAVE_DROPPED_ITEM)
-		{
 			ItemsOnGroundManager.getInstance();
-		}
 		if (Config.AUTODESTROY_ITEM_AFTER > 0 || Config.HERB_AUTO_DESTROY_TIME > 0)
-		{
 			ItemsAutoDestroy.getInstance();
-		}
-		
-		DoorData.getInstance();
-		
+				
 		Util.printSection("Tasks");
 		TaskManager.getInstance();
 		PvpFlagTaskManager.getInstance();
@@ -288,6 +270,12 @@ public class GameServer
 		Olympiad.getInstance();
 		Hero.getInstance();
 		
+		Util.printSection("Geodata");
+		if (Config.GEODATA)
+			GeoEngine.loadGeo();
+		else
+			_log.info(GameServer.class.getSimpleName() + ":GeoEngine disabled by Config.");
+		
 		Util.printSection("Scripts");
 		if (!Config.ALT_DEV_NO_SCRIPT)
 		{
@@ -297,9 +285,7 @@ public class GameServer
 			
 		}
 		else
-		{
 			_log.info(GameServer.class.getSimpleName() + ": Scripts are disabled by Config.");
-		}
 		
 		if (Config.ALLOW_BOAT)
 		{
@@ -313,9 +299,7 @@ public class GameServer
 		
 		Util.printSection("Customs");
 		RunCustoms();
-		
-		RunOptimizer();
-		
+			
 		Util.printSection("Game Server Info");
 		if (Config.ENABLE_GUI)
 			gui = new Gui();
@@ -368,7 +352,8 @@ public class GameServer
 		Toolkit.getDefaultToolkit().beep();
 		_loginThread = LoginServerThread.getInstance();
 		_loginThread.start();
-		_log.info(optimizer);
+		RunOptimizer();
+		_log.info(optimizer);		
 	}
 	
 	private void RunOptimizer()
@@ -385,7 +370,6 @@ public class GameServer
 	{
 		AchievementsManager.getInstance();
 		PcColorTable.getInstance();
-		PolymporphTable.getInstance();
 		
 		if (Config.ALLOW_TOPZONE_VOTE_REWARD)
 			VoteRewardTopzone.LoadTopZone();
@@ -399,24 +383,18 @@ public class GameServer
 			_log.log(Level.INFO, " - Rank PvP System: Disabled");
 		
 		if (Config.ZODIAC_ENABLE)
-		{
 			ZodiacMain.ZodiacIn();
-		}
+		
 		if (Config.ALLOW_CTF_AUTOEVENT)
-		{
 			new EventHandlerCtf().startHandler();
-		}
+
 		if (Config.TVT_ALLOW_AUTOEVENT)
-		{
 			new EventHandlerTvT().startHandler();
-		}
 		
 		BalanceLoad.LoadEm();
 		
 		if (Config.ALLOW_SEQURITY_QUE)
-		{
 			AntiBot.getInstance();
-		}
 
 		if (Config.RESTART_BY_TIME_OF_DAY)
 		{
@@ -427,10 +405,9 @@ public class GameServer
 		{
 			_log.info(GameServer.class.getSimpleName() + "Restart System: Auto Restart System is Disabled.");
 		}
+		
 		if (Config.MOD_ALLOW_WEDDING)
-		{
 			CoupleManager.getInstance();
-		}
 		
 		IpCatcher.ipsLoad();
 		
@@ -448,9 +425,7 @@ public class GameServer
 		final String LOG_NAME = "./config/Others/log.cfg"; // Name of log file
 		
 		if (Config.USE_SAY_FILTER)
-		{
 			new File(PackRoot.DATAPACK_ROOT, "config/Others/ChatFilter.txt").createNewFile();
-		}
 		
 		// Create directories
 		File logFolder = new File(PackRoot.DATAPACK_ROOT, LOG_FOLDER);

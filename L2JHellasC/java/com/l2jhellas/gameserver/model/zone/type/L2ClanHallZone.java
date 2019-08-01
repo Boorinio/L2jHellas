@@ -1,12 +1,12 @@
 package com.l2jhellas.gameserver.model.zone.type;
 
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
 import com.l2jhellas.gameserver.model.zone.L2SpawnZone;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.serverpackets.ClanHallDecoration;
 
 public class L2ClanHallZone extends L2SpawnZone

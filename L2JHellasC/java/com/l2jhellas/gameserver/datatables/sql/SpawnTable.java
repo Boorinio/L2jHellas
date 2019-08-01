@@ -12,7 +12,6 @@ import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
-import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class SpawnTable
@@ -111,7 +110,6 @@ public class SpawnTable
 			_log.warning("SpawnTable: Spawn could not be initialized: " + e);
 		}
 		
-		Util.printSection("Spawnlist");
 		_log.info(SpawnTable.class.getSimpleName() + ": Loaded " + _spawntable.size() + " Npc Spawn Locations.");
 	}
 	

@@ -30,7 +30,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
-import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
+import com.l2jhellas.gameserver.network.serverpackets.AbstractNpcInfo.SummonInfo;
 import com.l2jhellas.gameserver.network.serverpackets.PetInfo;
 import com.l2jhellas.gameserver.network.serverpackets.PetInventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.PetItemList;
@@ -253,14 +253,6 @@ public class L2PetInstance extends L2Summon
 	public void setCurrentFed(int num)
 	{
 		_curFed = num > getMaxFed() ? getMaxFed() : num;
-	}
-	
-	// public void setPvpFlag(byte pvpFlag) { _pvpFlag = pvpFlag; }
-	
-	@Override
-	public void setPkKills(int pkKills)
-	{
-		_pkKills = pkKills;
 	}
 	
 	@Override
@@ -751,9 +743,7 @@ public class L2PetInstance extends L2Summon
 			pet.getStatus().setCurrentHp(rset.getDouble("curHp"));
 			pet.getStatus().setCurrentMp(rset.getDouble("curMp"));
 			pet.getStatus().setCurrentCp(pet.getMaxCp());
-			
-			pet.setKarma(rset.getInt("karma"));
-			pet.setPkKills(rset.getInt("pkkills"));
+
 			pet.setCurrentFed(rset.getInt("fed"));
 			
 			rset.close();
@@ -780,9 +770,9 @@ public class L2PetInstance extends L2Summon
 		
 		String req;
 		if (!isRespawned())
-			req = "INSERT INTO pets (name,level,curHp,curMp,exp,sp,karma,pkkills,fed,item_obj_id) VALUES (?,?,?,?,?,?,?,?,?,?)";
+			req = "INSERT INTO pets (name,level,curHp,curMp,exp,sp,karma,fed,item_obj_id) VALUES (?,?,?,?,?,?,?,?,?)";
 		else
-			req = "UPDATE pets SET name=?,level=?,curHp=?,curMp=?,exp=?,sp=?,karma=?,pkkills=?,fed=? WHERE item_obj_id=?";
+			req = "UPDATE pets SET name=?,level=?,curHp=?,curMp=?,exp=?,sp=?,karma=?,fed=? WHERE item_obj_id=?";
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			PreparedStatement statement = con.prepareStatement(req);
@@ -793,9 +783,8 @@ public class L2PetInstance extends L2Summon
 			statement.setLong(5, getStat().getExp());
 			statement.setInt(6, getStat().getSp());
 			statement.setInt(7, getKarma());
-			statement.setInt(8, getPkKills());
-			statement.setInt(9, getCurrentFed());
-			statement.setInt(10, getControlItemId());
+			statement.setInt(8, getCurrentFed());
+			statement.setInt(9, getControlItemId());
 			statement.executeUpdate();
 			statement.close();
 			_respawned = true;
@@ -1055,7 +1044,7 @@ public class L2PetInstance extends L2Summon
 			activeChar.sendPacket(new PetItemList((L2PetInstance) summon));
 		}
 		else
-			activeChar.sendPacket(new NpcInfo(summon, activeChar));
+		    activeChar.sendPacket(new SummonInfo(this, activeChar, 0));
 		
 	}
 	

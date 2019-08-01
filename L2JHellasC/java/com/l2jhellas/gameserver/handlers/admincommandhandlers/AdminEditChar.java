@@ -16,6 +16,7 @@ import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
+import com.l2jhellas.gameserver.emum.ClassId;
 import com.l2jhellas.gameserver.emum.Sex;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Clan;
@@ -24,7 +25,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
-import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -248,36 +248,45 @@ public class AdminEditChar implements IAdminCommandHandler
 		{
 			try
 			{
-				String val = command.substring(15);
+				String val = command.substring(15).trim();
 				int classidval = Integer.parseInt(val);
 				L2Object target = activeChar.getTarget();
-				L2PcInstance player = null;
-				if (target instanceof L2PcInstance)
-					player = (L2PcInstance) target;
-				else
+				
+				if ((target == null) || !target.isPlayer())
 					return false;
-				boolean valid = false;
-				for (ClassId classid : ClassId.values())
-					if (classidval == classid.getId())
-						valid = true;
-				if (valid && (player.getClassId().getId() != classidval))
+
+				final L2PcInstance player = target.getActingPlayer();
+				
+				if ((ClassId.getClassId(classidval) != null) && (player.getClassId().getId() != classidval))
 				{
+			
 					player.setClassId(classidval);
-					if (!player.isSubClassActive())
-						player.setBaseClass(classidval);
-					String newclass = player.getTemplate().className;
+					
+					if (player.isSubClassActive())
+						player.getSubClasses().get(player.getClassIndex()).setClassId(player.getActiveClass());
+					else
+						player.setBaseClass(player.getActiveClass());
+					
+					final String newclass = player.getTemplate().className;
 					player.store();
+					
 					if (player != activeChar)
 						player.sendMessage("A GM changed your class to " + newclass);
+					
 					player.broadcastUserInfo();
-					activeChar.sendMessage(player.getName() + " changed to " + newclass);
+					player.sendSkillList();
+					activeChar.sendMessage(player.getName() + " is a " + newclass + ".");
 				}
 				else
 					activeChar.sendMessage("Usage: //setclass <valid_new_classid>");
 			}
-			catch (Exception e)
+			catch (StringIndexOutOfBoundsException e)
 			{
 				AdminHelpPage.showHelpPage(activeChar, "charclasses.htm");
+			}
+			catch (NumberFormatException e)
+			{
+				activeChar.sendMessage("Usage: //setclass <valid_new_classid>");
 			}
 		}
 		else if (command.startsWith("admin_settitle"))

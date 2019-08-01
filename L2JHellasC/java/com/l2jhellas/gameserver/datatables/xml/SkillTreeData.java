@@ -23,12 +23,12 @@ import org.xml.sax.SAXException;
 
 import com.PackRoot;
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.ClassId;
 import com.l2jhellas.gameserver.model.L2EnchantSkillLearn;
 import com.l2jhellas.gameserver.model.L2PledgeSkillLearn;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillLearn;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
 public class SkillTreeData
@@ -815,6 +815,13 @@ public class SkillTreeData
 		enchantSkillLearnList = null;
 		
 		return 0;
+	}
+	
+	
+	public boolean isClanSkill(int skillId, int skillLevel)
+	{
+		final long hashCode = SkillTable.getSkillHashCode(skillId, skillLevel);
+		return _pledgeSkillTrees.contains(hashCode);
 	}
 	
 	public static enum FrequentSkill

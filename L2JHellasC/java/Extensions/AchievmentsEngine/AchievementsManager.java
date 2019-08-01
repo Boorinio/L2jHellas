@@ -227,64 +227,94 @@ public class AchievementsManager
 	
 	private static void addToConditionList(String nodeName, Object value, ArrayList<Condition> conditions)
 	{
-		
-		if (nodeName.equals("minLevel"))
-			conditions.add(new Levelup(value));
-		else if (nodeName.equals("minPvPCount"))
-			conditions.add(new Pvp(value));
-		else if (nodeName.equals("minPkCount"))
-			conditions.add(new Pk(value));
-		else if (nodeName.equals("minClanLevel"))
-			conditions.add(new ClanLevel(value));
-		else if (nodeName.equals("mustBeHero"))
-			conditions.add(new Hero(value));
-		else if (nodeName.equals("mustBeNoble"))
-			conditions.add(new Noble(value));
-		else if (nodeName.equals("minWeaponEnchant"))
-			conditions.add(new WeaponEnchant(value));
-		else if (nodeName.equals("minKarmaCount"))
-			conditions.add(new Karma(value));
-		else if (nodeName.equals("minAdenaCount"))
-			conditions.add(new Adena(value));
-		else if (nodeName.equals("minClanMembersCount"))
-			conditions.add(new MinCMcount(value));
-		else if (nodeName.equals("mustBeClanLeader"))
-			conditions.add(new ClanLeader(value));
-		else if (nodeName.equals("mustBeMarried"))
-			conditions.add(new Marry(value));
-		else if (nodeName.equals("itemAmmount"))
-			conditions.add(new ItemsCount(value));
-		else if (nodeName.equals("crpAmmount"))
-			conditions.add(new Crp(value));
-		else if (nodeName.equals("lordOfCastle"))
-			conditions.add(new Castle(value));
-		else if (nodeName.equals("mustBeMageClass"))
-			conditions.add(new Mage(value));
-		else if (nodeName.equals("minSubclassCount"))
-			conditions.add(new Sub(value));
-		else if (nodeName.equals("CompleteAchievements"))
-			conditions.add(new CompleteAchievements(value));
-		else if (nodeName.equals("minSkillEnchant"))
-			conditions.add(new SkillEnchant(value));
-		else if (nodeName.equals("minOnlineTime"))
-			conditions.add(new OnlineTime(value));
-		else if (nodeName.equals("minHeroCount"))
-			conditions.add(new HeroCount(value));
-		else if (nodeName.equals("raidToKill"))
-			conditions.add(new RaidKill(value));
-		else if (nodeName.equals("raidToKill1"))
-			conditions.add(new RaidKill(value));
-		else if (nodeName.equals("raidToKill2"))
-			conditions.add(new RaidKill(value));
-		else if (nodeName.equals("minRaidPoints"))
-			conditions.add(new RaidPoints(value));
-		else if (nodeName.equals("eventKills"))
-			conditions.add(new eventKills(value));
-		else if (nodeName.equals("events"))
-			conditions.add(new events(value));
-		else if (nodeName.equals("eventWins"))
-			conditions.add(new eventWins(value));
-		
+			switch (nodeName)
+			{
+				case "minLevel":
+					conditions.add(new Levelup(value));	
+					break;
+				case "minPvPCount":
+					conditions.add(new Pvp(value));
+					break;
+				case "minPkCount":
+					conditions.add(new Pk(value));
+					break;										
+				case "minClanLevel":
+					conditions.add(new ClanLevel(value));
+					break;
+				case "mustBeHero":
+					conditions.add(new Hero(value));
+					break;
+				case "mustBeNoble":
+					conditions.add(new Noble(value));
+					break;	
+				case "minWeaponEnchant":
+					conditions.add(new WeaponEnchant(value));	
+					break;	
+				case "minKarmaCount":
+					conditions.add(new Karma(value));
+					break;	
+				case "minAdenaCount":
+					conditions.add(new Adena(value));
+					break;	
+				case "minClanMembersCount":
+					conditions.add(new MinCMcount(value));	
+					break;	
+				case "mustBeClanLeader":
+					conditions.add(new ClanLeader(value));	
+					break;	
+				case "mustBeMarried":
+					conditions.add(new Marry(value));
+					break;	
+				case "itemAmmount":
+					conditions.add(new ItemsCount(value));
+					break;	
+				case "crpAmmount":
+					conditions.add(new Crp(value));	
+					break;	
+				case "lordOfCastle":
+					conditions.add(new Castle(value));		
+					break;	
+				case "mustBeMageClass":
+					conditions.add(new Mage(value));		
+					break;
+				case "minSubclassCount":
+					conditions.add(new Sub(value));
+					break;			
+				case "CompleteAchievements":
+					conditions.add(new CompleteAchievements(value));
+					break;						
+				case "minSkillEnchant":
+					conditions.add(new SkillEnchant(value));
+					break;							
+				case "minOnlineTime":
+					conditions.add(new OnlineTime(value));		
+					break;	
+				case "minHeroCount":
+					conditions.add(new HeroCount(value));				
+					break;	
+				case "raidToKill":
+					conditions.add(new RaidKill(value));					
+					break;	
+				case "raidToKill1":
+					conditions.add(new RaidKill(value));							
+					break;	
+				case "raidToKill2":
+					conditions.add(new RaidKill(value));						
+					break;	
+				case "minRaidPoints":
+					conditions.add(new RaidPoints(value));								
+					break;	
+				case "eventKills":
+					conditions.add(new eventKills(value));								
+					break;	
+				case "events":
+					conditions.add(new events(value));									
+					break;
+				case "eventWins":
+					conditions.add(new eventWins(value));								
+					break;																															
+			}
+                				
 	}
 	
 	public void loadUsed()

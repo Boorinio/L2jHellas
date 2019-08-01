@@ -108,6 +108,7 @@ public class AdminReload implements IAdminCommandHandler
 					SpawnTable.getInstance().reloadAll();
 					RaidBossSpawnManager.getInstance().reloadBosses();
 					SevenSigns.getInstance().spawnSevenSignsNPC();
+					DayNightSpawnManager.getInstance().notifyChangeMode();
 					AdminData.getInstance().broadcastMessageToGMs("NPC Respawn completed!");
 					activeChar.sendMessage("All NPCs have been reloaded.");
 					sendReloadPage(activeChar);

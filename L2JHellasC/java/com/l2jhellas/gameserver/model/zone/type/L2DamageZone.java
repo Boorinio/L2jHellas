@@ -3,10 +3,10 @@ package com.l2jhellas.gameserver.model.zone.type;
 import java.util.concurrent.Future;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2CastleZoneType;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.EtcStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;

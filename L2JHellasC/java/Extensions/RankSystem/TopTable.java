@@ -153,6 +153,9 @@ public class TopTable
 		// order and load top killers & gatherers from model:
 		Map<Integer, PvpSummary> pvpList = PvpTable.getInstance().getPvpTable();
 		
+		if (pvpList ==null)	
+			return false;
+		
 		Map<Integer, TopField> tmpTopKillsTable = new LinkedHashMap<>();
 		Map<Integer, TopField> tmpTopGatherersTable = new LinkedHashMap<>();
 		
@@ -197,7 +200,7 @@ public class TopTable
 				}
 				
 				// if killer found:
-				if (bestKiller != 0)
+				if (bestKiller > 0)
 				{
 					KillPosition++;
 					
@@ -229,7 +232,7 @@ public class TopTable
 				}
 				
 				// if any best killer not found, break action:
-				if (bestGatherer != 0)
+				if (bestGatherer > 0)
 				{
 					PointPosition++;
 					
@@ -268,7 +271,7 @@ public class TopTable
 			setTopKillsTable(tmpTopKillsTable);
 			setTopGatherersTable(tmpTopGatherersTable);
 
-			PreparedStatement statement = con.prepareStatement("");
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM rank_pvp_system_top_table");
 			
 			// clear Top Table:
 			statement.addBatch("DELETE FROM rank_pvp_system_top_table");
@@ -303,7 +306,7 @@ public class TopTable
 		}
 		catch (SQLException e)
 		{
-			log.log(Level.WARNING, e.getMessage());
+			log.log(Level.WARNING, e.getMessage()+"poutsa");
 			
 			// clear tables:
 			_topKillsTable.clear();

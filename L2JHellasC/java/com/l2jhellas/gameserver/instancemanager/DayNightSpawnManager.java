@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -40,95 +39,34 @@ public class DayNightSpawnManager
 		_nightCreatures.add(spawnDat);
 	}
 	
-	public void spawnDayCreatures()
+	public void spawnCreatures(boolean isNight)
 	{
-		spawnCreatures(_nightCreatures, _dayCreatures, "night", "day");
-	}
-	
-	public void spawnNightCreatures()
-	{
-		spawnCreatures(_dayCreatures, _nightCreatures, "day", "night");
-	}
-	
-	private static void spawnCreatures(List<L2Spawn> unSpawnCreatures, List<L2Spawn> spawnCreatures, String UnspawnLogInfo, String SpawnLogInfo)
-	{
-		try
-		{
-			if (!unSpawnCreatures.isEmpty())
-			{
-				int i = 0;
-				for (L2Spawn spawn : unSpawnCreatures)
-				{
-					if (spawn == null)
-						continue;
-					
-					spawn.stopRespawn();
-					L2Npc last = spawn.getLastSpawn();
-					if (last != null)
-					{
-						last.deleteMe();
-						i++;
-					}
-				}
-				_log.info(DayNightSpawnManager.class.getSimpleName() + ": Removed " + i + " " + UnspawnLogInfo + " creatures");
-			}
-			
-			int i = 0;
-			for (L2Spawn spawnDat : spawnCreatures)
-			{
-				if (spawnDat == null)
-					continue;
-				
-				spawnDat.startRespawn();
-				spawnDat.doSpawn();
-				i++;
-			}
-			
-			_log.info(DayNightSpawnManager.class.getSimpleName() + ": Spawned " + i + " " + SpawnLogInfo + " creatures");
-		}
-		catch (Exception e)
-		{
-			_log.info(DayNightSpawnManager.class.getSimpleName() + "Error while spawning creatures: " + e.getMessage());
-		}
-	}
-	
-	private void changeMode(int mode)
-	{
+		final List<L2Spawn> creaturesToUnspawn = (isNight) ? _dayCreatures : _nightCreatures;
+		final List<L2Spawn> creaturesToSpawn = (isNight) ? _nightCreatures : _dayCreatures;
 		
-		if (_nightCreatures.isEmpty() && _dayCreatures.isEmpty() && _bosses.isEmpty())
-			return;
-		
-		switch (mode)
+		for (L2Spawn Unspawn : creaturesToUnspawn)
 		{
-			case 0:
-				spawnDayCreatures();
-				specialNightBoss(0);
-				break;
-			case 1:
-				spawnNightCreatures();
-				specialNightBoss(1);
-				break;
-			default:
-				_log.warning(DayNightSpawnManager.class.getName() + ": Wrong mode sent");
-				break;
+			Unspawn.stopRespawn();
+
+			final L2Npc last = Unspawn.getLastSpawn();
+			
+			if (last != null)
+				last.deleteMe();
 		}
+		
+		for (L2Spawn spawn : creaturesToSpawn)
+		{
+			spawn.startRespawn();
+			spawn.doSpawn();
+		}
+
+		_log.info(DayNightSpawnManager.class.getSimpleName() + ": Spawned " +  ((isNight) ? "night" : "day") + " creatures");
 	}
-	
+
 	public void notifyChangeMode()
-	{
-		try
-		{
-			if (GameTimeController.getInstance().isNight())
-				changeMode(1);
-			else
-				changeMode(0);
-		}
-		catch (Exception e)
-		{
-			_log.warning(DayNightSpawnManager.class.getName() + ": Could not notify change mode.");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
-		}
+	{	
+		spawnCreatures(GameTimeController.getInstance().isNight());	
+		specialNightBoss(GameTimeController.getInstance().isNight()?1:0);
 	}
 	
 	public void cleanUp()
@@ -167,7 +105,7 @@ public class DayNightSpawnManager
 		}
 		catch (Exception e)
 		{
-			_log.info(DayNightSpawnManager.class.getSimpleName() + " Error while specialNoghtBoss(): " + e.getMessage());
+			_log.info(DayNightSpawnManager.class.getSimpleName() + " Error while specialNightBoss(): " + e.getMessage());
 		}
 	}
 	

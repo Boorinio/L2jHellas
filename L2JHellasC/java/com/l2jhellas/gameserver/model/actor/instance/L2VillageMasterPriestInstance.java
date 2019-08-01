@@ -1,8 +1,8 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import com.l2jhellas.gameserver.emum.ClassId;
 import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.emum.ClassType;
-import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 public final class L2VillageMasterPriestInstance extends L2VillageMasterInstance

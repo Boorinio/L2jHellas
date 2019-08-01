@@ -1,6 +1,5 @@
 package com.l2jhellas.gameserver.skills.l2skills;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.emum.L2SkillTargetType;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
@@ -13,7 +12,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2SiegeSummonInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
 import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
@@ -49,9 +47,7 @@ public class L2SkillSummon extends L2Skill
 				int count = player.getCubics().size();
 				if (count > mastery)
 				{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-					sm.addString("You already have " + count + " cubic(s).");
-					activeChar.sendPacket(sm);
+					player.sendPacket(SystemMessageId.CUBIC_SUMMONING_FAILED);
 					return false;
 				}
 			}
@@ -61,9 +57,7 @@ public class L2SkillSummon extends L2Skill
 					return false;
 				if (player.getPet() != null)
 				{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-					sm.addString("You already have a pet.");
-					activeChar.sendPacket(sm);
+					player.sendPacket(SystemMessageId.SUMMON_ONLY_ONE);
 					return false;
 				}
 			}
@@ -85,9 +79,7 @@ public class L2SkillSummon extends L2Skill
 		
 		if (_npcId == 0)
 		{
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-			sm.addString("Summon skill " + getId() + " not described yet");
-			activeChar.sendPacket(sm);
+			activeChar.sendMessage("Summon skill " + getId() + " not described yet");
 			return;
 		}
 		
@@ -126,8 +118,7 @@ public class L2SkillSummon extends L2Skill
 						player.sendMessage("You already have such cubic");
 					}
 					else
-					{
-						
+					{						
 						player.addCubic(_npcId, getLevel());
 						player.broadcastUserInfo();
 					}
@@ -142,10 +133,6 @@ public class L2SkillSummon extends L2Skill
 			}
 			if (activeChar.getCubics().size() > mastery)
 			{
-				if (Config.DEBUG)
-				{
-					_log.fine("player can't summon any more cubics. ignore summon skill");
-				}
 				activeChar.sendPacket(SystemMessageId.CUBIC_SUMMONING_FAILED);
 				return;
 			}
@@ -160,13 +147,7 @@ public class L2SkillSummon extends L2Skill
 		}
 		
 		if (activeChar.getPet() != null || activeChar.isMounted())
-		{
-			if (Config.DEBUG)
-			{
-				_log.fine("player has a pet already. ignore summon skill");
-			}
 			return;
-		}
 		
 		L2SummonInstance summon;
 		L2NpcTemplate summonTemplate = NpcData.getInstance().getTemplate(_npcId);
@@ -197,8 +178,8 @@ public class L2SkillSummon extends L2Skill
 		summon.setRunning();
 		activeChar.setPet(summon);
 		
-		summon.spawnMe(activeChar.getX() + 50, activeChar.getY() + 100, activeChar.getZ());
-		
+		summon.spawnMe(activeChar.getX() + 30, activeChar.getY() + 30, activeChar.getZ());
+
 		summon.setFollowStatus(true);
 		summon.setShowSummonAnimation(false); // addVisibleObject created the info packets with summon animation
 	}

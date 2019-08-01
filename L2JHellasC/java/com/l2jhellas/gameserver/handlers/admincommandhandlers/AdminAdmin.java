@@ -40,7 +40,7 @@ public class AdminAdmin implements IAdminCommandHandler
 	{
 		if (command.startsWith("admin_admin"))
 		{
-			showMainPage(activeChar, command);
+			showMainPage(activeChar, command);	
 		}
 		else if (command.startsWith("admin_gmliston"))
 		{

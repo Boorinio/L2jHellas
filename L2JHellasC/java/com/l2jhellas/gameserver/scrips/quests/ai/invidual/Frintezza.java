@@ -22,7 +22,7 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.Earthquake;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillCanceld;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
-import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
+import com.l2jhellas.gameserver.network.serverpackets.AbstractNpcInfo.NpcInfo;
 import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
 import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;

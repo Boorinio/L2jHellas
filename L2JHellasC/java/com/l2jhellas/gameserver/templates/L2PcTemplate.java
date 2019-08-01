@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.emum.ClassId;
 import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.emum.Sex;
-import com.l2jhellas.gameserver.model.base.ClassId;
 
 public class L2PcTemplate extends L2CharTemplate
 {

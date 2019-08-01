@@ -12,7 +12,6 @@ CREATE TABLE `pets` (
   `exp` decimal(20,0) DEFAULT NULL,
   `sp` decimal(11,0) DEFAULT NULL,
   `karma` decimal(11,0) DEFAULT NULL,
-  `pkkills` decimal(11,0) DEFAULT NULL,
   `fed` decimal(11,0) DEFAULT NULL,
   PRIMARY KEY (`item_obj_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';

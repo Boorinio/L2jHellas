@@ -1,8 +1,8 @@
 package com.l2jhellas.gameserver.scrips.quests;
 
+import com.l2jhellas.gameserver.emum.ClassId;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.util.Rnd;

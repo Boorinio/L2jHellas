@@ -12,34 +12,36 @@ public class CharInfo extends L2GameServerPacket
 	private static final String _S__03_CHARINFO = "[S] 03 CharInfo";
 	private final L2PcInstance _activeChar;
 	private final Inventory _inv;
-	private final int _x, _y, _z, _heading;
+	private int _x, _y, _z, _heading;
 	private final int _mAtkSpd, _pAtkSpd;
-	private final int _runSpd, _walkSpd, _swimRunSpd, _swimWalkSpd;
-	private int _flRunSpd;
-	private int _flWalkSpd;
-	private int _flyRunSpd;
-	private int _flyWalkSpd;
-	private final float _moveMultiplier;
 	private final int _maxCp;
+	private int _vehicleId = 0;
 	
 	public CharInfo(L2PcInstance cha)
 	{
 		_activeChar = cha;
 		_inv = cha.getInventory();
-		_x = _activeChar.getX();
-		_y = _activeChar.getY();
-		_z = _activeChar.getZ();
+
+		if ((_activeChar.getVehicle() != null) && (_activeChar.getInVehiclePosition() != null))
+		{
+			_x = _activeChar.getInVehiclePosition().getX();
+			_y = _activeChar.getInVehiclePosition().getY();
+			_z = _activeChar.getInVehiclePosition().getZ();
+			_vehicleId = _activeChar.getVehicle().getObjectId();
+		}
+		else
+		{
+			_x = _activeChar.getX();
+			_y = _activeChar.getY();
+			_z = _activeChar.getZ();
+		}
+		
 		_heading = _activeChar.getHeading();
 		_mAtkSpd = _activeChar.getMAtkSpd();
 		_pAtkSpd = _activeChar.getPAtkSpd();
-		_moveMultiplier = _activeChar.getMovementSpeedMultiplier();
-		_runSpd = (int) (_activeChar.getRunSpeed() / _moveMultiplier);
-		_walkSpd = (int) (_activeChar.getWalkSpeed() / _moveMultiplier);
-		_swimRunSpd = _flRunSpd = _flyRunSpd = _runSpd;
-		_swimWalkSpd = _flWalkSpd = _flyWalkSpd = _walkSpd;
 		_maxCp = _activeChar.getMaxCp();
 	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -57,13 +59,12 @@ public class CharInfo extends L2GameServerPacket
 		writeD(_x);
 		writeD(_y);
 		writeD(_z);
-		writeD(_heading);
+		writeD(_vehicleId);		
 		writeD(_activeChar.getObjectId());
 		writeS(_activeChar.getName());
 		writeD(_activeChar.getRace().ordinal());
 		writeD(_activeChar.getAppearance().getSex().ordinal());
-		
-		writeD(_activeChar.getClassIndex() == 0 ? _activeChar.getClassId().getId() : _activeChar.getBaseClass());
+		writeD(_activeChar.getBaseClass()); 
 		
 		writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_DHAIR));
 		writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_HEAD));
@@ -107,20 +108,26 @@ public class CharInfo extends L2GameServerPacket
 		
 		writeD(_mAtkSpd);
 		writeD(_pAtkSpd);
-		
+				
 		writeD(_activeChar.getPvpFlag());
-		writeD(_activeChar.getKarma());
+		writeD(_activeChar.getKarma());		
 		
-		writeD(_runSpd);
-		writeD(_walkSpd);
-		writeD(_swimRunSpd); // swimspeed
-		writeD(_swimWalkSpd); // swimspeed
-		writeD(_flRunSpd);
-		writeD(_flWalkSpd);
-		writeD(_flyRunSpd);
-		writeD(_flyWalkSpd);
-		writeF(_activeChar.getMovementSpeedMultiplier()); // _activeChar.getProperMultiplier()
-		writeF(_activeChar.getAttackSpeedMultiplier()); // _activeChar.getAttackSpeedMultiplier()
+		
+		final int runSpd = _activeChar.getStat().getRunSpeed();
+		final int walkSpd = _activeChar.getStat().getWalkSpeed();
+		final int swimSpd = runSpd;
+		
+		writeD(runSpd);
+		writeD(walkSpd);
+		writeD(swimSpd);
+		writeD(swimSpd);
+		writeD(runSpd);
+		writeD(walkSpd);
+		writeD((_activeChar.isFlying()) ? runSpd : 0);
+		writeD((_activeChar.isFlying()) ? walkSpd : 0);
+		
+		writeF(_activeChar.getStat().getMovementSpeedMultiplier());
+		writeF(_activeChar.getStat().getAttackSpeedMultiplier());
 		
 		if (_activeChar.getMountType() != 0)
 		{
@@ -143,8 +150,7 @@ public class CharInfo extends L2GameServerPacket
 		writeD(_activeChar.getClanCrestId());
 		writeD(_activeChar.getAllyId());
 		writeD(_activeChar.getAllyCrestId());
-		// In UserInfo leader rights and siege flags, but here found nothing??
-		// Therefore RelationChanged packet with that info is required
+		
 		writeD(0);
 		
 		writeC(_activeChar.isSitting() ? 0 : 1); // standing = 1 sitting = 0
@@ -156,11 +162,9 @@ public class CharInfo extends L2GameServerPacket
 		
 		writeC(_activeChar.getMountType()); // 1 on strider 2 on wyvern 0 no mount
 		writeC(_activeChar.getPrivateStoreType()); // 1 - sellshop
-		
+
 		writeH(_activeChar.getCubics().size());
-		
-		for (int id : _activeChar.getCubics().keySet())
-			writeH(id);
+		_activeChar.getCubics().keySet().forEach(this::writeH);
 		
 		writeC(_activeChar.isInPartyMatchRoom() ? 1 : 0);
 		
@@ -171,7 +175,7 @@ public class CharInfo extends L2GameServerPacket
 		writeD(_activeChar.getClassId().getId());
 		
 		writeD(_maxCp);
-		writeD((int) _activeChar.getCurrentCp());
+		writeD((int) Math.round(_activeChar.getCurrentCp()));
 		writeC(_activeChar.isMounted() ? 0 : _activeChar.getEnchantEffect());
 		
 		writeC(_activeChar.getTeam().getId());
@@ -196,7 +200,7 @@ public class CharInfo extends L2GameServerPacket
 		
 		writeC(_activeChar.isCursedWeaponEquiped() ? CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()) : 0);
 		
-		writeD(_activeChar.getClanId() > 0 && _activeChar.getClan() != null ? _activeChar.getClan().getReputationScore() : 0);
+		writeD(!_activeChar.isCursedWeaponEquiped() && _activeChar.getClanId() > 0 && _activeChar.getClan() != null ? _activeChar.getClan().getReputationScore() : 0);
 	}
 	
 	@Override

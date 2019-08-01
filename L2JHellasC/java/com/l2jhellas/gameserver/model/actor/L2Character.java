@@ -27,6 +27,7 @@ import com.l2jhellas.gameserver.emum.DuelState;
 import com.l2jhellas.gameserver.emum.L2SkillTargetType;
 import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.geodata.GeoMove;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
@@ -66,7 +67,6 @@ import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.model.zone.ZoneRegion;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -78,7 +78,7 @@ import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillCanceld;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillLaunched;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
-import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
+import com.l2jhellas.gameserver.network.serverpackets.AbstractNpcInfo.NpcInfo;
 import com.l2jhellas.gameserver.network.serverpackets.Revive;
 import com.l2jhellas.gameserver.network.serverpackets.ServerObjectInfo;
 import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
@@ -199,20 +199,16 @@ public abstract class L2Character extends L2Object
 					addStatFuncs(skill.getValue().getStatFuncs(null, this));
 			}
 			if (!Config.NPCS_ATTACKABLE && !(this instanceof L2Attackable))
-			{
-				
-				setIsInvul(true);
-				
+			{			
+				setIsInvul(true);				
 			}
 		}
 		else
 		{
 			// Initialize the FastMap _skills to null
-			_skills = new LinkedHashMap<>();
-			
+			_skills = new LinkedHashMap<>();	
 			// If L2Character is a L2PcInstance or a L2Summon, create the basic calculator set
 			_calculators = new Calculator[Stats.NUM_STATS];
-			Formulas.addFuncsToNewCharacter(this);
 		}
 	}
 	
@@ -245,16 +241,7 @@ public abstract class L2Character extends L2Object
 		setIsTeleporting(false);
 		
 		if (_isPendingRevive)
-			doRevive();
-		
-		// Modify the position of the pet if necessary
-		if (getPet() != null)
-		{
-			getPet().setFollowStatus(false);
-			getPet().teleToLocation(getX() + Rnd.get(-100, 100), getY() + Rnd.get(-100, 100), getZ(), false);
-			getPet().setFollowStatus(true);
-		}
-		
+			doRevive();		
 	}
 	
 	public void addAttackerToAttackByList(L2Character player)
@@ -263,17 +250,7 @@ public abstract class L2Character extends L2Object
 			return;
 		getAttackByList().add(player);
 	}
-	
-	public void broadcastPacket(L2GameServerPacket mov)
-	{
-		Broadcast.toSelfAndKnownPlayers(this, mov);
-	}
-	
-	public void broadcastPacket(L2GameServerPacket mov, int radius)
-	{
-		Broadcast.toSelfAndKnownPlayersInRadius(this, mov, radius);
-	}
-	
+
 	protected boolean needHpUpdate(int barPixels)
 	{
 		double currentHp = getCurrentHp();
@@ -1618,7 +1595,7 @@ public abstract class L2Character extends L2Object
 		return isStunned() || isRooted() || isSleeping() || isOverloaded() || isParalyzed() || isImmobilized() || isFakeDeath() || isTeleporting();
 	}
 	
-	public final boolean isOutOfControl()
+	public boolean isOutOfControl()
 	{
 		return isConfused() || isAfraid();
 	}
@@ -2795,7 +2772,7 @@ public abstract class L2Character extends L2Object
 		return getZ();
 	}
 	
-	public final boolean isInCombat()
+	public boolean isInCombat()
 	{
 		return hasAI() && AttackStanceTaskManager.getInstance().isInAttackStance(this);
 	}
@@ -2835,7 +2812,7 @@ public abstract class L2Character extends L2Object
 		return _castInterruptTime > GameTimeController.getInstance().getGameTicks();
 	}
 	
-	public final boolean isAttackingNow()
+	public boolean isAttackingNow()
 	{
 		return _attackEndTime > GameTimeController.getInstance().getGameTicks();
 	}
@@ -2856,8 +2833,8 @@ public abstract class L2Character extends L2Object
 	
 	public final void abortAllAttacks()
 	{
-		abortAttack();
 		abortCast();
+		abortAttack();
 	}
 	
 	public final int getAttackingBodyPart()
@@ -4025,21 +4002,25 @@ public abstract class L2Character extends L2Object
 			
 			// If an old skill has been replaced, remove all its Func objects
 			if (oldSkill != null)
-				removeStatsOwner(oldSkill);
+			{		
+				if (oldSkill.isPassive())
+					stopSkillEffects(oldSkill.getId());
+				
+				if (oldSkill.triggerAnotherSkill())
+					removeSkill(oldSkill.getTriggeredId());
+				
+				removeStatsOwner(oldSkill);				
+			}
 			
 			// Add Func objects of newSkill to the calculator set of the
 			// L2Character
 			addStatFuncs(newSkill.getStatFuncs(null, this));
 			
 			if (oldSkill != null && _chanceSkills != null)
-			{
 				removeChanceSkill(oldSkill.getId());
-			}
+
 			if (newSkill.isChance())
-			{
-				addChanceSkill(newSkill);
-			}
-			
+				addChanceSkill(newSkill);	
 		}
 		
 		return oldSkill;
@@ -5492,6 +5473,32 @@ public abstract class L2Character extends L2Object
 		_effects.stopEffectsOnDamage(awake);
 	}
 
+	
+	public void broadcastPacket(L2GameServerPacket mov)
+	{
+		Broadcast.toSelfAndKnownPlayers(this, mov);
+	}
+	
+	public void broadcastPacket(L2GameServerPacket mov, int radius)
+	{
+		Broadcast.toSelfAndKnownPlayersInRadius(this, mov, radius);
+	}
+	
+	public int getClanId()
+	{
+		return 0;
+	}
+	
+	public int getAllyId()
+	{
+		return 0;
+	}
+	
+	public void rechargeShots(boolean physical, boolean magic, boolean summon)
+	{
+		// Dummy method to be overriden.
+	}
+	
 	@Override
 	public void setXYZ(int x, int y, int z)
 	{

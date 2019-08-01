@@ -196,6 +196,7 @@ import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.VipTeleportCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.VoiceInfoCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.WeddingCmd;
 import com.l2jhellas.gameserver.handlers.voicedcommandhandlers.ZodiacRegistrationCmd;
+import com.l2jhellas.util.Util;
 
 public class MasterHandler
 {
@@ -215,9 +216,7 @@ public class MasterHandler
 			for (Method method : loadInstance.getClass().getMethods())
 			{
 				if (method.getName().equals("registerHandler") && !method.isBridge())
-				{
 					registerHandlerMethods.put(loadInstance, method);
-				}
 			}
 		}
 		
@@ -241,9 +240,7 @@ public class MasterHandler
 					for (Entry<IHandler<?, ?>, Method> entry : registerHandlerMethods.entrySet())
 					{
 						if ((entry.getValue() != null) && entry.getValue().getParameterTypes()[0].isInstance(handler))
-						{
 							entry.getValue().invoke(entry.getKey(), handler);
-						}
 					}
 				}
 				catch (Exception e)
@@ -254,12 +251,9 @@ public class MasterHandler
 			}
 		}
 		
-		_log.info("============" + MasterHandler.class.getSimpleName() + "==============");
+		Util.printSection(MasterHandler.class.getSimpleName());
 		for (IHandler<?, ?> loadInstance : _loadInstances)
-		{
 			_log.info(loadInstance.getClass().getSimpleName() + ": Loaded " + loadInstance.size() + " Handlers.");
-		}
-		_log.info("=======================================");
 	}
 	
 	private static final IHandler<?, ?>[] _loadInstances =

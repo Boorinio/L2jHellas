@@ -1,5 +1,6 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+
 import com.l2jhellas.gameserver.datatables.sql.PetNameTable;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -7,7 +8,7 @@ import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
-import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
+import com.l2jhellas.gameserver.network.serverpackets.PetInfo;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public final class RequestChangePetName extends L2GameClientPacket
@@ -59,7 +60,7 @@ public final class RequestChangePetName extends L2GameClientPacket
 		}
 		
 		pet.setName(_name);
-		pet.broadcastPacket(new NpcInfo(pet, activeChar, 1));
+		pet.getOwner().sendPacket(new PetInfo(pet, 2));
 		pet.updateAndBroadcastStatus(1);
 		// The PetInfo packet wipes the PartySpelled (list of active spells' icons). Re-add them
 		pet.updateEffectIcons(true);

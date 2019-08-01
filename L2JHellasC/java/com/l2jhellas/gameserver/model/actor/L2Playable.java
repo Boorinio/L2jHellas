@@ -278,4 +278,8 @@ public abstract class L2Playable extends L2Character
 	{
 		return _hitmanTarget;
 	}
+	
+	public abstract int getKarma();
+	
+	public abstract byte getPvpFlag();
 }

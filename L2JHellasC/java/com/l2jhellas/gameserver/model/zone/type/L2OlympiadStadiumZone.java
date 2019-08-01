@@ -2,13 +2,13 @@ package com.l2jhellas.gameserver.model.zone.type;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameTask;
 import com.l2jhellas.gameserver.model.zone.L2SpawnZone;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadMatchEnd;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadUserInfo;

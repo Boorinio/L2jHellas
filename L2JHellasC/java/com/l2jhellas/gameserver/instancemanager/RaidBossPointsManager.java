@@ -108,11 +108,7 @@ public class RaidBossPointsManager
 		if (tmpPoint == null || tmpPoint.isEmpty())
 			return 0;
 		
-		int totalPoints = 0;
-		for (int points : tmpPoint.values())
-			totalPoints += points;
-		
-		return totalPoints;
+		return tmpPoint.values().stream().mapToInt(Number::intValue).sum();
 	}
 	
 	public final Map<Integer, Integer> getList(L2PcInstance player)

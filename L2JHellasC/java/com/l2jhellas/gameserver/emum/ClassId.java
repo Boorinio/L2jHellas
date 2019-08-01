@@ -1,9 +1,7 @@
-package com.l2jhellas.gameserver.model.base;
+package com.l2jhellas.gameserver.emum;
 
 import java.util.EnumSet;
 
-import com.l2jhellas.gameserver.emum.ClassRace;
-import com.l2jhellas.gameserver.emum.ClassType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public enum ClassId
@@ -214,8 +212,7 @@ public enum ClassId
 	{
 		return this == classId || childOf(classId);
 	}
-	
-	@SuppressWarnings("incomplete-switch")
+
 	private final void createSubclasses()
 	{
 		// only 2nd class level can have subclasses
@@ -315,5 +312,17 @@ public enum ClassId
 			}
 		}
 		return null;
+	}
+	
+	public static ClassId getClassId(int id)
+	{
+		try
+		{
+			return ClassId.values()[id];
+		}
+		catch (Exception e)
+		{
+			return null;
+		}
 	}
 }

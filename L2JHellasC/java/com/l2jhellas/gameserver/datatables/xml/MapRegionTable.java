@@ -11,6 +11,7 @@ import org.w3c.dom.Node;
 
 import com.l2jhellas.gameserver.SevenSigns;
 import com.l2jhellas.gameserver.emum.ClassRace;
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
@@ -20,7 +21,6 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.model.zone.type.L2ArenaZone;
 import com.l2jhellas.gameserver.model.zone.type.L2ClanHallZone;
 import com.l2jhellas.gameserver.model.zone.type.L2TownZone;

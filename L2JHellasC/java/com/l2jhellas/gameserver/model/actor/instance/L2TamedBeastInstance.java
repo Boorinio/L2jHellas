@@ -12,7 +12,7 @@ import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
+import com.l2jhellas.gameserver.network.serverpackets.AbstractNpcInfo;
 import com.l2jhellas.gameserver.network.serverpackets.StopMove;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -144,7 +144,7 @@ public final class L2TamedBeastInstance extends L2FeedableBeastInstance
 			_owner = owner;
 			setTitle(owner.getName());
 			// broadcast the new title
-			broadcastPacket(new NpcInfo(this, owner));
+			broadcastPacket(new AbstractNpcInfo.NpcInfo(this, owner));
 			
 			owner.setTrainedBeast(this);
 			

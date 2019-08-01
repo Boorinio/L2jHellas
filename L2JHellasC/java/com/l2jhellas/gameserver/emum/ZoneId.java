@@ -1,4 +1,4 @@
-package com.l2jhellas.gameserver.model.zone;
+package com.l2jhellas.gameserver.emum;
 
 public enum ZoneId
 {

@@ -5,6 +5,7 @@ import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.DayNightSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
@@ -118,11 +119,13 @@ public class AdminSpawn implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_spawnday"))
 		{
-			DayNightSpawnManager.getInstance().spawnDayCreatures();
+			DayNightSpawnManager.getInstance().spawnCreatures(false);	
+			AdminData.getInstance().broadcastMessageToGMs("Spawning day creatures.");
 		}
 		else if (command.startsWith("admin_spawnnight"))
 		{
-			DayNightSpawnManager.getInstance().spawnNightCreatures();
+			DayNightSpawnManager.getInstance().spawnCreatures(true);	
+			AdminData.getInstance().broadcastMessageToGMs("Spawning night creatures.");
 		}
 		
 		return true;

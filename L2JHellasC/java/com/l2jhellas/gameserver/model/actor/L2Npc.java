@@ -14,9 +14,7 @@ import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.BuffTemplateTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.datatables.sql.PolymporphTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
-import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
 import com.l2jhellas.gameserver.datatables.xml.HelperBuffData;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
@@ -32,7 +30,6 @@ import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2DropCategory;
 import com.l2jhellas.gameserver.model.L2DropData;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.L2MaxPolyModel;
 import com.l2jhellas.gameserver.model.L2NpcAIData;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -71,7 +68,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ExShowVariationMakeWindow;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
+import com.l2jhellas.gameserver.network.serverpackets.AbstractNpcInfo.NpcInfo;
 import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
 import com.l2jhellas.gameserver.network.serverpackets.RadarControl;
 import com.l2jhellas.gameserver.network.serverpackets.ServerObjectInfo;
@@ -119,8 +116,6 @@ public class L2Npc extends L2Character
 	private boolean _isInTown = false;
 	
 	private int _isSpoiledBy = 0;
-	
-	private final L2MaxPolyModel _mxcModel;
 	
 	private int _currentLHandId; // normally this shouldn't change from the template, but there exist exceptions
 	private int _currentRHandId; // normally this shouldn't change from the template, but there exist exceptions
@@ -215,20 +210,6 @@ public class L2Npc extends L2Character
 		// initialize the "current" collisions
 		_currentCollisionHeight = getTemplate().collisionHeight;
 		_currentCollisionRadius = getTemplate().collisionRadius;
-		// Velvet - MxC
-		_mxcModel = PolymporphTable.getInstance().getModelForID(template.npcId);
-		
-		if (_mxcModel != null) // Lil Config xD
-		{
-			_currentCollisionHeight = CharTemplateData.getInstance().getTemplate(_mxcModel.getClassId()).collisionHeight;
-			_currentCollisionRadius = CharTemplateData.getInstance().getTemplate(_mxcModel.getClassId()).collisionRadius;
-			
-			if (_mxcModel.getWeaponIdRH() <= 0 && _mxcModel.getWeaponIdLH() <= 0)
-			{
-				_mxcModel.setWeaponIdRH(template.rhand);
-				_mxcModel.setWeaponIdLH(template.lhand);
-			}
-		}
 		
 		// Set the name of the L2Character
 		setName(template.name);
@@ -2063,12 +2044,7 @@ public class L2Npc extends L2Character
 	{
 		return _currentCollisionRadius;
 	}
-	
-	public L2MaxPolyModel getMxcPoly()
-	{
-		return _mxcModel;
-	}
-	
+
 	public L2Npc scheduleDespawn(long delay)
 	{
 		ThreadPoolManager.getInstance().scheduleGeneral(this.new DespawnTask(this), delay);

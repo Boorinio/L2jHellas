@@ -29,9 +29,8 @@ public class ObjectPosition
 		if (newRegion != oldRegion)
 		{
 			if (oldRegion != null)
-			{
 				oldRegion.removeVisibleObject(getActiveObject());
-			}
+
 			newRegion.addVisibleObject(getActiveObject());
 			L2World.switchRegion(getActiveObject(), newRegion);
 			setWorldRegion(newRegion);

@@ -16,7 +16,8 @@ import com.l2jhellas.gameserver.network.serverpackets.CharInfo;
 import com.l2jhellas.gameserver.network.serverpackets.DoorInfo;
 import com.l2jhellas.gameserver.network.serverpackets.DoorStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.GetOnVehicle;
-import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
+import com.l2jhellas.gameserver.network.serverpackets.AbstractNpcInfo.NpcInfo;
+import com.l2jhellas.gameserver.network.serverpackets.AbstractNpcInfo.SummonInfo;
 import com.l2jhellas.gameserver.network.serverpackets.PetItemList;
 import com.l2jhellas.gameserver.network.serverpackets.RelationChanged;
 import com.l2jhellas.gameserver.network.serverpackets.SpawnItem;
@@ -93,7 +94,7 @@ public class RequestRecordInfo extends L2GameClientPacket
 							_activeChar.sendPacket(new PetItemList((L2PetInstance) summon));
 					}
 					else
-						_activeChar.sendPacket(new NpcInfo(summon, _activeChar));
+						_activeChar.sendPacket(new SummonInfo(summon, _activeChar,0));
 					
 					// The PetInfo packet wipes the PartySpelled (list of active spells' icons). Re-add them
 					summon.updateEffectIcons(true);

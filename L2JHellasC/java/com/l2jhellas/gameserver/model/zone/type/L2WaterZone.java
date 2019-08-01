@@ -1,12 +1,12 @@
 package com.l2jhellas.gameserver.model.zone.type;
 
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
-import com.l2jhellas.gameserver.network.serverpackets.NpcInfo;
+import com.l2jhellas.gameserver.network.serverpackets.AbstractNpcInfo.NpcInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ServerObjectInfo;
 
 public class L2WaterZone extends L2ZoneType

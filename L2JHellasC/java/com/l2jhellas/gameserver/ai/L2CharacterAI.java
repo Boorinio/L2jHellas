@@ -377,10 +377,7 @@ public class L2CharacterAI extends AbstractAI
 		_actor.broadcastPacket(new AutoAttackStop(_actor.getObjectId()));
 		
 		AttackStanceTaskManager.getInstance().remove(_actor);
-		
-		// Stop Server AutoAttack also
-		setAutoAttacking(false);
-		
+
 		// Stop the actor movement server side AND client side by sending Server->Client packet StopMove/StopRotation (broadcast)
 		clientStopMoving(null);
 		
@@ -393,9 +390,8 @@ public class L2CharacterAI extends AbstractAI
 	{
 		// Stop the actor auto-attack client side by sending Server->Client packet AutoAttackStop (broadcast)
 		_actor.broadcastPacket(new AutoAttackStop(_actor.getObjectId()));
+		
 		AttackStanceTaskManager.getInstance().remove(_actor);
-		// stop Server AutoAttack also
-		setAutoAttacking(false);
 		
 		// Stop the actor movement server side AND client side by sending Server->Client packet StopMove/StopRotation (broadcast)
 		clientStopMoving(null);

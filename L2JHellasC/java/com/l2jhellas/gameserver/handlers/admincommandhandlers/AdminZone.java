@@ -3,12 +3,12 @@ package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.util.StringUtil;
 

@@ -1,16 +1,17 @@
 package com.l2jhellas.gameserver.model;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
 import com.l2jhellas.gameserver.instancemanager.MercTicketManager;
 import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.poly.ObjectPoly;
 import com.l2jhellas.gameserver.model.actor.position.ObjectPosition;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.DeleteObject;
 import com.l2jhellas.gameserver.network.serverpackets.GetItem;
@@ -342,6 +343,11 @@ public abstract class L2Object
 	public boolean isPlayer()
 	{
 		return this instanceof L2PcInstance;
+	}
+
+	public boolean isNpc()
+	{
+		return this instanceof L2Npc;
 	}
 	
 	public abstract void sendInfo(L2PcInstance activeChar);

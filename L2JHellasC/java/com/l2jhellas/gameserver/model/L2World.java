@@ -257,27 +257,26 @@ public final class L2World
 	public void addVisibleObject(L2Object object, L2WorldRegion newRegion)
 	{
 		if (!newRegion.isActive())
-		{
 			return;
-		}
 		
 		forEachVisibleObject(object, L2Object.class, 1, wo ->
 		{
 			if (object instanceof L2PcInstance && wo.isVisible())
 			{
 				wo.sendInfo((L2PcInstance) object);
+				
 				if (wo instanceof L2Character)
 				{
 					final L2CharacterAI ai = ((L2Character) wo).getAI();
+					
 					if (ai != null)
 					{
 						ai.describeStateToPlayer((L2PcInstance) object);
+						
 						if (wo instanceof L2MonsterInstance)
 						{
 							if (ai.getIntention() == CtrlIntention.AI_INTENTION_IDLE)
-							{
 								ai.setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-							}
 						}
 					}
 				}
@@ -286,18 +285,19 @@ public final class L2World
 			if (wo instanceof L2PcInstance && object.isVisible())
 			{
 				object.sendInfo((L2PcInstance) wo);
+				
 				if (object instanceof L2Character)
 				{
 					final L2CharacterAI ai = ((L2Character) object).getAI();
+					
 					if (ai != null)
 					{
 						ai.describeStateToPlayer((L2PcInstance) wo);
+						
 						if (object instanceof L2MonsterInstance)
 						{
 							if (ai.getIntention() == CtrlIntention.AI_INTENTION_IDLE)
-							{
 								ai.setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-							}
 						}
 					}
 				}
@@ -308,9 +308,7 @@ public final class L2World
 	public static void removeVisibleObject(L2Object object, L2WorldRegion oldRegion)
 	{
 		if (object == null)
-		{
 			return;
-		}
 		
 		if (oldRegion != null)
 		{
@@ -322,48 +320,36 @@ public final class L2World
 				for (L2Object wo : w.getVisibleObjects().values())
 				{
 					if (wo == object)
-					{
 						continue;
-					}
 					
 					if (object instanceof L2Character)
 					{
 						final L2Character objectCreature = (L2Character) object;
 						final L2CharacterAI ai = objectCreature.getAI();
+						
 						if (ai != null)
-						{
 							ai.notifyEvent(CtrlEvent.EVT_FORGET_OBJECT, wo);
-						}
 						
 						if (objectCreature.getTarget() == wo)
-						{
 							objectCreature.setTarget(null);
-						}
 						
 						if (object instanceof L2PcInstance)
-						{
-							((L2PcInstance) object).sendPacket(new DeleteObject(wo));
-						}
+							((L2PcInstance) object).sendPacket(new DeleteObject(wo,(wo instanceof L2PcInstance) && ((L2PcInstance) wo).isSeated()));
 					}
 					
 					if (wo instanceof L2Character)
 					{
 						final L2Character woCreature = (L2Character) wo;
 						final L2CharacterAI ai = woCreature.getAI();
+						
 						if (ai != null)
-						{
 							ai.notifyEvent(CtrlEvent.EVT_FORGET_OBJECT, object);
-						}
 						
 						if (woCreature.getTarget() == object)
-						{
 							woCreature.setTarget(null);
-						}
 						
 						if (wo instanceof L2PcInstance)
-						{
-							((L2PcInstance) wo).sendPacket(new DeleteObject(object));
-						}
+							((L2PcInstance) wo).sendPacket(new DeleteObject(object,(object instanceof L2PcInstance) && ((L2PcInstance) object).isSeated()));
 					}
 				}
 				return true;
@@ -374,10 +360,9 @@ public final class L2World
 	public static void switchRegion(L2Object object, L2WorldRegion newRegion)
 	{
 		final L2WorldRegion oldRegion = object.getWorldRegion();
+		
 		if ((oldRegion == null) || (oldRegion == newRegion))
-		{
 			return;
-		}
 		
 		oldRegion.forEachSurroundingRegion(w ->
 		{
@@ -386,48 +371,36 @@ public final class L2World
 				for (L2Object wo : w.getVisibleObjects().values())
 				{
 					if (wo == object)
-					{
 						continue;
-					}
 					
 					if (object instanceof L2Character)
 					{
 						final L2Character objectCreature = (L2Character) object;
 						final L2CharacterAI ai = objectCreature.getAI();
+						
 						if (ai != null)
-						{
 							ai.notifyEvent(CtrlEvent.EVT_FORGET_OBJECT, wo);
-						}
 						
 						if (objectCreature.getTarget() == wo)
-						{
 							objectCreature.setTarget(null);
-						}
 						
 						if (object instanceof L2PcInstance)
-						{
-							((L2PcInstance) object).sendPacket(new DeleteObject(wo));
-						}
+							((L2PcInstance) object).sendPacket(new DeleteObject(wo,(wo instanceof L2PcInstance) && ((L2PcInstance) wo).isSeated()));
 					}
 					
 					if (wo instanceof L2Character)
 					{
 						final L2Character woCreature = (L2Character) wo;
 						final L2CharacterAI ai = woCreature.getAI();
+						
 						if (ai != null)
-						{
 							ai.notifyEvent(CtrlEvent.EVT_FORGET_OBJECT, object);
-						}
 						
 						if (woCreature.getTarget() == object)
-						{
 							woCreature.setTarget(null);
-						}
 						
 						if (wo instanceof L2PcInstance)
-						{
-							((L2PcInstance) wo).sendPacket(new DeleteObject(object));
-						}
+							((L2PcInstance) wo).sendPacket(new DeleteObject(object,(object instanceof L2PcInstance) && ((L2PcInstance) object).isSeated()));
 					}
 				}
 			}
@@ -441,25 +414,24 @@ public final class L2World
 				for (L2Object wo : w.getVisibleObjects().values())
 				{
 					if ((wo == object) || (wo.getInstanceId() != object.getInstanceId()))
-					{
 						continue;
-					}
 					
 					if (object instanceof L2PcInstance && wo.isVisible())
 					{
 						wo.sendInfo((L2PcInstance) object);
+						
 						if (wo instanceof L2Character)
 						{
 							final L2CharacterAI ai = ((L2Character) wo).getAI();
+							
 							if (ai != null)
 							{
 								ai.describeStateToPlayer((L2PcInstance) object);
+								
 								if (wo instanceof L2MonsterInstance)
 								{
 									if (ai.getIntention() == CtrlIntention.AI_INTENTION_IDLE)
-									{
 										ai.setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-									}
 								}
 							}
 						}
@@ -468,18 +440,18 @@ public final class L2World
 					if (wo instanceof L2PcInstance && object.isVisible())
 					{
 						object.sendInfo((L2PcInstance) wo);
+						
 						if (object instanceof L2Character)
 						{
 							final L2CharacterAI ai = ((L2Character) object).getAI();
 							if (ai != null)
 							{
 								ai.describeStateToPlayer((L2PcInstance) wo);
+								
 								if (object instanceof L2MonsterInstance)
 								{
 									if (ai.getIntention() == CtrlIntention.AI_INTENTION_IDLE)
-									{
 										ai.setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-									}
 								}
 							}
 						}
@@ -493,15 +465,12 @@ public final class L2World
 	private <T extends L2Object> void forEachVisibleObject(L2Object object, Class<T> clazz, int depth, Consumer<T> c)
 	{
 		if (object == null)
-		{
 			return;
-		}
 		
 		final L2WorldRegion centerWorldRegion = getRegion(object);
+		
 		if (centerWorldRegion == null)
-		{
 			return;
-		}
 		
 		for (int x = Math.max(centerWorldRegion.getRegionX() - depth, 0); x <= Math.min(centerWorldRegion.getRegionX() + depth, REGIONS_X); x++)
 		{
@@ -512,14 +481,10 @@ public final class L2World
 					for (L2Object visibleObject : _worldRegions[x][y][z].getVisibleObjects().values())
 					{
 						if ((visibleObject == null) || (visibleObject == object) || !clazz.isInstance(visibleObject))
-						{
 							continue;
-						}
 						
 						if (visibleObject.getInstanceId() != object.getInstanceId())
-						{
 							continue;
-						}
 						
 						c.accept(clazz.cast(visibleObject));
 					}
@@ -536,15 +501,11 @@ public final class L2World
 	public <T extends L2Object> void forEachVisibleObjectInRange(L2Object object, Class<T> clazz, int range, Consumer<T> c)
 	{
 		if (object == null)
-		{
 			return;
-		}
 		
 		final L2WorldRegion centerWorldRegion = getRegion(object);
 		if (centerWorldRegion == null)
-		{
 			return;
-		}
 		
 		final int depth = (range / REGION_MIN_DIMENSION) + 1;
 		for (int x = Math.max(centerWorldRegion.getRegionX() - depth, 0); x <= Math.min(centerWorldRegion.getRegionX() + depth, REGIONS_X); x++)
@@ -567,19 +528,13 @@ public final class L2World
 						for (L2Object visibleObject : _worldRegions[x][y][z].getVisibleObjects().values())
 						{
 							if ((visibleObject == null) || (visibleObject == object) || !clazz.isInstance(visibleObject))
-							{
 								continue;
-							}
 							
 							if (visibleObject.getInstanceId() != object.getInstanceId())
-							{
 								continue;
-							}
 							
 							if (visibleObject.calculateDistance(object, true, false) <= range)
-							{
 								c.accept(clazz.cast(visibleObject));
-							}
 						}
 					}
 				}
@@ -600,9 +555,7 @@ public final class L2World
 		forEachVisibleObject(object, clazz, o ->
 		{
 			if (predicate.test(o))
-			{
 				result.add(o);
-			}
 		});
 		return result;
 	}
@@ -620,9 +573,7 @@ public final class L2World
 		forEachVisibleObjectInRange(object, clazz, range, o ->
 		{
 			if (predicate.test(o))
-			{
 				result.add(o);
-			}
 		});
 		return result;
 	}

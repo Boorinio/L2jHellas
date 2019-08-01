@@ -35,7 +35,6 @@ public class L2DatabaseFactory
 			_source.setCheckoutTimeout(0);
 			_source.setAcquireIncrement(5);
 			
-			_source.setAutomaticTestTable("connection_test_table");
 			_source.setTestConnectionOnCheckin(false);
 			
 			_source.setIdleConnectionTestPeriod(3600);

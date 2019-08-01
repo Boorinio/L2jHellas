@@ -1,14 +1,10 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import java.util.logging.Logger;
-
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.templates.L2Item;
 
 public class EquipUpdate extends L2GameServerPacket
 {
-	private static Logger _log = Logger.getLogger(EquipUpdate.class.getName());
 	private static final String _S__5E_EQUIPUPDATE = "[S] 4b EquipUpdate";
 	
 	private final L2ItemInstance _item;
@@ -27,6 +23,7 @@ public class EquipUpdate extends L2GameServerPacket
 		writeC(0x4b);
 		writeD(_change);
 		writeD(_item.getObjectId());
+		
 		switch (_item.getItem().getBodyPart())
 		{
 			case L2Item.SLOT_L_EAR:
@@ -76,8 +73,6 @@ public class EquipUpdate extends L2GameServerPacket
 				break;
 		}
 		
-		if (Config.DEBUG)
-			_log.fine("body:" + bodypart);
 		writeD(bodypart);
 	}
 	

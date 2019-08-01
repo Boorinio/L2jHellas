@@ -1,8 +1,8 @@
 package com.l2jhellas.gameserver.model.zone.type;
 
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
 
 public class L2ScriptZone extends L2ZoneType
 {

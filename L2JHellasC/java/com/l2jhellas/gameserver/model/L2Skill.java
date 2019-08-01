@@ -7,9 +7,11 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
+import com.l2jhellas.gameserver.emum.ClassId;
 import com.l2jhellas.gameserver.emum.L2ArmorType;
 import com.l2jhellas.gameserver.emum.L2SkillTargetType;
 import com.l2jhellas.gameserver.emum.L2SkillType;
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.holder.IntIntHolder;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
@@ -24,11 +26,9 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeFlagInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
-import com.l2jhellas.gameserver.model.base.ClassId;
 import com.l2jhellas.gameserver.model.entity.engines.CTF;
 import com.l2jhellas.gameserver.model.entity.engines.DM;
 import com.l2jhellas.gameserver.model.entity.engines.TvT;
-import com.l2jhellas.gameserver.model.zone.ZoneId;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.EtcStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -2283,5 +2283,10 @@ public abstract class L2Skill
 	public final int getTargetConsume()
 	{
 		return _targetConsume;
+	}
+	
+	public boolean isClanSkill()
+	{
+		return SkillTreeData.getInstance().isClanSkill(_id, _level);
 	}
 }
