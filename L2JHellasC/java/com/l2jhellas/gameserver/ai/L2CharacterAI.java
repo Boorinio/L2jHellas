@@ -619,14 +619,20 @@ public class L2CharacterAI extends AbstractAI
 		if (target == null || offset < 0)
 			return false;
 
+		offset += _actor.getTemplate().getCollisionRadius();
+		
+		if (target instanceof L2Character)
+			offset += ((L2Character) target).getTemplate().getCollisionRadius();
+		
 		if (!_actor.isInsideRadius(target, offset, false, false))
 		{
 			if (isFollowing())
 			{
-				if (!_actor.isInsideRadius(target, offset + 15, false, false))
+				if (!_actor.isInsideRadius(target, offset + 100, false, false))
 					return true;
 				
 				stopFollow();
+
 				return false;
 			}
 			
@@ -640,25 +646,26 @@ public class L2CharacterAI extends AbstractAI
 			
 			if (!_actor.isRunning() && !(this instanceof L2PlayerAI))
 				_actor.setRunning();
-			
+						
 			stopFollow();
 			
 			if ((target instanceof L2Character) && !(target instanceof L2DoorInstance))
 			{
 				if (((L2Character) target).isMoving())
-					offset -= 30;
+					offset -= 100;
 				
 				if (offset < 5)
 					offset = 5;
-				
+								
 				startFollow((L2Character) target, offset);
 			}
 			else
-				moveToPawn(target, offset);
+				moveToPawn(target, offset);	
+				
 			
 			return true;
-		}
-		
+		}		
+	
 		if (isFollowing())
 			stopFollow();
 		

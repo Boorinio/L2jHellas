@@ -149,6 +149,9 @@ public class GameServer
 		Util.printSection("Chache");
 		HtmCache.getInstance();
 		CrestCache.load();
+		
+		Util.printSection("IdFactory");
+		IdFactory.getInstance();
 
 		Util.printSection("World");
 		GameTimeController.init();
@@ -304,12 +307,7 @@ public class GameServer
 		if (Config.ENABLE_GUI)
 			gui = new Gui();
 		Runtime.getRuntime().addShutdownHook(Shutdown.getInstance());
-		_log.info(GameServer.class.getSimpleName() + ": IdFactory: ObjectID's created: " + IdFactory.getInstance().size());
-		if (!IdFactory.getInstance().isInitialized())
-		{
-			_log.info(GameServer.class.getSimpleName() + ": Could not read object IDs from DB. Please Check Your Data.");
-			_log.warning(GameServer.class.getSimpleName() + ": Could not initialize the ID factory.");
-		}
+
 		final SelectorConfig sc = new SelectorConfig();
 		sc.MAX_READ_PER_PASS = Config.MMO_MAX_READ_PER_PASS;
 		sc.MAX_SEND_PER_PASS = Config.MMO_MAX_SEND_PER_PASS;

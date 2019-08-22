@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.L2EtcItemType;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
+import com.l2jhellas.gameserver.emum.StoreType;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
@@ -58,7 +59,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		if (player.getPrivateStoreType() != 0)
+		if (player.getPrivateStoreType() != StoreType.NONE)
 		{
 			player.sendMessage("Cannot exchange items while trading.");
 			return;

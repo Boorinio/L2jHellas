@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.controllers.RecipeController;
+import com.l2jhellas.gameserver.emum.StoreType;
 
 public final class RequestRecipeBookOpen extends L2GameClientPacket
 {
@@ -28,7 +29,7 @@ public final class RequestRecipeBookOpen extends L2GameClientPacket
 		if (getClient().getActiveChar() == null)
 			return;
 		
-		if (getClient().getActiveChar().getPrivateStoreType() != 0)
+		if (getClient().getActiveChar().getPrivateStoreType() != StoreType.NONE)
 		{
 			getClient().getActiveChar().sendMessage("Cannot use recipe book while trading");
 			return;

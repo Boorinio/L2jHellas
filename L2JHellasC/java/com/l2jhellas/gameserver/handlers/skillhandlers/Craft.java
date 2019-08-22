@@ -2,6 +2,7 @@ package com.l2jhellas.gameserver.handlers.skillhandlers;
 
 import com.l2jhellas.gameserver.controllers.RecipeController;
 import com.l2jhellas.gameserver.emum.L2SkillType;
+import com.l2jhellas.gameserver.emum.StoreType;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -25,7 +26,7 @@ public class Craft implements ISkillHandler
 		
 		L2PcInstance player = (L2PcInstance) activeChar;
 		
-		if (player.getPrivateStoreType() != 0)
+		if (player.getPrivateStoreType() != StoreType.NONE)
 		{
 			player.sendPacket(SystemMessageId.CANNOT_CREATED_WHILE_ENGAGED_IN_TRADING);
 			return;

@@ -40,7 +40,6 @@ public final class Config
 	public static final String SIEGE_CONFIGURATION_FILE = "./config/Main/Siege.ini";
 	private static final String GEO_FILE = "./config/Main/Geodata.ini";
 	private static final String OPTIONS_FILE = "./config/Main/Options.ini";
-	private static final String ID_CONFIG_FILE = "./config/Main/IDfactory.ini";
 	private static final String SEVENSIGNS_FILE = "./config/Main/Sevensigns.ini";
 	
 	private static final String RATES_CONFIG_FILE = "./config/Main/Rates.ini";
@@ -286,11 +285,6 @@ public final class Config
 	public static boolean PETITIONING_ALLOWED;
 	public static int MAX_PETITIONS_PER_PLAYER;
 	public static int MAX_PETITIONS_PENDING;
-	
-	public static ObjectMapType MAP_TYPE;
-	public static ObjectSetType SET_TYPE;
-	public static IdFactoryType IDFACTORY_TYPE;
-	public static boolean BAD_ID_CHECKING;
 	
 	public static int CHAMPION_FREQUENCY;
 	public static int CHAMPION_HP;
@@ -608,8 +602,6 @@ public final class Config
 	public static int DEFAULT_PUNISH;
 	public static int DEFAULT_PUNISH_PARAM;
 	public static boolean BYPASS_VALIDATION;
-	public static boolean GAMEGUARD_ENFORCE;
-	public static boolean GAMEGUARD_PROHIBITACTION;
 	public static int DELETE_DAYS;
 	public static boolean ALLOW_DISCARDITEM;
 	public static int AUTODESTROY_ITEM_AFTER;
@@ -1031,13 +1023,6 @@ public final class Config
 	public static FloodProtectorConfig FLOOD_PROTECTOR_TRANSACTION;
 	public static FloodProtectorConfig FLOOD_PROTECTOR_SOCIALACTION;
 	
-	public static enum IdFactoryType
-	{
-		Compaction,
-		BitSet,
-		Stack
-	}
-	
 	public static enum ObjectMapType
 	{
 		L2ObjectHashMap,
@@ -1338,20 +1323,6 @@ public final class Config
 			PETITIONING_ALLOWED = Boolean.parseBoolean(AdminSettings.getProperty("PetitioningAllowed", "True"));
 			MAX_PETITIONS_PER_PLAYER = Integer.parseInt(AdminSettings.getProperty("MaxPetitionsPerPlayer", "5"));
 			MAX_PETITIONS_PENDING = Integer.parseInt(AdminSettings.getProperty("MaxPetitionsPending", "25"));
-			
-			Properties idSettings = new Properties();
-			try (InputStream is = new FileInputStream(new File(ID_CONFIG_FILE)))
-			{
-				idSettings.load(is);
-			}
-			catch (Exception e)
-			{
-				_log.severe(Config.class.getName() + ": Error while loading " + ID_CONFIG_FILE + " settings!");
-			}
-			MAP_TYPE = ObjectMapType.valueOf(idSettings.getProperty("L2Map", "WorldObjectMap"));
-			SET_TYPE = ObjectSetType.valueOf(idSettings.getProperty("L2Set", "WorldObjectSet"));
-			IDFACTORY_TYPE = IdFactoryType.valueOf(idSettings.getProperty("IDFactory", "Compaction"));
-			BAD_ID_CHECKING = Boolean.valueOf(idSettings.getProperty("BadIdChecking", "True"));
 			
 			Properties ChampionSettings = new Properties();
 			try (InputStream is = new FileInputStream(new File(MOD_CHAMPIONS_CONFIG_FILE)))
@@ -2212,8 +2183,6 @@ public final class Config
 			DEFAULT_PUNISH = Integer.parseInt(optionsSettings.getProperty("DefaultPunish", "2"));
 			DEFAULT_PUNISH_PARAM = Integer.parseInt(optionsSettings.getProperty("DefaultPunishParam", "0"));
 			BYPASS_VALIDATION = Boolean.valueOf(optionsSettings.getProperty("BypassValidation", "True"));
-			GAMEGUARD_ENFORCE = Boolean.valueOf(optionsSettings.getProperty("GameGuardEnforce", "False"));
-			GAMEGUARD_PROHIBITACTION = Boolean.valueOf(optionsSettings.getProperty("GameGuardProhibitAction", "False"));
 			DELETE_DAYS = Integer.parseInt(optionsSettings.getProperty("DeleteCharAfterDays", "7"));
 			ALLOW_DISCARDITEM = Boolean.valueOf(optionsSettings.getProperty("AllowDiscardItem", "True"));
 			AUTODESTROY_ITEM_AFTER = Integer.parseInt(optionsSettings.getProperty("AutoDestroyDroppedItemAfter", "0"));

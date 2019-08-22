@@ -385,7 +385,7 @@ public class L2PetInstance extends L2Summon
 	}
 	
 	@Override
-	protected void doPickupItem(L2Object object)
+	public void doPickupItem(L2Object object)
 	{
 		getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		StopMove sm = new StopMove(getObjectId(), getX(), getY(), getZ(), getHeading());

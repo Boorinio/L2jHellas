@@ -3,6 +3,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.StoreType;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2World;
@@ -50,7 +51,7 @@ public final class RequestCrystallizeItem extends L2GameClientPacket
 			return;
 		}
 		
-		if (activeChar.getPrivateStoreType() != 0 || activeChar.isInCrystallize())
+		if (activeChar.getPrivateStoreType() != StoreType.NONE || activeChar.isInCrystallize())
 		{
 			activeChar.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
 			return;

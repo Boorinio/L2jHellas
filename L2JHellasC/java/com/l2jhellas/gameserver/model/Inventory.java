@@ -14,6 +14,7 @@ import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.xml.ArmorSetsData;
 import com.l2jhellas.gameserver.emum.L2EtcItemType;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
+import com.l2jhellas.gameserver.emum.StoreType;
 import com.l2jhellas.gameserver.model.L2ItemInstance.ItemLocation;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.SkillTable;
@@ -903,7 +904,7 @@ public abstract class Inventory extends ItemContainer
 	
 	public synchronized void equipItem(L2ItemInstance item)
 	{
-		if ((getOwner() instanceof L2PcInstance) && ((L2PcInstance) getOwner()).getPrivateStoreType() != 0)
+		if ((getOwner() instanceof L2PcInstance) && ((L2PcInstance) getOwner()).getPrivateStoreType() != StoreType.NONE)
 			return;
 		
 		if (getOwner() instanceof L2PcInstance)

@@ -4,6 +4,7 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
@@ -148,16 +149,11 @@ public class L2DoorAI extends L2CharacterAI
 		@Override
 		public void run()
 		{
-			// _attacker.sendPacket(new DoorInfo(_door, false));
-			// _attacker.sendPacket(new DoorStatusUpdate(_door));
-			
-			for (L2SiegeGuardInstance guard : _door.getKnownSiegeGuards())
+			L2World.getInstance().forEachVisibleObjectInRange(_door,L2SiegeGuardInstance.class,1280, guard ->
 			{
-				if (_actor.isInsideRadius(guard, guard.getFactionRange(), false, true) && Math.abs(_attacker.getZ() - guard.getZ()) < 200)
-				{
+				if (Math.abs(_attacker.getZ() - guard.getZ()) < 200)
 					guard.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, _attacker, 15);
-				}
-			}
+			});
 		}
 	}
 	

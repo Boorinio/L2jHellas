@@ -435,27 +435,34 @@ abstract class AbstractAI implements Ctrl
 	}
 
 	public void clientStartAutoAttack()
-	{
+	{		
+		// npcs should not get in combat if not attackable
+		if (_actor.isNpc() && !_actor.isAttackable())
+			return;
+		
 		if (!AttackStanceTaskManager.getInstance().isInAttackStance(_actor))
 		{
 			_actor.broadcastPacket(new AutoAttackStart(_actor.getObjectId()));
 			
 			if (_actor instanceof L2PcInstance && ((L2PcInstance) _actor).getPet() != null)
-				((L2PcInstance) _actor).getPet().broadcastPacket(new AutoAttackStart(((L2PcInstance) _actor).getPet().getObjectId()));		
-		}
-		
-		AttackStanceTaskManager.getInstance().add(_actor);
+				((L2PcInstance) _actor).getPet().broadcastPacket(new AutoAttackStart(((L2PcInstance) _actor).getPet().getObjectId()));
+
+		}	
+		AttackStanceTaskManager.getInstance().add(_actor);		
 	}
 	
 	public void clientStopAutoAttack()
 	{		
+		// npcs should not get in combat if not attackable
+		if (_actor.isNpc() && !_actor.isAttackable())
+			return;
+		
 		if (AttackStanceTaskManager.getInstance().remove(_actor))
 		{
 			_actor.broadcastPacket(new AutoAttackStop(_actor.getObjectId()));
 			
 			if (_actor instanceof L2PcInstance && ((L2PcInstance) _actor).getPet() != null)
 				((L2PcInstance) _actor).getPet().broadcastPacket(new AutoAttackStop(((L2PcInstance) _actor).getPet().getObjectId()));
-
 		}
 	}
 	

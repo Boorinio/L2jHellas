@@ -17,7 +17,7 @@ public class Q009_IntoTheCityOfHumans extends Quest
 	
 	// Rewards
 	public final int MARK_OF_TRAVELER = 7570;
-	public final int SOE_GIRAN = 7126;
+	public final int SOE_GIRAN = 7559;
 	
 	public Q009_IntoTheCityOfHumans()
 	{

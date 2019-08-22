@@ -1,6 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.StoreType;
 import com.l2jhellas.gameserver.model.L2ManufactureItem;
 import com.l2jhellas.gameserver.model.L2ManufactureList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -45,7 +46,7 @@ public final class RequestRecipeShopListSet extends L2GameClientPacket
 		
 		if (_count == 0)
 		{
-			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
+			player.setPrivateStoreType(StoreType.NONE);
 			player.broadcastUserInfo();
 			player.standUp();
 		}
@@ -62,7 +63,7 @@ public final class RequestRecipeShopListSet extends L2GameClientPacket
 			createList.setStoreName(player.getCreateList() != null ? player.getCreateList().getStoreName() : "");
 			player.setCreateList(createList);
 			
-			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_MANUFACTURE);
+			player.setPrivateStoreType(StoreType.MANUFACTURE);
 			player.sitDown();
 			player.broadcastUserInfo();
 			player.sendPacket(new RecipeShopMsg(player));

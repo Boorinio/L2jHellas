@@ -3,6 +3,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.TaskPriority;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
@@ -52,6 +53,15 @@ public class ValidatePosition extends L2GameClientPacket
 			return;
 		}
 		
+		if ((_x == 0) && (_y == 0))
+		{
+			if (activeChar.getX() != 0)
+			{
+				tsekarepos(activeChar);
+				return;
+			}
+		}
+		
 		if (Config.COORD_SYNCHRONIZE > 0)
 		{
 			activeChar.setClientX(_x);
@@ -83,21 +93,17 @@ public class ValidatePosition extends L2GameClientPacket
 			
 			if (diffSq > 0 && diffSq < 1000) // if too large, messes observation
 			{
-				if ((Config.COORD_SYNCHRONIZE & 1) == 1 && (!activeChar.isMoving() || !activeChar.validateMovementHeading(_heading))) // Heading changed on client = possible obstacle
+				if ((Config.COORD_SYNCHRONIZE) == 1 && (!activeChar.isMoving() || !activeChar.validateMovementHeading(_heading))) // Heading changed on client = possible obstacle
 				{
 					if (Config.DEVELOPER)
 						System.out.println(activeChar.getName() + ": Synchronizing position Client --> Server" + (activeChar.isMoving() ? " (collision)" : " (stay sync)"));
 					if (diffSq < 50) // 50*50 - attack won't work fluently if even small differences are corrected
-					{
 						activeChar.setXYZ(realX, realY, _z);
-					}
 					else
-					{
 						activeChar.setXYZ(_x, _y, _z);
-					}
 					activeChar.setHeading(_heading);
 				}
-				else if ((Config.COORD_SYNCHRONIZE & 2) == 2 && diffSq > activeChar.getStat().getMoveSpeed()) // more than can be considered to be result of latency
+				else if ((Config.COORD_SYNCHRONIZE) == 2 && diffSq > activeChar.getStat().getMoveSpeed()) // more than can be considered to be result of latency
 				{
 					if (Config.DEVELOPER)
 						System.out.println(activeChar.getName() + ": Synchronizing position Server --> Client");
@@ -113,7 +119,10 @@ public class ValidatePosition extends L2GameClientPacket
 				}
 			}
 			activeChar.setLastClientPosition(_x, _y, _z);
-			activeChar.setLastServerPosition(activeChar.getX(), activeChar.getY(), activeChar.getZ());
+			
+			if (DoorData.getInstance().checkIfDoorsBetween(activeChar.getX(), activeChar.getY(), activeChar.getZ(),_x, _y, _z) ==0)
+			    activeChar.setLastServerPosition(activeChar.getX(), activeChar.getY(), activeChar.getZ());
+
 		}
 		else if (Config.COORD_SYNCHRONIZE == -1)
 		{
@@ -144,9 +153,8 @@ public class ValidatePosition extends L2GameClientPacket
 			}
 			
 			if (diffSq < 250000)
-			{
 				activeChar.setXYZ(realX, realY, _z);
-			}
+
 			if (diffSq > 1000)
 			{
 				if (activeChar.isInBoat())
@@ -167,9 +175,7 @@ public class ValidatePosition extends L2GameClientPacket
 		if (Config.ACCEPT_GEOEDITOR_CONN)
 		{
 			if (GeoEditorListener.getInstance().getThread() != null && GeoEditorListener.getInstance().getThread().isWorking() && GeoEditorListener.getInstance().getThread().isSend(activeChar))
-			{
 				GeoEditorListener.getInstance().getThread().sendGmPosition(_x, _y, (short) _z);
-			}
 		}
 	}
 	
@@ -199,9 +205,7 @@ public class ValidatePosition extends L2GameClientPacket
 				activeChar.broadcastPacket(new ValidateLocation(activeChar));
 			}
 			else
-			{
 				activeChar.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
-			}
 		}
 		else if (activeChar.getClientX() != 0 && activeChar.getClientY() != 0 && activeChar.getClientZ() != 0)
 		{
@@ -211,13 +215,9 @@ public class ValidatePosition extends L2GameClientPacket
 				activeChar.broadcastPacket(new ValidateLocation(activeChar));
 			}
 			else
-			{
 				activeChar.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
-			}
 		}
 		else
-		{
 			activeChar.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
-		}
 	}
 }

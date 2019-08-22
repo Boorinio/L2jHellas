@@ -116,6 +116,7 @@ public class DoorData implements DocumentParser
 						L2CharTemplate template = new L2CharTemplate(npcDat);
 						L2DoorInstance door = new L2DoorInstance(IdFactory.getInstance().getNextId(), template, id, name, unlockable);
 						door.setRange(rangeXMin, rangeYMin, rangeZMin, rangeXMax, rangeYMax, rangeZMax);
+
 						try
 						{
 							door.setMapRegion(MapRegionTable.getMapRegion(x, y));
@@ -128,6 +129,7 @@ public class DoorData implements DocumentParser
 						door.setOpen(autoOpen);
 						door.setXYZInvisible(x, y, z);
 						putDoor(door);
+
 						door.spawnMe(door.getX(), door.getY(), door.getZ());
 						ClanHall clanhall = ClanHallManager.getInstance().getNearbyClanHall(door.getX(), door.getY(), 500);
 						if (clanhall != null)

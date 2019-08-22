@@ -446,7 +446,7 @@ public final class Formulas
 		@Override
 		public void calc(Env env)
 		{
-			L2PcInstance p = (L2PcInstance) env.player;
+			L2Character p = env.player;
 			env.value *= DEXbonus[p.getDEX()];
 		}
 	}
@@ -468,7 +468,7 @@ public final class Formulas
 		@Override
 		public void calc(Env env)
 		{
-			L2PcInstance p = (L2PcInstance) env.player;
+			L2Character p = env.player;
 			env.value *= DEXbonus[p.getDEX()];
 		}
 	}
@@ -490,7 +490,7 @@ public final class Formulas
 		@Override
 		public void calc(Env env)
 		{
-			L2PcInstance p = (L2PcInstance) env.player;
+			L2Character p = env.player;
 			env.value *= WITbonus[p.getWIT()];
 		}
 	}
@@ -682,7 +682,7 @@ public final class Formulas
 		@Override
 		public void calc(Env env)
 		{
-			L2PcInstance p = (L2PcInstance) env.player;
+			L2Character p = env.player;
 			env.value *= CONbonus[p.getCON()];
 		}
 	}
@@ -730,7 +730,7 @@ public final class Formulas
 		@Override
 		public void calc(Env env)
 		{
-			L2PcInstance p = (L2PcInstance) env.player;
+			L2Character p = env.player;
 			env.value *= CONbonus[p.getCON()];
 		}
 	}
@@ -778,7 +778,7 @@ public final class Formulas
 		@Override
 		public void calc(Env env)
 		{
-			L2PcInstance p = (L2PcInstance) env.player;
+			L2Character p = env.player;
 			env.value *= MENbonus[p.getMEN()];
 		}
 	}
@@ -1058,43 +1058,45 @@ public final class Formulas
 	
 	public static double calcBlowDamage(L2Character attacker, L2Character target, L2Skill skill, byte shld, boolean ss)
 	{
-		double power = skill.getPower();
-		double damage = attacker.getPAtk(target);
 		double defence = target.getPDef(attacker);
-		if (ss)
-			damage *= 2.;
 		switch (shld)
 		{
 			case 1:
 				defence += target.getShldDef();
 				break;
+			
 			case 2: // perfect block
 				return 1;
 		}
-		if (ss && skill.getSSBoost() > 0)
-			power *= skill.getSSBoost();
+
+		double power = skill.getPower();
+		double damage = 0;
+
+		if (ss)
+		{
+			damage *= 2;
+			
+			if (skill.getSSBoost() > 0)
+				power *= skill.getSSBoost();
+		}
 		
-		// Multiplier should be removed, it's false ??
-		damage += 1.5 * attacker.calcStat(Stats.CRITICAL_DAMAGE, damage + power, target, skill);
-		// damage *= (double)attacker.getLevel()/target.getLevel();
-		
+		damage += power;
+		damage *= attacker.calcStat(Stats.CRITICAL_DAMAGE, 1, target, skill);
+		damage += attacker.calcStat(Stats.CRITICAL_DAMAGE_ADD, 0, target, skill) * 6.5;
+		damage *= target.calcStat(Stats.CRIT_VULN, 1, target, skill);
+
 		// get the natural vulnerability for the template
 		if (target instanceof L2Npc)
-		{
 			damage *= ((L2Npc) target).getTemplate().getVulnerability(Stats.DAGGER_WPN_VULN);
-		}
-		// get the vulnerability for the instance due to skills (buffs, passives, toggles, etc)
+
 		damage = target.calcStat(Stats.DAGGER_WPN_VULN, damage, target, null);
-		damage *= 70. / defence;
-		damage += Rnd.nextDouble() * attacker.getRandomDamage(target);
-		// Sami: Must be removed, after armor resistances are checked.
-		// These values are a quick fix to balance dagger gameplay and give
-		// armor resistances vs dagger. daggerWpnRes could also be used if a skill
-		// was given to all classes. The values here try to be a compromise.
-		// They were originally added in a late C4 rev (2289).
+		damage *= 70 / defence;
+
+		damage *= attacker.getRandomDamage();
+		
 		if (target instanceof L2PcInstance)
 		{
-			L2Armor armor = ((L2PcInstance) target).getActiveChestArmorItem();
+			final L2Armor armor = ((L2PcInstance) target).getActiveChestArmorItem();
 			if (armor != null)
 			{
 				if (((L2PcInstance) target).isWearingHeavyArmor())
@@ -1105,10 +1107,10 @@ public final class Formulas
 				// damage /= 1; // 1.3
 			}
 		}
-		return damage < 1 ? 1 : damage;
+		
+		return Math.max(damage, 1);
 	}
 	
-	@SuppressWarnings("incomplete-switch")
 	public final static double calcPhysDam(L2Character attacker, L2Character target, L2Skill skill, byte shld, boolean crit, boolean dual, boolean ss)
 	{
 		if (attacker instanceof L2PcInstance)
@@ -1429,14 +1431,6 @@ public final class Formulas
 	
 	public static boolean calcHitMiss(L2Character attacker, L2Character target)
 	{
-		// accuracy+dexterity => probability to hit in percents
-		// int acc_attacker;
-		// int evas_target;
-		// acc_attacker = attacker.getAccuracy();
-		// evas_target = target.getEvasionRate(attacker);
-		// int d = 85 + acc_attacker - evas_target;
-		// return d < Rnd.get(100);
-		
 		int chance = (80 + (2 * (attacker.getAccuracy() - target.getEvasionRate(attacker)))) * 10;
 		
 		double modifier = 100;

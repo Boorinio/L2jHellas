@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.L2EtcItemType;
+import com.l2jhellas.gameserver.emum.StoreType;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -104,7 +105,7 @@ public final class RequestDropItem extends L2GameClientPacket
 			return;
 		}
 		
-		if (activeChar.isProcessingTransaction() || (activeChar.getPrivateStoreType() != 0))
+		if (activeChar.isProcessingTransaction() || (activeChar.getPrivateStoreType() != StoreType.NONE))
 		{
 			activeChar.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
 			return;

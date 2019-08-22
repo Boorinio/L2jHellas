@@ -1,6 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.StoreType;
 import com.l2jhellas.gameserver.model.ItemRequest;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.TradeList;
@@ -86,7 +87,7 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 			return;
 		}
 		
-		if (storePlayer.getPrivateStoreType() != L2PcInstance.STORE_PRIVATE_BUY)
+		if (storePlayer.getPrivateStoreType() != StoreType.BUY)
 		{
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
@@ -124,7 +125,7 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 		{
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			storePlayer.sendMessage("You have not enough adena, canceling PrivateBuy.");
-			storePlayer.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
+			storePlayer.setPrivateStoreType(StoreType.NONE);
 			storePlayer.broadcastUserInfo();
 			return;
 		}
@@ -138,7 +139,7 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 		
 		if (storeList.getItemCount() == 0)
 		{
-			storePlayer.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
+			storePlayer.setPrivateStoreType(StoreType.NONE);
 			storePlayer.broadcastUserInfo();
 		}
 	}

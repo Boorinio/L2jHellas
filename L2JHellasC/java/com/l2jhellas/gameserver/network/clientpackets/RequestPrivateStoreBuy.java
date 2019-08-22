@@ -1,6 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.StoreType;
 import com.l2jhellas.gameserver.model.ItemRequest;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.TradeList;
@@ -68,7 +69,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 		if (storePlayer == null)
 			return;
 		
-		if (!(storePlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL || storePlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_PACKAGE_SELL))
+		if (!(storePlayer.getPrivateStoreType() == StoreType.SELL || storePlayer.getPrivateStoreType() == StoreType.PACKAGE_SELL))
 			return;
 		
 		final TradeList storeList = storePlayer.getSellList();
@@ -126,7 +127,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 			return;
 		}
 		
-		if (storePlayer.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_PACKAGE_SELL)
+		if (storePlayer.getPrivateStoreType() == StoreType.PACKAGE_SELL)
 		{
 			if (storeList.getItemCount() > _count)
 			{
@@ -145,7 +146,7 @@ public final class RequestPrivateStoreBuy extends L2GameClientPacket
 		
 		if (storeList.getItemCount() == 0)
 		{
-			storePlayer.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
+			storePlayer.setPrivateStoreType(StoreType.NONE);
 			storePlayer.broadcastUserInfo();
 		}
 		

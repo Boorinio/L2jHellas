@@ -181,7 +181,6 @@ public class L2SkillSummon extends L2Skill
 		summon.spawnMe(activeChar.getX() + 30, activeChar.getY() + 30, activeChar.getZ());
 
 		summon.setFollowStatus(true);
-		summon.setShowSummonAnimation(false); // addVisibleObject created the info packets with summon animation
 	}
 	
 	public final boolean isCubic()

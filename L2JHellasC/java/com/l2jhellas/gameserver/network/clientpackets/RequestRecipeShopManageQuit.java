@@ -1,5 +1,6 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.gameserver.emum.StoreType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public final class RequestRecipeShopManageQuit extends L2GameClientPacket
@@ -19,7 +20,7 @@ public final class RequestRecipeShopManageQuit extends L2GameClientPacket
 		if (player == null)
 			return;
 		
-		player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
+		player.setPrivateStoreType(StoreType.NONE);
 		player.broadcastUserInfo();
 		player.standUp();
 	}

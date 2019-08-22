@@ -5,6 +5,7 @@ import java.nio.BufferUnderflowException;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.TaskPriority;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -115,6 +116,12 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 		if (_targetX == _originX && _targetY == _originY && _targetZ == _originZ)
 		{
 			activeChar.sendPacket(new StopMove(activeChar));
+			return;
+		}
+		
+		if (DoorData.getInstance().checkIfDoorsBetween(activeChar.getX(), activeChar.getY(), activeChar.getZ(), _targetX, _targetY, _targetZ) >0)
+		{
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		

@@ -5,6 +5,7 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.emum.L2ArmorType;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
+import com.l2jhellas.gameserver.emum.StoreType;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.handler.ItemHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -72,7 +73,7 @@ public final class UseItem extends L2GameClientPacket
 		if (!activeChar.getAntiFlood().getUseItem().tryPerformAction("use item"))
 			return;
 		
-		if (activeChar.getPrivateStoreType() != 0)
+		if (activeChar.getPrivateStoreType() != StoreType.NONE)
 		{
 			activeChar.sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);

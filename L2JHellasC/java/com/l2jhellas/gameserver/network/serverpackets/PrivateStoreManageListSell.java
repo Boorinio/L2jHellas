@@ -12,12 +12,12 @@ public class PrivateStoreManageListSell extends L2GameServerPacket
 	private final TradeList.TradeItem[] _itemList;
 	private final TradeList.TradeItem[] _sellList;
 	
-	public PrivateStoreManageListSell(L2PcInstance player)
+	public PrivateStoreManageListSell(L2PcInstance player, boolean isPackageSale)
 	{
 		_activeChar = player;
 		_playerAdena = _activeChar.getAdena();
 		_activeChar.getSellList().updateItems();
-		_packageSale = _activeChar.getSellList().isPackaged();
+		_packageSale = (_activeChar.getSellList().isPackaged()) ? true : isPackageSale;
 		_itemList = _activeChar.getInventory().getAvailableItems(_activeChar.getSellList());
 		_sellList = _activeChar.getSellList().getItems();
 	}

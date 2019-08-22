@@ -12,49 +12,47 @@ import com.l2jhellas.gameserver.network.serverpackets.AutoAttackStop;
 
 public class AttackStanceTaskManager implements Runnable
 {
-	private static final long ATTACK_STANCE_PERIOD = 15000; // 15 seconds
+	private static final long ATTACK_STANCE_PERIOD = 15000;
 	
 	private final Map<L2Character, Long> _characters = new ConcurrentHashMap<>();
 
 	protected AttackStanceTaskManager()
 	{
-		// Run task each second.
 		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(this, 1000, 1000);
 	}
 	
 	public final void add(L2Character character)
 	{
-		 if (character instanceof L2PcInstance)
-		 {
-			 if (character.getActingPlayer() != null && !character.getActingPlayer().getCubics().isEmpty())
-			 {
-				 for (L2CubicInstance cubic : character.getActingPlayer().getCubics().values())
-				  	 if (cubic != null && cubic.getId() != L2CubicInstance.LIFE_CUBIC)
-						 cubic.doAction(character.getActingPlayer());
-			 }
-		 }
-		
-		 if (character instanceof L2Summon)
-			 character = character.getActingPlayer();
-			
-		  _characters.put(character, System.currentTimeMillis() + ATTACK_STANCE_PERIOD);
-		
+		if (character !=null)
+		{
+		   if (character.isPlayer())
+		   {
+			   if (character.getActingPlayer() != null && !character.getActingPlayer().getCubics().isEmpty())
+			   {
+				   for (L2CubicInstance cubic : character.getActingPlayer().getCubics().values())
+				  	   if (cubic != null && cubic.getId() != L2CubicInstance.LIFE_CUBIC)
+						   cubic.doAction(character.getActingPlayer());
+			   }
+		   }
+		 
+		     _characters.put(character, System.currentTimeMillis() + ATTACK_STANCE_PERIOD);
+		}		
 	}
 
 	public final boolean remove(L2Character character)
 	{
-		if (character instanceof L2Summon)
-			character = character.getActingPlayer();
-
-		return _characters.remove(character) != null;
+		if (character != null)
+			return _characters.remove(character) != null;
+		
+		return false;
 	}
 	
 	public final boolean isInAttackStance(L2Character character)
 	{
-		if (character instanceof L2Summon)
-			character = character.getActingPlayer();
-
-		return _characters.containsKey(character);
+		if (character != null)
+			return _characters.containsKey(character);
+		
+		return false;
 	}
 	
 	@Override

@@ -89,13 +89,13 @@ public abstract class L2Summon extends L2Playable
 		super(objectId, template);
 		getStat(); // init stats
 		getStatus(); // init status
-		
-		_showSummonAnimation = true;
+
 		_owner = owner;
 		_ai = new L2SummonAI(new L2Summon.AIAccessor());
 		
 		//setXYZInvisible(owner.getX() + 30, owner.getY() + 30, owner.getZ());
 		Formulas.addFuncsToNewSummon(this);
+		setShowSummonAnimation(true);
 	}
 	
 	@Override
@@ -457,7 +457,7 @@ public abstract class L2Summon extends L2Playable
 		return null;
 	}
 	
-	protected void doPickupItem(L2Object object)
+	public void doPickupItem(L2Object object)
 	{
 		return;
 	}
@@ -723,17 +723,12 @@ public abstract class L2Summon extends L2Playable
 		if (value)
 		{
 			_previousFollowStatus = getFollowStatus();
-			// if imobilized temporarly disable follow mode
+			
 			if (_previousFollowStatus)
-			{
 				setFollowStatus(false);
-			}
 		}
 		else
-		{
-			// if not more imobilized restore previous follow mode
 			setFollowStatus(_previousFollowStatus);
-		}
 	}
 	
 	public void setOwner(L2PcInstance newOwner)

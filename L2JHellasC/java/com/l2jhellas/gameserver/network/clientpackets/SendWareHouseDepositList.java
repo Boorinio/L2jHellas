@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.L2EtcItemType;
+import com.l2jhellas.gameserver.emum.StoreType;
 import com.l2jhellas.gameserver.model.ClanWarehouse;
 import com.l2jhellas.gameserver.model.ItemContainer;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
@@ -94,7 +95,7 @@ public final class SendWareHouseDepositList extends L2GameClientPacket
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		if (player.getPrivateStoreType() != 0)
+		if (player.getPrivateStoreType() != StoreType.NONE)
 		{
 			player.sendMessage("You can't deposit items when you are trading.");
 			player.sendPacket(ActionFailed.STATIC_PACKET);

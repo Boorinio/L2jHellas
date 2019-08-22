@@ -397,11 +397,8 @@ public class CharStat
 		// swamp zone -50% speed
 		if (_activeChar.isInsideZone(ZoneId.SWAMP))
 			val /= 2;
-		
-		// Apply max run speed cap.
-		if (val > Config.MAX_RUN_SPEED)
-			val = Config.MAX_RUN_SPEED;
-		return val;
+
+		return Math.min(val, Config.MAX_RUN_SPEED);
 	}
 	
 	public final int getShldDef()

@@ -76,6 +76,7 @@ import com.l2jhellas.gameserver.emum.Music;
 import com.l2jhellas.gameserver.emum.PolyType;
 import com.l2jhellas.gameserver.emum.Sex;
 import com.l2jhellas.gameserver.emum.Sound;
+import com.l2jhellas.gameserver.emum.StoreType;
 import com.l2jhellas.gameserver.emum.Team;
 import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
@@ -178,7 +179,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ExSetCompassZoneCode;
 import com.l2jhellas.gameserver.network.serverpackets.ExStorageMaxCount;
 import com.l2jhellas.gameserver.network.serverpackets.FinishRotation;
 import com.l2jhellas.gameserver.network.serverpackets.FriendList;
-import com.l2jhellas.gameserver.network.serverpackets.GameGuardQuery;
 import com.l2jhellas.gameserver.network.serverpackets.GetOnVehicle;
 import com.l2jhellas.gameserver.network.serverpackets.HennaInfo;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
@@ -203,9 +203,12 @@ import com.l2jhellas.gameserver.network.serverpackets.PledgeSkillList;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeStatusChanged;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreListBuy;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreListSell;
+import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreManageListBuy;
+import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreManageListSell;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreMsgBuy;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreMsgSell;
 import com.l2jhellas.gameserver.network.serverpackets.QuestList;
+import com.l2jhellas.gameserver.network.serverpackets.RecipeShopManageList;
 import com.l2jhellas.gameserver.network.serverpackets.RecipeShopMsg;
 import com.l2jhellas.gameserver.network.serverpackets.RecipeShopSellList;
 import com.l2jhellas.gameserver.network.serverpackets.RelationChanged;
@@ -584,8 +587,8 @@ public class L2PcInstance extends L2Playable
 	private final PcInventory _inventory = new PcInventory(this);
 	private PcWarehouse _warehouse;
 	private final PcFreight _freight = new PcFreight(this);
-	
-	private int _privatestore;
+
+	private StoreType _privatestore = StoreType.NONE;
 	
 	private TradeList _activeTradeList;
 	private ItemContainer _activeWarehouse;
@@ -1206,7 +1209,7 @@ public class L2PcInstance extends L2Playable
 	
 	public boolean isInStoreMode()
 	{
-		return (getPrivateStoreType() > 0);
+		return (getPrivateStoreType() != StoreType.NONE);
 	}
 	
 	// public boolean isInCraftMode() { return (getPrivateStoreType() == STORE_PRIVATE_MANUFACTURE); }
@@ -2226,6 +2229,9 @@ public class L2PcInstance extends L2Playable
 			if(skill==null)
 				continue;
 			
+			if (getKnownSkill(skill.getId()) == skill)
+				continue;
+			
 			if (getSkillLevel(sk.getId()) == -1)
 				skillCounter++;
 			
@@ -2245,7 +2251,8 @@ public class L2PcInstance extends L2Playable
 			addSkill(skill, true);
 		}
 		
-		sendMessage("You have learned " + skillCounter + " new skills.");
+		if (skillCounter > 0)
+			sendMessage("You have learned " + skillCounter + " new skills.");
 	}
 	
 	public void setExp(long exp)
@@ -3619,7 +3626,7 @@ public class L2PcInstance extends L2Playable
 		else
 		{
 			// Check if this L2PcInstance has a Private Store
-			if (getPrivateStoreType() != 0)
+			if (getPrivateStoreType() != StoreType.NONE)
 			{
 				player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
 				return;
@@ -3724,29 +3731,29 @@ public class L2PcInstance extends L2Playable
 		super.onHitTimer(target, damage, crit, miss, soulshot, shld);
 	}
 	
-	public void queryGameGuard()
-	{
-		getClient().setGameGuardOk(false);
-		this.sendPacket(new GameGuardQuery());
-		if (Config.GAMEGUARD_ENFORCE)
-		{
-			ThreadPoolManager.getInstance().scheduleGeneral(new GameGuardCheck(), 30 * 1000);
-		}
-	}
+	//public void queryGameGuard()
+	//{
+	//	getClient().setGameGuardOk(false);
+	//	this.sendPacket(new GameGuardQuery());
+	//	if (Config.GAMEGUARD_ENFORCE)
+	//	{
+	//		ThreadPoolManager.getInstance().scheduleGeneral(new GameGuardCheck(), 30 * 1000);
+	//	}
+	//}
 	
-	class GameGuardCheck implements Runnable
-	{
-		@Override
-		public void run()
-		{
-			if (_client != null && !getClient().isAuthedGG() && isOnline() == 1)
-			{
-				AdminData.getInstance().broadcastMessageToGMs("Client " + getClient() + " failed to reply GameGuard query and is being kicked!");
-				_log.info("Client " + getClient() + " failed to reply GameGuard query and is being kicked!");
-				getClient().close(new LeaveWorld());
-			}
-		}
-	}
+	//class GameGuardCheck implements Runnable
+	//{
+		//@Override
+	//	public void run()
+	//	{
+	//		if (_client != null && !getClient().isAuthedGG() && isOnline() == 1)
+	//		{
+	//			AdminData.getInstance().broadcastMessageToGMs("Client " + getClient() + " failed to reply GameGuard query and is being kicked!");
+	//			_log.info("Client " + getClient() + " failed to reply GameGuard query and is being kicked!");
+	//			getClient().close(new LeaveWorld());
+	//		}
+	//	}
+	//}
 	
 	@Override
 	public void sendPacket(L2GameServerPacket packet)
@@ -3783,18 +3790,18 @@ public class L2PcInstance extends L2Playable
 			
 			switch (temp.getPrivateStoreType())
 			{
-				case STORE_PRIVATE_SELL:
-				case STORE_PRIVATE_PACKAGE_SELL:
+				case SELL:
+				case PACKAGE_SELL:
 					sendPacket(new PrivateStoreListSell(this, temp));
 					break;
 				
-				case STORE_PRIVATE_BUY:
+				case BUY:
 					sendPacket(new PrivateStoreListBuy(this, temp));
 					break;
 				
-				case STORE_PRIVATE_MANUFACTURE:
+				case MANUFACTURE:
 					sendPacket(new RecipeShopSellList(this, temp));
-			    break;
+					break;
 			}
 		}
 		else
@@ -3853,7 +3860,7 @@ public class L2PcInstance extends L2Playable
 			}
 			
 			// you cant pickup items like l2off
-			if (getPrivateStoreType() != 0)
+			if (getPrivateStoreType() != StoreType.NONE)
 			{
 				sendPacket(ActionFailed.STATIC_PACKET);
 				return;
@@ -5022,12 +5029,12 @@ public class L2PcInstance extends L2Playable
 		return _buyList;
 	}
 	
-	public void setPrivateStoreType(int type)
+	public void setPrivateStoreType(StoreType type)
 	{
 		_privatestore = type;
 	}
 	
-	public int getPrivateStoreType()
+	public StoreType getPrivateStoreType()
 	{
 		return _privatestore;
 	}
@@ -8408,7 +8415,7 @@ public class L2PcInstance extends L2Playable
 			_noDuelReason = SystemMessageId.S1_CANNOT_DUEL_BECAUSE_S1_IS_IN_A_CHAOTIC_STATE;
 			return false;
 		}
-		if (getPrivateStoreType() != STORE_PRIVATE_NONE)
+		if (getPrivateStoreType() != StoreType.NONE)
 		{
 			_noDuelReason = SystemMessageId.S1_CANNOT_DUEL_BECAUSE_S1_IS_CURRENTLY_ENGAGED_IN_A_PRIVATE_STORE_OR_MANUFACTURE;
 			return false;
@@ -9324,7 +9331,7 @@ public class L2PcInstance extends L2Playable
 	{
 		_lastServerPosition.setXYZ(x, y, z);
 	}
-	
+
 	public boolean checkLastServerPosition(int x, int y, int z)
 	{
 		return _lastServerPosition.equals(x, y, z);
@@ -11275,28 +11282,15 @@ public class L2PcInstance extends L2Playable
 		if (isGM())
 		{
 			if (Config.GM_STARTUP_INVULNERABLE && AdminData.getInstance().hasAccess("admin_invul", getAccessLevel()))
-			{
 				setIsInvul(true);
-				sendMessage("Entering world in Invulnerable mode.");
-			}
 			if (Config.GM_STARTUP_INVISIBLE && AdminData.getInstance().hasAccess("admin_invisible", getAccessLevel()))
-			{
 				getAppearance().setInvisible();
-				sendMessage("Entering world in Invisible mode.");
-			}
 			if (Config.GM_STARTUP_SILENCE && AdminData.getInstance().hasAccess("admin_silence", getAccessLevel()))
-			{
 				setMessageRefusal(true);
-				sendMessage("Entering world in Message Refusal mode.");
-			}
 			if (Config.GM_STARTUP_AUTO_LIST && AdminData.getInstance().hasAccess("admin_gmliston", getAccessLevel()))
 				AdminData.getInstance().addGm(this, false);
 			else
 				AdminData.getInstance().addGm(this, true);
-		}
-		else
-		{
-			getAppearance().setVisible();
 		}
 		
 		standUp();
@@ -11551,9 +11545,7 @@ public class L2PcInstance extends L2Playable
 		
 		if (Hero.getInstance().getHeroes() != null && Hero.getInstance().getHeroes().containsKey(getObjectId()))
 			setHero(true);
-		
-		queryGameGuard();
-		
+			
 		onPlayerEnter();
 		Quest.playerEnter(this);
 		
@@ -11614,10 +11606,7 @@ public class L2PcInstance extends L2Playable
 			teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 			sendMessage("You have been teleported to the nearest town due to you being in siege zone.");
 		}
-		
-		if (Config.GAMEGUARD_ENFORCE)
-			sendPacket(new GameGuardQuery());
-		
+
 		sendPacket(new SkillCoolTime(this));
 		
 		sendPacket(SystemMessageId.WELCOME_TO_LINEAGE);
@@ -11733,19 +11722,7 @@ public class L2PcInstance extends L2Playable
 	
 	public void giveClassItems(ClassId classId)
 	{
-		final int[] armorIdDagger =
-		{
-			6590,
-			6379,
-			6380,
-			6381,
-			6382,
-			920,
-			858,
-			858,
-			889,
-			889
-		};
+		final int[] armorIdDagger ={6590,6379,6380,6381,6382920,858,858,889,889};
 		final int[] armorIdSagi =
 		{
 			7577,
@@ -12632,7 +12609,7 @@ public class L2PcInstance extends L2Playable
 			return false;
 		}
 		
-		if (getPrivateStoreType() != 0)
+		if (getPrivateStoreType() != StoreType.NONE)
 		{
 			sendPacket(SystemMessageId.CANNOT_TRADE_DISCARD_DROP_ITEM_WHILE_IN_SHOPMODE);
 			cancellEnchant();
@@ -12865,6 +12842,88 @@ public class L2PcInstance extends L2Playable
 		
 	}
 	
+	public boolean canOpenPrivateStore()
+	{
+		if (getActiveTradeList() != null)
+			cancelActiveTrade();
+		
+		return !isAlikeDead() && !isInOlympiadMode() && !isMounted() && !isInsideZone(ZoneId.NO_STORE) && !isCastingNow();
+	}
+	
+	public void openPrivateBuyStore()
+	{
+		if (canOpenPrivateStore())
+		{
+			if (getPrivateStoreType() == StoreType.BUY || getPrivateStoreType() == StoreType.BUY_MANAGE)
+				setPrivateStoreType(StoreType.NONE);
+			
+			if (getPrivateStoreType() == StoreType.NONE)
+			{
+				standUp();
+				
+				setPrivateStoreType(StoreType.BUY_MANAGE);
+				sendPacket(new PrivateStoreManageListBuy(this));
+			}
+		}
+		else
+		{
+			if (isInsideZone(ZoneId.NO_STORE))
+				sendPacket(SystemMessageId.NO_PRIVATE_STORE_HERE);
+			
+			sendPacket(ActionFailed.STATIC_PACKET);
+		}
+	}
+	
+	public void openPrivateSellStore(boolean isPackageSale)
+	{
+		if (canOpenPrivateStore())
+		{
+			if (getPrivateStoreType() == StoreType.SELL || getPrivateStoreType() == StoreType.SELL_MANAGE || getPrivateStoreType() == StoreType.PACKAGE_SELL)
+				setPrivateStoreType(StoreType.NONE);
+			
+			if (getPrivateStoreType() == StoreType.NONE)
+			{
+				standUp();
+				
+				setPrivateStoreType(StoreType.SELL_MANAGE);
+				sendPacket(new PrivateStoreManageListSell(this, isPackageSale));
+			}
+		}
+		else
+		{
+			if (isInsideZone(ZoneId.NO_STORE))
+				sendPacket(SystemMessageId.NO_PRIVATE_STORE_HERE);
+			
+			sendPacket(ActionFailed.STATIC_PACKET);
+		}
+	}
+	
+	public void openWorkshop(boolean isDwarven)
+	{
+		if (canOpenPrivateStore())
+		{
+			if (isInStoreMode())
+				setPrivateStoreType(StoreType.NONE);
+			
+			if (getPrivateStoreType() == StoreType.NONE)
+			{
+				standUp();
+				
+				if (getCreateList() == null)
+					setCreateList(new L2ManufactureList());
+				
+				sendPacket(new RecipeShopManageList(this, isDwarven));
+			}
+		}
+		else
+		{
+			if (isInsideZone(ZoneId.NO_STORE))
+				sendPacket(SystemMessageId.NO_PRIVATE_WORKSHOP_HERE);
+			
+			sendPacket(ActionFailed.STATIC_PACKET);
+		}
+	}
+	
 	public List<Integer> getFriendList()
 	{
 		return _friendList;
@@ -13055,19 +13114,109 @@ public class L2PcInstance extends L2Playable
 		
 		switch (getPrivateStoreType())
 		{
-			case STORE_PRIVATE_SELL:
-			case STORE_PRIVATE_PACKAGE_SELL:
+			case SELL:
+			case PACKAGE_SELL:
 				activeChar.sendPacket(new PrivateStoreMsgSell(this));
 				break;
 			
-			case STORE_PRIVATE_BUY:
+			case BUY:
 				activeChar.sendPacket(new PrivateStoreMsgBuy(this));
 				break;
 			
-			case STORE_PRIVATE_MANUFACTURE:
+			case MANUFACTURE:
 				activeChar.sendPacket(new RecipeShopMsg(this));
 				break;
-		}	
+		}
+	}
+	
+	@Override
+	public final L2Skill getKnownSkill(int skillId)
+	{
+		return super.getKnownSkill(skillId);
+	}
+	
+	public void mountPlayer(L2Summon pet)
+	{
+			// mount
+			if ((pet != null) && pet.isMountable() && !isMounted() && !isBetrayed())
+			{
+				if (isDead())
+				{
+					// A strider cannot be ridden when dead
+					SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_DEAD);
+					sendPacket(msg);
+					msg = null;
+				}
+				else if (pet.isDead())
+				{
+					// A dead strider cannot be ridden.
+					SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.DEAD_STRIDER_CANT_BE_RIDDEN);
+					sendPacket(msg);
+					msg = null;
+				}
+				else if (pet.isInCombat() || pet.isRooted())
+				{
+					// A strider in battle cannot be ridden
+					SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.STRIDER_IN_BATLLE_CANT_BE_RIDDEN);
+					sendPacket(msg);
+					msg = null;
+				}
+				else if (isInCombat())
+				{
+					// A strider cannot be ridden while in battle
+					SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
+					sendPacket(msg);
+					msg = null;
+				}
+				else if (isSitting() || isMoving())
+				{
+					// A strider can be ridden only when standing
+					SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.STRIDER_CAN_BE_RIDDEN_ONLY_WHILE_STANDING);
+					sendPacket(msg);
+					msg = null;
+				}
+				else if (isFishing())
+				{
+					// You can't mount, dismount, break and drop items while fishing
+					SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.CANNOT_DO_WHILE_FISHING_2);
+					sendPacket(msg);
+					msg = null;
+				}
+				else if (isCursedWeaponEquiped())
+				{
+					// You can't mount, dismount, break and drop items while wielding a cursed weapon
+					SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.STRIDER_CANT_BE_RIDDEN_WHILE_IN_BATTLE);
+					sendPacket(msg);
+				}
+				else if (!pet.isDead() && !isMounted())
+				{
+					if (!disarmWeapons())
+						return;
+					
+					Ride mount = new Ride(getObjectId(), Ride.ACTION_MOUNT, pet.getTemplate().npcId);
+					broadcastPacket(mount);
+					setMountType(mount.getMountType());
+					setMountObjectID(pet.getControlItemId());
+					pet.unSummon(this);
+				}
+			}
+			else if (isRentedPet())
+			{
+				stopRentPet();
+			}
+			else if (isMounted())
+			{
+				if (setMountType(0))
+				{
+					if (isFlying())
+						removeSkill(SkillTable.getInstance().getInfo(4289, 1));
+					Ride dismount = new Ride(getObjectId(), Ride.ACTION_DISMOUNT, 0);
+					broadcastPacket(dismount);
+					setMountObjectID(0);
+					broadcastStatusUpdate();
+					broadcastUserInfo();
+				}
+			}	
 	}
 	
 	public void mount(int RideId)

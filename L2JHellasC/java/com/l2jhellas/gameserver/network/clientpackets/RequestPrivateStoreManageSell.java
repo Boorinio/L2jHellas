@@ -3,7 +3,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreManageListSell;
 import com.l2jhellas.util.Util;
 
 public final class RequestPrivateStoreManageSell extends L2GameClientPacket
@@ -44,15 +43,8 @@ public final class RequestPrivateStoreManageSell extends L2GameClientPacket
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		
-		if (player.isInOlympiadMode())
-		{
-			player.sendMessage("You are in olympiade mode. you can't use it right now!");
-			sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		
-		if (player.getActiveTradeList() != null || player.getActiveWarehouse() != null || player.getActiveEnchantItem() != null)
+
+		if (player.getActiveWarehouse() != null || player.getActiveEnchantItem() != null)
 		{
 			player.sendMessage("Trade-wh-enchant not allowded while managing private store.");
 			player.sendPacket(ActionFailed.STATIC_PACKET);
@@ -66,31 +58,7 @@ public final class RequestPrivateStoreManageSell extends L2GameClientPacket
 			return;
 		}
 		
-		// Like L2OFF - You can't open buy/sell when you are sitting
-		if (player.isSitting() && player.getPrivateStoreType() == 0)
-		{
-			sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		
-		if (player.isSitting() && player.getPrivateStoreType() != 0)
-		{
-			player.standUp();
-		}
-		
-		if (player.getMountType() != 0)
-			return;
-		
-		if ((player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL) || (player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_SELL + 1) || (player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_PACKAGE_SELL))
-			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
-		
-		if (player.getPrivateStoreType() == L2PcInstance.STORE_PRIVATE_NONE)
-		{
-			if (player.isSitting())
-				player.standUp();
-			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_SELL + 1);
-			player.sendPacket(new PrivateStoreManageListSell(player));
-		}
+		player.openPrivateSellStore(false);
 	}
 	
 	@Override

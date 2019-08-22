@@ -180,6 +180,17 @@ public final class Util
 		return (int) (angleTarget * 182.044444444);
 	}
 	
+	
+	public static int calculateHeadingFrom(double fromX, double fromY, double toX, double toY)
+	{
+		return convertRadianToHeading(Math.atan2(toY - fromY, toX - fromX));
+	}
+	
+	public static int convertRadianToHeading(double radians)
+	{
+		return Short.toUnsignedInt((short) Math.floor((radians * 65535.0) / 6.283185307179586));
+	}
+	
 	public static int countWords(String str)
 	{
 		return str.trim().split(" ").length;

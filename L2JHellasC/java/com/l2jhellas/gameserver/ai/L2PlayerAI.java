@@ -60,7 +60,7 @@ public class L2PlayerAI extends L2CharacterAI
 		
 		super.changeIntention(intention, arg0, arg1);
 	}
-	
+
 	@Override
 	protected void onEvtAttacked(L2Character target)
 	{
@@ -68,9 +68,7 @@ public class L2PlayerAI extends L2CharacterAI
 			return;
 		
 		if (_actor.getActingPlayer().getPet() != null)
-		{
 			_actor.getActingPlayer().getPet().getAI().clientStartAutoAttack();
-		}
 	}
 	
 	@Override
@@ -81,7 +79,7 @@ public class L2PlayerAI extends L2CharacterAI
 			if (_nextIntention != null && _nextIntention.getCtrlIntention() != CtrlIntention.AI_INTENTION_CAST)
 				setIntention(_nextIntention.getCtrlIntention(), _nextIntention._arg0, _nextIntention._arg1);
 			else
-				setIntention(CtrlIntention.AI_INTENTION_IDLE);
+				setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 		}
 	}
 	
@@ -150,18 +148,13 @@ public class L2PlayerAI extends L2CharacterAI
 	{
 		L2Character target = getAttackTarget();
 		
-		if (target == null)
-		{
-			setTarget(null);
-			setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-			return;
-		}
-
 		if (checkTargetLostOrDead(target))
 			return;
 
-		if (!maybeMoveToPawn(target, _actor.getPhysicalAttackRange()))		
-			_actor.doAttack(target,false);
+		if(maybeMoveToPawn(target, _actor.getPhysicalAttackRange()))
+			return;
+		
+		_actor.doAttack(target,false);
 	}
 	
 	private void thinkCast()
@@ -177,7 +170,9 @@ public class L2PlayerAI extends L2CharacterAI
 		{
 			if (checkTargetLost(target))
 			{
-				if (_skill.isOffensive() && getAttackTarget() != null)
+				boolean isBad = _skill.isOffensive() || _skill.isDebuff();
+				
+				if (isBad && target != null)
 				{
 					// Notify the target
 					setCastTarget(null);
@@ -185,7 +180,7 @@ public class L2PlayerAI extends L2CharacterAI
 				return;
 			}
 
-			if (target != null && maybeMoveToPawn(target, _actor.getMagicalAttackRange(_skill)+10))
+			if (target != null && maybeMoveToPawn(target, _actor.getMagicalAttackRange(_skill)))
 				return;
 		}
 
@@ -236,7 +231,7 @@ public class L2PlayerAI extends L2CharacterAI
 		
 		// Set the Intention of this AbstractAI to AI_INTENTION_MOVE_TO
 		changeIntention(CtrlIntention.AI_INTENTION_MOVE_TO, loc, null);
-
+	
 		// Move the actor to Location (x,y,z) server side AND client side by sending Server->Client packet CharMoveToLocation (broadcast)
 		moveTo(loc.x, loc.y, loc.z);
 	}

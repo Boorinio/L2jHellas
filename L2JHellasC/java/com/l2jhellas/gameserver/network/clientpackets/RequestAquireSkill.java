@@ -37,9 +37,14 @@ public class RequestAquireSkill extends L2GameClientPacket
 	@Override
 	protected void readImpl()
 	{
-		_id = readD();
-		_level = readD();
-		_skillType = readD();
+		final L2PcInstance player = getClient().getActiveChar();
+		
+		if(canRead(player))
+		{
+		  _id = readD();
+		  _level = readD();
+		  _skillType = readD();
+		}
 	}
 	
 	@SuppressWarnings("null")
@@ -121,10 +126,7 @@ public class RequestAquireSkill extends L2GameClientPacket
 			}
 			else
 			{
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.NOT_ENOUGH_SP_TO_LEARN_SKILL);
-				player.sendPacket(sm);
-				sm = null;
-				
+				player.sendPacket(SystemMessageId.NOT_ENOUGH_SP_TO_LEARN_SKILL);
 				return;
 			}
 		}
@@ -231,11 +233,10 @@ public class RequestAquireSkill extends L2GameClientPacket
 			}
 			else
 			{
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.ACQUIRE_SKILL_FAILED_BAD_CLAN_REP_SCORE);
-				player.sendPacket(sm);
-				// sm = null;
+				player.sendPacket(SystemMessageId.ACQUIRE_SKILL_FAILED_BAD_CLAN_REP_SCORE);
 				return;
 			}
+			
 			player.getClan().setReputationScore(player.getClan().getReputationScore() - repCost, true);
 			player.getClan().addNewSkill(skill);
 			
@@ -312,6 +313,22 @@ public class RequestAquireSkill extends L2GameClientPacket
 			ExStorageMaxCount esmc = new ExStorageMaxCount(player);
 			player.sendPacket(esmc);
 		}
+	}
+	
+	boolean canRead(L2PcInstance player)
+	{		
+		if (player == null || !player.isbOnline())
+			return false;
+		
+		final L2NpcInstance trainer = player.getLastFolkNPC();
+		
+		if (trainer == null)
+			return false;
+				
+		if (!player.isInsideRadius(trainer, L2Npc.INTERACTION_DISTANCE, false, false) && !player.isGM())
+			return false;
+		
+		return true;
 	}
 	
 	private boolean canLearn(L2PcInstance player, L2Skill skill)

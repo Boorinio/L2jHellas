@@ -3,6 +3,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.StoreType;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -41,7 +42,7 @@ public final class RequestAutoSoulShot extends L2GameClientPacket
 			return;
 		}
 		
-		if (activeChar.getPrivateStoreType() == 0 && activeChar.getActiveRequester() == null && !activeChar.isDead())
+		if (activeChar.getPrivateStoreType() == StoreType.NONE && activeChar.getActiveRequester() == null && !activeChar.isDead())
 		{
 			if (Config.DEBUG)
 				_log.fine("AutoSoulShot:" + _itemId);

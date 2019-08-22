@@ -1,6 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.controllers.RecipeController;
+import com.l2jhellas.gameserver.emum.StoreType;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -36,12 +37,12 @@ public final class RequestRecipeShopMakeItem extends L2GameClientPacket
 		if (manufacturer == null)
 			return;
 		
-		if (activeChar.getPrivateStoreType() != 0)
+		if (activeChar.getPrivateStoreType() != StoreType.NONE)
 		{
 			activeChar.sendMessage("Cannot make items while trading");
 			return;
 		}
-		if (manufacturer.getPrivateStoreType() != 5)
+		if (manufacturer.getPrivateStoreType() != StoreType.MANUFACTURE)
 		{
 			// activeChar.sendMessage("Cannot make items while trading");
 			return;

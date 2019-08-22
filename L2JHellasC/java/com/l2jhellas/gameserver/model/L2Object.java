@@ -193,10 +193,7 @@ public abstract class L2Object
 			setXYZ(x, y, z);
 		}
 		
-		// Spawn and update its _worldregion
-		spawnMe();
-		
-		_isVisible = true;
+		spawnMe();		
 	}
 	
 	public void toggleVisible()

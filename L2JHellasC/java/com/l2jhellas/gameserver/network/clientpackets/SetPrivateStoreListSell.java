@@ -1,11 +1,14 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.StoreType;
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.model.TradeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreManageListSell;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreMsgSell;
+import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 import com.l2jhellas.util.Util;
 
 public class SetPrivateStoreListSell extends L2GameClientPacket
@@ -58,6 +61,20 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
 			return;
 		}
 		
+		if (AttackStanceTaskManager.getInstance().isInAttackStance(player) || (player.isCastingNow() || player.isInDuel()))
+		{
+			player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+			player.sendPacket(new PrivateStoreManageListSell(player, _packageSale));
+			return;
+		}
+		
+		if (player.isInsideZone(ZoneId.NO_STORE))
+		{
+			player.sendPacket(SystemMessageId.NO_PRIVATE_STORE_HERE);
+			player.sendPacket(new PrivateStoreManageListSell(player, _packageSale));
+			return;
+		}
+		
 		TradeList tradeList = player.getSellList();
 		tradeList.clear();
 		tradeList.setPackaged(_packageSale);
@@ -82,7 +99,7 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
 		
 		if (_count <= 0)
 		{
-			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
+			player.setPrivateStoreType(StoreType.NONE);
 			player.broadcastUserInfo();
 			return;
 		}
@@ -90,16 +107,13 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
 		// Check maximum number of allowed slots for pvt shops
 		if (_count > player.getPrivateSellStoreLimit())
 		{
-			player.sendPacket(new PrivateStoreManageListSell(player));
+			player.sendPacket(new PrivateStoreManageListSell(player, _packageSale));
 			player.sendPacket(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
 			return;
 		}
 		
 		player.sitDown();
-		if (_packageSale)
-			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_PACKAGE_SELL);
-		else
-			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_SELL);
+		player.setPrivateStoreType((_packageSale) ? StoreType.PACKAGE_SELL : StoreType.SELL);
 		player.broadcastUserInfo();
 		player.broadcastPacket(new PrivateStoreMsgSell(player));
 	}

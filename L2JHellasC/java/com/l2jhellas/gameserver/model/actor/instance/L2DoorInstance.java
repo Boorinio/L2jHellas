@@ -1,7 +1,5 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Logger;
 
@@ -55,8 +53,9 @@ public class L2DoorInstance extends L2Character
 	private int _D = 0;
 	protected final int _doorId;
 	protected final String _name;
+	
 	private boolean _open = false;
-	private final boolean _unlockable;
+	private final boolean _unlockable;	
 	
 	private ClanHall _clanHall;
 	
@@ -460,7 +459,7 @@ public class L2DoorInstance extends L2Character
 		else
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
-	
+
 	@Override
 	public void broadcastStatusUpdate()
 	{
@@ -563,21 +562,6 @@ public class L2DoorInstance extends L2Character
 		_mapRegion = region;
 	}
 	
-	public Collection<L2SiegeGuardInstance> getKnownSiegeGuards()
-	{
-		ArrayList<L2SiegeGuardInstance> result = new ArrayList<>();
-		
-		for (L2SiegeGuardInstance Sguard : L2World.getInstance().getVisibleObjects(this, L2SiegeGuardInstance.class))
-		{
-			if (Sguard == null)
-				continue;
-			
-			result.add(Sguard);
-		}
-		
-		return result;
-	}
-	
 	public int getA()
 	{
 		return _A;
@@ -634,4 +618,5 @@ public class L2DoorInstance extends L2Character
 	
 	// return true;
 	// }
+	
 }

@@ -1,5 +1,6 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.gameserver.emum.StoreType;
 import com.l2jhellas.gameserver.model.L2ManufactureList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -28,9 +29,9 @@ public final class RequestRecipeShopManageList extends L2GameClientPacket
 			sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
-		if (player.getPrivateStoreType() != 0)
+		if (player.getPrivateStoreType() != StoreType.NONE)
 		{
-			player.setPrivateStoreType(L2PcInstance.STORE_PRIVATE_NONE);
+			player.setPrivateStoreType(StoreType.NONE);
 			player.broadcastUserInfo();
 			if (player.isSitting())
 				player.standUp();
