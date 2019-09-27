@@ -8,14 +8,16 @@ public class PetInfo extends L2GameServerPacket
 {
 	private static final String _S__CA_PETINFO = "[S] b1 PetInfo";
 	private final L2Summon _summon;
-	private int _val;
-
+	private int _summonAnimation = 0;
 	private int _maxFed, _curFed;
 	
 	public PetInfo(L2Summon summon, int val)
 	{
 		_summon = summon;
-		_val = val;
+		_summonAnimation = val;
+		
+		if (_summon.isShowSummonAnimation())
+			_summonAnimation = 2;
 		
 		if (_summon instanceof L2PetInstance)
 		{
@@ -63,7 +65,7 @@ public class PetInfo extends L2GameServerPacket
 		writeC(1);
 		writeC((_summon.isInCombat()) ? 1 : 0);
 		writeC((_summon.isAlikeDead()) ? 1 : 0);
-		writeC((_summon.isShowSummonAnimation()) ? 2 : _val);
+		writeC(_summonAnimation);
 		writeS(_summon.getName());
 		writeS(_summon.getTitle());
 		writeD(1);

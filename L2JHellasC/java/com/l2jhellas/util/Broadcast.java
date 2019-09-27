@@ -8,10 +8,8 @@ import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 import com.l2jhellas.gameserver.network.clientpackets.Say2;
-import com.l2jhellas.gameserver.network.serverpackets.CharInfo;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
-import com.l2jhellas.gameserver.network.serverpackets.RelationChanged;
 
 public final class Broadcast
 {
@@ -20,27 +18,16 @@ public final class Broadcast
 		L2World.getInstance().forEachVisibleObject(character, L2PcInstance.class, player ->
 		{
 			if (player.getTarget() == character)
-			{
 				player.sendPacket(mov);
-			}
 		});
 	}
 	
 	public static void toKnownPlayers(L2Character character, L2GameServerPacket mov)
-	{
-		
+	{		
 		L2World.getInstance().forEachVisibleObject(character, L2PcInstance.class, player ->
 		{
-			player.sendPacket(mov);
-			
-			if (mov instanceof CharInfo && character instanceof L2PcInstance)
-			{
-				int relation = ((L2PcInstance) character).getRelation(player);
-				player.sendPacket(new RelationChanged((L2PcInstance) character, relation, player.isAutoAttackable(character)));
-			}
-			
-		});
-		
+			player.sendPacket(mov);		
+		});		
 	}
 	
 	public static void toKnownPlayersInRadius(L2Character character, L2GameServerPacket mov, int radius)

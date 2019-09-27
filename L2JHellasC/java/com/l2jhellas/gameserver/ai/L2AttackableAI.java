@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.stream.Stream;
 
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
-import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.emum.L2SkillTargetType;
 import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
@@ -46,9 +46,8 @@ import com.l2jhellas.util.Util;
 
 public class L2AttackableAI extends L2CharacterAI implements Runnable
 {
-	private static final int RANDOM_WALK_RATE = 30; // confirmed
-	// private static final int MAX_DRIFT_RANGE = 300;
-	private static final int MAX_ATTACK_TIMEOUT = 90000; // int ticks, i.e. 30 seconds, here 10 secs
+	private static final int RANDOM_WALK_RATE = 30; 
+	private static final int MAX_ATTACK_TIMEOUT = 90000;
 	
 	private Future<?> _aiTask;
 	
@@ -56,7 +55,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 	
 	private int _globalAggro;
 	
-	private boolean _thinking; // to prevent recursive thinking
+	private boolean _thinking; 
 	
 	private int timepass = 0;
 	private int chaostime = 0;
@@ -66,16 +65,14 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 	public L2AttackableAI(L2Character.AIAccessor accessor)
 	{
 		super(accessor);
-		_skillrender = NpcData.getInstance().getTemplate(((L2Npc) _actor).getTemplate().npcId);
-		// _selfAnalysis.init();
+		_skillrender =  getActiveChar().getTemplate();
 		_attackTimeout = Integer.MAX_VALUE;
-		_globalAggro = -10; // 10 seconds timeout of ATTACK after respawn
+		_globalAggro = -10; 
 	}
 	
 	@Override
 	public void run()
 	{
-		// Launch actions corresponding to the Event Think
 		onEvtThink();
 	}
 	
@@ -169,7 +166,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 			boolean guardsAttackAggroMobs = false;
 			// Check if the L2MonsterInstance target is aggressive
 			if (target instanceof L2MonsterInstance && guardsAttackAggroMobs)
-				return (((L2MonsterInstance) target).isAggressive() && ((Config.GEODATA) ? !GeoEngine.canSeeTarget(me, target, me.isFlying()) : !GeoEngine.canSeeTarget(me, target)));
+				return (((L2MonsterInstance) target).isAggressive() && ((Config.GEODATA) ? GeoEngine.canSeeTarget(me, target, me.isFlying()) : GeoEngine.canSeeTarget(me, target)));
 			
 			return false;
 		}
@@ -182,7 +179,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 			
 			// Check if the L2Player target has karma (=PK)
 			if (target instanceof L2PcInstance && ((L2PcInstance) target).getKarma() > 0)
-				return ((Config.GEODATA) ? !GeoEngine.canSeeTarget(me, target, me.isFlying()) : !GeoEngine.canSeeTarget(me, target)); // Los Check
+				return ((Config.GEODATA) ? GeoEngine.canSeeTarget(me, target, me.isFlying()) : GeoEngine.canSeeTarget(me, target)); // Los Check
 				
 			return false;
 		}
@@ -199,18 +196,15 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 				if (((L2Attackable) _actor).getEnemyClan().equals(((L2Attackable) target).getClan()))
 				{
 					if (_actor.isInsideRadius(target, ((L2Attackable) _actor).getEnemyRange(), false, false))
-					{
 						return GeoEngine.canSeeTarget(_actor, target, false);
-					}
 					
 					return false;
 				}
 				if (((L2Attackable) _actor).getIsChaos() > 0 && me.isInsideRadius(target, ((L2Attackable) _actor).getIsChaos(), false, false))
 				{
 					if (((L2Attackable) _actor).getFactionId() != null && ((L2Attackable) _actor).getFactionId().equals(((L2Attackable) target).getFactionId()))
-					{
 						return false;
-					}
+					
 					// Los Check
 					return GeoEngine.canSeeTarget(me, target, false);
 				}
@@ -224,14 +218,12 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 			if (!Config.ALT_MOB_AGRO_IN_PEACEZONE && target.isInsidePeaceZone(_actor.getActingPlayer()))
 				return false;
 			
-			// Check if the actor is Aggressive
-			return (me.isAggressive() && GeoEngine.canSeeTarget(me, target, false));
+			return (me.isAggressive() && (Config.GEODATA) ? GeoEngine.canSeeTarget(me, target, me.isFlying()) : GeoEngine.canSeeTarget(me, target));
 		}
 	}
 	
 	public void startAITask()
 	{
-		// If not idle - create an AI task (schedule onEvtThink repeatedly)
 		if (_aiTask == null)
 			_aiTask = ThreadPoolManager.getInstance().scheduleAiAtFixedRate(this, 1000, 1000);
 	}
@@ -258,12 +250,10 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 	{
 		if (intention == AI_INTENTION_IDLE || intention == AI_INTENTION_ACTIVE)
 		{
-			// Check if actor is not dead
 			if (!_actor.isAlikeDead())
 			{
 				L2Attackable npc = (L2Attackable) _actor;
 				
-				// If its _knownPlayer isn't empty set the Intention to AI_INTENTION_ACTIVE
 				if (!L2World.getInstance().getVisibleObjects(npc, L2PcInstance.class).isEmpty())
 					intention = AI_INTENTION_ACTIVE;
 				else
@@ -345,8 +335,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 			final int range = npc instanceof L2GuardInstance ? 800 : npc.getAggroRange();
 			
 			L2World.getInstance().forEachVisibleObjectInRange(npc, L2Character.class, range, obj ->
-			{
-				
+			{			
 				L2Character target = obj;
 				
 				if ((_actor instanceof L2FestivalMonsterInstance) && obj instanceof L2PcInstance)
@@ -376,7 +365,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 				hated = npc.getMostHated();
 			
 			// Order to the L2Attackable to attack the target
-			if (hated != null)
+			if (hated != null && !npc.isCoreAIDisabled())
 			{
 				// Get the hate level of the L2Attackable against this L2Character target contained in _aggroList
 				int aggro = npc.getHating(hated);
@@ -492,13 +481,9 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		
 		if (_attackTimeout < GameTimeController.getInstance().getGameTicks())
 		{
-			// Check if the actor is running
 			if (_actor.isRunning())
 			{
-				// Set the actor movement type to walk and send Server->Client packet ChangeMoveType to all others L2Player
-				_actor.setWalking();
-				
-				// Calculate a new attack timeout
+				_actor.setWalking();				
 				_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getInstance().getGameTicks();
 			}
 		}
@@ -546,13 +531,9 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 									for (Quest quest : npc.getTemplate().getEventQuests(QuestEventType.ON_FACTION_CALL))
 									{
 										if (player != null)
-										{
 											quest.notifyFactionCall(npc, (L2Npc) _actor, player, (originalAttackTarget instanceof L2Summon));
-										}
 										else
-										{
 											setIntention(AI_INTENTION_ACTIVE);
-										}
 									}
 								}
 							}
@@ -578,12 +559,20 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 			}
 		}
 		
+		if (_actor.isCoreAIDisabled())
+			return;
+		
 		L2Character MostHate = ((L2Attackable) _actor).getMostHated();
 		
 		if (MostHate == null)
 		{
-			setIntention(AI_INTENTION_ACTIVE);
-			return;
+			MostHate = targetReconsider(false);
+			
+			if (MostHate == null)
+			{
+				setIntention(AI_INTENTION_ACTIVE);
+				return;
+			}
 		}
 		
 		setAttackTarget(MostHate);
@@ -602,14 +591,14 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		
 		if (_actor.isMoving())
 			range += 15;
-		
-		// ------------------------------------------------------
-		// In case many mobs are trying to hit from same place, move a bit,
-		// circling around the target
-		if (!_actor.isMovementDisabled() && (Rnd.nextInt(100) <= 3))
+
+		if (!_actor.isMovementDisabled() && _actor.getAttackByList().contains(getAttackTarget()))
 		{
 			for (L2Attackable nearby : L2World.getInstance().getVisibleObjects(_actor, L2Attackable.class, actorCollision))
 			{
+				if(!nearby.getAttackByList().contains(getAttackTarget()))
+				    continue;
+				
 				if (nearby != MostHate)
 				{
 					int newX = combinedCollision + Rnd.get(40);
@@ -625,10 +614,8 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 						newY = MostHate.getY() - newY;
 					
 					if (!_actor.isInsideRadius(newX, newY, actorCollision, false))
-					{
-						int newZ = _actor.getZ() + 30;
-						moveTo(newX, newY, newZ);
-					}
+						moveTo(newX, newY, _actor.getZ() + 30);
+					
 					return;
 				}
 			}
@@ -2089,41 +2076,38 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 	@Override
 	protected void onEvtAttacked(L2Character attacker)
 	{
-		// Calculate the attack timeout
+		final L2Attackable me = getActiveChar();
+		
 		_attackTimeout = MAX_ATTACK_TIMEOUT + GameTimeController.getInstance().getGameTicks();
 		
-		// Set the _globalAggro to 0 to permit attack even just after spawn
 		if (_globalAggro < 0)
 			_globalAggro = 0;
 		
-		// Add the attacker to the _aggroList of the actor
-		((L2Attackable) _actor).addDamageHate(attacker, 0, 1);
+		me.addDamageHate(attacker, 0, 1);
 		
-		// Set the L2Character movement type to run and send Server->Client packet ChangeMoveType to all others L2Player
-		if (!_actor.isRunning())
-			_actor.setRunning();
+		if (!me.isRunning())
+			 me.setRunning();
 		
-		// Set the Intention to AI_INTENTION_ATTACK
-		if (getIntention() != AI_INTENTION_ATTACK)
-			setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker);
-		else if (((L2Attackable) _actor).getMostHated() != getAttackTarget())
-			setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker);
-		
-		if (_actor instanceof L2MonsterInstance)
+		if (!me.isCoreAIDisabled())
 		{
-			L2MonsterInstance master = (L2MonsterInstance) _actor;
+		  if (getIntention() != AI_INTENTION_ATTACK)
+			  setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker);
+		
+		  else if (me.getMostHated() != getAttackTarget())
+			  setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker);
+		}
+		
+		if (me instanceof L2MonsterInstance)
+		{
+			L2MonsterInstance master = (L2MonsterInstance) me;
 			
 			if (master.hasMinions())
-			{
-				master.getMinionList().onAssist(_actor, attacker);
-			}
+				master.getMinionList().onAssist(me, attacker);
 			
 			master = master.getLeader();
 			
-			if ((master != null) && master.hasMinions())
-			{
-				master.getMinionList().onAssist(_actor, attacker);
-			}
+			if ((master != null) && master.hasMinions())		
+				master.getMinionList().onAssist(me, attacker);
 		}
 		
 		super.onEvtAttacked(attacker);
@@ -2139,17 +2123,27 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 		
 		if (target != null)
 		{
-			// Add the target to the actor _aggroList or update hate if already present
 			me.addDamageHate(target, 0, aggro);
 			
-			// Set the actor AI Intention to AI_INTENTION_ATTACK
 			if (getIntention() != CtrlIntention.AI_INTENTION_ATTACK)
 			{
-				// Set the L2Character movement type to run and send Server->Client packet ChangeMoveType to all others L2Player
-				if (!_actor.isRunning())
-					_actor.setRunning();
+				if (!me.isRunning())
+					me.setRunning();
 				
 				setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
+				
+				if (me instanceof L2MonsterInstance)
+				{
+					L2MonsterInstance master = (L2MonsterInstance) me;
+					
+					if (master.hasMinions())
+						master.getMinionList().onAssist(me, target);
+					
+					master = master.getLeader();
+					
+					if ((master != null) && master.hasMinions())		
+						master.getMinionList().onAssist(me, target);
+				}
 			}
 		}
 	}
@@ -2157,7 +2151,6 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 	@Override
 	protected void onIntentionActive()
 	{
-		// Cancel attack timeout
 		_attackTimeout = Integer.MAX_VALUE;
 		super.onIntentionActive();
 	}

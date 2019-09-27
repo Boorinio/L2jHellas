@@ -307,13 +307,9 @@ public class ZoneManager
 						}
 						
 						if (temp instanceof L2OlympiadStadiumZone)
-						{
 							OlympiadStadiaManager.getInstance().addStadium((L2OlympiadStadiumZone) temp);
-						}
 						else if (temp instanceof L2BossZone)
-						{
 							GrandBossManager.getInstance().addZone((L2BossZone) temp);
-						}
 					}
 				}
 			}

@@ -349,6 +349,12 @@ abstract class AbstractAI implements Ctrl
 			if (pawn == null)
 				return;
 			
+			if (_actor.isInsideRadius(pawn, offset, true, false))
+			{
+				ThreadPoolManager.getInstance().executeAi(() -> _actor.getAI().notifyEvent(CtrlEvent.EVT_ARRIVED));
+				return;
+			}
+						
 			_actor.moveToLocation(pawn.getX(), pawn.getY(), pawn.getZ(), offset);
 			
 			if (!_actor.isMoving())
@@ -376,7 +382,7 @@ abstract class AbstractAI implements Ctrl
 		}
 	}
 	
-	protected void moveTo(int x, int y, int z)
+	public void moveTo(int x, int y, int z)
 	{
 		// Chek if actor can move
 		if (!_actor.isMovementDisabled())
@@ -483,7 +489,7 @@ abstract class AbstractAI implements Ctrl
 	}
 	
 	public void describeStateToPlayer(L2PcInstance player)
-	{
+	{		
 		if (_clientMoving)
 		{
 			if ((_clientMovingToPawnOffset != 0) && isFollowing())

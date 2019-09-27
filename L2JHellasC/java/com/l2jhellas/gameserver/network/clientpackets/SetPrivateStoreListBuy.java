@@ -1,12 +1,16 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.emum.StoreType;
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.model.TradeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreManageListBuy;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreMsgBuy;
+import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 
 public final class SetPrivateStoreListBuy extends L2GameClientPacket
 {
@@ -74,11 +78,32 @@ public final class SetPrivateStoreListBuy extends L2GameClientPacket
 		
 		if (_count <= 0)
 		{
+			player.sendPacket(SystemMessageId.INCORRECT_ITEM_COUNT);
 			player.setPrivateStoreType(StoreType.NONE);
 			player.broadcastUserInfo();
 			return;
 		}
 		
+		if (player.isSitting() && !player.isInStoreMode())
+		    return;
+		
+		if (player.isAlikeDead() || player.isMounted() || player.isProcessingRequest())
+			 return;
+
+		if (player.isInDuel()  || player.isCastingNow() || AttackStanceTaskManager.getInstance().isInAttackStance(player) || player.isInOlympiadMode())
+		{
+			player.sendPacket(SystemMessageId.CANT_OPERATE_PRIVATE_STORE_DURING_COMBAT);
+			player.sendPacket(new PrivateStoreManageListBuy(player));
+			return;
+		}
+		
+		if (player.isInsideZone(ZoneId.NO_STORE))
+		{
+			player.sendPacket(new PrivateStoreManageListBuy(player));
+			player.sendPacket(SystemMessageId.NO_PRIVATE_STORE_HERE);
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return;
+		}
 		// Check maximum number of allowed slots for pvt shops
 		if (_count > player.getPrivateBuyStoreLimit())
 		{

@@ -25,7 +25,7 @@ public class RecipeData extends RecipeController
 {
 	protected static final Logger _log = Logger.getLogger(RecipeData.class.getName());
 	
-	private final Map<Integer, L2RecipeList> _lists;
+	private final Map<Integer, L2RecipeList> _lists = new HashMap<>();
 	
 	private static RecipeData instance;
 	
@@ -41,8 +41,6 @@ public class RecipeData extends RecipeController
 	
 	private RecipeData()
 	{
-		_lists = new HashMap<>();
-		
 		try
 		{
 			ParseXML();
@@ -158,28 +156,12 @@ public class RecipeData extends RecipeController
 	@Override
 	public L2RecipeList getRecipeByItemId(int itemId)
 	{
-		for (int i = 0; i < _lists.size(); i++)
-		{
-			L2RecipeList find = _lists.get(new Integer(i));
-			if (find.getRecipeId() == itemId)
-			{
-				return find;
-			}
-		}
-		return null;
+		return _lists.values().stream().filter(r -> r.getRecipeId() == itemId).findAny().orElse(null);
 	}
 	
 	public L2RecipeList getRecipeById(int recId)
 	{
-		for (int i = 0; i < _lists.size(); i++)
-		{
-			L2RecipeList find = _lists.get(new Integer(i));
-			if (find.getId() == recId)
-			{
-				return find;
-			}
-		}
-		return null;
+		return _lists.values().stream().filter(r -> r.getId() == recId).findAny().orElse(null);
 	}
 	
 }

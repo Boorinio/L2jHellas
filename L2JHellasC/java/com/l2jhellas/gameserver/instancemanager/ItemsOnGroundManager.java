@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ItemsAutoDestroy;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.emum.L2EtcItemType;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
@@ -113,7 +112,7 @@ public class ItemsOnGroundManager
 				{
 					if (result.getLong(8) > -1)
 					{
-						if ((Config.AUTODESTROY_ITEM_AFTER > 0 && item.getItemType() != L2EtcItemType.HERB) || (Config.HERB_AUTO_DESTROY_TIME > 0 && item.getItemType() == L2EtcItemType.HERB))
+						if (Config.AUTODESTROY_ITEM_AFTER > 0)
 							ItemsAutoDestroy.getInstance().addItem(item);
 					}
 				}

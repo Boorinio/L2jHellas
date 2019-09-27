@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
@@ -48,8 +49,8 @@ public class SiegeManager
 	private int _defenderRespawnDelay = 10000; // Time in ms. Changeable in siege.config
 	
 	// Siege settings
-	private HashMap<Integer, List<SiegeSpawn>> _artefactSpawnList;
-	private HashMap<Integer, List<SiegeSpawn>> _controlTowerSpawnList;
+	private Map<Integer, List<SiegeSpawn>> _artefactSpawnList = new HashMap<>();
+	private Map<Integer, List<SiegeSpawn>> _controlTowerSpawnList = new HashMap<>();
 	
 	private int _controlTowerLosePenalty = 20000; // Time in ms. Changeable in siege.config
 	private int _flagMaxCount = 1; // Changeable in siege.config
@@ -152,10 +153,6 @@ public class SiegeManager
 			_siegeClanMinLevel = Integer.decode(siegeSettings.getProperty("SiegeClanMinLevel", "4"));
 			_siegeLength = Integer.decode(siegeSettings.getProperty("SiegeLength", "120"));
 			_daytosiege = Integer.parseInt(siegeSettings.getProperty("DayToSiege", "14"));
-			
-			// Siege spawns settings
-			_controlTowerSpawnList = new HashMap<>();
-			_artefactSpawnList = new HashMap<>();
 			
 			for (Castle castle : CastleManager.getInstance().getCastles())
 			{

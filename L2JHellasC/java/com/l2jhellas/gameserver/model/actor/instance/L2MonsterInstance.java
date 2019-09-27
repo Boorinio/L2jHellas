@@ -98,6 +98,8 @@ public class L2MonsterInstance extends L2Attackable
 	@Override
 	public void deleteMe()
 	{
+		abortAllAttacks();
+		
 		if (_minionList != null)
 			getMinionList().onMasterDie(true);
 		else if (_master != null)

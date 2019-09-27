@@ -21,7 +21,6 @@ import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.CursedWeapon;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2FestivalMonsterInstance;
@@ -31,6 +30,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2RiftInvaderInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.util.Broadcast;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class CursedWeaponsManager
@@ -318,15 +318,7 @@ public class CursedWeaponsManager
 	
 	public static void announce(SystemMessage sm)
 	{
-		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
-		{
-			if (player == null)
-				continue;
-			
-			player.sendPacket(sm);
-		}
-		if (Config.DEBUG)
-			_log.config(CursedWeaponsManager.class.getName() + "MessageID: " + sm.getSystemMessageId());
+		Broadcast.toAllOnlinePlayers(sm);
 	}
 	
 	public void checkPlayer(L2PcInstance player)
@@ -374,9 +366,7 @@ public class CursedWeaponsManager
 	public void saveData()
 	{
 		for (CursedWeapon cw : _cursedWeapons.values())
-		{
 			cw.saveData();
-		}
 	}
 	
 	public boolean isCursed(int itemId)

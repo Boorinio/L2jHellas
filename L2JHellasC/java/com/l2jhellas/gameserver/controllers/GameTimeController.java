@@ -13,14 +13,12 @@ public class GameTimeController extends Thread
 {
 	static final Logger _log = Logger.getLogger(GameTimeController.class.getName());
 	
-	public static final int TICKS_PER_SECOND = 10; // not able to change this without checking through code
+	public static final int TICKS_PER_SECOND = 10; 
 	public static final int MILLIS_IN_TICK = 1000 / TICKS_PER_SECOND;
 	public static final int IG_DAYS_PER_DAY = 6;
 	public static final int MILLIS_PER_IG_DAY = (3600000 * 24) / IG_DAYS_PER_DAY;
 	public static final int SECONDS_PER_IG_DAY = MILLIS_PER_IG_DAY / 1000;
-	public static final int MINUTES_PER_IG_DAY = SECONDS_PER_IG_DAY / 60;
 	public static final int TICKS_PER_IG_DAY = SECONDS_PER_IG_DAY * TICKS_PER_SECOND;
-	public static final int TICKS_SUN_STATE_CHANGE = TICKS_PER_IG_DAY / 4;
 	
 	private static GameTimeController _instance;
 	
@@ -43,56 +41,56 @@ public class GameTimeController extends Thread
 		super.start();
 	}
 	
-	public static final void init()
+	public static void init()
 	{
 		_instance = new GameTimeController();
 	}
 	
-	public final int getGameTime()
+	public int getGameTime()
 	{
 		return (getGameTicks() % TICKS_PER_IG_DAY) / MILLIS_IN_TICK;
 	}
 	
-	public final int getGameHour()
+	public int getGameHour()
 	{
 		return getGameTime() / 60;
 	}
 	
-	public final int getGameMinute()
+	public int getGameMinute()
 	{
 		return getGameTime() % 60;
 	}
 	
-	public final boolean isNight()
+	public boolean isNight()
 	{
 		return getGameHour() < 6;
 	}
 	
-	public final int getGameTicks()
+	public int getGameTicks()
 	{
 		return (int) ((System.currentTimeMillis() - _referenceTime) / MILLIS_IN_TICK);
 	}
 	
-	public final void registerMovingObject(final L2Character cha)
+	public void registerMovingObject(final L2Character cha)
 	{
 		if (cha == null)
 			return;
-		
+
 		_movingObjects.add(cha);
 	}
 	
-	private final void moveObjects()
+	private void moveObjects()
 	{
 		_movingObjects.removeIf(L2Character::updatePosition);
 	}
 	
-	public final void stopTimer()
+	public void stopTimer()
 	{
 		super.interrupt();
 	}
 	
 	@Override
-	public final void run()
+	public void run()
 	{
 		
 		long nextTickTime, sleepTime;
@@ -139,7 +137,7 @@ public class GameTimeController extends Thread
 		}
 	}
 	
-	public static final GameTimeController getInstance()
+	public static GameTimeController getInstance()
 	{
 		return _instance;
 	}

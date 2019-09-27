@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.group;
 
+import com.l2jhellas.gameserver.ai.CtrlEvent;
+import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.ai.NextAction;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -125,12 +128,22 @@ public class Chests extends AbstractNpcAI
 								chest.setSpecialDrop();
 								chest.doDie(caster);
 							}
-							// Used a key but failed to open: disappears with no rewards.
 							else
-								chest.deleteMe(); // TODO: replace for a better system (as chests attack once before decaying)
-							break;
-						
-						default:
+							{								
+							    //chest attack before decaying)	
+								chest.getAI().setNextAction(new NextAction(CtrlEvent.EVT_READY_TO_ACT, CtrlIntention.AI_INTENTION_ATTACK, new Runnable()
+								{
+									@Override
+									public void run()
+									{
+										// Used a key but failed to open: disappears with no rewards.
+										chest.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+										chest.deleteMe(); 
+									}
+								}));								
+							}
+							break;	
+						default:	
 							chest.doCast(SkillTable.getInstance().getInfo(4143, Math.min(10, Math.round(npc.getLevel() / 10))));
 							break;
 					}

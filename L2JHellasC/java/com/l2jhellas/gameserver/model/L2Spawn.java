@@ -1,8 +1,6 @@
 package com.l2jhellas.gameserver.model;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -53,7 +51,6 @@ public class L2Spawn
 	private int _instanceId = 0;
 	
 	private L2Npc _lastSpawn;
-	private static List<SpawnListener> _spawnListeners = new ArrayList<>();
 	
 	class SpawnTask implements Runnable
 	{
@@ -338,40 +335,11 @@ public class L2Spawn
 		// Init other values of the L2NpcInstance (ex : from its L2CharTemplate for INT, STR, DEX...) and add it in the world as a visible object
 		mob.spawnMe(newlocx, newlocy, newlocz);
 		
-		L2Spawn.notifyNpcSpawned(mob);
-		
 		_lastSpawn = mob;
 		
 		// Increase the current number of L2NpcInstance managed by this L2Spawn
 		_currentCount++;
 		return mob;
-	}
-	
-	public static void addSpawnListener(SpawnListener listener)
-	{
-		synchronized (_spawnListeners)
-		{
-			_spawnListeners.add(listener);
-		}
-	}
-	
-	public static void removeSpawnListener(SpawnListener listener)
-	{
-		synchronized (_spawnListeners)
-		{
-			_spawnListeners.remove(listener);
-		}
-	}
-	
-	public static void notifyNpcSpawned(L2Npc npc)
-	{
-		synchronized (_spawnListeners)
-		{
-			for (SpawnListener listener : _spawnListeners)
-			{
-				listener.npcSpawned(npc);
-			}
-		}
 	}
 	
 	public void setRespawnDelay(int i)

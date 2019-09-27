@@ -36,14 +36,14 @@ public class PetNameTable
 			PreparedStatement statement = con.prepareStatement("SELECT name FROM pets p, items i WHERE p.item_obj_id = i.object_id AND name=? AND i.item_id IN (?)");
 			statement.setString(1, name);
 			
-			String cond = "";
-			for (int it : PetData.getPetItemsAsNpc(petNpcId))
-			{
-				if (cond != "")
-					cond += ", ";
-				cond += it;
-			}
-			statement.setString(2, cond);
+
+			StringBuilder cond = new StringBuilder();
+			if (!cond.toString().isEmpty())
+				cond.append(", ");
+			
+			cond.append(PetData.getPetItemsAsNpc(petNpcId));
+	
+			statement.setString(2, cond.toString());
 			ResultSet rset = statement.executeQuery();
 			result = rset.next();
 			rset.close();

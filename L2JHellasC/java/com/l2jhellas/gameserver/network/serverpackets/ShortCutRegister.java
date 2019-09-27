@@ -22,8 +22,8 @@ public class ShortCutRegister extends L2GameServerPacket
 		writeC(0x44);
 		
 		writeD(_shortcut.getType());
-		writeD(_shortcut.getSlot() + _shortcut.getPage() * 12); // C4 Client
-		
+		writeD(_shortcut.getSlot() + (_shortcut.getPage() * 12)); // C4 Client
+	
 		if (_shortcut.getType() == L2ShortCut.TYPE_ITEM)
 		{
 			writeD(_shortcut.getId());

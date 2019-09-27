@@ -17,12 +17,13 @@ public final class OlympiadAnnouncer implements Runnable
 	private int _currentStadium = 0;
 	
 	public OlympiadAnnouncer()
-	{
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawnTable().values())
+	{	
+		SpawnTable.getInstance().forEachSpawn(sp ->
 		{
-			if (spawn != null && spawn.getId() == OLY_MANAGER)
-				_managers.add(spawn);
-		}
+			if (sp != null && sp.getId() == OLY_MANAGER)
+				_managers.add(sp);
+			return true;
+		});
 	}
 	
 	@Override

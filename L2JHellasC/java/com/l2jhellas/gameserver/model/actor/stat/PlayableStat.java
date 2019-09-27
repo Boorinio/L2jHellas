@@ -41,27 +41,24 @@ public class PlayableStat extends CharStat
 	public boolean removeExp(long value)
 	{
 		if ((getExp() - value) < 0)
-		{
 			value = getExp() - 1;
-		}
 		
 		setExp(getExp() - value);
 		
-		byte level = 0;
-		for (level = 1; level <= Experience.MAX_LEVEL; level++)
+		byte level = 1;
+		
+		for (byte tmp = level; tmp <= Experience.MAX_LEVEL; tmp++)
 		{
-			if (getExp() >= getExpForLevel(level))
-			{
+			if (getExp() >= getExpForLevel(tmp))
 				continue;
-			}
-			level--;
+			level = --tmp;
 			break;
 		}
-		if (level != getLevel())
-		{
+		
+		if ((level != getLevel()) && (level >= 1))
 			addLevel((byte) (level - getLevel()));
-		}
-		return true;
+
+		return true;		
 	}
 	
 	public boolean addExpAndSp(long addToExp, int addToSp)
@@ -115,7 +112,7 @@ public class PlayableStat extends CharStat
 		{
 			setExp(getExpForLevel(getLevel()));
 		}
-		
+
 		if (!levelIncreased)
 			return false;
 		

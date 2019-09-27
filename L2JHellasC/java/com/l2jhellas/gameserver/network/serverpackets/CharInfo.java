@@ -111,11 +111,10 @@ public class CharInfo extends L2GameServerPacket
 				
 		writeD(_activeChar.getPvpFlag());
 		writeD(_activeChar.getKarma());		
-		
-		
-		final int runSpd = _activeChar.getStat().getRunSpeed();
-		final int walkSpd = _activeChar.getStat().getWalkSpeed();
-		final int swimSpd = runSpd;
+				
+		final int runSpd =  (int)Math.round(_activeChar.getRunSpeed() / _activeChar.getMovementSpeedMultiplier());
+		final int walkSpd =  (int)Math.round(_activeChar.getWalkSpeed() / _activeChar.getMovementSpeedMultiplier());
+		final int swimSpd = (int)Math.round(_activeChar.getMoveSpeed() / _activeChar.getMovementSpeedMultiplier());
 		
 		writeD(runSpd);
 		writeD(walkSpd);

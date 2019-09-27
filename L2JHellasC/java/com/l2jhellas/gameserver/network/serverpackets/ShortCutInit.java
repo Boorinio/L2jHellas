@@ -29,7 +29,7 @@ public class ShortCutInit extends L2GameServerPacket
 		for (L2ShortCut sc : _shortCuts)
 		{
 			writeD(sc.getType());
-			writeD(sc.getSlot() + sc.getPage() * 12);
+			writeD(sc.getSlot() + (sc.getPage() * 12));
 			
 			if (sc.getType() == L2ShortCut.TYPE_ITEM)
 			{

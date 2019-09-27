@@ -12,7 +12,9 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.AquireSkillList;
 import com.l2jhellas.gameserver.network.serverpackets.ExEnchantSkillList;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
+import com.l2jhellas.gameserver.network.serverpackets.ServerObjectInfo;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.gameserver.network.serverpackets.AbstractNpcInfo.NpcInfo;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
@@ -282,5 +284,14 @@ public class L2NpcInstance extends L2Npc
 			// this class don't know any other commands, let forward the command to the parent class
 			super.onBypassFeedback(player, command);
 		}
+	}
+	
+	@Override
+	public void sendInfo(L2PcInstance activeChar)
+	{
+		if (getMoveSpeed() == 0)
+			activeChar.sendPacket(new ServerObjectInfo(this, activeChar));
+		else
+			activeChar.sendPacket(new NpcInfo(this, activeChar));
 	}
 }

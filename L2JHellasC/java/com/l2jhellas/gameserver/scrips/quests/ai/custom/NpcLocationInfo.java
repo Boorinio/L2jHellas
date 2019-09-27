@@ -1,7 +1,6 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.custom;
 
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
-import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
@@ -210,18 +209,13 @@ public class NpcLocationInfo extends Quest
 			
 			if (Util.contains(RADARS, npcId))
 			{
-				int x = 0, y = 0, z = 0;
-				for (L2Spawn spawn : SpawnTable.getInstance().getSpawnTable().values())
+				SpawnTable.getInstance().forEachSpawn(sp ->
 				{
-					if (npcId == spawn.getNpcid())
-					{
-						x = spawn.getLocx();
-						y = spawn.getLocy();
-						z = spawn.getLocz();
-						break;
-					}
-				}
-				st.addRadar(x, y, z);
+					if (sp != null && sp.getId() == npcId)
+						st.addRadar(sp.getLocx(), sp.getLocy(), sp.getLocz());
+					return true;
+				});
+							
 				htmltext = "MoveToLoc.htm";
 			}
 			st.exitQuest(true);

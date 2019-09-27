@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.templates.L2BuffTemplate;
@@ -17,7 +19,7 @@ public class BuffTemplateTable
 	
 	private static BuffTemplateTable _instance;
 	
-	private final ArrayList<L2BuffTemplate> _buffs;
+	private final List<L2BuffTemplate> _buffs = new ArrayList<>();
 	
 	public static BuffTemplateTable getInstance()
 	{
@@ -29,8 +31,7 @@ public class BuffTemplateTable
 	}
 	
 	public BuffTemplateTable()
-	{
-		_buffs = new ArrayList<>();
+	{		
 		ReloadBuffTemplates();
 	}
 	
@@ -92,69 +93,27 @@ public class BuffTemplateTable
 		
 	}
 	
-	public ArrayList<L2BuffTemplate> getBuffTemplate(int Id)
+	public List<L2BuffTemplate> getBuffTemplate(int Id)
 	{
-		ArrayList<L2BuffTemplate> _templateBuffs = new ArrayList<>();
-		
-		for (L2BuffTemplate _bt : _buffs)
-		{
-			if (_bt.getId() == Id)
-			{
-				_templateBuffs.add(_bt);
-			}
-		}
-		
-		return _templateBuffs;
+		return _buffs.stream().filter(buff -> (buff.getId() == Id)).collect(Collectors.toList());
 	}
 	
 	public int getTemplateIdByName(String _name)
 	{
-		
-		int _id = 0;
-		
-		for (L2BuffTemplate _bt : _buffs)
-		{
-			if (_bt.getName().equals(_name))
-			{
-				_id = _bt.getId();
-				break;
-			}
-		}
-		
-		return _id;
+		return  _buffs.stream().filter(buname -> buname.getName() !=null && buname.getName().equals(_name)).mapToInt(bu -> bu.getId()).findFirst().orElse(0);
 	}
 	
 	public int getLowestLevel(int Id)
 	{
-		int _lowestLevel = 255;
-		
-		for (L2BuffTemplate _bt : _buffs)
-		{
-			if ((_bt.getId() == Id) && (_lowestLevel > _bt.getMinLevel()))
-			{
-				_lowestLevel = _bt.getMinLevel();
-			}
-		}
-		
-		return _lowestLevel;
+		return  _buffs.stream().filter(lowest -> lowest.getId() == Id).mapToInt(bu -> bu.getMinLevel()).findFirst().orElse(0);
 	}
 	
 	public int getHighestLevel(int Id)
 	{
-		int _highestLevel = 0;
-		
-		for (L2BuffTemplate _bt : _buffs)
-		{
-			if ((_bt.getId() == Id) && (_highestLevel < _bt.getMaxLevel()))
-			{
-				_highestLevel = _bt.getMaxLevel();
-			}
-		}
-		
-		return _highestLevel;
+		return  _buffs.stream().filter(highest -> highest.getId() == Id).mapToInt(bu -> bu.getMaxLevel()).findFirst().orElse(0);
 	}
 	
-	public ArrayList<L2BuffTemplate> getBuffTemplateTable()
+	public List<L2BuffTemplate> getBuffTemplateTable()
 	{
 		return _buffs;
 	}

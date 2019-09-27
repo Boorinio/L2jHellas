@@ -40,7 +40,7 @@ public class L2Manor
 			if (!crops.contains(seed.getCrop()) && seed.getCrop() != 0 && !crops.contains(seed.getCrop()))
 				crops.add(seed.getCrop());
 		}
-		return crops;
+		return crops;		
 	}
 	
 	public int getSeedBasicPrice(int seedId)
@@ -49,18 +49,13 @@ public class L2Manor
 		
 		if (seedItem != null)
 			return seedItem.getReferencePrice();
-		
+
 		return 0;
 	}
 	
 	public int getSeedBasicPriceByCrop(int cropId)
 	{
-		for (SeedData seed : _seeds.values())
-		{
-			if (seed.getCrop() == cropId)
-				return getSeedBasicPrice(seed.getId());
-		}
-		return 0;
+		return _seeds.values().stream().filter(seed -> seed.getCrop() == cropId).mapToInt(se -> getSeedBasicPrice(se.getId())).findFirst().orElse(0);
 	}
 	
 	public int getCropBasicPrice(int cropId)
@@ -75,12 +70,7 @@ public class L2Manor
 	
 	public int getMatureCrop(int cropId)
 	{
-		for (SeedData seed : _seeds.values())
-		{
-			if (seed.getCrop() == cropId)
-				return seed.getMature();
-		}
-		return 0;
+		return  _seeds.values().stream().filter(seed -> seed.getCrop() == cropId).mapToInt(se -> se.getMature()).findFirst().orElse(0);
 	}
 	
 	public int getSeedBuyPrice(int seedId)
@@ -109,12 +99,7 @@ public class L2Manor
 	
 	public int getSeedLevelByCrop(int cropId)
 	{
-		for (SeedData seed : _seeds.values())
-		{
-			if (seed.getCrop() == cropId)
-				return seed.getLevel();
-		}
-		return 0;
+		return  _seeds.values().stream().filter(seed -> seed.getCrop() == cropId).mapToInt(se -> se.getLevel()).findFirst().orElse(0);
 	}
 	
 	public int getSeedLevel(int seedId)
@@ -128,12 +113,7 @@ public class L2Manor
 	
 	public boolean isAlternative(int seedId)
 	{
-		for (SeedData seed : _seeds.values())
-		{
-			if (seed.getId() == seedId)
-				return seed.isAlternative();
-		}
-		return false;
+		return _seeds.values().stream().filter(seed -> seed.getId() == seedId).anyMatch(se -> se.isAlternative());
 	}
 	
 	public int getCropType(int seedId)
@@ -147,13 +127,7 @@ public class L2Manor
 	
 	public synchronized int getRewardItem(int cropId, int type)
 	{
-		for (SeedData seed : _seeds.values())
-		{
-			// there can be several seeds with same crop, but reward should be the same for all
-			if (seed.getCrop() == cropId)
-				return seed.getReward(type);
-		}
-		return -1;
+		return _seeds.values().stream().filter(seed -> seed.getCrop() == cropId).mapToInt(se -> se.getReward(type)).findFirst().orElse(-1);
 	}
 	
 	public synchronized int getRewardItemBySeed(int seedId, int type)

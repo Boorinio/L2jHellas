@@ -3,44 +3,58 @@ package com.l2jhellas.gameserver.skills;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.l2jhellas.gameserver.holder.ItemHolder;
+import com.l2jhellas.gameserver.holder.SkillHolder;
+
 public class NpcBufferSkills
 {
-	private int _npcId = 0;
-	private final Map<Integer, Integer> _skillLevels = new HashMap<>();
-	private final Map<Integer, Integer> _skillFeeIds = new HashMap<>();
-	private final Map<Integer, Integer> _skillFeeAmounts = new HashMap<>();
+	private final int _npcId;
+	private final Map<Integer, NpcBufferData> _skills = new HashMap<>();
 	
-	public NpcBufferSkills(int npcId)
+	public NpcBufferSkills(int npcId) 
 	{
 		_npcId = npcId;
 	}
 	
 	public void addSkill(int skillId, int skillLevel, int skillFeeId, int skillFeeAmount)
 	{
-		_skillLevels.put(skillId, skillLevel);
-		_skillFeeIds.put(skillId, skillFeeId);
-		_skillFeeAmounts.put(skillId, skillFeeAmount);
+		_skills.put(skillId, new NpcBufferData(skillId, skillLevel, skillFeeId, skillFeeAmount));
 	}
 	
-	public int[] getSkillInfo(int skillId)
+	public NpcBufferData getSkillInfo(int skillId) 
 	{
-		Integer skillLevel = _skillLevels.get(skillId);
-		Integer skillFeeId = _skillFeeIds.get(skillId);
-		Integer skillFeeAmount = _skillFeeAmounts.get(skillId);
-		
-		if ((skillLevel == null) || (skillFeeId == null) || (skillFeeAmount == null))
-			return null;
-		
-		return new int[]
-		{
-			skillLevel,
-			skillFeeId,
-			skillFeeAmount
-		};
+		return _skills.get(skillId);
 	}
 	
-	public int getNpcId()
+	public Map<Integer, NpcBufferData> getSkills() 
+	{
+		return _skills;
+	}
+	
+	public int getNpcId() 
 	{
 		return _npcId;
+	}
+	
+	public class NpcBufferData
+	{
+		private final SkillHolder _skill;
+		private final ItemHolder _fee;
+		
+		protected NpcBufferData(int skillId, int skillLevel, int feeId, int feeAmount)
+		{
+			_skill = new SkillHolder(skillId, skillLevel);
+			_fee = new ItemHolder(feeId, feeAmount);
+		}
+		
+		public SkillHolder getSkill() 
+		{
+			return _skill;
+		}
+		
+		public ItemHolder getFee() 
+		{
+			return _fee;
+		}
 	}
 }

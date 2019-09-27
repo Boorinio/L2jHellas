@@ -411,14 +411,11 @@ public abstract class L2Summon extends L2Playable
 	public void setFollowStatus(boolean state)
 	{
 		_follow = state;
+		
 		if (_follow)
-		{
 			getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, getOwner());
-		}
 		else
-		{
 			getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null);
-		}
 	}
 	
 	public boolean getFollowStatus()

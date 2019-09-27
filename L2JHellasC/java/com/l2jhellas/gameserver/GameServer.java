@@ -159,11 +159,12 @@ public class GameServer
 		MapRegionTable.getInstance();
 		StaticObjData.getInstance();
 		TeleportLocationData.getInstance();
-		
-		Util.printSection("Announcements-AutoSpawn-Chat");
-		Announcements.getInstance();
-		AutoAnnouncementHandler.getInstance();
-		AutoChatHandler.getInstance();
+			
+		Util.printSection("Geodata");
+		if (Config.GEODATA)
+			GeoEngine.loadGeo();
+		else
+			_log.info(GameServer.class.getSimpleName() + ":GeoEngine disabled by Config.");	
 		
 		Util.printSection("Skills");
 		SkillTable.getInstance();
@@ -180,10 +181,15 @@ public class GameServer
 		ItemTable.getInstance();
 		ArmorSetsData.getInstance();
 		SummonItemsData.getInstance();
-		SoulCrystalsTable.getInstance();
-				
+		SoulCrystalsTable.getInstance();			
+		
 		Util.printSection("Npc");
 		NpcData.getInstance();
+		
+		Util.printSection("Announcements-AutoSpawn-Chat");
+		Announcements.getInstance();
+		AutoAnnouncementHandler.getInstance();
+		AutoChatHandler.getInstance();
 		
 		Util.printSection("Characters");
 		if (Config.COMMUNITY_TYPE.equals("Full"))
@@ -207,26 +213,26 @@ public class GameServer
 		PartyMatchWaitingList.getInstance();
 		PartyMatchRoomList.getInstance();
 		DuelManager.getInstance();
-	
+		AugmentationData.getInstance();
+
 		Util.printSection("Spawn");
 		SpawnTable.getInstance();
 		DayNightSpawnManager.getInstance().notifyChangeMode();
 		AutoSpawnHandler.getInstance();
-		
+		SevenSignsFestival.getInstance();
+		SevenSigns.getInstance().spawnSevenSignsNPC();// Spawn the Orators/Preachers if in the Seal Validation period.
+		DoorData.getInstance();
+	
 		Util.printSection("Economy");
 		TradeController.getInstance();
 		MultisellData.getInstance();		
-		
-		DoorData.getInstance();
-		
-		Util.printSection("Clan Halls");
-		ClanHallManager.getInstance();
-		AuctionManager.getInstance();
-		
-		Util.printSection("Castles");
+				
+		Util.printSection("Castles-Clan Halls");
 		CastleManager.getInstance();
 		SiegeManager.getInstance();
 		SiegeReward.getInstance();
+		ClanHallManager.getInstance();
+		AuctionManager.getInstance();
 		
 		Util.printSection("RaidBos");
 		RaidBossSpawnManager.getInstance();
@@ -240,20 +246,21 @@ public class GameServer
 		RecipeData.getInstance();
 		RecipeController.getInstance();
 		EventDroplist.getInstance();
-		AugmentationData.getInstance();
 		MonsterRace.getInstance();
 		MercTicketManager.getInstance();
 		PetitionManager.getInstance();
 		CursedWeaponsManager.getInstance();
-		FourSepulchersManager.getInstance().init();
 		PetData.getInstance();
+		
+		Util.printSection("FourSepulcher");
+		FourSepulchersManager.getInstance().init();
 		
 		if (Config.ACCEPT_GEOEDITOR_CONN)
 			GeoEditorListener.getInstance();
 		if (Config.SAVE_DROPPED_ITEM)
 			ItemsOnGroundManager.getInstance();
-		if (Config.AUTODESTROY_ITEM_AFTER > 0 || Config.HERB_AUTO_DESTROY_TIME > 0)
-			ItemsAutoDestroy.getInstance();
+		
+		ItemsAutoDestroy.getInstance().CheckItemsForDestroy();
 				
 		Util.printSection("Tasks");
 		TaskManager.getInstance();
@@ -263,21 +270,11 @@ public class GameServer
 		Util.printSection("Manor");
 		L2Manor.getInstance();
 		CastleManorManager.getInstance();
-		
-		Util.printSection("Seven Signs");
-		SevenSignsFestival.getInstance();
-		SevenSigns.getInstance().spawnSevenSignsNPC();// Spawn the Orators/Preachers if in the Seal Validation period.
-		
+
 		Util.printSection("Olympiad System");
 		OlympiadGameManager.getInstance();
 		Olympiad.getInstance();
 		Hero.getInstance();
-		
-		Util.printSection("Geodata");
-		if (Config.GEODATA)
-			GeoEngine.loadGeo();
-		else
-			_log.info(GameServer.class.getSimpleName() + ":GeoEngine disabled by Config.");
 		
 		Util.printSection("Scripts");
 		if (!Config.ALT_DEV_NO_SCRIPT)
@@ -378,7 +375,7 @@ public class GameServer
 		if (Config.RANK_PVP_SYSTEM_ENABLED)
 			RankLoader.load();
 		else
-			_log.log(Level.INFO, " - Rank PvP System: Disabled");
+			_log.log(Level.INFO, "Rank PvP System: Disabled");
 		
 		if (Config.ZODIAC_ENABLE)
 			ZodiacMain.ZodiacIn();
@@ -396,20 +393,21 @@ public class GameServer
 
 		if (Config.RESTART_BY_TIME_OF_DAY)
 		{
-			_log.info(GameServer.class.getSimpleName() + "Restart System: Auto Restart System is Enabled.");
+			_log.info("Restart System: Auto Restart System is Enabled.");
 			Restart.getInstance().StartCalculationOfNextRestartTime();
 		}
 		else
-		{
-			_log.info(GameServer.class.getSimpleName() + "Restart System: Auto Restart System is Disabled.");
-		}
+			_log.info("Restart System: Auto Restart System is Disabled.");
 		
 		if (Config.MOD_ALLOW_WEDDING)
 			CoupleManager.getInstance();
 		
 		IpCatcher.ipsLoad();
-		
-		FakePlayerManager.initialise();
+			
+		if (Config.ALLOW_FAKE_PLAYERS)
+		   FakePlayerManager.initialise();
+		else
+			_log.log(Level.INFO, "FakePlayer System: Disabled");
 	}
 	
 	public static void main(String[] args) throws Exception

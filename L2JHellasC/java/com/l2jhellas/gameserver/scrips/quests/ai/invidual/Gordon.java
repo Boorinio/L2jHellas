@@ -326,16 +326,8 @@ public class Gordon extends AbstractNpcAI
 	
 	public L2Npc findTemplate(int npcId)
 	{
-		L2Npc npc = null;
-		for (L2Spawn spawn : SpawnTable.getInstance().getSpawnTable().values())
-		{
-			if (spawn != null && spawn.getNpcid() == npcId)
-			{
-				npc = spawn.getLastSpawn();
-				break;
-			}
-		}
-		return npc;
+		L2Spawn spawn = SpawnTable.getInstance().getSpawn(npcId);
+		return spawn != null ? spawn.getLastSpawn() : null;
 	}
 	
 	@Override

@@ -470,11 +470,16 @@ public class Quest
 		timers.remove(timer);
 	}
 	
+	public L2Npc addSpawn(int npcId, L2Character cha)
+	{
+		return addSpawn(npcId, cha.getX(), cha.getY(), cha.getZ(), cha.getHeading(),false, 0, false);
+	}
+	
 	public L2Npc addSpawn(int npcId, L2Character cha, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
 	{
 		return addSpawn(npcId, cha.getX(), cha.getY(), cha.getZ(), cha.getHeading(), randomOffset, despawnDelay, isSummonSpawn);
 	}
-	
+
 	public L2Npc addSpawn(int npcId, Location loc, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
 	{
 		return addSpawn(npcId, loc.getX(), loc.getY(), loc.getZ(), loc.getHeading(), randomOffset, despawnDelay, isSummonSpawn);

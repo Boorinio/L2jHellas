@@ -9,6 +9,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.emum.DuelState;
+import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.instancemanager.DuelManager;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -130,20 +131,29 @@ public class CharStatus
 			value = getCurrentHp() - value; // Get diff of Hp vs value
 			if (value <= 0)
 			{
-				// is the dyeing one a duelist? if so change his duel state to dead
-				if (getActiveChar() instanceof L2PcInstance && ((L2PcInstance) getActiveChar()).isInDuel())
+				if (getActiveChar().isPlayer())
 				{
-					getActiveChar().disableAllSkills();
-					stopHpMpRegeneration();
-					attacker.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
-					attacker.sendPacket(ActionFailed.STATIC_PACKET);
+					// is the dyeing one a duelist? if so change his duel state to dead
+					if(((L2PcInstance) getActiveChar()).isInDuel())
+					{
+					   getActiveChar().disableAllSkills();
+					   stopHpMpRegeneration();
+					   attacker.getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+					   attacker.sendPacket(ActionFailed.STATIC_PACKET);
 					
-					// let the DuelManager know of his defeat
-					DuelManager.getInstance().onPlayerDefeat((L2PcInstance) getActiveChar());
-					value = 1;
+					   // let the DuelManager know of his defeat
+					   DuelManager.getInstance().onPlayerDefeat((L2PcInstance) getActiveChar());
+					   value = 1;
+					}
+					else
+					{
+					  boolean isInside = (getActiveChar().isInsideZone(ZoneId.PEACE) && attacker != null && !attacker.isInsideZone(ZoneId.PEACE));			
+					  value = isInside ? 1 : 0;
+					}
 				}
 				else
 					value = 0; // Set value to 0 if Hp < 0
+				
 			}
 			setCurrentHp(value); // Set Hp
 		}

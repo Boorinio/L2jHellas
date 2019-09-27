@@ -238,7 +238,7 @@ public class L2ControllableMobAI extends L2AttackableAI
 		
 		_accessor.doAttack(getForcedTarget());
 	}
-	
+
 	protected void thinkAttack()
 	{
 		if (getAttackTarget() == null || getAttackTarget().isAlikeDead())
@@ -337,8 +337,8 @@ public class L2ControllableMobAI extends L2AttackableAI
 			_accessor.doAttack(getAttackTarget());
 		}
 	}
-	
-	private void thinkActive()
+
+	protected void thinkActive()
 	{
 		setAttackTarget(findNextRndTarget());
 		L2Character hated;

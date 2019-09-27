@@ -17,7 +17,7 @@ public enum FakePlayerNameManager
 	INSTANCE;
 	
 	public static final Logger _log = Logger.getLogger(FakePlayerNameManager.class.getName());
-	private List<String> _fakePlayerNames;
+	private List<String> _fakePlayerNames = new ArrayList<>();
 	
 	public void initialise()
 	{
@@ -51,14 +51,12 @@ public enum FakePlayerNameManager
 		try (LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(new File("./data/fakenamewordlist.txt"))));)
 		{
 			String line;
-			ArrayList<String> playersList = new ArrayList<>();
 			while ((line = lnr.readLine()) != null)
 			{
 				if (line.trim().length() == 0 || line.startsWith("#"))
 					continue;
-				playersList.add(line);
+				_fakePlayerNames.add(line);
 			}
-			_fakePlayerNames = playersList;
 			_log.log(Level.INFO, String.format("Loaded %s fake player names.", _fakePlayerNames.size()));
 		}
 		catch (Exception e)

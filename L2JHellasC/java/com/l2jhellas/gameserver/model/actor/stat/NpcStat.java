@@ -32,7 +32,7 @@ public class NpcStat extends CharStat
 	}
 	
 	@Override
-	public float getMovementSpeedMultiplier()
+	public final float getMovementSpeedMultiplier()
 	{
 		if (getActiveChar() == null)
 			return 1;

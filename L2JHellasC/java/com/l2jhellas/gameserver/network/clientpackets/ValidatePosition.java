@@ -47,9 +47,11 @@ public class ValidatePosition extends L2GameClientPacket
 		if (activeChar == null || activeChar.isTeleporting() || activeChar.inObserverMode())
 			return;
 		
+		boolean isFloating = activeChar.isFlying() || activeChar.isInsideZone(ZoneId.WATER);
+
 		if ((activeChar.getX() == 0) && (activeChar.getY() == 0) && (activeChar.getZ() == 0))
 		{
-			tsekarepos(activeChar);
+			tsekarepos(activeChar,isFloating);
 			return;
 		}
 		
@@ -57,11 +59,20 @@ public class ValidatePosition extends L2GameClientPacket
 		{
 			if (activeChar.getX() != 0)
 			{
-				tsekarepos(activeChar);
+				tsekarepos(activeChar,isFloating);
 				return;
 			}
 		}
+			
+		if (activeChar.isFalling(_z))
+			return;
 		
+		if(!phxZCheck(activeChar.getZ(), _z))
+		{
+			tsekarepos(activeChar,isFloating);
+			return;
+		}
+
 		if (Config.COORD_SYNCHRONIZE > 0)
 		{
 			activeChar.setClientX(_x);
@@ -77,18 +88,15 @@ public class ValidatePosition extends L2GameClientPacket
 			double diffSq = Math.sqrt(dx * dx + dy * dy);
 
 			if (!activeChar.isFlying() && !activeChar.isInsideZone(ZoneId.WATER))
-			{
-				
+			{			
 				// temporary fix for -> (((if))) holes found.
 				if (_z < -15000 || _z > 15000)
 				{
 					activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 					activeChar.setTarget(activeChar);
-					tsekarepos(activeChar);
-				}
-				
-				if (activeChar.isFalling(_z))
+					tsekarepos(activeChar,false);
 					return;
+				}							
 			}
 			
 			if (diffSq > 0 && diffSq < 1000) // if too large, messes observation
@@ -145,7 +153,7 @@ public class ValidatePosition extends L2GameClientPacket
 				{
 					activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 					activeChar.setTarget(activeChar);
-					tsekarepos(activeChar);
+					tsekarepos(activeChar,false);
 				}
 				
 				if (activeChar.isFalling(_z))
@@ -191,15 +199,20 @@ public class ValidatePosition extends L2GameClientPacket
 		return _x == pos._x && _y == pos._y && _z == pos._z && _heading == pos._heading;
 	}
 	
-	// temporary fix for -> (((if))) holes found.
-	private static void tsekarepos(L2PcInstance activeChar)
+	public void tsekarepos(L2PcInstance activeChar,boolean isfloating)
 	{
 		int realX = activeChar.getX();
 		int realY = activeChar.getY();
 		int realZ = activeChar.getZ();
 		if (realX != 0 && realY != 0 && realZ != 0)
 		{
-			if (GeoEngine.getNSWE(activeChar.getX(), activeChar.getY(), activeChar.getZ()) == 15)
+			if(isfloating)
+			{
+				activeChar.setXYZ(realX, realY, realZ);
+                return;
+			}
+			
+			if (Config.GEODATA && GeoEngine.getNSWE(activeChar.getX(), activeChar.getY(), activeChar.getZ()) == 15)
 			{
 				activeChar.setXYZ(realX, realY, GeoEngine.getHeight(realX, realY, realZ));
 				activeChar.broadcastPacket(new ValidateLocation(activeChar));
@@ -209,7 +222,13 @@ public class ValidatePosition extends L2GameClientPacket
 		}
 		else if (activeChar.getClientX() != 0 && activeChar.getClientY() != 0 && activeChar.getClientZ() != 0)
 		{
-			if (GeoEngine.getNSWE(activeChar.getClientX(), activeChar.getClientY(), activeChar.getClientZ()) == 15)
+			if(isfloating)
+			{
+				activeChar.setXYZ(realX, realY, realZ);
+                return;
+			}
+			
+			if (Config.GEODATA && GeoEngine.getNSWE(activeChar.getClientX(), activeChar.getClientY(), activeChar.getClientZ()) == 15)
 			{
 				activeChar.setXYZ(activeChar.getClientX(), activeChar.getClientY(), GeoEngine.getHeight(activeChar.getClientX(), activeChar.getClientY(), activeChar.getClientZ()));
 				activeChar.broadcastPacket(new ValidateLocation(activeChar));
@@ -219,5 +238,10 @@ public class ValidatePosition extends L2GameClientPacket
 		}
 		else
 			activeChar.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
+	}
+	
+	public boolean phxZCheck(int cz, int tz)
+	{		
+		return Math.abs(cz - tz) < 1000;
 	}
 }

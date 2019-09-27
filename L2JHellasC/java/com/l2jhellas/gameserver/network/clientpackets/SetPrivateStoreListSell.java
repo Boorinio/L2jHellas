@@ -63,7 +63,7 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
 		
 		if (AttackStanceTaskManager.getInstance().isInAttackStance(player) || (player.isCastingNow() || player.isInDuel()))
 		{
-			player.sendPacket(SystemMessageId.YOU_ARE_NOT_AUTHORIZED_TO_DO_THAT);
+			player.sendPacket(SystemMessageId.CANT_OPERATE_PRIVATE_STORE_DURING_COMBAT);
 			player.sendPacket(new PrivateStoreManageListSell(player, _packageSale));
 			return;
 		}
@@ -74,6 +74,12 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
 			player.sendPacket(new PrivateStoreManageListSell(player, _packageSale));
 			return;
 		}
+		
+		if (player.isSitting() && !player.isInStoreMode())
+		    return;
+		
+		if (player.isAlikeDead() || player.isMounted() || player.isProcessingRequest())
+			 return;
 		
 		TradeList tradeList = player.getSellList();
 		tradeList.clear();
@@ -99,6 +105,7 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
 		
 		if (_count <= 0)
 		{
+			player.sendPacket(SystemMessageId.INCORRECT_ITEM_COUNT);
 			player.setPrivateStoreType(StoreType.NONE);
 			player.broadcastUserInfo();
 			return;

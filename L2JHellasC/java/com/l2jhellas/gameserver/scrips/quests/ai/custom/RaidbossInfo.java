@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
-import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -149,12 +148,13 @@ public class RaidbossInfo extends Quest
 		
 		// Add all Raid Bosses to RAIDS list
 		for (L2NpcTemplate raid : NpcData.getInstance().getAllNpcOfClassType("L2RaidBoss"))
-		{
-			for (L2Spawn spawn : SpawnTable.getInstance().getSpawnTable().values())
+		{		
+			SpawnTable.getInstance().forEachSpawn(sp ->
 			{
-				if (spawn.getNpcid() == raid.getNpcId())
-					RADARS.put(raid.getNpcId(), new Location(spawn.getLocx(), spawn.getLocy(), spawn.getLocz()));
-			}
+				if (sp != null && sp.getId() == raid.getNpcId())
+				  RADARS.put(raid.getNpcId(), new Location(sp.getLocx(), sp.getLocy(), sp.getLocz()));
+				return true;
+			});
 		}
 	}
 	

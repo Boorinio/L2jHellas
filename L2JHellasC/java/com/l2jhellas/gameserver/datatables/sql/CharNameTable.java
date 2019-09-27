@@ -43,10 +43,7 @@ public class CharNameTable
 	private final void addName(int objId, String name)
 	{
 		if (name != null)
-		{
-			if (!name.equalsIgnoreCase(_chars.get(objId)))
-				_chars.put(objId, name);
-		}
+			_chars.putIfAbsent(objId, name);
 	}
 	
 	public final void removeName(int objId)

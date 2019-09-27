@@ -85,33 +85,7 @@ public class PetData implements DocumentParser
 			}
 		}
 	}
-	
-	public void addPetData(L2PetData petData)
-	{
-		Map<Integer, L2PetData> h = _petTable.get(petData.getPetID());
 		
-		if (h == null)
-		{
-			Map<Integer, L2PetData> statTable = new HashMap<>();
-			statTable.put(petData.getPetLevel(), petData);
-			_petTable.put(petData.getPetID(), statTable);
-			statTable = null;
-			return;
-		}
-		
-		h.put(petData.getPetLevel(), petData);
-		
-		h = null;
-	}
-	
-	public void addPetData(L2PetData[] petLevelsList)
-	{
-		for (L2PetData element : petLevelsList)
-		{
-			addPetData(element);
-		}
-	}
-	
 	public L2PetData getPetData(int petID, int petLevel)
 	{
 		return _petTable.get(petID).get(petLevel);

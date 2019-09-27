@@ -12,7 +12,7 @@ public final class RequestShortCutReg extends L2GameClientPacket
 	private int _id;
 	private int _slot;
 	private int _page;
-	private int _unk;
+	private int _characterType;
 	
 	@Override
 	protected void readImpl()
@@ -20,7 +20,7 @@ public final class RequestShortCutReg extends L2GameClientPacket
 		_type = readD();
 		int slot = readD();
 		_id = readD();
-		_unk = readD();
+		_characterType = readD();
 		
 		_slot = slot % 12;
 		_page = slot / 12;
@@ -36,9 +36,12 @@ public final class RequestShortCutReg extends L2GameClientPacket
 		if (_page > 11 || _page < 0)
 			return;
 		
+		if (_type < 1 || _type > 5)
+			return;
+		
 		final int level = activeChar.getSkillLevel(_id);
 		
-		final L2ShortCut sc = new L2ShortCut(_slot, _page, _type, _id, level, _unk);
+		final L2ShortCut sc = new L2ShortCut(_slot, _page, _type, _id, level, _characterType);
 		activeChar.sendPacket(new ShortCutRegister(activeChar, sc));
 		activeChar.registerShortCut(sc);
 	}

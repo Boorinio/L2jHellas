@@ -39,9 +39,7 @@ public class AdminAdmin implements IAdminCommandHandler
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (command.startsWith("admin_admin"))
-		{
 			showMainPage(activeChar, command);	
-		}
 		else if (command.startsWith("admin_gmliston"))
 		{
 			AdminData.getInstance().showGm(activeChar);

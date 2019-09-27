@@ -17,7 +17,6 @@ import com.l2jhellas.gameserver.ai.L2AttackableAI;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2SiegeGuardAI;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.emum.L2EtcItemType;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2CommandChannel;
@@ -53,14 +52,7 @@ public class L2Attackable extends L2Npc
 {
 	private boolean _isRaid = false;
 	private boolean _isRaidMinion = false;
-	
-	AttackableType _type;
-	
-	public enum AttackableType
-	{
-		ATTACKABLE_NPC,
-		ANIMATED_BOT;
-	}
+
 	
 	public void addDamageHate(L2Character attacker, int damage, int aggro)
 	{
@@ -82,7 +74,7 @@ public class L2Attackable extends L2Npc
 		ai.addDamage(damage);
 		
 		// If aggro is negative, its comming from SEE_SPELL, buffs use constant 150
-		if (targetPlayer != null && aggro == 0 && _type == AttackableType.ATTACKABLE_NPC)
+		if (targetPlayer != null && aggro == 0)
 		{
 			if (getTemplate().getEventQuests(QuestEventType.ON_AGGRO_RANGE_ENTER) != null)
 				for (Quest quest : getTemplate().getEventQuests(QuestEventType.ON_AGGRO_RANGE_ENTER))
@@ -105,8 +97,6 @@ public class L2Attackable extends L2Npc
 		{
 			getAI().notifyEvent(CtrlEvent.EVT_ATTACKED, attacker);
 			
-			if (_type == AttackableType.ATTACKABLE_NPC)
-			{
 				try
 				{
 					if (attacker instanceof L2PcInstance || attacker instanceof L2Summon)
@@ -127,7 +117,6 @@ public class L2Attackable extends L2Npc
 					for (StackTraceElement stack : e.getStackTrace())
 						_log.severe(stack.toString());
 				}
-			}
 		}
 	}
 	
@@ -313,14 +302,6 @@ public class L2Attackable extends L2Npc
 			return 0;
 		}
 		return ai.getHate();
-	}
-	
-	public L2PcInstance getAnimtated()
-	{
-		if (_type == AttackableType.ANIMATED_BOT)
-			return getActingPlayer();
-
-		throw new ClassCastException("Cannot cast L2Bot to a L2Attackable! StackTrace: ");
 	}
 	
 	public final class AggroInfo
@@ -1613,11 +1594,9 @@ public class L2Attackable extends L2Npc
 				ditem.dropMe(this, newX, newY, newZ);
 				
 				// Add drop to auto destroy item task
-				if (!Config.LIST_PROTECTED_ITEMS.contains(item.getItemId()))
-				{
-					if ((Config.AUTODESTROY_ITEM_AFTER > 0 && ditem.getItemType() != L2EtcItemType.HERB) || (Config.HERB_AUTO_DESTROY_TIME > 0 && ditem.getItemType() == L2EtcItemType.HERB))
-						ItemsAutoDestroy.getInstance().addItem(ditem);
-				}
+				if (Config.AUTODESTROY_ITEM_AFTER > 0 && !Config.LIST_PROTECTED_ITEMS.contains(item.getItemId()))
+					ItemsAutoDestroy.getInstance().addItem(ditem);
+
 				ditem.setProtected(false);
 				
 				// If stackable, end loop as entire count is included in 1 instance of item
@@ -2397,5 +2376,16 @@ public class L2Attackable extends L2Npc
 	public synchronized boolean getMustRewardExpSP()
 	{
 		return _mustGiveExpSp;
+	}
+	
+	public double distance2d(L2Character character)
+	{
+		return distance2d(character.getX(), character.getY());
+	}
+	
+	@Override
+	public double distance2d(double x, double y)
+	{
+		return Math.sqrt(Math.pow(getX() - x, 2) + Math.pow(getY() - y, 2));
 	}
 }

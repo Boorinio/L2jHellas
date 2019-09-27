@@ -44,8 +44,7 @@ public class GeoEngine
 	
 	// If geo is off do simple check
 	public static boolean canSeeTarget(L2Object cha, L2Object target)
-	{
-		
+	{		
 		// Don't allow casting on players on different dungeon lvls etc
 		return Math.abs(target.getZ() - cha.getZ()) < 1000;
 	}

@@ -9,6 +9,7 @@ import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 
 public class AdminLevel implements IAdminCommandHandler
 {
@@ -39,6 +40,10 @@ public class AdminLevel implements IAdminCommandHandler
 				if (targetChar instanceof L2Playable)
 				{
 					((L2Playable) targetChar).getStat().addLevel(Byte.parseByte(val));
+					
+					if (targetChar instanceof L2PcInstance)
+						((L2PcInstance) targetChar).sendPacket(new UserInfo(((L2PcInstance) targetChar).getActingPlayer()));
+	
 				}
 			}
 			catch (NumberFormatException e)
@@ -78,6 +83,9 @@ public class AdminLevel implements IAdminCommandHandler
 					{
 						targetPlayer.getStat().addExpAndSp(tXp - pXp, 0);
 					}
+					
+					if (targetChar instanceof L2PcInstance)
+					    targetPlayer.sendPacket(new UserInfo(targetPlayer.getActingPlayer()));
 				}
 				else
 				{

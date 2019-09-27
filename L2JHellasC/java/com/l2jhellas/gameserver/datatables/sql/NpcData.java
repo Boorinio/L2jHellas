@@ -368,7 +368,7 @@ public class NpcData
 				_log.warning(NpcData.class.getName() + ":  Error reading NPC trainer data");
 			}
 			
-			_log.info("NpcTable: Loaded " + th + " teachers.");
+			_log.info("NpcData: Loaded " + th + " teachers.");
 			
 			DocumentBuilderFactory factory1 = DocumentBuilderFactory.newInstance();
 			factory1.setValidating(false);

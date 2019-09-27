@@ -44,6 +44,9 @@ public class DayNightSpawnManager
 		final List<L2Spawn> creaturesToUnspawn = (isNight) ? _dayCreatures : _nightCreatures;
 		final List<L2Spawn> creaturesToSpawn = (isNight) ? _nightCreatures : _dayCreatures;
 		
+		if(creaturesToUnspawn.isEmpty() && creaturesToSpawn.isEmpty())
+			return;
+		
 		for (L2Spawn Unspawn : creaturesToUnspawn)
 		{
 			Unspawn.stopRespawn();

@@ -18,7 +18,7 @@ public class L2BoatAI extends L2CharacterAI
 	}
 	
 	@Override
-	protected void moveTo(int x, int y, int z)
+	public void moveTo(int x, int y, int z)
 	{
 		if (!_actor.isMovementDisabled())
 		{

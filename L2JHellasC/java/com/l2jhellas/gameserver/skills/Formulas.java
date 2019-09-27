@@ -1409,21 +1409,7 @@ public final class Formulas
 	{
 		return Math.max(50, (500000 / attackSpeed));
 	}
-	
-	public static int calculateTimeToHit(int totalAttackTime, L2WeaponType attackType, boolean isblunt, boolean secondHit)
-	{	
-		switch (attackType)
-		{
-			case BOW:
-				return (int) (totalAttackTime * 0.95);
-			case DUAL:
-			case DUALFIST:
-				return secondHit? (int) (totalAttackTime * 0.6) : (int) (totalAttackTime * 0.2726);
-			default:
-				return isblunt? (int) (totalAttackTime * 0.735) : (int) (totalAttackTime * 0.644);
-		}
-	}
-	
+
 	public final static int calcMAtkSpd(L2Character attacker, L2Skill skill, double skillTime)
 	{
 		return skill.isMagic()? (int) (skillTime * 333 / attacker.getMAtkSpd()) : (int) (skillTime * 333 / attacker.getPAtkSpd());
@@ -2032,4 +2018,5 @@ public final class Formulas
 		
 		return reflect;
 	}
+
 }

@@ -82,7 +82,7 @@ public class L2PlayerAI extends L2CharacterAI
 				setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
 		}
 	}
-	
+
 	@Override
 	protected void onEvtReadyToAct()
 	{
@@ -109,10 +109,10 @@ public class L2PlayerAI extends L2CharacterAI
 		{
 			changeIntention(AI_INTENTION_REST, null, null);
 			setTarget(null);
+			
 			if (getAttackTarget() != null)
-			{
 				setAttackTarget(null);
-			}
+			
 			clientStopMoving(null);
 		}
 	}
@@ -129,9 +129,7 @@ public class L2PlayerAI extends L2CharacterAI
 				setIntention(nextIntention._crtlIntention, nextIntention._arg0, nextIntention._arg1);
 			}
 			else
-			{
 				changeIntention(AI_INTENTION_ACTIVE, null, null);
-			}
 		}
 	}
 	
@@ -148,13 +146,11 @@ public class L2PlayerAI extends L2CharacterAI
 	{
 		L2Character target = getAttackTarget();
 		
-		if (checkTargetLostOrDead(target))
+		if(checkTargetLostOrDead(target))
 			return;
 
-		if(maybeMoveToPawn(target, _actor.getPhysicalAttackRange()))
-			return;
-		
-		_actor.doAttack(target,false);
+		if(!maybeMoveToPawn(target, _actor.getPhysicalAttackRange()))
+		   _actor.doAttack(target,false);
 	}
 	
 	private void thinkCast()
@@ -173,10 +169,7 @@ public class L2PlayerAI extends L2CharacterAI
 				boolean isBad = _skill.isOffensive() || _skill.isDebuff();
 				
 				if (isBad && target != null)
-				{
-					// Notify the target
 					setCastTarget(null);
-				}
 				return;
 			}
 
@@ -245,7 +238,7 @@ public class L2PlayerAI extends L2CharacterAI
 			return;
 		if (maybeMoveToPawn(target, 36))
 			return;
-		setIntention(AI_INTENTION_IDLE);
+		setIntention(AI_INTENTION_ACTIVE);
 		((L2PcInstance.AIAccessor) _accessor).doPickupItem(target);
 		return;
 	}
@@ -269,7 +262,7 @@ public class L2PlayerAI extends L2CharacterAI
 		
 		setTarget(object);
 		
-		moveToPawn(object, 60);
+		moveToPawn(object, 60);		
 	}
 	
 	@Override
@@ -282,7 +275,7 @@ public class L2PlayerAI extends L2CharacterAI
 	{
 		if (_actor.isAllSkillsDisabled() || _actor.isCastingNow())
 			return;
-		
+			
 		L2Object target = getTarget();
 		
 		if (checkTargetLost(target))
@@ -293,8 +286,8 @@ public class L2PlayerAI extends L2CharacterAI
 		
 		if (!(target instanceof L2StaticObjectInstance))
 			_actor.getActingPlayer().doInteract((L2Character) target);
-		
-		setIntention(AI_INTENTION_IDLE);
+			
+		setIntention(AI_INTENTION_ACTIVE);	
 	}
 	
 	@Override

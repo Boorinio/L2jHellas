@@ -24,7 +24,6 @@ import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.SpawnListener;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2FestivalMonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -40,7 +39,7 @@ import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
-public class SevenSignsFestival implements SpawnListener
+public class SevenSignsFestival
 {
 	protected static final Logger _log = Logger.getLogger(SevenSignsFestival.class.getName());
 	private static SevenSignsFestival _instance;
@@ -3158,7 +3157,6 @@ public class SevenSignsFestival implements SpawnListener
 			return;
 		}
 		
-		L2Spawn.addSpawnListener(this);
 		startFestivalManager();
 	}
 	
@@ -4009,7 +4007,6 @@ public class SevenSignsFestival implements SpawnListener
 		return festivalInst.increaseChallenge();
 	}
 	
-	@Override
 	public void npcSpawned(L2Npc npc)
 	{
 		if (npc == null)
@@ -4021,9 +4018,7 @@ public class SevenSignsFestival implements SpawnListener
 		if (npcId == 31127)
 		{
 			if (Config.DEBUG)
-			{
 				_log.config(SevenSignsFestival.class.getName() + ": Instance found for NPC ID 31127 (" + npc.getObjectId() + ").");
-			}
 			
 			_dawnChatGuide = npc;
 		}
@@ -4031,9 +4026,7 @@ public class SevenSignsFestival implements SpawnListener
 		if (npcId == 31137)
 		{
 			if (Config.DEBUG)
-			{
 				_log.config(SevenSignsFestival.class.getName() + ": Instance found for NPC ID 31137 (" + npc.getObjectId() + ").");
-			}
 			
 			_duskChatGuide = npc;
 		}

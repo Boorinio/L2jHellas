@@ -87,11 +87,8 @@ public class CastleManager
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
-			ResultSet rs;
-			
-			statement = con.prepareStatement("SELECT id FROM castle ORDER BY id");
-			rs = statement.executeQuery();
+			PreparedStatement statement = con.prepareStatement("SELECT id FROM castle ORDER BY id");
+			ResultSet rs = statement.executeQuery();
 			
 			while (rs.next())
 			{
@@ -104,7 +101,7 @@ public class CastleManager
 		}
 		catch (Exception e)
 		{
-			_log.warning(CastleManager.class.getName() + ": loadCastleData(): ");
+			_log.warning(" loadCastleData(): "+e);
 			if (Config.DEVELOPER)
 				e.printStackTrace();
 		}
@@ -112,42 +109,22 @@ public class CastleManager
 	
 	public final Castle getCastleById(int castleId)
 	{
-		for (Castle temp : getCastles())
-		{
-			if (temp.getCastleId() == castleId)
-				return temp;
-		}
-		return null;
+		return getCastles().stream().filter(c -> c.getCastleId() == castleId).findFirst().orElse(null);
 	}
 	
 	public final Castle getCastleByOwner(L2Clan clan)
 	{
-		for (Castle temp : getCastles())
-		{
-			if (temp.getOwnerId() == clan.getClanId())
-				return temp;
-		}
-		return null;
+		return getCastles().stream().filter(c -> c.getOwnerId() == clan.getClanId()).findFirst().orElse(null);
 	}
 	
 	public final Castle getCastle(String name)
 	{
-		for (Castle temp : getCastles())
-		{
-			if (temp.getName().equalsIgnoreCase(name.trim()))
-				return temp;
-		}
-		return null;
+		return getCastles().stream().filter(c -> c.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
 	}
 	
 	public final Castle getCastle(int x, int y, int z)
 	{
-		for (Castle temp : getCastles())
-		{
-			if (temp.checkIfInZone(x, y, z))
-				return temp;
-		}
-		return null;
+		return getCastles().stream().filter(c -> c.checkIfInZone(x, y, z)).findFirst().orElse(null);
 	}
 	
 	public final Castle getCastle(L2Object activeObject)
@@ -206,9 +183,7 @@ public class CastleManager
 				maxTax = 15;
 				break;
 		}
-		for (Castle castle : _castles)
-			if (castle.getTaxPercent() > maxTax)
-				castle.setTaxPercent(maxTax);
+		getCastles().stream().filter(c -> c.getTaxPercent() > maxTax).forEach(c -> c.setTaxPercent(maxTax));
 	}
 	
 	int _castleId = 1; // from this castle

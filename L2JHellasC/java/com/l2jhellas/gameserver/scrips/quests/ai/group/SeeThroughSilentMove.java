@@ -1,7 +1,6 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.group;
 
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
-import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
@@ -27,9 +26,14 @@ public class SeeThroughSilentMove extends AbstractNpcAI
 	public SeeThroughSilentMove()
 	{
 		super("SeeThroughSilentMove", "ai");
-		for (L2Spawn npc : SpawnTable.getInstance().getSpawnTable().values())
-			if (Util.contains(MOBIDS, npc.getNpcid()) && npc.getLastSpawn() != null && npc.getLastSpawn() instanceof L2Attackable)
-				((L2Attackable) npc.getLastSpawn()).seeThroughSilentMove(true);
+		
+		SpawnTable.getInstance().forEachSpawn(sp ->
+		{
+			if (sp != null && Util.contains(MOBIDS, sp.getNpcid()) && sp.getLastSpawn() != null && sp.getLastSpawn() instanceof L2Attackable)
+				((L2Attackable) sp.getLastSpawn()).seeThroughSilentMove(true);
+			return true;
+		});
+
 		for (int npcId : MOBIDS)
 			addSpawnId(npcId);
 	}

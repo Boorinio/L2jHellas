@@ -1,5 +1,8 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.templates.L2Henna;
 
@@ -8,19 +11,16 @@ public final class HennaInfo extends L2GameServerPacket
 	private static final String _S__E4_HennaInfo = "[S] E4 HennaInfo";
 	
 	private final L2PcInstance _activeChar;
-	private final L2Henna[] _hennas = new L2Henna[3];
-	private int _count = 0;
+	private final List<L2Henna> _hennas = new ArrayList<>();
 	
 	public HennaInfo(L2PcInstance player)
 	{
 		_activeChar = player;
-		_count = 0;
 		
-		for (int i = 0; i < 3; i++)
+		for (L2Henna henna : _activeChar.getHennaList())
 		{
-			L2Henna henna = _activeChar.getHenna(i + 1);
 			if (henna != null)
-				_hennas[_count++] = henna;
+				_hennas.add(henna);
 		}
 	}
 	
@@ -45,11 +45,12 @@ public final class HennaInfo extends L2GameServerPacket
 		else
 			writeD(0);
 		
-		writeD(_count); // size
-		for (int i = 0; i < _count; i++)
+		writeD(_hennas.size()); // size
+		
+		for (L2Henna henna : _hennas)
 		{
-			writeD(_hennas[i].getSymbolId());
-			writeD(_hennas[i].isForThisClass(_activeChar) ? _hennas[i].getSymbolId() : 0);
+			writeD(henna.getSymbolId());
+			writeD(henna.isForThisClass(_activeChar) ? henna.getSymbolId() : 0);
 		}
 	}
 	

@@ -665,7 +665,7 @@ public final class L2ItemInstance extends L2Object
 			insertIntoDb();
 		}
 	}
-	
+
 	public static L2ItemInstance restoreFromDb(int objectId)
 	{
 		L2ItemInstance inst = null;
@@ -873,6 +873,27 @@ public final class L2ItemInstance extends L2Object
 				e.printStackTrace();
 		}
 	}
+	
+	
+	public boolean canBeRemoved()
+	{
+		final long autoDestroyTime = Config.AUTODESTROY_ITEM_AFTER == 0 ? 3600000 : Config.AUTODESTROY_ITEM_AFTER * 1000;	
+		long curtime = System.currentTimeMillis();
+		
+	    if ((getDropTime() == 0) || (getLocation() != L2ItemInstance.ItemLocation.VOID))
+		     return true;
+	    else if(curtime - getDropTime()  > autoDestroyTime)
+		{		
+			decayMe();
+			
+			if (Config.SAVE_DROPPED_ITEM)
+				ItemsOnGroundManager.getInstance().removeObject(this);
+			
+		    return true;
+		}
+		
+        return false;
+    }
 	
 	@Override
 	public String toString()

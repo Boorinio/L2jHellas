@@ -4,6 +4,8 @@ import java.nio.BufferUnderflowException;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.TaskPriority;
+import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
@@ -116,6 +118,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 		if (_targetX == _originX && _targetY == _originY && _targetZ == _originZ)
 		{
 			activeChar.sendPacket(new StopMove(activeChar));
+			ThreadPoolManager.getInstance().executeAi(() -> activeChar.getAI().notifyEvent(CtrlEvent.EVT_ARRIVED));
 			return;
 		}
 		
@@ -143,7 +146,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 			activeChar.cancellEnchant();
 			activeChar.sendPacket(SystemMessageId.ENCHANT_SCROLL_CANCELLED);
 		}
-		
+
 		if (_moveMovement == 0 && !Config.GEODATA) // cursor movement without geodata is disabled
 		{
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
@@ -181,7 +184,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 	}
-	
+
 	@Override
 	public String getType()
 	{

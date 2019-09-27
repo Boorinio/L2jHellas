@@ -246,20 +246,7 @@ public class CharStat
 			val += BalanceLoad.MAtk[((L2PcInstance) _activeChar).getClassId().getId() - 88];
 		return val;
 	}
-	
-	public int getMAtkSpd()
-	{
-		float bonusSpdAtk = 1;
-		if (_activeChar.isChampion())
-			bonusSpdAtk = Config.CHAMPION_SPD_ATK;
-		
-		int val = (int) calcStat(Stats.MAGIC_ATTACK_SPEED, _activeChar.getTemplate().baseMAtkSpd * bonusSpdAtk, null, null);
-		val /= _activeChar.getArmourExpertisePenalty();
-		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
-			val += BalanceLoad.MAtkSpd[((L2PcInstance) _activeChar).getClassId().getId() - 88];
-		return val;
-	}
-	
+
 	public int getMDef(L2Character target, L2Skill skill)
 	{
 		// Get the base MDef of the L2Character
@@ -296,9 +283,24 @@ public class CharStat
 		int val = (int) (calcStat(Stats.POWER_ATTACK_SPEED, _activeChar.getTemplate().basePAtkSpd * bonusAtk, null, null) / _activeChar.getArmourExpertisePenalty());
 		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
 			val += BalanceLoad.PAtkSpd[((L2PcInstance) _activeChar).getClassId().getId() - 88];
-		return val;
+
+		return Math.min(val, Config.MAX_PATK_SPEED);
 	}
-	
+		
+	public int getMAtkSpd()
+	{
+		float bonusSpdAtk = 1;
+		if (_activeChar.isChampion())
+			bonusSpdAtk = Config.CHAMPION_SPD_ATK;
+		
+		int val = (int) calcStat(Stats.MAGIC_ATTACK_SPEED, _activeChar.getTemplate().baseMAtkSpd * bonusSpdAtk, null, null);
+		val /= _activeChar.getArmourExpertisePenalty();
+		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
+			val += BalanceLoad.MAtkSpd[((L2PcInstance) _activeChar).getClassId().getId() - 88];
+		
+		return Math.min(val, Config.MAX_MATK_SPEED);
+	}
+
 	public int getPDef(L2Character target)
 	{
 		// Get the base PDef of the L2Character
@@ -364,43 +366,7 @@ public class CharStat
 	{
 		return calcStat(Stats.ATK_REUSE, 1, target, null);
 	}
-	
-	public int getWalkSpeed()
-	{
-		int walkspd = (getRunSpeed() * 70) / 100;
 		
-		if (_activeChar instanceof L2PcInstance)
-		{
-			
-			if (_activeChar.isInsideZone(ZoneId.SWAMP))
-				walkspd /= 1;
-			
-			return walkspd;
-		}
-		return (int) calcStat(Stats.WALK_SPEED, _activeChar.getTemplate().baseWalkSpd, null, null);
-	}
-	
-	public int getRunSpeed()
-	{
-		// err we should be adding TO the persons run speed not making it a constant
-		int val = (int) (calcStat(Stats.RUN_SPEED, _activeChar.getTemplate().baseRunSpd, null, null));
-		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
-			val += BalanceLoad.Speed[((L2PcInstance) _activeChar).getClassId().getId() - 88];
-		
-		if (_activeChar.isFlying())
-			return val += Config.WYVERN_SPEED;
-		if (_activeChar.isRiding())
-			return val += Config.STRIDER_SPEED;
-		
-		val /= _activeChar.getArmourExpertisePenalty();
-		
-		// swamp zone -50% speed
-		if (_activeChar.isInsideZone(ZoneId.SWAMP))
-			val /= 2;
-
-		return Math.min(val, Config.MAX_RUN_SPEED);
-	}
-	
 	public final int getShldDef()
 	{
 		return (int) calcStat(Stats.SHIELD_DEFENCE, 0, null, null);
@@ -479,11 +445,65 @@ public class CharStat
 		return returnVal;
 	}
 	
-	public float getMovementSpeedMultiplier()
+	public int getWalkSpeed()
 	{
-		return getRunSpeed() / (float) _activeChar.getTemplate().baseRunSpd;
+		int walkspd = (getRunSpeed() * 70) / 100;
+		
+		if (_activeChar instanceof L2PcInstance)
+		{
+			
+			if (_activeChar.isInsideZone(ZoneId.SWAMP) || _activeChar.isInsideZone(ZoneId.WATER))
+				walkspd /= 1;
+			
+			return walkspd;
+		}
+		return (int) calcStat(Stats.WALK_SPEED, getBaseWalkSpeed(), null, null);
 	}
 	
+	public int getRunSpeed()
+	{
+		// err we should be adding TO the persons run speed not making it a constant
+		int val = (int) (calcStat(Stats.RUN_SPEED, getBaseRunSpeed(), null, null));
+		if (_activeChar instanceof L2PcInstance && ((L2PcInstance) _activeChar).getClassId().getId() >= 88)
+			val += BalanceLoad.Speed[((L2PcInstance) _activeChar).getClassId().getId() - 88];
+		
+		if (_activeChar.isFlying())
+			return val += Config.WYVERN_SPEED;
+		if (_activeChar.isRiding())
+			return val += Config.STRIDER_SPEED;
+		
+		val /= _activeChar.getArmourExpertisePenalty();
+		
+		// swamp zone -50% speed
+		if (_activeChar.isInsideZone(ZoneId.SWAMP))
+			val /= 2;
+		
+		if(_activeChar.isInsideZone(ZoneId.WATER))
+			val /= 1.4;
+
+		return Math.min(val, Config.MAX_RUN_SPEED);
+	}
+
+	public int getBaseRunSpeed()
+	{
+		return _activeChar.getTemplate().baseRunSpd;
+	}
+
+	public int getBaseWalkSpeed()
+	{
+		return _activeChar.getTemplate().baseWalkSpd;
+	}
+
+	protected final int getBaseMoveSpeed()
+	{
+		return _activeChar.isRunning() ? getBaseRunSpeed() : getWalkSpeed();
+	}
+	
+	public float getMovementSpeedMultiplier()
+	{		
+		return (float) (getMoveSpeed() * (1. / getBaseMoveSpeed()));
+	}
+
 	public final float getAttackSpeedMultiplier()
 	{
 		return (float) ((1.1) * getPAtkSpd() / _activeChar.getTemplate().basePAtkSpd);

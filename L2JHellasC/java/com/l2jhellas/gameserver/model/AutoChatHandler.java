@@ -21,7 +21,7 @@ import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
-public class AutoChatHandler implements SpawnListener
+public class AutoChatHandler
 {
 	protected static final Logger _log = Logger.getLogger(AutoChatHandler.class.getName());
 	private static AutoChatHandler _instance;
@@ -34,7 +34,6 @@ public class AutoChatHandler implements SpawnListener
 	{
 		_registeredChats = new HashMap<>();
 		restoreChatData();
-		L2Spawn.addSpawnListener(this);
 	}
 	
 	private void restoreChatData()
@@ -180,25 +179,19 @@ public class AutoChatHandler implements SpawnListener
 		}
 	}
 	
-	@Override
 	public void npcSpawned(L2Npc npc)
 	{
-		synchronized (_registeredChats)
+		if (npc == null)
+			return;
+			
+		int npcId = npc.getNpcId();
+		
+		if (_registeredChats.containsKey(npcId))
 		{
-			if (npc == null)
-				return;
-			
-			int npcId = npc.getNpcId();
-			
-			if (_registeredChats.containsKey(npcId))
-			{
-				AutoChatInstance chatInst = _registeredChats.get(npcId);
+			AutoChatInstance chatInst = _registeredChats.get(npcId);
 				
-				if (chatInst != null && chatInst.isGlobal())
-				{
+			if (chatInst != null && chatInst.isGlobal())
 					chatInst.addChatDefinition(npc);
-				}
-			}
 		}
 	}
 	

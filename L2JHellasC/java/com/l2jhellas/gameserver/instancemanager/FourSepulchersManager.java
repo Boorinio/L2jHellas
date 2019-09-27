@@ -410,7 +410,7 @@ public class FourSepulchersManager
 				SpawnTable.getInstance().addNewSpawn(spawnDat, false);
 				spawnDat.doSpawn();
 				spawnDat.startRespawn();
-				_log.info(FourSepulchersManager.class.getSimpleName() + " Spawned " + spawnDat.getTemplate().getName());
+				_log.info(FourSepulchersManager.class.getSimpleName() + ": Spawned " + spawnDat.getTemplate().getName());
 			}
 			catch (SecurityException e)
 			{
@@ -841,7 +841,7 @@ public class FourSepulchersManager
 			
 			rset1.close();
 			statement1.close();
-			_log.info(FourSepulchersManager.class.getSimpleName() + ": FourSepulchersManager: loaded " + loaded + " Emperor's grave NPC spawns.");
+			_log.info(FourSepulchersManager.class.getSimpleName() + ": loaded " + loaded + " Emperor's grave NPC spawns.");
 		}
 		catch (Exception e)
 		{

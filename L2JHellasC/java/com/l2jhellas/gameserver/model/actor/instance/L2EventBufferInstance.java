@@ -1,6 +1,7 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.l2jhellas.gameserver.datatables.sql.BuffTemplateTable;
 import com.l2jhellas.gameserver.emum.L2SkillType;
@@ -20,7 +21,7 @@ public class L2EventBufferInstance
 		if (player == null)
 			return;
 		
-		ArrayList<L2BuffTemplate> _templateBuffs = new ArrayList<>();
+		List<L2BuffTemplate> _templateBuffs = new ArrayList<>();
 		_templateBuffs = BuffTemplateTable.getInstance().getBuffTemplate(_templateId);
 		
 		if ((_templateBuffs == null) || (_templateBuffs.size() == 0))

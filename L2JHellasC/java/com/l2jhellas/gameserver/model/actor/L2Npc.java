@@ -26,6 +26,7 @@ import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.instancemanager.games.Lottery;
+import com.l2jhellas.gameserver.model.AutoChatHandler;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2DropCategory;
 import com.l2jhellas.gameserver.model.L2DropData;
@@ -42,6 +43,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2EventBufferInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2FestivalGuideInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2FishermanInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MerchantInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcWalkerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -66,6 +68,7 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowVariationCancelWindow;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowVariationMakeWindow;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
+import com.l2jhellas.gameserver.network.serverpackets.MoveToPawn;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.AbstractNpcInfo.NpcInfo;
@@ -373,7 +376,9 @@ public class L2Npc extends L2Character
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return false;
 		}
-		// TODO: More checks...
+		
+		if(this instanceof L2MonsterInstance && isDead())
+		    return false;
 		
 		return true;
 	}
@@ -387,7 +392,7 @@ public class L2Npc extends L2Character
 		// Can't interact while died.
 		if (player.isDead() || player.isFakeDeath())
 			return false;
-		
+
 		// Can't interact sitted.
 		if (player.isSitting())
 			return false;
@@ -402,83 +407,48 @@ public class L2Npc extends L2Character
 		
 		return true;
 	}
-	
+
 	@Override
 	public void onAction(L2PcInstance player)
 	{
 		if (!canTarget(player))
 			return;
 		
-		// Check if the L2PcInstance already target the L2NpcInstance
-		if (this != player.getTarget())
+		if (player.getTarget() != this)
 		{
-			if (Config.DEBUG)
-				_log.fine("new target selected:" + getObjectId());
-			
-			// Set the target of the L2PcInstance player
 			player.setTarget(this);
 			
-			// Check if the player is attackable (without a forced attack)
 			if (isAutoAttackable(player))
 			{
-				// Send a Server->Client packet MyTargetSelected to the L2PcInstance player
-				// The player.getLevel() - getLevel() permit to display the correct color in the select window
 				MyTargetSelected my = new MyTargetSelected(getObjectId(), player.getLevel() - getLevel());
 				player.sendPacket(my);
 				
-				// Send a Server->Client packet StatusUpdate of the L2NpcInstance to the L2PcInstance to update its HP bar
 				StatusUpdate su = new StatusUpdate(getObjectId());
 				su.addAttribute(StatusUpdate.CUR_HP, (int) getCurrentHp());
 				su.addAttribute(StatusUpdate.MAX_HP, getMaxHp());
 				player.sendPacket(su);
 			}
-			else
-			{
-				// Send a Server->Client packet MyTargetSelected to the L2PcInstance player
-				MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
-				player.sendPacket(my);
-			}
-			
-			// Send a Server->Client packet ValidateLocation to correct the L2NpcInstance position and heading on the client
-			// player.sendPacket(new ValidateLocation(this));
 		}
 		else
 		{
-			// player.sendPacket(new ValidateLocation(this));
-			// Check if the player is attackable (without a forced attack) and isn't dead
 			if (isAutoAttackable(player) && !isAlikeDead())
+				player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
+			else
 			{
-				// Check the height difference
-				if (Math.abs(player.getZ() - getZ()) < 400) // this max heigth difference might need some tweaking
-				{
-					// Set the L2PcInstance Intention to AI_INTENTION_ATTACK
-					player.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, this);
-					// player.startAttack(this);
-				}
-				else
-				{
-					// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
-					player.sendPacket(ActionFailed.STATIC_PACKET);
-				}
-			}
-			else if (!isAutoAttackable(player))
-			{
-				// Calculate the distance between the L2PcInstance and the L2NpcInstance
 				if (!canInteract(player))
-				{
-					// Notify the L2PcInstance AI with AI_INTENTION_INTERACT
 					player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
-				}
 				else
 				{
-					// Send a Server->Client packet SocialAction to the all L2PcInstance on the _knownPlayer of the L2NpcInstance
-					// to display a social action of the L2NpcInstance on their client
-					if (hasRandomAnimation() && !isWalker())
-					{
-						onRandomAnimation();
-					}
+					if (player.isMoving() || player.isInCombat())
+						player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 					
-					// / Open a chat window on client with the text of the L2NpcInstance
+					player.sendPacket(new MoveToPawn(player, this, INTERACTION_DISTANCE));
+					
+					player.sendPacket(ActionFailed.STATIC_PACKET);
+					
+					if (hasRandomAnimation() && !isWalker())
+						onRandomAnimation();
+					
 					if (isEventMob)
 						L2Event.showEventHtml(player, String.valueOf(getObjectId()));
 					else if (_isEventMobTvT)
@@ -492,21 +462,19 @@ public class L2Npc extends L2Character
 					else if (_isCTF_throneSpawn)
 						CTF.CheckRestoreFlags();
 					else
-					{
-						List<Quest> scripts = getTemplate().getEventQuests(QuestEventType.QUEST_START);
-						if (scripts != null && !scripts.isEmpty())
-							player.setLastQuestNpcObject(getObjectId());
-						
-						scripts = getTemplate().getEventQuests(QuestEventType.ON_FIRST_TALK);
-						if (scripts != null && scripts.size() == 1)
-							scripts.get(0).notifyFirstTalk(this, player);
-						else
-							showChatWindow(player);
+					{						
+					   List<Quest> scripts = getTemplate().getEventQuests(QuestEventType.QUEST_START);
+					   if (scripts != null && !scripts.isEmpty())
+						   player.setLastQuestNpcObject(getObjectId());
+					
+					   scripts = getTemplate().getEventQuests(QuestEventType.ON_FIRST_TALK);
+					   if (scripts != null && scripts.size() == 1)
+						   scripts.get(0).notifyFirstTalk(this, player);
+					   else
+					   	   showChatWindow(player);
 					}
 				}
 			}
-			else
-				player.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 	}
 	
@@ -901,7 +869,7 @@ public class L2Npc extends L2Character
 			{
 				try
 				{
-					L2Spawn spawn = SpawnTable.getInstance().getTemplate(Integer.parseInt(command.substring(12).trim()));
+					L2Spawn spawn = SpawnTable.getInstance().getSpawn(Integer.parseInt(command.substring(12).trim()));
 					
 					if (spawn != null)
 						player.sendPacket(new RadarControl(0, 1, spawn.getLocx(), spawn.getLocy(), spawn.getLocz()));
@@ -1942,8 +1910,9 @@ public class L2Npc extends L2Character
 	@Override
 	public void onSpawn()
 	{
-		super.onSpawn();
-		
+		SevenSignsFestival.getInstance().npcSpawned(this);
+		AutoChatHandler.getInstance().npcSpawned(this);
+		super.onSpawn();	
 	}
 	
 	@Override
@@ -2308,7 +2277,7 @@ public class L2Npc extends L2Character
 		return _scriptValue == val;
 	}
 	
-	private boolean isWalker()
+	public boolean isWalker()
 	{
 		return this instanceof L2NpcWalkerInstance;
 	}

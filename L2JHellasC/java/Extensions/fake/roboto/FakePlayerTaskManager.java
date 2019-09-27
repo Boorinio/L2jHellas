@@ -14,7 +14,7 @@ public enum FakePlayerTaskManager
 	
 	private final int aiTaskRunnerInterval = 700;
 	private final int _playerCountPerTask = 2000;
-	private List<AITask> _aiTasks;
+	private List<AITask> _aiTasks = new ArrayList<>();
 	
 	private FakePlayerTaskManager()
 	{
@@ -23,8 +23,7 @@ public enum FakePlayerTaskManager
 	
 	public void initialise()
 	{
-		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new AITaskRunner(), aiTaskRunnerInterval, aiTaskRunnerInterval);
-		_aiTasks = new ArrayList<>();
+		ThreadPoolManager.getInstance().scheduleAiAtFixedRate(new AITaskRunner(), aiTaskRunnerInterval, aiTaskRunnerInterval);		
 	}
 	
 	public void adjustTaskSize()

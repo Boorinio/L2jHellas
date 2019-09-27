@@ -1,7 +1,5 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
 
-import java.util.Map;
-
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.emum.Music;
@@ -33,19 +31,8 @@ public class DrChaos extends Quest
 	
 	public L2Npc FindTemplate(int npcId)
 	{
-		L2Npc npcInstance = null;
-		L2Spawn spawn;
-		Map<Integer, L2Spawn> values = SpawnTable.getInstance().getSpawnTable();
-		for (int i = 0; i < values.size(); i++)
-		{
-			spawn = values.get(i);
-			if (spawn != null && spawn.getNpcid() == npcId)
-			{
-				npcInstance = spawn.getLastSpawn();
-				break;
-			}
-		}
-		return npcInstance;
+		L2Spawn spawn = SpawnTable.getInstance().getSpawn(npcId);
+		return spawn != null ? spawn.getLastSpawn() : null;
 	}
 	
 	@Override

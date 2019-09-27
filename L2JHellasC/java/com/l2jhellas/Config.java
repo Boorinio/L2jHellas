@@ -56,7 +56,6 @@ public final class Config
 	private static final String EVENT_RAID_CONFIG_FILE = "./config/Events/Raid.ini";
 	private static final String EVENT_WEDDING_CONFIG_FILE = "./config/Events/Wedding.ini";
 	// Mods Folder
-	private static final String MOD_CHAMPIONS_CONFIG_FILE = "./config/Mods/Champions.ini";
 	private static final String MOD_L2JHellas_CONFIG_FILE = "./config/Mods/L2JHellas.ini";
 	private static final String MOD_RANK_CONFIG_FILE = "./config/Mods/Rank PvP System.ini";
 	private static final String MOD_AUTOMATION_CONFIG_FILE = "./config/Mods/Automatation.ini";
@@ -101,6 +100,37 @@ public final class Config
 	// GameServer LoginServer Configs
 	// ================================
 	
+	
+	// ================================
+	// Champions config
+	// ================================
+	public static boolean CHAMPION_ENABLE = false;//Allow champions?	
+	public static boolean CHAMPION_PASSIVE = false;	//champion aggro 
+	public static boolean CHAMPION_BOSS = false;//Allow Boss or RaidBoss to be a Champion, True/False
+	public static boolean CHAMPION_MINIONS = false;	//Allow Minions to be a Champion when Leader is a Champion, True/False
+
+	public static String CHAMPION_TITLE = "Mob Plus"; // champion monster title
+	
+	public static int CHAMPION_FREQUENCY = 1; //Chance (100000 for 100% chance) that spawn will be Champion
+	public static int CHAMPION_HP = 10;	
+	public static int CHAMPION_ADENA = 10;
+	public static int CHAMPION_REWARDS = 10;
+	public static int CHAMPION_EXP_SP = 10;
+	public static int CHAMPION_MIN_LEVEL = 20;
+	public static int CHAMPION_MAX_LEVEL = 70;
+	
+	public static int CHAMPION_SPCL_CHANCE = 0; //Chance in % (default: 0)
+	public static int CHAMPION_SPCL_ITEM = 6393; // champion special item id
+	public static int CHAMPION_SPCL_QTY =1; // champion special item count
+	public static int CHAMPION_SPCL_LVL_DIFF = 0; //If player level diff with mob level is more this value - don't drop an special reward item.
+	
+	public static float CHAMPION_HP_REGEN = 2;
+	public static float CHAMPION_ATK =1;
+	public static float CHAMPION_SPD_ATK =1;
+	// ================================
+	// Champions config end
+	// ================================
+	
 	public static boolean AUTO_LOOT;
 	public static boolean AUTO_LOOT_RAID;
 	public static boolean AUTO_LOOT_GRAND;
@@ -117,7 +147,6 @@ public final class Config
 	public static int ALT_PARTY_RANGE;
 	public static int ALT_PARTY_RANGE2;
 	public static double ALT_WEIGHT_LIMIT;
-	public static boolean ALT_GAME_DELEVEL;
 	public static boolean ALT_GAME_MAGICFAILURES;
 	public static boolean ALT_GAME_CANCEL_BOW;
 	public static boolean ALT_GAME_CANCEL_CAST;
@@ -285,27 +314,7 @@ public final class Config
 	public static boolean PETITIONING_ALLOWED;
 	public static int MAX_PETITIONS_PER_PLAYER;
 	public static int MAX_PETITIONS_PENDING;
-	
-	public static int CHAMPION_FREQUENCY;
-	public static int CHAMPION_HP;
-	public static boolean CHAMPION_PASSIVE;
-	public static String CHAMPION_TITLE;
-	public static int CHAMPION_ADENA;
-	public static int CHAMPION_REWARDS;
-	public static int CHAMPION_EXP_SP;
-	public static int CHAMPION_MIN_LEVEL;
-	public static int CHAMPION_MAX_LEVEL;
-	public static int CHAMPION_SPCL_CHANCE;
-	public static int CHAMPION_SPCL_ITEM;
-	public static int CHAMPION_SPCL_QTY;
-	public static int CHAMPION_SPCL_LVL_DIFF;
-	public static float CHAMPION_HP_REGEN;
-	public static float CHAMPION_ATK;
-	public static float CHAMPION_SPD_ATK;
-	public static boolean CHAMPION_BOSS;
-	public static boolean CHAMPION_MINIONS;
-	public static boolean CHAMPION_ENABLE;
-	
+					
 	public static boolean REMOVE_BUFFS_ON_DIE;
 	public static boolean ALLOW_POTS_IN_PVP;
 	public static boolean ALLOW_SOE_IN_PVP;
@@ -317,6 +326,7 @@ public final class Config
 	public static int PVP_NORMAL_TIME;
 	public static int PVP_PVP_TIME;
 	
+	public static boolean ALLOW_FAKE_PLAYERS;
 	public static boolean BANKING_SYSTEM_ENABLED;
 	public static int BANKING_SYSTEM_GOLDBARS;
 	public static int BANKING_SYSTEM_ADENA;
@@ -605,7 +615,6 @@ public final class Config
 	public static int DELETE_DAYS;
 	public static boolean ALLOW_DISCARDITEM;
 	public static int AUTODESTROY_ITEM_AFTER;
-	public static int HERB_AUTO_DESTROY_TIME;
 	public static String PROTECTED_ITEMS;
 	public static List<Integer> LIST_PROTECTED_ITEMS = new ArrayList<>();
 	public static boolean DESTROY_DROPPED_PLAYER_ITEM;
@@ -1084,7 +1093,6 @@ public final class Config
 			ALT_PARTY_RANGE = Integer.parseInt(altSettings.getProperty("AltPartyRange", "1600"));
 			ALT_PARTY_RANGE2 = Integer.parseInt(altSettings.getProperty("AltPartyRange2", "1400"));
 			ALT_WEIGHT_LIMIT = Double.parseDouble(altSettings.getProperty("AltWeightLimit", "1"));
-			ALT_GAME_DELEVEL = Boolean.parseBoolean(altSettings.getProperty("Delevel", "True"));
 			ALT_GAME_MAGICFAILURES = Boolean.parseBoolean(altSettings.getProperty("MagicFailures", "False"));
 			ALT_GAME_CANCEL_BOW = altSettings.getProperty("AltGameCancelByHit", "Cast").equalsIgnoreCase("bow") || altSettings.getProperty("AltGameCancelByHit", "Cast").equalsIgnoreCase("all");
 			ALT_GAME_CANCEL_CAST = altSettings.getProperty("AltGameCancelByHit", "Cast").equalsIgnoreCase("cast") || altSettings.getProperty("AltGameCancelByHit", "Cast").equalsIgnoreCase("all");
@@ -1323,36 +1331,7 @@ public final class Config
 			PETITIONING_ALLOWED = Boolean.parseBoolean(AdminSettings.getProperty("PetitioningAllowed", "True"));
 			MAX_PETITIONS_PER_PLAYER = Integer.parseInt(AdminSettings.getProperty("MaxPetitionsPerPlayer", "5"));
 			MAX_PETITIONS_PENDING = Integer.parseInt(AdminSettings.getProperty("MaxPetitionsPending", "25"));
-			
-			Properties ChampionSettings = new Properties();
-			try (InputStream is = new FileInputStream(new File(MOD_CHAMPIONS_CONFIG_FILE)))
-			{
-				ChampionSettings.load(is);
-			}
-			catch (Exception e)
-			{
-				_log.severe(Config.class.getName() + ": Error while loading " + MOD_CHAMPIONS_CONFIG_FILE + " settings!");
-			}
-			CHAMPION_PASSIVE = Boolean.parseBoolean(ChampionSettings.getProperty("ChampionPassive", "False"));
-			CHAMPION_TITLE = ChampionSettings.getProperty("ChampionTitle", "Champion").trim();
-			CHAMPION_ENABLE = Boolean.parseBoolean(ChampionSettings.getProperty("ChampionEnable", "False"));
-			CHAMPION_FREQUENCY = Integer.parseInt(ChampionSettings.getProperty("ChampionFrequency", "0"));
-			CHAMPION_HP = Integer.parseInt(ChampionSettings.getProperty("ChampionHp", "7"));
-			CHAMPION_HP_REGEN = Float.parseFloat(ChampionSettings.getProperty("ChampionHpRegen", "1"));
-			CHAMPION_REWARDS = Integer.parseInt(ChampionSettings.getProperty("ChampionRewards", "8"));
-			CHAMPION_ADENA = Integer.parseInt(ChampionSettings.getProperty("ChampionAdenasRewards", "1"));
-			CHAMPION_ATK = Float.parseFloat(ChampionSettings.getProperty("ChampionAtk", "1"));
-			CHAMPION_SPD_ATK = Float.parseFloat(ChampionSettings.getProperty("ChampionSpdAtk", "1"));
-			CHAMPION_EXP_SP = Integer.parseInt(ChampionSettings.getProperty("ChampionExpSp", "8"));
-			CHAMPION_BOSS = Boolean.parseBoolean(ChampionSettings.getProperty("ChampionBoss", "False"));
-			CHAMPION_MIN_LEVEL = Integer.parseInt(ChampionSettings.getProperty("ChampionMinLevel", "20"));
-			CHAMPION_MAX_LEVEL = Integer.parseInt(ChampionSettings.getProperty("ChampionMaxLevel", "60"));
-			CHAMPION_MINIONS = Boolean.parseBoolean(ChampionSettings.getProperty("ChampionMinions", "False"));
-			CHAMPION_SPCL_CHANCE = Integer.parseInt(ChampionSettings.getProperty("ChampionSpecialItemChance", "0"));
-			CHAMPION_SPCL_ITEM = Integer.parseInt(ChampionSettings.getProperty("ChampionSpecialItemID", "6393"));
-			CHAMPION_SPCL_QTY = Integer.parseInt(ChampionSettings.getProperty("ChampionSpecialItemAmount", "1"));
-			CHAMPION_SPCL_LVL_DIFF = Integer.parseInt(ChampionSettings.getProperty("ChampionSpecialItemLevelDiff", "0"));
-			
+
 			Properties PvPSettings = new Properties();
 			try (InputStream is = new FileInputStream(new File(PVP_CONFIG_FILE)))
 			{
@@ -1390,6 +1369,7 @@ public final class Config
 			{
 				_log.severe(Config.class.getName() + ": Error while loading " + MOD_L2JHellas_CONFIG_FILE + " settings!");
 			}
+			ALLOW_FAKE_PLAYERS = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowFakePlayers", "False"));
 			BANKING_SYSTEM_ENABLED = Boolean.parseBoolean(L2JHellasSettings.getProperty("BankingEnabled", "False"));
 			BANKING_SYSTEM_GOLDBARS = Integer.parseInt(L2JHellasSettings.getProperty("BankingGoldbarCount", "1"));
 			BANKING_SYSTEM_ADENA = Integer.parseInt(L2JHellasSettings.getProperty("BankingAdenaCount", "500000000"));
@@ -2186,7 +2166,6 @@ public final class Config
 			DELETE_DAYS = Integer.parseInt(optionsSettings.getProperty("DeleteCharAfterDays", "7"));
 			ALLOW_DISCARDITEM = Boolean.valueOf(optionsSettings.getProperty("AllowDiscardItem", "True"));
 			AUTODESTROY_ITEM_AFTER = Integer.parseInt(optionsSettings.getProperty("AutoDestroyDroppedItemAfter", "0"));
-			HERB_AUTO_DESTROY_TIME = Integer.parseInt(optionsSettings.getProperty("AutoDestroyHerbTime", "15")) * 1000;
 			PROTECTED_ITEMS = optionsSettings.getProperty("ListOfProtectedItems");
 			LIST_PROTECTED_ITEMS = new ArrayList<>();
 			for (String listid : PROTECTED_ITEMS.split(","))
@@ -3320,9 +3299,6 @@ public final class Config
 			case "AltPerfectShieldBlockRate":
 				ALT_PERFECT_SHLD_BLOCK = Integer.parseInt(pValue);
 				break;
-			case "Delevel":
-				ALT_GAME_DELEVEL = Boolean.valueOf(pValue);
-				break;
 			case "MagicFailures":
 				ALT_GAME_MAGICFAILURES = Boolean.valueOf(pValue);
 				break;
@@ -3445,57 +3421,6 @@ public final class Config
 				break;
 			case "CastleCircletsRestriction":
 				CASTLE_CIRCLETS = Boolean.valueOf(pValue);
-				break;
-			case "ChampionSpecialItemLevelDiff":
-				CHAMPION_SPCL_LVL_DIFF = Integer.parseInt(pValue);
-				break;
-			case "ChampionEnable":
-				CHAMPION_ENABLE = Boolean.parseBoolean(pValue);
-				break;
-			case "ChampionFrequency":
-				CHAMPION_FREQUENCY = Integer.parseInt(pValue);
-				break;
-			case "ChampionHp":
-				CHAMPION_HP = Integer.parseInt(pValue);
-				break;
-			case "ChampionHpRegen":
-				CHAMPION_HP_REGEN = Float.parseFloat(pValue);
-				break;
-			case "ChampionAtk":
-				CHAMPION_ATK = Float.parseFloat(pValue);
-				break;
-			case "ChampionSpdAtk":
-				CHAMPION_SPD_ATK = Float.parseFloat(pValue);
-				break;
-			case "ChampionRewards":
-				CHAMPION_REWARDS = Integer.parseInt(pValue);
-				break;
-			case "ChampionAdenasRewards":
-				CHAMPION_ADENA = Integer.parseInt(pValue);
-				break;
-			case "ChampionExpSp":
-				CHAMPION_EXP_SP = Integer.parseInt(pValue);
-				break;
-			case "ChampionBoss":
-				CHAMPION_BOSS = Boolean.parseBoolean(pValue);
-				break;
-			case "ChampionMinLevel":
-				CHAMPION_MIN_LEVEL = Integer.parseInt(pValue);
-				break;
-			case "ChampionMaxLevel":
-				CHAMPION_MAX_LEVEL = Integer.parseInt(pValue);
-				break;
-			case "ChampionMinions":
-				CHAMPION_MINIONS = Boolean.parseBoolean(pValue);
-				break;
-			case "ChampionSpecialItemChance":
-				CHAMPION_SPCL_CHANCE = Integer.parseInt(pValue);
-				break;
-			case "ChampionSpecialItemID":
-				CHAMPION_SPCL_ITEM = Integer.parseInt(pValue);
-				break;
-			case "ChampionSpecialItemAmount":
-				CHAMPION_SPCL_QTY = Integer.parseInt(pValue);
 				break;
 			case "AllowWedding":
 				MOD_ALLOW_WEDDING = Boolean.valueOf(pValue);

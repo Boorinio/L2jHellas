@@ -73,6 +73,7 @@ import com.l2jhellas.gameserver.emum.L2SkillTargetType;
 import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.emum.Music;
+import com.l2jhellas.gameserver.emum.PlayerExpLost;
 import com.l2jhellas.gameserver.emum.PolyType;
 import com.l2jhellas.gameserver.emum.Sex;
 import com.l2jhellas.gameserver.emum.Sound;
@@ -2218,7 +2219,7 @@ public class L2PcInstance extends L2Playable
 		getInventory().reloadEquippedItems();
 	}
 	
-	void giveAvailableSkills()
+	public void giveAvailableSkills()
 	{
 		int skillCounter = 0;
 		Collection<L2SkillLearn> skills = SkillTreeData.getInstance().getAllAvailableSkills(this, getClassId());
@@ -2254,7 +2255,7 @@ public class L2PcInstance extends L2Playable
 		if (skillCounter > 0)
 			sendMessage("You have learned " + skillCounter + " new skills.");
 	}
-	
+
 	public void setExp(long exp)
 	{
 		getStat().setExp(exp);
@@ -2400,6 +2401,7 @@ public class L2PcInstance extends L2Playable
 			setPosticipateSit(true);
 			return;
 		}
+		
 		// we are going to sitdown, so posticipate is false
 		setPosticipateSit(false);
 		
@@ -2408,9 +2410,6 @@ public class L2PcInstance extends L2Playable
 			sendMessage("Cannot sit while casting.");
 			return;
 		}
-		
-		if (isCastingNow() && !_relax)
-			return;
 		
 		if (sittingTaskLaunched) // if already started the task just return
 			return;
@@ -3650,9 +3649,7 @@ public class L2PcInstance extends L2Playable
 			else
 			{
 				if (player != this && ((Config.GEODATA) ? GeoEngine.canSeeTarget(player, this, isFlying()) : GeoEngine.canSeeTarget(player, this)))
-				{
 					player.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, this);
-				}
 			}
 		}
 		player.sendPacket(ActionFailed.STATIC_PACKET);
@@ -3754,32 +3751,6 @@ public class L2PcInstance extends L2Playable
 	//		}
 	//	}
 	//}
-	
-	@Override
-	public void sendPacket(L2GameServerPacket packet)
-	{
-		if (_client != null)
-		{
-			_client.sendPacket(packet);
-		}
-	}
-	
-	public void sendPacket(L2GameServerPacket... packets)
-	{
-		
-		if (_client != null)
-		{
-			for (L2GameServerPacket packet : packets)
-			{
-				_client.sendPacket(packet);
-			}
-		}
-	}
-	
-	public void sendPacket(SystemMessageId id)
-	{
-		sendPacket(SystemMessage.getSystemMessage(id));
-	}
 
 	public void doInteract(L2Character target)
 	{
@@ -4456,7 +4427,8 @@ public class L2PcInstance extends L2Playable
 							}
 						}
 						// Reduce player's xp and karma.
-						if (Config.ALT_GAME_DELEVEL && (getSkillLevel(L2Skill.SKILL_LUCKY) < 0 || getStat().getLevel() > 9))
+						final int lvl = getLevel();
+						if (lvl > 9  && getSkillLevel(L2Skill.SKILL_LUCKY) < 0)
 							deathPenalty(pk != null && getClan() != null && pk.getClan() != null && (getClan().isAtWarWith(pk.getClanId()) || pk.getClan().isAtWarWith(getClanId())), pk != null, killer instanceof L2SiegeGuardInstance);
 					}
 				}
@@ -4802,11 +4774,7 @@ public class L2PcInstance extends L2Playable
 		final int lvl = getLevel();
 		
 		// The death steal you some Exp
-		double percentLost = 7.0;
-		if (getLevel() >= 76)
-			percentLost = 2.0;
-		else if (getLevel() >= 40)
-			percentLost = 4.0;
+		double percentLost = PlayerExpLost.getExpLost(lvl);
 		
 		if (getKarma() > 0)
 			percentLost *= Config.RATE_KARMA_EXP_LOST;
@@ -4815,12 +4783,8 @@ public class L2PcInstance extends L2Playable
 			percentLost /= 4.0;
 		
 		// Calculate the Experience loss
-		long lostExp = 0;
-		
-		if (lvl < Experience.MAX_LEVEL)
-			lostExp = Math.round((getStat().getExpForLevel(lvl + 1) - getStat().getExpForLevel(lvl)) * percentLost / 100);
-		else
-			lostExp = Math.round((getStat().getExpForLevel(Experience.MAX_LEVEL) - getStat().getExpForLevel(Experience.MAX_LEVEL - 1)) * percentLost / 100);
+		long lostExp = lvl < Experience.MAX_LEVEL ? Math.round((getStat().getExpForLevel(lvl + 1) - getStat().getExpForLevel(lvl)) * percentLost / 100) : 
+		Math.round((getStat().getExpForLevel(Experience.MAX_LEVEL) - getStat().getExpForLevel(Experience.MAX_LEVEL - 1)) * percentLost / 100);
 		
 		// Get the Experience before applying penalty
 		setExpBeforeDeath(getExp());
@@ -4829,7 +4793,7 @@ public class L2PcInstance extends L2Playable
 		updateKarmaLoss(lostExp);
 		
 		// Set the new Experience value of the Player
-		getStat().addExp(-lostExp);
+		getStat().removeExp(lostExp);
 	}
 	
 	public void updateKarmaLoss(long exp)
@@ -5486,8 +5450,8 @@ public class L2PcInstance extends L2Playable
 			statement.setInt(17, getPAtk(null));
 			statement.setInt(18, getPDef(null));
 			statement.setInt(19, getPAtkSpd());
-			statement.setInt(20, getRunSpeed());
-			statement.setInt(21, getWalkSpeed());
+			statement.setDouble(20, getRunSpeed());
+			statement.setDouble(21, getWalkSpeed());
 			statement.setInt(22, getSTR());
 			statement.setInt(23, getCON());
 			statement.setInt(24, getDEX());
@@ -6876,7 +6840,7 @@ public class L2PcInstance extends L2Playable
 	public boolean isAutoAttackable(L2Character attacker)
 	{
 		// Check if the attacker isn't the L2PcInstance Pet
-		if (attacker == this || attacker == getPet())
+		if (attacker == this || attacker == getPet() || attacker instanceof L2NpcInstance)
 			return false;
 		
 		// Check if the attacker is monster
@@ -6928,18 +6892,15 @@ public class L2PcInstance extends L2Playable
 					return true;
 			}
 
-			if (isInsideZone(ZoneId.PVP) && !isInsideZone(ZoneId.SIEGE))		
+			if (isInsideZone(ZoneId.PVP) && !isInsideZone(ZoneId.SIEGE) && attacker.isInsideZone(ZoneId.PVP) && !attacker.isInsideZone(ZoneId.SIEGE))		
 				return true;
-			
 			// Check if the attacker is not in the same clan.
 			if (getClan() != null && getClan().isMember(cha.getName()))
 				return false;
-			
 			// Check if the attacker is not in the same ally.
 			if (getAllyId() != 0 && getAllyId() == cha.getAllyId())
 				return false;
-					
-			if (isInsideZone(ZoneId.PVP) && !isInsideZone(ZoneId.SIEGE))
+			if (isInsideZone(ZoneId.PVP) && attacker.isInsideZone(ZoneId.PVP))
 				return true;
 		}
 		else if (attacker instanceof L2SiegeGuardInstance)
@@ -9330,6 +9291,11 @@ public class L2PcInstance extends L2Playable
 	public void setLastServerPosition(int x, int y, int z)
 	{
 		_lastServerPosition.setXYZ(x, y, z);
+	}
+	
+	public Point3D getLastServerPosition()
+	{
+		return _lastServerPosition;
 	}
 
 	public boolean checkLastServerPosition(int x, int y, int z)
@@ -13089,7 +13055,6 @@ public class L2PcInstance extends L2Playable
 		Broadcast.toKnownPlayers(this, new TitleUpdate(this));
 	}
 	
-	
 	@Override
 	public void sendInfo(L2PcInstance activeChar)
 	{
@@ -13127,6 +13092,28 @@ public class L2PcInstance extends L2Playable
 				activeChar.sendPacket(new RecipeShopMsg(this));
 				break;
 		}
+	}
+	
+	
+	@Override
+	public void sendPacket(L2GameServerPacket packet)
+	{
+		if (_client != null)
+			_client.sendPacket(packet);
+	}
+	
+	public void sendPacket(L2GameServerPacket... packets)
+	{	
+		if (_client != null)
+		{
+			for (L2GameServerPacket packet : packets)
+				_client.sendPacket(packet);
+		}
+	}
+	
+	public void sendPacket(SystemMessageId id)
+	{
+		sendPacket(SystemMessage.getSystemMessage(id));
 	}
 	
 	@Override
