@@ -241,7 +241,7 @@ public class Q336_CoinsOfMagic extends Quest
 		{
 			case SORINT:
 			{
-				if (id == STATE_STARTED)
+				if (id == STATE_CREATED)
 				{
 					if (st.getPlayer().getLevel() < 40)
 					{

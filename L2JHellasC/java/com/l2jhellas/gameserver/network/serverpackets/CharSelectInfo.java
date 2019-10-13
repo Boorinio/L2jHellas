@@ -71,7 +71,7 @@ public class CharSelectInfo extends L2GameServerPacket
 		{
 			CharSelectInfoPackage slot = _slots[i];
 			
-			writeS(slot.getName());
+			writeS(slot.getAccessLevel() < 0 ? "BANNED - "+slot.getName() : slot.getName());		
 			writeD(slot.getCharId());
 			writeS(_loginName);
 			writeD(_sessionId);

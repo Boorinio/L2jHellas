@@ -12,7 +12,6 @@ import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
-import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.Location;
@@ -113,7 +112,7 @@ public class L2Vehicle extends L2Character
 			if (point.getRotationSpeed() > 0)
 				getStat().setRotationSpeed(point.getRotationSpeed());
 			
-			getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(point.getX(), point.getY(), point.getZ(), 0));
+			getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(point.getX(), point.getY(), point.getZ(), 0));
 			return;
 		}
 		getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
@@ -350,13 +349,13 @@ public class L2Vehicle extends L2Character
 	}
 	
 	@Override
-	public void stopMove(L2CharPosition pos)
+	public void stopMove(Location pos)
 	{
 		_move = null;
 		if (pos != null)
 		{
-			setXYZ(pos.x, pos.y, pos.z);
-			setHeading(pos.heading);
+			setXYZ(pos.getX(), pos.getY(), pos.getZ());
+			setHeading(pos.getHeading());
 			revalidateZone(true);
 		}
 		

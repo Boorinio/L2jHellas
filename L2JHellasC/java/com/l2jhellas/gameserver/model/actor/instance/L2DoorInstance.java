@@ -9,11 +9,11 @@ import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2DoorAI;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
-import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.stat.DoorStat;
@@ -85,7 +85,7 @@ public class L2DoorInstance extends L2Character
 		}
 		
 		@Override
-		public void stopMove(L2CharPosition pos)
+		public void stopMove(Location pos)
 		{
 		}
 		

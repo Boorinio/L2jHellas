@@ -14,7 +14,6 @@ import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable.TeleportWhereType;
 import com.l2jhellas.gameserver.emum.L2SkillTargetType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
-import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Effect.EffectType;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -301,7 +300,7 @@ public abstract class FakePlayerAI
 		_fakePlayer.broadcastInfo();
 	}
 	
-	protected void clientStopMoving(L2CharPosition loc)
+	protected void clientStopMoving(Location loc)
 	{
 		if (_fakePlayer.isMoving())
 			_fakePlayer.stopMove(loc);

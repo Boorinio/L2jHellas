@@ -411,7 +411,8 @@ public final class L2ItemInstance extends L2Object
 				Util.handleIllegalPlayerAction(player, "Warning!! Character " + player.getName() + " of account " + player.getAccountName() + " tried to pickup Freight Items", IllegalPlayerAction.PUNISH_KICK);
 			}
 			else
-				player.getAI().setIntention(CtrlIntention.AI_INTENTION_PICK_UP, this);
+				if (!player.isFlying())
+			         player.getAI().setIntention(CtrlIntention.AI_INTENTION_PICK_UP, this);
 		}
 	}
 	

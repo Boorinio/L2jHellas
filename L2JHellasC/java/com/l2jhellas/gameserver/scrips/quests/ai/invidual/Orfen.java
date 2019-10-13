@@ -4,10 +4,10 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.emum.Music;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
-import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2Spawn;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -263,7 +263,7 @@ public class Orfen extends AbstractNpcAI
 		if (index == 0)
 			npc.teleToLocation(Pos[index][0], Pos[index][1], Pos[index][2], false);
 		else
-			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(Pos[index][0], Pos[index][1], Pos[index][2], 0));
+			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(Pos[index][0], Pos[index][1], Pos[index][2], 0));
 	}
 	
 	private void spawnBoss(L2GrandBossInstance npc)

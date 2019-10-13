@@ -40,7 +40,6 @@ import com.l2jhellas.gameserver.model.ChanceSkillList;
 import com.l2jhellas.gameserver.model.CharEffectList;
 import com.l2jhellas.gameserver.model.ForceBuff;
 import com.l2jhellas.gameserver.model.Inventory;
-import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -69,6 +68,7 @@ import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.model.zone.ZoneRegion;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.AbstractNpcInfo.NpcInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.Attack;
 import com.l2jhellas.gameserver.network.serverpackets.ChangeMoveType;
@@ -78,7 +78,6 @@ import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillCanceld;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillLaunched;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
-import com.l2jhellas.gameserver.network.serverpackets.AbstractNpcInfo.NpcInfo;
 import com.l2jhellas.gameserver.network.serverpackets.Revive;
 import com.l2jhellas.gameserver.network.serverpackets.ServerObjectInfo;
 import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
@@ -876,7 +875,7 @@ public abstract class L2Character extends L2Object
 					attackcount += 1;
 					if (attackcount <= attackcountmax)
 					{
-						if (target == getAI().getAttackTarget() || target.isAutoAttackable(this))
+						if (target == getAI().getTarget() || target.isAutoAttackable(this))
 						{
 							
 							hitted |= doAttackHitSimple(attack, target, attackpercent, sAtk);
@@ -2379,7 +2378,7 @@ public abstract class L2Character extends L2Object
 			moveToLocation(x, y, z, 0);
 		}
 		
-		public void stopMove(L2CharPosition pos)
+		public void stopMove(Location pos)
 		{
 			L2Character.this.stopMove(pos);
 		}
@@ -2947,7 +2946,7 @@ public abstract class L2Character extends L2Object
 					int spy =getActingPlayer().getLastServerPosition().getY();
 					int spz =getActingPlayer().getLastServerPosition().getZ();
 					
-					L2CharPosition pos  = new L2CharPosition(spx,spy,spz,getHeading());
+					Location pos  = new Location(spx,spy,spz,getHeading());
 					_move.onGeodataPathIndex = -1;
 					stopMove(pos);
 					return false;
@@ -2960,7 +2959,7 @@ public abstract class L2Character extends L2Object
 				int spy =getActingPlayer().getLastServerPosition().getY();
 				int spz =getActingPlayer().getLastServerPosition().getZ();
 				
-				L2CharPosition pos  = new L2CharPosition(spx,spy,spz,getHeading());
+				Location pos  = new Location(spx,spy,spz,getHeading());
 			
 				_move.onGeodataPathIndex = -1;
 				stopMove(pos);
@@ -3000,7 +2999,7 @@ public abstract class L2Character extends L2Object
 				((L2Vehicle) this).updatePeopleInTheBoat((int) (m._xAccurate), (int) (m._yAccurate), zPrev + (int) (dz * distFraction + 0.5));
 
 		}
-		
+
 		revalidateZone(false);
 		
 		m._moveTimestamp = gameTicks;
@@ -3035,7 +3034,7 @@ public abstract class L2Character extends L2Object
 		ZoneManager.getInstance().getRegion(this).revalidateZones(this);
 	}
 	
-	public void stopMove(L2CharPosition pos)
+	public void stopMove(Location pos)
 	{
 		// Delete movement data of the L2Character
 		_move = null;
@@ -3043,10 +3042,10 @@ public abstract class L2Character extends L2Object
 		// Set the current position and refresh the region if necessary.
 		if (pos != null)
 		{
-			setXYZ(pos.x, pos.y, pos.z);
-			setHeading(pos.heading);
+			setXYZ(pos.getX(), pos.getY(), pos.getZ());
+			setHeading(pos.getHeading());
 			revalidateZone(true);
-			broadcastPacket(new StopRotation(getObjectId(), pos.heading, 0));
+			broadcastPacket(new StopRotation(getObjectId(), pos.getHeading(), 0));
 		}
 		broadcastPacket(new StopMove(this));
 	}
@@ -3256,7 +3255,7 @@ public abstract class L2Character extends L2Object
 		m._xDestination = x;
 		m._yDestination = y;
 		m._zDestination = z; 
-		
+
 		m._heading = 0; 
 		setHeading(calcHeading(x, y));
 

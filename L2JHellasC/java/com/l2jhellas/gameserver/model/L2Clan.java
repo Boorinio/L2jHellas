@@ -457,12 +457,23 @@ public class L2Clan
 		for (L2ClanMember temp : _members.values())
 		{
 			if (temp != null && temp.isOnline())
-			{
 				result.add(temp.getPlayerInstance());
-			}
 		}
 		
 		return result.toArray(new L2PcInstance[result.size()]);
+	}
+	
+	public Integer[] getOfflineMembersIds()
+	{
+		List<Integer> list = new ArrayList<>();
+		
+		for (L2ClanMember temp : _members.values())
+		{
+			if ((temp != null) && !temp.isOnline())
+				list.add(temp.getObjectId());
+		}
+		
+		return list.toArray(new Integer[list.size()]);
 	}
 	
 	public int getAllyId()

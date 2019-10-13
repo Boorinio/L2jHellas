@@ -4,6 +4,8 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
+import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
+import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 
 public class Q235_MimirsElixir extends Quest
 {
@@ -60,8 +62,13 @@ public class Q235_MimirsElixir extends Quest
 		}
 		else if (event.equalsIgnoreCase("30721-16.htm") && st.hasQuestItems(MIMIR_ELIXIR))
 		{
+			player.broadcastPacket(new MagicSkillUse(player, player, 4339, 1, 1, 1));
+			
+			st.takeItems(MAGISTER_MIXING_STONE, -1);
+			st.takeItems(MIMIR_ELIXIR, -1);
 			st.takeItems(STAR_OF_DESTINY, -1);
 			st.giveItems(SCROLL_ENCHANT_WEAPON_A, 1);
+			player.broadcastPacket(new SocialAction(player.getObjectId(), 3));
 			st.playSound(QuestState.SOUND_FINISH);
 			st.exitQuest(false);
 		}

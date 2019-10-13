@@ -33,8 +33,7 @@ public final class Logout extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		// Don't allow leaving if player is fighting
-		L2PcInstance player = getClient().getActiveChar();
+		final L2PcInstance player = getClient().getActiveChar();
 		
 		if (player == null)
 			return;
@@ -48,11 +47,6 @@ public final class Logout extends L2GameClientPacket
 		
 		if (AttackStanceTaskManager.getInstance().isInAttackStance(player))
 		{
-			if (Config.DEBUG)
-			{
-				_log.fine("Player " + player.getName() + " tried to logout while fighting.");
-			}
-			
 			player.sendPacket(SystemMessageId.CANT_LOGOUT_WHILE_FIGHTING);
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return;

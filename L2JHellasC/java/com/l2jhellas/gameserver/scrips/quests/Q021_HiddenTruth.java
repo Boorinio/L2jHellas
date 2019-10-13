@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.scrips.quests;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.model.L2CharPosition;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
@@ -88,33 +88,33 @@ public class Q021_HiddenTruth extends Quest
 		}
 		else if (event.equalsIgnoreCase("1"))
 		{
-			_vonHellmannPage.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(52373, -54296, -3136, 0));
+			_vonHellmannPage.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(52373, -54296, -3136, 0));
 			_vonHellmannPage.broadcastNpcSay("Follow me...");
 			startQuestTimer("2", 5000, _vonHellmannPage, player, false);
 			return null;
 		}
 		else if (event.equalsIgnoreCase("2"))
 		{
-			_vonHellmannPage.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(52279, -53064, -3161, 0));
+			_vonHellmannPage.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(52279, -53064, -3161, 0));
 			startQuestTimer("3", 12000, _vonHellmannPage, player, false);
 			return null;
 		}
 		else if (event.equalsIgnoreCase("3"))
 		{
-			_vonHellmannPage.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(51909, -51725, -3125, 0));
+			_vonHellmannPage.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(51909, -51725, -3125, 0));
 			startQuestTimer("4", 15000, _vonHellmannPage, player, false);
 			return null;
 		}
 		else if (event.equalsIgnoreCase("4"))
 		{
-			_vonHellmannPage.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(52438, -51240, -3097, 0));
+			_vonHellmannPage.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(52438, -51240, -3097, 0));
 			_vonHellmannPage.broadcastNpcSay("This where that here...");
 			startQuestTimer("5", 5000, _vonHellmannPage, player, false);
 			return null;
 		}
 		else if (event.equalsIgnoreCase("5"))
 		{
-			_vonHellmannPage.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(52143, -51418, -3085, 0));
+			_vonHellmannPage.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(52143, -51418, -3085, 0));
 			_vonHellmannPage.broadcastNpcSay("I want to speak to you...");
 			return null;
 		}

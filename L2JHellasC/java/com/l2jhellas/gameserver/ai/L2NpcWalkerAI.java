@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.xml.NpcWalkerRoutesData;
-import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2NpcWalkerNode;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcWalkerInstance;
 
@@ -44,36 +44,31 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 	protected void onEvtThink()
 	{
 		if (_walkingToNextPoint)
-		{
-			checkArrived();
 			return;
-		}
 		
 		if (_nextMoveTime < System.currentTimeMillis())
 			walkToLocation();
 	}
 	
 	@Override
-	protected void onEvtArrivedBlocked(L2CharPosition blocked_at_pos)
+	protected void onEvtArrived()
+	{
+		String chat = _currentNode.getChatText();
+		
+		if (chat != null && !chat.isEmpty())
+			getActor().broadcastNpcSay(chat);
+		
+		_nextMoveTime = System.currentTimeMillis() + Math.max(0, _currentNode.getDelay() * 1000);
+		_walkingToNextPoint = false;
+	}
+	
+	@Override
+	protected void onEvtArrivedBlocked(Location blocked_at_pos)
 	{
 		_log.warning("NpcWalker ID: " + getActor().getNpcId() + ": Blocked at coords: " + blocked_at_pos.toString() + ". Teleporting to next point.");
 		
 		getActor().teleToLocation(_currentNode.getMoveX(), _currentNode.getMoveY(), _currentNode.getMoveZ(), false);
 		super.onEvtArrivedBlocked(blocked_at_pos);
-	}
-	
-	private void checkArrived()
-	{
-		if (getActor().isInsideRadius(_currentNode.getMoveX(), _currentNode.getMoveY(), _currentNode.getMoveZ(), 5, false, false))
-		{
-			String chat = _currentNode.getChatText();
-			
-			if (chat != null && !chat.isEmpty())
-				getActor().broadcastNpcSay(chat);
-			
-			_nextMoveTime = System.currentTimeMillis() + Math.max(0, _currentNode.getDelay() * 1000);
-			_walkingToNextPoint = false;
-		}
 	}
 	
 	private void walkToLocation()
@@ -92,7 +87,7 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 		
 		_walkingToNextPoint = true;
 		
-		setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(_currentNode.getMoveX(), _currentNode.getMoveY(), _currentNode.getMoveZ(), 0));
+		setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(_currentNode.getMoveX(), _currentNode.getMoveY(), _currentNode.getMoveZ(), 0));
 		
 		NextAction nextAction = new NextAction(CtrlEvent.EVT_ARRIVED, CtrlIntention.AI_INTENTION_MOVE_TO, () ->
 		{

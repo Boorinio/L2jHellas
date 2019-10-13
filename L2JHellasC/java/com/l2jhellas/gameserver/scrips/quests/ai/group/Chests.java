@@ -130,14 +130,14 @@ public class Chests extends AbstractNpcAI
 							}
 							else
 							{								
-							    //chest attack before decaying)	
+							    //chest attack before decaying
 								chest.getAI().setNextAction(new NextAction(CtrlEvent.EVT_READY_TO_ACT, CtrlIntention.AI_INTENTION_ATTACK, new Runnable()
 								{
 									@Override
 									public void run()
 									{
-										// Used a key but failed to open: disappears with no rewards.
 										chest.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+										chest.doDie(caster);
 										chest.deleteMe(); 
 									}
 								}));								

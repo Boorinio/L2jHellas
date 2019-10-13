@@ -122,7 +122,10 @@ public final class QuestState
 			_player.sendPacket(new QuestList(_player));
 		}
 		else
+		{
 			setState(Quest.STATE_COMPLETED);
+			playSound(QuestState.QUEST_COMPLETE);
+		}
 		
 		// Remove quest variables.
 		_vars.clear();
@@ -190,6 +193,21 @@ public final class QuestState
 				_log.warning(QuestState.class.getName() + ": " + _player.getName() + ", " + _quest.getName() + " cond [" + value + "] is not an integer. Value stored, but no packet was sent: " + e.getMessage());
 			}
 		}
+	}
+	
+	public int getCond()
+	{
+		return isStarted() ? getInt("cond") : 0;
+	}
+	
+	public boolean isCond(int cond)
+	{
+		return getInt("cond") == cond;
+	}
+	
+	public boolean isSet(String var)
+	{
+		return get(var) != null;
 	}
 	
 	public void setInternal(String var, String value)
@@ -287,7 +305,7 @@ public final class QuestState
 	{
 		return _vars.get(var);
 	}
-	
+		
 	public int getInt(String var)
 	{
 		final String variable = _vars.get(var);
@@ -678,7 +696,7 @@ public final class QuestState
 	{
 		_player.sendPacket(new TutorialEnableClientEvent(number));
 	}
-	
+
 	// discover the string representation of the state, for readable DB storage
 	public static String getStateName(byte state)
 	{

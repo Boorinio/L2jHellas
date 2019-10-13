@@ -10,6 +10,7 @@ import com.l2jhellas.gameserver.scrips.quests.ai.custom.HeroWeapon;
 import com.l2jhellas.gameserver.scrips.quests.ai.custom.KetraOrcSupport;
 import com.l2jhellas.gameserver.scrips.quests.ai.custom.MissQueen;
 import com.l2jhellas.gameserver.scrips.quests.ai.custom.NpcLocationInfo;
+import com.l2jhellas.gameserver.scrips.quests.ai.custom.Q998_FallenAngelSelect;
 import com.l2jhellas.gameserver.scrips.quests.ai.custom.RaidbossInfo;
 import com.l2jhellas.gameserver.scrips.quests.ai.custom.ShadowWeapon;
 import com.l2jhellas.gameserver.scrips.quests.ai.custom.VarkaSilenosSupport;
@@ -119,6 +120,7 @@ public class ScriptLoader
 		Q021_HiddenTruth.class,
 		Q022_TragedyInVonHellmannForest.class,
 		Q023_LidiasHeart.class,
+		Q024_InhabitantsOfTheForestOfTheDead.class,
 		Q027_ChestCaughtWithABaitOfWind.class,
 		Q028_ChestCaughtWithABaitOfIcyAir.class,
 		Q029_ChestCaughtWithABaitOfEarth.class,
@@ -158,6 +160,7 @@ public class ScriptLoader
 		Q112_WalkOfFate.class,
 		Q113_StatusOfTheBeaconTower.class,
 		Q114_ResurrectionOfAnOldManager.class,
+		Q115_TheOtherSideOfTruth.class,
 		Q116_BeyondTheHillsOfWinter.class,
 		Q117_TheOceanOfDistantStars.class,
 		Q119_LastImperialPrince.class,
@@ -168,6 +171,14 @@ public class ScriptLoader
 		Q125_TheNameOfEvil_1.class,
 		Q126_TheNameOfEvil_2.class,
 		Q127_KamaelAWindowToTheFuture.class,
+		Q136_MoreThanMeetsTheEye.class,
+		Q137_TempleChampionPart1.class,
+		Q138_TempleChampionPart2.class,
+		Q139_ShadowFoxPart1.class,
+		Q140_ShadowFoxPart2.class,
+		Q141_ShadowFoxPart3.class,
+		Q142_FallenAngelRequestOfDawn.class,
+		Q143_FallenAngelRequestOfDusk.class,
 		Q151_CureForFeverDisease.class,
 		Q152_ShardsOfGolem.class,
 		Q153_DeliverGoods.class,
@@ -267,6 +278,7 @@ public class ScriptLoader
 		Q338_AlligatorHunter.class,
 		Q340_SubjugationOfLizardmen.class,
 		Q341_HuntingForWildBeasts.class,
+		Q343_UnderTheShadowOfTheIvoryTower.class,
 		Q344_1000YearsTheEndOfLamentation.class,
 		Q345_MethodToRaiseTheDead.class,
 		Q347_GoGetTheCalculator.class,
@@ -306,6 +318,7 @@ public class ScriptLoader
 		Q383_SearchingForTreasure.class,
 		Q384_WarehouseKeepersPastime.class,
 		Q385_YokeOfThePast.class,
+		Q386_StolenDignity.class,
 		Q401_PathToAWarrior.class,
 		Q402_PathToAHumanKnight.class,
 		Q403_PathToARogue.class,
@@ -331,6 +344,9 @@ public class ScriptLoader
 		Q426_QuestForFishingShot.class,
 		Q431_WeddingMarch.class,
 		Q432_BirthdayPartySong.class,
+		Q501_ProofOfClanAlliance.class,
+		Q503_PursuitOfClanAmbition.class,
+		Q505_BloodOffering.class,
 		Q508_AClansReputation.class,
 		Q509_TheClansPrestige.class,
 		Q510_AClansReputation.class,
@@ -367,6 +383,7 @@ public class ScriptLoader
 		Q632_NecromancersRequest.class,
 		Q633_InTheForgottenVillage.class,
 		Q634_InSearchOfFragmentsOfDimension.class,
+		Q635_InTheDimensionalRift.class,
 		Q636_TruthBeyondTheGate.class,
 		Q637_ThroughTheGateOnceMore.class,
 		Q638_SeekersOfTheHolyGrail.class,
@@ -379,6 +396,7 @@ public class ScriptLoader
 		Q645_GhostsOfBatur.class,
 		Q646_SignsOfRevolt.class,
 		Q647_InfluxOfMachines.class,
+		Q648_AnIceMerchantsDream.class,
 		Q649_ALooterAndARailroadMan.class,
 		Q650_ABrokenDream.class,
 		Q651_RunawayYouth.class,
@@ -391,6 +409,7 @@ public class ScriptLoader
 		Q662_AGameOfCards.class,
 		Q663_SeductiveWhispers.class,
 		Q688_DefeatTheElrokianRaiders.class,
+		Q998_FallenAngelSelect.class,
 		(Config.ALLOW_TUTORIAL ? Q999_T1Tutorial.class : null),
 		
 		AncientEGG.class,

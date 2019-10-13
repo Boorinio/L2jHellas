@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.L2CharPosition;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
@@ -8,10 +8,10 @@ public class MoveToLocationInVehicle extends L2GameServerPacket
 {
 	private int _charObjId;
 	private int _boatId;
-	private L2CharPosition _destination;
-	private L2CharPosition _origin;
+	private Location _destination;
+	private Location _origin;
 	
-	public MoveToLocationInVehicle(L2Character actor, L2CharPosition destination, L2CharPosition origin)
+	public MoveToLocationInVehicle(L2Character actor, Location destination, Location origin)
 	{
 		if (!(actor instanceof L2PcInstance))
 			return;
@@ -33,12 +33,12 @@ public class MoveToLocationInVehicle extends L2GameServerPacket
 		writeC(0x71);
 		writeD(_charObjId);
 		writeD(_boatId);
-		writeD(_destination.x);
-		writeD(_destination.y);
-		writeD(_destination.z);
-		writeD(_origin.x);
-		writeD(_origin.y);
-		writeD(_origin.z);
+		writeD(_destination.getX());
+		writeD(_destination.getY());
+		writeD(_destination.getZ());
+		writeD(_origin.getX());
+		writeD(_origin.getY());
+		writeD(_origin.getZ());
 	}
 	
 	@Override

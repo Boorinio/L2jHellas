@@ -4,8 +4,8 @@ import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.TeleportLocationData;
-import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2TeleportLocation;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -116,7 +116,7 @@ public final class L2CastleTeleporterInstance extends L2NpcInstance
 				
 				// teleport
 				player.teleToLocation(list.getLocX(), list.getLocY(), list.getLocZ(), true);
-				player.stopMove(new L2CharPosition(list.getLocX(), list.getLocY(), list.getLocZ(), player.getHeading()));
+				player.stopMove(new Location(list.getLocX(), list.getLocY(), list.getLocZ(), player.getHeading()));
 			}
 		}
 		else

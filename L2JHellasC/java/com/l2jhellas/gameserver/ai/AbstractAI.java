@@ -10,9 +10,9 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
-import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -148,10 +148,10 @@ abstract class AbstractAI implements Ctrl
 				onIntentionCast((L2Skill) arg0, (L2Object) arg1);
 				break;
 			case AI_INTENTION_MOVE_TO:
-				onIntentionMoveTo((L2CharPosition) arg0);
+				onIntentionMoveTo((Location) arg0);
 				break;
 			case AI_INTENTION_MOVE_TO_IN_A_BOAT:
-				onIntentionMoveToInABoat((L2CharPosition) arg0, (L2CharPosition) arg1);
+				onIntentionMoveToInABoat((Location) arg0, (Location) arg1);
 				break;
 			case AI_INTENTION_FOLLOW:
 				onIntentionFollow((L2Character) arg0);
@@ -231,7 +231,7 @@ abstract class AbstractAI implements Ctrl
 					onEvtArrivedRevalidate();
 				break;
 			case EVT_ARRIVED_BLOCKED:
-				onEvtArrivedBlocked((L2CharPosition) arg0);
+				onEvtArrivedBlocked((Location) arg0);
 				break;
 			case EVT_FORGET_OBJECT:
 				onEvtForgetObject((L2Object) arg0);
@@ -267,9 +267,9 @@ abstract class AbstractAI implements Ctrl
 	
 	protected abstract void onIntentionCast(L2Skill skill, L2Object target);
 	
-	protected abstract void onIntentionMoveTo(L2CharPosition destination);
+	protected abstract void onIntentionMoveTo(Location destination);
 	
-	protected abstract void onIntentionMoveToInABoat(L2CharPosition destination, L2CharPosition origin);
+	protected abstract void onIntentionMoveToInABoat(Location destination, Location origin);
 	
 	protected abstract void onIntentionFollow(L2Character target);
 	
@@ -301,7 +301,7 @@ abstract class AbstractAI implements Ctrl
 	
 	protected abstract void onEvtArrivedRevalidate();
 	
-	protected abstract void onEvtArrivedBlocked(L2CharPosition blocked_at_pos);
+	protected abstract void onEvtArrivedBlocked(Location blocked_at_pos);
 	
 	protected abstract void onEvtForgetObject(L2Object object);
 	
@@ -319,7 +319,7 @@ abstract class AbstractAI implements Ctrl
 			_actor.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 	
-	protected void moveToPawn(L2Object pawn, int offset)
+	public void moveToPawn(L2Object pawn, int offset)
 	{
 		if (!_actor.isMovementDisabled())
 		{
@@ -403,7 +403,7 @@ abstract class AbstractAI implements Ctrl
 		}
 	}
 	
-	protected void moveToInABoat(L2CharPosition destination, L2CharPosition origin)
+	protected void moveToInABoat(Location destination, Location origin)
 	{
 		if (!_actor.isMovementDisabled())
 		{
@@ -420,7 +420,7 @@ abstract class AbstractAI implements Ctrl
 		}
 	}
 	
-	protected void clientStopMoving(L2CharPosition pos)
+	protected void clientStopMoving(Location pos)
 	{
 		if (_actor.isMoving())
 			_actor.stopMove(pos);
@@ -472,11 +472,9 @@ abstract class AbstractAI implements Ctrl
 		}
 	}
 	
-	protected void clientNotifyDead()
+	protected  void clientNotifyDead()
 	{
-		// Send a Server->Client packet Die to the actor and all L2PcInstance in its _knownPlayers
-		Die msg = new Die(_actor);
-		_actor.broadcastPacket(msg);
+		_actor.broadcastPacket(new Die(_actor));
 		
 		// Init AI
 		_intention = AI_INTENTION_IDLE;

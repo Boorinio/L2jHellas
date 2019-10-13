@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.model.L2CharPosition;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
@@ -39,14 +39,14 @@ public class FleeNpc extends AbstractNpcAI
 	{
 		if (npc.getNpcId() >= 18150 && npc.getNpcId() <= 18157)
 		{
-			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition((npc.getX() + Rnd.get(-40, 40)), (npc.getY() + Rnd.get(-40, 40)), npc.getZ(), npc.getHeading()));
+			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location((npc.getX() + Rnd.get(-40, 40)), (npc.getY() + Rnd.get(-40, 40)), npc.getZ(), npc.getHeading()));
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null, null);
 			return null;
 		}
 		else if (npc.getNpcId() == 20432 || npc.getNpcId() == 22228)
 		{
 			if (Rnd.get(3) == 2)
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition((npc.getX() + Rnd.get(-200, 200)), (npc.getY() + Rnd.get(-200, 200)), npc.getZ(), npc.getHeading()));
+				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location((npc.getX() + Rnd.get(-200, 200)), (npc.getY() + Rnd.get(-200, 200)), npc.getZ(), npc.getHeading()));
 			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE, null, null);
 			return null;
 		}

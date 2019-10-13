@@ -11,7 +11,6 @@ import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
-import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
@@ -150,7 +149,7 @@ public class AdminTeleport implements IAdminCommandHandler
 				int y = Integer.parseInt(y1);
 				String z1 = st.nextToken();
 				int z = Integer.parseInt(z1);
-				L2CharPosition pos = new L2CharPosition(x, y, z, 0);
+				Location pos = new Location(x, y, z, 0);
 				activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, pos);
 			}
 			catch (Exception e)

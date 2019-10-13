@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
@@ -573,6 +574,58 @@ public class Quest
 		return true;
 	}
 	
+	public boolean giveItemRandomly(L2PcInstance player, int itemId, long amountToGive, long limit, double dropChance, boolean playSound)
+	{
+		return giveItemRandomly(player, null, itemId, amountToGive, amountToGive, limit, dropChance, playSound);
+	}
+
+	public boolean giveItemRandomly(L2PcInstance player, L2Npc npc, int itemId, long amountToGive, long limit, double dropChance, boolean playSound)
+	{
+		return giveItemRandomly(player, npc, itemId, amountToGive, amountToGive, limit, dropChance, playSound);
+	}
+
+	public boolean giveItemRandomly(L2PcInstance player, L2Npc npc, int itemId, long minAmount, long maxAmount, long limit, double dropChance, boolean playSound)
+	{            
+		final QuestState st = player.getQuestState(getName());
+		
+		if (st == null)
+			return false;
+		
+		final long currentCount = st.getQuestItemsCount(itemId);
+		
+		if ((limit > 0) && (currentCount >= limit))
+			return true;
+		
+		minAmount *= Config.RATE_QUEST_DROP;
+		maxAmount *= Config.RATE_QUEST_DROP;
+		dropChance *= Config.RATE_QUEST_DROP; 
+		
+		long amountToGive = (minAmount == maxAmount) ? minAmount : Rnd.get(minAmount, maxAmount);
+		final double random = Rnd.nextDouble();
+		if ((dropChance >= random) && (amountToGive > 0) && player.getInventory().validateCapacityByItemId(itemId))
+		{
+			if ((limit > 0) && ((currentCount + amountToGive) > limit))
+				amountToGive = limit - currentCount;
+			
+			player.addItem("Quest", itemId, amountToGive, npc, true);
+			
+			if ((currentCount + amountToGive) == limit)
+			{
+				if (playSound)
+					st.playSound(QuestState.SOUND_MIDDLE);
+
+				return true;
+			}
+				
+			if (playSound)
+				st.playSound(QuestState.SOUND_ITEMGET);
+			
+			if (limit <= 0)
+					return true;
+		}
+		return false;
+	}
+	
 	public boolean showError(L2PcInstance player, Throwable e)
 	{
 		_log.warning(Quest.class.getName());
@@ -1012,6 +1065,12 @@ public class Quest
 		return null;
 	}
 	
+	public void addKillId(Set<Integer> set)
+	{
+		for (int killId : set)
+			addEventId(killId, QuestEventType.ON_KILL);
+	}
+	
 	public void addKillId(int... killIds)
 	{
 		for (int killId : killIds)
@@ -1162,6 +1221,82 @@ public class Quest
 	public String onTalk(L2Npc npc, L2PcInstance talker)
 	{
 		return null;
+	}
+	
+	private void setQuestToOfflineMembers(Integer[] objectsId)
+	{
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement stm = con.prepareStatement("INSERT INTO character_quests (char_id,name,var,value) VALUES (?,?,?,?)");
+			
+			for (Integer charId : objectsId)
+			{
+				stm.setInt(1, charId.intValue());
+				stm.setString(2, getName());
+				stm.setString(3, "<state>");
+				stm.setString(4, "1");			
+				stm.executeUpdate();
+			}
+			
+			stm.close();
+			con.close();
+		}
+		catch (Exception e)
+		{
+			_log.info("Error in updating character_quest table from Quest.java on method setQuestToOfflineMembers");
+			_log.info(e.toString());
+		}
+	}
+	
+	private void deleteQuestToOfflineMembers(int clanId)
+	{
+		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+		{
+			PreparedStatement stm = con.prepareStatement("DELETE FROM character_quests WHERE name = ? and char_id IN (SELECT obj_Id FROM characters WHERE clanid = ? AND online = 0)");	
+			stm.setString(1, getName());
+			stm.setInt(2, clanId);		
+			stm.executeUpdate();		
+			stm.close();
+			con.close();
+		}
+		catch (Exception e)
+		{
+			_log.info("Error in deleting infos from character_quest table from Quest.java on method deleteQuestToOfflineMembers");
+			_log.info(e.toString());
+		}
+	}
+	
+	public void setQuestToClanMembers(L2PcInstance player)
+	{
+		if (player.isClanLeader())
+		{
+			L2PcInstance[] onlineMembers = player.getClan().getOnlineMembers();
+			Integer[] offlineMembersIds = player.getClan().getOfflineMembersIds();
+			
+			for (L2PcInstance onlineMember : onlineMembers)
+			{
+				if (!onlineMember.isClanLeader())
+					onlineMember.setQuestState(player.getQuestState(getName()));
+			}
+			
+			setQuestToOfflineMembers(offlineMembersIds);
+		}
+	}
+
+	public void finishQuestToClan(L2PcInstance player)
+	{
+		if (player.isClanLeader())
+		{
+			L2PcInstance[] onlineMembers = player.getClan().getOnlineMembers();
+			
+			for (L2PcInstance onlineMember : onlineMembers)
+			{
+				if (!onlineMember.isClanLeader())
+					onlineMember.delQuestState(onlineMember.getQuestState(getName()));
+			}
+			
+			deleteQuestToOfflineMembers(player.getClanId());
+		}
 	}
 	
 	@Override

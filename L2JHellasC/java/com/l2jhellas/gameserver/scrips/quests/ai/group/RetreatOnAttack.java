@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.model.L2CharPosition;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -190,7 +190,7 @@ public class RetreatOnAttack extends AbstractNpcAI
 				posY = (npc.getY() > player.getY()) ? posY + 500 : posY - 500;
 				npc.setIsAfraid(true);
 				npc.setRunning();
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(posX, posY, posZ, 0));
+				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(posX, posY, posZ, 0));
 				startQuestTimer("Retreat", 10000, npc, player, false);
 			}
 		}

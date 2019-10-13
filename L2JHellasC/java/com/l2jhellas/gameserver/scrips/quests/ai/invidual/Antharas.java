@@ -4,7 +4,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.emum.Music;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
-import com.l2jhellas.gameserver.model.L2CharPosition;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -99,7 +99,7 @@ public class Antharas extends AbstractNpcAI
 			if (event.equalsIgnoreCase("waiting"))
 			{
 				npc.teleToLocation(185452, 114835, -8221);
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(181911, 114835, -7678, 0));
+				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(181911, 114835, -7678, 0));
 				startQuestTimer("antharas_has_arrived", 2000, npc, null, true);
 				npc.broadcastPacket(Music.BS02_A_10000.getPacket());
 				GrandBossManager.setBossStatus(ANTHARAS, FIGHTING);
@@ -157,7 +157,7 @@ public class Antharas extends AbstractNpcAI
 				}
 				else
 				{
-					npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(181911, 114835, -7678, 0));
+					npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(181911, 114835, -7678, 0));
 				}
 			}
 			else if (event.equalsIgnoreCase("spawn_cubes"))

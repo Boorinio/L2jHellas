@@ -313,7 +313,13 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 	
 	private void thinkActive()
 	{
+		if (getActiveChar() == null)
+			return;
+		
 		L2Attackable npc = (L2Attackable) _actor;
+		
+		if (L2World.getInstance().getVisibleObjects(npc, L2PcInstance.class).isEmpty())
+			return;
 		
 		// If this is a flag, then it remains in the same location.
 		if (_actor.getObjectId() == 36006)
@@ -2052,7 +2058,7 @@ public class L2AttackableAI extends L2CharacterAI implements Runnable
 	@Override
 	protected void onEvtThink()
 	{
-		if (_actor.isCastingNow() || _thinking || _actor.isAllSkillsDisabled() || _actor.isAfraid())
+		if (_thinking || !getActiveChar().isInActiveRegion() ||  getActiveChar().isCastingNow() || getActiveChar().isAllSkillsDisabled() || getActiveChar().isAfraid())
 			return;
 		
 		// Start thinking action

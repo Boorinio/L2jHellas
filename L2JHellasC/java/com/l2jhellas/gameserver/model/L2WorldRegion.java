@@ -123,7 +123,7 @@ public final class L2WorldRegion
 		switchAI(value);
 		
 		if (Config.DEBUG)
-			_log.warning((value ? "Starting" : "Stoping") + " Grid: " + getName());
+			_log.info((value ? "Starting" : "Stoping") + " Grid: " + getName());
 	}
 	
 	private void startActivation()

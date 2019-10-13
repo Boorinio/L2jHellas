@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.scrips.quests;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.model.L2CharPosition;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
@@ -82,7 +82,7 @@ public class Q652_AnAgedExAdventurer extends Quest
 				st.takeItems(CSS, 100);
 				st.playSound(QuestState.SOUND_ACCEPT);
 				
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(85326, 7869, -3620, 0));
+				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(85326, 7869, -3620, 0));
 				startQuestTimer("apparition_npc", 6000, npc, player, false);
 			}
 			else

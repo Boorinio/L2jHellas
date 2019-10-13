@@ -177,9 +177,7 @@ public final class L2FastAugByAbsoInstance extends L2NpcInstance
 			boolean canBeShow = isValid(player, item);
 			
 			if (canBeShow)
-			{
 				tb.append("<button value=\"" + item.getItemName() + "\" action=\"bypass -h npc_" + getObjectId() + "_tryaug-" + item.getObjectId() + "\" width=204 height=20 back=\"sek.cbui75\" fore=\"sek.cbui75\"><br>");
-			}
 		}
 		
 		tb.append("<br>");
@@ -219,9 +217,7 @@ public final class L2FastAugByAbsoInstance extends L2NpcInstance
 			boolean canBeShow = item.isAugmented();
 			
 			if (canBeShow)
-			{
 				tb.append("<button value=\"" + item.getItemName() + "\" action=\"bypass -h npc_" + getObjectId() + "_tryremove-" + item.getObjectId() + "\" width=204 height=20 back=\"sek.cbui75\" fore=\"sek.cbui75\"><br>");
-			}
 		}
 		
 		tb.append("<br>");

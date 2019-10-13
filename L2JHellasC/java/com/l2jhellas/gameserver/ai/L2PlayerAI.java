@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.emum.DuelState;
 import com.l2jhellas.gameserver.emum.L2SkillTargetType;
-import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Character.AIAccessor;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -201,7 +201,7 @@ public class L2PlayerAI extends L2CharacterAI
 	}
 	
 	@Override
-	protected void onIntentionMoveTo(L2CharPosition loc)
+	protected void onIntentionMoveTo(Location loc)
 	{
 		if (getIntention() == AI_INTENTION_REST)
 		{
@@ -226,7 +226,7 @@ public class L2PlayerAI extends L2CharacterAI
 		changeIntention(CtrlIntention.AI_INTENTION_MOVE_TO, loc, null);
 	
 		// Move the actor to Location (x,y,z) server side AND client side by sending Server->Client packet CharMoveToLocation (broadcast)
-		moveTo(loc.x, loc.y, loc.z);
+		moveTo(loc.getX(), loc.getY(), loc.getZ());
 	}
 	
 	private void thinkPickUp()

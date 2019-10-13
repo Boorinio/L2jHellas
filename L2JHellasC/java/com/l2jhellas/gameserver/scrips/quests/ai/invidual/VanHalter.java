@@ -18,11 +18,11 @@ import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
-import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -1353,8 +1353,8 @@ public class VanHalter extends AbstractNpcAI
 					_vanHalter.startFear();
 					if (_vanHalter.getZ() >= -10476)
 					{
-						L2CharPosition pos = new L2CharPosition(-16397, -53308, -10448, 0);
-						if ((_vanHalter.getX() == pos.x) && (_vanHalter.getY() == pos.y))
+						Location pos = new Location(-16397, -53308, -10448, 0);
+						if ((_vanHalter.getX() == pos.getX()) && (_vanHalter.getY() == pos.getY()))
 						{
 							_vanHalter.stopEffects(L2Effect.EffectType.FEAR);
 							_vanHalter.setIsAfraid(false);
@@ -1365,12 +1365,12 @@ public class VanHalter extends AbstractNpcAI
 					}
 					else if (_vanHalter.getX() >= -16397)
 					{
-						L2CharPosition pos = new L2CharPosition(-15548, -54830, -10475, 0);
+						Location pos = new Location(-15548, -54830, -10475, 0);
 						_vanHalter.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, pos);
 					}
 					else
 					{
-						L2CharPosition pos = new L2CharPosition(-17248, -54830, -10475, 0);
+						Location pos = new Location(-17248, -54830, -10475, 0);
 						_vanHalter.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, pos);
 					}
 				}

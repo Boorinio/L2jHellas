@@ -1,8 +1,8 @@
 package com.l2jhellas.gameserver.ai;
 
-import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Vehicle;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -41,7 +41,7 @@ public class L2BoatAI extends L2CharacterAI
 	}
 	
 	@Override
-	protected void clientStopMoving(L2CharPosition pos)
+	protected void clientStopMoving(Location pos)
 	{
 		if (_actor.isMoving())
 			_accessor.stopMove(pos);
@@ -138,7 +138,7 @@ public class L2BoatAI extends L2CharacterAI
 	}
 	
 	@Override
-	protected void moveToPawn(L2Object pawn, int offset)
+	public void moveToPawn(L2Object pawn, int offset)
 	{
 	}
 	

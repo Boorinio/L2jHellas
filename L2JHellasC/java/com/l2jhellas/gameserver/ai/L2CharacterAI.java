@@ -17,11 +17,13 @@ import com.l2jhellas.gameserver.emum.L2SkillTargetType;
 import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
-import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Effect;
+import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.L2ItemInstance.ItemLocation;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -178,6 +180,9 @@ public class L2CharacterAI extends AbstractAI
 	@Override
 	protected void onIntentionCast(L2Skill skill, L2Object target)
 	{
+		if(skill==null || target ==null)
+			return;
+		
 		if (getIntention() == AI_INTENTION_REST && skill.isMagic())
 		{
 			clientActionFailed();
@@ -213,7 +218,7 @@ public class L2CharacterAI extends AbstractAI
 	}
 	
 	@Override
-	protected void onIntentionMoveTo(L2CharPosition pos)
+	protected void onIntentionMoveTo(Location pos)
 	{
 		if (getIntention() == AI_INTENTION_REST)
 		{
@@ -239,7 +244,7 @@ public class L2CharacterAI extends AbstractAI
 		_actor.abortAttack();
 		
 		// Move the actor to Location (x,y,z) server side AND client side by sending Server->Client packet CharMoveToLocation (broadcast)
-		moveTo(pos.x, pos.y, pos.z);
+		moveTo(pos.getX(), pos.getY(), pos.getZ());
 	}
 	
 	@Override
@@ -259,7 +264,7 @@ public class L2CharacterAI extends AbstractAI
 			return;
 		}
 		
-		if (_actor.isImmobilized() || _actor.isRooted())
+		if (_actor.isMovementDisabled() || (_actor.getMoveSpeed() <= 0))
 		{
 			// Cancel action client side by sending Server->Client packet ActionFailed to the L2PcInstance actor
 			clientActionFailed();
@@ -300,12 +305,15 @@ public class L2CharacterAI extends AbstractAI
 			return;
 		}
 		
-		if (_actor.isAllSkillsDisabled() || _actor.isCastingNow())
+		if (_actor.isAllSkillsDisabled() || _actor.isCastingNow() || _actor.isAttackingNow())
 		{
 			// Cancel action client side by sending Server->Client packet ActionFailed to the L2PcInstance actor
 			clientActionFailed();
 			return;
 		}
+		
+		if (object instanceof L2ItemInstance && (((L2ItemInstance) object).getLocation() != ItemLocation.VOID))
+			return;
 		
 		// Stop the actor auto-attack client side by sending Server->Client packet AutoAttackStop (broadcast)
 		clientStopAutoAttack();
@@ -469,7 +477,7 @@ public class L2CharacterAI extends AbstractAI
 	}
 	
 	@Override
-	protected void onEvtArrivedBlocked(L2CharPosition blocked_at_pos)
+	protected void onEvtArrivedBlocked(Location blocked_at_pos)
 	{
 		// If the Intention was AI_INTENTION_MOVE_TO, let the Intention to AI_INTENTION_ACTIVE
 		if ((getIntention() == AI_INTENTION_MOVE_TO) || (getIntention() == AI_INTENTION_CAST))
@@ -1069,7 +1077,7 @@ public class L2CharacterAI extends AbstractAI
 	}
 	
 	@Override
-	protected void onIntentionMoveToInABoat(L2CharPosition destination, L2CharPosition origin)
+	protected void onIntentionMoveToInABoat(Location destination, Location origin)
 	{
 		if (getIntention() == AI_INTENTION_REST)
 		{

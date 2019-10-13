@@ -3800,7 +3800,7 @@ public class L2PcInstance extends L2Playable
 	
 	protected void doPickupItem(L2Object object)
 	{
-		if (isAlikeDead() || !isVisible())
+		if (object == null || isAlikeDead() || !isVisible())
 			return;
 		
 		// Set the AI Intention to AI_INTENTION_IDLE

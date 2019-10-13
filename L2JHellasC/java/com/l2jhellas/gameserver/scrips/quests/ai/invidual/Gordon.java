@@ -2,9 +2,9 @@ package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
-import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -343,7 +343,7 @@ public class Gordon extends AbstractNpcAI
 			if (npc.getNpcId() == GORDON)
 			{
 				npc.setWalking();
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(X, Y, Z, 0));
+				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(X, Y, Z, 0));
 			}
 		}
 		else if (event.equalsIgnoreCase("check_ai"))
@@ -397,7 +397,7 @@ public class Gordon extends AbstractNpcAI
 					Z = WALKS[_isWalkTo - 1][2];
 					
 					npc.setWalking();
-					npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(X, Y, Z, 0));
+					npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(X, Y, Z, 0));
 				}
 				
 				// Test for unblock Npc
@@ -417,7 +417,7 @@ public class Gordon extends AbstractNpcAI
 					}
 					
 					if (_npcBlock > 0)
-						npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(X, Y, Z, 0));
+						npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(X, Y, Z, 0));
 				}
 				// End Test unblock Npc
 			}

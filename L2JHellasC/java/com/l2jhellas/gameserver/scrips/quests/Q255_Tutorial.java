@@ -289,9 +289,7 @@ public class Q255_Tutorial extends Quest
 		final QuestState qs = player.getQuestState(qn);
 		
 		if (qs == null)
-		{
 			return event;
-		}
 		
 		String html = "";
 		
@@ -321,13 +319,10 @@ public class Q255_Tutorial extends Quest
 					case 2:
 					{
 						if (Ex == 2)
-						{
-							qs.showQuestionMark(3);
-						}
+							qs.showQuestionMark(3);				
 						else if (qs.getQuestItemsCount(6353) > 0)
-						{
 							qs.showQuestionMark(5);
-						}
+						
 						qs.playSound("ItemSound.quest_tutorial");
 						break;
 					}
@@ -438,17 +433,13 @@ public class Q255_Tutorial extends Quest
 					case 23:
 					{
 						if (TCLb.containsKey(classId))
-						{
 							html = TCLb.get(classId);
-						}
 						break;
 					}
 					case 24:
 					{
 						if (TCLc.containsKey(classId))
-						{
 							html = TCLc.get(classId);
-						}
 						break;
 					}
 					case 25:
@@ -459,9 +450,7 @@ public class Q255_Tutorial extends Quest
 					case 26:
 					{
 						if (TCLa.containsKey(classId))
-						{
 							html = TCLa.get(classId);
-						}
 						break;
 					}
 					case 27:
@@ -825,10 +814,9 @@ public class Q255_Tutorial extends Quest
 		if (player.getLevel() < 6)
 		{
 			Quest q = QuestManager.getInstance().getQuest(qn);
+			
 			if (q != null)
-			{
 				player.processQuestEvent(q.getName(), "CE45");
-			}
 		}
 		return "";
 	}

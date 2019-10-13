@@ -3,8 +3,8 @@ package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.emum.Music;
-import com.l2jhellas.gameserver.model.L2CharPosition;
 import com.l2jhellas.gameserver.model.L2Spawn;
+import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
@@ -66,7 +66,7 @@ public class DrChaos extends Quest
 		}
 		else if (event.equalsIgnoreCase("4"))
 		{
-			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(96055, -110759, -3312, 0));
+			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(96055, -110759, -3312, 0));
 			startQuestTimer("5", 2000, npc, player, false);
 		}
 		else if (event.equalsIgnoreCase("5"))
@@ -94,7 +94,7 @@ public class DrChaos extends Quest
 		if (npc.getNpcId() == DOCTER_CHAOS)
 		{
 			npc.broadcastPacket(new NpcSay(npc.getObjectId(), 0, npc.getNpcId(), "How dare you trespass into my territory? Have you no fear?"));
-			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new L2CharPosition(96323, -110914, -3328, 0));
+			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(96323, -110914, -3328, 0));
 			startQuestTimer("Chat", 3000, npc, player, false);
 		}
 		return "";
