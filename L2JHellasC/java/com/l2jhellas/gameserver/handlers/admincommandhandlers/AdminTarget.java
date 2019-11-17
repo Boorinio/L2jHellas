@@ -8,8 +8,7 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class AdminTarget implements IAdminCommandHandler
-{
-	
+{	
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_target"
@@ -35,16 +34,11 @@ public class AdminTarget implements IAdminCommandHandler
 		{
 			String targetName = command.substring(13);
 			L2Object obj = L2World.getInstance().getPlayer(targetName);
+			
 			if ((obj != null) && (obj instanceof L2PcInstance))
-			{
 				obj.onAction(activeChar);
-			}
 			else
-			{
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-				sm.addString("Player " + targetName + " not found");
-				activeChar.sendPacket(sm);
-			}
+				activeChar.sendMessage("Player " + targetName + " not found");
 		}
 		catch (IndexOutOfBoundsException e)
 		{

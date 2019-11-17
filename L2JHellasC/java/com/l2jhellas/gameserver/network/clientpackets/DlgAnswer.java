@@ -30,7 +30,7 @@ public final class DlgAnswer extends L2GameClientPacket
 		{
 			switch (_messageId)
 			{
-			// RESSURECTION
+			    // RESSURECTION
 				case 1510:
 				case 332:
 					player.reviveAnswer(_answer);

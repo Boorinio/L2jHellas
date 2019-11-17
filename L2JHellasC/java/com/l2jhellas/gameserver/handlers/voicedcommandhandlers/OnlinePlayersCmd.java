@@ -19,14 +19,7 @@ public class OnlinePlayersCmd implements IVoicedCommandHandler
 		if (command.startsWith(VOICED_COMMANDS[0]))
 		{
 			showPlayers(activeChar);
-			
-			final L2ZoneType town = MapRegionTable.getTown(activeChar.getX(), activeChar.getY(), activeChar.getZ());
-			
-			if (town != null)
-			{
-				int count = town.getCharactersInside().size();
-				activeChar.sendMessage("There are " + count + " characters inside that town");
-			}
+			showPlayersInTown(activeChar);
 		}
 		return true;
 	}
@@ -36,6 +29,19 @@ public class OnlinePlayersCmd implements IVoicedCommandHandler
 		player.sendMessage("====================\n");
 		player.sendMessage("There are " + L2World.getInstance().getAllPlayers().size() + " players online\n");
 		player.sendMessage("====================");
+	}
+	
+	public void showPlayersInTown(L2PcInstance player)
+	{
+		final L2ZoneType town = MapRegionTable.getTown(player.getX(), player.getY(), player.getZ());
+		
+		if (town != null)
+		{
+			int count = town.getKnownTypeInside(L2PcInstance.class).size();
+			player.sendMessage("====================\n");
+			player.sendMessage("There are " + count + " characters inside that town\n");
+			player.sendMessage("====================");
+		}
 	}
 	
 	@Override

@@ -56,9 +56,8 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 						activeChar.sendMessage("  Kills : " + cw.getNbKills());
 					}
 					else
-					{
 						activeChar.sendMessage("  Don't exist in the world.");
-					}
+
 					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.FRIEND_LIST_FOOTER));
 				}
 			}
@@ -102,9 +101,7 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 			}
 		}
 		else if (command.startsWith("admin_cw_reload"))
-		{
 			CursedWeaponsManager.reload();
-		}
 		else
 		{
 			CursedWeapon cw = null;
@@ -145,13 +142,9 @@ public class AdminCursedWeapons implements IAdminCommandHandler
 			}
 			
 			if (command.startsWith("admin_cw_remove "))
-			{
 				cw.endOfLife();
-			}
 			else if (command.startsWith("admin_cw_goto "))
-			{
 				cw.goTo(activeChar);
-			}
 			else if (command.startsWith("admin_cw_add"))
 			{
 				if (cw.isActive())

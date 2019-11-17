@@ -64,7 +64,7 @@ public class CharInfo extends L2GameServerPacket
 		writeS(_activeChar.getName());
 		writeD(_activeChar.getRace().ordinal());
 		writeD(_activeChar.getAppearance().getSex().ordinal());
-		writeD(_activeChar.getBaseClass()); 
+		writeD(_activeChar.getClassIndex() == 0 ? _activeChar.getClassId().getId() : _activeChar.getBaseClass());
 		
 		writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_DHAIR));
 		writeD(_inv.getPaperdollItemId(Inventory.PAPERDOLL_HEAD));
@@ -197,7 +197,7 @@ public class CharInfo extends L2GameServerPacket
 		
 		writeD(_activeChar.getAppearance().getTitleColor());
 		
-		writeC(_activeChar.isCursedWeaponEquiped() ? CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()) : 0);
+		writeD(_activeChar.isCursedWeaponEquiped() ? CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()) : 0);
 		
 		writeD(!_activeChar.isCursedWeaponEquiped() && _activeChar.getClanId() > 0 && _activeChar.getClan() != null ? _activeChar.getClan().getReputationScore() : 0);
 	}

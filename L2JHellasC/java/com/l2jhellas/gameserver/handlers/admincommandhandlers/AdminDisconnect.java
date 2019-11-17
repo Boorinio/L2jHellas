@@ -4,10 +4,8 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
-import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class AdminDisconnect implements IAdminCommandHandler
 {
@@ -22,9 +20,7 @@ public class AdminDisconnect implements IAdminCommandHandler
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (command.equals("admin_character_disconnect"))
-		{
 			disconnectCharacter(activeChar);
-		}
 		
 		return true;
 	}
@@ -36,35 +32,21 @@ public class AdminDisconnect implements IAdminCommandHandler
 	}
 	
 	private static void disconnectCharacter(L2PcInstance activeChar)
-	{
-		L2Object target = activeChar.getTarget();
-		L2PcInstance player = null;
-		if (target instanceof L2PcInstance)
+	{	
+		final L2PcInstance player = activeChar.getTarget().getActingPlayer();	
+		if (player == null)
 		{
-			player = (L2PcInstance) target;
-		}
-		else
-		{
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			return;
 		}
 		
 		if (player.getObjectId() == activeChar.getObjectId())
-		{
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-			sm.addString("You cannot logout your character.");
-			activeChar.sendPacket(sm);
-		}
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 		else
-		{
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-			sm.addString("Character " + player.getName() + " disconnected from server.");
-			activeChar.sendPacket(sm);
-			
-			_log.warning(AdminDisconnect.class.getSimpleName() + ": " + player.getName() + " kicked from server.");
-			
+		{						
+			player.closeNetConnection(true);		
 			RegionBBSManager.getInstance().changeCommunityBoard();
-			
-			player.closeNetConnection(true);
+			activeChar.sendMessage("Character " + player.getName() + " disconnected from server.");
 		}
 	}
 }

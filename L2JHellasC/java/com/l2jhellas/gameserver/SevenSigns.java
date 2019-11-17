@@ -533,6 +533,48 @@ public class SevenSigns
 		return (_activePeriod == PERIOD_SEAL_VALIDATION);
 	}
 	
+	public boolean isDateInSealValidPeriod(Calendar date)
+	{
+		long nextPeriodChange = getMilliToPeriodChange();
+		long nextQuestStart = 0;
+		long nextValidStart = 0;
+		long tillDate = date.getTimeInMillis() - Calendar.getInstance().getTimeInMillis();
+		
+		while (((2 * PERIOD_MAJOR_LENGTH) + (2 * PERIOD_MINOR_LENGTH)) < tillDate)
+		{
+			tillDate -= ((2 * PERIOD_MAJOR_LENGTH) + (2 * PERIOD_MINOR_LENGTH));
+		}
+		while (tillDate < 0)
+		{
+			tillDate += ((2 * PERIOD_MAJOR_LENGTH) + (2 * PERIOD_MINOR_LENGTH));
+		}
+		
+		switch (getCurrentPeriod())
+		{
+			case PERIOD_COMP_RECRUITING:
+				nextValidStart = nextPeriodChange + PERIOD_MAJOR_LENGTH;
+				nextQuestStart = nextValidStart + PERIOD_MAJOR_LENGTH + PERIOD_MINOR_LENGTH;
+				break;
+			case PERIOD_COMPETITION:
+				nextValidStart = nextPeriodChange;
+				nextQuestStart = nextPeriodChange + PERIOD_MAJOR_LENGTH + PERIOD_MINOR_LENGTH;
+				break;
+			case PERIOD_COMP_RESULTS:
+				nextQuestStart = nextPeriodChange + PERIOD_MAJOR_LENGTH;
+				nextValidStart = nextQuestStart + PERIOD_MAJOR_LENGTH + PERIOD_MINOR_LENGTH;
+				break;
+			case PERIOD_SEAL_VALIDATION:
+				nextQuestStart = nextPeriodChange;
+				nextValidStart = nextPeriodChange + PERIOD_MAJOR_LENGTH + PERIOD_MINOR_LENGTH;
+				break;
+		}
+		
+		if (((nextQuestStart < tillDate) && (tillDate < nextValidStart)) || ((nextValidStart < nextQuestStart) && ((tillDate < nextValidStart) || (nextQuestStart < tillDate))))
+			return false;
+		
+		return true;
+	}
+
 	public final boolean isCompResultsPeriod()
 	{
 		return (_activePeriod == PERIOD_COMP_RESULTS);

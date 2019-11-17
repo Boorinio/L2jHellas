@@ -596,6 +596,7 @@ public class NpcData
 	
 	public void reloadAllNpc()
 	{
+		_npcs.clear();
 		restoreNpcData();
 	}
 	

@@ -38,9 +38,7 @@ public class AdminDoorControl implements IAdminCommandHandler
 				{
 					for (Castle castle : CastleManager.getInstance().getCastles())
 						if (castle.getDoor(doorId) != null)
-						{
 							castle.getDoor(doorId).openMe();
-						}
 				}
 			}
 			else if (command.startsWith("admin_close "))
@@ -52,9 +50,7 @@ public class AdminDoorControl implements IAdminCommandHandler
 				{
 					for (Castle castle : CastleManager.getInstance().getCastles())
 						if (castle.getDoor(doorId) != null)
-						{
 							castle.getDoor(doorId).closeMe();
-						}
 				}
 			}
 			if (command.equals("admin_closeall"))
@@ -79,34 +75,24 @@ public class AdminDoorControl implements IAdminCommandHandler
 			{
 				L2Object target = activeChar.getTarget();
 				if (target instanceof L2DoorInstance)
-				{
 					((L2DoorInstance) target).openMe();
-				}
 				else
-				{
 					activeChar.sendMessage("Incorrect target.");
-				}
 			}
 			
 			if (command.equals("admin_close"))
 			{
 				L2Object target = activeChar.getTarget();
 				if (target instanceof L2DoorInstance)
-				{
 					((L2DoorInstance) target).closeMe();
-				}
 				else
-				{
 					activeChar.sendMessage("Incorrect target.");
-				}
 			}
 		}
 		catch (Exception e)
 		{
 			if (Config.DEVELOPER)
-			{
 				e.printStackTrace();
-			}
 		}
 		
 		return true;

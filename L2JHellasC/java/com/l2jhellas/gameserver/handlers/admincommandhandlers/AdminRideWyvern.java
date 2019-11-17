@@ -32,13 +32,9 @@ public class AdminRideWyvern implements IAdminCommandHandler
 				return false;
 			}
 			if (command.startsWith("admin_ride_wyvern"))
-			{
 				_petRideId = 12621;
-			}
 			else if (command.startsWith("admin_ride_strider"))
-			{
 				_petRideId = 12526;
-			}
 			else
 			{
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);

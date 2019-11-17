@@ -75,7 +75,7 @@ public class UserInfo extends L2GameServerPacket
 		writeS(_activeChar.getName());
 		writeD(_activeChar.getRace().ordinal());
 		writeD(_activeChar.getAppearance().getSex().ordinal());
-		writeD(_activeChar.getBaseClass());
+		writeD(_activeChar.getClassIndex() == 0 ? _activeChar.getClassId().getId() : _activeChar.getBaseClass());
 		
 		writeD(_activeChar.getLevel());
 		writeQ(_activeChar.getExp());
@@ -272,7 +272,7 @@ public class UserInfo extends L2GameServerPacket
 		
 		writeD(_activeChar.getAppearance().getTitleColor());
 
-		writeC(_activeChar.isCursedWeaponEquiped() ? CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()) : 0);
+		writeD(_activeChar.isCursedWeaponEquiped() ? CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()) : 0);
 	}
 	
 	@Override

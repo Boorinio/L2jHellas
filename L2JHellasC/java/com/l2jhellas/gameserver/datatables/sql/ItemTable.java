@@ -619,6 +619,11 @@ public class ItemTable
 		return id > _allTemplates.length ? null : _allTemplates[id];
 	}
 	
+	public L2Item[] getTemplates()
+	{
+		return _allTemplates;
+	}
+	
 	public L2ItemInstance createItem(String process, int itemId, int count, L2PcInstance actor, L2Object reference)
 	{
 		// Create and Init the L2ItemInstance corresponding to the Item Identifier

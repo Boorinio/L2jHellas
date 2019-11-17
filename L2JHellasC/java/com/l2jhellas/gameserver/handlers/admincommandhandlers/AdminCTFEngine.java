@@ -89,13 +89,9 @@ public class AdminCTFEngine implements IAdminCommandHandler
 				showMainPage(activeChar);
 			}
 			else if (command.equals("admin_ctf_edit"))
-			{
 				showEditPage(activeChar);
-			}
 			else if (command.equals("admin_ctf_control"))
-			{
 				showControlPage(activeChar);
-			}
 			else if (command.equals("admin_ctf_tele_npc"))
 			{
 				activeChar.teleToLocation(CTF._npcX, CTF._npcY, CTF._npcZ);

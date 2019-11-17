@@ -92,36 +92,13 @@ public class Shutdown extends Thread
 	{
 		if (this == SingletonHolder._instance)
 		{
-			TimeCounter tc = new TimeCounter();
-			TimeCounter tc1 = new TimeCounter();
-			
 			Util.printSection("Under " + MODE_TEXT[_shutdownMode] + " process");
 			
 			// disconnect players
 			try
 			{
 				disconnectAllCharacters();
-				_log.info(Shutdown.class.getSimpleName() + ": All players have been disconnected.(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
-			}
-			catch (Throwable t)
-			{
-			}
-			
-			// ensure all services are stopped
-			try
-			{
-				GameTimeController.getInstance().stopTimer();
-				_log.info(Shutdown.class.getSimpleName() + ": Services have been stopped.(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
-			}
-			catch (Throwable t)
-			{
-			}
-			
-			// stop all threadpolls
-			try
-			{
-				ThreadPoolManager.getInstance().shutdown();
-				_log.info(Shutdown.class.getSimpleName() + ": Threads have been shutdown.(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+				_log.info(Shutdown.class.getSimpleName() + ": All players have been disconnected.");
 			}
 			catch (Throwable t)
 			{
@@ -130,7 +107,7 @@ public class Shutdown extends Thread
 			try
 			{
 				LoginServerThread.getInstance().interrupt();
-				_log.info(Shutdown.class.getSimpleName() + ": Disconnect from login.(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+				_log.info(Shutdown.class.getSimpleName() + ": Disconnect from login.");
 			}
 			catch (Throwable t)
 			{
@@ -140,43 +117,41 @@ public class Shutdown extends Thread
 			if (!SevenSigns.getInstance().isSealValidationPeriod())
 				SevenSignsFestival.getInstance().saveFestivalData(false);
 			
-			// Save Seven Signs data && status.
-			
 			// Save Seven Signs data before closing. :)
 			SevenSigns.getInstance().saveSevenSignsData(null, true);
 			
-			_log.info(Shutdown.class.getSimpleName() + ": Seven Signs Festival, general data && status have been saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+			_log.info(Shutdown.class.getSimpleName() + ": Seven Signs Festival, general data && status have been saved.");
 			
 			// Four Sepulchers, stop any working task.
 			FourSepulchersManager.getInstance().stop();
 			
 			// Save raidbosses status
 			RaidBossSpawnManager.getInstance().cleanUp();
-			_log.info(Shutdown.class.getSimpleName() + ": Raid Bosses data have been saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+			_log.info(Shutdown.class.getSimpleName() + ": Raid Bosses data have been saved.");
 			
 			// Save grandbosses status
 			GrandBossManager.getInstance().cleanUp();
-			_log.info(Shutdown.class.getSimpleName() + ": World Bosses data have been saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+			_log.info(Shutdown.class.getSimpleName() + ": World Bosses data have been saved.");
 			
 			// Save TradeController
-			_log.info(Shutdown.class.getSimpleName() + ": TradeController is save data in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+			_log.info(Shutdown.class.getSimpleName() + ": TradeController data have been saved.");
 			TradeController.getInstance().dataCountStore();
-			_log.info(Shutdown.class.getSimpleName() + ": All items have been saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+			_log.info(Shutdown.class.getSimpleName() + ": All items have been saved.");
 			
 			// Save olympiads
 			Olympiad.getInstance().saveOlympiadStatus();
-			_log.info(Shutdown.class.getSimpleName() + ": Olympiad data has been saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+			_log.info(Shutdown.class.getSimpleName() + ": Olympiad data has been saved.");
 			
 			// Save Hero data
 			Hero.getInstance().shutdown();
-			_log.info(Shutdown.class.getSimpleName() + ": Hero data has been saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+			_log.info(Shutdown.class.getSimpleName() + ": Hero data has been saved.");
 			
 			// Save all manor data
 			CastleManorManager.getInstance().save();
-			_log.info(Shutdown.class.getSimpleName() + ": Manor Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+			_log.info(Shutdown.class.getSimpleName() + ": Manor Data saved.");
 			
 			CursedWeaponsManager.getInstance().saveData();
-			_log.info(Shutdown.class.getSimpleName() + ": Cursed weapons Data saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+			_log.info(Shutdown.class.getSimpleName() + ": Cursed weapons Data saved.");
 			
 			// Rank PvP System by Masterio:
 			if (Config.RANK_PVP_SYSTEM_ENABLED)
@@ -185,7 +160,7 @@ public class Shutdown extends Thread
 				
 				if (up[0] == 0)
 				{
-					_log.info("PvpTable: Data saved [" + up[1] + " inserts and " + up[2] + " updates] in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+					_log.info("PvpTable: Data saved [" + up[1] + " inserts and " + up[2] + " updates]");
 				}
 			}
 			
@@ -194,9 +169,29 @@ public class Shutdown extends Thread
 			{
 				ItemsOnGroundManager.getInstance().saveInDb();
 				ItemsOnGroundManager.getInstance().cleanUp();
-				_log.info(Shutdown.class.getSimpleName() + ": All items on ground saved in (" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+				_log.info(Shutdown.class.getSimpleName() + ": All items on ground saved.");
 			}
-			_log.info(Shutdown.class.getSimpleName() + ": Data saved.(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+					
+			// ensure all services are stopped
+			try
+			{
+				GameTimeController.getInstance().stopTimer();
+				_log.info(Shutdown.class.getSimpleName() + ": Services have been stopped.");
+			}
+			catch (Throwable t)
+			{
+			}
+			
+			// stop all threadpolls
+			try
+			{
+				ThreadPoolManager.getInstance().shutdown();
+				_log.info(Shutdown.class.getSimpleName() + ": Threads have been shutdown.");
+			}
+			catch (Throwable t)
+			{
+			}
+			_log.info(Shutdown.class.getSimpleName() + ": Data saved.");
 			
 			try
 			{
@@ -217,19 +212,15 @@ public class Shutdown extends Thread
 			try
 			{
 				L2DatabaseFactory.getInstance().shutdown();
-				_log.info(Shutdown.class.getSimpleName() + ": Database connection shutdown successfull.(" + tc.getEstimatedTimeAndRestartCounter() + "ms).");
+				_log.info(Shutdown.class.getSimpleName() + ": Database connection shutdown successfull.");
 			}
 			catch (Throwable t)
 			{
 				
 			}
-			_log.info(Shutdown.class.getSimpleName() + ": The server has been successfully shut down in " + tc1.getEstimatedTime() + " ms.");
-			
-			// server will quit, when this function ends.
-			if (SingletonHolder._instance._shutdownMode == GM_RESTART)
-				Runtime.getRuntime().halt(2);
-			else
-				Runtime.getRuntime().halt(0);
+			_log.info(Shutdown.class.getSimpleName() + ": The server has been successfully shut down.");
+
+			Runtime.getRuntime().halt((SingletonHolder._instance._shutdownMode == GM_RESTART) ? 2 : 0);
 		}
 		else
 		{
@@ -398,33 +389,6 @@ public class Shutdown extends Thread
 		}
 		catch (InterruptedException e)
 		{
-		}
-	}
-	
-	private static final class TimeCounter
-	{
-		private long _startTime;
-		
-		TimeCounter()
-		{
-			restartCounter();
-		}
-		
-		private void restartCounter()
-		{
-			_startTime = System.currentTimeMillis();
-		}
-		
-		long getEstimatedTimeAndRestartCounter()
-		{
-			final long toReturn = System.currentTimeMillis() - _startTime;
-			restartCounter();
-			return toReturn;
-		}
-		
-		long getEstimatedTime()
-		{
-			return System.currentTimeMillis() - _startTime;
 		}
 	}
 	

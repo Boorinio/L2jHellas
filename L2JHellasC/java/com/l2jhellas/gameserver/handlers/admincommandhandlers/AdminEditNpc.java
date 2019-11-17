@@ -58,7 +58,7 @@ public class AdminEditNpc implements IAdminCommandHandler
 	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
-	{// TODO: Tokenize and protect arguments parsing. Externalize HTML.
+	{
 		if (command.startsWith("admin_showShop "))
 		{
 			String[] args = command.split(" ");

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.datatables.xml.IconData;
 import com.l2jhellas.gameserver.emum.L2ArmorType;
 import com.l2jhellas.gameserver.emum.L2EtcItemType;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
@@ -188,6 +189,11 @@ public abstract class L2Item
 	public final int getItemId()
 	{
 		return _itemId;
+	}
+	
+	public final String getIcon()
+	{
+		return IconData.getIconByItemId(getItemId());
 	}
 	
 	public abstract int getItemMask();

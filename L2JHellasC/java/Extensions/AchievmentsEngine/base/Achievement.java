@@ -40,8 +40,8 @@ public class Achievement
 				continue;
 			
 			String[] split = s.split(",");
-			Integer item = 0;
-			Long count = new Long(0);
+			int item = 0;
+			long count = 0;			
 			try
 			{
 				item = Integer.valueOf(split[0]);

@@ -206,8 +206,8 @@ public class ClanBBSManager extends BaseBBSManager
 		}
 		i = 0;
 		int nbp;
-		nbp = ClanTable.getInstance().getClans().length / 8;
-		if (nbp * 8 != ClanTable.getInstance().getClans().length)
+		nbp = ClanTable.getInstance().getClans().size() / 8;
+		if (nbp * 8 != ClanTable.getInstance().getClans().size())
 		{
 			nbp++;
 		}

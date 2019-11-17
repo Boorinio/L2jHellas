@@ -95,22 +95,16 @@ public class AdminSpawn implements IAdminCommandHandler
 				String id = st.nextToken();
 				int respawnTime = 0;
 				int mobCount = 1;
+				
 				if (st.hasMoreTokens())
-				{
 					mobCount = Integer.parseInt(st.nextToken());
-				}
 				if (st.hasMoreTokens())
-				{
 					respawnTime = Integer.parseInt(st.nextToken());
-				}
+				
 				if (cmd.equalsIgnoreCase("admin_spawn_once"))
-				{
 					spawnMonster(activeChar, id, respawnTime, mobCount, false);
-				}
 				else
-				{
 					spawnMonster(activeChar, id, respawnTime, mobCount, true);
-				}
 			}
 			catch (Exception e)
 			{ // Case of wrong or missing monster data
@@ -177,18 +171,15 @@ public class AdminSpawn implements IAdminCommandHandler
 			else
 			{
 				if (RaidBossSpawnManager.getInstance().getValidTemplate(spawn.getNpcid()) != null)
-				{
 					RaidBossSpawnManager.getInstance().addNewSpawn(spawn, 0, template1.getStatsSet().getDouble("baseHpMax"), template1.getStatsSet().getDouble("baseMpMax"), permanent);
-				}
 				else
-				{
 					SpawnTable.getInstance().addNewSpawn(spawn, permanent);
-				}
+
 				spawn.init();
+				
 				if (!permanent)
-				{
 					spawn.stopRespawn();
-				}
+				
 				activeChar.sendMessage("Created " + template1.name + " on " + target.getObjectId());
 			}
 		}
@@ -227,13 +218,9 @@ public class AdminSpawn implements IAdminCommandHandler
 		
 		// End
 		if (ended)
-		{
 			tb.append(end2);
-		}
 		else
-		{
 			tb.append(end1);
-		}
 		
 		activeChar.sendPacket(new NpcHtmlMessage(5, tb.toString()));
 	}
@@ -262,13 +249,10 @@ public class AdminSpawn implements IAdminCommandHandler
 		}
 		// End
 		if (ended)
-		{
 			tb.append(end2);
-		}
 		else
-		{
 			tb.append(end1);
-		}
+
 		activeChar.sendPacket(new NpcHtmlMessage(5, tb.toString()));
 	}
 }

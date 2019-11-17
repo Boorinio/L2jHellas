@@ -48,9 +48,7 @@ public class AdminShutdown implements IAdminCommandHandler
 			}
 		}
 		else if (command.startsWith("admin_server_abort"))
-		{
 			serverAbort(activeChar);
-		}
 		
 		return true;
 	}

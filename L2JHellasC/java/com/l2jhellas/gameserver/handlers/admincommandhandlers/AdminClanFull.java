@@ -2,7 +2,6 @@ package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
-import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.EtcStatusUpdate;
@@ -24,7 +23,6 @@ public class AdminClanFull implements IAdminCommandHandler
 			try
 			{
 				adminAddClanSkill(activeChar);
-				activeChar.sendMessage("Sucessfull usage //clanfull !");
 			}
 			catch (Exception e)
 			{
@@ -36,30 +34,20 @@ public class AdminClanFull implements IAdminCommandHandler
 	
 	private static void adminAddClanSkill(L2PcInstance activeChar)
 	{
-		L2Object target = activeChar.getTarget();
-		L2PcInstance player = null;
+		final L2PcInstance player = activeChar.getTarget().getActingPlayer();
 		
-		if (target == null)
-			target = activeChar;
-		
-		if (target instanceof L2PcInstance)
+		if (player == null)
 		{
-			player = (L2PcInstance) target;
-		}
-		else
-		{
-			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.INCORRECT_TARGET));
 			return;
 		}
 		
 		if (!player.isClanLeader())
 		{
-			player.sendPacket(SystemMessageId.S1_IS_NOT_A_CLAN_LEADER);
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_IS_NOT_A_CLAN_LEADER);
-			sm.addString(player.getName());
-			player.sendPacket(sm);
+			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_IS_NOT_A_CLAN_LEADER).addCharName(player));
 			return;
 		}
+		
 		player.getClan().changeLevel(Config.CLAN_LEVEL);
 		player.ClanSkills();
 		player.sendPacket(new EtcStatusUpdate(activeChar));

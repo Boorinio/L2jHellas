@@ -16,9 +16,8 @@ public class AdminWho implements IAdminCommandHandler
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (command.equalsIgnoreCase("admin_who"))
-		{
 			activeChar.sendMessage("SYS: Online Players:" + L2World.getInstance().getAllPlayers().size() + "/" + Config.MAXIMUM_ONLINE_USERS + ".");
-		}
+
 		return true;
 	}
 	

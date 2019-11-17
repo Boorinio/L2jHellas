@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -393,7 +394,7 @@ public class Siege
 				// The player's clan is in an alliance
 				if (allyId != 0)
 				{
-					L2Clan[] clanList = ClanTable.getInstance().getClans();
+					Collection<L2Clan> clanList = ClanTable.getInstance().getClans();
 					
 					for (L2Clan clan : clanList)
 					{
@@ -988,7 +989,7 @@ public class Siege
 		startAutoTask(); // Prepare auto start siege and end registration
 	}
 	
-	private void saveSiegeDate()
+	public void saveSiegeDate()
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{

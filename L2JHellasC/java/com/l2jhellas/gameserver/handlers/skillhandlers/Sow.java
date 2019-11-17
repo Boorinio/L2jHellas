@@ -76,8 +76,10 @@ public class Sow implements ISkillHandler
 			}
 			
 			L2ItemInstance item = _activeChar.getInventory().getItemByItemId(_seedId);
+			
 			// Consuming used seed
-			_activeChar.destroyItem("Consume", item.getObjectId(), 1, null, false);
+			if (!_activeChar.destroyItemByItemId("Consume", item.getObjectId(), 1, _target, false))
+				return;
 			
 			SystemMessage sm = null;
 			if (calcSuccess())
@@ -89,17 +91,13 @@ public class Sow implements ISkillHandler
 				sm = SystemMessage.getSystemMessage(SystemMessageId.THE_SEED_WAS_SUCCESSFULLY_SOWN);
 			}
 			else
-			{
 				sm = SystemMessage.getSystemMessage(SystemMessageId.THE_SEED_WAS_NOT_SOWN);
-			}
+
 			if (_activeChar.getParty() == null)
-			{
 				_activeChar.sendPacket(sm);
-			}
 			else
-			{
 				_activeChar.getParty().broadcastToPartyMembers(sm);
-			}
+
 			_target.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 		}
 		

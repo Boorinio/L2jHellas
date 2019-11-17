@@ -8,7 +8,6 @@ import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class AdminDelete implements IAdminCommandHandler
 {
@@ -31,7 +30,6 @@ public class AdminDelete implements IAdminCommandHandler
 		if ((obj != null) && (obj instanceof L2Npc))
 		{
 			L2Npc target = (L2Npc) obj;
-			target.deleteMe();
 			
 			L2Spawn spawn = target.getSpawn();
 			if (spawn != null)
@@ -44,16 +42,12 @@ public class AdminDelete implements IAdminCommandHandler
 					SpawnTable.getInstance().deleteSpawn(spawn, true);
 			}
 			
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-			sm.addString("Deleted " + target.getName() + " from " + target.getObjectId() + ".");
-			activeChar.sendPacket(sm);
+			target.deleteMe();
+
+			activeChar.sendMessage("Deleted " + target.getName() + " from " + target.getObjectId() + ".");
 		}
 		else
-		{
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-			sm.addString("Incorrect target.");
-			activeChar.sendPacket(sm);
-		}
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 	}
 	
 	@Override

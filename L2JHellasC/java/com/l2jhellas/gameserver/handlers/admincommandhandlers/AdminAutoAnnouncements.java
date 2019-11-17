@@ -20,13 +20,9 @@ public class AdminAutoAnnouncements implements IAdminCommandHandler
 	public boolean useAdminCommand(String command, L2PcInstance admin)
 	{
 		if (command.equals("admin_list_autoannouncements"))
-		{
 			AutoAnnouncementHandler.getInstance().listAutoAnnouncements(admin);
-		}
 		else if (command.startsWith("admin_add_autoannouncement"))
 		{
-			// FIXME the player can send only 16 chars (if you try to send more
-			// it sends null), remove this function or not?
 			if (!command.equals("admin_add_autoannouncement"))
 			{
 				try
@@ -68,9 +64,7 @@ public class AdminAutoAnnouncements implements IAdminCommandHandler
 			}
 		}
 		else if (command.startsWith("admin_autoannounce"))
-		{
 			AutoAnnouncementHandler.getInstance().listAutoAnnouncements(admin);
-		}
 		
 		return true;
 	}

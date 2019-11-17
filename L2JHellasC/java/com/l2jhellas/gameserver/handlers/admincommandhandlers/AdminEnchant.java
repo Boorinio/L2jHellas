@@ -42,69 +42,39 @@ public class AdminEnchant implements IAdminCommandHandler
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (command.equals("admin_enchant"))
-		{
 			showMainPage(activeChar);
-		}
 		else
 		{
 			int armorType = -1;
 			
 			if (command.startsWith("admin_seteh"))
-			{
 				armorType = Inventory.PAPERDOLL_HEAD;
-			}
 			else if (command.startsWith("admin_setec"))
-			{
 				armorType = Inventory.PAPERDOLL_CHEST;
-			}
 			else if (command.startsWith("admin_seteg"))
-			{
 				armorType = Inventory.PAPERDOLL_GLOVES;
-			}
 			else if (command.startsWith("admin_seteb"))
-			{
 				armorType = Inventory.PAPERDOLL_FEET;
-			}
 			else if (command.startsWith("admin_setel"))
-			{
 				armorType = Inventory.PAPERDOLL_LEGS;
-			}
 			else if (command.startsWith("admin_setew"))
-			{
 				armorType = Inventory.PAPERDOLL_RHAND;
-			}
 			else if (command.startsWith("admin_setes"))
-			{
 				armorType = Inventory.PAPERDOLL_LHAND;
-			}
 			else if (command.startsWith("admin_setle"))
-			{
 				armorType = Inventory.PAPERDOLL_LEAR;
-			}
 			else if (command.startsWith("admin_setre"))
-			{
 				armorType = Inventory.PAPERDOLL_REAR;
-			}
 			else if (command.startsWith("admin_setlf"))
-			{
 				armorType = Inventory.PAPERDOLL_LFINGER;
-			}
 			else if (command.startsWith("admin_setrf"))
-			{
 				armorType = Inventory.PAPERDOLL_RFINGER;
-			}
 			else if (command.startsWith("admin_seten"))
-			{
 				armorType = Inventory.PAPERDOLL_NECK;
-			}
 			else if (command.startsWith("admin_setun"))
-			{
 				armorType = Inventory.PAPERDOLL_UNDER;
-			}
 			else if (command.startsWith("admin_setba"))
-			{
 				armorType = Inventory.PAPERDOLL_BACK;
-			}
 			
 			if (armorType == Inventory.PAPERDOLL_NULL)
 			{
@@ -120,9 +90,7 @@ public class AdminEnchant implements IAdminCommandHandler
 					
 					// check value
 					if (ench < 0 || ench > 65535)
-					{
 						activeChar.sendMessage("You must set the enchant level to be between 0-65535.");
-					}
 					else
 					{
 						L2Object target = activeChar.getTarget();
@@ -135,23 +103,15 @@ public class AdminEnchant implements IAdminCommandHandler
 							Util.handleIllegalPlayerAction(activeChar, "The GM " + activeChar.getName() + " has overenchanted the player " + player.getName() + ". BAN!", IllegalPlayerAction.PUNISH_KICKBAN);
 						}
 						else
-						{
 							setEnchant(activeChar, ench, armorType);
-						}
 					}
 				}
 				catch (StringIndexOutOfBoundsException e)
 				{
-					_log.warning(AdminEnchant.class.getName() + ": Set enchant error: ");
-					if (Config.DEVELOPER)
-						e.printStackTrace();
 					activeChar.sendMessage("Please specify a new enchant value.");
 				}
 				catch (NumberFormatException e)
 				{
-					_log.warning(AdminEnchant.class.getName() + ": Set enchant error: ");
-					if (Config.DEVELOPER)
-						e.printStackTrace();
 					activeChar.sendMessage("Please specify a valid new enchant value.");
 				}
 			}
@@ -163,63 +123,44 @@ public class AdminEnchant implements IAdminCommandHandler
 	
 	private static void setEnchant(L2PcInstance activeChar, int ench, int armorType)
 	{
-		// get the target
-		L2Object target = activeChar.getTarget();
-		if (target == null)
-		{
-			target = activeChar;
-		}
-		L2PcInstance player = null;
+		final L2PcInstance  player = activeChar.getTarget() != null ? activeChar.getTarget().getActingPlayer() : activeChar;
 		
-		if (target instanceof L2PcInstance)
-		{
-			player = (L2PcInstance) target;
-		}
-		else
+		if (player == null)
 		{
 			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			return;
 		}
 		
-		// now we need to find the equipped weapon of the targeted character...
-		int curEnchant = 0; // display purposes only
+		int curEnchant = 0; 
 		L2ItemInstance itemInstance = null;
 		
-		// only attempt to enchant if there is a weapon equipped
 		L2ItemInstance parmorInstance = player.getInventory().getPaperdollItem(armorType);
 		if (parmorInstance != null && parmorInstance.getEquipSlot() == armorType)
-		{
 			itemInstance = parmorInstance;
-		}
 		else
 		{
-			// for bows and double handed weapons
 			parmorInstance = player.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LRHAND);
 			if (parmorInstance != null && parmorInstance.getEquipSlot() == Inventory.PAPERDOLL_LRHAND)
-			{
 				itemInstance = parmorInstance;
-			}
 		}
 		
-		// set enchant value
 		if (itemInstance == null)
 		{
 			activeChar.sendMessage("Selected slot is empty in your targets inventory.");
 			return;
 		}
+		
 		player.getInventory().unEquipItemInSlotAndRecord(armorType);
 		curEnchant = itemInstance.getEnchantLevel();
 		itemInstance.setEnchantLevel(ench);
 		player.getInventory().equipItemAndRecord(itemInstance);
 		
-		// send packets
 		InventoryUpdate iu = new InventoryUpdate();
 		iu.addModifiedItem(itemInstance);
 		player.sendPacket(iu);
 		player.broadcastPacket(new CharInfo(player));
 		player.sendPacket(new UserInfo(player));
 		
-		// informations
 		activeChar.sendMessage("Changed enchantment of " + player.getName() + "'s " + itemInstance.getItem().getItemName() + " from " + curEnchant + " to " + ench + ".");
 		player.sendMessage("Admin has changed the enchantment of your " + itemInstance.getItem().getItemName() + " from " + curEnchant + " to " + ench + ".");
 	}

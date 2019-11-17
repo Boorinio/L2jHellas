@@ -27,7 +27,7 @@ public class SpawnTable
 	
 	private static final String SELECT_ALL_SPAWNS = "SELECT * FROM spawnlist";
 	private static final String ADD_NEW_SPAWN = "INSERT INTO spawnlist (id,count,npc_templateid,locx,locy,locz,heading,respawn_delay,loc_id) VALUES (?,?,?,?,?,?,?,?,?)";
-	private static final String DELETE_SPAWN = "DELETE FROM spawnlist WHERE id=?";
+	private static final String DELETE_SPAWN = "DELETE FROM spawnlist WHERE locx=? AND locy=? AND locz=? AND npc_templateid=? AND heading=?";
 
 	public static SpawnTable getInstance()
 	{
@@ -37,7 +37,7 @@ public class SpawnTable
 	private SpawnTable()
 	{
 		if (!Config.ALT_DEV_NO_SPAWNS)
-			fillSpawnTable();
+			reloadAll();
 	}
 
 	private void fillSpawnTable()
@@ -114,7 +114,7 @@ public class SpawnTable
 			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
 				PreparedStatement statement = con.prepareStatement(ADD_NEW_SPAWN);
-				statement.setInt(1, spawn.getId());
+				statement.setInt(1, spawn.getNpcid());
 				statement.setInt(2, spawn.getAmount());
 				statement.setInt(3, spawn.getNpcid());
 				statement.setInt(4, spawn.getLocx());
@@ -138,30 +138,30 @@ public class SpawnTable
 	
 	public void deleteSpawn(L2Spawn spawn, boolean updateDb)
 	{
-		final Set<L2Spawn> set = _spawntable.get(spawn.getId());
-		
+		final Set<L2Spawn> set = _spawntable.get(spawn.getId());		
 		if (set == null)
              return;
 		
 		set.remove(spawn);
+		
 		if (set.isEmpty())
 			_spawntable.remove(spawn.getId());
 		
 		if (updateDb)
 		{
-			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
+			try (Connection con = L2DatabaseFactory.getInstance().getConnection();
+				PreparedStatement ps = con.prepareStatement(DELETE_SPAWN))
 			{
-				PreparedStatement statement = con.prepareStatement(DELETE_SPAWN);
-				statement.setInt(1, spawn.getId());
-				statement.execute();
-				statement.close();
+				ps.setInt(1, spawn.getLocx());
+				ps.setInt(2, spawn.getLocy());
+				ps.setInt(3, spawn.getLocz());
+				ps.setInt(4, spawn.getNpcid());
+				ps.setInt(5, spawn.getHeading());
+				ps.execute();
 			}
 			catch (Exception e)
 			{
-				// problem with deleting spawn
-				_log.warning(SpawnTable.class.getName() + ": Spawn " + spawn.getId() + " could not be removed from DB: ");
-				if (Config.DEVELOPER)
-					e.printStackTrace();
+				_log.warning(SpawnTable.class.getName() + ": Spawn Id " + spawn.getNpcid() + " could not be removed from DB: " + e);
 			}
 		}
 	}

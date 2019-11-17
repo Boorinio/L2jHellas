@@ -49,9 +49,7 @@ public class RecipeController
 	{
 		RecipeItemMaker maker = null;
 		if (Config.ALT_GAME_CREATION)
-		{
 			maker = _activeMakers.get(player);
-		}
 		
 		if (maker == null)
 		{

@@ -311,9 +311,6 @@
 	<admin command="admin_manor_save" accessLevel="7" />
 	<admin command="admin_manor_disable" accessLevel="7" />
 
-	<!-- ADMIN MASSHERO -->
-	<admin command="admin_masshero" accessLevel="7" />
-
 	<!-- ADMIN MENU -->
 	<admin command="admin_char_manage" accessLevel="7" />
 	<admin command="admin_teleport_character_to_menu" accessLevel="7" />
@@ -395,6 +392,9 @@
 	<admin command="admin_unride_wyvern" accessLevel="7" />
 	<admin command="admin_unride_strider" accessLevel="7" />
 	<admin command="admin_unride" accessLevel="7" />
+	
+	<!-- ADMIN SEARCH -->
+	<admin command="admin_search" accessLevel="7" />
 
 	<!-- ADMIN SHOP -->
 	<admin command="admin_buy" accessLevel="7" />

@@ -63,9 +63,7 @@ public class AdminBan implements IAdminCommandHandler
 		else
 		{
 			if (activeChar.getTarget() != null && activeChar.getTarget() instanceof L2PcInstance)
-			{
 				targetPlayer = (L2PcInstance) activeChar.getTarget();
-			}
 		}
 		
 		if (targetPlayer != null && targetPlayer.equals(activeChar))
@@ -146,9 +144,7 @@ public class AdminBan implements IAdminCommandHandler
 				return false;
 			}
 			else
-			{
 				return changeCharAccessLevel(null, player, activeChar, 0);
-			}
 		}
 		else if (command.startsWith("admin_jail"))
 		{
@@ -168,9 +164,7 @@ public class AdminBan implements IAdminCommandHandler
 					targetPlayer.getParty().removePartyMember(targetPlayer);
 			}
 			else
-			{
 				jailOfflinePlayer(activeChar, player, duration);
-			}
 		}
 		else if (command.startsWith("admin_unjail"))
 		{
@@ -186,13 +180,11 @@ public class AdminBan implements IAdminCommandHandler
 				activeChar.sendMessage("Character " + targetPlayer.getName() + " removed from jail");
 			}
 			else
-			{
 				unjailOfflinePlayer(activeChar, player);
-			}
 		}
 		else if (command.startsWith("admin_permaban"))
 		{
-			if (targetPlayer == null && player.equals(""))
+			if (targetPlayer == null && player.isEmpty())
 			{
 				activeChar.sendMessage("Usage: //permaban <char_name> (if none, target char is banned)");
 				return false;
@@ -209,7 +201,7 @@ public class AdminBan implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_removeperma"))
 		{
-			if (targetPlayer == null && player.equals(""))
+			if (targetPlayer == null && player.isEmpty())
 			{
 				activeChar.sendMessage("Usage: //removeperma <char_name> (if none, target char is unbanned)");
 				return false;

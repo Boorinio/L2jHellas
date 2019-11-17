@@ -15,6 +15,7 @@ import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.entity.Auction;
 import com.l2jhellas.gameserver.model.entity.Auction.Bidder;
+import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -41,13 +42,9 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 		
 		player.setLastFolkNPC(this);
 		
-		// Check if the L2PcInstance already target the L2NpcInstance
 		if (this != player.getTarget())
 		{
-			// Set the target of the L2PcInstance player
-			player.setTarget(this);
-			
-			// Send a Server->Client packet MyTargetSelected to the L2PcInstance player
+			player.setTarget(this);		
 			MyTargetSelected my = new MyTargetSelected(getObjectId(), 0);
 			player.sendPacket(my);
 		}
@@ -55,14 +52,10 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 		{
 			// Calculate the distance between the L2PcInstance and the L2NpcInstance
 			if (!canInteract(player))
-			{
 				// Notify the L2PcInstance AI with AI_INTENTION_INTERACT
 				player.getAI().setIntention(CtrlIntention.AI_INTENTION_INTERACT, this);
-			}
 			else
-			{
 				showMessageWindow(player);
-			}
 		}
 		// Send a Server->Client ActionFailed to the L2PcInstance in order to avoid that the client wait another packet
 		player.sendPacket(ActionFailed.STATIC_PACKET);
@@ -74,13 +67,11 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 		int condition = validateCondition(player);
 		if (condition == COND_ALL_FALSE)
 		{
-			// TODO: html
 			player.sendMessage("Wrong conditions.");
 			return;
 		}
 		if (condition == COND_BUSY_BECAUSE_OF_SIEGE)
 		{
-			// TODO: html
 			player.sendMessage("Busy because of siege.");
 			return;
 		}
@@ -89,11 +80,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 			StringTokenizer st = new StringTokenizer(command, " ");
 			String actualCommand = st.nextToken(); // Get actual command
 			
-			String val = "";
-			if (st.countTokens() >= 1)
-			{
-				val = st.nextToken();
-			}
+			final String val = (st.hasMoreTokens()) ? st.nextToken() : "";
 			
 			if (actualCommand.equalsIgnoreCase("auction"))
 			{
@@ -107,7 +94,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 					{
 						SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 						int bid = 0;
-						if (st.countTokens() >= 1)
+						if (st.hasMoreTokens())
 							bid = Integer.parseInt(st.nextToken());
 						
 						Auction a = new Auction(player.getClan().hasHideout(), player.getClan(), days * 86400000L, bid, ClanHallManager.getInstance().getClanHallByOwner(player.getClan()).getName());
@@ -212,7 +199,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 					try
 					{
 						int bid = 0;
-						if (st.countTokens() >= 1)
+						if (st.hasMoreTokens())
 							bid = Integer.parseInt(st.nextToken());
 						
 						AuctionManager.getInstance().getAuction(auctionId).setBid(player, bid);
@@ -233,15 +220,22 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 			{
 				if (player.getClan() == null || player.getClan().getLevel() < 2)
 				{
-					player.sendMessage("Your clan's level needs to be at least 2, before you can bid in an auction");
+					player.sendPacket(SystemMessageId.AUCTION_ONLY_CLAN_LEVEL_2_HIGHER);
 					return;
 				}
-				
+		
+				if (player.getClan().hasHideout() > 0)
+				{
+					player.sendPacket(SystemMessageId.CANNOT_PARTICIPATE_IN_AUCTION);
+					return;
+				}
+							
 				if (val == "")
 					return;
-				if ((player.getClan().getAuctionBiddedAt() > 0 && player.getClan().getAuctionBiddedAt() != Integer.parseInt(val)) || player.getClan().hasHideout() > 0)
+				
+				if ((player.getClan().getAuctionBiddedAt() > 0 && player.getClan().getAuctionBiddedAt() != Integer.parseInt(val)))
 				{
-					player.sendMessage("You can't bid at more than one auction");
+					player.sendPacket(SystemMessageId.ALREADY_SUBMITTED_BID);
 					return;
 				}
 				
@@ -452,7 +446,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 				if (AuctionManager.getInstance().getAuction(player.getClan().getAuctionBiddedAt()) != null)
 				{
 					AuctionManager.getInstance().getAuction(player.getClan().getAuctionBiddedAt()).cancelBid(player.getClanId());
-					player.sendMessage("You have succesfully canceled your bidding at the auction");
+					player.sendPacket(SystemMessageId.CANCELED_BID);
 				}
 				return;
 			}
@@ -477,7 +471,7 @@ public final class L2AuctioneerInstance extends L2NpcInstance
 				if (AuctionManager.getInstance().getAuction(player.getClan().hasHideout()) != null)
 				{
 					AuctionManager.getInstance().getAuction(player.getClan().hasHideout()).cancelAuction();
-					player.sendMessage("Your auction has been canceled.");
+					player.sendPacket(SystemMessageId.CANCELED_BID);
 				}
 				return;
 			}

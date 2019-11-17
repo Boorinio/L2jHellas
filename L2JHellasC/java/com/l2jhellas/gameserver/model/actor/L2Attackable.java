@@ -55,22 +55,13 @@ public class L2Attackable extends L2Npc
 
 	
 	public void addDamageHate(L2Character attacker, int damage, int aggro)
-	{
-		
+	{	
 		if (attacker == null)
 			return;
 		
 		final L2PcInstance targetPlayer = attacker.getActingPlayer();
 		
-		// Get the AggroInfo of the attacker L2Character from the _aggroList of the L2Attackable
-		AggroInfo ai = _aggroListPro.get(attacker);
-		
-		if (ai == null)
-		{
-			ai = new AggroInfo(attacker);
-			_aggroListPro.put(attacker, ai);
-		}
-		
+		final AggroInfo ai = _aggroListPro.computeIfAbsent(attacker, AggroInfo::new);
 		ai.addDamage(damage);
 		
 		// If aggro is negative, its comming from SEE_SPELL, buffs use constant 150
@@ -797,13 +788,8 @@ public class L2Attackable extends L2Npc
 						damage = getMaxHp();
 					
 					// If there's NO party in progress
-					if (attackerParty == null && isInSurroundingRegion(attacker))
+					if (attackerParty == null && !attacker.isDead() && isInSurroundingRegion(attacker))
 					{
-						// Calculate Exp and SP rewards
-						// Calculate the difference of level between this attacker (L2PcInstance or L2SummonInstance owner) and the L2Attackable
-						// mob = 24, atk = 10, diff = -14 (full xp)
-						// mob = 24, atk = 28, diff = 4 (some xp)
-						// mob = 24, atk = 50, diff = 26 (no xp)
 						levelDiff = attacker.getLevel() - getLevel();
 						
 						tmp = calculateExpAndSp(levelDiff, damage, attacker.getPremiumService());
@@ -838,11 +824,11 @@ public class L2Attackable extends L2Npc
 								exp += calculateOverhitExp(exp);
 								exp_premium += calculateOverhitExp(exp_premium);
 							}
+							player.updateKarmaLoss(exp);
 						}
 						
 						// Distribute the Exp and SP between the L2PcInstance and its L2Summon
-						if (!attacker.isDead())
-							attacker.addExpAndSp(Math.round(exp), sp);
+						attacker.addExpAndSp(Math.round(exp), sp);
 					}
 					else
 					{

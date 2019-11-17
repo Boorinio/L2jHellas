@@ -29,18 +29,16 @@ public class RecipeBookItemList extends L2GameServerPacket
 		writeD(_maxMp);
 		
 		if (_recipes == null)
-		{
 			writeD(0);
-		}
 		else
 		{
 			writeD(_recipes.length);// number of items in recipe book
 			
-			for (int i = 0; i < _recipes.length; i++)
-			{
-				L2RecipeList temp = _recipes[i];
-				writeD(temp.getId());
-				writeD(i + 1);
+			int i = 0;
+			for (L2RecipeList recipe : _recipes)
+			{		
+				writeD(recipe.getId());
+				writeD(++i);
 			}
 		}
 	}

@@ -239,6 +239,7 @@ public class L2ControllableMobAI extends L2AttackableAI
 		_accessor.doAttack(getForcedTarget());
 	}
 
+	@Override
 	protected void thinkAttack()
 	{
 		if (getAttackTarget() == null || getAttackTarget().isAlikeDead())
@@ -338,6 +339,7 @@ public class L2ControllableMobAI extends L2AttackableAI
 		}
 	}
 
+	@Override
 	protected void thinkActive()
 	{
 		setAttackTarget(findNextRndTarget());

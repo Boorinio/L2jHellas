@@ -1,12 +1,14 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import com.l2jhellas.gameserver.instancemanager.RaidBossPointsManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+import com.l2jhellas.util.Rnd;
 
 public final class L2RaidBossInstance extends L2MonsterInstance
 {
@@ -29,21 +31,28 @@ public final class L2RaidBossInstance extends L2MonsterInstance
 	{
 		if (!super.doDie(killer))
 			return false;
-		if (killer instanceof L2Playable)
+		
+		if (killer !=null )
 		{
-			if (killer.isInParty())
+			L2PcInstance player = killer.getActingPlayer();
+			if (player.isInParty())
 			{
-				for (L2PcInstance member : killer.getParty().getPartyMembers())
+				for (L2PcInstance member : player.getParty().getPartyMembers())
 				{
-					Hero.getInstance().setRBkilled(member.getObjectId(), getNpcId());
+					RaidBossPointsManager.getInstance().addPoints(member, getNpcId(), (getLevel() / 2) + Rnd.get(-5, 5));				
+					if (member.isNoble())
+					    Hero.getInstance().setRBkilled(member.getObjectId(), getNpcId());
 				}
 			}
 			else
 			{
-				Hero.getInstance().setRBkilled(killer.getObjectId(), getNpcId());
+				RaidBossPointsManager.getInstance().addPoints(player, getNpcId(), (getLevel() / 2) + Rnd.get(-5, 5));
+				if (player.isNoble())
+				    Hero.getInstance().setRBkilled(player.getObjectId(), getNpcId());
 			}
-			SystemMessage msg = SystemMessage.getSystemMessage(SystemMessageId.RAID_WAS_SUCCESSFUL);
-			broadcastPacket(msg);
+			
+			broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.RAID_WAS_SUCCESSFUL));
+			broadcastPacket(PlaySound.createSound("systemmsg_e.1209"));
 		}
 		
 		RaidBossSpawnManager.getInstance().updateStatus(this, true);

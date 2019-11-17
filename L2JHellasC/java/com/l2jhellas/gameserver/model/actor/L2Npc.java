@@ -140,6 +140,18 @@ public class L2Npc extends L2Character
 		
 	}
 	
+	public void onRandomAnimation(int id)
+	{
+		long current = System.currentTimeMillis();
+		
+		if (current - lastSocialBroadcast > 4000)
+		{
+			lastSocialBroadcast = current;
+			broadcastPacket(new SocialAction(getObjectId(), id), 700);
+		}
+		
+	}
+	
 	public void startRandomAnimationTimer()
 	{
 		if (!hasRandomAnimation())

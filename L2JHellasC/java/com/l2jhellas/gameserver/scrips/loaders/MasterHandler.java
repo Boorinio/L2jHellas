@@ -57,7 +57,6 @@ import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminLevel;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminLogin;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminMammon;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminManor;
-import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminMassHero;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminMenu;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminMobGroup;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminMonsterRace;
@@ -72,6 +71,7 @@ import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminReload;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminRepairChar;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminRes;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminRideWyvern;
+import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminSearch;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminShop;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminShutdown;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminSiege;
@@ -310,7 +310,6 @@ public class MasterHandler
 			AdminLogin.class,
 			AdminMammon.class,
 			AdminManor.class,
-			AdminMassHero.class,
 			AdminMenu.class,
 			AdminMobGroup.class,
 			AdminMonsterRace.class,
@@ -325,6 +324,7 @@ public class MasterHandler
 			AdminRepairChar.class,
 			AdminRes.class,
 			AdminRideWyvern.class,
+			AdminSearch.class,
 			AdminShop.class,
 			AdminShutdown.class,
 			AdminSiege.class,

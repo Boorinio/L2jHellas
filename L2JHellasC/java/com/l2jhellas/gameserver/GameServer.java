@@ -47,6 +47,7 @@ import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.datatables.xml.FishTable;
 import com.l2jhellas.gameserver.datatables.xml.HelperBuffData;
 import com.l2jhellas.gameserver.datatables.xml.HennaData;
+import com.l2jhellas.gameserver.datatables.xml.IconData;
 import com.l2jhellas.gameserver.datatables.xml.LevelUpData;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
@@ -181,7 +182,8 @@ public class GameServer
 		ItemTable.getInstance();
 		ArmorSetsData.getInstance();
 		SummonItemsData.getInstance();
-		SoulCrystalsTable.getInstance();			
+		SoulCrystalsTable.getInstance();	
+		IconData.getInstance();
 		
 		Util.printSection("Npc");
 		NpcData.getInstance();

@@ -31,9 +31,7 @@ public class AdminPremium implements IAdminCommandHandler
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (command.equals("admin_premium_menu"))
-		{
 			AdminHelpPage.showHelpPage(activeChar, "premium_menu.htm");
-		}
 		else if (command.startsWith("admin_premium_add1"))
 		{
 			try

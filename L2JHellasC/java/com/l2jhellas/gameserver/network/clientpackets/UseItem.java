@@ -2,6 +2,9 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.ai.CtrlEvent;
+import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.ai.NextAction;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.emum.L2ArmorType;
 import com.l2jhellas.gameserver.emum.L2WeaponType;
@@ -30,31 +33,6 @@ public final class UseItem extends L2GameClientPacket
 	
 	protected int _objectId;
 	private int _itemId;
-	
-	public class WeaponEquipTask implements Runnable
-	{
-		L2ItemInstance item;
-		L2PcInstance activeChar;
-		
-		public WeaponEquipTask(L2ItemInstance it, L2PcInstance character)
-		{
-			item = it;
-			activeChar = character;
-		}
-		
-		@Override
-		public void run()
-		{
-			
-			final L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);
-			
-			if (item == null || activeChar.isAttackingNow())
-				return;
-			
-			// Equip or unEquip
-			activeChar.useEquippableItem(item, false);
-		}
-	}
 	
 	@Override
 	protected void readImpl()
@@ -101,7 +79,7 @@ public final class UseItem extends L2GameClientPacket
 		_itemId = item.getItemId();
 		
 		// The player can't use an item in those special conditions
-		if (activeChar.isAlikeDead() || activeChar.isStunned() || activeChar.isSleeping() || activeChar.isParalyzed() || activeChar.isAlikeDead() || activeChar.isAfraid() || (activeChar.isCastingNow() && !(item.isPotion())))
+		if (activeChar.isAlikeDead() || activeChar.isStunned() || activeChar.isSleeping() || activeChar.isParalyzed() || activeChar.isAlikeDead() || activeChar.isAfraid())
 		{
 			activeChar.sendMessage(item.getItemName() + " cannot be used right now!");
 			return;
@@ -346,13 +324,6 @@ public final class UseItem extends L2GameClientPacket
 						return;
 					}
 					
-					// Prevent player to remove the weapon on special conditions
-					if (activeChar.isCastingNow())
-					{
-						activeChar.sendPacket(SystemMessageId.CANNOT_USE_ITEM_WHILE_USING_MAGIC);
-						return;
-					}
-					
 					if (activeChar.isMounted())
 					{
 						activeChar.sendPacket(SystemMessageId.CANNOT_EQUIP_ITEM_DUE_TO_BAD_CONDITION);
@@ -424,25 +395,31 @@ public final class UseItem extends L2GameClientPacket
 			
 			if (activeChar.isCursedWeaponEquiped() && _itemId == 6408) // Don't allow to put formal wear
 				return;
-			
-			if (activeChar.isAttackingNow())
+
+			if (activeChar.isCastingNow())
+				activeChar.getAI().setNextAction(new NextAction(CtrlEvent.EVT_FINISH_CASTING, CtrlIntention.AI_INTENTION_CAST, () -> activeChar.useEquippableItem(_objectId, true)));
+			else if (activeChar.isAttackingNow())
 			{
-				ThreadPoolManager.getInstance().scheduleGeneral(new WeaponEquipTask(item, activeChar), (activeChar.getAttackEndTime() - GameTimeController.getInstance().getGameTicks()) * GameTimeController.MILLIS_IN_TICK);
-				return;
-			}
-			
-			// Equip or unEquip
-			activeChar.useEquippableItem(item, true);
-			activeChar.refreshExpertisePenalty();
+				ThreadPoolManager.getInstance().scheduleGeneral(() ->
+				{			
+					activeChar.useEquippableItem(_objectId, false);				
+				}, (activeChar.getAttackEndTime() - GameTimeController.getInstance().getGameTicks()) * GameTimeController.MILLIS_IN_TICK);
+		    }
+			else
+				activeChar.useEquippableItem(_objectId, true);
 		}
 		else
 		{
+			if (activeChar.isCastingNow() && !(item.isPotion()))
+				return;
+			
 			final L2Weapon weaponItem = activeChar.getActiveWeaponItem();
 			int itemid = item.getItemId();
 			
 			if (itemid == 4393)
 				activeChar.sendPacket(new ShowCalculator(4393));
-			else if ((weaponItem != null && weaponItem.getItemType() == L2WeaponType.ROD) && ((itemid >= 6519 && itemid <= 6527) || (itemid >= 7610 && itemid <= 7613) || (itemid >= 7807 && itemid <= 7809) || (itemid >= 8484 && itemid <= 8486) || (itemid >= 8505 && itemid <= 8513)))
+			
+			if ((weaponItem != null && weaponItem.getItemType() == L2WeaponType.ROD) && ((itemid >= 6519 && itemid <= 6527) || (itemid >= 7610 && itemid <= 7613) || (itemid >= 7807 && itemid <= 7809) || (itemid >= 8484 && itemid <= 8486) || (itemid >= 8505 && itemid <= 8513)))
 			{
 				activeChar.getInventory().setPaperdollItem(Inventory.PAPERDOLL_LHAND, item);
 				activeChar.broadcastUserInfo();
@@ -450,12 +427,10 @@ public final class UseItem extends L2GameClientPacket
 				sendPacket(new ItemList(activeChar, false));
 				return;
 			}
-			else
-			{
-				IItemHandler handler = ItemHandler.getInstance().getHandler(item.getItem().getItemId());
-				if (handler != null)
-					handler.useItem(activeChar, item);
-			}
+
+			final IItemHandler handler = ItemHandler.getInstance().getHandler(item.getItem().getItemId());
+			if (handler != null)
+				handler.useItem(activeChar, item);
 		}
 	}
 	

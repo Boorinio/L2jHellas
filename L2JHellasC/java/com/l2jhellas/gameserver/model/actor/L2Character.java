@@ -2794,7 +2794,7 @@ public abstract class L2Character extends L2Object
 	{
 		return _castEndTime > GameTimeController.getInstance().getGameTicks();
 	}
-	
+
 	public final boolean canAbortCast()
 	{
 		return _castInterruptTime > GameTimeController.getInstance().getGameTicks();
@@ -4060,6 +4060,11 @@ public abstract class L2Character extends L2Object
 	public L2Skill getKnownSkill(int skillId)
 	{
 		return _skills.get(skillId);
+	}
+	
+	public boolean hasSkill(int skillId)
+	{
+		return _skills.containsKey(skillId);
 	}
 	
 	public int getBuffCount()
@@ -5471,5 +5476,17 @@ public abstract class L2Character extends L2Object
 		
 		super.setXYZ(x, y, z);
 		
+	}
+	
+	boolean _thinking;
+	
+	public boolean thinking()
+	{
+		return _thinking;
+	}
+	
+	public void setThinking(boolean thinking)
+	{
+		_thinking = thinking;
 	}
 }

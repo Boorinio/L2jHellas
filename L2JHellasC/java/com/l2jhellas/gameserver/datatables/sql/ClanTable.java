@@ -3,8 +3,9 @@ package com.l2jhellas.gameserver.datatables.sql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -27,13 +28,9 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 public class ClanTable
 {
 	private static Logger _log = Logger.getLogger(ClanTable.class.getName());
-	
-	private final Map<Integer, L2Clan> _clans = new HashMap<>();
-	
-	public L2Clan[] getClans()
-	{
-		return _clans.values().toArray(new L2Clan[_clans.size()]);
-	}
+		
+	private final Map<Integer, L2Clan> _clans = new ConcurrentHashMap<>();
+
 	
 	protected ClanTable()
 	{
@@ -77,25 +74,19 @@ public class ClanTable
 		restorewars();
 	}
 	
+	public Collection<L2Clan> getClans()
+	{
+		return _clans.values();
+	}
+
 	public L2Clan getClan(int clanId)
 	{
-		L2Clan clan = _clans.get(new Integer(clanId));
-		
-		return clan;
+		return _clans.get(clanId);
 	}
 	
 	public L2Clan getClanByName(String clanName)
 	{
-		for (L2Clan clan : getClans())
-		{
-			if (clan.getName().equalsIgnoreCase(clanName))
-			{
-				return clan;
-			}
-			
-		}
-		
-		return null;
+		return _clans.values().stream().filter(c -> c.getName().equalsIgnoreCase(clanName)).findAny().orElse(null);
 	}
 	
 	public L2Clan createClan(L2PcInstance player, String clanName)
@@ -152,8 +143,8 @@ public class ClanTable
 		
 		if (Config.DEBUG)
 			_log.config(ClanTable.class.getName() + ": New clan created: " + clan.getClanId() + " " + clan.getName());
-		
-		_clans.put(new Integer(clan.getClanId()), clan);
+
+		_clans.put(clan.getClanId(), clan);
 		
 		// should be update packet only
 		player.sendPacket(new PledgeShowInfoUpdate(clan));

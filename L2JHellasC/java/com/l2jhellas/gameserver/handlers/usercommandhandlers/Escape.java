@@ -9,6 +9,7 @@ import com.l2jhellas.gameserver.handler.IUserCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
+import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.util.Broadcast;
@@ -24,7 +25,10 @@ public class Escape implements IUserCommandHandler
 	public boolean useUserCommand(int id, L2PcInstance activeChar)
 	{
 		if (activeChar.isCastingNow() || activeChar.isSitting() || activeChar.isMovementDisabled() || activeChar.isMuted() || activeChar.isAlikeDead() || activeChar.isInOlympiadMode())
-			return false;
+		{
+			activeChar.sendPacket(SystemMessageId.NO_UNSTUCK_PLEASE_SEND_PETITION);
+		    return false;
+		}
 		
 		int unstuckTimer = (activeChar.isGM() ? 5000 : Config.UNSTUCK_INTERVAL * 1000);
 		
@@ -55,6 +59,8 @@ public class Escape implements IUserCommandHandler
 			return false;
 		}
 		
+		activeChar.sendPacket(PlaySound.createSound("systemmsg_e.809"));
+
 		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
 		sm.addString("After " + unstuckTimer / 60000 + " min. you be returned to near village.");
 		

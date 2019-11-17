@@ -1,5 +1,6 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.Collection;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
@@ -543,7 +544,7 @@ public class L2SignsPriestInstance extends L2NpcInstance
 			{
 				// Check if another clan in the same alliance owns a castle,
 				// by traversing the list of clans and act accordingly.
-				L2Clan[] clanList = ClanTable.getInstance().getClans();
+				Collection<L2Clan> clanList = ClanTable.getInstance().getClans();
 				
 				for (L2Clan clan : clanList)
 					if (clan.getAllyId() == allyId)

@@ -75,9 +75,7 @@ public class AdminEditChar implements IAdminCommandHandler
 	{
 		
 		if (command.equals("admin_current_player"))
-		{
 			showCharacterInfo(activeChar, null);
-		}
 		else if ((command.startsWith("admin_character_list")) || (command.startsWith("admin_character_info")))
 		{
 			try

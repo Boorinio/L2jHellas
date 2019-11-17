@@ -56,26 +56,16 @@ public class AdminTeleport implements IAdminCommandHandler
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
 		if (command.equals("admin_teleto"))
-		{
 			activeChar.setTeleMode(1);
-		}
 		if (command.equals("admin_teleto r"))
-		{
 			activeChar.setTeleMode(2);
-		}
 		if (command.equals("admin_teleto end"))
-		{
 			activeChar.setTeleMode(0);
-		}
 		if (command.equals("admin_show_moves"))
-		{
 			AdminHelpPage.showHelpPage(activeChar, "teleports.htm");
-		}
 		// Alt+g window (instant move)
 		if (command.equals("admin_instant_move"))
-		{
 			activeChar.setTeleMode(1);
-		}
 		// Send player to town (alt+g)
 		else if (command.startsWith("admin_sendhome"))
 		{
@@ -104,21 +94,13 @@ public class AdminTeleport implements IAdminCommandHandler
 			}
 		}
 		if (command.equals("admin_show_moves_other"))
-		{
 			AdminHelpPage.showHelpPage(activeChar, "tele/other.html");
-		}
 		else if (command.equals("admin_show_teleport"))
-		{
 			showTeleportCharWindow(activeChar);
-		}
 		else if (command.equals("admin_recall_npc"))
-		{
 			recallNPC(activeChar);
-		}
 		else if (command.equals("admin_teleport_to_character"))
-		{
 			teleportToCharacter(activeChar, activeChar.getTarget());
-		}
 		else if (command.startsWith("admin_goto"))
 		{
 			StringTokenizer st = new StringTokenizer(command);
@@ -324,9 +306,7 @@ public class AdminTeleport implements IAdminCommandHandler
 		L2Object target = activeChar.getTarget();
 		L2PcInstance player = null;
 		if (target instanceof L2PcInstance)
-		{
 			player = (L2PcInstance) target;
-		}
 		else
 		{
 			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
@@ -334,9 +314,8 @@ public class AdminTeleport implements IAdminCommandHandler
 		}
 		
 		if (player.getObjectId() == activeChar.getObjectId())
-		{
 			player.sendPacket(SystemMessageId.CANNOT_USE_ON_YOURSELF);
-		}
+
 		else
 		{
 			try

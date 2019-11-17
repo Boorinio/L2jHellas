@@ -1,9 +1,7 @@
 package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
@@ -15,7 +13,6 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 
 public class AdminKill implements IAdminCommandHandler
 {
-	private static Logger _log = Logger.getLogger(AdminKill.class.getName());
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_kill",
@@ -44,9 +41,7 @@ public class AdminKill implements IAdminCommandHandler
 							for (L2Character knownChar : L2World.getInstance().getVisibleObjects(activeChar, L2Character.class, radius))
 							{
 								if ((knownChar == null) || (knownChar instanceof L2ControllableMobInstance) || knownChar.equals(activeChar))
-								{
 									continue;
-								}
 								
 								kill(activeChar, knownChar);
 							}
@@ -90,13 +85,9 @@ public class AdminKill implements IAdminCommandHandler
 			{
 				L2Object obj = activeChar.getTarget();
 				if ((obj == null) || (obj instanceof L2ControllableMobInstance) || !(obj instanceof L2Character))
-				{
 					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
-				}
 				else
-				{
 					kill(activeChar, (L2Character) obj);
-				}
 			}
 		}
 		return true;
@@ -107,40 +98,11 @@ public class AdminKill implements IAdminCommandHandler
 		if (target instanceof L2PcInstance)
 		{
 			if (!((L2PcInstance) target).isGM())
-			{
 				target.stopAllEffects(); // e.g. invincibility effect
-			}
 			target.reduceCurrentHp(target.getMaxHp() + target.getMaxCp() + 1, activeChar);
-			_log.warning(AdminKill.class.getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed character " + target.getName() + "(" + target.getObjectId() + ")");
 		}
 		else if (target instanceof L2MonsterInstance)
-		{
-			if (target.isChampion() && Config.CHAMPION_ENABLE)
-			{
-				_log.warning(AdminKill.class.getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed champion " + target.getName() + "(" + target.getObjectId() + ")");
-			}
-			else if (target.isBoss())
-			{
-				_log.warning(AdminKill.class.getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed grand boss " + target.getName() + "(" + target.getObjectId() + ")");
-			}
-			else if (target.isRaidMinion())
-			{
-				_log.warning(AdminKill.class.getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed raid minion " + target.getName() + "(" + target.getObjectId() + ")");
-			}
-			else if (target.isRaid())
-			{
-				_log.warning(AdminKill.class.getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed raid " + target.getName() + "(" + target.getObjectId() + ")");
-			}
-			else if (((L2MonsterInstance) target).isMob())
-			{
-				_log.warning(AdminKill.class.getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed monster " + target.getName() + "(" + target.getObjectId() + ")");
-			}
-			else
-			{
-				_log.warning(AdminKill.class.getSimpleName() + ": GM " + activeChar.getName() + "(" + activeChar.getObjectId() + ")" + " killed etc " + target.getName() + "(" + target.getObjectId() + ")");
-			}
 			target.reduceCurrentHp(target.getMaxHp() + 1, activeChar);
-		}
 	}
 	
 	@Override

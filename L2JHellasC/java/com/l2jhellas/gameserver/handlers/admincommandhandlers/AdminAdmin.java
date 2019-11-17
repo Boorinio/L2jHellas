@@ -201,34 +201,25 @@ public class AdminAdmin implements IAdminCommandHandler
 				String[] parameter = st.nextToken().split("=");
 				String pName = parameter[0].trim();
 				String pValue = parameter[1].trim();
+				
 				if (Config.setParameterValue(pName, pValue))
-				{
 					activeChar.sendMessage("parameter " + pName + " succesfully set to " + pValue);
-				}
 				else
-				{
 					activeChar.sendMessage("Invalid parameter!");
-				}
 			}
 			catch (Exception e)
 			{
 				if (cmd.length == 2)
-				{
 					activeChar.sendMessage("Usage: //set parameter=vaue");
-				}
 			}
 			finally
 			{
 				if (cmd.length == 3)
 				{
 					if (cmd[2].equalsIgnoreCase("menu"))
-					{
 						AdminHelpPage.showHelpPage(activeChar, "settings.htm");
-					}
 					else if (cmd[2].equalsIgnoreCase("mod"))
-					{
 						AdminHelpPage.showHelpPage(activeChar, "mods_menu.htm");
-					}
 				}
 			}
 		}

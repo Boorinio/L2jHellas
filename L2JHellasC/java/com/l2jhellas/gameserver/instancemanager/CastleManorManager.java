@@ -54,9 +54,7 @@ public class CastleManorManager
 	public static final CastleManorManager getInstance()
 	{
 		if (_instance == null)
-		{
 			_instance = new CastleManorManager();
-		}
 		return _instance;
 	}
 	
@@ -201,14 +199,11 @@ public class CastleManorManager
 					int startProduce = rs.getInt("start_produce");
 					int price = rs.getInt("seed_price");
 					int period = rs.getInt("period");
+					
 					if (period == PERIOD_CURRENT)
-					{
 						production.add(new SeedProduction(seedId, canProduce, price, startProduce));
-					}
 					else
-					{
 						productionNext.add(new SeedProduction(seedId, canProduce, price, startProduce));
-					}
 				}
 				statement.close();
 				rs.close();
@@ -228,14 +223,11 @@ public class CastleManorManager
 					int rewardType = rs.getInt("reward_type");
 					int price = rs.getInt("price");
 					int period = rs.getInt("period");
+					
 					if (period == PERIOD_CURRENT)
-					{
 						procure.add(new CropProcure(cropId, canBuy, rewardType, startBuy, price));
-					}
 					else
-					{
 						procureNext.add(new CropProcure(cropId, canBuy, rewardType, startBuy, price));
-					}
 				}
 				statement.close();
 				rs.close();
@@ -244,9 +236,7 @@ public class CastleManorManager
 				castle.setCropProcure(procureNext, PERIOD_NEXT);
 				
 				if (!procure.isEmpty() || !procureNext.isEmpty() || !production.isEmpty() || !productionNext.isEmpty())
-				{
 					_log.info(CastleManorManager.class.getSimpleName() + ": " + castle.getName() + ": Data loaded.");
-				}
 			}
 		}
 		catch (Exception e)
@@ -374,14 +364,11 @@ public class CastleManorManager
 		for (Castle c : CastleManager.getInstance().getCastles())
 		{
 			if (c.getOwnerId() <= 0)
-			{
 				continue;
-			}
+
 			L2Clan clan = ClanTable.getInstance().getClan(c.getOwnerId());
 			if (clan == null)
-			{
 				continue;
-			}
 			
 			ItemContainer cwh = clan.getWarehouse();
 			if (!(cwh instanceof ClanWarehouse))
@@ -393,9 +380,8 @@ public class CastleManorManager
 			for (CropProcure crop : c.getCropProcure(PERIOD_CURRENT))
 			{
 				if (crop.getStartAmount() == 0)
-				{
 					continue;
-				}
+
 				// adding bought crops to clan warehouse
 				if (crop.getStartAmount() - crop.getAmount() > 0)
 				{
@@ -404,20 +390,14 @@ public class CastleManorManager
 					if (count < 1)
 					{
 						if (Rnd.nextInt(99) < 90)
-						{
 							count = 1;
-						}
 					}
 					if (count > 0)
-					{
 						cwh.addItem("Manor", L2Manor.getInstance().getMatureCrop(crop.getId()), count, null, null);
-					}
 				}
 				// reserved and not used money giving back to treasury
 				if (crop.getAmount() > 0)
-				{
 					c.addToTreasuryNoTax(crop.getAmount() * crop.getPrice());
-				}
 			}
 			
 			c.setSeedProduction(c.getSeedProduction(PERIOD_NEXT), PERIOD_CURRENT);
@@ -430,7 +410,7 @@ public class CastleManorManager
 			}
 			else
 			{
-				ArrayList<SeedProduction> production = new ArrayList<>();
+				List<SeedProduction> production = new ArrayList<>();
 				for (SeedProduction s : c.getSeedProduction(PERIOD_CURRENT))
 				{
 					s.setCanProduce(s.getStartProduce());
@@ -438,7 +418,7 @@ public class CastleManorManager
 				}
 				c.setSeedProduction(production, PERIOD_NEXT);
 				
-				ArrayList<CropProcure> procure = new ArrayList<>();
+				List<CropProcure> procure = new ArrayList<>();
 				for (CropProcure cr : c.getCropProcure(PERIOD_CURRENT))
 				{
 					cr.setAmount(cr.getStartAmount());
@@ -454,10 +434,9 @@ public class CastleManorManager
 			
 			// Sending notification to a clan leader
 			L2PcInstance clanLeader = L2World.getInstance().getPlayer(clan.getLeader().getName());
+			
 			if (clanLeader != null)
-			{
 				clanLeader.sendPacket(SystemMessageId.THE_MANOR_INFORMATION_HAS_BEEN_UPDATED);
-			}
 			
 			c.setNextPeriodApproved(false);
 		}
@@ -492,9 +471,7 @@ public class CastleManorManager
 				for (CropProcure crop : c.getCropProcure(PERIOD_NEXT))
 				{
 					if (crop.getStartAmount() > 0)
-					{
 						slots++;
-					}
 				}
 				if (!cwh.validateCapacity(slots))
 				{
@@ -511,21 +488,17 @@ public class CastleManorManager
 				L2Clan clan = ClanTable.getInstance().getClan(c.getOwnerId());
 				L2PcInstance clanLeader = null;
 				if (clan != null)
-				{
 					clanLeader = L2World.getInstance().getPlayer(clan.getLeader().getName());
-				}
 				if (clanLeader != null)
-				{
 					clanLeader.sendPacket(SystemMessageId.THE_AMOUNT_IS_NOT_SUFFICIENT_AND_SO_THE_MANOR_IS_NOT_IN_OPERATION);
-				}
 			}
 		}
 		
 	}
 	
-	private ArrayList<SeedProduction> getNewSeedsList(int castleId)
+	private List<SeedProduction> getNewSeedsList(int castleId)
 	{
-		ArrayList<SeedProduction> seeds = new ArrayList<>();
+		List<SeedProduction> seeds = new ArrayList<>();
 		List<Integer> seedsIds = L2Manor.getInstance().getSeedsForCastle(castleId);
 		for (int sd : seedsIds)
 		{
@@ -534,9 +507,9 @@ public class CastleManorManager
 		return seeds;
 	}
 	
-	private ArrayList<CropProcure> getNewCropsList(int castleId)
+	private List<CropProcure> getNewCropsList(int castleId)
 	{
-		ArrayList<CropProcure> crops = new ArrayList<>();
+		List<CropProcure> crops = new ArrayList<>();
 		List<Integer> cropsIds = L2Manor.getInstance().getCropsForCastle(castleId);
 		for (int cr : cropsIds)
 		{

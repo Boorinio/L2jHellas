@@ -593,7 +593,7 @@ abstract class AbstractAI implements Ctrl
 		return _target;
 	}
 	
-	protected synchronized void setTarget(L2Object target)
+	protected void setTarget(L2Object target)
 	{
 		_target = target;
 	}

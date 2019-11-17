@@ -34,10 +34,9 @@ public class AdminRepairChar implements IAdminCommandHandler
 	private static void handleRepair(String command)
 	{
 		String[] parts = command.split(" ");
+		
 		if (parts.length != 2)
-		{
 			return;
-		}
 		
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{

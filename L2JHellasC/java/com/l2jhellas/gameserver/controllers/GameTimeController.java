@@ -111,7 +111,7 @@ public class GameTimeController extends Thread
 			}
 			catch (final Throwable e)
 			{
-				_log.info("Unable to move objects!" + e);
+
 			}
 			
 			sleepTime = nextTickTime - System.currentTimeMillis();

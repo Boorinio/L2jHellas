@@ -22,23 +22,22 @@ public class IpCatcher
 	public static List<String> ips = new ArrayList<>();
 	static File file = new File(PackRoot.DATAPACK_ROOT, "data/ips.txt");
 	
+	@SuppressWarnings("static-access")
 	public String getMacAddr(L2PcInstance p)
 	{
 		StringBuilder sb = new StringBuilder();
 		byte[] mac = null;
 		
 		if (p != null)
+		{
 			try
 			{
-				p.getClient().getConnection().getInetAddress();
-				final InetAddress ip = InetAddress.getLocalHost();
+				final InetAddress ip = p.getClient().getConnection().getInetAddress().getLocalHost();
 				
 				NetworkInterface network = NetworkInterface.getByInetAddress(ip);
 				
 				if (network != null)
-				{
 					mac = network.getHardwareAddress();
-				}
 				
 				if (mac != null)
 				{
@@ -58,6 +57,7 @@ public class IpCatcher
 			{
 				e.printStackTrace();
 			}
+		}
 		
 		return sb.toString();
 	}

@@ -53,9 +53,7 @@ public class AdminSkill implements IAdminCommandHandler
 			}
 		}
 		else if (command.startsWith("admin_skill_list"))
-		{
 			AdminHelpPage.showHelpPage(activeChar, "skills.htm");
-		}
 		else if (command.startsWith("admin_skill_index"))
 		{
 			try
@@ -93,18 +91,11 @@ public class AdminSkill implements IAdminCommandHandler
 			}
 		}
 		else if (command.equals("admin_get_skills"))
-		{
 			adminGetSkills(activeChar);
-		}
 		else if (command.equals("admin_reset_skills"))
-		{
 			adminResetSkills(activeChar);
-		}
 		else if (command.equals("admin_give_all_skills"))
-		{
-			adminGiveAllSkills(activeChar);
-		}
-		
+			adminGiveAllSkills(activeChar);	
 		else if (command.equals("admin_remove_all_skills"))
 		{
 			if (activeChar.getTarget() instanceof L2PcInstance)
