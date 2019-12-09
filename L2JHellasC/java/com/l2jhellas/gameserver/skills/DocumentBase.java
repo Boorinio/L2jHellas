@@ -15,11 +15,12 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.AbnormalEffect;
-import com.l2jhellas.gameserver.emum.ClassRace;
-import com.l2jhellas.gameserver.emum.L2ArmorType;
-import com.l2jhellas.gameserver.emum.L2WeaponType;
+import com.l2jhellas.gameserver.emum.items.L2ArmorType;
+import com.l2jhellas.gameserver.emum.items.L2WeaponType;
+import com.l2jhellas.gameserver.emum.player.ClassRace;
+import com.l2jhellas.gameserver.emum.skills.AbnormalEffect;
 import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.item.L2Item;
 import com.l2jhellas.gameserver.skills.conditions.Condition;
 import com.l2jhellas.gameserver.skills.conditions.ConditionElementSeed;
 import com.l2jhellas.gameserver.skills.conditions.ConditionGameChance;
@@ -53,7 +54,6 @@ import com.l2jhellas.gameserver.skills.funcs.Lambda;
 import com.l2jhellas.gameserver.skills.funcs.LambdaCalc;
 import com.l2jhellas.gameserver.skills.funcs.LambdaConst;
 import com.l2jhellas.gameserver.skills.funcs.LambdaStats;
-import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.gameserver.templates.StatsSet;
 

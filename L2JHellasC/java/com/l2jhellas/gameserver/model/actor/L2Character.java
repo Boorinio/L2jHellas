@@ -22,14 +22,15 @@ import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable.TeleportWhereType;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData.FrequentSkill;
-import com.l2jhellas.gameserver.emum.AbnormalEffect;
-import com.l2jhellas.gameserver.emum.DuelState;
-import com.l2jhellas.gameserver.emum.L2SkillTargetType;
-import com.l2jhellas.gameserver.emum.L2SkillType;
-import com.l2jhellas.gameserver.emum.L2WeaponType;
 import com.l2jhellas.gameserver.emum.ZoneId;
+import com.l2jhellas.gameserver.emum.items.L2WeaponType;
+import com.l2jhellas.gameserver.emum.player.DuelState;
+import com.l2jhellas.gameserver.emum.skills.AbnormalEffect;
+import com.l2jhellas.gameserver.emum.skills.L2SkillTargetType;
+import com.l2jhellas.gameserver.emum.skills.L2SkillType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.geodata.GeoMove;
+import com.l2jhellas.gameserver.geometry.Point3D;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -39,15 +40,12 @@ import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.ChanceSkillList;
 import com.l2jhellas.gameserver.model.CharEffectList;
 import com.l2jhellas.gameserver.model.ForceBuff;
-import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2Effect;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.L2WorldRegion;
-import com.l2jhellas.gameserver.model.Location;
+import com.l2jhellas.gameserver.model.actor.group.party.L2Party;
 import com.l2jhellas.gameserver.model.actor.instance.L2ArtefactInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
@@ -59,10 +57,14 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance.SkillDat;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RiftInvaderInstance;
+import com.l2jhellas.gameserver.model.actor.item.Inventory;
+import com.l2jhellas.gameserver.model.actor.item.L2Item;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.model.actor.stat.CharStat;
 import com.l2jhellas.gameserver.model.actor.status.CharStatus;
 import com.l2jhellas.gameserver.model.entity.Castle;
-import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
+import com.l2jhellas.gameserver.model.entity.events.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.model.quest.QuestState;
@@ -96,11 +98,9 @@ import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 import com.l2jhellas.gameserver.templates.L2Armor;
 import com.l2jhellas.gameserver.templates.L2CharTemplate;
-import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.util.Broadcast;
-import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 
@@ -1680,6 +1680,12 @@ public abstract class L2Character extends L2Object
 		}
 	}
 	
+	public final void setWalking()
+	{
+		if (isRunning())
+			setIsRunning(false);
+	}
+	
 	public final void setRunning()
 	{
 		if (!isRunning())
@@ -1794,12 +1800,6 @@ public abstract class L2Character extends L2Object
 	public final void setTitle(String value)
 	{
 		_title = value;
-	}
-	
-	public final void setWalking()
-	{
-		if (isRunning())
-			setIsRunning(false);
 	}
 	
 	class EnableSkill implements Runnable
@@ -3632,7 +3632,7 @@ public abstract class L2Character extends L2Object
 			// Check Raidboss attack
 			// Character will be petrified if attacking a raid that's more
 			// than 8 levels lower
-			if (target.isRaid() && !Config.RAID_DISABLE_CURSE && getActingPlayer() != null && !getActingPlayer().inSoloEvent && !getActingPlayer().inClanEvent && !getActingPlayer().inPartyEvent)
+			if (target.isRaid() && !Config.RAID_DISABLE_CURSE && getActingPlayer() != null)
 			{
 				int level = getActingPlayer().getLevel();
 				

@@ -3,19 +3,20 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.ClassRace;
-import com.l2jhellas.gameserver.emum.L2WeaponType;
-import com.l2jhellas.gameserver.model.Inventory;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.emum.items.ItemLocation;
+import com.l2jhellas.gameserver.emum.items.L2WeaponType;
+import com.l2jhellas.gameserver.emum.player.ClassRace;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.Inventory;
+import com.l2jhellas.gameserver.model.actor.item.L2Item;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.EnchantResult;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.shield.antibot.PrivateAntiBot;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Rnd;
@@ -420,7 +421,7 @@ public final class RequestEnchantItem extends L2GameClientPacket
 					activeChar.sendPacket(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION);
 					return;
 				}
-				if (item.getLocation() != L2ItemInstance.ItemLocation.INVENTORY && item.getLocation() != L2ItemInstance.ItemLocation.PAPERDOLL)
+				if (item.getLocation() != ItemLocation.INVENTORY && item.getLocation() != ItemLocation.PAPERDOLL)
 				{
 					activeChar.cancellEnchant();
 					activeChar.sendPacket(SystemMessageId.INAPPROPRIATE_ENCHANT_CONDITION);

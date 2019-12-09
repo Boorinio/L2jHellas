@@ -12,14 +12,13 @@ import java.util.stream.Stream;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
-import com.l2jhellas.gameserver.emum.L2SkillType;
 import com.l2jhellas.gameserver.emum.ZoneId;
+import com.l2jhellas.gameserver.emum.skills.L2SkillType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Attackable.AggroInfo;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -34,6 +33,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RiftInvaderInstance;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.util.Rnd;
@@ -162,31 +162,11 @@ public class L2AttackableAI extends L2CharacterAI
 		
 		if (target instanceof L2Attackable)
 		{
-			if (me.getEnemyClan() == null || ((L2Attackable) target).getClan() == null)
-				return false;
-			
 			if (!target.isAutoAttackable(me))
 				return false;
 			
 			if (!Config.ALT_MOB_AGRO_IN_PEACEZONE && target.isInsidePeaceZone(_actor.getActingPlayer()))
-				return false;
-			
-			if (me.getEnemyClan().equals(((L2Attackable) target).getClan()))
-			{
-				if (me.isInsideRadius(target, me.getEnemyRange(), false, false))
-				    return ((Config.GEODATA) ? GeoEngine.canSeeTarget(me, target, me.isFlying()) : GeoEngine.canSeeTarget(me, target));
-
-				
-				return false;
-			}
-			if (((L2Attackable) _actor).getIsChaos() > 0 && me.isInsideRadius(target, ((L2Attackable) _actor).getIsChaos(), false, false))
-			{
-				if (((L2Attackable) _actor).getFactionId() != null && ((L2Attackable) _actor).getFactionId().equals(((L2Attackable) target).getFactionId()))
-					return false;
-				
-				return ((Config.GEODATA) ? GeoEngine.canSeeTarget(me, target, me.isFlying()) : GeoEngine.canSeeTarget(me, target));
-
-			}
+				return false;		
 		}
 		
 		return target.isAutoAttackable(me) && ((Config.GEODATA) ? GeoEngine.canSeeTarget(me, target, me.isFlying()) : GeoEngine.canSeeTarget(me, target));
@@ -553,9 +533,9 @@ public class L2AttackableAI extends L2CharacterAI
 			}
 		}
 
-		if (!npc.isMovementDisabled() && (npc.getCanDodge() > 0))
+		if (!npc.isMovementDisabled() && (npc.getTemplate().getDodge() > 0))
 		{
-			if (Rnd.get(100) <= npc.getCanDodge())
+			if (Rnd.get(100) <= npc.getTemplate().getDodge())
 			{
 				if (npc.distance2d(target) <= (60 + combinedCollision))
 				{
@@ -618,7 +598,7 @@ public class L2AttackableAI extends L2CharacterAI
 			npc.setTarget(target);
 		}
 		
-		if(Rnd.get(100) < Rnd.get(40, 100))
+		if(npc.getTemplate().hasSkill() && Rnd.get(100) < 10)
 		{
 			if (npc.getTemplate().hasHealSkill() && !npc.getTemplate()._healskills.isEmpty())
 			{
@@ -659,6 +639,7 @@ public class L2AttackableAI extends L2CharacterAI
 				final L2Skill immobolizeSkill = npc.getTemplate()._immobiliseskills.get(Rnd.get(npc.getTemplate()._immobiliseskills.size()));
 				if (checkUseConditions(npc, immobolizeSkill) && checkSkillTarget(immobolizeSkill, target))
 				{
+					npc.setTarget(target);
 					npc.doCast(immobolizeSkill);
 					return;
 				}
@@ -710,7 +691,7 @@ public class L2AttackableAI extends L2CharacterAI
 			}
 		}
 		
-		final int range = npc.getPhysicalAttackRange() + combinedCollision;
+		int range = npc.getPhysicalAttackRange() + combinedCollision;
 					
         if(target.isDead())
         {
@@ -722,8 +703,22 @@ public class L2AttackableAI extends L2CharacterAI
 			setTarget(target);
         }
         
-		if(!maybeMoveToPawn(target, range))
-			npc.doAttack(target,true);
+		final double dista = Math.sqrt(npc.getPlanDistanceSq(target.getX(), target.getY()));
+		int dist2 = (int) dista - npc.getTemplate().collisionRadius;
+		
+		if (dist2 > range)
+		{
+			if (target.isMoving())
+				range -= 30;
+			
+			if (range < 5)
+				range = 5;
+			
+			moveToPawn(target, range);
+			return;
+		}
+		
+		npc.doAttack(target,true);
 	}
 	
 	public static boolean checkUseConditions(L2Character caster, L2Skill skill)
@@ -734,7 +729,7 @@ public class L2AttackableAI extends L2CharacterAI
 		if (skill == null || caster.isSkillDisabled(skill.getId()))
 			return false;
 
-		if ( caster.isCastingNow())
+		if (caster.isCastingNow())
 			return false;
 
 		if (caster.isMuted() || caster.isPsychicalMuted())
@@ -751,7 +746,7 @@ public class L2AttackableAI extends L2CharacterAI
 		if(!getActiveChar().isInsideRadius(target.getX(), target.getY(), target.getZ(), skill.getCastRange(), true, false))
 			return false;
 
-		if ((!skill.isDebuff() || !skill.isOffensive()) && target.isAutoAttackable(getActiveChar()))
+		if (skill.getSkillType()==L2SkillType.BUFF && target.isAutoAttackable(getActiveChar()))
 			return false;
 		
 		if (skill.getSkillType()==L2SkillType.HEAL && target.getCurrentHp() == target.getMaxHp())

@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.ItemInfo;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.actor.item.ItemInfo;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 
 public class PetInventoryUpdate extends L2GameServerPacket
 {

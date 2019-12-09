@@ -10,7 +10,7 @@ import org.w3c.dom.Node;
 
 import com.PackRoot;
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.ClassId;
+import com.l2jhellas.gameserver.emum.player.ClassId;
 import com.l2jhellas.gameserver.engines.DocumentParser;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;

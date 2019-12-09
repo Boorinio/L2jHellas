@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.ai.CtrlEvent;
-import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.network.serverpackets.PartyMemberPosition;
 
 public final class CannotMoveAnymore extends L2GameClientPacket

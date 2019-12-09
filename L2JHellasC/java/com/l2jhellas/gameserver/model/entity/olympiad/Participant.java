@@ -38,7 +38,7 @@ public final class Participant
 	public final void updatePlayer()
 	{
 		if (player == null || player.isOnline() == 0)
-			player = L2World.getInstance().getPlayer(player.getName());
+			player = L2World.getInstance().getPlayer(objectId);
 	}
 	
 	public final void updateStat(String statName, int increment)

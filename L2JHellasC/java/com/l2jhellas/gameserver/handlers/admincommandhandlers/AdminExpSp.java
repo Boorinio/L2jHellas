@@ -5,8 +5,8 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
-import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
@@ -21,8 +21,6 @@ public class AdminExpSp implements IAdminCommandHandler
 		"admin_add_exp_sp",
 		"admin_remove_exp_sp"
 	};
-
-	private static L2PcInstance player;
 	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
@@ -65,14 +63,14 @@ public class AdminExpSp implements IAdminCommandHandler
 	
 	private static void addExpSp(L2PcInstance activeChar)
 	{
-		L2Object target = activeChar.getTarget();
-		player = null;
-		if (target != null & target instanceof L2PcInstance)
-			player = (L2PcInstance) target;
-		else
+		final L2PcInstance  player = activeChar.getTarget() != null ? activeChar.getTarget().getActingPlayer() : activeChar;
+		
+		if (player == null)
 		{
-			player = activeChar;
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+			return;
 		}
+		
 		NpcHtmlMessage adminReply = new NpcHtmlMessage(5);
 		adminReply.setFile("data/html/admin/expsp.htm");
 		adminReply.replace("%name%", player.getName());
@@ -85,21 +83,19 @@ public class AdminExpSp implements IAdminCommandHandler
 	
 	private static boolean adminAddExpSp(L2PcInstance activeChar, String ExpSp)
 	{
-		L2Object target = activeChar.getTarget();
-		L2PcInstance player = null;
-		if (target != null && target instanceof L2PcInstance)
+		final L2PcInstance  player = activeChar.getTarget() != null ? activeChar.getTarget().getActingPlayer() : activeChar;
+		
+		if (player == null)
 		{
-			player = (L2PcInstance) target;
-		}
-		else
-		{
-			player = activeChar;
-		}
-		StringTokenizer st = new StringTokenizer(ExpSp);
-		if (st.countTokens() != 2)
-		{
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			return false;
 		}
+		
+		StringTokenizer st = new StringTokenizer(ExpSp);
+		
+		if (st.countTokens() != 2)
+			return false;
+		
 		String exp = st.nextToken();
 		String sp = st.nextToken();
 		long expval = 0;
@@ -140,16 +136,14 @@ public class AdminExpSp implements IAdminCommandHandler
 	
 	private static boolean adminRemoveExpSP(L2PcInstance activeChar, String ExpSp)
 	{
-		L2Object target = activeChar.getTarget();
-		L2PcInstance player = null;
-		if (target != null && target instanceof L2PcInstance)
+		final L2PcInstance  player = activeChar.getTarget() != null ? activeChar.getTarget().getActingPlayer() : activeChar;
+		
+		if (player == null)
 		{
-			player = (L2PcInstance) target;
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+			return false;
 		}
-		else
-		{
-			player = activeChar;
-		}
+		
 		StringTokenizer st = new StringTokenizer(ExpSp);
 		if (st.countTokens() != 2)
 			return false;

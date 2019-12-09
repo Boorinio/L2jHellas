@@ -10,14 +10,15 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_REST;
 
 import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.emum.DuelState;
-import com.l2jhellas.gameserver.emum.L2SkillTargetType;
+import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.emum.player.DuelState;
+import com.l2jhellas.gameserver.emum.skills.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Character.AIAccessor;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
@@ -150,7 +151,7 @@ public class L2PlayerAI extends L2CharacterAI
 			return;
 
 		if(!maybeMoveToPawn(target, _actor.getPhysicalAttackRange()))
-		   _actor.doAttack(target,false);
+		  _actor.doAttack(target,false);
 	}
 	
 	private void thinkCast()
@@ -231,15 +232,24 @@ public class L2PlayerAI extends L2CharacterAI
 	
 	private void thinkPickUp()
 	{
-		if (_actor.isAllSkillsDisabled())
+		if (_actor.isAllSkillsDisabled() || _actor.isCastingNow() || _actor.isAttackingNow())
 			return;
+		
 		L2Object target = getTarget();
+		
 		if (checkTargetLost(target))
 			return;
+		
 		if (maybeMoveToPawn(target, 36))
 			return;
+		
+		if (_actor.isAlikeDead() || getActor().isFakeDeath())
+			return;
+		
 		setIntention(AI_INTENTION_ACTIVE);
 		((L2PcInstance.AIAccessor) _accessor).doPickupItem(target);
+		_actor.setIsParalyzed(true);
+		ThreadPoolManager.getInstance().scheduleGeneral(() -> _actor.setIsParalyzed(false), (int) (660 / _actor.getStat().getMovementSpeedMultiplier()));		
 		return;
 	}
 	

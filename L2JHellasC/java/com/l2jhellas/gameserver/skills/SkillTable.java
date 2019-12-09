@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.emum.L2WeaponType;
+import com.l2jhellas.gameserver.emum.items.L2WeaponType;
 import com.l2jhellas.gameserver.model.L2Skill;
 
 public class SkillTable

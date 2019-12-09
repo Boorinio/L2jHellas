@@ -15,9 +15,8 @@ import com.l2jhellas.gameserver.communitybbs.Manager.RegionBBSManager;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
-import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
-import com.l2jhellas.gameserver.emum.ClassId;
 import com.l2jhellas.gameserver.emum.Sex;
+import com.l2jhellas.gameserver.emum.player.ClassId;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -199,15 +198,13 @@ public class AdminEditChar implements IAdminCommandHandler
 		}
 		else if (command.equals("admin_rec"))
 		{
-			L2Object target = activeChar.getTarget();
-			L2PcInstance player = null;
+			final L2PcInstance  player = activeChar.getTarget() != null ? activeChar.getTarget().getActingPlayer() : activeChar;
 			
-			if (target instanceof L2PcInstance)
+			if (player == null)
 			{
-				player = (L2PcInstance) target;
-			}
-			else
+				activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 				return false;
+			}
 			
 			player.setRecomHave(player.getRecomHave() + 1);
 			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.GM_S1);
@@ -221,16 +218,15 @@ public class AdminEditChar implements IAdminCommandHandler
 			{
 				String val = command.substring(10);
 				int recVal = Integer.parseInt(val);
-				L2Object target = activeChar.getTarget();
-				L2PcInstance player = null;
-				if (target instanceof L2PcInstance)
+				
+				final L2PcInstance  player = activeChar.getTarget() != null ? activeChar.getTarget().getActingPlayer() : activeChar;
+				
+				if (player == null)
 				{
-					player = (L2PcInstance) target;
-				}
-				else
-				{
+					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 					return false;
 				}
+				
 				player.setRecomHave(player.getRecomHave() + recVal);
 				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.GM_S1);
 				sm.addString("You have been recommended by a GM");
@@ -248,13 +244,15 @@ public class AdminEditChar implements IAdminCommandHandler
 			{
 				String val = command.substring(15).trim();
 				int classidval = Integer.parseInt(val);
-				L2Object target = activeChar.getTarget();
-				
-				if ((target == null) || !target.isPlayer())
-					return false;
 
-				final L2PcInstance player = target.getActingPlayer();
+				final L2PcInstance  player = activeChar.getTarget() != null ? activeChar.getTarget().getActingPlayer() : activeChar;
 				
+				if (player == null)
+				{
+					activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+					return false;
+				}
+								
 				if ((ClassId.getClassId(classidval) != null) && (player.getClassId().getId() != classidval))
 				{
 			
@@ -412,24 +410,18 @@ public class AdminEditChar implements IAdminCommandHandler
 			
 		}
 		else if (command.startsWith("admin_setsex"))
-		{
-			L2Object target = activeChar.getTarget();
-			L2PcInstance player = null;
-			if (target instanceof L2PcInstance)
+		{	
+			final L2PcInstance  player = activeChar.getTarget() != null ? activeChar.getTarget().getActingPlayer() : activeChar;
+
+			if (player == null)
 			{
-				player = (L2PcInstance) target;
-			}
-			else
-			{
+				activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 				return false;
 			}
 			
-			Sex male = Sex.MALE;
-			Sex female = Sex.FEMALE;
-			
-			if (male != player.getAppearance().getSex())
+			if (player.getAppearance().getSex() != Sex.MALE)
 			{
-				player.getAppearance().setSex(male);
+				player.getAppearance().setSex(Sex.MALE);
 				player.sendMessage("Your gender has been changed by a GM.");
 				player.decayMe();
 				player.spawnMe(player.getX(), player.getY(), player.getZ());
@@ -437,7 +429,7 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 			else
 			{
-				player.getAppearance().setSex(female);
+				player.getAppearance().setSex(Sex.FEMALE);
 				player.sendMessage("Your gender has been changed by a GM.");
 				player.decayMe();
 				player.spawnMe(player.getX(), player.getY(), player.getZ());
@@ -445,62 +437,24 @@ public class AdminEditChar implements IAdminCommandHandler
 			}
 		}
 		else if (command.startsWith("admin_setcolor"))
-		{
-			L2Object target = activeChar.getTarget();
-			if (target == null)
-			{
-				activeChar.sendMessage("You have to select a player!");
-				return false;
-			}
-			if (!(target instanceof L2PcInstance))
-			{
-				activeChar.sendMessage("Your target is not a player!");
-				return false;
-			}
+		{		
+			final L2PcInstance  player = activeChar.getTarget() != null ? activeChar.getTarget().getActingPlayer() : activeChar;
+			
 			if (!activeChar.isGM())
 			{
 				activeChar.sendMessage("Your can't perform that action without access!");
 				return false;
 			}
-			String[] params = command.split(" ");
-			if (params.length != 3)
+			
+			if (player == null)
 			{
-				activeChar.sendMessage("Wrong usage: //setcolor <colorHex> <timeInDays>");
-				activeChar.sendMessage("If you type for <timeInDays> 0, the color will never deleted.");
-				activeChar.sendMessage("If you type for <timeInDays> login, color will disapear if player logout.");
+				activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 				return false;
 			}
-			L2PcInstance player = (L2PcInstance) target;
-			int color = Integer.parseInt(params[1]);
-			if (params[2].equals("login"))
-			{
-				player.getAppearance().setNameColor(color);
-				player.sendMessage("Your name color has been changed!");
-				player.broadcastUserInfo();
-			}
-			long time = Long.valueOf(params[2]);
-			PcColorTable.getInstance().add((L2PcInstance) target, color, System.currentTimeMillis(), ((((time * 24) * 60) * 60) * 1000));
-		}
-		else if (command.equals("admin_delete_color"))
-		{
-			L2Object target = activeChar.getTarget();
-			if (target == null)
-			{
-				activeChar.sendMessage("You have to select a player!");
-				return false;
-			}
-			if (!(target instanceof L2PcInstance))
-			{
-				activeChar.sendMessage("Your target is not a player!");
-				return false;
-			}
-			if (!activeChar.isGM())
-			{
-				activeChar.sendMessage("Your can't perform that action without access!");
-				return false;
-			}
-			String charName = command.substring(19);
-			PcColorTable.delete(charName);
+		
+			player.getAppearance().setNameColor(Integer.decode("0x" + command.substring(15)));
+			player.sendMessage("Your name color has been changed by a GM.");
+			player.broadcastUserInfo();
 		}
 		else if (command.startsWith("admin_fullfood"))
 		{
@@ -516,17 +470,14 @@ public class AdminEditChar implements IAdminCommandHandler
 		}
 		else if (command.equals("admin_remclanwait"))
 		{
-			L2Object target = activeChar.getTarget();
-			L2PcInstance player = null;
-			if (target instanceof L2PcInstance)
+			final L2PcInstance  player = activeChar.getTarget() != null ? activeChar.getTarget().getActingPlayer() : activeChar;
+			
+			if (player == null)
 			{
-				player = (L2PcInstance) target;
-			}
-			else
-			{
+				activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 				return false;
 			}
-			
+					
 			if (player.getClan() == null)
 			{
 				player.setClanJoinExpiryTime(0);
@@ -767,18 +718,14 @@ public class AdminEditChar implements IAdminCommandHandler
 	
 	private static void setTargetKarma(L2PcInstance activeChar, int newKarma)
 	{
-		// function to change karma of selected char
-		L2Object target = activeChar.getTarget();
-		L2PcInstance player = null;
-		if (target instanceof L2PcInstance)
+		final L2PcInstance  player = activeChar.getTarget() != null ? activeChar.getTarget().getActingPlayer() : activeChar;
+		
+		if (player == null)
 		{
-			player = (L2PcInstance) target;
-		}
-		else
-		{
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			return;
 		}
-		
+				
 		if (newKarma >= 0)
 		{
 			// for display
@@ -801,20 +748,19 @@ public class AdminEditChar implements IAdminCommandHandler
 				activeChar.sendMessage("Successfully Changed karma for " + player.getName() + " from (" + oldKarma + ") to (" + newKarma + ").");
 		}
 		else
-		{
-			// tell admin of mistake
 			activeChar.sendMessage("You must enter a value for karma greater than or equal to 0.");
-		}
 	}
 	
 	private static void adminModifyCharacter(L2PcInstance activeChar, String modifications)
 	{
-		L2Object target = activeChar.getTarget();
+		final L2PcInstance  player = activeChar.getTarget() != null ? activeChar.getTarget().getActingPlayer() : activeChar;
 		
-		if (!(target instanceof L2PcInstance))
+		if (player == null)
+		{
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			return;
+		}
 		
-		L2PcInstance player = (L2PcInstance) target;
 		StringTokenizer st = new StringTokenizer(modifications);
 		
 		if (st.countTokens() != 6)
@@ -874,10 +820,12 @@ public class AdminEditChar implements IAdminCommandHandler
 	
 	private static void editCharacter(L2PcInstance activeChar)
 	{
-		L2Object target = activeChar.getTarget();
-		if (!(target instanceof L2PcInstance))
+		final L2PcInstance  player = activeChar.getTarget() != null ? activeChar.getTarget().getActingPlayer() : activeChar;		
+		if (player == null)
+		{
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			return;
-		L2PcInstance player = (L2PcInstance) target;
+		}		
 		gatherCharacterInfo(activeChar, player, "charedit.htm");
 	}
 	
@@ -1010,28 +958,22 @@ public class AdminEditChar implements IAdminCommandHandler
 		{
 			client = player.getClient();
 			if ((client == null) || client.isDetached())
-			{
 				continue;
-			}
 			
 			ip = client.getConnection().getInetAddress().getHostAddress();
+			
 			if (ipMap.get(ip) == null)
-			{
 				ipMap.put(ip, new ArrayList<L2PcInstance>());
-			}
+
 			ipMap.get(ip).add(player);
 			
 			if (ipMap.get(ip).size() >= multibox)
 			{
 				Integer count = dualboxIPs.get(ip);
 				if (count == null)
-				{
 					dualboxIPs.put(ip, multibox);
-				}
 				else
-				{
 					dualboxIPs.put(ip, count + 1);
-				}
 			}
 		}
 		

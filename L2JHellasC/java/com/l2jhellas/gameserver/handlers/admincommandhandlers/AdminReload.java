@@ -11,7 +11,6 @@ import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.controllers.TradeController;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
-import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.datatables.xml.AugmentationData;
@@ -181,13 +180,6 @@ public class AdminReload implements IAdminCommandHandler
 					TradeController.reload();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("TradeList Table has been reloaded.");
-					break;
-				}
-				case "pccolor":
-				{
-					PcColorTable.process(activeChar);
-					sendReloadPage(activeChar);
-					activeChar.sendMessage("PcColor Table has been reloaded.");
 					break;
 				}
 				case "cw":

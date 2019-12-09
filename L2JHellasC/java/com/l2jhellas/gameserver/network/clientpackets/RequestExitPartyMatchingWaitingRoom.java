@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.model.PartyMatchWaitingList;
+import com.l2jhellas.gameserver.model.actor.group.party.PartyMatchWaitingList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public final class RequestExitPartyMatchingWaitingRoom extends L2GameClientPacket

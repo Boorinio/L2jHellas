@@ -3,8 +3,9 @@ package Extensions.fake.roboto;
 import Extensions.fake.roboto.ai.FakePlayerAI;
 import Extensions.fake.roboto.helpers.FakeHelpers;
 
-import com.l2jhellas.gameserver.emum.L2SkillTargetType;
-import com.l2jhellas.gameserver.emum.L2SkillType;
+import com.l2jhellas.gameserver.emum.skills.L2SkillTargetType;
+import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.gameserver.geometry.Point3D;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -19,7 +20,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MoveToLocation;
 import com.l2jhellas.gameserver.network.serverpackets.MoveToPawn;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
-import com.l2jhellas.util.Point3D;
 
 public class FakePlayer extends L2PcInstance
 {

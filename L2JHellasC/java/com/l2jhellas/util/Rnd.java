@@ -3,7 +3,7 @@ package com.l2jhellas.util;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import com.l2jhellas.gameserver.model.Location;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 
 public final class Rnd
 {

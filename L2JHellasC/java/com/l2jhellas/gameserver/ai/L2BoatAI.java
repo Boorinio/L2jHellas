@@ -2,10 +2,10 @@ package com.l2jhellas.gameserver.ai;
 
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Vehicle;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.network.serverpackets.VehicleDeparture;
 import com.l2jhellas.gameserver.network.serverpackets.VehicleInfo;
 import com.l2jhellas.gameserver.network.serverpackets.VehicleStarted;

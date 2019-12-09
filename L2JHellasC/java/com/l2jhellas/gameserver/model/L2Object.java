@@ -9,6 +9,7 @@ import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.poly.ObjectPoly;
 import com.l2jhellas.gameserver.model.actor.position.ObjectPosition;
 import com.l2jhellas.gameserver.model.quest.QuestState;

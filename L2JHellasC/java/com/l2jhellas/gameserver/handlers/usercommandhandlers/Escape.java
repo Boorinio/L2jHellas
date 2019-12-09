@@ -52,13 +52,7 @@ public class Escape implements IUserCommandHandler
 			activeChar.sendMessage("You can not escape from jail.");
 			return false;
 		}
-		
-		if (activeChar.inClanEvent || activeChar.inPartyEvent || activeChar.inSoloEvent)
-		{
-			activeChar.sendPacket(SystemMessage.sendString("You can't escape while in Event."));
-			return false;
-		}
-		
+
 		activeChar.sendPacket(PlaySound.createSound("systemmsg_e.809"));
 
 		SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);

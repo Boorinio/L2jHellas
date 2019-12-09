@@ -11,15 +11,13 @@ import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.cache.HtmCache;
-import com.l2jhellas.gameserver.datatables.sql.BuffTemplateTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.HelperBuffData;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
-import com.l2jhellas.gameserver.emum.L2SkillTargetType;
-import com.l2jhellas.gameserver.emum.L2SkillType;
+import com.l2jhellas.gameserver.emum.skills.L2SkillType;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
@@ -30,8 +28,6 @@ import com.l2jhellas.gameserver.model.AutoChatHandler;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2DropCategory;
 import com.l2jhellas.gameserver.model.L2DropData;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.L2NpcAIData;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2Spawn;
@@ -39,7 +35,6 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.MobGroupTable;
 import com.l2jhellas.gameserver.model.actor.instance.L2ControlTowerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2ControllableMobInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2EventBufferInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2FestivalGuideInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2FishermanInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MerchantInstance;
@@ -49,14 +44,16 @@ import com.l2jhellas.gameserver.model.actor.instance.L2NpcWalkerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2TeleporterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2WarehouseInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2Item;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.stat.NpcStat;
 import com.l2jhellas.gameserver.model.actor.status.NpcStatus;
 import com.l2jhellas.gameserver.model.entity.Castle;
-import com.l2jhellas.gameserver.model.entity.L2Event;
-import com.l2jhellas.gameserver.model.entity.engines.CTF;
-import com.l2jhellas.gameserver.model.entity.engines.DM;
-import com.l2jhellas.gameserver.model.entity.engines.TvT;
-import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
+import com.l2jhellas.gameserver.model.entity.events.CTF;
+import com.l2jhellas.gameserver.model.entity.events.DM;
+import com.l2jhellas.gameserver.model.entity.events.TvT;
+import com.l2jhellas.gameserver.model.entity.events.engines.L2Event;
+import com.l2jhellas.gameserver.model.entity.events.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
@@ -83,7 +80,6 @@ import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.taskmanager.DecayTaskManager;
 import com.l2jhellas.gameserver.taskmanager.RandomAnimationTaskManager;
 import com.l2jhellas.gameserver.templates.L2HelperBuff;
-import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.util.Rnd;
@@ -114,7 +110,6 @@ public class L2Npc extends L2Character
 	public boolean _isEventMobVIP = false;
 	public String _CTF_FlagTeamName;
 	public boolean _isEventVIPNPC = false, _isEventVIPNPCEnd = false;
-	public boolean isPrivateEventMob = false;
 	
 	private boolean _isInTown = false;
 	
@@ -454,8 +449,12 @@ public class L2Npc extends L2Character
 					if (player.isMoving() || player.isInCombat())
 						player.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
 					
-					player.sendPacket(new MoveToPawn(player, this, INTERACTION_DISTANCE));
+					if (!player.isSitting())
+					     player.sendPacket(new MoveToPawn(player, this, INTERACTION_DISTANCE));
 					
+					if (isMoving())
+						 player.stopMove(null);
+
 					player.sendPacket(ActionFailed.STATIC_PACKET);
 					
 					if (hasRandomAnimation() && !isWalker())
@@ -873,10 +872,6 @@ public class L2Npc extends L2Character
 						break;
 				}
 			}
-			else if (command.startsWith("MakeBuffs"))
-			{
-				makeBuffs(player, command.substring(9).trim());
-			}
 			else if (command.startsWith("npcfind_byid"))
 			{
 				try
@@ -999,24 +994,6 @@ public class L2Npc extends L2Character
 			return null;
 		
 		return (L2Weapon) item;
-	}
-	
-	public void makeBuffs(L2PcInstance player, String buffTemplate)
-	{
-		int _templateId = 0;
-		
-		try
-		{
-			_templateId = Integer.parseInt(buffTemplate);
-		}
-		catch (NumberFormatException e)
-		{
-			_templateId = BuffTemplateTable.getInstance().getTemplateIdByName(buffTemplate);
-		}
-		if (_templateId > 0)
-		{
-			L2EventBufferInstance.makeBuffs(player, _templateId, this, true);
-		}
 	}
 	
 	public void insertObjectIdAndShowChatWindow(L2PcInstance player, String content)
@@ -2031,232 +2008,7 @@ public class L2Npc extends L2Character
 		ThreadPoolManager.getInstance().scheduleGeneral(this.new DespawnTask(this), delay);
 		return this;
 	}
-	
-	public String getClan()
-	{
-		L2NpcAIData AI = getTemplate().getAIDataStatic();
-		return AI.getClan();
-	}
-	
-	public int getEnemyRange()
-	{
-		L2NpcAIData AI = getTemplate().getAIDataStatic();
-		return AI.getEnemyRange();
-	}
-	
-	public String getEnemyClan()
-	{
-		L2NpcAIData AI = getTemplate().getAIDataStatic();
-		return AI.getEnemyClan();
-	}
-	
-	public int getClanRange()
-	{
-		L2NpcAIData AI = getTemplate().getAIDataStatic();
-		return AI.getClanRange();
-	}
-	
-	// GET THE PRIMARY ATTACK
-	public int getPrimaryAttack()
-	{
-		L2NpcAIData AI = getTemplate().getAIDataStatic();
-		return AI.getPrimaryAttack();
-		
-	}
-	
-	public int getSkillChance()
-	{
-		L2NpcAIData AI = getTemplate().getAIDataStatic();
-		return AI.getSkillChance();
-		
-	}
-	
-	public int getCanMove()
-	{
-		L2NpcAIData AI = getTemplate().getAIDataStatic();
-		return AI.getCanMove();
-	}
-	
-	public int getIsChaos()
-	{
-		L2NpcAIData AI = getTemplate().getAIDataStatic();
-		return AI.getIsChaos();
-		
-	}
-	
-	public int getCanDodge()
-	{
-		L2NpcAIData AI = getTemplate().getAIDataStatic();
-		return AI.getDodge();
-		
-	}
-	
-	public int getSSkillChance()
-	{
-		L2NpcAIData AI = getTemplate().getAIDataStatic();
-		return AI.getShortRangeChance();
-		
-	}
-	
-	public int getLSkillChance()
-	{
-		L2NpcAIData AI = getTemplate().getAIDataStatic();
-		return AI.getLongRangeChance();
-		
-	}
-	
-	public int getSwitchRangeChance()
-	{
-		L2NpcAIData AI = getTemplate().getAIDataStatic();
-		return AI.getSwitchRangeChance();
-		
-	}
-	
-	public boolean hasLSkill()
-	{
-		L2NpcAIData AI = getTemplate().getAIDataStatic();
-		
-		if (AI.getLongRangeSkill() == 0)
-			return false;
 
-		return true;	
-	}
-	
-	public boolean hasSSkill()
-	{
-		L2NpcAIData AI = getTemplate().getAIDataStatic();
-		
-		if (AI.getShortRangeSkill() == 0)
-			return false;
-	
-		return true;
-		
-	}
-	
-	public ArrayList<L2Skill> getLrangeSkill()
-	{
-		ArrayList<L2Skill> skilldata = new ArrayList<>();
-		boolean hasLrange = false;
-		L2NpcAIData AI = getTemplate().getAIDataStatic();
-		
-		if (AI == null || AI.getLongRangeSkill() == 0)
-			return null;
-		
-		switch (AI.getLongRangeSkill())
-		{
-			case -1:
-			{
-				L2Skill[] skills = null;
-				skills = getAllSkills();
-				if (skills != null)
-				{
-					for (L2Skill sk : skills)
-					{
-						if (sk == null || sk.isPassive() || sk.getTargetType() == L2SkillTargetType.TARGET_SELF)
-							continue;
-						
-						if (sk.getCastRange() >= 200)
-						{
-							skilldata.add(sk);
-							hasLrange = true;
-						}
-					}
-				}
-				break;
-			}
-			case 1:
-			{
-				if (getTemplate()._universalskills != null)
-				{
-					for (L2Skill sk : getTemplate()._universalskills)
-					{
-						if (sk.getCastRange() >= 200)
-						{
-							skilldata.add(sk);
-							hasLrange = true;
-						}
-					}
-				}
-				break;
-			}
-			default:
-			{
-				for (L2Skill sk : getAllSkills())
-				{
-					if (sk.getId() == AI.getLongRangeSkill())
-					{
-						skilldata.add(sk);
-						hasLrange = true;
-					}
-				}
-			}
-		}
-		
-		return (hasLrange ? skilldata : null);
-	}
-	
-	public ArrayList<L2Skill> getSrangeSkill()
-	{
-		ArrayList<L2Skill> skilldata = new ArrayList<>();
-		boolean hasSrange = false;
-		L2NpcAIData AI = getTemplate().getAIDataStatic();
-		
-		if (AI == null || AI.getShortRangeSkill() == 0)
-			return null;
-		
-		switch (AI.getShortRangeSkill())
-		{
-			case -1:
-			{
-				L2Skill[] skills = null;
-				skills = getAllSkills();
-				if (skills != null)
-				{
-					for (L2Skill sk : skills)
-					{
-						if (sk == null || sk.isPassive() || sk.getTargetType() == L2SkillTargetType.TARGET_SELF)
-							continue;
-						
-						if (sk.getCastRange() <= 200)
-						{
-							skilldata.add(sk);
-							hasSrange = true;
-						}
-					}
-				}
-				break;
-			}
-			case 1:
-			{
-				if (getTemplate()._universalskills != null)
-				{
-					for (L2Skill sk : getTemplate()._universalskills)
-					{
-						if (sk.getCastRange() <= 200)
-						{
-							skilldata.add(sk);
-							hasSrange = true;
-						}
-					}
-				}
-				break;
-			}
-			default:
-			{
-				for (L2Skill sk : getAllSkills())
-				{
-					if (sk.getId() == AI.getShortRangeSkill())
-					{
-						skilldata.add(sk);
-						hasSrange = true;
-					}
-				}
-			}
-		}
-		
-		return (hasSrange ? skilldata : null);
-	}
-	
 	public class DespawnTask implements Runnable
 	{
 		L2Npc _npc;

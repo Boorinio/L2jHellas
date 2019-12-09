@@ -5,9 +5,9 @@ import java.util.List;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.xml.NpcWalkerRoutesData;
 import com.l2jhellas.gameserver.model.L2NpcWalkerNode;
-import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcWalkerInstance;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 
 public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 {
@@ -80,20 +80,11 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 		
 		_currentNode = _route.get(_currentPos);
 		
-		if (_currentNode.getRunning())
-			getActor().setRunning();
-		else
-			getActor().setWalking();
+		getActor().setIsRunning(_currentNode.getRunning());
 		
 		_walkingToNextPoint = true;
 		
-		setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(_currentNode.getMoveX(), _currentNode.getMoveY(), _currentNode.getMoveZ(), 0));
-		
-		NextAction nextAction = new NextAction(CtrlEvent.EVT_ARRIVED, CtrlIntention.AI_INTENTION_MOVE_TO, () ->
-		{
-			moveTo(_currentNode.getMoveX(), _currentNode.getMoveY(), _currentNode.getMoveZ());
-		});
-		setNextAction(nextAction);
+		setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(_currentNode.getMoveX(), _currentNode.getMoveY(), _currentNode.getMoveZ(), 0));		
 	}
 	
 	@Override

@@ -19,7 +19,6 @@ public abstract class L2Playable extends L2Character
 	private boolean _isPhoenixBlessed = false; // for Soul of The PPhoenix or Salvation buffs
 	private boolean _ProtectionBlessing = false;
 	private String _lastTownName = null;
-	private int _hitmanTarget = 0;
 	
 	public L2Playable(int objectId, L2CharTemplate template)
 	{
@@ -267,16 +266,6 @@ public abstract class L2Playable extends L2Character
 	public String getLastTownName()
 	{
 		return _lastTownName;
-	}
-	
-	public void setHitmanTarget(int hitmanTarget)
-	{
-		_hitmanTarget = hitmanTarget;
-	}
-	
-	public int getHitmanTarget()
-	{
-		return _hitmanTarget;
 	}
 	
 	public abstract int getKarma();

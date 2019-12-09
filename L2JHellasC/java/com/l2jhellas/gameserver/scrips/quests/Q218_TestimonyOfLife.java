@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.scrips.quests;
 
-import com.l2jhellas.gameserver.emum.ClassRace;
-import com.l2jhellas.gameserver.model.Inventory;
+import com.l2jhellas.gameserver.emum.player.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.Inventory;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.util.Rnd;

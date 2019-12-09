@@ -3,8 +3,8 @@ package com.l2jhellas.gameserver.model.zone;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.util.Rnd;
 
 public abstract class L2SpawnZone extends L2ZoneType

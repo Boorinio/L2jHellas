@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.skills.conditions;
 
-import com.l2jhellas.gameserver.emum.ClassRace;
+import com.l2jhellas.gameserver.emum.player.ClassRace;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.skills.Env;
 

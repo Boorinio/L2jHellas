@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.scrips.quests;
 
-import com.l2jhellas.gameserver.emum.ClassRace;
+import com.l2jhellas.gameserver.emum.player.ClassRace;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
@@ -36,7 +36,7 @@ public class Q101_SwordOfSolidarity extends Quest
 	{
 		super(101, qn, "Sword of Solidarity");
 		
-		setItemsIds(BROKEN_SWORD_HANDLE, BROKEN_BLADE_BOTTOM, BROKEN_BLADE_TOP);
+		setItemsIds(BROKEN_SWORD_HANDLE, BROKEN_BLADE_BOTTOM, BROKEN_BLADE_TOP, ALTRANS_NOTE, ROIENS_LETTER, DIR_TO_RUINS);
 		
 		addStartNpc(ROIEN);
 		addTalkId(ROIEN, ALTRAN);

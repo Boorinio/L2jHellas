@@ -2,16 +2,14 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import java.util.logging.Logger;
 
-import Extensions.RaidEvent.L2RaidEvent;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.model.L2SiegeClan;
-import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -174,31 +172,6 @@ public final class RequestRestartPoint extends L2GameClientPacket
 		{
 			_log.warning(RequestRestartPoint.class.getName() + ": Living player [" + activeChar.getName() + "] called RestartPointPacket! Ban this player!");
 			return;
-		}
-		
-		if (activeChar.inClanEvent || activeChar.inPartyEvent || activeChar.inSoloEvent)
-		{
-			activeChar.inClanEvent = false;
-			activeChar.inPartyEvent = false;
-			activeChar.inSoloEvent = false;
-			if (L2RaidEvent._eventType == 2)
-			{
-				if (L2RaidEvent._participatingPlayers.contains(activeChar))
-					// Clear player from Event.
-					L2RaidEvent._participatingPlayers.remove(activeChar);
-			}
-			if (L2RaidEvent._eventType == 3)
-			{
-				if (activeChar.getParty() != null)
-					activeChar.leaveParty();
-				activeChar.sendMessage("You have been kicked from the party.");
-			}
-			activeChar.sendMessage("You've been erased from the event!");
-			int num = L2RaidEvent._participatingPlayers.size();
-			if (num > 0 && num != 1)
-				num -= 1;
-			else
-				L2RaidEvent.hardFinish();
 		}
 		
 		Castle castle = CastleManager.getInstance().getCastle(activeChar.getX(), activeChar.getY(), activeChar.getZ());

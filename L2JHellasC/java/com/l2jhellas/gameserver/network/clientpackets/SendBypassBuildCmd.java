@@ -1,5 +1,6 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.handler.AdminCommandHandler;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
@@ -18,9 +19,7 @@ public final class SendBypassBuildCmd extends L2GameClientPacket
 	{
 		_command = readS();
 		if (_command != null)
-		{
 			_command = _command.trim();
-		}
 	}
 	
 	@Override
@@ -31,9 +30,9 @@ public final class SendBypassBuildCmd extends L2GameClientPacket
 		if (activeChar == null)
 			return;
 		
-		String command = "admin_" + _command.split(" ")[0];
+		final String command = "admin_" + _command.split(" ")[0];
 		
-		IAdminCommandHandler ach = AdminCommandHandler.getInstance().getHandler(command);
+		final IAdminCommandHandler ach = AdminCommandHandler.getInstance().getHandler(command);
 		
 		if (ach == null)
 		{
@@ -52,7 +51,16 @@ public final class SendBypassBuildCmd extends L2GameClientPacket
 			return;
 		}
 		
-		ach.useAdminCommand("admin_" + _command, activeChar);
+		ThreadPoolManager.getInstance().executeTask(() ->
+		{
+			try
+			{
+				ach.useAdminCommand("admin_" + _command, activeChar);
+			}
+			catch (final RuntimeException e)
+			{
+			}
+		});	
 	}
 	
 	@Override

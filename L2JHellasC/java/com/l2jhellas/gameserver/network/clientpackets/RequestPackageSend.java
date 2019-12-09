@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.L2EtcItemType;
-import com.l2jhellas.gameserver.model.ItemContainer;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.emum.items.L2EtcItemType;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.PcFreight;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.ItemContainer;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;

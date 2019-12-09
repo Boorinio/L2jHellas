@@ -1,10 +1,11 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.emum.items.ItemLocation;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.TradeList;
 import com.l2jhellas.gameserver.model.TradeList.TradeItem;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.TradeOtherAdd;
 import com.l2jhellas.gameserver.network.serverpackets.TradeOwnAdd;
@@ -77,7 +78,7 @@ public final class AddTradeItem extends L2GameClientPacket
 			return;
 		}
 		
-		if (item.getLocation() != L2ItemInstance.ItemLocation.INVENTORY)
+		if (item.getLocation() != ItemLocation.INVENTORY)
 		{
 			player.sendPacket(SystemMessageId.NOTHING_HAPPENED);
 			return;

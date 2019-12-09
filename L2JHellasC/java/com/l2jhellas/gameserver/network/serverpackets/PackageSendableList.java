@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 
 public class PackageSendableList extends L2GameServerPacket
 {
@@ -22,19 +22,23 @@ public class PackageSendableList extends L2GameServerPacket
 		writeD(_playerObjId);
 		writeD(getClient().getActiveChar().getAdena());
 		writeD(_items.length);
-		for (L2ItemInstance item : _items) // format inside the for taken from SellList part use should be about the same
+		
+		for (L2ItemInstance item : _items) 
 		{
+			if (item == null || item.getItem() == null)
+				continue;
+			
 			writeH(item.getItem().getType1());
 			writeD(item.getObjectId());
 			writeD(item.getItemId());
 			writeD(item.getCount());
 			writeH(item.getItem().getType2());
-			writeH(0x00);
+			writeH(item.getCustomType1());
 			writeD(item.getItem().getBodyPart());
 			writeH(item.getEnchantLevel());
+			writeH(item.getCustomType2());
 			writeH(0x00);
-			writeH(0x00);
-			writeD(item.getObjectId()); // some item identifier later used by client to answer (see RequestPackageSend) not item id nor object id maybe some freight system id??
+			writeD(item.getObjectId());
 		}
 	}
 	

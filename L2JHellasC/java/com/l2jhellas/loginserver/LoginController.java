@@ -180,20 +180,15 @@ public class LoginController
 				// dont allow 2 simultaneous login
 				synchronized (_loginServerClients)
 				{
-					if (!_loginServerClients.containsKey(account))
-					{
-						_loginServerClients.put(account, client);
+					if (_loginServerClients.putIfAbsent(account, client) == null)
 						ret = AuthLoginResult.AUTH_SUCCESS;
-					}
 				}
 			}
 		}
 		else
 		{
 			if (client.getAccessLevel() < 0)
-			{
 				ret = AuthLoginResult.ACCOUNT_BANNED;
-			}
 		}
 		return ret;
 	}

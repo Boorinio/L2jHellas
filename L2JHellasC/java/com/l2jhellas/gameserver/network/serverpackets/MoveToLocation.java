@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 
 public class MoveToLocation extends L2GameServerPacket
 {

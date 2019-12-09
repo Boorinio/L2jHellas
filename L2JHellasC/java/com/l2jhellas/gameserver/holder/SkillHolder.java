@@ -14,6 +14,12 @@ public final class SkillHolder
 		_skillLvl = skillLvl;
 	}
 	
+	public SkillHolder(int skillId) 
+	{
+		_skillId = skillId;
+		_skillLvl = 1;
+	}
+	
 	public SkillHolder(L2Skill skill)
 	{
 		_skillId = skill.getId();

@@ -3,7 +3,7 @@ package com.l2jhellas.gameserver.handler;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.l2jhellas.gameserver.emum.L2SkillType;
+import com.l2jhellas.gameserver.emum.skills.L2SkillType;
 
 public class SkillHandler implements IHandler<ISkillHandler, L2SkillType>
 {

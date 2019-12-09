@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.skills.conditions;
 
-import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.Inventory;
 import com.l2jhellas.gameserver.skills.Env;
 
 public final class ConditionUsingItemType extends Condition

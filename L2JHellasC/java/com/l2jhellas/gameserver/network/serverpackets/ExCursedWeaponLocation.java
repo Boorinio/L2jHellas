@@ -2,7 +2,7 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 import java.util.List;
 
-import com.l2jhellas.gameserver.model.Location;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 
 public class ExCursedWeaponLocation extends L2GameServerPacket
 {

@@ -2,11 +2,11 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import java.util.logging.Logger;
 
+import com.l2jhellas.gameserver.geometry.Point3D;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.skills.SkillTable;
-import com.l2jhellas.util.Point3D;
 
 public final class RequestExMagicSkillUseGround extends L2GameClientPacket
 {

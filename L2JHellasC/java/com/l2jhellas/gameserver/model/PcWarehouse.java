@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.model;
 
-import com.l2jhellas.gameserver.model.L2ItemInstance.ItemLocation;
+import com.l2jhellas.gameserver.emum.items.ItemLocation;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class PcWarehouse extends Warehouse

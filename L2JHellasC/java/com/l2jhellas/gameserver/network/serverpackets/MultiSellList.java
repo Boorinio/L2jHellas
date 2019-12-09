@@ -4,7 +4,7 @@ import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData.MultiSellEntry;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData.MultiSellIngredient;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData.MultiSellListContainer;
-import com.l2jhellas.gameserver.templates.L2Item;
+import com.l2jhellas.gameserver.model.actor.item.L2Item;
 
 public class MultiSellList extends L2GameServerPacket
 {

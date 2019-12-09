@@ -4,8 +4,8 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
-import com.l2jhellas.gameserver.model.ItemContainer;
 import com.l2jhellas.gameserver.model.L2Clan;
+import com.l2jhellas.gameserver.model.actor.item.ItemContainer;
 import com.l2jhellas.gameserver.model.entity.Castle;
 
 public class CastleUpdater implements Runnable

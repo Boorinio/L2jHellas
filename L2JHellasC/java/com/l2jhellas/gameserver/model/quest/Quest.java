@@ -16,21 +16,24 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
+import com.l2jhellas.gameserver.holder.SkillHolder;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.L2Clan;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2Spawn;
-import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2Item;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -310,6 +313,27 @@ public class Quest
 			return null;
 		
 		return st;
+	}
+	
+	public static L2PcInstance getApprentice(L2PcInstance player)
+	{
+		final int apprenticeId = player.getApprentice();
+		if (apprenticeId == 0)
+			return null;
+		
+		final L2Clan clan = player.getClan();
+		if (clan == null)
+			return null;
+		
+		final L2ClanMember member = clan.getClanMember(apprenticeId);
+		if (member != null && member.isOnline())
+		{
+			final L2PcInstance apprentice = member.getPlayerInstance();
+			if (apprentice != null && player.isInsideRadius(apprentice, 1500, true, false))
+				return apprentice;
+		}
+		
+		return null;
 	}
 	
 	public List<L2PcInstance> getPartyMembersState(L2PcInstance player, L2Npc npc, byte state)
@@ -1125,6 +1149,18 @@ public class Quest
 	{
 		for (int npcId : npcIds)
 			addEventId(npcId, QuestEventType.ON_SKILL_SEE);
+	}
+	
+	protected void castSkill(L2Npc npc, L2Playable target, SkillHolder skill)
+	{
+		npc.setTarget(target);
+		npc.doCast(skill.getSkill());
+	}
+
+	protected void castSkill(L2Npc npc, L2Playable target, L2Skill skill)
+	{
+		npc.setTarget(target);
+		npc.doCast(skill);
 	}
 	
 	public class TmpOnSkillSee implements Runnable

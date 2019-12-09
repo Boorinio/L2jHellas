@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.L2Party;
+import com.l2jhellas.gameserver.model.actor.group.party.L2Party;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class ExMPCCShowPartyMemberInfo extends L2GameServerPacket

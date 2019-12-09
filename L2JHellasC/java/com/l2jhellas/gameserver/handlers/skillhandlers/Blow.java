@@ -1,11 +1,10 @@
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
-import com.l2jhellas.gameserver.emum.L2SkillType;
-import com.l2jhellas.gameserver.emum.L2WeaponType;
-import com.l2jhellas.gameserver.emum.Sound;
+import com.l2jhellas.gameserver.emum.items.L2WeaponType;
+import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.gameserver.emum.sound.Sound;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.model.L2Effect;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -16,6 +15,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Env;

@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.emum.items.ItemLocation;
 import com.l2jhellas.gameserver.model.actor.instance.L2MerchantInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 
 public class SellList extends L2GameServerPacket
 {
@@ -40,7 +41,7 @@ public class SellList extends L2GameServerPacket
 		{
 			for (L2ItemInstance item : _activeChar.getInventory().getItems())
 			{
-				if (!item.isEquipped() && item.getLocation() == L2ItemInstance.ItemLocation.INVENTORY && item.getItem().isSellable() && (_activeChar.getPet() == null ||
+				if (!item.isEquipped() && item.getLocation() == ItemLocation.INVENTORY && item.getItem().isSellable() && (_activeChar.getPet() == null ||
 				
 				item.getObjectId() != _activeChar.getPet().getControlItemId()))
 				{

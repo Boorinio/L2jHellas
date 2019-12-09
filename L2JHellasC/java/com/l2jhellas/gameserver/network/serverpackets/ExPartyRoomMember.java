@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
-import com.l2jhellas.gameserver.model.PartyMatchRoom;
+import com.l2jhellas.gameserver.model.actor.group.party.PartyMatchRoom;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class ExPartyRoomMember extends L2GameServerPacket

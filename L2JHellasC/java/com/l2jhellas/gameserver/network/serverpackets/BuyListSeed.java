@@ -3,8 +3,8 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2TradeList;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 
 public final class BuyListSeed extends L2GameServerPacket
 {

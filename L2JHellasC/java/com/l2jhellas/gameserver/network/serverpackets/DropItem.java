@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 
 public class DropItem extends L2GameServerPacket
 {

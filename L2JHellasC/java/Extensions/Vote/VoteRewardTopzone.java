@@ -157,9 +157,8 @@ public class VoteRewardTopzone
 			String line;
 			while ((line = br.readLine()) != null)
 			{
-				if (line.contains("fa fa-fw fa-lg fa-thumbs-up"))
-				{
-					
+				if (line.contains("fa fa-fw fa-lg fa-thumbs-up::before"))
+				{				
 					final String letsSliptIt = line;
 					final String[] nowLetsFindTheVote = letsSliptIt.split("</i>");
 					final String nowLetsSplitTheVote = nowLetsFindTheVote[1];

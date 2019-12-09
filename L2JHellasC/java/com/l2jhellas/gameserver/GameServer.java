@@ -30,14 +30,11 @@ import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.controllers.RecipeController;
 import com.l2jhellas.gameserver.controllers.TradeController;
-import com.l2jhellas.gameserver.datatables.EventDroplist;
-import com.l2jhellas.gameserver.datatables.sql.BuffTemplateTable;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcBufferSkillIdsTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
-import com.l2jhellas.gameserver.datatables.sql.PcColorTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.datatables.xml.ArmorSetsData;
@@ -90,12 +87,12 @@ import com.l2jhellas.gameserver.model.AutoChatHandler;
 import com.l2jhellas.gameserver.model.AutoSpawnHandler;
 import com.l2jhellas.gameserver.model.L2Manor;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.PartyMatchRoomList;
-import com.l2jhellas.gameserver.model.PartyMatchWaitingList;
+import com.l2jhellas.gameserver.model.actor.group.party.PartyMatchRoomList;
+import com.l2jhellas.gameserver.model.actor.group.party.PartyMatchWaitingList;
 import com.l2jhellas.gameserver.model.entity.Hero;
-import com.l2jhellas.gameserver.model.entity.engines.EventHandlerCtf;
-import com.l2jhellas.gameserver.model.entity.engines.EventHandlerTvT;
-import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
+import com.l2jhellas.gameserver.model.entity.events.engines.EventHandlerCtf;
+import com.l2jhellas.gameserver.model.entity.events.engines.EventHandlerTvT;
+import com.l2jhellas.gameserver.model.entity.events.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameManager;
 import com.l2jhellas.gameserver.network.L2GameClient;
@@ -211,7 +208,6 @@ public class GameServer
 		AdminData.getInstance();
 		HennaData.getInstance();
 		HelperBuffData.getInstance();
-		BuffTemplateTable.getInstance();
 		PartyMatchWaitingList.getInstance();
 		PartyMatchRoomList.getInstance();
 		DuelManager.getInstance();
@@ -247,7 +243,6 @@ public class GameServer
 		Util.printSection("Misc");
 		RecipeData.getInstance();
 		RecipeController.getInstance();
-		EventDroplist.getInstance();
 		MonsterRace.getInstance();
 		MercTicketManager.getInstance();
 		PetitionManager.getInstance();
@@ -366,7 +361,6 @@ public class GameServer
 	private static void RunCustoms()
 	{
 		AchievementsManager.getInstance();
-		PcColorTable.getInstance();
 		
 		if (Config.ALLOW_TOPZONE_VOTE_REWARD)
 			VoteRewardTopzone.LoadTopZone();

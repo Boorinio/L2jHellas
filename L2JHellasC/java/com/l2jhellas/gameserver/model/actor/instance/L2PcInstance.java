@@ -27,8 +27,6 @@ import java.util.regex.Pattern;
 
 import Extensions.IpCatcher;
 import Extensions.AchievmentsEngine.AchievementsManager;
-import Extensions.RaidEvent.L2EventChecks;
-import Extensions.RaidEvent.L2RaidEvent;
 import Extensions.RankSystem.RPSCookie;
 import Extensions.RankSystem.RankPvpSystem;
 
@@ -63,24 +61,26 @@ import com.l2jhellas.gameserver.datatables.xml.HennaData;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.RecipeData;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
-import com.l2jhellas.gameserver.emum.ClassId;
-import com.l2jhellas.gameserver.emum.ClassRace;
-import com.l2jhellas.gameserver.emum.ClassType;
-import com.l2jhellas.gameserver.emum.DuelState;
-import com.l2jhellas.gameserver.emum.L2ArmorType;
-import com.l2jhellas.gameserver.emum.L2EtcItemType;
-import com.l2jhellas.gameserver.emum.L2SkillTargetType;
-import com.l2jhellas.gameserver.emum.L2SkillType;
-import com.l2jhellas.gameserver.emum.L2WeaponType;
-import com.l2jhellas.gameserver.emum.Music;
-import com.l2jhellas.gameserver.emum.PlayerExpLost;
 import com.l2jhellas.gameserver.emum.PolyType;
 import com.l2jhellas.gameserver.emum.Sex;
-import com.l2jhellas.gameserver.emum.Sound;
-import com.l2jhellas.gameserver.emum.StoreType;
 import com.l2jhellas.gameserver.emum.Team;
 import com.l2jhellas.gameserver.emum.ZoneId;
+import com.l2jhellas.gameserver.emum.items.L2ArmorType;
+import com.l2jhellas.gameserver.emum.items.L2EtcItemType;
+import com.l2jhellas.gameserver.emum.items.L2WeaponType;
+import com.l2jhellas.gameserver.emum.player.ClassId;
+import com.l2jhellas.gameserver.emum.player.ClassRace;
+import com.l2jhellas.gameserver.emum.player.ClassType;
+import com.l2jhellas.gameserver.emum.player.DuelState;
+import com.l2jhellas.gameserver.emum.player.PartyLootType;
+import com.l2jhellas.gameserver.emum.player.PlayerExpLost;
+import com.l2jhellas.gameserver.emum.player.StoreType;
+import com.l2jhellas.gameserver.emum.skills.L2SkillTargetType;
+import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.gameserver.emum.sound.Music;
+import com.l2jhellas.gameserver.emum.sound.Sound;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
+import com.l2jhellas.gameserver.geometry.Point3D;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.handler.ItemHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -97,21 +97,18 @@ import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeReward;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.BlockList;
+import com.l2jhellas.gameserver.model.Couple;
 import com.l2jhellas.gameserver.model.FishData;
 import com.l2jhellas.gameserver.model.ForceBuff;
-import com.l2jhellas.gameserver.model.Inventory;
-import com.l2jhellas.gameserver.model.ItemContainer;
 import com.l2jhellas.gameserver.model.L2AccessLevel;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2Clan.SubPledge;
 import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Fishing;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Macro;
 import com.l2jhellas.gameserver.model.L2ManufactureList;
 import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2Radar;
 import com.l2jhellas.gameserver.model.L2RecipeList;
 import com.l2jhellas.gameserver.model.L2Request;
@@ -119,11 +116,7 @@ import com.l2jhellas.gameserver.model.L2ShortCut;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillLearn;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.MacroList;
-import com.l2jhellas.gameserver.model.PartyMatchRoom;
-import com.l2jhellas.gameserver.model.PartyMatchRoomList;
-import com.l2jhellas.gameserver.model.PartyMatchWaitingList;
 import com.l2jhellas.gameserver.model.PcFreight;
 import com.l2jhellas.gameserver.model.PcInventory;
 import com.l2jhellas.gameserver.model.PcWarehouse;
@@ -137,20 +130,28 @@ import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.L2Vehicle;
 import com.l2jhellas.gameserver.model.actor.appearance.PcAppearance;
+import com.l2jhellas.gameserver.model.actor.group.party.L2Party;
+import com.l2jhellas.gameserver.model.actor.group.party.PartyMatchRoom;
+import com.l2jhellas.gameserver.model.actor.group.party.PartyMatchRoomList;
+import com.l2jhellas.gameserver.model.actor.group.party.PartyMatchWaitingList;
+import com.l2jhellas.gameserver.model.actor.item.Inventory;
+import com.l2jhellas.gameserver.model.actor.item.ItemContainer;
+import com.l2jhellas.gameserver.model.actor.item.L2Item;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.model.actor.stat.PcStat;
 import com.l2jhellas.gameserver.model.actor.status.PcStatus;
 import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.model.base.SubClass;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
-import com.l2jhellas.gameserver.model.entity.Couple;
 import com.l2jhellas.gameserver.model.entity.Hero;
-import com.l2jhellas.gameserver.model.entity.L2Event;
 import com.l2jhellas.gameserver.model.entity.Siege;
-import com.l2jhellas.gameserver.model.entity.engines.CTF;
-import com.l2jhellas.gameserver.model.entity.engines.DM;
-import com.l2jhellas.gameserver.model.entity.engines.TvT;
-import com.l2jhellas.gameserver.model.entity.engines.ZodiacMain;
+import com.l2jhellas.gameserver.model.entity.events.CTF;
+import com.l2jhellas.gameserver.model.entity.events.DM;
+import com.l2jhellas.gameserver.model.entity.events.TvT;
+import com.l2jhellas.gameserver.model.entity.events.engines.L2Event;
+import com.l2jhellas.gameserver.model.entity.events.engines.ZodiacMain;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameManager;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadGameTask;
@@ -248,14 +249,12 @@ import com.l2jhellas.gameserver.taskmanager.PvpFlagTaskManager;
 import com.l2jhellas.gameserver.taskmanager.WaterTaskManager;
 import com.l2jhellas.gameserver.templates.L2Armor;
 import com.l2jhellas.gameserver.templates.L2Henna;
-import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.shield.antibot.AntiBot;
 import com.l2jhellas.shield.antiflood.FloodProtectors;
 import com.l2jhellas.util.Broadcast;
 import com.l2jhellas.util.IllegalPlayerAction;
-import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -276,8 +275,8 @@ public class L2PcInstance extends L2Playable
 	private static final String DELETE_SKILL_SAVE = "DELETE FROM character_skills_save WHERE char_obj_id=? AND class_index=?";
 	
 	// Character Character
-	private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?, maxHp=?, curHp=?, maxCp=?, curCp=?, maxMp=?, curMp=?, str=?, con=?, dex=?, _int=?, men=?, wit=?, face=?, hairStyle=?, hairColor=?, heading=?, x=?, y=?, z=?, exp=?, expBeforeDeath=?, sp=?, karma=?, pvpkills=?, pkkills=?, rec_have=?, rec_left=?, clanid=?, maxload=?, race=?, classid=?, deletetime=?, title=?, accesslevel=?, online=?, isin7sdungeon=?, clan_privs=?, wantspeace=?, base_class=?, onlinetime=?, in_jail=?, jail_timer=?, newbie=?, nobless=?, power_grade=?, subpledge=?, last_recom_date=?, lvl_joined_academy=?, apprentice=?, sponsor=?, varka_ketra_ally=?, clan_join_expiry_time=?, clan_create_expiry_time=?, char_name=?, death_penalty_level=?, chat_filter_count=?,hitman_target=?, event_points=? WHERE obj_id=?";
-	private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, expBeforeDeath, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally, clan_join_expiry_time, clan_create_expiry_time, death_penalty_level, hero, donator, chatban_timer, chatban_reason, chat_filter_count,hitman_target, lastVoteHopzone, lastVoteTopzone, hasVotedHop, hasVotedTop, monthVotes, totalVotes, tries, event_points FROM characters WHERE obj_Id=?";
+	private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?, maxHp=?, curHp=?, maxCp=?, curCp=?, maxMp=?, curMp=?, str=?, con=?, dex=?, _int=?, men=?, wit=?, face=?, hairStyle=?, hairColor=?, heading=?, x=?, y=?, z=?, exp=?, expBeforeDeath=?, sp=?, karma=?, pvpkills=?, pkkills=?, rec_have=?, rec_left=?, clanid=?, maxload=?, race=?, classid=?, deletetime=?, title=?, accesslevel=?, online=?, isin7sdungeon=?, clan_privs=?, wantspeace=?, base_class=?, onlinetime=?, in_jail=?, jail_timer=?, newbie=?, nobless=?, power_grade=?, subpledge=?, last_recom_date=?, lvl_joined_academy=?, apprentice=?, sponsor=?, varka_ketra_ally=?, clan_join_expiry_time=?, clan_create_expiry_time=?, char_name=?, death_penalty_level=?, chat_filter_count=? WHERE obj_id=?";
+	private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, expBeforeDeath, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally, clan_join_expiry_time, clan_create_expiry_time, death_penalty_level, hero, donator, chatban_timer, chatban_reason, chat_filter_count, lastVoteHopzone, lastVoteTopzone, hasVotedHop, hasVotedTop, monthVotes, totalVotes, tries FROM characters WHERE obj_Id=?";
 	private static final String RESTORE_CHAR_SUBCLASSES = "SELECT class_id,exp,sp,level,class_index FROM character_subclasses WHERE char_obj_id=? ORDER BY class_index ASC";
 	private static final String INSERT_CHARACTER = "INSERT INTO characters (account_name,obj_Id,char_name,level,maxHp,curHp,maxCp,curCp,maxMp,curMp,acc,crit,evasion,mAtk,mDef,mSpd,pAtk,pDef,pSpd,runSpd,walkSpd,str,con,dex,_int,men,wit,face,hairStyle,hairColor,sex,movement_multiplier,attack_speed_multiplier,colRad,colHeight,exp,sp,karma,pvpkills,pkkills,clanid,maxload,race,classid,deletetime,cancraft,title,accesslevel,online,isin7sdungeon,clan_privs,wantspeace,base_class,newbie,nobless,power_grade,last_recom_date) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	
@@ -2672,7 +2671,6 @@ public class L2PcInstance extends L2Playable
 					InventoryUpdate playerIU = new InventoryUpdate();
 					playerIU.addItem(item);
 					sendPacket(playerIU);
-					playerIU = null;
 				}
 				else
 				{
@@ -2718,18 +2716,12 @@ public class L2PcInstance extends L2Playable
 			// Add the item to inventory
 			L2ItemInstance newitem = _inventory.addItem(process, item, this, reference);
 			
-			// Send inventory update packet
-			if (!Config.FORCE_INVENTORY_UPDATE)
-			{
-				InventoryUpdate playerIU = new InventoryUpdate();
-				playerIU.addItem(newitem);
-				sendPacket(playerIU);
-			}
-			else
-			{
-				sendPacket(new ItemList(this, false));
-			}
-			
+			InventoryUpdate playerIU = new InventoryUpdate();
+			playerIU.addItem(newitem);
+			sendPacket(playerIU);
+
+			sendPacket(new ItemList(this, false));
+
 			// Update current load as well
 			StatusUpdate su = new StatusUpdate(getObjectId());
 			su.addAttribute(StatusUpdate.CUR_LOAD, getCurrentLoad());
@@ -2818,17 +2810,10 @@ public class L2PcInstance extends L2Playable
 				// Add the item to inventory
 				L2ItemInstance item = _inventory.addItem(process, itemId, count, this, reference);
 				
-				// Send inventory update packet
-				if (!Config.FORCE_INVENTORY_UPDATE)
-				{
-					InventoryUpdate playerIU = new InventoryUpdate();
-					playerIU.addItem(item);
-					sendPacket(playerIU);
-				}
-				else
-				{
-					sendPacket(new ItemList(this, false));
-				}
+				InventoryUpdate playerIU = new InventoryUpdate();
+				playerIU.addItem(item);
+				sendPacket(playerIU);
+				sendPacket(new ItemList(this, false));
 				
 				// Update current load as well
 				StatusUpdate su = new StatusUpdate(getObjectId());
@@ -3697,7 +3682,7 @@ public class L2PcInstance extends L2Playable
 				return;
 			}
 			
-			if (((isInParty() && getParty().getLootDistribution() == L2Party.ITEM_LOOTER) || !isInParty()) && !_inventory.validateCapacity(target))
+			if (((isInParty() && getParty().getDistributionType() == PartyLootType.FINDERS_KEEPERS) || !isInParty()) && !_inventory.validateCapacity(target))
 			{
 				sendPacket(ActionFailed.STATIC_PACKET);
 				sendPacket(SystemMessageId.SLOTS_FULL);
@@ -4230,18 +4215,12 @@ public class L2PcInstance extends L2Playable
 				clanWarKill = (pk.getClan() != null && getClan() != null && !isAcademyMember() && !pk.isAcademyMember() && _clan.isAtWarWith(pk.getClanId()) && pk.getClan().isAtWarWith(getClanId()));
 				playerKill = true;
 			}
-			if (Config.RAID_SYSTEM_RESURRECT_PLAYER && (inSoloEvent || inPartyEvent || inClanEvent))
-			{
-				L2RaidEvent.onPlayerDeath(this);
-			}
+
 			if (isinZodiac)
-			{
 				ZodiacMain.OnDeath(this, pk);
-			}
+
 			if (atEvent && pk != null)
-			{
 				pk.kills.add(getName());
-			}
 			
 			// Clear resurrect xp calculation
 			setExpBeforeDeath(0);
@@ -5398,7 +5377,6 @@ public class L2PcInstance extends L2Playable
 				// l2jhellas Donator and Hero Mod
 				player.setHero(rset.getInt("hero") == 1);
 				player.setDonator(rset.getInt("donator") == 1);
-				player.setEventPoints(rset.getInt("event_points"));
 				player.setClanJoinExpiryTime(rset.getLong("clan_join_expiry_time"));
 				if (player.getClanJoinExpiryTime() < System.currentTimeMillis())
 				{
@@ -5518,7 +5496,6 @@ public class L2PcInstance extends L2Playable
 				player.setDeathPenaltyBuffLevel(rset.getInt("death_penalty_level"));
 				
 				player.setChatFilterCount(rset.getInt("chat_filter_count"));
-				player.setHitmanTarget(rset.getInt("hitman_target"));
 				restorePremServiceData(player, rset.getString("account_name"));
 				// Add the L2PcInstance object in _allObjects L2World.getInstance().storeObject(player);
 				// Set the x,y,z position of the L2PcInstance and make it invisible
@@ -5865,9 +5842,7 @@ public class L2PcInstance extends L2Playable
 			statement.setString(55, getName());
 			statement.setLong(56, getDeathPenaltyBuffLevel());
 			statement.setInt(57, getChatFilterCount());
-			statement.setInt(58, getHitmanTarget());
-			statement.setInt(59, getEventPoints());
-			statement.setInt(60, getObjectId());
+			statement.setInt(58, getObjectId());
 			
 			statement.execute();
 			statement.close();
@@ -10885,72 +10860,8 @@ public class L2PcInstance extends L2Playable
 		_isVoting = value;
 	}
 	
-	public boolean inClanEvent = false;
-	public boolean inPartyEvent = false;
-	public boolean inSoloEvent = false;
 	public boolean awaitingAnswer = false;
-	private int _event_points;
-	public static int eventType;
-	public static int eventPointsRequired;
-	public static int eventNpcId;
-	public static int eventNpcAmmount;
-	public static int eventMinPlayers;
-	public static int eventBufflist;
-	public static int eventRewardLevel;
-	public static L2Object eventEffector;
-	public static List<L2PcInstance> eventParticipatingPlayers;
-	
-	public void setEventPoints(int points)
-	{
-		_event_points = points;
-	}
-	
-	public int getEventPoints()
-	{
-		return _event_points;
-	}
-	
-	public void setRaidParameters(L2PcInstance player, int type, int points, int npcId, int npcAm, int minPeople, int bufflist, int rewardLevel, L2Object effector, List<L2PcInstance> participatingPlayers)
-	{
-		eventType = type;
-		eventPointsRequired = points;
-		eventNpcId = npcId;
-		eventNpcAmmount = npcAm;
-		eventMinPlayers = minPeople;
-		eventBufflist = bufflist;
-		eventRewardLevel = rewardLevel;
-		eventEffector = effector;
-		eventParticipatingPlayers = participatingPlayers;
-	}
-	
-	public void setRaidAnswear(int answer)
-	{
-		if (answer == 1)
-		{
-			if (L2EventChecks.checkPlayer(this, eventType, eventPointsRequired, eventMinPlayers, eventParticipatingPlayers))
-			{
-				L2RaidEvent event;
-				event = new L2RaidEvent(this, eventType, eventPointsRequired, eventNpcId, eventNpcAmmount, eventBufflist, eventRewardLevel, eventEffector, eventParticipatingPlayers);
-				sendMessage("You've choosen to continue the event with " + eventParticipatingPlayers + "online Member/s.");
-				try
-				{
-					Thread.sleep(5000);
-				}
-				catch (InterruptedException e)
-				{
-					e.printStackTrace();
-				}
-				event.init();
-			}
-		}
-		else if (answer == 0)
-		{
-			sendMessage("You don't want to continue with the Event.");
-		}
-		else
-			return;
-	}
-	
+
 	private final List<Integer> _completedAchievements = new ArrayList<>();
 	
 	public long getOnlineTime()
@@ -11219,13 +11130,11 @@ public class L2PcInstance extends L2Playable
 				}
 			}
 		}
-		
-		if (Config.RAID_SYSTEM_ENABLED)
-		{
-			inClanEvent = false;
-			inPartyEvent = false;
-			inSoloEvent = false;
-		}
+
+		if (getPremiumService() == 1)
+			setDonator(true);
+		else
+			setDonator(false);
 		
 		if (isDonator() && Config.DONATOR_NAME_COLOR_ENABLED)
 			getAppearance().setNameColor(Config.DONATOR_NAME_COLOR);
@@ -11242,12 +11151,7 @@ public class L2PcInstance extends L2Playable
 			if (temp != null && temp.isEquipped())
 				temp.getAugmentation().applyBoni(this);
 		}
-				
-		if (getPremiumService() == 1)
-			setDonator(true);
-		else
-			setDonator(false);
-		
+						
 		if (ZodiacMain.voting && !ZodiacMain.HasVoted(this))
 			ZodiacMain.showHtmlWindow(this);
 		
@@ -12101,6 +12005,12 @@ public class L2PcInstance extends L2Playable
 	public void delQuestState(QuestState qs)
 	{
 		_quests.remove(qs);
+	}
+	
+	public boolean hasQuestCompleted(String quest)
+	{
+		final QuestState qs = getQuestState(quest);
+		return (qs != null) && qs.isCompleted();
 	}
 	
 	public QuestState getQuestState(String quest)
@@ -13150,7 +13060,7 @@ public class L2PcInstance extends L2Playable
 		
 		final L2ItemInstance item = getInventory().getItemByObjectId(sc.getId());
 		
-		return item == null || !item.isAugmented()? 0 : item.getAugmentation().getAugmentationId();
+		return item == null || !item.isAugmented() ? 0 : item.getAugmentation().getAugmentationId();
 	}
 	
 	public void showFishingHelp()

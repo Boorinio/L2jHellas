@@ -6,9 +6,9 @@ import Extensions.AchievmentsEngine.AchievementsManager;
 import Extensions.AchievmentsEngine.base.Achievement;
 import Extensions.AchievmentsEngine.base.Condition;
 
-import com.l2jhellas.gameserver.model.Inventory;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.item.Inventory;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;

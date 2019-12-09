@@ -1,6 +1,8 @@
 package com.l2jhellas.gameserver.model;
 
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.Inventory;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 
 public final class L2ArmorSet
 {

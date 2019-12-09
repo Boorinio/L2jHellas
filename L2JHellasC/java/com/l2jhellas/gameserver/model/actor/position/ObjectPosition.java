@@ -3,7 +3,6 @@ package com.l2jhellas.gameserver.model.actor.position;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.L2WorldRegion;
-import com.l2jhellas.gameserver.model.Location;
 
 public class ObjectPosition
 {

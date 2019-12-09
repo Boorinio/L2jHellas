@@ -4,7 +4,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.controllers.RecipeController;
-import com.l2jhellas.gameserver.emum.StoreType;
+import com.l2jhellas.gameserver.emum.player.StoreType;
 
 public final class RequestRecipeBookOpen extends L2GameClientPacket
 {

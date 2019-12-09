@@ -42,9 +42,7 @@ public final class FenceManager
 		
 		final List<L2FenceInstance> fencesInRegion = _regions.get(MapRegionTable.getMapRegion(fence.getX(), fence.getY()));
 		if (fencesInRegion != null)
-		{
 			fencesInRegion.remove(fence);
-		}
 	}
 	
 	public Map<Integer, L2FenceInstance> getFences()

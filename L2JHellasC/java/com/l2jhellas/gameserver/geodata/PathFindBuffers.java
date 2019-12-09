@@ -2,7 +2,7 @@ package com.l2jhellas.gameserver.geodata;
 
 import java.util.HashMap;
 
-import com.l2jhellas.gameserver.model.Location;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.util.GArray;
 import com.l2jhellas.util.StrTable;
 

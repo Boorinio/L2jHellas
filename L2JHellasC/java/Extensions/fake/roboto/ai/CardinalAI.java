@@ -11,8 +11,8 @@ import Extensions.fake.roboto.model.HealingSpell;
 import Extensions.fake.roboto.model.OffensiveSpell;
 import Extensions.fake.roboto.model.SupportSpell;
 
-import com.l2jhellas.gameserver.emum.L2SkillTargetType;
-import com.l2jhellas.gameserver.emum.ShotType;
+import com.l2jhellas.gameserver.emum.items.ShotType;
+import com.l2jhellas.gameserver.emum.skills.L2SkillTargetType;
 
 public class CardinalAI extends CombatAI implements IHealer
 {

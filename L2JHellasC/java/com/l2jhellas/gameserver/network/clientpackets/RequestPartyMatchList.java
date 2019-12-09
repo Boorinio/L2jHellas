@@ -2,9 +2,9 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.model.PartyMatchRoom;
-import com.l2jhellas.gameserver.model.PartyMatchRoomList;
-import com.l2jhellas.gameserver.model.PartyMatchWaitingList;
+import com.l2jhellas.gameserver.model.actor.group.party.PartyMatchRoom;
+import com.l2jhellas.gameserver.model.actor.group.party.PartyMatchRoomList;
+import com.l2jhellas.gameserver.model.actor.group.party.PartyMatchWaitingList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ExPartyRoomMember;

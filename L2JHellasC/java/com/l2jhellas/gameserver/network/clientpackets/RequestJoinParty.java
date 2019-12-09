@@ -3,13 +3,14 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.player.PartyLootType;
 import com.l2jhellas.gameserver.model.BlockList;
-import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.group.party.L2Party;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.engines.CTF;
-import com.l2jhellas.gameserver.model.entity.engines.DM;
-import com.l2jhellas.gameserver.model.entity.engines.TvT;
+import com.l2jhellas.gameserver.model.entity.events.CTF;
+import com.l2jhellas.gameserver.model.entity.events.DM;
+import com.l2jhellas.gameserver.model.entity.events.TvT;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.AskJoinParty;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -137,7 +138,7 @@ public final class RequestJoinParty extends L2GameClientPacket
 			requestor.onTransactionRequest(target);
 			
 			// in case a leader change has happened, use party's mode
-			target.sendPacket(new AskJoinParty(requestor.getName(), party.getLootDistribution()));
+			target.sendPacket(new AskJoinParty(requestor.getName(), party.getDistributionType()));
 			party.setPendingInvitation(true);
 			
 			requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_INVITED_S1_TO_PARTY).addPcName(target));
@@ -154,26 +155,21 @@ public final class RequestJoinParty extends L2GameClientPacket
 	
 	private void createNewParty(L2PcInstance target, L2PcInstance requestor)
 	{
+		final PartyLootType DistributionType = PartyLootType.GetById(_itemDistribution);
+		
+		if (DistributionType == null)
+			return;
+
 		if (!target.isProcessingRequest())
 		{
-			requestor.setParty(new L2Party(requestor, _itemDistribution));
-			
+			requestor.setParty(new L2Party(requestor, DistributionType));		
 			requestor.onTransactionRequest(target);
-			target.sendPacket(new AskJoinParty(requestor.getName(), _itemDistribution));
-			requestor.getParty().setPendingInvitation(true);
-			
-			if (Config.DEBUG)
-				_log.warning(RequestJoinParty.class.getName() + ": Sent out a party invitation to " + target.getName());
-			
+			target.sendPacket(new AskJoinParty(requestor.getName(),DistributionType));
+			requestor.getParty().setPendingInvitation(true);		
 			requestor.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_INVITED_S1_TO_PARTY).addPcName(target));
 		}
 		else
-		{
 			requestor.sendPacket(SystemMessageId.WAITING_FOR_ANOTHER_REPLY);
-			
-			if (Config.DEBUG)
-				_log.warning(RequestJoinParty.class.getName() + ": " + requestor.getName() + " already received a party invitation");
-		}
 	}
 	
 	@Override

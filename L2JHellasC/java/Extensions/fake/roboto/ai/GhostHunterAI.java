@@ -10,7 +10,7 @@ import Extensions.fake.roboto.model.HealingSpell;
 import Extensions.fake.roboto.model.OffensiveSpell;
 import Extensions.fake.roboto.model.SupportSpell;
 
-import com.l2jhellas.gameserver.emum.ShotType;
+import com.l2jhellas.gameserver.emum.items.ShotType;
 
 public class GhostHunterAI extends CombatAI
 {

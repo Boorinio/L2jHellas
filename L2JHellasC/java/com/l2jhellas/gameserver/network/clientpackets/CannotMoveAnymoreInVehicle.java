@@ -1,8 +1,8 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import com.l2jhellas.gameserver.geometry.Point3D;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.StopMoveInVehicle;
-import com.l2jhellas.util.Point3D;
 
 public final class CannotMoveAnymoreInVehicle extends L2GameClientPacket
 {

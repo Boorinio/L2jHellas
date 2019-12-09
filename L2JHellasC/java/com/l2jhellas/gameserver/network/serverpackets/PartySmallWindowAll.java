@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.L2Party;
+import com.l2jhellas.gameserver.model.actor.group.party.L2Party;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class PartySmallWindowAll extends L2GameServerPacket
@@ -8,22 +8,19 @@ public class PartySmallWindowAll extends L2GameServerPacket
 	private static final String _S__63_PARTYSMALLWINDOWALL = "[S] 4e PartySmallWindowAll";
 	private final L2Party _party;
 	private final L2PcInstance _exclude;
-	private final int _dist, _LeaderOID;
 	
 	public PartySmallWindowAll(L2PcInstance exclude, L2Party party)
 	{
 		_exclude = exclude;
 		_party = party;
-		_LeaderOID = _party.getPartyLeaderOID();
-		_dist = _party.getLootDistribution();
 	}
 	
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x4e);
-		writeD(_LeaderOID);
-		writeD(_dist);
+		writeD(_party.getPartyLeaderOID());
+		writeD(_party.getDistributionType().getId());
 		writeD(_party.getMemberCount() - 1);
 		
 		for (L2PcInstance member : _party.getPartyMembers())

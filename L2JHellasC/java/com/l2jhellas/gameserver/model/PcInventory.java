@@ -6,10 +6,13 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.l2jhellas.gameserver.emum.L2EtcItemType;
-import com.l2jhellas.gameserver.model.L2ItemInstance.ItemLocation;
+import com.l2jhellas.gameserver.emum.items.ItemLocation;
+import com.l2jhellas.gameserver.emum.items.L2EtcItemType;
 import com.l2jhellas.gameserver.model.TradeList.TradeItem;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.Inventory;
+import com.l2jhellas.gameserver.model.actor.item.ItemContainer;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.util.database.L2DatabaseFactory;

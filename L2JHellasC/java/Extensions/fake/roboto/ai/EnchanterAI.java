@@ -4,7 +4,7 @@ import Extensions.fake.roboto.FakePlayer;
 import Extensions.fake.roboto.helpers.FakeHelpers;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.util.Rnd;
 
 public class EnchanterAI extends FakePlayerAI

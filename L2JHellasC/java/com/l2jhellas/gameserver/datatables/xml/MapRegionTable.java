@@ -1,8 +1,6 @@
 package com.l2jhellas.gameserver.datatables.xml;
 
-import java.io.File;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
@@ -10,23 +8,23 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.l2jhellas.gameserver.SevenSigns;
-import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.emum.ZoneId;
+import com.l2jhellas.gameserver.emum.player.ClassRace;
+import com.l2jhellas.gameserver.engines.DocumentParser;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
-import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
 import com.l2jhellas.gameserver.model.zone.type.L2ArenaZone;
 import com.l2jhellas.gameserver.model.zone.type.L2ClanHallZone;
 import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
-import com.l2jhellas.util.XMLDocumentFactory;
 
-public class MapRegionTable
+public class MapRegionTable implements DocumentParser
 {
 	private static Logger _log = Logger.getLogger(MapRegionTable.class.getName());
 	
@@ -66,36 +64,35 @@ public class MapRegionTable
 		TOWN
 	}
 	
+	
 	protected MapRegionTable()
 	{
-		int count = 0;
-		
-		try
+		load();
+	}
+	
+	@Override
+	public void load()
+	{
+		parseDatapackFile("data/xml/map_region.xml");
+		_log.info("MapRegionTable: Loaded regions.");
+	}
+	
+	@Override
+	public void parseDocument(Document doc)
+	{
+		Node n = doc.getFirstChild();
+		for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
 		{
-			File f = new File("./data/xml/map_region.xml");
-			Document doc = XMLDocumentFactory.getInstance().loadDocument(f);
-			
-			Node n = doc.getFirstChild();
-			for (Node d = n.getFirstChild(); d != null; d = d.getNextSibling())
+			if (d.getNodeName().equalsIgnoreCase("map"))
 			{
-				if (d.getNodeName().equalsIgnoreCase("map"))
-				{
-					NamedNodeMap attrs = d.getAttributes();
-					int rY = Integer.valueOf(attrs.getNamedItem("geoY").getNodeValue()) - 10;
-					for (int rX = 0; rX < REGIONS_X; rX++)
-					{
-						_regions[rX][rY] = Integer.valueOf(attrs.getNamedItem("geoX_" + (rX + 16)).getNodeValue());
-						count++;
-					}
-				}
+				NamedNodeMap attrs = d.getAttributes();
+				int rY = Integer.valueOf(attrs.getNamedItem("geoY").getNodeValue()) - 10;
+				for (int rX = 0; rX < REGIONS_X; rX++)
+					_regions[rX][rY] = Integer.valueOf(attrs.getNamedItem("geoX_" + (rX + 16)).getNodeValue());
 			}
 		}
-		catch (Exception e)
-		{
-			_log.log(Level.WARNING, "MapRegionTable: Error while loading \"map_region.xml\".", e);
-		}
-		_log.info("MapRegionTable: Loaded " + count + " regions.");
 	}
+
 	
 	public static final int getMapRegion(int posX, int posY)
 	{

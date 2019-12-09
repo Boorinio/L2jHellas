@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.skills.conditions;
 
-import com.l2jhellas.gameserver.model.Inventory;
+import com.l2jhellas.gameserver.model.actor.item.Inventory;
+import com.l2jhellas.gameserver.model.actor.item.L2Item;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.templates.L2Armor;
-import com.l2jhellas.gameserver.templates.L2Item;
 
 public class ConditionTargetBodyPart extends Condition
 {

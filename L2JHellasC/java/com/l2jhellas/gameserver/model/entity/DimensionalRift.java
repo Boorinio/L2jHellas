@@ -6,8 +6,8 @@ import java.util.TimerTask;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
-import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.group.party.L2Party;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.util.Rnd;
 

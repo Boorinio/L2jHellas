@@ -36,13 +36,10 @@ public class L2TownZone extends L2SpawnZone
 	@Override
 	protected void onEnter(L2Character character)
 	{
-		if (character instanceof L2PcInstance)
-		{
-			// PVP possible during siege, now for siege participants only
-			// Could also check if this town is in siege, or if any siege is going on
-			if (((L2PcInstance) character).getSiegeState() != 0 && Config.ZONE_TOWN == 1)
-				return;
-		}
+		// PVP possible during siege, now for siege participants only
+		// Could also check if this town is in siege, or if any siege is going on
+		if (character instanceof L2PcInstance && ((L2PcInstance) character).getSiegeState() != 0 && Config.ZONE_TOWN == 1)
+			return;
 		
 		if (_isPeaceZone && Config.ZONE_TOWN != 2)
 			character.setInsideZone(ZoneId.PEACE, true);

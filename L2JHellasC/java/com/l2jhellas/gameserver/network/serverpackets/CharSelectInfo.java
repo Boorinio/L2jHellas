@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.model.CharSelectInfoPackage;
-import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.L2Clan;
+import com.l2jhellas.gameserver.model.actor.item.Inventory;
 import com.l2jhellas.gameserver.network.L2GameClient;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 

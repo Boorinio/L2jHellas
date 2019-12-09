@@ -2,17 +2,17 @@ package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
-import com.l2jhellas.gameserver.emum.AbnormalEffect;
+import com.l2jhellas.gameserver.emum.skills.AbnormalEffect;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
-import com.l2jhellas.gameserver.model.Inventory;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.Inventory;
 
 public class CharInfo extends L2GameServerPacket
 {
 	private static final String _S__03_CHARINFO = "[S] 03 CharInfo";
 	private final L2PcInstance _activeChar;
 	private final Inventory _inv;
-	private int _x, _y, _z, _heading;
+	private int _x, _y, _z;
 	private final int _mAtkSpd, _pAtkSpd;
 	private final int _maxCp;
 	private int _vehicleId = 0;
@@ -36,7 +36,6 @@ public class CharInfo extends L2GameServerPacket
 			_z = _activeChar.getZ();
 		}
 		
-		_heading = _activeChar.getHeading();
 		_mAtkSpd = _activeChar.getMAtkSpd();
 		_pAtkSpd = _activeChar.getPAtkSpd();
 		_maxCp = _activeChar.getMaxCp();
@@ -190,16 +189,14 @@ public class CharInfo extends L2GameServerPacket
 		
 		writeD(_activeChar.getAppearance().getNameColor());
 		
-		writeD(_heading);
+		writeD(_activeChar.getHeading());
 		
 		writeD(_activeChar.getPledgeClass());
 		writeD(_activeChar.getPledgeType());
 		
 		writeD(_activeChar.getAppearance().getTitleColor());
 		
-		writeD(_activeChar.isCursedWeaponEquiped() ? CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()) : 0);
-		
-		writeD(!_activeChar.isCursedWeaponEquiped() && _activeChar.getClanId() > 0 && _activeChar.getClan() != null ? _activeChar.getClan().getReputationScore() : 0);
+		writeD(_activeChar.isCursedWeaponEquiped() ? CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()) : 0);		
 	}
 	
 	@Override

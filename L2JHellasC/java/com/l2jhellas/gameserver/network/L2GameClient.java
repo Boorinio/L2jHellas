@@ -22,7 +22,8 @@ import com.l2jhellas.gameserver.model.CharSelectInfoPackage;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.L2Event;
+import com.l2jhellas.gameserver.model.entity.events.engines.EventData;
+import com.l2jhellas.gameserver.model.entity.events.engines.L2Event;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.ServerClose;
@@ -30,7 +31,6 @@ import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.mmocore.network.MMOClient;
 import com.l2jhellas.mmocore.network.MMOConnection;
 import com.l2jhellas.mmocore.network.ReceivablePacket;
-import com.l2jhellas.util.EventData;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> implements Runnable

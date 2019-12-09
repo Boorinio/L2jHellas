@@ -15,12 +15,13 @@ import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.datatables.sql.CharNameTable;
+import com.l2jhellas.gameserver.geometry.Point3D;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.network.serverpackets.DeleteObject;
-import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Util;
 
 public final class L2World

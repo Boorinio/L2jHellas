@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.skills.effects;
 
-import com.l2jhellas.gameserver.emum.L2SkillTargetType;
+import com.l2jhellas.gameserver.emum.skills.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.network.SystemMessageId;

@@ -10,7 +10,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.L2SkillType;
+import com.l2jhellas.gameserver.emum.skills.L2SkillType;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.skills.conditions.Condition;
 import com.l2jhellas.gameserver.templates.StatsSet;

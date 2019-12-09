@@ -2,7 +2,7 @@ package Extensions.fake.roboto.ai.addon;
 
 import Extensions.fake.roboto.FakePlayer;
 
-import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 
 public interface IConsumableSpender
 {

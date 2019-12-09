@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.model.PartyMatchRoom;
-import com.l2jhellas.gameserver.model.PartyMatchRoomList;
+import com.l2jhellas.gameserver.model.actor.group.party.PartyMatchRoom;
+import com.l2jhellas.gameserver.model.actor.group.party.PartyMatchRoomList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;

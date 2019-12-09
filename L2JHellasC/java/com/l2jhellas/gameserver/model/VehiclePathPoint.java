@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.model;
 
+import com.l2jhellas.gameserver.model.actor.position.Location;
+
 public class VehiclePathPoint extends Location
 {
 	private final int _moveSpeed;

@@ -3,10 +3,11 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.emum.items.ItemLocation;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2Item;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 
 public abstract class AbstractRefinePacket extends L2GameClientPacket
@@ -125,7 +126,7 @@ public abstract class AbstractRefinePacket extends L2GameClientPacket
 		if (gemStones.getOwnerId() != player.getObjectId())
 			return false;
 		// .. and located in inventory
-		if (gemStones.getLocation() != L2ItemInstance.ItemLocation.INVENTORY)
+		if (gemStones.getLocation() != ItemLocation.INVENTORY)
 			return false;
 		
 		final int grade = item.getItem().getCrystalType();
@@ -150,7 +151,7 @@ public abstract class AbstractRefinePacket extends L2GameClientPacket
 			return false;
 		
 		// Lifestone must be located in inventory
-		if (refinerItem.getLocation() != L2ItemInstance.ItemLocation.INVENTORY)
+		if (refinerItem.getLocation() != ItemLocation.INVENTORY)
 			return false;
 		
 		final LifeStone ls = _lifeStones.get(refinerItem.getItemId());

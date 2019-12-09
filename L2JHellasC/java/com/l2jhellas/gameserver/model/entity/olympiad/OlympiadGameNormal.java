@@ -6,11 +6,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.Auction;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.Auction;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadUserInfo;
@@ -165,6 +165,10 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		_playerOne.player.updateEffectIcons();
 		_playerTwo.player.setIsOlympiadStart(true);
 		_playerTwo.player.updateEffectIcons();
+		
+		_playerOne.player.broadcastRelationChanged();
+	    _playerTwo.player.broadcastRelationChanged();
+	    
 		return true;
 	}
 	

@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.TeleportLocationData;
 import com.l2jhellas.gameserver.model.L2TeleportLocation;
-import com.l2jhellas.gameserver.model.Location;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;

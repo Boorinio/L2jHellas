@@ -2,6 +2,7 @@ package com.l2jhellas.gameserver.instancemanager;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -122,13 +123,13 @@ public class SiegeReward
 		}
 	}
 	
-	@SuppressWarnings("resource")
+
 	private void loadConfigs()
-	{
-		try
+	{	
+		Properties prop = new Properties();
+		try (InputStream is = new FileInputStream(new File("./config/Mods/SiegeRewards.ini")))
 		{
-			Properties prop = new Properties();
-			prop.load(new FileInputStream(new File("./config/Mods/SiegeRewards.ini")));
+			prop.load(is);
 			
 			ACTIVATED_SYSTEM = Boolean.parseBoolean(prop.getProperty("ActivateSystem", "false"));
 			REWARD_ACTIVE_MEMBERS_ONLY = Boolean.parseBoolean(prop.getProperty("RewardOnlineOnly", "false"));
@@ -143,6 +144,8 @@ public class SiegeReward
 					_list.add(new RewardInfoz(splits));
 				}
 			}
+			
+			is.close();
 		}
 		catch (Exception e)
 		{

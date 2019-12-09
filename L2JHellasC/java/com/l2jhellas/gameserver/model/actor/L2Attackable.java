@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
-import Extensions.RaidEvent.L2RaidEvent;
-
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ItemsAutoDestroy;
 import com.l2jhellas.gameserver.ThreadPoolManager;
@@ -18,15 +16,13 @@ import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2SiegeGuardAI;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
-import com.l2jhellas.gameserver.model.L2CommandChannel;
 import com.l2jhellas.gameserver.model.L2DropCategory;
 import com.l2jhellas.gameserver.model.L2DropData;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Manor;
 import com.l2jhellas.gameserver.model.L2Object;
-import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.Location;
+import com.l2jhellas.gameserver.model.actor.group.party.L2CommandChannel;
+import com.l2jhellas.gameserver.model.actor.group.party.L2Party;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MinionInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
@@ -34,6 +30,8 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SummonInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.model.base.SoulCrystal;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
@@ -807,17 +805,7 @@ public class L2Attackable extends L2Npc
 						if (attacker instanceof L2PcInstance)
 						{
 							L2PcInstance player = (L2PcInstance) attacker;
-							if (isPrivateEventMob)
-							{
-								L2RaidEvent.expHandOut();
-								exp = L2RaidEvent.exp;
-								sp = L2RaidEvent.sp;
-								if (L2RaidEvent.checkPossibleReward())
-								{
-									L2RaidEvent.chooseReward(player);
-								}
-								deleteMe();
-							}
+
 							if (isOverhit() && attacker == getOverhitAttacker())
 							{
 								((L2PcInstance) attacker).sendPacket(SystemMessageId.OVER_HIT);
@@ -944,20 +932,10 @@ public class L2Attackable extends L2Npc
 						if (attacker instanceof L2PcInstance)
 						{
 							L2PcInstance player = (L2PcInstance) attacker;
-							if (isPrivateEventMob)
+
+							if (isOverhit() && player == getOverhitAttacker())
 							{
-								L2RaidEvent.expHandOut();
-								exp = L2RaidEvent.exp;
-								sp = L2RaidEvent.sp;
-								if (L2RaidEvent.checkPossibleReward())
-								{
-									L2RaidEvent.chooseReward(player);
-								}
-								deleteMe();
-							}
-							if (isOverhit() && attacker == getOverhitAttacker())
-							{
-								((L2PcInstance) attacker).sendPacket(SystemMessageId.OVER_HIT);
+								player.sendPacket(SystemMessageId.OVER_HIT);
 								exp += calculateOverhitExp(exp);
 							}
 						}

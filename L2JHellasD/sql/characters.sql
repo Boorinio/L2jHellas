@@ -86,7 +86,6 @@ CREATE TABLE `characters` (
   `chatban_timer` decimal(20,0) DEFAULT '0',
   `chatban_reason` varchar(255) NOT NULL DEFAULT '',
   `chat_filter_count` int(1) DEFAULT '0',
-  `hitman_target` int(16) NOT NULL DEFAULT '0',
   `lastVoteHopzone` bigint(20) unsigned DEFAULT NULL,
   `lastVoteTopzone` bigint(20) unsigned DEFAULT NULL,
   `hasVotedHop` int(10) unsigned DEFAULT '0',
@@ -94,7 +93,6 @@ CREATE TABLE `characters` (
   `monthVotes` int(10) unsigned DEFAULT '0',
   `totalVotes` int(10) unsigned DEFAULT '0',
   `tries` int(10) unsigned DEFAULT '3',
-  `event_points` decimal(11,0) DEFAULT NULL,
   PRIMARY KEY (`obj_Id`),
   KEY `clanid` (`clanid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPRESSED COMMENT='L2jHellas Table';

@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.util.Point3D;
+import com.l2jhellas.gameserver.geometry.Point3D;
 
 public class GetOnVehicle extends L2GameServerPacket
 {

@@ -2,11 +2,11 @@ package com.l2jhellas.gameserver.handlers.itemhandlers;
 
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.skills.SkillTable;

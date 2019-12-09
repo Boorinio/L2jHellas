@@ -27,7 +27,7 @@ public abstract class SendablePacket<T extends MMOClient<?>> extends AbstractPac
 		_buf.putDouble(value);
 	}
 	
-	protected final void writeH(final int value)
+	public final void writeH(final int value)
 	{
 		_buf.putShort((short) value);
 	}

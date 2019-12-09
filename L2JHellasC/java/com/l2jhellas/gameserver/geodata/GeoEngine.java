@@ -15,15 +15,15 @@ import com.l2jhellas.gameserver.geodata.GeoOptimizer.BlockLink;
 import com.l2jhellas.gameserver.geodata.loader.GeoFileInfo;
 import com.l2jhellas.gameserver.geodata.loader.GeoLoader;
 import com.l2jhellas.gameserver.geodata.loader.GeoLoaderFactory;
+import com.l2jhellas.gameserver.geometry.Point3D;
 import com.l2jhellas.gameserver.geometry.Polygon;
 import com.l2jhellas.gameserver.instancemanager.FenceManager;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
-import com.l2jhellas.gameserver.model.Location;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.taskmanager.MemoryWatchOptimize;
 import com.l2jhellas.util.GArray;
 import com.l2jhellas.util.ParallelExecutor;
-import com.l2jhellas.util.Point3D;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 

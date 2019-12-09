@@ -3,14 +3,14 @@ package com.l2jhellas.gameserver.model.entity.olympiad;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.L2Party;
 import com.l2jhellas.gameserver.model.L2Skill;
-import com.l2jhellas.gameserver.model.Location;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
+import com.l2jhellas.gameserver.model.actor.group.party.L2Party;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -60,19 +60,13 @@ public abstract class AbstractOlympiadGame
 	protected final void addPointsToParticipant(Participant par, int points)
 	{
 		par.updateStat(POINTS, points);
-		final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_GAINED_S2_OLYMPIAD_POINTS);
-		sm.addString(par.name);
-		sm.addNumber(points);
-		broadcastPacket(sm);
+		broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_GAINED_S2_OLYMPIAD_POINTS).addString(par.name).addNumber(points));
 	}
 	
 	protected final void removePointsFromParticipant(Participant par, int points)
 	{
 		par.updateStat(POINTS, -points);
-		final SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_LOST_S2_OLYMPIAD_POINTS);
-		sm.addString(par.name);
-		sm.addNumber(points);
-		broadcastPacket(sm);
+		broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_LOST_S2_OLYMPIAD_POINTS).addString(par.name).addNumber(points));
 	}
 	
 	protected static SystemMessage checkDefaulted(L2PcInstance player)
@@ -156,79 +150,72 @@ public abstract class AbstractOlympiadGame
 	@SuppressWarnings("static-access")
 	protected static final void removals(L2PcInstance player, boolean removeParty)
 	{
-		try
+		if (player == null)
+			return;
+			
+		// Remove Buffs
+		player.stopAllEffects();
+			
+		// Remove Clan Skills
+		if (player.getClan() != null)
 		{
-			if (player == null)
-				return;
+			for (L2Skill skill : player.getClan().getAllSkills())
+				player.removeSkill(skill, false);
+		}
 			
-			// Remove Buffs
-			player.stopAllEffects();
+		// Abort casting if player casting
+		player.abortAttack();
+		player.abortCast();
 			
-			// Remove Clan Skills
-			if (player.getClan() != null)
-			{
-				for (L2Skill skill : player.getClan().getAllSkills())
-					player.removeSkill(skill, false);
-			}
+		// Force the character to be visible
+		player.getAppearance().setVisible();
 			
-			// Abort casting if player casting
-			player.abortAttack();
-			player.abortCast();
+		// Remove Hero Skills
+		if (player.isHero())
+		{
+			for (L2Skill skill : HeroSkillTable.GetHeroSkills())
+				player.removeSkill(skill, false);
+		}
 			
-			// Force the character to be visible
-			player.getAppearance().setVisible();
+		// Heal Player fully
+		player.setCurrentCp(player.getMaxCp());
+		player.setCurrentHp(player.getMaxHp());
+		player.setCurrentMp(player.getMaxMp());
 			
-			// Remove Hero Skills
-			if (player.isHero())
-			{
-				for (L2Skill skill : HeroSkillTable.GetHeroSkills())
-					player.removeSkill(skill, false);
-			}
-			
-			// Heal Player fully
-			player.setCurrentCp(player.getMaxCp());
-			player.setCurrentHp(player.getMaxHp());
-			player.setCurrentMp(player.getMaxMp());
-			
-			// Remove Summon's Buffs
-			final L2Summon summon = player.getPet();
-			if (summon != null)
-			{
-				summon.stopAllEffects();
-				summon.abortAttack();
-				summon.abortCast();
+		// Remove Summon's Buffs
+		final L2Summon summon = player.getPet();
+		if (summon != null)
+		{
+			summon.stopAllEffects();
+			summon.abortAttack();
+			summon.abortCast();
 				
-				if (summon instanceof L2PetInstance)
-					summon.unSummon(player);
-			}
-			
-			// stop any cubic that has been given by other player.
-			player.getCubics().clear();
-			
-			// Remove player from his party
-			if (removeParty)
-			{
-				final L2Party party = player.getParty();
-				if (party != null)
-					party.removePartyMember(player);
-			}
-			
-			player.checkItemRestriction();
-			
-			// Remove shot automation
-			player.disableAutoShotsAll();
-			
-			// Discharge any active shots
-			L2ItemInstance item = player.getActiveWeaponInstance();
-			if (item != null)
-				item.setChargedNoNe();
-			
-			player.sendSkillList();
+			if (summon instanceof L2PetInstance)
+				summon.unSummon(player);
 		}
-		catch (Exception e)
+			
+		// stop any cubic that has been given by other player.
+		player.getCubics().clear();
+			
+		// Remove player from his party
+		if (removeParty)
 		{
-			_log.warning(AbstractOlympiadGame.class.getName() + ": error");
+			final L2Party party = player.getParty();
+			if (party != null)
+				party.removePartyMember(player);
 		}
+		
+		player.checkItemRestriction();
+			
+		// Remove shot automation
+		player.disableAutoShotsAll();
+			
+		// Discharge any active shots
+		L2ItemInstance item = player.getActiveWeaponInstance();
+		if (item != null)
+			item.setChargedNoNe();
+			
+		player.sendSkillList();
 	}
 	
 	protected static final void buffAndHealPlayer(L2PcInstance player)
@@ -348,33 +335,21 @@ public abstract class AbstractOlympiadGame
 	{
 		if (player == null || player.isOnline() == 0 || reward == null)
 			return;
-		
-		try
+
+		final InventoryUpdate iu = new InventoryUpdate();
+		for (int[] it : reward)
 		{
-			SystemMessage sm;
-			L2ItemInstance item;
-			final InventoryUpdate iu = new InventoryUpdate();
-			for (int[] it : reward)
-			{
-				if (it == null || it.length != 2)
-					continue;
+			if (it == null || it.length != 2)
+				continue;
 				
-				item = player.getInventory().addItem("Olympiad", it[0], it[1], player, null);
-				if (item == null)
-					continue;
+			final L2ItemInstance item = player.getInventory().addItem("Olympiad", it[0], it[1], player, null);
+			if (item == null)
+				continue;
 				
-				iu.addModifiedItem(item);
-				sm = SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S);
-				sm.addItemName(it[0]);
-				sm.addNumber(it[1]);
-				player.sendPacket(sm);
-			}
-			player.sendPacket(iu);
+			iu.addModifiedItem(item);
+			player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.EARNED_S2_S1_S).addItemName(it[0]).addNumber(it[1]));
 		}
-		catch (Exception e)
-		{
-			_log.warning(AbstractOlympiadGame.class.getName() + ": error");
-		}
+		player.sendPacket(iu);
 	}
 	
 	public abstract CompetitionType getType();

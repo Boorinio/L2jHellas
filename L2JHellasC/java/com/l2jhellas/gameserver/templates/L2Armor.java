@@ -3,10 +3,11 @@ package com.l2jhellas.gameserver.templates;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.l2jhellas.gameserver.emum.L2ArmorType;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.emum.items.L2ArmorType;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.item.L2Item;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.funcs.Func;

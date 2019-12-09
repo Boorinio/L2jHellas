@@ -1,10 +1,12 @@
 package com.l2jhellas.gameserver.model;
 
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.emum.L2EtcItemType;
-import com.l2jhellas.gameserver.model.L2ItemInstance.ItemLocation;
+import com.l2jhellas.gameserver.emum.items.ItemLocation;
+import com.l2jhellas.gameserver.emum.items.L2EtcItemType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
-import com.l2jhellas.gameserver.templates.L2Item;
+import com.l2jhellas.gameserver.model.actor.item.Inventory;
+import com.l2jhellas.gameserver.model.actor.item.L2Item;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 
 public class PetInventory extends Inventory
 {

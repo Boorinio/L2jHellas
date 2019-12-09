@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.handlers.voicedcommandhandlers;
 
 import com.l2jhellas.gameserver.Announcements;
+import com.l2jhellas.gameserver.RestartVoteVariable;
 import com.l2jhellas.gameserver.handler.IVoicedCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.RestartVoteVariable;
 
 public class ServerRestartVoteCmd implements IVoicedCommandHandler
 {

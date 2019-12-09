@@ -3,8 +3,8 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.util.List;
 
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.model.entity.Hero;
 import com.l2jhellas.gameserver.model.entity.olympiad.CompetitionType;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;

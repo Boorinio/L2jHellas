@@ -1,7 +1,6 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.actor.instance.L2EventManagerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 
@@ -54,11 +53,6 @@ public final class DlgAnswer extends L2GameClientPacket
 					{
 						player.EngageAnswer(_answer);
 						player.awaitingAnswer = false;
-					}
-					if (L2EventManagerInstance._awaitingplayers.contains(player))
-					{
-						player.setRaidAnswear(_answer);
-						L2EventManagerInstance._awaitingplayers.remove(player);
 					}
 					break;
 				default:

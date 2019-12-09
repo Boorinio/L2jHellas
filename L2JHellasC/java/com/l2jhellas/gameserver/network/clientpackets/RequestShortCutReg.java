@@ -36,14 +36,14 @@ public final class RequestShortCutReg extends L2GameClientPacket
 		if (_page > 11 || _page < 0)
 			return;
 		
-		if (_type < 1 || _type > 5)
+		if (_type < 1 || _type > 6)
 			return;
 		
 		final int level = activeChar.getSkillLevel(_id);
 		
 		final L2ShortCut sc = new L2ShortCut(_slot, _page, _type, _id, level, _characterType);
-		activeChar.sendPacket(new ShortCutRegister(activeChar, sc));
 		activeChar.registerShortCut(sc);
+		activeChar.sendPacket(new ShortCutRegister(activeChar, sc));
 	}
 	
 	@Override

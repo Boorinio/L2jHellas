@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.entity.Auction;
+import com.l2jhellas.gameserver.model.Auction;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class AuctionManager

@@ -3,9 +3,9 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.l2jhellas.gameserver.model.PartyMatchRoom;
-import com.l2jhellas.gameserver.model.PartyMatchRoomList;
-import com.l2jhellas.gameserver.model.PartyMatchWaitingList;
+import com.l2jhellas.gameserver.model.actor.group.party.PartyMatchRoom;
+import com.l2jhellas.gameserver.model.actor.group.party.PartyMatchRoomList;
+import com.l2jhellas.gameserver.model.actor.group.party.PartyMatchWaitingList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class ExListPartyMatchingWaitingRoom extends L2GameServerPacket

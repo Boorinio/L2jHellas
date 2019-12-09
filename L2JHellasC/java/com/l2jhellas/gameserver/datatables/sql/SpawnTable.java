@@ -114,7 +114,7 @@ public class SpawnTable
 			try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 			{
 				PreparedStatement statement = con.prepareStatement(ADD_NEW_SPAWN);
-				statement.setInt(1, spawn.getNpcid());
+				statement.setInt(1, spawn.getId());
 				statement.setInt(2, spawn.getAmount());
 				statement.setInt(3, spawn.getNpcid());
 				statement.setInt(4, spawn.getLocx());
@@ -128,10 +128,8 @@ public class SpawnTable
 			}
 			catch (Exception e)
 			{
-				// problem with storing spawn
 				_log.warning(SpawnTable.class.getName() + ": Could not store spawn in the DB:");
-				if (Config.DEVELOPER)
-					e.printStackTrace();
+				e.printStackTrace();
 			}
 		}
 	}

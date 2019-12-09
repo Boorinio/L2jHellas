@@ -98,9 +98,7 @@ public class MacroList
 		else
 		{
 			for (L2Macro m : all)
-			{
 				_owner.sendPacket(new SendMacroList(_revision, all.length, m));
-			}
 		}
 	}
 	

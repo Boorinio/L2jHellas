@@ -13,22 +13,23 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
-import com.l2jhellas.gameserver.model.L2Party;
+import com.l2jhellas.gameserver.engines.DocumentParser;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
+import com.l2jhellas.gameserver.model.actor.group.party.L2Party;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.model.entity.DimensionalRift;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
-import com.l2jhellas.util.XMLDocumentFactory;
 
-public class DimensionalRiftManager
+public class DimensionalRiftManager implements DocumentParser
 {
 	private static Logger _log = Logger.getLogger(DimensionalRiftManager.class.getName());
 	
@@ -42,92 +43,85 @@ public class DimensionalRiftManager
 	
 	protected DimensionalRiftManager()
 	{
-		loadData();
+		load();
 	}
 	
-	public DimensionalRiftRoom getRoom(byte type, byte room)
+	@Override
+	public void load()
 	{
-		return _rooms.get(type) == null ? null : _rooms.get(type).get(room);
+		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/dimensional_rift.xml"));
+		_log.info("DimensionalRiftManager: Loaded rooms.");
 	}
 	
-	private static void loadData()
+	@Override
+	public void parseDocument(Document doc)
 	{
-		int countGood = 0, countBad = 0;
 		try
 		{
-			File file = new File("./data/xml/dimensional_rift.xml");
-			Document doc = XMLDocumentFactory.getInstance().loadDocument(file);
-			
-			for (Node rift = doc.getFirstChild(); rift != null; rift = rift.getNextSibling())
+		for (Node rift = doc.getFirstChild(); rift != null; rift = rift.getNextSibling())
+		{
+			if ("rift".equalsIgnoreCase(rift.getNodeName()))
 			{
-				if ("rift".equalsIgnoreCase(rift.getNodeName()))
+				for (Node area = rift.getFirstChild(); area != null; area = area.getNextSibling())
 				{
-					for (Node area = rift.getFirstChild(); area != null; area = area.getNextSibling())
+					if ("area".equalsIgnoreCase(area.getNodeName()))
 					{
-						if ("area".equalsIgnoreCase(area.getNodeName()))
+						NamedNodeMap attrs = area.getAttributes();
+						byte type = Byte.parseByte(attrs.getNamedItem("type").getNodeValue());
+						
+						for (Node room = area.getFirstChild(); room != null; room = room.getNextSibling())
 						{
-							NamedNodeMap attrs = area.getAttributes();
-							byte type = Byte.parseByte(attrs.getNamedItem("type").getNodeValue());
-							
-							for (Node room = area.getFirstChild(); room != null; room = room.getNextSibling())
+							if ("room".equalsIgnoreCase(room.getNodeName()))
 							{
-								if ("room".equalsIgnoreCase(room.getNodeName()))
+								attrs = room.getAttributes();
+								byte roomId = Byte.parseByte(attrs.getNamedItem("id").getNodeValue());
+								
+								int xMin = Integer.parseInt(attrs.getNamedItem("xMin").getNodeValue());
+								int xMax = Integer.parseInt(attrs.getNamedItem("xMax").getNodeValue());
+								int yMin = Integer.parseInt(attrs.getNamedItem("yMin").getNodeValue());
+								int yMax = Integer.parseInt(attrs.getNamedItem("yMax").getNodeValue());
+								int xT = Integer.parseInt(attrs.getNamedItem("xT").getNodeValue());
+								int yT = Integer.parseInt(attrs.getNamedItem("yT").getNodeValue());
+								
+								if (!_rooms.containsKey(type))
+									_rooms.put(type, new HashMap<Byte, DimensionalRiftRoom>(9));
+								
+								_rooms.get(type).put(roomId, new DimensionalRiftRoom(type, roomId, xMin, xMax, yMin, yMax, xT, yT));
+								
+								for (Node spawn = room.getFirstChild(); spawn != null; spawn = spawn.getNextSibling())
 								{
-									attrs = room.getAttributes();
-									byte roomId = Byte.parseByte(attrs.getNamedItem("id").getNodeValue());
-									
-									int xMin = Integer.parseInt(attrs.getNamedItem("xMin").getNodeValue());
-									int xMax = Integer.parseInt(attrs.getNamedItem("xMax").getNodeValue());
-									int yMin = Integer.parseInt(attrs.getNamedItem("yMin").getNodeValue());
-									int yMax = Integer.parseInt(attrs.getNamedItem("yMax").getNodeValue());
-									int xT = Integer.parseInt(attrs.getNamedItem("xT").getNodeValue());
-									int yT = Integer.parseInt(attrs.getNamedItem("yT").getNodeValue());
-									
-									if (!_rooms.containsKey(type))
-										_rooms.put(type, new HashMap<Byte, DimensionalRiftRoom>(9));
-									
-									_rooms.get(type).put(roomId, new DimensionalRiftRoom(type, roomId, xMin, xMax, yMin, yMax, xT, yT));
-									
-									for (Node spawn = room.getFirstChild(); spawn != null; spawn = spawn.getNextSibling())
+									if ("spawn".equalsIgnoreCase(spawn.getNodeName()))
 									{
-										if ("spawn".equalsIgnoreCase(spawn.getNodeName()))
+										attrs = spawn.getAttributes();
+										int mobId = Integer.parseInt(attrs.getNamedItem("mobId").getNodeValue());
+										int delay = Integer.parseInt(attrs.getNamedItem("delay").getNodeValue());
+										int count = Integer.parseInt(attrs.getNamedItem("count").getNodeValue());
+										
+										L2NpcTemplate template = NpcData.getInstance().getTemplate(mobId);
+										if (template == null)
+											_log.warning(DimensionalRiftManager.class.getSimpleName() + ": Template " + mobId + " not found!");
+										if (!_rooms.containsKey(type))
+											_log.warning(DimensionalRiftManager.class.getSimpleName() + ": Type " + type + " not found!");
+										else if (!_rooms.get(type).containsKey(roomId))
+											_log.warning(DimensionalRiftManager.class.getSimpleName() + ": Room " + roomId + " in Type " + type + " not found!");
+										
+										for (int i = 0; i < count; i++)
 										{
-											attrs = spawn.getAttributes();
-											int mobId = Integer.parseInt(attrs.getNamedItem("mobId").getNodeValue());
-											int delay = Integer.parseInt(attrs.getNamedItem("delay").getNodeValue());
-											int count = Integer.parseInt(attrs.getNamedItem("count").getNodeValue());
+											DimensionalRiftRoom riftRoom = _rooms.get(type).get(roomId);
+											int x = riftRoom.getRandomX();
+											int y = riftRoom.getRandomY();
+											int z = riftRoom.getTeleportCoords()[2];
 											
-											L2NpcTemplate template = NpcData.getInstance().getTemplate(mobId);
-											if (template == null)
-												_log.warning(DimensionalRiftManager.class.getSimpleName() + ": Template " + mobId + " not found!");
-											if (!_rooms.containsKey(type))
-												_log.warning(DimensionalRiftManager.class.getSimpleName() + ": Type " + type + " not found!");
-											else if (!_rooms.get(type).containsKey(roomId))
-												_log.warning(DimensionalRiftManager.class.getSimpleName() + ": Room " + roomId + " in Type " + type + " not found!");
-											
-											for (int i = 0; i < count; i++)
+											if (template != null && _rooms.containsKey(type) && _rooms.get(type).containsKey(roomId))
 											{
-												DimensionalRiftRoom riftRoom = _rooms.get(type).get(roomId);
-												int x = riftRoom.getRandomX();
-												int y = riftRoom.getRandomY();
-												int z = riftRoom.getTeleportCoords()[2];
-												
-												if (template != null && _rooms.containsKey(type) && _rooms.get(type).containsKey(roomId))
-												{
-													L2Spawn spawnDat = new L2Spawn(template);
-													spawnDat.setLocx(x);
-													spawnDat.setLocy(y);
-													spawnDat.setLocz(z);
-													spawnDat.setHeading(-1);
-													spawnDat.setRespawnDelay(delay);
-													SpawnTable.getInstance().addNewSpawn(spawnDat, false);
-													_rooms.get(type).get(roomId).getSpawns().add(spawnDat);
-													countGood++;
-												}
-												else
-												{
-													countBad++;
-												}
+												L2Spawn spawnDat = new L2Spawn(template);
+												spawnDat.setLocx(x);
+												spawnDat.setLocy(y);
+												spawnDat.setLocz(z);
+												spawnDat.setHeading(-1);
+												spawnDat.setRespawnDelay(delay);
+												SpawnTable.getInstance().addNewSpawn(spawnDat, false);
+												_rooms.get(type).get(roomId).getSpawns().add(spawnDat);
 											}
 										}
 									}
@@ -136,7 +130,8 @@ public class DimensionalRiftManager
 						}
 					}
 				}
-			}
+			 }
+		  }
 		}
 		catch (Exception e)
 		{
@@ -144,15 +139,11 @@ public class DimensionalRiftManager
 			if (Config.DEVELOPER)
 				e.printStackTrace();
 		}
-		
-		int typeSize = _rooms.keySet().size();
-		int roomSize = 0;
-		
-		for (byte b : _rooms.keySet())
-			roomSize += _rooms.get(b).keySet().size();
-		
-		_log.info("DimensionalRiftManager: Loaded " + typeSize + " room types with " + roomSize + " rooms.");
-		_log.info("DimensionalRiftManager: Loaded " + countGood + " dimensional rift spawns, " + countBad + " errors.");
+	}
+	
+	public DimensionalRiftRoom getRoom(byte type, byte room)
+	{
+		return _rooms.get(type) == null ? null : _rooms.get(type).get(room);
 	}
 	
 	public void reload()
@@ -165,7 +156,7 @@ public class DimensionalRiftManager
 			_rooms.get(b).clear();
 		}
 		_rooms.clear();
-		loadData();
+		load();
 	}
 	
 	public boolean checkIfInRiftZone(int x, int y, int z, boolean ignorePeaceZone)

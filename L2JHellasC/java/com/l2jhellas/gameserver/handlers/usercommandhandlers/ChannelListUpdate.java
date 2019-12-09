@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.handlers.usercommandhandlers;
 
 import com.l2jhellas.gameserver.handler.IUserCommandHandler;
-import com.l2jhellas.gameserver.model.L2CommandChannel;
+import com.l2jhellas.gameserver.model.actor.group.party.L2CommandChannel;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ExMultiPartyCommandChannelInfo;
 

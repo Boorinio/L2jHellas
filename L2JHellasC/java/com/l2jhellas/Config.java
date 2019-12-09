@@ -53,7 +53,6 @@ public final class Config
 	private static final String EVENT_HITMAN_CONFIG_FILE = "./config/Events/HitMan.ini";
 	private static final String EVENT_DM_CONFIG_FILE = "./config/Events/DM.ini";
 	private static final String EVENT_CTF_CONFIG_FILE = "./config/Events/CTF.ini";
-	private static final String EVENT_RAID_CONFIG_FILE = "./config/Events/Raid.ini";
 	private static final String EVENT_WEDDING_CONFIG_FILE = "./config/Events/Wedding.ini";
 	// Mods Folder
 	private static final String MOD_L2JHellas_CONFIG_FILE = "./config/Mods/L2JHellas.ini";
@@ -806,12 +805,6 @@ public final class Config
 	public static boolean CTF_JOIN_CURSED;
 	public static boolean CTF_REVIVE_RECOVERY;
 	public static long CTF_REVIVE_DELAY;
-	// Raid Settings
-	public static boolean RAID_SYSTEM_ENABLED;
-	public static int RAID_SYSTEM_MAX_EVENTS;
-	public static boolean RAID_SYSTEM_GIVE_BUFFS;
-	public static boolean RAID_SYSTEM_RESURRECT_PLAYER;
-	public static int RAID_SYSTEM_FIGHT_TIME;
 	
 	// Wedding Settings
 	public static boolean MOD_ALLOW_WEDDING;
@@ -2417,22 +2410,7 @@ public final class Config
 			{
 				CTF_REVIVE_DELAY = 1000; // can't be set less then 1 second
 			}
-			
-			Properties EventRAIDSettings = new Properties();
-			try (InputStream is = new FileInputStream(new File(EVENT_RAID_CONFIG_FILE)))
-			{
-				EventRAIDSettings.load(is);
-			}
-			catch (Exception e)
-			{
-				_log.severe(Config.class.getName() + ": Error while loading " + EVENT_RAID_CONFIG_FILE + " settings!");
-			}
-			RAID_SYSTEM_ENABLED = Boolean.parseBoolean(EventRAIDSettings.getProperty("RaidEnginesEnabled", "false"));
-			RAID_SYSTEM_GIVE_BUFFS = Boolean.parseBoolean(EventRAIDSettings.getProperty("RaidGiveBuffs", "true"));
-			RAID_SYSTEM_RESURRECT_PLAYER = Boolean.parseBoolean(EventRAIDSettings.getProperty("RaidResurrectPlayer", "true"));
-			RAID_SYSTEM_MAX_EVENTS = Integer.parseInt(EventRAIDSettings.getProperty("RaidMaxNumEvents", "3"));
-			RAID_SYSTEM_FIGHT_TIME = Integer.parseInt(EventRAIDSettings.getProperty("RaidSystemFightTime", "60"));
-			
+
 			Properties EventWEDDINGSettings = new Properties();
 			try (InputStream is = new FileInputStream(new File(EVENT_WEDDING_CONFIG_FILE)))
 			{

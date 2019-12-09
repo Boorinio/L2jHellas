@@ -28,13 +28,13 @@ import Extensions.fake.roboto.ai.TitanAI;
 import Extensions.fake.roboto.ai.WindRiderAI;
 
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
-import com.l2jhellas.gameserver.emum.ClassId;
-import com.l2jhellas.gameserver.emum.ClassRace;
 import com.l2jhellas.gameserver.emum.Sex;
+import com.l2jhellas.gameserver.emum.player.ClassId;
+import com.l2jhellas.gameserver.emum.player.ClassRace;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.appearance.PcAppearance;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.templates.L2PcTemplate;
 import com.l2jhellas.util.Rnd;

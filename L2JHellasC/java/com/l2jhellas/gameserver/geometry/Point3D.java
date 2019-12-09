@@ -15,6 +15,13 @@ public class Point3D extends Point2D
 		this.z = z;
 	}
 	
+	public void setXYZ(int pX, int pY, int pZ)
+	{
+		x = pX;
+		y = pY;
+		z = pZ;
+	}
+	
 	public int getZ()
 	{
 		return z;

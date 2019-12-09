@@ -230,9 +230,7 @@ public class MasterHandler
 			for (Class<?> c : classes)
 			{
 				if (c == null)
-				{
 					continue; // Disabled handler
-				}
 				
 				try
 				{

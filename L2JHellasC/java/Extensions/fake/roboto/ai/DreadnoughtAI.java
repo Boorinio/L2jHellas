@@ -12,7 +12,7 @@ import Extensions.fake.roboto.model.OffensiveSpell;
 import Extensions.fake.roboto.model.SpellUsageCondition;
 import Extensions.fake.roboto.model.SupportSpell;
 
-import com.l2jhellas.gameserver.emum.ShotType;
+import com.l2jhellas.gameserver.emum.items.ShotType;
 
 public class DreadnoughtAI extends CombatAI implements IConsumableSpender
 {

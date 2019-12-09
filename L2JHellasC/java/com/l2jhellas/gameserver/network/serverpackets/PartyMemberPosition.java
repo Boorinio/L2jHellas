@@ -3,9 +3,9 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.l2jhellas.gameserver.model.L2Party;
-import com.l2jhellas.gameserver.model.Location;
+import com.l2jhellas.gameserver.model.actor.group.party.L2Party;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 
 public class PartyMemberPosition extends L2GameServerPacket
 {

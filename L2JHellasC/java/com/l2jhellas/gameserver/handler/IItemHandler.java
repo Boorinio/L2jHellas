@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.handler;
 
-import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 
 public interface IItemHandler
 {

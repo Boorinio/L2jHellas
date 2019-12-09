@@ -3,8 +3,8 @@ package com.l2jhellas.gameserver.model.zone.form;
 import java.awt.Polygon;
 
 import com.l2jhellas.gameserver.geodata.GeoEngine;
-import com.l2jhellas.gameserver.model.Inventory;
-import com.l2jhellas.gameserver.model.Location;
+import com.l2jhellas.gameserver.model.actor.item.Inventory;
+import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.model.zone.L2ZoneForm;
 import com.l2jhellas.util.Rnd;
 

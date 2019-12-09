@@ -236,8 +236,6 @@ public class ValidatePosition extends L2GameClientPacket
 			else
 				activeChar.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 		}
-		else
-			activeChar.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 	}
 	
 	public boolean phxZCheck(int cz, int tz)

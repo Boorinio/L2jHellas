@@ -10,9 +10,9 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
 import com.l2jhellas.gameserver.model.L2DropData;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.PcInventory;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowQuestMark;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
@@ -40,6 +40,7 @@ public final class QuestState
 	public static final String SOUND_JACKPOT = "ItemSound.quest_jackpot";
 	public static final String SOUND_FANFARE = "ItemSound.quest_fanfare_2";
 	public static final String SOUND_BEFORE_BATTLE = "Itemsound.quest_before_battle";
+	public static final String AMDSOUND_HORROR_02 = "AmdSound.dd_horror_02";
 	
 	private static final String QUEST_SET_VAR = "REPLACE INTO character_quests (char_id,name,var,value) VALUES (?,?,?,?)";
 	private static final String QUEST_DEL_VAR = "DELETE FROM character_quests WHERE char_id=? AND name=? AND var=?";
@@ -193,6 +194,47 @@ public final class QuestState
 				_log.warning(QuestState.class.getName() + ": " + _player.getName() + ", " + _quest.getName() + " cond [" + value + "] is not an integer. Value stored, but no packet was sent: " + e.getMessage());
 			}
 		}
+	}
+	
+	public QuestState setMemoState(int value) 
+	{
+		set("memoState", String.valueOf(value));
+		return this;
+	}
+
+	public int getMemoState() 
+	{
+		if (isStarted())
+			return getInt("memoState");
+		return -1;
+	}
+	
+	public boolean hasMemoState()
+	{
+		return getMemoState() > 0;
+	}
+	
+	public boolean isMemoState(int memoState)
+	{
+		return (getInt("memoState") == memoState);
+	}
+
+	public int getMemoStateEx(int slot)
+	{
+		if (isStarted())
+			return getInt("memoStateEx" + slot);
+		return 0;
+	}
+
+	public QuestState setMemoStateEx(int slot, int value)
+	{
+		set("memoStateEx" + slot, String.valueOf(value));
+		return this;
+	}
+
+	public boolean isMemoStateEx(int slot, int memoStateEx) 
+	{
+		return (getMemoStateEx(slot) == memoStateEx);
 	}
 	
 	public int getCond()
@@ -670,7 +712,7 @@ public final class QuestState
 		PlaySound _snd = PlaySound.createSound(sound);
 		_player.sendPacket(_snd);
 	}
-	
+
 	public void showQuestionMark(int number)
 	{
 		_player.sendPacket(new TutorialShowQuestionMark(number));

@@ -2,7 +2,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
-import com.l2jhellas.gameserver.emum.ClassId;
+import com.l2jhellas.gameserver.emum.player.ClassId;
 import com.l2jhellas.gameserver.model.L2EnchantSkillLearn;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillLearn;

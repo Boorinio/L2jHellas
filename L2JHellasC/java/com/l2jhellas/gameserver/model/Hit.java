@@ -17,24 +17,16 @@ public class Hit
 		_damage = damage;
 		
 		if (soulshot)
-		{
 			_flags |= HITFLAG_USESS | ssGrade;
-		}
 		
 		if (crit)
-		{
 			_flags |= HITFLAG_CRIT;
-		}
 		
 		if (shld > 0)
-		{
 			_flags |= HITFLAG_SHLD;
-		}
 		
 		if (miss)
-		{
 			_flags |= HITFLAG_MISS;
-		}
 	}
 	
 	public int getTargetId()

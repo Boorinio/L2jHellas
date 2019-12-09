@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.controllers.RecipeController;
-import com.l2jhellas.gameserver.emum.StoreType;
+import com.l2jhellas.gameserver.emum.player.StoreType;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;

@@ -6,11 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.emum.ClassId;
+import com.l2jhellas.gameserver.emum.player.ClassId;
 import com.l2jhellas.gameserver.model.L2DropCategory;
 import com.l2jhellas.gameserver.model.L2DropData;
 import com.l2jhellas.gameserver.model.L2MinionData;
-import com.l2jhellas.gameserver.model.L2NpcAIData;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
@@ -34,6 +33,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public final int aggroRange;
 	public final String factionId;
 	public final int factionRange;
+	private int _dodge;
 	public final int rhand;
 	public final int lhand;
 	public final int armor;
@@ -45,26 +45,26 @@ public final class L2NpcTemplate extends L2CharTemplate
 	// quests, just plain quest monsters for preventing champion spawn
 	
 	// Skill AI
-	public ArrayList<L2Skill> _buffskills;
-	public ArrayList<L2Skill> _negativeskills;
-	public ArrayList<L2Skill> _debuffskills;
-	public ArrayList<L2Skill> _atkskills;
-	public ArrayList<L2Skill> _rootskills;
-	public ArrayList<L2Skill> _stunskills;
-	public ArrayList<L2Skill> _sleepskills;
-	public ArrayList<L2Skill> _paralyzeskills;
-	public ArrayList<L2Skill> _fossilskills;
-	public ArrayList<L2Skill> _floatskills;
-	public ArrayList<L2Skill> _immobiliseskills;
-	public ArrayList<L2Skill> _healskills;
-	public ArrayList<L2Skill> _resskills;
-	public ArrayList<L2Skill> _dotskills;
-	public ArrayList<L2Skill> _cotskills;
-	public ArrayList<L2Skill> _universalskills;
-	public ArrayList<L2Skill> _manaskills;
-	public ArrayList<L2Skill> _Lrangeskills;
-	public ArrayList<L2Skill> _Srangeskills;
-	public ArrayList<L2Skill> _generalskills;
+	public List<L2Skill> _buffskills;
+	public List<L2Skill> _negativeskills;
+	public List<L2Skill> _debuffskills;
+	public List<L2Skill> _atkskills;
+	public List<L2Skill> _rootskills;
+	public List<L2Skill> _stunskills;
+	public List<L2Skill> _sleepskills;
+	public List<L2Skill> _paralyzeskills;
+	public List<L2Skill> _fossilskills;
+	public List<L2Skill> _floatskills;
+	public List<L2Skill> _immobiliseskills;
+	public List<L2Skill> _healskills;
+	public List<L2Skill> _resskills;
+	public List<L2Skill> _dotskills;
+	public List<L2Skill> _cotskills;
+	public List<L2Skill> _universalskills;
+	public List<L2Skill> _manaskills;
+	public List<L2Skill> _Lrangeskills;
+	public List<L2Skill> _Srangeskills;
+	public List<L2Skill> _generalskills;
 	
 	private boolean _hasbuffskills;
 	private boolean _hasnegativeskills;
@@ -87,7 +87,6 @@ public final class L2NpcTemplate extends L2CharTemplate
 	private boolean _hasSrangeskills;
 	private boolean _hasgeneralskills;
 	private final StatsSet _npcStatsSet;
-	private L2NpcAIData _AIdataStatic = new L2NpcAIData();
 	
 	public static enum AbsorbCrystalType
 	{
@@ -172,6 +171,7 @@ public final class L2NpcTemplate extends L2CharTemplate
 		else
 			factionId = f.intern();
 		factionRange = set.getInteger("factionRange");
+		_dodge = set.getInteger("dodge", 0);
 		rhand = set.getInteger("rhand");
 		lhand = set.getInteger("lhand");
 		armor = set.getInteger("armor");
@@ -547,22 +547,6 @@ public final class L2NpcTemplate extends L2CharTemplate
 		}
 	}
 	
-	// -----------------------------------------------------------------------
-	// Npc AI Data
-	// By ShanSoft
-	public void setAIData(L2NpcAIData aidata)
-	{
-		// _AIdataStatic = new L2NpcAIData(); // not needed to init object and in next line override with other reference. maybe other intention?
-		_AIdataStatic = aidata;
-	}
-	
-	// -----------------------------------------------------------------------
-	
-	public L2NpcAIData getAIDataStatic()
-	{
-		return _AIdataStatic;
-	}
-	
 	public void addBuffSkill(L2Skill skill)
 	{
 		if (_buffskills == null)
@@ -857,6 +841,11 @@ public final class L2NpcTemplate extends L2CharTemplate
 	public int getNpcId()
 	{
 		return npcId;
+	}
+	
+	public int getDodge()
+	{
+		return _dodge;
 	}
 	
 	public boolean isQuestMonster()

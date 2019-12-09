@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.engines;
 
-import com.l2jhellas.gameserver.templates.L2Item;
+import com.l2jhellas.gameserver.model.actor.item.L2Item;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
 public class Item

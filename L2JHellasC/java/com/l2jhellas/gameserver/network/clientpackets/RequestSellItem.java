@@ -2,13 +2,14 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
+import com.l2jhellas.gameserver.emum.items.ItemLocation;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2FishermanInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MercManagerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MerchantInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
@@ -121,7 +122,7 @@ public final class RequestSellItem extends L2GameClientPacket
 			}
 			
 			L2ItemInstance item = player.checkItemManipulation(objectId, count, "sell");
-			if (item == null || (!item.getItem().isSellable()) || item.getLocation() != L2ItemInstance.ItemLocation.INVENTORY)
+			if (item == null || (!item.getItem().isSellable()) || item.getLocation() != ItemLocation.INVENTORY)
 				continue;
 			
 			totalPrice += item.getReferencePrice() * count / 2;

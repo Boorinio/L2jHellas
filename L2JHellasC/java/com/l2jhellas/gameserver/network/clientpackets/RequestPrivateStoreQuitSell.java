@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.emum.StoreType;
+import com.l2jhellas.gameserver.emum.player.StoreType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public final class RequestPrivateStoreQuitSell extends L2GameClientPacket

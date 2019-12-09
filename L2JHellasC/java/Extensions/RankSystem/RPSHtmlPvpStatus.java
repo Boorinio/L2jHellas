@@ -333,10 +333,7 @@ public class RPSHtmlPvpStatus
 		Rank rank = targetPvpSummary.getRank();
 		
 		if (rank == null)
-		{
-			log.info("[ERROR] calculatePercent(): no rank found!");
 			return 0;
-		}
 		
 		int rankId = rank.getId();
 		long minRP = rank.getMinExp();

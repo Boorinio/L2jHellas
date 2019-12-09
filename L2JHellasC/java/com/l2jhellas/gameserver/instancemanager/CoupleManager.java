@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.model.Couple;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.entity.Couple;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public class CoupleManager

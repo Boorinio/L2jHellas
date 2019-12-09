@@ -5,10 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.l2jhellas.gameserver.emum.items.ItemLocation;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager.CropProcure;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 
 public class SellListProcure extends L2GameServerPacket
 {
@@ -29,7 +30,7 @@ public class SellListProcure extends L2GameServerPacket
 		for (CropProcure c : _procureList)
 		{
 			L2ItemInstance item = _activeChar.getInventory().getItemByItemId(c.getId());
-			if (item != null && c.getAmount() > 0 && item.getLocation() == L2ItemInstance.ItemLocation.INVENTORY)
+			if (item != null && c.getAmount() > 0 && item.getLocation() == ItemLocation.INVENTORY)
 			{
 				_sellList.put(item, c.getAmount());
 			}

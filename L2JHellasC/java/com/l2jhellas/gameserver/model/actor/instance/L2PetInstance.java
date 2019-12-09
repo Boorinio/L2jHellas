@@ -11,11 +11,10 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.xml.PetData;
+import com.l2jhellas.gameserver.emum.items.ItemLocation;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
-import com.l2jhellas.gameserver.model.Inventory;
-import com.l2jhellas.gameserver.model.L2ItemInstance;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2PetData;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -24,6 +23,9 @@ import com.l2jhellas.gameserver.model.PcInventory;
 import com.l2jhellas.gameserver.model.PetInventory;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
+import com.l2jhellas.gameserver.model.actor.item.Inventory;
+import com.l2jhellas.gameserver.model.actor.item.L2Item;
+import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.model.actor.stat.PetStat;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.AbstractNpcInfo.SummonInfo;
@@ -39,7 +41,6 @@ import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.StopMove;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.taskmanager.DecayTaskManager;
-import com.l2jhellas.gameserver.templates.L2Item;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -259,7 +260,7 @@ public class L2PetInstance extends L2Summon
 	public L2ItemInstance getActiveWeaponInstance()
 	{
 		for (L2ItemInstance item : getInventory().getItems())
-			if (item.getLocation() == L2ItemInstance.ItemLocation.PET_EQUIP && item.getItem().getType1() == L2Item.TYPE2_WEAPON)
+			if (item.getLocation() == ItemLocation.PET_EQUIP && item.getItem().getType1() == L2Item.TYPE2_WEAPON)
 				return item;
 		
 		return null;

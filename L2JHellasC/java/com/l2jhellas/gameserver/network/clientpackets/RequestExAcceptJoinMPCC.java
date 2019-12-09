@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.model.L2CommandChannel;
-import com.l2jhellas.gameserver.model.L2Party;
+import com.l2jhellas.gameserver.model.actor.group.party.L2CommandChannel;
+import com.l2jhellas.gameserver.model.actor.group.party.L2Party;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;

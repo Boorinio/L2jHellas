@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.handlers.usercommandhandlers;
 
 import com.l2jhellas.gameserver.handler.IUserCommandHandler;
-import com.l2jhellas.gameserver.model.L2Party;
+import com.l2jhellas.gameserver.model.actor.group.party.L2Party;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -28,27 +28,26 @@ public class PartyInfo implements IUserCommandHandler
 		
 		L2Party playerParty = activeChar.getParty();
 		int memberCount = playerParty.getMemberCount();
-		int lootDistribution = playerParty.getLootDistribution();
 		String partyLeader = playerParty.getPartyMembers().get(0).getName();
 		
 		activeChar.sendPacket(SystemMessageId.PARTY_INFORMATION);
-		
-		switch (lootDistribution)
+
+		switch (playerParty.getDistributionType())
 		{
-			case L2Party.ITEM_LOOTER:
+			case FINDERS_KEEPERS:
 				activeChar.sendPacket(SystemMessageId.LOOTING_FINDERS_KEEPERS);
 				break;
-			case L2Party.ITEM_ORDER:
-				activeChar.sendPacket(SystemMessageId.LOOTING_BY_TURN);
-				break;
-			case L2Party.ITEM_ORDER_SPOIL:
-				activeChar.sendPacket(SystemMessageId.LOOTING_BY_TURN_INCLUDE_SPOIL);
-				break;
-			case L2Party.ITEM_RANDOM:
+			case RANDOM:
 				activeChar.sendPacket(SystemMessageId.LOOTING_RANDOM);
 				break;
-			case L2Party.ITEM_RANDOM_SPOIL:
+			case RANDOM_INCLUDING_SPOIL:
 				activeChar.sendPacket(SystemMessageId.LOOTING_RANDOM_INCLUDE_SPOIL);
+				break;
+			case BY_TURN:
+				activeChar.sendPacket(SystemMessageId.LOOTING_BY_TURN);
+				break;
+			case BY_TURN_INCLUDING_SPOIL:
+				activeChar.sendPacket(SystemMessageId.LOOTING_BY_TURN_INCLUDE_SPOIL);
 				break;
 		}
 		

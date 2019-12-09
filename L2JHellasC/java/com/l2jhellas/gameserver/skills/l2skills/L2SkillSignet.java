@@ -1,7 +1,8 @@
 package com.l2jhellas.gameserver.skills.l2skills;
 
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
-import com.l2jhellas.gameserver.emum.L2SkillTargetType;
+import com.l2jhellas.gameserver.emum.skills.L2SkillTargetType;
+import com.l2jhellas.gameserver.geometry.Point3D;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -11,7 +12,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2EffectPointInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.gameserver.templates.StatsSet;
-import com.l2jhellas.util.Point3D;
 
 public final class L2SkillSignet extends L2Skill
 {

@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.model.L2CommandChannel;
-import com.l2jhellas.gameserver.model.L2Party;
+import com.l2jhellas.gameserver.model.actor.group.party.L2CommandChannel;
+import com.l2jhellas.gameserver.model.actor.group.party.L2Party;
 
 public class ExMultiPartyCommandChannelInfo extends L2GameServerPacket
 {
