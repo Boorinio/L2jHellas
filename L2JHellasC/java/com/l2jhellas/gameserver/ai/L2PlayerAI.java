@@ -142,7 +142,7 @@ public class L2PlayerAI extends L2CharacterAI
 		
 		super.clientNotifyDead();
 	}
-	
+		
 	private void thinkAttack()
 	{
 		L2Character target = getAttackTarget();
@@ -151,9 +151,9 @@ public class L2PlayerAI extends L2CharacterAI
 			return;
 
 		if(!maybeMoveToPawn(target, _actor.getPhysicalAttackRange()))
-		  _actor.doAttack(target,false);
+			_actor.doAttack(target,false);
 	}
-	
+		
 	private void thinkCast()
 	{
 		L2Character target = getCastTarget();

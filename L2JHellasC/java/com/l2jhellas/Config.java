@@ -24,7 +24,6 @@ import Extensions.RankSystem.Rank;
 import Extensions.RankSystem.RankTable;
 
 import com.l2jhellas.gameserver.geodata.PathFindBuffers;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.shield.antiflood.FloodProtectorConfig;
 import com.l2jhellas.util.StringUtil;
 
@@ -50,7 +49,6 @@ public final class Config
 	// Events Folder
 	private static final String EVENT_ZODIAC_CONFIG_FILE = "./config/Events/Zodiac.ini";
 	private static final String EVENT_TVT_CONFIG_FILE = "./config/Events/TVT.ini";
-	private static final String EVENT_HITMAN_CONFIG_FILE = "./config/Events/HitMan.ini";
 	private static final String EVENT_DM_CONFIG_FILE = "./config/Events/DM.ini";
 	private static final String EVENT_CTF_CONFIG_FILE = "./config/Events/CTF.ini";
 	private static final String EVENT_WEDDING_CONFIG_FILE = "./config/Events/Wedding.ini";
@@ -64,8 +62,9 @@ public final class Config
 	private static final String OLYMPIAD_FILE = "./config/Olympiad/OlySettings.ini";
 	// Others
 	private static final String CHAT_FILTER_FILE = "./config/Others/ChatFilter.txt";
-	// Version Folder
+	
 	private static final String SERVER_VERSION_FILE = "./config/Version/L2J Hellas Version.ini";
+
 	// Network Folder
 	private static final String CONFIGURATION_FILE = "./config/Network/GameServer.ini";
 	private static final String HEXID_FILE = "./config/Network/HexId/hexid.txt";
@@ -76,7 +75,6 @@ public final class Config
 	
 	public static boolean GEODATA;
 	public static int GEO_X_FIRST, GEO_Y_FIRST, GEO_X_LAST, GEO_Y_LAST;
-	public static boolean ACCEPT_GEOEDITOR_CONN;
 	public static boolean CONTROL_HEIGHT_DAMAGE;
 	public static boolean PATH_CLEAN;
 	public static boolean ALLOW_DOORS;
@@ -92,7 +90,6 @@ public final class Config
 	public static double WEIGHT2;
 	public static boolean COMPACT_GEO;
 	public static int COORD_SYNCHRONIZE;
-	public static int GEOEDITOR_PORT;
 	
 	// ===============================================================================
 	// ================================
@@ -234,7 +231,6 @@ public final class Config
 	public static int RIFT_ENTER_COST_CAPTAIN;
 	public static int RIFT_ENTER_COST_COMMANDER;
 	public static int RIFT_ENTER_COST_HERO;
-	public static int MAX_CHAT_LENGTH;
 	public static int CRUMA_TOWER_LEVEL_RESTRICT;
 	public static boolean ALT_RESPAWN_POINT;
 	public static int ALT_RESPAWN_POINT_X;
@@ -335,7 +331,6 @@ public final class Config
 	public static int BANKINGALTERNATE_SYSTEM_ADENA;
 	public static boolean CHAR_TITLE;
 	public static String ADD_CHAR_TITLE;
-	public static boolean KICK_L2WALKER;
 	public static boolean ALLOW_CREATE_LVL;
 	public static int CUSTOM_START_LVL;
 	public static boolean ALLOW_HERO_SUBSKILL;
@@ -366,11 +361,8 @@ public final class Config
 	public static int SPAWN_X;
 	public static int SPAWN_Y;
 	public static int SPAWN_Z;
-	public static int CHAT_FILTER_PUNISHMENT_PARAM1;
-	public static int CHAT_FILTER_PUNISHMENT_PARAM2;
 	public static boolean USE_SAY_FILTER;
 	public static String CHAT_FILTER_CHARS;
-	public static String CHAT_FILTER_PUNISHMENT;
 	public static List<String> FILTER_LIST = new ArrayList<>();
 	public static boolean ALLOW_DAGGERS_WEAR_HEAVY;
 	public static boolean ALLOW_ARCHERS_WEAR_HEAVY;
@@ -648,17 +640,7 @@ public final class Config
 	public static boolean ALLOW_CURSED_WEAPONS;
 	public static boolean ALLOW_MANOR;
 	public static boolean ALLOW_NPC_WALKERS;
-	
-	public static enum L2WalkerAllowed
-	{
-		True,
-		False,
-		GM
-	}
-	
-	public static L2WalkerAllowed ALLOW_L2WALKER_CLIENT;
-	public static int L2WALKER_REVISION;
-	public static boolean AUTOBAN_L2WALKER_ACC;
+
 	public static boolean GM_EDIT;
 	public static boolean ONLY_GM_ITEMS_FREE;
 	public static boolean RAID_DISABLE_CURSE;
@@ -733,12 +715,8 @@ public final class Config
 	public static boolean JAIL_DISABLE_CHAT;
 	public static int DEATH_PENALTY_CHANCE;
 	
-	// Variables doesn't found in any .ini file.
+	// Variable doesn't found in any .ini file.
 	public static int MAX_ITEM_IN_PACKET;
-	public static int NEW_NODE_ID;
-	public static int SELECTED_NODE_ID;
-	public static int LINKED_NODE_ID;
-	public static String NEW_NODE_TYPE;
 	
 	// Zodiac Settings
 	public static boolean ZODIAC_ENABLE;
@@ -772,10 +750,7 @@ public final class Config
 	public static boolean TVT_ANNOUNCE_REWARD;
 	public static int FIRST_TVT_DELAY;
 	public static long TVT_REVIVE_DELAY;
-	// HitMan Settings
-	public static boolean ENABLE_HITMAN_EVENT;
-	public static boolean HITMAN_TAKE_KARMA;
-	public static int HIT_MAN_ITEM_ID;
+
 	// DM Settings
 	public static boolean DM_ALLOW_INTERFERENCE;
 	public static boolean DM_ALLOW_POTIONS;
@@ -1203,7 +1178,6 @@ public final class Config
 			RIFT_ENTER_COST_CAPTAIN = Integer.parseInt(altSettings.getProperty("CaptainCost", "27"));
 			RIFT_ENTER_COST_COMMANDER = Integer.parseInt(altSettings.getProperty("CommanderCost", "30"));
 			RIFT_ENTER_COST_HERO = Integer.parseInt(altSettings.getProperty("HeroCost", "33"));
-			MAX_CHAT_LENGTH = Integer.parseInt(altSettings.getProperty("MaxChatLength", "100"));
 			CRUMA_TOWER_LEVEL_RESTRICT = Integer.parseInt(altSettings.getProperty("CrumaTowerLevelRestrict", "56"));
 			// spawns
 			ALT_RESPAWN_POINT = Boolean.parseBoolean(altSettings.getProperty("AllowCustomRespawnPoint", "False"));
@@ -1369,7 +1343,6 @@ public final class Config
 			BANKING_SYSTEM_ITEM = Integer.parseInt(L2JHellasSettings.getProperty("BankingItemId", "3470"));
 			CHAR_TITLE = Boolean.parseBoolean(L2JHellasSettings.getProperty("CharTitle", "False"));
 			ADD_CHAR_TITLE = L2JHellasSettings.getProperty("CharAddTitle", "l2jhellas");
-			KICK_L2WALKER = Boolean.parseBoolean(L2JHellasSettings.getProperty("L2WalkerProtection", "False"));
 			ALLOW_CREATE_LVL = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowCustomStartLvl", "False"));
 			CUSTOM_START_LVL = Integer.parseInt(L2JHellasSettings.getProperty("CustomStartLvl", "1"));
 			ALLOW_HERO_SUBSKILL = Boolean.parseBoolean(L2JHellasSettings.getProperty("CustomHeroSubSkill", "False"));
@@ -1405,9 +1378,6 @@ public final class Config
 			SPAWN_Z = Integer.parseInt(L2JHellasSettings.getProperty("SpawnZ", "0"));
 			USE_SAY_FILTER = Boolean.parseBoolean(L2JHellasSettings.getProperty("UseChatFilter", "False"));
 			CHAT_FILTER_CHARS = L2JHellasSettings.getProperty("ChatFilterChars", "***");
-			CHAT_FILTER_PUNISHMENT = L2JHellasSettings.getProperty("ChatFilterPunishment", "off");
-			CHAT_FILTER_PUNISHMENT_PARAM1 = Integer.parseInt(L2JHellasSettings.getProperty("ChatFilterPunishmentParam1", "1"));
-			CHAT_FILTER_PUNISHMENT_PARAM2 = Integer.parseInt(L2JHellasSettings.getProperty("ChatFilterPunishmentParam2", "1"));
 			ALLOW_DAGGERS_WEAR_HEAVY = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowDaggersUseHeavy", "True"));
 			ALLOW_ARCHERS_WEAR_HEAVY = Boolean.parseBoolean(L2JHellasSettings.getProperty("AllowArchersUseHeavy", "True"));
 			
@@ -2136,8 +2106,6 @@ public final class Config
 			WEIGHT2 = Double.parseDouble(geoSettings.getProperty("Weight2", "1.0"));
 			PathFindBuffers.initBuffers(geoSettings.getProperty("PathFindBuffers", "8x100;8x128;8x192;4x256;2x320;2x384;1x500"));
 			COMPACT_GEO = Boolean.parseBoolean(geoSettings.getProperty("CompactGeoData", "false"));
-			ACCEPT_GEOEDITOR_CONN = Boolean.parseBoolean(geoSettings.getProperty("AcceptGeoeditorConn", "False"));
-			GEOEDITOR_PORT = Integer.parseInt(geoSettings.getProperty("GeoPort", "2109"));
 			COORD_SYNCHRONIZE = Integer.parseInt(geoSettings.getProperty("CoordSynchronize", "-1"));
 			
 			Properties optionsSettings = new Properties();
@@ -2197,9 +2165,6 @@ public final class Config
 			ALLOW_CURSED_WEAPONS = Boolean.valueOf(optionsSettings.getProperty("AllowCursedWeapons", "False"));
 			ALLOW_MANOR = Boolean.parseBoolean(optionsSettings.getProperty("AllowManor", "False"));
 			ALLOW_NPC_WALKERS = Boolean.valueOf(optionsSettings.getProperty("AllowNpcWalkers", "True"));
-			ALLOW_L2WALKER_CLIENT = L2WalkerAllowed.valueOf(optionsSettings.getProperty("AllowL2Walker", "False"));
-			L2WALKER_REVISION = Integer.parseInt(optionsSettings.getProperty("L2WalkerRevision", "537"));
-			AUTOBAN_L2WALKER_ACC = Boolean.valueOf(optionsSettings.getProperty("AutobanL2WalkerAcc", "False"));
 			GM_EDIT = Boolean.valueOf(optionsSettings.getProperty("GMEdit", "False"));
 			ONLY_GM_ITEMS_FREE = Boolean.valueOf(optionsSettings.getProperty("OnlyGMItemsFree", "True"));
 			RAID_DISABLE_CURSE = Boolean.parseBoolean(optionsSettings.getProperty("DisableRaidCurse", "False"));
@@ -2288,10 +2253,6 @@ public final class Config
 			DEATH_PENALTY_CHANCE = Integer.parseInt(otherSettings.getProperty("DeathPenaltyChance", "20"));
 			
 			// Configuration values not found in config files
-			NEW_NODE_ID = Integer.parseInt(otherSettings.getProperty("NewNodeId", "7952"));
-			SELECTED_NODE_ID = Integer.parseInt(otherSettings.getProperty("NewNodeId", "7952"));
-			LINKED_NODE_ID = Integer.parseInt(otherSettings.getProperty("NewNodeId", "7952"));
-			NEW_NODE_TYPE = otherSettings.getProperty("NewNodeType", "npc");
 			MAX_ITEM_IN_PACKET = Math.max(INVENTORY_MAXIMUM_NO_DWARF, Math.max(INVENTORY_MAXIMUM_DWARF, INVENTORY_MAXIMUM_GM));
 			
 			Properties EventZodiacSettings = new Properties();
@@ -2350,19 +2311,6 @@ public final class Config
 			{
 				TVT_REVIVE_DELAY = 1000; // can't be set less then 1 second
 			}
-			
-			Properties EventHITMANSettings = new Properties();
-			try (InputStream is = new FileInputStream(new File(EVENT_HITMAN_CONFIG_FILE)))
-			{
-				EventHITMANSettings.load(is);
-			}
-			catch (Exception e)
-			{
-				_log.severe(Config.class.getName() + ": Error while loading " + EVENT_HITMAN_CONFIG_FILE + " settings!");
-			}
-			ENABLE_HITMAN_EVENT = Boolean.parseBoolean(EventHITMANSettings.getProperty("EnableHitmanEvent", "False"));
-			HITMAN_TAKE_KARMA = Boolean.parseBoolean(EventHITMANSettings.getProperty("HitmansTakekarma", "True"));
-			HIT_MAN_ITEM_ID = Integer.parseInt(EventHITMANSettings.getProperty("HitMansRewardId", "57"));
 			
 			Properties EventDMSettings = new Properties();
 			try (InputStream is = new FileInputStream(new File(EVENT_DM_CONFIG_FILE)))
@@ -3615,7 +3563,6 @@ public final class Config
 		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_MULTISELL, "MultiSell", "1");
 		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_TRANSACTION, "Transaction", "10");
 		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_SOCIALACTION, "SocialAction", "40");
-		
 	}
 	
 	private static void loadFloodProtectorConfig(final Properties properties, final FloodProtectorConfig config, final String configString, final String defaultInterval)
@@ -3626,12 +3573,7 @@ public final class Config
 		config.PUNISHMENT_TYPE = properties.getProperty(StringUtil.concat("FloodProtector", configString, "PunishmentType"), "none");
 		config.PUNISHMENT_TIME = Integer.parseInt(properties.getProperty(StringUtil.concat("FloodProtector", configString, "PunishmentTime"), "0"));
 	}
-	
-	public static boolean allowL2Walker(L2PcInstance player)
-	{
-		return (ALLOW_L2WALKER_CLIENT == L2WalkerAllowed.True || (ALLOW_L2WALKER_CLIENT == L2WalkerAllowed.GM && player != null && player.isGM()));
-	}
-	
+
 	public static void saveHexid(int serverId, String string)
 	{
 		Config.saveHexid(serverId, string, HEXID_FILE);

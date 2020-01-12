@@ -10,12 +10,12 @@ public final class RequestEvaluate extends L2GameClientPacket
 {
 	private static final String _C__B9_REQUESTEVALUATE = "[C] B9 RequestEvaluate";
 	
-	private int _target;
+	private int _targetId;
 	
 	@Override
 	protected void readImpl()
 	{
-		_target = readD();
+		_targetId = readD();
 	}
 	
 	@Override
@@ -23,14 +23,20 @@ public final class RequestEvaluate extends L2GameClientPacket
 	{
 		final L2PcInstance activeChar = getClient().getActiveChar();
 		
-		if (activeChar == null)
+		if (activeChar == null || _targetId <= 0)
 			return;
 		
-		final L2PcInstance target = L2World.getInstance().getPlayer(_target);
+		final L2PcInstance target = (activeChar.getTargetId() == _targetId) ? activeChar.getTarget().getActingPlayer() : L2World.getInstance().getPlayer(_targetId);
 		
 		if (target == null)
 		{
 			activeChar.sendPacket(SystemMessageId.TARGET_IS_INCORRECT);
+			return;
+		}
+		
+		if (activeChar.equals(target))
+		{
+			activeChar.sendPacket(SystemMessageId.YOU_CANNOT_RECOMMEND_YOURSELF);
 			return;
 		}
 		
@@ -45,13 +51,7 @@ public final class RequestEvaluate extends L2GameClientPacket
 			activeChar.sendPacket(SystemMessageId.ONLY_LEVEL_SUP_10_CAN_RECOMMEND);
 			return;
 		}
-		
-		if (activeChar.equals(target))
-		{
-			activeChar.sendPacket(SystemMessageId.YOU_CANNOT_RECOMMEND_YOURSELF);
-			return;
-		}
-		
+				
 		if (activeChar.getRecomLeft() <= 0)
 		{
 			activeChar.sendPacket(SystemMessageId.NO_MORE_RECOMMENDATIONS_TO_HAVE);

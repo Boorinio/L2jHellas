@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.model;
 
+import com.l2jhellas.gameserver.model.actor.L2Character;
+
 public class Hit
 {
 	private static final int HITFLAG_USESS = 0x10;
@@ -22,7 +24,7 @@ public class Hit
 		if (crit)
 			_flags |= HITFLAG_CRIT;
 		
-		if (shld > 0)
+		if ((target instanceof L2Character && ((L2Character) target).isInvul()) || (shld > 0))
 			_flags |= HITFLAG_SHLD;
 		
 		if (miss)

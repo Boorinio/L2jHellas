@@ -1480,6 +1480,8 @@ public class FourSepulchersManager
 		
 		for (L2Npc mob : _allMobs)
 		{
+			if (mob == null)
+				continue;
 			try
 			{
 				mob.getSpawn().stopRespawn();

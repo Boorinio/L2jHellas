@@ -3,6 +3,7 @@ package com.l2jhellas.gameserver.model.entity.olympiad;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.emum.skills.HeroSkills;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
@@ -18,7 +19,6 @@ import com.l2jhellas.gameserver.network.serverpackets.ExOlympiadMode;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
 
 public abstract class AbstractOlympiadGame
@@ -173,8 +173,11 @@ public abstract class AbstractOlympiadGame
 		// Remove Hero Skills
 		if (player.isHero())
 		{
-			for (L2Skill skill : HeroSkillTable.GetHeroSkills())
+			for (HeroSkills sk : HeroSkills.getAllSkills())
+			{
+				L2Skill skill = SkillTable.getInstance().getInfo(sk.getSkillId(),sk.getLevel());
 				player.removeSkill(skill, false);
+			}
 		}
 			
 		// Heal Player fully
@@ -309,8 +312,11 @@ public abstract class AbstractOlympiadGame
 			// Add Hero Skills
 			if (player.isHero())
 			{
-				for (L2Skill skill : HeroSkillTable.GetHeroSkills())
+				for (HeroSkills sk : HeroSkills.getAllSkills())
+				{
+					L2Skill skill = SkillTable.getInstance().getInfo(sk.getSkillId(),sk.getLevel());
 					player.addSkill(skill, false);
+				}
 			}
 			player.sendSkillList();
 		}

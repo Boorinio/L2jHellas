@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.util.Rnd;
 
@@ -37,30 +38,19 @@ public final class RandomAnimationTaskManager implements Runnable
 		final long time = System.currentTimeMillis();
 		
 		for (Map.Entry<L2Npc, Long> entry : _npcs.entrySet())
-		{
+		{		
+			final L2Npc character = entry.getKey();
+			
+			if (!character.isInActiveRegion() || character.isDead() || (character instanceof L2Attackable && character.getAI().getIntention() != CtrlIntention.AI_INTENTION_ACTIVE))
+			{
+				_npcs.remove(character);
+				continue;
+			}
+			
 			if (time < entry.getValue())
 				continue;
 			
-			final L2Npc character = entry.getKey();
-			
-			if (character.isMob())
-			{
-				if (character.getAI().getIntention() != CtrlIntention.AI_INTENTION_ACTIVE)
-				{
-					_npcs.remove(character);
-					continue;
-				}
-			}
-			else
-			{
-				if (!character.isInActiveRegion())
-				{
-					_npcs.remove(character);
-					continue;
-				}
-			}
-			
-			if (!(character.isDead() || character.isStunned() || character.isSleeping() || character.isParalyzed()))
+			if (!(character.isDead() || !character.isMoving() ||  character.isStunned() || character.isSleeping() || character.isParalyzed()))
 				character.onRandomAnimation();
 			
 			final int timer = (character.isMob()) ? Rnd.get(Config.MIN_MONSTER_ANIMATION, Config.MAX_MONSTER_ANIMATION) : Rnd.get(Config.MIN_NPC_ANIMATION, Config.MAX_NPC_ANIMATION);

@@ -63,23 +63,20 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 			}
 			catch (BufferUnderflowException e)
 			{
-				if (Config.KICK_L2WALKER)
+				L2PcInstance activeChar = getClient().getActiveChar();
+				activeChar.sendPacket(SystemMessageId.HACKING_TOOL);
+				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+				try
 				{
-					L2PcInstance activeChar = getClient().getActiveChar();
-					activeChar.sendPacket(SystemMessageId.HACKING_TOOL);
-					activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-					try
-					{
-						Thread.sleep(5000);
-					}
-					catch (InterruptedException ie)
-					{
-					}
-					finally
-					{
-						Util.handleIllegalPlayerAction(activeChar, "Player " + activeChar.getName() + " trying to use L2Walker!", IllegalPlayerAction.PUNISH_KICK);
-						activeChar.closeNetConnection(false);
-					}
+					Thread.sleep(5000);
+				}
+				catch (InterruptedException ie)
+				{
+				}
+				finally
+				{
+					Util.handleIllegalPlayerAction(activeChar, "Player " + activeChar.getName() + " trying to use L2Walker!", IllegalPlayerAction.PUNISH_KICK);
+					activeChar.closeNetConnection(false);
 				}
 			}
 		}

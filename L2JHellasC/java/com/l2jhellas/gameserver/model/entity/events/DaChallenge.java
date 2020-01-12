@@ -10,13 +10,13 @@ import com.l2jhellas.gameserver.Announcements;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.events.engines.ZodiacMain;
-import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowScreenMessage.SMPOS;
@@ -184,7 +184,7 @@ public class DaChallenge
 			@Override
 			public void run()
 			{
-				final CreatureSay cs = new CreatureSay(Daboss.getObjectId(), Say2.SHOUT, "DaRealBoss", "Welcome to your doom Challengers!");
+				final CreatureSay cs = new CreatureSay(Daboss.getObjectId(), ChatType.SHOUT.getClientId(), "DaRealBoss", "Welcome to your doom Challengers!");
 				Daboss.broadcastPacket(cs, 1000);
 			}
 		}, 8 * 1000);
@@ -264,14 +264,14 @@ public class DaChallenge
 	{
 		final L2Npc Last = addSpawn(36014, 174238, -88013, -5116);
 		_RoomMobs.add(Last);
-		CreatureSay cs = new CreatureSay(Last.getObjectId(), Say2.SHOUT, "DaRealBoss", "You thought it was over?!? HAHAHAHA");
+		CreatureSay cs = new CreatureSay(Last.getObjectId(), ChatType.SHOUT.getClientId(), "DaRealBoss", "You thought it was over?!? HAHAHAHA");
 		Last.broadcastPacket(cs, 1000);
 		ThreadPoolManager.getInstance().scheduleGeneral(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				final CreatureSay cs1 = new CreatureSay(Last.getObjectId(), Say2.SHOUT, "DaRealBoss", "You will never kill me Challengers!!!");
+				final CreatureSay cs1 = new CreatureSay(Last.getObjectId(), ChatType.SHOUT.getClientId(), "DaRealBoss", "You will never kill me Challengers!!!");
 				Last.broadcastPacket(cs1, 1000);
 			}
 		}, 5 * 1000);

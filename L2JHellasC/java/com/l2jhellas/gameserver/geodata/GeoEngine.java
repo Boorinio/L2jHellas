@@ -20,6 +20,7 @@ import com.l2jhellas.gameserver.geometry.Polygon;
 import com.l2jhellas.gameserver.instancemanager.FenceManager;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.taskmanager.MemoryWatchOptimize;
 import com.l2jhellas.util.GArray;
@@ -76,6 +77,11 @@ public class GeoEngine
 	public static int getHeight(int x, int y, int z)
 	{
 		return NgetHeight(x - L2World.WORLD_X_MIN >> 4, y - L2World.WORLD_Y_MIN >> 4, z);
+	}
+	
+	public static boolean canMoveToCoord(L2Character player, L2Character target)
+	{
+		return canMove(player.getX(), player.getY(), player.getZ(), target.getX(), target.getY(), target.getZ(), false) == 0;
 	}
 	
 	public static boolean canMoveToCoord(int x, int y, int z, int tx, int ty, int tz)

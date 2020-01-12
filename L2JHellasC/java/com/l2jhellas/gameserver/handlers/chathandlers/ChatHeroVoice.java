@@ -1,5 +1,6 @@
 package com.l2jhellas.gameserver.handlers.chathandlers;
 
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.handler.IChatHandler;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.L2World;
@@ -8,13 +9,13 @@ import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 
 public class ChatHeroVoice implements IChatHandler
 {
-	private static final int[] COMMAND_IDS =
+	private static final ChatType[] COMMAND_IDS =
 	{
-		17
+		ChatType.HERO_VOICE
 	};
 	
 	@Override
-	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
+	public void handleChat(ChatType type, L2PcInstance activeChar, String target, String text)
 	{
 		if (activeChar.isHero() || activeChar.isGM())
 		{
@@ -32,7 +33,7 @@ public class ChatHeroVoice implements IChatHandler
 	}
 	
 	@Override
-	public int[] getChatTypeList()
+	public ChatType[] getChatTypeList()
 	{
 		return COMMAND_IDS;
 	}

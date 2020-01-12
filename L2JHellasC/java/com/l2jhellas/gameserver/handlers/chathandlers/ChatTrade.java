@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.handler.IChatHandler;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.L2World;
@@ -12,13 +13,13 @@ import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 
 public class ChatTrade implements IChatHandler
 {
-	private static final int[] COMMAND_IDS =
+	private static final ChatType[] COMMAND_IDS =
 	{
-		8
+		ChatType.TRADE
 	};
 	
 	@Override
-	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
+	public void handleChat(ChatType type, L2PcInstance activeChar, String target, String text)
 	{
 		CreatureSay cs = new CreatureSay(activeChar.getObjectId(), type, activeChar.getName(), text);
 		
@@ -45,7 +46,7 @@ public class ChatTrade implements IChatHandler
 	}
 	
 	@Override
-	public int[] getChatTypeList()
+	public ChatType[] getChatTypeList()
 	{
 		return COMMAND_IDS;
 	}

@@ -11,6 +11,7 @@ import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.emum.Sex;
+import com.l2jhellas.gameserver.emum.player.PlayerCreateFailReason;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.model.L2ShortCut;
@@ -69,60 +70,58 @@ public final class CharacterCreate extends L2GameClientPacket
 	
 	@Override
 	protected void runImpl()
-	{
-		if (CharNameTable.getInstance().accountCharNumber(getClient().getAccountName()) >= Config.MAX_CHARACTERS_NUMBER_PER_ACCOUNT && Config.MAX_CHARACTERS_NUMBER_PER_ACCOUNT != 0)
+	{		
+		if ((_name.length() < 3) || (_name.length() > 16) || !Util.isAlphaNumeric(_name) || !isValidName(_name))
 		{
-			CharCreateFail ccf = new CharCreateFail(CharCreateFail.REASON_TOO_MANY_CHARACTERS);
-			sendPacket(ccf);
-			return;
-		}
-		else if (CharNameTable.getInstance().doesCharNameExist(_name))
-		{
-			CharCreateFail ccf = new CharCreateFail(CharCreateFail.REASON_NAME_ALREADY_EXISTS);
-			sendPacket(ccf);
-			return;
-		}
-		else if ((_name.length() < 3) || (_name.length() > 16) || !Util.isAlphaNumeric(_name) || !isValidName(_name))
-		{
-			CharCreateFail ccf = new CharCreateFail(CharCreateFail.REASON_16_ENG_CHARS);
-			sendPacket(ccf);
+			sendPacket(new CharCreateFail((_name.length() > 16) ? PlayerCreateFailReason.REASON_16_ENG_CHARS : PlayerCreateFailReason.REASON_INCORRECT_NAME));
 			return;
 		}
 		
 		if (_face > 2 || _face < 0 || _race > 4 || _race < 0)
 		{
-			sendPacket(new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED));
+			sendPacket(new CharCreateFail(PlayerCreateFailReason.REASON_CREATION_FAILED));
 			return;
 		}
 		
 		if (_hairStyle < 0 || (_sex == 0 && _hairStyle > 4) || (_sex != 0 && _hairStyle > 6))
 		{
-			sendPacket(new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED));
+			sendPacket(new CharCreateFail(PlayerCreateFailReason.REASON_CREATION_FAILED));
 			return;
 		}
 		
 		if (_hairColor > 3 || _hairColor < 0)
 		{
-			sendPacket(new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED));
+			sendPacket(new CharCreateFail(PlayerCreateFailReason.REASON_CREATION_FAILED));
 			return;
 		}
 		
-		L2PcTemplate template = CharTemplateData.getInstance().getTemplate(_classId);
+		if (CharNameTable.getInstance().accountCharNumber(getClient().getAccountName()) >= Config.MAX_CHARACTERS_NUMBER_PER_ACCOUNT && Config.MAX_CHARACTERS_NUMBER_PER_ACCOUNT != 0)
+		{
+			sendPacket(new CharCreateFail(PlayerCreateFailReason.REASON_TOO_MANY_CHARACTERS));
+			return;
+		}
+		
+		if (CharNameTable.getInstance().doesCharNameExist(_name))
+		{
+			sendPacket(new CharCreateFail(PlayerCreateFailReason.REASON_NAME_ALREADY_EXISTS));
+			return;
+		}
+
+		final L2PcTemplate template = CharTemplateData.getInstance().getTemplate(_classId);
 		
 		if (template == null || template.classBaseLevel > 1)
 		{
-			CharCreateFail ccf = new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED);
-			sendPacket(ccf);
+			sendPacket(new CharCreateFail(PlayerCreateFailReason.REASON_CREATION_FAILED));
 			return;
 		}
 		
 		int objectId = IdFactory.getInstance().getNextId();
 		
-		L2PcInstance newChar = L2PcInstance.create(objectId, template, getClient().getAccountName(), _name, _hairStyle, _hairColor, _face, Sex.values()[_sex]);
+		final L2PcInstance newChar = L2PcInstance.create(objectId, template, getClient().getAccountName(), _name, _hairStyle, _hairColor, _face, Sex.values()[_sex]);
 		
 		if (newChar == null)
 		{
-			sendPacket(new CharCreateFail(CharCreateFail.REASON_CREATION_FAILED));
+			sendPacket(new CharCreateFail(PlayerCreateFailReason.REASON_CREATION_FAILED));
 			return;
 		}
 		
@@ -164,7 +163,7 @@ public final class CharacterCreate extends L2GameClientPacket
 	{
 		L2World.getInstance().storeObject(newChar);
 		
-		L2PcTemplate template = newChar.getTemplate();
+		final L2PcTemplate template = newChar.getTemplate();
 		
 		newChar.addAdena("Init", Config.STARTING_ADENA, null, false);
 		newChar.addAncientAdena("Init", Config.STARTING_ANCIENT, null, false);
@@ -186,7 +185,6 @@ public final class CharacterCreate extends L2GameClientPacket
 		newChar.registerShortCut(new L2ShortCut(3, 0, 3, 5, -1, 1));
 		newChar.registerShortCut(new L2ShortCut(10, 0, 3, 0, -1, 1));
 		
-		ItemTable.getInstance();
 		L2Item[] items = template.getItems();
 		for (L2Item item2 : items)
 		{
@@ -198,9 +196,7 @@ public final class CharacterCreate extends L2GameClientPacket
 			if (item.isEquipable())
 			{
 				if (newChar.getActiveWeaponItem() == null || !(item.getItem().getType2() != L2Item.TYPE2_WEAPON))
-				{
 					newChar.getInventory().equipItemAndRecord(item);
-				}
 			}
 		}
 		
@@ -209,13 +205,9 @@ public final class CharacterCreate extends L2GameClientPacket
 		{
 			newChar.addSkill(SkillTable.getInstance().getInfo(startSkill.getId(), startSkill.getLevel()), true);
 			if (startSkill.getId() == 1001 || startSkill.getId() == 1177)
-			{
 				newChar.registerShortCut(new L2ShortCut(1, 0, 2, startSkill.getId(), 1, 1));
-			}
 			if (startSkill.getId() == 1216)
-			{
 				newChar.registerShortCut(new L2ShortCut(10, 0, 2, startSkill.getId(), 1, 1));
-			}
 		}
 		
 		if (Config.ALLOW_TUTORIAL)

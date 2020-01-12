@@ -10,10 +10,12 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
+import com.l2jhellas.gameserver.emum.player.ChatType;
+import com.l2jhellas.gameserver.emum.player.PetitionState;
+import com.l2jhellas.gameserver.emum.player.PetitionType;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -26,33 +28,7 @@ public final class PetitionManager
 	
 	private final Map<Integer, Petition> _pendingPetitions;
 	private final Map<Integer, Petition> _completedPetitions;
-	
-	private static enum PetitionState
-	{
-		Pending,
-		Responder_Cancel,
-		Responder_Missing,
-		Responder_Reject,
-		Responder_Complete,
-		Petitioner_Cancel,
-		Petitioner_Missing,
-		In_Process,
-		Completed
-	}
-	
-	private static enum PetitionType
-	{
-		Immobility,
-		Recovery_Related,
-		Bug_Report,
-		Quest_Related,
-		Bad_User,
-		Suggestions,
-		Game_Tip,
-		Operation_Related,
-		Other
-	}
-	
+
 	public static PetitionManager getInstance()
 	{
 		if (_instance == null)
@@ -68,7 +44,7 @@ public final class PetitionManager
 		private final long _submitTime = System.currentTimeMillis();
 		private final int _id;
 		private final PetitionType _type;
-		private PetitionState _state = PetitionState.Pending;
+		private PetitionState _state = PetitionState.PENDING;
 		private final String _content;
 		
 		private final List<CreatureSay> _messageLog = new ArrayList<>();
@@ -107,7 +83,7 @@ public final class PetitionManager
 			
 			if (getResponder() != null && getResponder().isOnline() == 1)
 			{
-				if (endState == PetitionState.Responder_Reject)
+				if (endState == PetitionState.RESPONDER_REJECT)
 				{
 					getPetitioner().sendMessage("Your petition was rejected. Please try again later.");
 				}
@@ -118,7 +94,7 @@ public final class PetitionManager
 					sm.addString(getPetitioner().getName());
 					getResponder().sendPacket(sm);
 					
-					if (endState == PetitionState.Petitioner_Cancel)
+					if (endState == PetitionState.PETITIONER_CANCEL)
 					{
 						// Receipt No. <ID> petition cancelled.
 						sm = SystemMessage.getSystemMessage(SystemMessageId.RECENT_NO_S1_CANCELED);
@@ -186,7 +162,7 @@ public final class PetitionManager
 		{
 			if (getResponder() == null || getResponder().isOnline() == 0)
 			{
-				endPetitionConsultation(PetitionState.Responder_Missing);
+				endPetitionConsultation(PetitionState.RESPONDER_MISSING);
 				return;
 			}
 			
@@ -240,7 +216,7 @@ public final class PetitionManager
 			return false;
 		
 		currPetition.setResponder(respondingAdmin);
-		currPetition.setState(PetitionState.In_Process);
+		currPetition.setState(PetitionState.IN_PROCESS);
 		
 		// Petition application accepted. (Send to Petitioner)
 		currPetition.sendPetitionerPacket(SystemMessage.getSystemMessage(SystemMessageId.PETITION_APP_ACCEPTED));
@@ -262,10 +238,10 @@ public final class PetitionManager
 		for (Petition currPetition : getPendingPetitions().values())
 		{
 			if (currPetition.getPetitioner() != null && currPetition.getPetitioner().getObjectId() == player.getObjectId())
-				return (currPetition.endPetitionConsultation(PetitionState.Petitioner_Cancel));
+				return (currPetition.endPetitionConsultation(PetitionState.PETITIONER_CANCEL));
 			
 			if (currPetition.getResponder() != null && currPetition.getResponder().getObjectId() == player.getObjectId())
-				return (currPetition.endPetitionConsultation(PetitionState.Responder_Cancel));
+				return (currPetition.endPetitionConsultation(PetitionState.RESPONDER_CANCEL));
 		}
 		
 		return false;
@@ -308,7 +284,7 @@ public final class PetitionManager
 			}
 			
 			if (currPetition.getResponder() != null && currPetition.getResponder().getObjectId() == player.getObjectId())
-				return (currPetition.endPetitionConsultation(PetitionState.Completed));
+				return (currPetition.endPetitionConsultation(PetitionState.COMPLETED));
 		}
 		
 		return false;
@@ -374,7 +350,7 @@ public final class PetitionManager
 				continue;
 			}
 			
-			if (currPetition.getState() == PetitionState.In_Process)
+			if (currPetition.getState() == PetitionState.IN_PROCESS)
 				return true;
 		}
 		
@@ -387,7 +363,7 @@ public final class PetitionManager
 			return false;
 		
 		Petition currPetition = getPendingPetitions().get(petitionId);
-		return (currPetition.getState() == PetitionState.In_Process);
+		return (currPetition.getState() == PetitionState.IN_PROCESS);
 	}
 	
 	public boolean isPlayerInConsultation(L2PcInstance player)
@@ -401,7 +377,7 @@ public final class PetitionManager
 					continue;
 				}
 				
-				if (currPetition.getState() != PetitionState.In_Process)
+				if (currPetition.getState() != PetitionState.IN_PROCESS)
 				{
 					continue;
 				}
@@ -454,7 +430,7 @@ public final class PetitionManager
 			return false;
 		
 		currPetition.setResponder(respondingAdmin);
-		return (currPetition.endPetitionConsultation(PetitionState.Responder_Reject));
+		return (currPetition.endPetitionConsultation(PetitionState.RESPONDER_REJECT));
 	}
 	
 	public boolean sendActivePetitionMessage(L2PcInstance player, String messageText)
@@ -473,7 +449,7 @@ public final class PetitionManager
 			
 			if (currPetition.getPetitioner() != null && currPetition.getPetitioner().getObjectId() == player.getObjectId())
 			{
-				cs = new CreatureSay(player.getObjectId(), Say2.PETITION_PLAYER, player.getName(), messageText);
+				cs = new CreatureSay(player.getObjectId(), ChatType.PETITION_PLAYER.getClientId(), player.getName(), messageText);
 				currPetition.addLogMessage(cs);
 				
 				currPetition.sendResponderPacket(cs);
@@ -483,7 +459,7 @@ public final class PetitionManager
 			
 			if (currPetition.getResponder() != null && currPetition.getResponder().getObjectId() == player.getObjectId())
 			{
-				cs = new CreatureSay(player.getObjectId(), Say2.PETITION_GM, player.getName(), messageText);
+				cs = new CreatureSay(player.getObjectId(), ChatType.PETITION_GM.getClientId(), player.getName(), messageText);
 				currPetition.addLogMessage(cs);
 				
 				currPetition.sendResponderPacket(cs);
@@ -518,7 +494,7 @@ public final class PetitionManager
 			
 			htmlContent.append("<tr><td>");
 			
-			if (currPetition.getState() != PetitionState.In_Process)
+			if (currPetition.getState() != PetitionState.IN_PROCESS)
 			{
 				htmlContent.append("<button value=\"View\" action=\"bypass -h admin_view_petition " + currPetition.getId() + "\" width=\"40\" height=\"15\" back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 			}
@@ -546,7 +522,7 @@ public final class PetitionManager
 		
 		// Notify all GMs that a new petition has been submitted.
 		String msgContent = petitioner.getName() + " has submitted a new petition."; // (ID: " + newPetitionId + ").";
-		AdminData.getInstance().broadcastToGMs(new CreatureSay(petitioner.getObjectId(), Say2.HERO_VOICE, "Petition System", msgContent));
+		AdminData.getInstance().broadcastToGMs(new CreatureSay(petitioner.getObjectId(), ChatType.HERO_VOICE.getClientId(), "Petition System", msgContent));
 		return newPetitionId;
 	}
 	

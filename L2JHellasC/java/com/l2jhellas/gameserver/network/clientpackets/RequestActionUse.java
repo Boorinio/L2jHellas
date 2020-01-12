@@ -3,6 +3,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -298,7 +299,7 @@ public final class RequestActionUse extends L2GameClientPacket
 			
 			case 1001: // Sin Eater - Ultimate Bombastic Buster
 				if (useSkill(4139, summon) && summon.getNpcId() == SIN_EATER_ID && Rnd.get(100) < 10)
-					summon.broadcastPacket(new NpcSay(summon.getObjectId(), Say2.ALL, summon.getNpcId(), Rnd.get(SIN_EATER_ACTIONS_STRINGS)));
+					summon.broadcastPacket(new NpcSay(summon.getObjectId(), ChatType.GENERAL.getClientId(), summon.getNpcId(), Rnd.get(SIN_EATER_ACTIONS_STRINGS)));
 				break;
 			
 			case 1003: // Wind Hatchling/Strider - Wild Stun

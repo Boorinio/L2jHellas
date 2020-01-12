@@ -54,4 +54,9 @@ public class L2ManufactureList
 	{
 		_list = list;
 	}
+	
+	public void clear()
+	{
+		_list.clear();
+	}
 }

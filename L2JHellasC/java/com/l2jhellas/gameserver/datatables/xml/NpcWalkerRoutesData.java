@@ -11,6 +11,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.engines.DocumentParser;
 import com.l2jhellas.gameserver.model.L2NpcWalkerNode;
 
@@ -22,7 +23,8 @@ public class NpcWalkerRoutesData implements DocumentParser
 	
 	protected NpcWalkerRoutesData()
 	{
-		load();
+		if (Config.ALLOW_NPC_WALKERS)
+		    load();
 	}
 	
 	@Override

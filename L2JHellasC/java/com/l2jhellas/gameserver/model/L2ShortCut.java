@@ -8,12 +8,12 @@ public class L2ShortCut
 	public final static int TYPE_MACRO = 4;
 	public final static int TYPE_RECIPE = 5;
 	
-	private final int _slot;
-	private final int _page;
-	private final int _type;
-	private final int _id;
+	private int _slot;
+	private int _page;
+	private int _type;
+	private int _id;
 	private int _level;
-	private final int _getCharacterType;
+	private int _getCharacterType;
 	
 	public L2ShortCut(int slotId, int pageId, int shortcutType, int shortcutId, int shortcutLevel, int getCharacterType)
 	{

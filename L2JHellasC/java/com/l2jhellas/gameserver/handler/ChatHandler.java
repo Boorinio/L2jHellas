@@ -3,9 +3,11 @@ package com.l2jhellas.gameserver.handler;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChatHandler implements IHandler<IChatHandler, Integer>
+import com.l2jhellas.gameserver.emum.player.ChatType;
+
+public class ChatHandler implements IHandler<IChatHandler, ChatType>
 {
-	private final Map<Integer, IChatHandler> _datatable;
+	private final Map<ChatType, IChatHandler> _datatable;
 	
 	protected ChatHandler()
 	{
@@ -15,25 +17,23 @@ public class ChatHandler implements IHandler<IChatHandler, Integer>
 	@Override
 	public void registerHandler(IChatHandler handler)
 	{
-		int[] ids = handler.getChatTypeList();
-		for (int id : ids)
+		for (ChatType type : handler.getChatTypeList())
 		{
-			_datatable.put(id, handler);
+			_datatable.put(type, handler);
 		}
 	}
 	
 	@Override
 	public synchronized void removeHandler(IChatHandler handler)
 	{
-		int[] ids = handler.getChatTypeList();
-		for (int id : ids)
+		for (ChatType type : handler.getChatTypeList())
 		{
-			_datatable.remove(id);
+			_datatable.remove(type);
 		}
 	}
 	
 	@Override
-	public IChatHandler getHandler(Integer chatType)
+	public IChatHandler getHandler(ChatType chatType)
 	{
 		return _datatable.get(chatType);
 	}

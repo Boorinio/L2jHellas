@@ -71,6 +71,8 @@ public final class Action extends L2GameClientPacket
 			return;
 		}
 		
+		activeChar.onActionRequest();
+		
 		if (_actionId == 0)
 			obj.onAction(activeChar);
 		else if (_actionId == 1)

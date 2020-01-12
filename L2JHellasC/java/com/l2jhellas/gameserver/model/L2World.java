@@ -26,7 +26,6 @@ import com.l2jhellas.util.Util;
 
 public final class L2World
 {
-	
 	// Geodata min/max tiles
 	public static final int TILE_X_MIN = 15;
 	public static final int TILE_X_MAX = 26;

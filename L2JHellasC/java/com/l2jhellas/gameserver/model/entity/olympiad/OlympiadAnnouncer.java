@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
-import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
 
 public final class OlympiadAnnouncer implements Runnable
@@ -59,7 +59,7 @@ public final class OlympiadAnnouncer implements Runnable
 				{
 					manager = spawn.getLastSpawn();
 					if (manager != null)
-						manager.broadcastPacket(new NpcSay(manager.getObjectId(), Say2.SHOUT, manager.getNpcId(), npcString));
+						manager.broadcastPacket(new NpcSay(manager.getObjectId(), ChatType.SHOUT.getClientId(), manager.getNpcId(), npcString));
 				}
 				break;
 			}

@@ -162,6 +162,9 @@ public class L2AttackableAI extends L2CharacterAI
 		
 		if (target instanceof L2Attackable)
 		{
+			if (!Config.ALLOW_GUARDS && me instanceof L2GuardInstance)
+				return false;
+			
 			if (!target.isAutoAttackable(me))
 				return false;
 			
@@ -415,17 +418,19 @@ public class L2AttackableAI extends L2CharacterAI
 			npc.stopHating(target);		
 			npc.getAI().setIntention(AI_INTENTION_ACTIVE);		
 			npc.setWalking();
+			npc.returnHome();
 			return;
 		}
 		
 		if (npc.getTarget() != target)
 			npc.setTarget(target);	
 		
-		if(!npc.isInsideRadius(target.getX(), target.getY(), target.getZ(),2500, true, false))
+		if(!npc.isInsideRadius(target.getX(), target.getY(), target.getZ(),3000, true, false))
 		{
 			npc.stopHating(target);		
 			npc.getAI().setIntention(AI_INTENTION_ACTIVE);		
 			npc.setWalking();
+			npc.returnHome();
 			return;	
 		}
 
@@ -437,11 +442,12 @@ public class L2AttackableAI extends L2CharacterAI
 				npc.setWalking();	
 		}
 
-		if(Math.abs(target.getZ() - npc.getZ()) > 600)
+		if(target.isFlying() && Math.abs(target.getZ() - npc.getZ()) > 600)
 		{
 			npc.stopHating(target);		
 			npc.getAI().setIntention(AI_INTENTION_ACTIVE);		
 			npc.setWalking();
+			npc.returnHome();
 			return;
 		}
 				
@@ -500,7 +506,7 @@ public class L2AttackableAI extends L2CharacterAI
 
 		final int combinedCollision = collision + target.getTemplate().getCollisionRadius();
 
-		if (Rnd.get(10) <=  3 && !npc.isMovementDisabled() && npc.getAttackByList().contains(target))
+		if (Rnd.get(10) <= 4 && !npc.isMovementDisabled() && npc.getAttackByList().contains(target))
 		{
 			for (L2Attackable nearby : L2World.getInstance().getVisibleObjects(npc, L2Attackable.class,combinedCollision))
 			{
@@ -593,7 +599,10 @@ public class L2AttackableAI extends L2CharacterAI
 			target = targetReconsider(false);
 			
 			if (target == null)
+			{
+				npc.returnHome();
 				return;
+			}
 			
 			npc.setTarget(target);
 		}
@@ -613,6 +622,7 @@ public class L2AttackableAI extends L2CharacterAI
 						{
 							npc.setTarget(healTarget);
 							npc.doCast(healSkill);
+							npc.setTarget(target);
 							return;
 						}
 					}
@@ -698,7 +708,10 @@ public class L2AttackableAI extends L2CharacterAI
 			target = targetReconsider(true);
 			
 			if (target == null)
+			{
+				npc.returnHome();
 				return;
+			}
 			
 			setTarget(target);
         }

@@ -15,6 +15,7 @@ import com.l2jhellas.gameserver.ai.L2AttackableAI;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2SiegeGuardAI;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.L2DropCategory;
 import com.l2jhellas.gameserver.model.L2DropData;
@@ -36,7 +37,6 @@ import com.l2jhellas.gameserver.model.base.SoulCrystal;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -591,7 +591,7 @@ public class L2Attackable extends L2Npc
 							_commandChannelTimer = new CommandChannelTimer(this);
 							_commandChannelLastAttack = System.currentTimeMillis();
 							ThreadPoolManager.getInstance().scheduleGeneral(_commandChannelTimer, 10000); // check for last attack
-							_firstCommandChannelAttacked.broadcastToChannelMembers(new CreatureSay(0, Say2.PARTYROOM_ALL, "", "You have looting rights!")); // TODO: retail msg
+							_firstCommandChannelAttacked.broadcastToChannelMembers(new CreatureSay(0, ChatType.PARTYROOM_ALL.getClientId(), "", "You have looting rights!")); // TODO: retail msg
 						}
 					}
 				}
@@ -1793,11 +1793,8 @@ public class L2Attackable extends L2Npc
 		setWalking();
 		
 		// check the region where this mob is, do not activate the AI if region is inactive.
-		if (!isInActiveRegion())
-		{
-			if (hasAI())
-				getAI().stopAITask();
-		}
+		if (hasAI() && !isInActiveRegion())
+			getAI().stopAITask();
 	}
 	
 	public void setSeeded(L2PcInstance seeder)
@@ -1996,7 +1993,7 @@ public class L2Attackable extends L2Npc
 	public void moveToLocation(int x, int y, int z, int offset)
 	{
 		if (isAttackingNow())
-			return;
+			breakAttack();
 		
 		super.moveToLocation(x, y, z, offset);
 	}

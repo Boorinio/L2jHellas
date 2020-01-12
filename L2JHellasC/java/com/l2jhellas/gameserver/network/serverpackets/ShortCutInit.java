@@ -7,17 +7,13 @@ public class ShortCutInit extends L2GameServerPacket
 {
 	private static final String _S__57_SHORTCUTINIT = "[S] 45 ShortCutInit";
 	
-	private L2ShortCut[] _shortCuts;
 	private L2PcInstance _activeChar;
-	
+	private L2ShortCut[] _shortCuts;
+
 	public ShortCutInit(L2PcInstance activeChar)
 	{
 		_activeChar = activeChar;
-		
-		if (_activeChar == null)
-			return;
-		
-		_shortCuts = _activeChar.getAllShortCuts();
+		_shortCuts = activeChar.getAllShortCuts();
 	}
 	
 	@Override
@@ -25,32 +21,31 @@ public class ShortCutInit extends L2GameServerPacket
 	{
 		writeC(0x45);
 		writeD(_shortCuts.length);
-		
+
 		for (L2ShortCut sc : _shortCuts)
 		{
 			writeD(sc.getType());
-			writeD(sc.getSlot() + (sc.getPage() * 12));
+			writeD(sc.getSlot() + sc.getPage() * 12);
 			
-			if (sc.getType() == L2ShortCut.TYPE_ITEM)
+			switch (sc.getType())
 			{
-				writeD(sc.getId());
-				writeD(sc.getCharacterType());
-				writeD(0x00); // SharedReuseGroup
-				writeD(0x00); // Remaining time
-				writeD(0x00); // Cooldown time
-				writeD(_activeChar.WriteAugmentation(sc));
-			}
-			else if (sc.getType() == L2ShortCut.TYPE_SKILL)
-			{
-				writeD(sc.getId());
-				writeD(sc.getLevel());
-				writeC(0x00); // C5
-				writeD(0x01); // C6
-			}
-			else
-			{
-				writeD(sc.getId());
-				writeD(0x01); // C6
+				case L2ShortCut.TYPE_ITEM:
+					writeD(sc.getId());
+					writeD(sc.getCharacterType());
+					writeD(0x00); // SharedReuseGroup
+					writeD(0x00); // Remaining time
+					writeD(0x00); // Cooldown time			
+					writeD(_activeChar.WriteAugmentation(sc));
+					break;				
+				case L2ShortCut.TYPE_SKILL:
+					writeD(sc.getId());
+					writeD(sc.getLevel());
+					writeC(0x00); // C5
+					writeD(0x01); // C6
+					break;				
+				default:
+					writeD(sc.getId());
+					writeD(0x01); // C6
 			}
 		}
 	}

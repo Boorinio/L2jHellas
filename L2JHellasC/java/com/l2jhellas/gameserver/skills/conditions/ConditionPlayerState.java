@@ -43,11 +43,11 @@ public class ConditionPlayerState extends Condition
 			case FLYING:
 				return env.player.isFlying() == _required;
 			case BEHIND:
-				return env.player.isBehindTarget() == _required;
+				return env.player.isBehindOfTarget() == _required;
 			case FRONT:
-				return env.player.isFrontTarget() == _required;
+				return env.player.isFrontOfTarget() == _required;
 			case SIDE:
-				return env.player.isFrontTarget() == _required;
+				return env.player.isSideOfTarget() == _required;
 		}
 		return !_required;
 	}

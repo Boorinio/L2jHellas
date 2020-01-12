@@ -14,10 +14,10 @@ import java.util.logging.Logger;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
@@ -180,7 +180,7 @@ public class L2Event
 	
 	public static void announceAllPlayers(String text)
 	{
-		CreatureSay cs = new CreatureSay(0, Say2.ANNOUNCEMENT, "", text);
+		CreatureSay cs = new CreatureSay(0,ChatType.ANNOUNCEMENT.getClientId(), "", text);
 		
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{

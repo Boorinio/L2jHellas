@@ -90,9 +90,9 @@ public abstract class AbstractNpcAI extends Quest
 			if (!Util.checkIfInRange(range, npc, player, true))
 				continue;
 			
-			if (player.isInFrontOf(npc))
+			if (player.isFrontOf(npc))
 				frontCount++;
-			else if (player.isBehind(npc))
+			else if (player.isBehindOf(npc))
 				backCount++;
 			else
 				sideCount++;

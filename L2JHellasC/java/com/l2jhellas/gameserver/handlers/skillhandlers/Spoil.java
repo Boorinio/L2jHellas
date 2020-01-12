@@ -39,9 +39,8 @@ public class Spoil implements ISkillHandler
 				continue;
 			
 			final L2MonsterInstance target = (L2MonsterInstance) spoiledtarget;
-			boolean isDead = target.isDead();
 			
-			if (isDead)
+			if (target.isDead())
 				continue;
 			
 			boolean alreadySpoiled = target.getIsSpoiledBy() != 0;

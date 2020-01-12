@@ -9,7 +9,6 @@ import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 public class ItemsAutoDestroy
 {
 	protected List<L2ItemInstance> _items = new ArrayList<>();
-	protected static long _sleep;
 	
 	protected ItemsAutoDestroy()
 	{

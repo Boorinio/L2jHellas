@@ -58,7 +58,6 @@ import com.l2jhellas.gameserver.datatables.xml.StaticObjData;
 import com.l2jhellas.gameserver.datatables.xml.SummonItemsData;
 import com.l2jhellas.gameserver.datatables.xml.TeleportLocationData;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
-import com.l2jhellas.gameserver.geodata.geoeditorcon.GeoEditorListener;
 import com.l2jhellas.gameserver.handler.AutoAnnouncementHandler;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.AuctionManager;
@@ -81,7 +80,6 @@ import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossPointsManager;
 import com.l2jhellas.gameserver.instancemanager.RaidBossSpawnManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
-import com.l2jhellas.gameserver.instancemanager.SiegeReward;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.AutoChatHandler;
 import com.l2jhellas.gameserver.model.AutoSpawnHandler;
@@ -104,8 +102,6 @@ import com.l2jhellas.gameserver.scrips.boats.BoatRunePrimeval;
 import com.l2jhellas.gameserver.scrips.boats.BoatTalkingGludin;
 import com.l2jhellas.gameserver.scrips.loaders.MasterHandler;
 import com.l2jhellas.gameserver.scrips.loaders.ScriptLoader;
-import com.l2jhellas.gameserver.skills.HeroSkillTable;
-import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.taskmanager.MemoryWatchOptimize;
 import com.l2jhellas.gameserver.taskmanager.PvpFlagTaskManager;
@@ -168,8 +164,6 @@ public class GameServer
 		SkillTable.getInstance();
 		SkillTreeData.getInstance();
 		SkillSpellbookData.getInstance();
-		NobleSkillTable.getInstance();
-		HeroSkillTable.getInstance();
 		NpcBufferSkillIdsTable.getInstance();
 		
 		Util.printSection("Zone");
@@ -228,7 +222,6 @@ public class GameServer
 		Util.printSection("Castles-Clan Halls");
 		CastleManager.getInstance();
 		SiegeManager.getInstance();
-		SiegeReward.getInstance();
 		ClanHallManager.getInstance();
 		AuctionManager.getInstance();
 		
@@ -252,8 +245,6 @@ public class GameServer
 		Util.printSection("FourSepulcher");
 		FourSepulchersManager.getInstance().init();
 		
-		if (Config.ACCEPT_GEOEDITOR_CONN)
-			GeoEditorListener.getInstance();
 		if (Config.SAVE_DROPPED_ITEM)
 			ItemsOnGroundManager.getInstance();
 		

@@ -94,7 +94,6 @@ public class IpCatcher
 		}
 	}
 	
-	@SuppressWarnings("resource")
 	public void addIp(L2PcInstance p)
 	{
 		MkTiNe();
@@ -110,10 +109,9 @@ public class IpCatcher
 		ips.add(getMacAddr(p));
 		ips.add("-");
 		
-		FileWriter s = null;
 		try
 		{
-			s = new FileWriter(file);
+			FileWriter s = new FileWriter(file);
 			for (int i = 0; i < ips.size(); i++)
 			{
 				s.write(ips.get(i));
@@ -132,7 +130,6 @@ public class IpCatcher
 		ipsLoad();
 	}
 	
-	@SuppressWarnings("resource")
 	public void removeIp(L2PcInstance p)
 	{
 		final String ip = getIp(p);
@@ -147,10 +144,9 @@ public class IpCatcher
 		ips.remove(getMacAddr(p));
 		ips.remove("-");
 		
-		FileWriter s = null;
 		try
 		{
-			s = new FileWriter(file);
+			FileWriter s = new FileWriter(file);
 			for (int i = 0; i < ips.size(); i++)
 			{
 				s.write(ips.get(i));
@@ -171,6 +167,7 @@ public class IpCatcher
 	
 	public static void ipsLoad()
 	{
+		ips.clear();
 		try
 		{
 			MkTiNe();

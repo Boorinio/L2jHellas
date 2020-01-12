@@ -34,6 +34,8 @@ abstract class AbstractAI implements Ctrl
 	
 	protected final L2Character.AIAccessor _accessor;
 	
+	private final Location _tempMovePos = new Location();
+
 	protected CtrlIntention _intention = AI_INTENTION_IDLE;
 	
 	protected Object _intentionArg0 = null;
@@ -349,14 +351,20 @@ abstract class AbstractAI implements Ctrl
 			if (pawn == null)
 				return;
 			
+			Location destPos = new Location(pawn.getX(), pawn.getY(), pawn.getZ());
+
+			if(_actor.isMoving() && !_actor.getAI().isFollowing() && _tempMovePos.equals(destPos))
+				return;
+			
 			if (_actor.isInsideRadius(pawn, offset, true, false))
 			{
 				ThreadPoolManager.getInstance().executeAi(() -> _actor.getAI().notifyEvent(CtrlEvent.EVT_ARRIVED));
 				return;
-			}
-						
-			_actor.moveToLocation(pawn.getX(), pawn.getY(), pawn.getZ(), offset);
+			}		
 			
+			_actor.moveToLocation(pawn.getX(), pawn.getY(), pawn.getZ(), offset);
+			_tempMovePos.set(destPos);
+
 			if (!_actor.isMoving())
 			{
 				clientActionFailed();

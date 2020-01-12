@@ -672,9 +672,7 @@ public class NpcData
 		
 		for (L2NpcTemplate t : _npcs.values())
 			if (t.level == lvl)
-			{
 				list.add(t);
-			}
 		
 		return list.toArray(new L2NpcTemplate[list.size()]);
 	}
@@ -685,9 +683,7 @@ public class NpcData
 		
 		for (L2NpcTemplate t : _npcs.values())
 			if (t.level == lvl && "L2Monster".equals(t.type))
-			{
 				list.add(t);
-			}
 		
 		return list.toArray(new L2NpcTemplate[list.size()]);
 	}
@@ -698,9 +694,7 @@ public class NpcData
 		
 		for (L2NpcTemplate t : _npcs.values())
 			if (t.name.startsWith(letter) && "L2Npc".equals(t.type))
-			{
 				list.add(t);
-			}
 		
 		return list.toArray(new L2NpcTemplate[list.size()]);
 	}

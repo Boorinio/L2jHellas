@@ -66,12 +66,16 @@ public class AdminEditChar implements IAdminCommandHandler
 		"admin_setmp",
 		"admin_setchar_cp",
 		"admin_setchar_hp",
+		"admin_character_disconnect",
 		"admin_setchar_mp"
 	};
 	
 	@Override
 	public boolean useAdminCommand(String command, L2PcInstance activeChar)
 	{
+		
+		if (command.equals("admin_character_disconnect"))
+			disconnectCharacter(activeChar);
 		
 		if (command.equals("admin_current_player"))
 			showCharacterInfo(activeChar, null);
@@ -1007,6 +1011,25 @@ public class AdminEditChar implements IAdminCommandHandler
 		else
 			activeChar.setTarget(player);
 		gatherCharacterInfo(activeChar, player, "charinfo.htm");
+	}
+
+	private static void disconnectCharacter(L2PcInstance activeChar)
+	{	
+		final L2PcInstance player = activeChar.getTarget().getActingPlayer();	
+		if (player == null)
+		{
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+			return;
+		}
+		
+		if (player.getObjectId() == activeChar.getObjectId())
+			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
+		else
+		{						
+			player.closeNetConnection(true);		
+			RegionBBSManager.getInstance().changeCommunityBoard();
+			activeChar.sendMessage("Character " + player.getName() + " disconnected from server.");
+		}
 	}
 	
 	@Override

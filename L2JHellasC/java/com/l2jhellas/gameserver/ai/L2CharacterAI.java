@@ -631,7 +631,7 @@ public class L2CharacterAI extends AbstractAI
 
 				return false;
 			}
-			
+
 			if (_actor.isMovementDisabled() || (_actor.getMoveSpeed() <= 0))
 			{
 				if (_actor.getAI().getIntention() == CtrlIntention.AI_INTENTION_ATTACK)
@@ -645,19 +645,17 @@ public class L2CharacterAI extends AbstractAI
 						
 			stopFollow();
 			
-			if (!(target instanceof L2DoorInstance))
+			if (target instanceof L2Character && !(target instanceof L2DoorInstance))
 			{
-				if (((L2Character) target).isMoving())
+				if (isFollowing() || ((L2Character) target).isMoving())
 					offset -= 100;
 				
 				if (offset < 5)
-					offset = 5;
-						
-				    startFollow((L2Character) target, offset);
+					offset = 5;				
+			    startFollow((L2Character) target, offset);
 			}
 			else
 				moveToPawn(target, offset);	
-				
 			
 			return true;
 		}		

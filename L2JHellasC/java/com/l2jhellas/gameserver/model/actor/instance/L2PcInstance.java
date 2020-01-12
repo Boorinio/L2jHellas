@@ -75,8 +75,10 @@ import com.l2jhellas.gameserver.emum.player.DuelState;
 import com.l2jhellas.gameserver.emum.player.PartyLootType;
 import com.l2jhellas.gameserver.emum.player.PlayerExpLost;
 import com.l2jhellas.gameserver.emum.player.StoreType;
+import com.l2jhellas.gameserver.emum.skills.HeroSkills;
 import com.l2jhellas.gameserver.emum.skills.L2SkillTargetType;
 import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.gameserver.emum.skills.NobleSkills;
 import com.l2jhellas.gameserver.emum.sound.Music;
 import com.l2jhellas.gameserver.emum.sound.Sound;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
@@ -94,7 +96,6 @@ import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
 import com.l2jhellas.gameserver.instancemanager.QuestManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
-import com.l2jhellas.gameserver.instancemanager.SiegeReward;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.Couple;
@@ -239,8 +240,6 @@ import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.Formulas;
-import com.l2jhellas.gameserver.skills.HeroSkillTable;
-import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.skills.effects.EffectTemplate;
@@ -276,7 +275,7 @@ public class L2PcInstance extends L2Playable
 	
 	// Character Character
 	private static final String UPDATE_CHARACTER = "UPDATE characters SET level=?, maxHp=?, curHp=?, maxCp=?, curCp=?, maxMp=?, curMp=?, str=?, con=?, dex=?, _int=?, men=?, wit=?, face=?, hairStyle=?, hairColor=?, heading=?, x=?, y=?, z=?, exp=?, expBeforeDeath=?, sp=?, karma=?, pvpkills=?, pkkills=?, rec_have=?, rec_left=?, clanid=?, maxload=?, race=?, classid=?, deletetime=?, title=?, accesslevel=?, online=?, isin7sdungeon=?, clan_privs=?, wantspeace=?, base_class=?, onlinetime=?, in_jail=?, jail_timer=?, newbie=?, nobless=?, power_grade=?, subpledge=?, last_recom_date=?, lvl_joined_academy=?, apprentice=?, sponsor=?, varka_ketra_ally=?, clan_join_expiry_time=?, clan_create_expiry_time=?, char_name=?, death_penalty_level=?, chat_filter_count=? WHERE obj_id=?";
-	private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, expBeforeDeath, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally, clan_join_expiry_time, clan_create_expiry_time, death_penalty_level, hero, donator, chatban_timer, chatban_reason, chat_filter_count, lastVoteHopzone, lastVoteTopzone, hasVotedHop, hasVotedTop, monthVotes, totalVotes, tries FROM characters WHERE obj_Id=?";
+	private static final String RESTORE_CHARACTER = "SELECT account_name, obj_Id, char_name, level, maxHp, curHp, maxCp, curCp, maxMp, curMp, acc, crit, evasion, mAtk, mDef, mSpd, pAtk, pDef, pSpd, runSpd, walkSpd, str, con, dex, _int, men, wit, face, hairStyle, hairColor, sex, heading, x, y, z, movement_multiplier, attack_speed_multiplier, colRad, colHeight, exp, expBeforeDeath, sp, karma, pvpkills, pkkills, clanid, maxload, race, classid, deletetime, cancraft, title, rec_have, rec_left, accesslevel, online, char_slot, lastAccess, clan_privs, wantspeace, base_class, onlinetime, isin7sdungeon, in_jail, jail_timer, newbie, nobless, power_grade, subpledge, last_recom_date, lvl_joined_academy, apprentice, sponsor, varka_ketra_ally, clan_join_expiry_time, clan_create_expiry_time, death_penalty_level, hero, donator, chatban_timer, chatban_reason, chat_filter_count FROM characters WHERE obj_Id=?";
 	private static final String RESTORE_CHAR_SUBCLASSES = "SELECT class_id,exp,sp,level,class_index FROM character_subclasses WHERE char_obj_id=? ORDER BY class_index ASC";
 	private static final String INSERT_CHARACTER = "INSERT INTO characters (account_name,obj_Id,char_name,level,maxHp,curHp,maxCp,curCp,maxMp,curMp,acc,crit,evasion,mAtk,mDef,mSpd,pAtk,pDef,pSpd,runSpd,walkSpd,str,con,dex,_int,men,wit,face,hairStyle,hairColor,sex,movement_multiplier,attack_speed_multiplier,colRad,colHeight,exp,sp,karma,pvpkills,pkkills,clanid,maxload,race,classid,deletetime,cancraft,title,accesslevel,online,isin7sdungeon,clan_privs,wantspeace,base_class,newbie,nobless,power_grade,last_recom_date) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	
@@ -335,6 +334,258 @@ public class L2PcInstance extends L2Playable
 		55,
 		62
 	};
+		
+	protected boolean sittingTaskLaunched;
+	protected boolean _inventoryDisable = false;
+
+	public boolean PassedProt;
+	public boolean isinZodiac = false;
+	public boolean _exploring = false;
+	public boolean _allowTrade = true;
+
+	private boolean _isStored = false;
+	private boolean _isInDuel = false;
+	private boolean _posticipateSit;
+	private boolean _isOnline = false;
+	private boolean _isIn7sDungeon = false;
+	private boolean _InvullBuffs = false;	
+	private boolean _inJail = false;			
+	private boolean _isSilentMoving = false;	
+	private boolean _inCrystallize;	
+	private boolean _inCraftMode;	
+	private boolean _inOlympiadMode = false;
+	private boolean _OlympiadStart = false;	
+	private boolean _newbie;	
+	private boolean _noble = false;
+	private boolean _hero = false;	
+	private boolean _waitTypeSitting;	
+	private boolean _relax;	
+	private boolean _messageRefusal = false; // message refusal mode
+	private boolean _dietMode = false; // ignore weight penalty
+	private boolean _tradeRefusal = false; // Trade refusal
+	private boolean _exchangeRefusal = false; // Exchange refusal
+	private boolean _observerMode = false;				
+	private boolean _IsWearingFormalWear = false;
+	private boolean _revivePet = false;
+	
+	public int tempAc = 0;
+	public int botx, boty, botz;
+	public int ZodiacPoints;
+	public int CountIps;
+	public int OriginalColor;	
+	public int _telemode = 0;
+	
+	private int _herbstask = 0;
+	private int _recomHave; // how much I was recommended by others	
+	private int _recomLeft; // how many recommendations I can give to others	
+	private int _karma=0;	
+	private int _pvpKills = 0;
+	private int _pkKills = 0;	
+	private int _charId = 0x00030b7a;
+	private int _curWeightPenalty = 0;	
+	private int _lastCompassZone; // the last compass zone update send to the client
+	private int _olympiadGameId = -1;
+	private int _olympiadSide = -1;		
+	private int _mountType;	
+	private int _mountObjectID = 0;
+	private int _duelId = 0;
+	private int _questNpcObject = 0;
+	private int _clanId;	
+	private int _apprentice = 0;
+	private int _sponsor = 0;
+	private int _powerGrade = 0;
+	private int _clanPrivileges = 0;	
+	private int _pledgeClass = 0;
+	private int _pledgeType = 0;	
+	private int _lvlJoinedAcademy = 0;	
+	private int _wantsPeace = 0;
+	private int _deathPenaltyBuffLevel = 0;	
+	private int _expertiseIndex; // index in EXPERTISE_LEVELS
+	private int _expertisePenalty = 0;
+	private int _cursedWeaponEquipedId = 0;
+	private int _reviveRequested = 0;
+	private int _alliedVarkaKetra = 0;
+
+	// hennas
+	private final L2Henna[] _henna = new L2Henna[3];
+	private int _hennaSTR;
+	private int _hennaINT;
+	private int _hennaDEX;
+	private int _hennaMEN;
+	private int _hennaWIT;
+	private int _hennaCON;
+
+	protected int _baseClass;
+	protected int _activeClass;
+	protected int _classIndex = 0;
+	
+	private double _revivePower = 0;
+	private double _cpUpdateIncCheck = .0;
+	private double _cpUpdateDecCheck = .0;
+	private double _cpUpdateInterval = .0;
+	private double _mpUpdateIncCheck = .0;
+	private double _mpUpdateDecCheck = .0;
+	private double _mpUpdateInterval = .0;
+
+	private long _clanJoinExpiryTime;
+	private long _clanCreateExpiryTime;
+	private long _lastRecomUpdate;
+	private long _deleteTimer;	
+	private long _onlineTime;
+	private long _onlineBeginTime;
+	private long _lastAccess;
+	private long _uptime;
+	private long _expBeforeDeath;
+	private long _protectEndTime = 0;
+	private long _recentFakeDeathEndTime = 0;
+	
+	private byte _pvpFlag;	
+	private byte _siegeState = 0;
+	
+	public String OriginalTitle;
+	private String _accountName;
+		
+	protected L2GameClient _client;
+
+	private L2Clan _clan;
+	private PcAppearance _appearance;
+				
+	private long _jailTimer = 0;
+	private ScheduledFuture<?> _jailTask;
+	
+	private PunishLevel _punishLevel = PunishLevel.NONE; // TODO Clean up, delete old methods and add this one...
+	private long _punishTimer = 0;
+	private ScheduledFuture<?> _punishTask;
+
+	private DuelState _duelState = DuelState.NO_DUEL;
+	private SystemMessageId _noDuelReason = SystemMessageId.THERE_IS_NO_OPPONENT_TO_RECEIVE_YOUR_CHALLENGE_FOR_A_DUEL;
+	
+	private final RPSCookie _RPSCookie = new RPSCookie();	
+	public RPSCookie getRPSCookie()
+	{
+		return _RPSCookie;
+	}
+	
+	private Point3D _inBoatPosition;
+	private Point3D _currentSkillWorldPosition;
+	private ClassId _skillLearningClassId;
+	private L2Vehicle _vehicle = null;
+	private PcWarehouse _warehouse;
+	private L2NpcInstance _lastFolkNpc = null;
+	private L2Summon _summon = null;
+	private L2TamedBeastInstance _tamedBeast = null;
+	private L2Radar _radar;	
+	private L2AccessLevel _accessLevel;
+	private L2Weapon _fistsWeaponItem;
+	private L2Party _party;
+	private L2ItemInstance _arrowItem;
+
+	private final FloodProtectors _floodProtectors = new FloodProtectors(this);
+	
+	private Map<Integer, SubClass> _subClasses;
+	private final Map<Integer, String> _chars = new HashMap<>();
+	private final Map<Integer, L2RecipeList> _dwarvenRecipeBook = new HashMap<>();
+	private final Map<Integer, L2RecipeList> _commonRecipeBook = new HashMap<>();
+	
+	protected Map<Integer, L2CubicInstance> _cubics = new HashMap<>();
+	protected Map<Integer, Integer> _activeSoulShots = new HashMap<>();
+
+	private final Location _obsLocation = new Location(0, 0, 0);	
+	private final Point3D _lastClientPosition = new Point3D(0, 0, 0);
+	private final Point3D _lastServerPosition = new Point3D(0, 0, 0);
+
+	private final List<Integer> _recomChars = new ArrayList<>();
+		
+	private final PcInventory _inventory = new PcInventory(this);
+	private final PcFreight _freight = new PcFreight(this);
+	private StoreType _privatestore = StoreType.NONE;
+	private final BlockList _blockList = new BlockList(this);
+
+	private TradeList _activeTradeList;
+	private ItemContainer _activeWarehouse;
+	private L2ManufactureList _createList;
+	private TradeList _sellList;
+	private TradeList _buyList;
+
+	private final List<QuestState> _quests = new ArrayList<>();
+	private final List<QuestState> _notifyQuestOfDeathList = new ArrayList<>();
+	
+	private final ShortCuts _shortCuts = new ShortCuts(this);	
+	private final MacroList _macroses = new MacroList(this);
+	
+	private final List<L2PcInstance> _snoopListener = new ArrayList<>();
+	private final List<L2PcInstance> _snoopedPlayer = new ArrayList<>();
+	
+	// Chat ban
+	private boolean _chatBanned = false; // Chat Banned
+	private long _banchat_timer = 0;
+	private ScheduledFuture<?> _BanChatTask;
+	
+	// this is needed to find the inviting player for Party response
+	// there can only be one active party request at once
+	private L2PcInstance _activeRequester;
+	private long _requestExpireTime = 0;
+	private final L2Request _request = new L2Request(this);
+
+	private boolean _isEnchanting = false;
+	private L2ItemInstance _activeEnchantItem = null;
+			
+	public final ReentrantLock soulShotLock = new ReentrantLock();
+
+	public int eventX;
+	public int eventY;
+	public int eventZ;
+	public int eventkarma;
+	public int eventpvpkills;
+	public int eventpkkills;
+	public String eventTitle;
+	public LinkedList<String> kills = new LinkedList<>();
+	public boolean eventSitForced = false;
+	public boolean atEvent = false;
+	
+	public String _teamNameTvT, _originalTitleTvT;
+	public int _originalNameColorTvT, _countTvTkills, _countTvTdies, _originalKarmaTvT;
+	public boolean _inEventTvT = false;
+	
+	public String _teamNameCTF, _teamNameHaveFlagCTF, _originalTitleCTF;
+	public int _originalNameColorCTF, _originalKarmaCTF, _countCTFflags;
+	public boolean _inEventCTF = false, _haveFlagCTF = false;
+	public Future<?> _posCheckerCTF = null;
+	
+	public boolean _isVIP = false, _inEventVIP = false, _isNotVIP = false, _isTheVIP = false;
+	public int _originalNameColourVIP, _originalKarmaVIP;
+	
+	public boolean _voteRestart = false;
+	
+	public int _originalNameColorDM, _countDMkills, _originalKarmaDM;
+	public boolean _inEventDM = false;
+	
+	private final int _loto[] = new int[5];
+	// public static int _loto_nums[] = {0,1,2,3,4,5,6,7,8,9,};
+	
+	private final int _race[] = new int[2];
+		
+	private Team _team = Team.NONE;
+		
+	private L2Fishing _fishCombat;
+	private boolean _fishing = false;
+	private int _fishx = 0;
+	private int _fishy = 0;
+	private int _fishz = 0;
+	
+	private ScheduledFuture<?> _taskRentPet;
+	
+	private final List<Integer> _friendList = new ArrayList<>();
+	
+	private final List<String> _validBypass = new ArrayList<>();
+	private final List<String> _validBypass2 = new ArrayList<>();
+	
+	private Forum _forumMail;
+	private Forum _forumMemo;
+	
+	private SkillDat _currentSkill;
+	private SkillDat _currentPetSkill;
+	private SkillDat _queuedSkill;
 	
 	public class AIAccessor extends L2Character.AIAccessor
 	{
@@ -431,71 +682,6 @@ public class L2PcInstance extends L2Playable
 			_forceBuff = new ForceBuff(this, (L2PcInstance) target, skill);
 	}
 	
-	private boolean _posticipateSit;
-	
-	protected boolean sittingTaskLaunched;
-	
-	public int tempAc = 0;
-	public boolean PassedProt;
-	public int botx, boty, botz;
-	
-	// Zodiac Engine
-	public boolean isinZodiac = false;
-	public int OriginalColor;
-	public String OriginalTitle;
-	public int ZodiacPoints;
-	public int CountIps;
-	
-	protected L2GameClient _client;
-	
-	private String _accountName;
-	private long _deleteTimer;
-	
-	private boolean _isOnline = false;
-	private long _onlineTime;
-	private long _onlineBeginTime;
-	private long _lastAccess;
-	private long _uptime;
-	
-	private boolean hasVotedTop, hasVotedHop;
-	
-	protected int _baseClass;
-	protected int _activeClass;
-	protected int _classIndex = 0;
-	
-	private Map<Integer, SubClass> _subClasses;
-	
-	private PcAppearance _appearance;
-	
-	private int _charId = 0x00030b7a;
-	
-	private long _expBeforeDeath;
-	
-	private int _karma;
-	
-	private int _pvpKills = 0;
-	
-	private int _pkKills = 0;
-	
-	private byte _pvpFlag;
-	
-	private byte _siegeState = 0;
-	
-	private int _curWeightPenalty = 0;
-	
-	private int _lastCompassZone; // the last compass zone update send to the client
-	
-	private boolean _isIn7sDungeon = false;
-	private boolean _InvullBuffs = false;
-	
-	private boolean _inJail = false;
-	private long _jailTimer = 0;
-	private ScheduledFuture<?> _jailTask;
-	
-	private PunishLevel _punishLevel = PunishLevel.NONE; // TODO Clean up, delete old methods and add this one...
-	private long _punishTimer = 0;
-	private ScheduledFuture<?> _punishTask;
-	
 	public enum PunishLevel
 	{
 		NONE(0, ""),
@@ -523,85 +709,7 @@ public class L2PcInstance extends L2Playable
 			return punString;
 		}
 	}
-	
-	private boolean _isStored = false;
-	
-	private boolean _inOlympiadMode = false;
-	private boolean _OlympiadStart = false;
-	private int _olympiadGameId = -1;
-	private int _olympiadSide = -1;
-	
-	private boolean _isInDuel = false;
-	private DuelState _duelState = DuelState.NO_DUEL;
-	private int _duelId = 0;
-	private SystemMessageId _noDuelReason = SystemMessageId.THERE_IS_NO_OPPONENT_TO_RECEIVE_YOUR_CHALLENGE_FOR_A_DUEL;
-	
-	private final RPSCookie _RPSCookie = new RPSCookie();
-	
-	public RPSCookie getRPSCookie()
-	{
-		return _RPSCookie;
-	}
-	
-	private Point3D _inBoatPosition;
-	private L2Vehicle _vehicle = null;
-	
-	private int _mountType;
-	
-	private int _mountObjectID = 0;
-	
-	public int _telemode = 0;
-	
-	public boolean _exploring = false;
-	
-	private boolean _isSilentMoving = false;
-	
-	private boolean _inCrystallize;
-	
-	private boolean _inCraftMode;
-	
-	private final Map<Integer, L2RecipeList> _dwarvenRecipeBook = new HashMap<>();
-	private final Map<Integer, L2RecipeList> _commonRecipeBook = new HashMap<>();
-	
-	private final FloodProtectors _floodProtectors = new FloodProtectors(this);
-	
-	private boolean _waitTypeSitting;
-	
-	private boolean _relax;
-	
-	private final Location _obsLocation = new Location(0, 0, 0);
-	private boolean _observerMode = false;
-	
-	private final Point3D _lastClientPosition = new Point3D(0, 0, 0);
-	private final Point3D _lastServerPosition = new Point3D(0, 0, 0);
-	
-	private int _recomHave; // how much I was recommended by others
-	
-	private int _recomLeft; // how many recommendations I can give to others
-	
-	private long _lastRecomUpdate;
-	
-	private final List<Integer> _recomChars = new ArrayList<>();
-	
-	// private static final Random _rnd = new Random();
-	
-	private final PcInventory _inventory = new PcInventory(this);
-	private PcWarehouse _warehouse;
-	private final PcFreight _freight = new PcFreight(this);
 
-	private StoreType _privatestore = StoreType.NONE;
-	
-	private TradeList _activeTradeList;
-	private ItemContainer _activeWarehouse;
-	private L2ManufactureList _createList;
-	private TradeList _sellList;
-	private TradeList _buyList;
-	
-	private boolean _newbie;
-	
-	private boolean _noble = false;
-	private boolean _hero = false;
-	
 	private void createPSdb()
 	{
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
@@ -692,194 +800,6 @@ public class L2PcInstance extends L2Playable
 			player.setPremiumService(0);
 		}
 	}
-	
-	private L2NpcInstance _lastFolkNpc = null;
-	
-	private int _questNpcObject = 0;
-	
-	// private final Map<String, QuestState> _quests = new HashMap<String, QuestState>();
-	private final List<QuestState> _quests = new ArrayList<>();
-	
-	private final List<QuestState> _notifyQuestOfDeathList = new ArrayList<>();
-	
-	private final ShortCuts _shortCuts = new ShortCuts(this);
-	
-	private final MacroList _macroses = new MacroList(this);
-	
-	private final List<L2PcInstance> _snoopListener = new ArrayList<>();
-	private final List<L2PcInstance> _snoopedPlayer = new ArrayList<>();
-	
-	private ClassId _skillLearningClassId;
-	
-	// hennas
-	private final L2Henna[] _henna = new L2Henna[3];
-	private int _hennaSTR;
-	private int _hennaINT;
-	private int _hennaDEX;
-	private int _hennaMEN;
-	private int _hennaWIT;
-	private int _hennaCON;
-	
-	private L2Summon _summon = null;
-	// apparently, a L2PcInstance CAN have both a summon AND a tamed beast at
-	// the same time!!
-	private L2TamedBeastInstance _tamedBeast = null;
-	
-	// client radar
-	// TODO: This needs to be better integrated and saved/loaded
-	private L2Radar _radar;
-	
-	// Clan related attributes
-	
-	private int _clanId;
-	
-	private L2Clan _clan;
-	
-	private int _apprentice = 0;
-	private int _sponsor = 0;
-	
-	public boolean _allowTrade = true;
-	
-	private long _clanJoinExpiryTime;
-	private long _clanCreateExpiryTime;
-	
-	private int _powerGrade = 0;
-	private int _clanPrivileges = 0;
-	
-	private int _pledgeClass = 0;
-	private int _pledgeType = 0;
-	
-	private int _lvlJoinedAcademy = 0;
-	
-	private int _wantsPeace = 0;
-	
-	// Death Penalty Buff Level
-	private int _deathPenaltyBuffLevel = 0;
-	
-	// WorldPosition used by TARGET_SIGNET_GROUND
-	private Point3D _currentSkillWorldPosition;
-	
-	private L2AccessLevel _accessLevel;
-	
-	// Chat ban
-	private boolean _chatBanned = false; // Chat Banned
-	private long _banchat_timer = 0;
-	private ScheduledFuture<?> _BanChatTask;
-	
-	private boolean _messageRefusal = false; // message refusal mode
-	private boolean _dietMode = false; // ignore weight penalty
-	private boolean _tradeRefusal = false; // Trade refusal
-	private boolean _exchangeRefusal = false; // Exchange refusal
-	
-	private L2Party _party;
-	
-	// this is needed to find the inviting player for Party response
-	// there can only be one active party request at once
-	private L2PcInstance _activeRequester;
-	private long _requestExpireTime = 0;
-	private final L2Request _request = new L2Request(this);
-	private L2ItemInstance _arrowItem;
-	
-	// Used for protection after teleport
-	private long _protectEndTime = 0;
-	
-	// protects a char from agro mobs when getting up from fake death
-	private long _recentFakeDeathEndTime = 0;
-	
-	private L2Weapon _fistsWeaponItem;
-	
-	private final Map<Integer, String> _chars = new HashMap<>();
-	
-	// private byte _updateKnownCounter = 0;
-	
-	private int _expertiseIndex; // index in EXPERTISE_LEVELS
-	private int _expertisePenalty = 0;
-	
-	private boolean _isEnchanting = false;
-	private L2ItemInstance _activeEnchantItem = null;
-	
-	protected boolean _inventoryDisable = false;
-	
-	protected Map<Integer, L2CubicInstance> _cubics = new HashMap<>();
-	
-	protected Map<Integer, Integer> _activeSoulShots = new HashMap<>();
-	
-	public final ReentrantLock soulShotLock = new ReentrantLock();
-	
-	public int eventX;
-	public int eventY;
-	public int eventZ;
-	public int eventkarma;
-	public int eventpvpkills;
-	public int eventpkkills;
-	public String eventTitle;
-	public LinkedList<String> kills = new LinkedList<>();
-	public boolean eventSitForced = false;
-	public boolean atEvent = false;
-	
-	public String _teamNameTvT, _originalTitleTvT;
-	public int _originalNameColorTvT, _countTvTkills, _countTvTdies, _originalKarmaTvT;
-	public boolean _inEventTvT = false;
-	
-	public String _teamNameCTF, _teamNameHaveFlagCTF, _originalTitleCTF;
-	public int _originalNameColorCTF, _originalKarmaCTF, _countCTFflags;
-	public boolean _inEventCTF = false, _haveFlagCTF = false;
-	public Future<?> _posCheckerCTF = null;
-	
-	public boolean _isVIP = false, _inEventVIP = false, _isNotVIP = false, _isTheVIP = false;
-	public int _originalNameColourVIP, _originalKarmaVIP;
-	
-	public boolean _voteRestart = false;
-	
-	public int _originalNameColorDM, _countDMkills, _originalKarmaDM;
-	public boolean _inEventDM = false;
-	
-	private final int _loto[] = new int[5];
-	// public static int _loto_nums[] = {0,1,2,3,4,5,6,7,8,9,};
-	
-	private final int _race[] = new int[2];
-	
-	private final BlockList _blockList = new BlockList(this);
-	
-	private Team _team = Team.NONE;
-	
-	private int _alliedVarkaKetra = 0;
-	
-	private L2Fishing _fishCombat;
-	private boolean _fishing = false;
-	private int _fishx = 0;
-	private int _fishy = 0;
-	private int _fishz = 0;
-	
-	private ScheduledFuture<?> _taskRentPet;
-	
-	private final List<String> _validBypass = new ArrayList<>();
-	private final List<String> _validBypass2 = new ArrayList<>();
-	
-	private Forum _forumMail;
-	private Forum _forumMemo;
-	
-	private SkillDat _currentSkill;
-	private SkillDat _currentPetSkill;
-	
-	private SkillDat _queuedSkill;
-	
-	private boolean _IsWearingFormalWear = false;
-	
-	private int _cursedWeaponEquipedId = 0;
-	
-	private int _reviveRequested = 0;
-	private double _revivePower = 0;
-	private boolean _revivePet = false;
-	
-	private double _cpUpdateIncCheck = .0;
-	private double _cpUpdateDecCheck = .0;
-	private double _cpUpdateInterval = .0;
-	private double _mpUpdateIncCheck = .0;
-	private double _mpUpdateDecCheck = .0;
-	private double _mpUpdateInterval = .0;
-	
-	private int _herbstask = 0;
 	
 	public class HerbTask implements Runnable
 	{
@@ -983,9 +903,7 @@ public class L2PcInstance extends L2Playable
 			return (getSkill() != null) ? getSkill().getId() : -1;
 		}
 	}
-	
-	private final List<Integer> _friendList = new ArrayList<>();
-	
+		
 	public static L2PcInstance create(int objectId, L2PcTemplate template, String accountName, String name, byte hairStyle, byte hairColor, byte face, Sex sex)
 	{
 		// Create a new L2PcInstance with an account name
@@ -1831,11 +1749,8 @@ public class L2PcInstance extends L2Playable
 				
 				if (((_itemId >= 2509 && _itemId <= 2514) || (_itemId >= 3947 && _itemId <= 3952) || (_itemId <= 1804 && _itemId >= 1808) || _itemId == 5789 || _itemId == 5790 || _itemId == 1835) && ss.getItem().getCrystalType() == unequipped.getItem().getCrystalType())
 				{
-					sendPacket(new ExAutoSoulShot(_itemId, 0));
-					
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.AUTO_USE_OF_S1_CANCELLED);
-					sm.addString(ss.getItemName());
-					sendPacket(sm);
+					sendPacket(new ExAutoSoulShot(_itemId, 0));			
+					sendPacket(SystemMessage.getSystemMessage(SystemMessageId.AUTO_USE_OF_S1_CANCELLED).addString(ss.getItemName()));
 				}
 			}
 		}
@@ -2021,7 +1936,7 @@ public class L2PcInstance extends L2Playable
 		int lvl = getLevel();
 		
 		// Remove beginner Lucky skill
-		if (lvl == 10)
+		if (lvl > 9)
 		{
 			L2Skill skill = SkillTable.getInstance().getInfo(194, 1);
 			skill = removeSkill(skill);
@@ -4083,6 +3998,12 @@ public class L2PcInstance extends L2Playable
 		// Kill the L2PcInstance
 		if (!super.doDie(killer))
 			return false;
+
+		synchronized (this)
+		{
+			if (isFakeDeath())
+				stopFakeDeath(null);
+		}
 		
 		Castle castle = null;
 		if (getClan() != null)
@@ -6139,12 +6060,12 @@ public class L2PcInstance extends L2Playable
 			}
 			
 			// Exclude noble skills
-			if (isNoble() && NobleSkillTable.isNobleSkill(skillid))
+			if (isNoble() && NobleSkills.isNobleSkill(skillid))
 			{
 				continue skill_loop;
 			}
 			// Exclude hero skills
-			if (isHero() && HeroSkillTable.isHeroSkill(skillid))
+			if (isHero() && HeroSkills.isHeroSkill(skillid))
 			{
 				continue skill_loop;
 			}
@@ -7199,11 +7120,12 @@ public class L2PcInstance extends L2Playable
 		// Check if the skill is Sweep type and if conditions not apply
 		if (SkillType == L2SkillType.SWEEP && target instanceof L2Attackable)
 		{
-			int spoilerId = ((L2Attackable) target).getIsSpoiledBy();
 			
 			if (((L2Attackable) target).isDead())
 			{
-				if (!((L2Attackable) target).isSpoil())
+				final int spoilerId = ((L2Attackable) target).getIsSpoiledBy();
+
+				if (spoilerId == 0)
 				{
 					// Send a System Message to the L2PcInstance
 					sendPacket(SystemMessageId.SWEEPER_FAILED_TARGET_NOT_SPOILED);
@@ -8071,23 +7993,27 @@ public class L2PcInstance extends L2Playable
 	{
 		if (hero && _baseClass == _activeClass)
 		{
-			for (L2Skill s : HeroSkillTable.GetHeroSkills())
+			for (HeroSkills sk : HeroSkills.getAllSkills())
 			{
-				addSkill(s, false); // Dont Save Hero skills to database
+				L2Skill skill = SkillTable.getInstance().getInfo(sk.getSkillId(),sk.getLevel());
+				addSkill(skill,false);
 			}
 		}
 		else if (getCount() >= Config.HERO_COUNT && hero && Config.ALLOW_HERO_SUBSKILL)
 		{
-			for (L2Skill s : HeroSkillTable.GetHeroSkills())
+			for (HeroSkills sk : HeroSkills.getAllSkills())
 			{
-				addSkill(s, false); // Dont Save Hero skills to database
+				L2Skill skill = SkillTable.getInstance().getInfo(sk.getSkillId(),sk.getLevel());
+				addSkill(skill,false);
 			}
 		}
 		else
 		{
-			for (L2Skill s : HeroSkillTable.GetHeroSkills())
+			
+			for (HeroSkills sk : HeroSkills.getAllSkills())
 			{
-				super.removeSkill(s); // Just Remove skills from nonHero characters
+				L2Skill skill = SkillTable.getInstance().getInfo(sk.getSkillId(),sk.getLevel());
+				super.removeSkill(skill);
 			}
 		}
 		_hero = hero;
@@ -8229,16 +8155,18 @@ public class L2PcInstance extends L2Playable
 	{
 		if (val)
 		{
-			for (L2Skill s : NobleSkillTable.getInstance().GetNobleSkills())
+			for (NobleSkills sk : NobleSkills.getAllSkills())
 			{
-				addSkill(s, false); // Dont Save Noble skills to Sql
+				L2Skill skill = SkillTable.getInstance().getInfo(sk.getSkillId(),sk.getLevel());
+				addSkill(skill,false);
 			}
 		}
 		else
-		{
-			for (L2Skill s : NobleSkillTable.getInstance().GetNobleSkills())
+		{		
+			for (NobleSkills sk : NobleSkills.getAllSkills())
 			{
-				super.removeSkill(s); // Just Remove skills without deleting
+				L2Skill skill = SkillTable.getInstance().getInfo(sk.getSkillId(),sk.getLevel());
+				super.removeSkill(skill);
 			}
 		}
 		// from Sql
@@ -11024,6 +10952,9 @@ public class L2PcInstance extends L2Playable
 				AdminData.getInstance().addGm(this, true);
 		}
 		
+		if (getLevel() > 9 && hasSkill(L2Skill.SKILL_LUCKY))
+			removeSkill(SkillTable.getInstance().getInfo(L2Skill.SKILL_LUCKY, 1));
+		
 		standUp();
 		
 		if (isDead())
@@ -11194,10 +11125,7 @@ public class L2PcInstance extends L2Playable
 			else if (getLevel() >= 76 && lvlnow == 2)
 				L2ClassMasterInstance.ClassMaster.onAction(this);
 		}
-		
-		if (SiegeReward.ACTIVATED_SYSTEM && !SiegeReward.REWARD_ACTIVE_MEMBERS_ONLY)
-			SiegeReward.getInstance().processWorldEnter(this);
-		
+
 		if (AntiBot.isvoting)
 			AntiBot.showHtmlWindow(this);
 		
@@ -11274,9 +11202,7 @@ public class L2PcInstance extends L2Playable
 			teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 			sendMessage("You have been teleported to the nearest town.");
 		}
-		
-		loadVotes();
-		
+
 		RegionBBSManager.getInstance().changeCommunityBoard();
 		
 		sendPacket(ActionFailed.STATIC_PACKET);
@@ -11873,66 +11799,6 @@ public class L2PcInstance extends L2Playable
 		}
 	}
 	
-	private void loadVotes()
-	{
-		int flag = 0;
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			PreparedStatement statement = con.prepareStatement("SELECT hasVotedTop FROM characters WHERE obj_Id=?");
-			statement.setInt(1, getObjectId());
-			ResultSet rset = statement.executeQuery();
-			
-			while (rset.next())
-			{
-				flag = rset.getInt("hasVotedTop");
-			}
-			rset.close();
-			statement.close();
-			if (flag == 1)
-			{
-				setTop(true);
-			}
-			else
-			{
-				setTop(false);
-			}
-		}
-		catch (SQLException e)
-		{
-			_log.warning(L2PcInstance.class.getSimpleName() + ": VoteManager: could not select hasVotedHop from characters ");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
-		}
-		flag = 0;
-		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
-		{
-			PreparedStatement statement = con.prepareStatement("SELECT hasVotedHop FROM characters WHERE obj_Id=?");
-			statement.setInt(1, getObjectId());
-			ResultSet rset = statement.executeQuery();
-			
-			while (rset.next())
-			{
-				flag = rset.getInt("hasVotedHop");
-			}
-			rset.close();
-			statement.close();
-			if (flag == 1)
-			{
-				setHop(true);
-			}
-			else
-			{
-				setHop(false);
-			}
-		}
-		catch (SQLException e)
-		{
-			_log.warning(L2PcInstance.class.getSimpleName() + ": VoteManager: could not select hasVotedHop from characters ");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
-		}
-	}
-	
 	private void notifySponsorOrApprentice()
 	{
 		if (getSponsor() != 0)
@@ -11958,22 +11824,7 @@ public class L2PcInstance extends L2Playable
 			}
 		}
 	}
-	
-	public boolean hasVotedBoth()
-	{
-		return hasVotedHop && hasVotedTop;
-	}
-	
-	public void setHop(boolean target)
-	{
-		hasVotedHop = target;
-	}
-	
-	public void setTop(boolean target)
-	{
-		hasVotedTop = target;
-	}
-	
+
 	private void setPledgeClass()
 	{
 		int pledgeClass = 0;
@@ -12849,7 +12700,7 @@ public class L2PcInstance extends L2Playable
 		{
 			player.sendPacket(packet);	
 			sendRelationChanged(player);
-		});
+		});			
 	}
 	
 	public final void broadcastTitleInfo()
@@ -13071,7 +12922,7 @@ public class L2PcInstance extends L2Playable
 		infoHtml.setHtml(htmContent);
 		sendPacket(infoHtml);
 	}
-	
+
 	public void rechargeShots(boolean physical, boolean magic)
 	{
 		L2ItemInstance weaponInst = getActiveWeaponInstance();

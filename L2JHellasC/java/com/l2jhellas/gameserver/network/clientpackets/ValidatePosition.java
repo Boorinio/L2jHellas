@@ -7,7 +7,6 @@ import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
-import com.l2jhellas.gameserver.geodata.geoeditorcon.GeoEditorListener;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.CharMoveToLocation;
 import com.l2jhellas.gameserver.network.serverpackets.GetOnVehicle;
@@ -66,12 +65,6 @@ public class ValidatePosition extends L2GameClientPacket
 			
 		if (activeChar.isFalling(_z))
 			return;
-		
-		if(!phxZCheck(activeChar.getZ(), _z))
-		{
-			tsekarepos(activeChar,isFloating);
-			return;
-		}
 
 		if (Config.COORD_SYNCHRONIZE > 0)
 		{
@@ -87,9 +80,8 @@ public class ValidatePosition extends L2GameClientPacket
 			double dy = _y - realY;
 			double diffSq = Math.sqrt(dx * dx + dy * dy);
 
-			if (!activeChar.isFlying() && !activeChar.isInsideZone(ZoneId.WATER))
+			if (!isFloating)
 			{			
-				// temporary fix for -> (((if))) holes found.
 				if (_z < -15000 || _z > 15000)
 				{
 					activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
@@ -105,7 +97,7 @@ public class ValidatePosition extends L2GameClientPacket
 				{
 					if (Config.DEVELOPER)
 						System.out.println(activeChar.getName() + ": Synchronizing position Client --> Server" + (activeChar.isMoving() ? " (collision)" : " (stay sync)"));
-					if (diffSq < 50) // 50*50 - attack won't work fluently if even small differences are corrected
+					if (diffSq < 50) 
 						activeChar.setXYZ(realX, realY, _z);
 					else
 						activeChar.setXYZ(_x, _y, _z);
@@ -179,12 +171,6 @@ public class ValidatePosition extends L2GameClientPacket
 		
 		if (activeChar.getParty() != null)
 			activeChar.getParty().broadcastToPartyMembers(activeChar, new PartyMemberPosition(activeChar.getParty()));
-		
-		if (Config.ACCEPT_GEOEDITOR_CONN)
-		{
-			if (GeoEditorListener.getInstance().getThread() != null && GeoEditorListener.getInstance().getThread().isWorking() && GeoEditorListener.getInstance().getThread().isSend(activeChar))
-				GeoEditorListener.getInstance().getThread().sendGmPosition(_x, _y, (short) _z);
-		}
 	}
 	
 	@Override
@@ -236,10 +222,5 @@ public class ValidatePosition extends L2GameClientPacket
 			else
 				activeChar.teleToLocation(MapRegionTable.TeleportWhereType.TOWN);
 		}
-	}
-	
-	public boolean phxZCheck(int cz, int tz)
-	{		
-		return Math.abs(cz - tz) < 1000;
 	}
 }

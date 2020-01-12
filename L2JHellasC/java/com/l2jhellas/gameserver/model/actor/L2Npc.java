@@ -17,6 +17,7 @@ import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.HelperBuffData;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.emum.skills.L2SkillType;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -60,7 +61,6 @@ import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.model.zone.type.L2TownZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.AbstractNpcInfo.NpcInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.ExShowVariationCancelWindow;
@@ -1966,9 +1966,9 @@ public class L2Npc extends L2Character
 		}
 	}
 	
-	public boolean isMob() // rather delete this check
+	public boolean isMob()
 	{
-		return false; // This means we use MAX_NPC_ANIMATION instead of MAX_MONSTER_ANIMATION
+		return false; 
 	}
 	
 	// Two functions to change the appearance of the equipped weapons on the NPC
@@ -2048,7 +2048,7 @@ public class L2Npc extends L2Character
 	
 	public void broadcastNpcSay(String message)
 	{
-		broadcastPacket(new NpcSay(getObjectId(), Say2.ALL, getNpcId(), message), 1250);
+		broadcastPacket(new NpcSay(getObjectId(), ChatType.GENERAL.getClientId(), getNpcId(), message), 1250);
 	}
 	
 	@Override

@@ -43,6 +43,7 @@ public final class RequestGMCommand extends L2GameClientPacket
 			case 1: // player status
 			{
 				sendPacket(new GMViewCharacterInfo(player));
+				sendPacket(new GMViewHennaInfo(player));
 				break;
 			}
 			case 2: // player clan

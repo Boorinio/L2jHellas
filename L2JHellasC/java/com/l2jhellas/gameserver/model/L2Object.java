@@ -16,6 +16,7 @@ import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.DeleteObject;
 import com.l2jhellas.gameserver.network.serverpackets.GetItem;
+import com.l2jhellas.util.Util;
 
 public abstract class L2Object
 {
@@ -373,5 +374,10 @@ public abstract class L2Object
 	public boolean isInsideZone(ZoneId zone)
 	{
 		return false;
+	}
+
+	public int calculateHeadingTo(L2Character activeChar)
+	{
+		return Util.calculateHeadingFrom(getX(), getY(), activeChar.getX(), activeChar.getY());
 	}
 }

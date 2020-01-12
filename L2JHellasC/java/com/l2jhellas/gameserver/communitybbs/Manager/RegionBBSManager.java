@@ -10,12 +10,12 @@ import java.util.StringTokenizer;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.GameServer;
 import com.l2jhellas.gameserver.emum.Sex;
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.base.Experience;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.ShowBoard;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -187,13 +187,13 @@ public class RegionBBSManager extends BaseBBSManager
 					return;
 				}
 				
-				CreatureSay cs = new CreatureSay(activeChar.getObjectId(), Say2.TELL, activeChar.getName(), ar3);
+				CreatureSay cs = new CreatureSay(activeChar.getObjectId(), ChatType.WHISPER.getClientId(), activeChar.getName(), ar3);
 				if (!BlockList.isBlocked(receiver, activeChar))
 				{
 					if (!receiver.getMessageRefusal())
 					{
 						receiver.sendPacket(cs);
-						activeChar.sendPacket(new CreatureSay(activeChar.getObjectId(), Say2.TELL, "->" + receiver.getName(), ar3));
+						activeChar.sendPacket(new CreatureSay(activeChar.getObjectId(), ChatType.WHISPER.getClientId(), "->" + receiver.getName(), ar3));
 						htmlCode.append("Message Sent<br><button value=\"Back\" action=\"bypass _bbsloc;playerinfo;" + receiver.getName() + "\" width=40 height=15 back=\"sek.cbui94\" fore=\"sek.cbui92\">");
 						htmlCode.append("</td></tr></table></body></html>");
 						separateAndSend(htmlCode.toString(), activeChar);

@@ -111,7 +111,9 @@ public class ShortCuts
 	
 	public void deleteShortCut(int slot, int page)
 	{
-		final L2ShortCut old = _shortCuts.remove(slot + (page * MAX_SHORTCUTS_PER_BAR));
+		slot += page * MAX_SHORTCUTS_PER_BAR;
+		
+		final L2ShortCut old = _shortCuts.remove(slot);
 		if (old == null || _owner == null)
 			return;
 		
@@ -128,7 +130,7 @@ public class ShortCuts
 		}
 				
 		_owner.sendPacket(new ShortCutInit(_owner));
-		
+
 		for (int shotId : _owner.getAutoSoulShot().values())
 			_owner.sendPacket(new ExAutoSoulShot(shotId, 1));
 	}

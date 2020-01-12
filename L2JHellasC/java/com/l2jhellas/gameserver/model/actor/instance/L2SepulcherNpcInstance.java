@@ -10,13 +10,13 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.instancemanager.FourSepulchersManager;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
-import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
@@ -395,7 +395,7 @@ public class L2SepulcherNpcInstance extends L2Npc
 		Collection<L2PcInstance> knownPlayers = L2World.getInstance().getAllPlayers().values();
 		if ((knownPlayers == null) || knownPlayers.isEmpty())
 			return;
-		CreatureSay sm = new CreatureSay(0, Say2.SHOUT, getName(), msg);
+		CreatureSay sm = new CreatureSay(0, ChatType.SHOUT.getClientId(), getName(), msg);
 		for (L2PcInstance player : knownPlayers)
 		{
 			if (player == null)

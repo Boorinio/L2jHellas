@@ -14,9 +14,9 @@ import java.util.logging.Logger;
 import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
@@ -47,7 +47,7 @@ public class Announcements
 	{
 		for (int i = 0; i < _announcements.size(); i++)
 		{
-			CreatureSay cs = new CreatureSay(0, Say2.ANNOUNCEMENT, activeChar.getName(), _announcements.get(i));
+			CreatureSay cs = new CreatureSay(0, ChatType.ANNOUNCEMENT.getClientId(), activeChar.getName(), _announcements.get(i));
 			activeChar.sendPacket(cs);
 		}
 		

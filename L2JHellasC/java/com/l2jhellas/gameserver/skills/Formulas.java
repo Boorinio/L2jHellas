@@ -6,6 +6,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.emum.items.L2WeaponType;
+import com.l2jhellas.gameserver.emum.player.Position;
 import com.l2jhellas.gameserver.emum.skills.L2SkillType;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
@@ -1212,17 +1213,7 @@ public final class Formulas
 					// nothing
 					break;
 			}
-		}
-		
-		// Dmg bonuses in PvP fight
-		if ((attacker instanceof L2PcInstance || attacker instanceof L2Summon) && (target instanceof L2PcInstance || target instanceof L2Summon))
-		{
-			if (skill == null)
-				damage *= attacker.calcStat(Stats.PVP_PHYSICAL_DMG, 1, null, null);
-			else
-				damage *= attacker.calcStat(Stats.PVP_PHYS_SKILL_DMG, 1, null, null);
-		}
-		
+		}		
 		return Math.max(damage, 1);
 	}
 	
@@ -1266,11 +1257,7 @@ public final class Formulas
 				}
 				else
 				{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2);
-					sm.addString(target.getName());
-					sm.addSkillName(skill.getId());
-					attacker.sendPacket(sm);
-					
+					attacker.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2).addCharName(target).addSkillName(skill));					
 					damage = 1;
 				}
 			}
@@ -1278,33 +1265,17 @@ public final class Formulas
 			if (target instanceof L2PcInstance)
 			{
 				if (skill.getSkillType() == L2SkillType.DRAIN)
-				{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.RESISTED_S1_DRAIN);
-					sm.addString(attacker.getName());
-					target.sendPacket(sm);
-				}
+					target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.RESISTED_S1_DRAIN).addCharName(attacker));
 				else
-				{
-					SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.RESISTED_S1_MAGIC);
-					sm.addString(attacker.getName());
-					target.sendPacket(sm);
-				}
+					target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.RESISTED_S1_MAGIC).addCharName(attacker));
 			}
 		}
 		else if (mcrit)
 			damage *= 4;
 		
-		// Pvp bonuses for dmg
-		if ((attacker instanceof L2PcInstance || attacker instanceof L2Summon) && (target instanceof L2PcInstance || target instanceof L2Summon))
-		{
-			if (skill.isMagic())
-				damage *= attacker.calcStat(Stats.PVP_MAGICAL_DMG, 1, null, null);
-			else
-				damage *= attacker.calcStat(Stats.PVP_PHYS_SKILL_DMG, 1, null, null);
-		}
 		return damage;
 	}
-	
+
 	public final static boolean calcCrit(double rate)
 	{
 		return rate > Rnd.get(1000);
@@ -1388,15 +1359,14 @@ public final class Formulas
 		else if (attacker.getZ() - target.getZ() < -50)
 			modifier -= 3;
 		
-		// Get weather bonus. TODO: rain support (-3%).
+		// Get weather bonus. todo rain support (-3%).
 		if (GameTimeController.getInstance().isNight())
 			modifier -= 10;
 		
 		// Get position bonus.
-		if (attacker.isBehindTarget())
-			modifier += 10;
-		else if (!attacker.isInFrontOfTarget())
-			modifier += 5;
+		final Position position = Position.getPosition(attacker,target);
+		final int positionbonus = position == Position.BACK ? 10 : position == Position.SIDE ? 7 : 4;
+		modifier += positionbonus;
 		
 		chance *= modifier / 100;
 		
@@ -1412,24 +1382,20 @@ public final class Formulas
 		// Check for passive skill Aegis (316) or Aegis Stance (318)
 		// Like L2OFF you can't parry if your target is behind you
 		if (target.getKnownSkill(316) == null && target.getFirstEffect(318) == null)
-			if (target.isBehind(attacker) || !target.isFront(attacker) || !attacker.isFront(target))
+			if (target.isBehindOf(attacker) || !target.isFrontOf(attacker) || !attacker.isFrontOf(target))
 				return 0;
 		
 		byte shldSuccess = 0;
-		// if attacker
 		// if attacker use bow and target wear shield, shield block rate is multiplied by 1.3 (30%)
-		L2Weapon at_weapon = attacker.getActiveWeaponItem();
-		if (at_weapon != null && at_weapon.getItemType() == L2WeaponType.BOW)
+     	boolean isUsingBow = (attacker.getAttackType() == L2WeaponType.BOW);
+     	
+		if (isUsingBow)
 			shldRate *= 1.3;
 		
 		if (shldRate > 0 && 100 - Config.ALT_PERFECT_SHLD_BLOCK < Rnd.get(100))
-		{
 			shldSuccess = 2;
-		}
 		else if (shldRate > Rnd.get(100))
-		{
 			shldSuccess = 1;
-		}
 		
 		if (sendSysMsg && target instanceof L2PcInstance)
 		{
@@ -1678,7 +1644,7 @@ public final class Formulas
 		if (lvlDepend == 0)
 			lvlDepend = (type == L2SkillType.PARALYZE || type == L2SkillType.FEAR) ? 1 : 2;
 		
-		// TODO: Temporary fix for NPC skills with MagicLevel not set
+		// todo: Temporary fix for NPC skills with MagicLevel not set
 		// int lvlmodifier = (skill.getMagicLevel() - target.getLevel()) * lvlDepend;
 		int lvlmodifier = ((skill.getMagicLevel() > 0 ? skill.getMagicLevel() : attacker.getLevel()) - target.getLevel()) * lvlDepend;
 		double statmodifier = calcSkillStatModifier(type, target);
@@ -1721,7 +1687,7 @@ public final class Formulas
 		
 		return (Rnd.get(10000) > rate);
 	}
-	
+
 	public static boolean calculateUnlockChance(L2Skill skill)
 	{
 		int level = skill.getLevel();

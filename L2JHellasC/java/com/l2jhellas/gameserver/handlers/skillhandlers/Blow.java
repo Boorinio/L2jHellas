@@ -1,6 +1,7 @@
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
 import com.l2jhellas.gameserver.emum.items.L2WeaponType;
+import com.l2jhellas.gameserver.emum.player.Position;
 import com.l2jhellas.gameserver.emum.skills.L2SkillType;
 import com.l2jhellas.gameserver.emum.sound.Sound;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
@@ -46,13 +47,9 @@ public class Blow implements ISkillHandler
 			// Check firstly if target dodges skill
 			final boolean skillIsEvaded = Formulas.calcPhysicalSkillEvasion(target, skill);
 			
-			int _successChance = 60;
-			
-			if (activeChar.isBehindTarget())
-				_successChance = 70;
-			else if (activeChar.isFrontTarget())
-				_successChance = 50;
-			
+			final Position position = Position.getPosition(activeChar,target);
+			final int _successChance = position == Position.BACK ? 70 : position == Position.SIDE ? 60 : 50;
+						
 			// If skill requires Crit or skill requires behind,
 			// calculate chance based on DEX, Position and on self BUFF
 			boolean success = true;

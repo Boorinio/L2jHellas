@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.util.Broadcast;
 
@@ -18,7 +18,7 @@ public class RPSHtmlComboKill
 	private long _lastKillTime = 0; // the time of the last kill counted to combo, this is not standard PvP kill time !
 	
 	// combo shout definitions:
-	public static final int SAY_TYPE = Say2.HERO_VOICE; // local or global area are defined by sending methods.
+	public static final int SAY_TYPE = ChatType.HERO_VOICE.getClientId(); // local or global area are defined by sending methods.
 	
 	public boolean addVictim(int victimId, long killTime)
 	{

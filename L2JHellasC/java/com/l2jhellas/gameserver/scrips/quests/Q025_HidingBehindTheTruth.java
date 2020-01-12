@@ -3,12 +3,12 @@ package com.l2jhellas.gameserver.scrips.quests;
 import java.util.HashMap;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestState;
-import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.NpcSay;
 import com.l2jhellas.util.Rnd;
 
@@ -566,7 +566,7 @@ public class Q025_HidingBehindTheTruth extends Quest
 			}
 			case "SAY_TRIYOL":
 			{
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(),"That box was sealed by my master."+player.getName()+" Don't touch it!"));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), ChatType.GENERAL.getClientId(), npc.getNpcId(),"That box was sealed by my master."+player.getName()+" Don't touch it!"));
 				break;
 			}
 			case "DESPAWN_TRIYOL":
@@ -678,7 +678,7 @@ public class Q025_HidingBehindTheTruth extends Quest
 				qs.giveItems(TOTEM_DOLL3, 1);
 				qs.set("cond", "8");
 				qs.set("step", "2");
-				npc.broadcastPacket(new NpcSay(npc.getObjectId(), Say2.ALL, npc.getNpcId(), "You've ended my immortal life! You've protected by the feudal lord, aren't you?"));
+				npc.broadcastPacket(new NpcSay(npc.getObjectId(), ChatType.GENERAL.getClientId(), npc.getNpcId(), "You've ended my immortal life! You've protected by the feudal lord, aren't you?"));
 				npc.deleteMe();
 			}
 		}

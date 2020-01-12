@@ -1,15 +1,11 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Logger;
-
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.network.serverpackets.CharDeleteFail;
 import com.l2jhellas.gameserver.network.serverpackets.CharDeleteOk;
 import com.l2jhellas.gameserver.network.serverpackets.CharSelectInfo;
 
 public final class CharacterDelete extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(CharacterDelete.class.getName());
 	private static final String _C__0C_CHARACTERDELETE = "[C] 0C CharacterDelete";
 	
 	private int _charSlot;
@@ -23,9 +19,6 @@ public final class CharacterDelete extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		if (Config.DEBUG)
-			_log.fine("deleting slot:" + _charSlot);
-		
 		switch (getClient().markToDeleteChar(_charSlot))
 		{
 			default:

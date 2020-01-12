@@ -2,7 +2,7 @@ package com.l2jhellas.gameserver.instancemanager;
 
 import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.datatables.CrownTable;
+import com.l2jhellas.gameserver.emum.items.CrownList;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -34,9 +34,7 @@ public class CrownManager
 		for (L2ClanMember member : clan.getMembers())
 		{
 			if (member != null && member.isOnline() && member.getPlayerInstance() != null)
-			{
 				checkCrowns(member.getPlayerInstance());
-			}
 		}
 	}
 	
@@ -58,15 +56,11 @@ public class CrownManager
 		{
 			Castle activeCharCastle = CastleManager.getInstance().getCastleByOwner(activeCharClan);
 			
-			if (activeCharCastle != null)
-			{
-				crownId = CrownTable.getCrownId(activeCharCastle.getCastleId());
-			}
+			if (activeCharCastle != null)		
+				crownId = CrownList.findCrownByCastle(activeCharCastle.getCastleId());
 			
 			if (activeCharClanLeader != null && activeCharClanLeader.getObjectId() == activeChar.getObjectId())
-			{
 				isLeader = true;
-			}
 		}
 		
 		if (crownId > 0)
@@ -88,7 +82,7 @@ public class CrownManager
 		boolean alreadyFoundCrown = false;
 		for (L2ItemInstance item : activeChar.getInventory().getItems())
 		{
-			if (CrownTable.getCrownList().contains(item.getItemId()))
+			if(CrownList.findCrownByItemId(item.getItemId()) > 0)
 			{
 				if (crownId > 0)
 				{

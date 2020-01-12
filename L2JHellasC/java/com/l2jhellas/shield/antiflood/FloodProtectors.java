@@ -5,31 +5,19 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public final class FloodProtectors
 {
-	
-	private final FloodProtectorAction _useItem;
-	
-	private final FloodProtectorAction _rollDice;
-	
-	private final FloodProtectorAction _firework;
-	
-	private final FloodProtectorAction _itemPetSummon;
-	
-	private final FloodProtectorAction _heroVoice;
-	
-	private final FloodProtectorAction _globalChat;
-	
-	private final FloodProtectorAction _subclass;
-	
+	private final FloodProtectorAction _useItem;	
+	private final FloodProtectorAction _rollDice;	
+	private final FloodProtectorAction _firework;	
+	private final FloodProtectorAction _itemPetSummon;	
+	private final FloodProtectorAction _heroVoice;	
+	private final FloodProtectorAction _globalChat;	
+	private final FloodProtectorAction _subclass;	
 	private final FloodProtectorAction _dropItem;
-	
-	private final FloodProtectorAction _serverBypass;
-	
-	private final FloodProtectorAction _multiSell;
-	
-	private final FloodProtectorAction _transaction;
-	
+	private final FloodProtectorAction _serverBypass;	
+	private final FloodProtectorAction _multiSell;	
+	private final FloodProtectorAction _transaction;	
 	private final FloodProtectorAction _social;
-	
+		
 	public FloodProtectors(final L2PcInstance player)
 	{
 		super();
@@ -44,7 +32,7 @@ public final class FloodProtectors
 		_serverBypass = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_SERVER_BYPASS);
 		_multiSell = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_MULTISELL);
 		_transaction = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_TRANSACTION);
-		_social = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_SOCIALACTION);
+		_social = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_SOCIALACTION);	
 	}
 	
 	public FloodProtectorAction getUseItem()

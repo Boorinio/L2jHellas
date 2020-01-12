@@ -1,6 +1,7 @@
 package com.l2jhellas.gameserver.handlers.chathandlers;
 
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.handler.IChatHandler;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.L2World;
@@ -11,13 +12,13 @@ import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class ChatTell implements IChatHandler
 {
-	private static final int[] COMMAND_IDS =
+	private static final ChatType[] COMMAND_IDS =
 	{
-		2
+		ChatType.WHISPER
 	};
 	
 	@Override
-	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
+	public void handleChat(ChatType type, L2PcInstance activeChar, String target, String text)
 	{
 		
 		// Return if player is chat banned
@@ -76,7 +77,7 @@ public class ChatTell implements IChatHandler
 	}
 	
 	@Override
-	public int[] getChatTypeList()
+	public ChatType[] getChatTypeList()
 	{
 		return COMMAND_IDS;
 	}

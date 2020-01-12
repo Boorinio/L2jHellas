@@ -1,5 +1,6 @@
 package com.l2jhellas.util;
 
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
@@ -7,7 +8,6 @@ import com.l2jhellas.gameserver.model.L2WorldRegion;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
-import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 
@@ -117,11 +117,11 @@ public final class Broadcast
 	
 	public static void announceToOnlinePlayers(String text)
 	{
-		toAllOnlinePlayers(new CreatureSay(0, Say2.ANNOUNCEMENT, "", text));
+		toAllOnlinePlayers(new CreatureSay(0, ChatType.ANNOUNCEMENT.getClientId(), "", text));
 	}
 	
 	public static void announceToOnlinePlayers(String text, boolean critical)
 	{
-		toAllOnlinePlayers(new CreatureSay(0, (critical) ? Say2.CRITICAL_ANNOUNCE : Say2.ANNOUNCEMENT, "", text));
+		toAllOnlinePlayers(new CreatureSay(0, (critical) ? ChatType.CRITICAL_ANNOUNCE.getClientId() : ChatType.ANNOUNCEMENT.getClientId(), "", text));
 	}
 }

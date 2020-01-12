@@ -1,8 +1,8 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
 import com.l2jhellas.gameserver.ai.CtrlEvent;
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
@@ -26,7 +26,7 @@ public class L2PenaltyMonsterInstance extends L2MonsterInstance
 	{
 		if (Rnd.get(100) <= 80)
 		{
-			CreatureSay cs = new CreatureSay(getObjectId(), Say2.ALL, getName(), "mmm your bait was delicious.");
+			CreatureSay cs = new CreatureSay(getObjectId(), ChatType.GENERAL.getClientId(), getName(), "mmm your bait was delicious.");
 			this.broadcastPacket(cs);
 		}
 		_ptk = ptk;
@@ -43,7 +43,7 @@ public class L2PenaltyMonsterInstance extends L2MonsterInstance
 		
 		if (Rnd.get(100) <= 75)
 		{
-			CreatureSay cs = new CreatureSay(getObjectId(), Say2.ALL, getName(), "I will tell fishes not to take your bait.");
+			CreatureSay cs = new CreatureSay(getObjectId(),ChatType.GENERAL.getClientId(), getName(), "I will tell fishes not to take your bait.");
 			this.broadcastPacket(cs);
 		}
 		return true;

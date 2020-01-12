@@ -10,6 +10,7 @@ import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
 import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.emum.items.L2ArmorType;
 import com.l2jhellas.gameserver.emum.player.ClassId;
+import com.l2jhellas.gameserver.emum.skills.HeroSkills;
 import com.l2jhellas.gameserver.emum.skills.L2SkillTargetType;
 import com.l2jhellas.gameserver.emum.skills.L2SkillType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
@@ -35,7 +36,6 @@ import com.l2jhellas.gameserver.network.serverpackets.EtcStatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.Env;
 import com.l2jhellas.gameserver.skills.Formulas;
-import com.l2jhellas.gameserver.skills.HeroSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.skills.Stats;
 import com.l2jhellas.gameserver.skills.conditions.Condition;
@@ -381,7 +381,7 @@ public abstract class L2Skill
 		if (_operateType == SkillOpType.OP_CHANCE)
 			_chanceCondition = ChanceCondition.parse(set);
 		
-		_isHeroSkill = HeroSkillTable.isHeroSkill(_id);
+		_isHeroSkill = HeroSkills.isHeroSkill(_id);
 		
 		_baseCritRate = set.getInteger("baseCritRate", (_skillType == L2SkillType.PDAM || _skillType == L2SkillType.BLOW) ? 0 : -1);
 		_lethalEffect1 = set.getInteger("lethal1", 0);

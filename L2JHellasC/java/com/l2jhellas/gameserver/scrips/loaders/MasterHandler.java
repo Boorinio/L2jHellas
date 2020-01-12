@@ -32,7 +32,6 @@ import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminCursedWeapons
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminDMEngine;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminDelete;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminDeport;
-import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminDisconnect;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminDonator;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminDoorControl;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminEditChar;
@@ -43,7 +42,6 @@ import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminEventEngine;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminExpSp;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminFence;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminFightCalculator;
-import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminGeoEditor;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminGeodata;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminGm;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminGmChat;
@@ -283,7 +281,6 @@ public class MasterHandler
 			AdminCursedWeapons.class,
 			AdminDelete.class,
 			AdminDeport.class,
-			AdminDisconnect.class,
 			AdminDMEngine.class,
 			AdminDonator.class,
 			AdminDoorControl.class,
@@ -295,7 +292,6 @@ public class MasterHandler
 			AdminExpSp.class,
 			AdminFightCalculator.class,
 			AdminGeodata.class,
-			AdminGeoEditor.class,
 			AdminGm.class,
 			AdminGmChat.class,
 			AdminHeal.class,

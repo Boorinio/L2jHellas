@@ -57,8 +57,6 @@ public class SpawnTable
                          continue;
 					if (template1.type.equalsIgnoreCase("L2RaidBoss"))
 						 continue;
-					if (!Config.ENABLE_HITMAN_EVENT && template1.type.equals("L2Hitman"))
-						 continue;
 					if (!Config.ALLOW_CLASS_MASTER && template1.type.equals("L2ClassMaster"))
 						 continue;
 					

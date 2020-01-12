@@ -159,6 +159,11 @@ public final class Util
 		return degree;
 	}
 	
+	public static double convertHeadingToRadian(int clientHeading)
+	{
+		return (clientHeading / 65535.0) * 6.283185307179586;
+	}
+	
 	public final static int calculateHeadingFrom(L2Object obj1, L2Object obj2)
 	{
 		return calculateHeadingFrom(obj1.getX(), obj1.getY(), obj2.getX(), obj2.getY());
@@ -169,7 +174,7 @@ public final class Util
 		double angleTarget = Math.toDegrees(Math.atan2(obj2Y - obj1Y, obj2X - obj1X));
 		if (angleTarget < 0)
 			angleTarget = 360 + angleTarget;
-		return (int) (angleTarget * 182.044444444);
+		return (int) (angleTarget * 182.04444444444444444444444444444);
 	}
 	
 	public final static int calculateHeadingFrom(double dx, double dy)

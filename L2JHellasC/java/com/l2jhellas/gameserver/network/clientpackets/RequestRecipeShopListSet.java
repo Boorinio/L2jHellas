@@ -1,14 +1,20 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.datatables.xml.RecipeData;
 import com.l2jhellas.gameserver.emum.ZoneId;
 import com.l2jhellas.gameserver.emum.player.StoreType;
 import com.l2jhellas.gameserver.model.L2ManufactureItem;
 import com.l2jhellas.gameserver.model.L2ManufactureList;
+import com.l2jhellas.gameserver.model.L2RecipeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.RecipeShopMsg;
 import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
+import com.l2jhellas.util.Util;
 
 public final class RequestRecipeShopListSet extends L2GameClientPacket
 {
@@ -67,12 +73,35 @@ public final class RequestRecipeShopListSet extends L2GameClientPacket
 			return;
 		}
 
+		final List<L2RecipeList> dwarfRecipes = Arrays.asList(player.getDwarvenRecipeBook());
+		final List<L2RecipeList> commonRecipes = Arrays.asList(player.getCommonRecipeBook());
+	
 		L2ManufactureList createList = new L2ManufactureList();
-			
+		createList.clear();
+		
 		for (int x = 0; x < _count; x++)
 		{
 			int recipeID = _items[x * 2 + 0];
 			int cost = _items[x * 2 + 1];
+			
+			final L2RecipeList list = RecipeData.getInstance().getRecipeList(recipeID);
+			
+			if(list == null)
+			{
+				player.setPrivateStoreType(StoreType.NONE);
+				player.broadcastUserInfo();
+				return;	
+			}
+			
+			if (!dwarfRecipes.contains(list) && !commonRecipes.contains(list))
+			{
+				Util.handleIllegalPlayerAction(player, "Warning!! Player " + player.getName() + " of account " + player.getAccountName() + " tried to set recipe which he dont have.", Config.DEFAULT_PUNISH);
+				return;
+			}
+			
+			if (cost > 2000000000)
+				return;
+			
 			createList.add(new L2ManufactureItem(recipeID, cost));
 		}
 		

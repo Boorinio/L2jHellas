@@ -32,14 +32,12 @@ import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jhellas.gameserver.skills.HeroSkillTable;
-import com.l2jhellas.gameserver.skills.NobleSkillTable;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.util.Util;
 
 public class AdminReload implements IAdminCommandHandler
 {
-	private static final String RELOAD_USAGE = "Usage: //reload <multisell|doors|teleport|npc|respawn_npcs|zone|htm|crest|fix_crest|items|access|instancemanager|npcwalkers|configs|tradelist|pccolor|cw|levelupdata|summonitems|balancer|skill|nobleskill|heroskill|sktrees|spellbooks|augment>";
+	private static final String RELOAD_USAGE = "Usage: //reload <multisell|doors|teleport|npc|respawn_npcs|zone|htm|crest|fix_crest|items|access|instancemanager|npcwalkers|configs|tradelist|pccolor|cw|levelupdata|summonitems|balancer|skill|sktrees|spellbooks|augment>";
 	private static final String[] ADMIN_COMMANDS =
 	{
 		"admin_reload"
@@ -215,20 +213,6 @@ public class AdminReload implements IAdminCommandHandler
 					SkillTable.reload();
 					sendReloadPage(activeChar);
 					activeChar.sendMessage("All skills has been reloaded.");
-					break;
-				}
-				case "nobleskill":
-				{
-					NobleSkillTable.reload();
-					sendReloadPage(activeChar);
-					activeChar.sendMessage("Noble Skill table has been reloaded.");
-					break;
-				}
-				case "heroskill":
-				{
-					HeroSkillTable.reload();
-					sendReloadPage(activeChar);
-					activeChar.sendMessage("Hero Skill table has been reloaded.");
 					break;
 				}
 				case "sktrees":

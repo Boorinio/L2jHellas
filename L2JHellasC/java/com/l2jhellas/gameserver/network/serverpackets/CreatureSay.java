@@ -3,6 +3,7 @@ package com.l2jhellas.gameserver.network.serverpackets;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 
@@ -22,6 +23,14 @@ public class CreatureSay extends L2GameServerPacket
 	{
 		_objectId = objectId;
 		_textType = messageType;
+		_charName = charName;
+		_text = text;
+	}
+	
+	public CreatureSay(int objectId, ChatType messageType, String charName, String text)
+	{
+		_objectId = objectId;
+		_textType = messageType.getClientId();
 		_charName = charName;
 		_text = text;
 	}

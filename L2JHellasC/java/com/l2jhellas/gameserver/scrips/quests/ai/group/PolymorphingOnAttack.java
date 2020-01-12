@@ -3,11 +3,11 @@ package com.l2jhellas.gameserver.scrips.quests.ai.group;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
-import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.util.Rnd;
@@ -152,7 +152,7 @@ public class PolymorphingOnAttack extends AbstractNpcAI
 					if (tmp[3] >= 0)
 					{
 						String text = MOBTEXTS[tmp[3]][Rnd.get(MOBTEXTS[tmp[3]].length)];
-						npc.broadcastPacket(new CreatureSay(npc.getObjectId(), Say2.ALL, npc.getName(), text));
+						npc.broadcastPacket(new CreatureSay(npc.getObjectId(), ChatType.GENERAL.getClientId(), npc.getName(), text));
 					}
 					npc.deleteMe();
 					

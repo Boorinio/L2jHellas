@@ -20,8 +20,6 @@ public class Manager
 		MercTicketManager.getInstance().reload();
 		PetitionManager.getInstance();
 		RaidBossSpawnManager.getInstance().reloadBosses();
-		SiegeManager.getInstance();
-		SiegeReward.getInstance();
-		
+		SiegeManager.getInstance();		
 	}
 }

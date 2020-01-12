@@ -1,18 +1,19 @@
 package com.l2jhellas.gameserver.handlers.chathandlers;
 
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.handler.IChatHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 
 public class ChatPartyRoomCommander implements IChatHandler
 {
-	private static final int[] COMMAND_IDS =
+	private static final ChatType[] COMMAND_IDS =
 	{
-		15
+		ChatType.PARTYROOM_COMMANDER
 	};
 	
 	@Override
-	public void handleChat(int type, L2PcInstance activeChar, String target, String text)
+	public void handleChat(ChatType type, L2PcInstance activeChar, String target, String text)
 	{
 		if (activeChar.isInParty())
 		{
@@ -25,7 +26,7 @@ public class ChatPartyRoomCommander implements IChatHandler
 	}
 	
 	@Override
-	public int[] getChatTypeList()
+	public ChatType[] getChatTypeList()
 	{
 		return COMMAND_IDS;
 	}

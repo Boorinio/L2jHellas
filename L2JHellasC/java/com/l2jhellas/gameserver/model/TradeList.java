@@ -14,6 +14,7 @@ import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.util.Util;
 
 public class TradeList
 {
@@ -745,10 +746,20 @@ public class TradeList
 			if (oldItem == null)
 				return false;
 			
+			if (oldItem.getItemId() != item.getItemId())
+			{
+				String msg = "cheating is not allowed.";
+				_owner.sendMessage(msg);
+				player.sendMessage(msg);
+				Util.handleIllegalPlayerAction(player, player + " cheating with sell items", Config.DEFAULT_PUNISH);
+				return false;
+			}
+			
 			// Proceed with item transfer
 			L2ItemInstance newItem = playerInventory.transferItem("PrivateStore", item.getObjectId(), item.getCount(), ownerInventory, player, _owner);
 			if (newItem == null)
 				return false;
+			
 			removeItem(-1, item.getItemId(), item.getCount());
 			
 			// Add changes to inventory update packets

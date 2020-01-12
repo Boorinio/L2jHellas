@@ -17,6 +17,7 @@ import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
 import com.l2jhellas.gameserver.emum.Team;
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
@@ -24,7 +25,6 @@ import com.l2jhellas.gameserver.model.actor.group.party.L2Party;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.entity.olympiad.OlympiadManager;
-import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
@@ -85,7 +85,7 @@ public class TvT
 			Announcements.getInstance().gameAnnounceToAll(announce);
 		else
 		{
-			CreatureSay cs = new CreatureSay(0, Say2.ANNOUNCEMENT, "", announce);
+			CreatureSay cs = new CreatureSay(0, ChatType.ANNOUNCEMENT.getClientId(), "", announce);
 			if (_players != null && !_players.isEmpty())
 			{
 				for (L2PcInstance player : _players)

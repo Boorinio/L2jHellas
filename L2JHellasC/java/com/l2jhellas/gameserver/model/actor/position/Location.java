@@ -1,7 +1,10 @@
 package com.l2jhellas.gameserver.model.actor.position;
 
+import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
+import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.templates.StatsSet;
+import com.l2jhellas.util.Util;
 
 public class Location
 {
@@ -13,6 +16,11 @@ public class Location
 		_x = x;
 		_y = y;
 		_z = z;
+	}
+	
+	public Location()
+	{
+
 	}
 	
 	public Location(int x, int y, int z, int heading)
@@ -148,5 +156,15 @@ public class Location
 		_x = 0;
 		_y = 0;
 		_z = 0;
+	}
+
+	public int calculateHeadingTo(L2Character activeChar)
+	{
+		return Util.calculateHeadingFrom(getX(), getY(), activeChar.getX(), activeChar.getY());
+	}
+	
+	public int calculateHeadingTo(L2Object activeChar)
+	{
+		return Util.calculateHeadingFrom(getX(), getY(), activeChar.getX(), activeChar.getY());
 	}
 }

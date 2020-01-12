@@ -42,12 +42,8 @@ public class MagicEffectIcons extends L2GameServerPacket
 		for (Effect temp : _effects)
 		{
 			writeD(temp._skillId);
-			writeH(temp._level);
-			
-			if (temp._duration == -1)
-				writeD(-1);
-			else
-				writeD(temp._duration / 1000);
+			writeH(temp._level);		
+			writeD(temp._duration == -1 ? -1 : temp._duration / 1000);
 		}
 	}
 	

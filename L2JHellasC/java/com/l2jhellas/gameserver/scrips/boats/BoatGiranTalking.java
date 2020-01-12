@@ -1,14 +1,13 @@
 package com.l2jhellas.gameserver.scrips.boats;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
+import com.l2jhellas.gameserver.emum.player.ChatType;
 import com.l2jhellas.gameserver.emum.sound.Sound;
 import com.l2jhellas.gameserver.instancemanager.BoatManager;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
 import com.l2jhellas.gameserver.model.actor.L2Vehicle;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.clientpackets.Say2;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
-
 
 public class BoatGiranTalking implements Runnable
 {
@@ -96,29 +95,29 @@ public class BoatGiranTalking implements Runnable
 	{
 		_boat = boat;
 		
-		ARRIVED_AT_GIRAN = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_ARRIVED_AT_GIRAN);
-		ARRIVED_AT_GIRAN_2 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVE_FOR_TALKING_AFTER_10_MINUTES);
-		LEAVE_GIRAN5 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVE_FOR_TALKING_IN_5_MINUTES);
-		LEAVE_GIRAN1 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVE_FOR_TALKING_IN_1_MINUTE);
-		LEAVE_GIRAN0 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVE_SOON_FOR_TALKING);
-		LEAVING_GIRAN = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVING_FOR_TALKING);
-		ARRIVED_AT_TALKING = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_ARRIVED_AT_TALKING);
-		ARRIVED_AT_TALKING_2 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVE_FOR_GIRAN_AFTER_10_MINUTES);
-		LEAVE_TALKING5 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVE_FOR_GIRAN_IN_5_MINUTES);
-		LEAVE_TALKING1 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVE_FOR_GIRAN_IN_1_MINUTE);
-		LEAVE_TALKING0 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVE_SOON_FOR_GIRAN);
-		LEAVING_TALKING = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_LEAVING_FOR_GIRAN);
-		BUSY_TALKING = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_GIRAN_TALKING_DELAYED);
+		ARRIVED_AT_GIRAN = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_ARRIVED_AT_GIRAN);
+		ARRIVED_AT_GIRAN_2 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_LEAVE_FOR_TALKING_AFTER_10_MINUTES);
+		LEAVE_GIRAN5 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_LEAVE_FOR_TALKING_IN_5_MINUTES);
+		LEAVE_GIRAN1 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_LEAVE_FOR_TALKING_IN_1_MINUTE);
+		LEAVE_GIRAN0 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_LEAVE_SOON_FOR_TALKING);
+		LEAVING_GIRAN = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_LEAVING_FOR_TALKING);
+		ARRIVED_AT_TALKING = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_ARRIVED_AT_TALKING);
+		ARRIVED_AT_TALKING_2 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_LEAVE_FOR_GIRAN_AFTER_10_MINUTES);
+		LEAVE_TALKING5 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_LEAVE_FOR_GIRAN_IN_5_MINUTES);
+		LEAVE_TALKING1 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_LEAVE_FOR_GIRAN_IN_1_MINUTE);
+		LEAVE_TALKING0 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_LEAVE_SOON_FOR_GIRAN);
+		LEAVING_TALKING = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_LEAVING_FOR_GIRAN);
+		BUSY_TALKING = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_GIRAN_TALKING_DELAYED);
 		
-		ARRIVAL_TALKING15 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_FROM_GIRAN_ARRIVE_AT_TALKING_15_MINUTES);
-		ARRIVAL_TALKING10 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_FROM_GIRAN_ARRIVE_AT_TALKING_10_MINUTES);
-		ARRIVAL_TALKING5 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_FROM_GIRAN_ARRIVE_AT_TALKING_5_MINUTES);
-		ARRIVAL_TALKING1 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_FROM_GIRAN_ARRIVE_AT_TALKING_1_MINUTE);
-		ARRIVAL_GIRAN20 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_FROM_TALKING_ARRIVE_AT_GIRAN_20_MINUTES);
-		ARRIVAL_GIRAN15 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_FROM_TALKING_ARRIVE_AT_GIRAN_15_MINUTES);
-		ARRIVAL_GIRAN10 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_FROM_TALKING_ARRIVE_AT_GIRAN_10_MINUTES);
-		ARRIVAL_GIRAN5 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_FROM_TALKING_ARRIVE_AT_GIRAN_5_MINUTES);
-		ARRIVAL_GIRAN1 = new CreatureSay(0, Say2.BOAT, 801, SystemMessageId.FERRY_FROM_TALKING_ARRIVE_AT_GIRAN_1_MINUTE);
+		ARRIVAL_TALKING15 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_FROM_GIRAN_ARRIVE_AT_TALKING_15_MINUTES);
+		ARRIVAL_TALKING10 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_FROM_GIRAN_ARRIVE_AT_TALKING_10_MINUTES);
+		ARRIVAL_TALKING5 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_FROM_GIRAN_ARRIVE_AT_TALKING_5_MINUTES);
+		ARRIVAL_TALKING1 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_FROM_GIRAN_ARRIVE_AT_TALKING_1_MINUTE);
+		ARRIVAL_GIRAN20 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_FROM_TALKING_ARRIVE_AT_GIRAN_20_MINUTES);
+		ARRIVAL_GIRAN15 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_FROM_TALKING_ARRIVE_AT_GIRAN_15_MINUTES);
+		ARRIVAL_GIRAN10 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_FROM_TALKING_ARRIVE_AT_GIRAN_10_MINUTES);
+		ARRIVAL_GIRAN5 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_FROM_TALKING_ARRIVE_AT_GIRAN_5_MINUTES);
+		ARRIVAL_GIRAN1 = new CreatureSay(0, ChatType.BOAT.getClientId(), 801, SystemMessageId.FERRY_FROM_TALKING_ARRIVE_AT_GIRAN_1_MINUTE);
 	}
 	
 	@Override

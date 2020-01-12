@@ -1,16 +1,14 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Logger;
-
 import com.l2jhellas.gameserver.geometry.Point3D;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.gameserver.network.serverpackets.ValidateLocation;
+import com.l2jhellas.util.Util;
 
 public final class RequestExMagicSkillUseGround extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(RequestExMagicSkillUseGround.class.getName());
 	private static final String _C__D0_2F_REQUESTEXMAGICSKILLUSEGROUND = "[C] D0:2F RequestExMagicSkillUseGround";
 	
 	private int _x;
@@ -35,7 +33,7 @@ public final class RequestExMagicSkillUseGround extends L2GameClientPacket
 	protected void runImpl()
 	{
 		// Get the current L2PcInstance of the player
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
 		
 		if (activeChar == null)
 			return;
@@ -48,19 +46,15 @@ public final class RequestExMagicSkillUseGround extends L2GameClientPacket
 		}
 		
 		// Get the L2Skill template corresponding to the skillID received from the client
-		L2Skill skill = SkillTable.getInstance().getInfo(_skillId, level);
-		
-		// Check the validity of the skill
-		if (skill != null)
-		{
-			activeChar.setCurrentSkillWorldPosition(new Point3D(_x, _y, _z));
-			activeChar.useMagic(skill, _ctrlPressed, _shiftPressed);
-		}
-		else
-		{
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-			_log.warning(RequestExMagicSkillUseGround.class.getName() + ": No skill found!!");
-		}
+		final L2Skill skill = activeChar.getSkill(_skillId);
+
+		if (skill == null)
+			return;
+				
+		activeChar.setCurrentSkillWorldPosition(new Point3D(_x, _y, _z));	
+		activeChar.setHeading(Util.calculateHeadingFrom(activeChar.getX(), activeChar.getY(), _x, _y));
+		activeChar.broadcastPacket(new ValidateLocation(activeChar));
+		activeChar.useMagic(skill, _ctrlPressed, _shiftPressed);
 	}
 	
 	@Override

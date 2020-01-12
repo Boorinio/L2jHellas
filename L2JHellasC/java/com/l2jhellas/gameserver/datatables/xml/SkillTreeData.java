@@ -48,13 +48,11 @@ public class SkillTreeData implements DocumentParser
 		
 		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/fishing_skill_tree.xml"));
 		_log.info("FishingSkillTreeTable: Loaded " + _fishingSkillTrees.size() + " general skills.");
-		_log.info("DwarvenSkillTreeTable: Loaded " + _expandDwarfCraftSkillTrees.size() + " dwarven skills.");
-		
+		_log.info("DwarvenSkillTreeTable: Loaded " + _expandDwarfCraftSkillTrees.size() + " dwarven skills.");		
 		
 		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/enchant_skill_tree.xml"));
 		_log.info("EnchantSkillTreeTable: Loaded " + _enchantSkillTrees.size() + " enchant skills & enchant stats.");
-		
-		
+			
 		parseFile(new File(PackRoot.DATAPACK_ROOT, "data/xml/pledge_skill_tree.xml"));
 		_log.info("PledgeSkillTreeTable: Loaded " + _pledgeSkillTrees.size() + " pledge skills.");
 	}
@@ -152,11 +150,8 @@ public class SkillTreeData implements DocumentParser
 								byte rate77 = Byte.valueOf(t2.getAttributes().getNamedItem("rate77").getNodeValue());
 								byte rate78 = Byte.valueOf(t2.getAttributes().getNamedItem("rate78").getNodeValue());
 								
-								if (lvl == 101 || lvl == 141)
-									minSkillLvl = baseLvl1;
-								else
-									minSkillLvl = lvl - 1;
-								
+								minSkillLvl = lvl == 101 || lvl == 141 ? baseLvl1 : lvl - 1;
+
 								L2EnchantSkillLearn skill = new L2EnchantSkillLearn(id1, lvl, minSkillLvl, baseLvl1, name1, sp, exp, rate76, rate77, rate78);
 								_enchantSkillTrees.add(skill);
 							}
@@ -177,9 +172,7 @@ public class SkillTreeData implements DocumentParser
 					}
 				}
 			}
-		}
-		
-		
+		}			
 	}
 	
 	private static Map<ClassId, Map<Integer, L2SkillLearn>> getSkillTrees()
