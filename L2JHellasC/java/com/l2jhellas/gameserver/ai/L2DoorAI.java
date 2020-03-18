@@ -12,7 +12,7 @@ import com.l2jhellas.gameserver.model.actor.position.Location;
 public class L2DoorAI extends L2CharacterAI
 {
 	
-	public L2DoorAI(L2DoorInstance.AIAccessor accessor)
+	public L2DoorAI(L2DoorInstance accessor)
 	{
 		super(accessor);
 	}
@@ -149,7 +149,7 @@ public class L2DoorAI extends L2CharacterAI
 		@Override
 		public void run()
 		{
-			L2World.getInstance().forEachVisibleObjectInRange(_door,L2SiegeGuardInstance.class,1280, guard ->
+			L2World.getInstance().forEachVisibleObjectInRange(_door,L2SiegeGuardInstance.class,900, guard ->
 			{
 				if (Math.abs(_attacker.getZ() - guard.getZ()) < 200)
 					guard.getAI().notifyEvent(CtrlEvent.EVT_AGGRESSION, _attacker, 15);

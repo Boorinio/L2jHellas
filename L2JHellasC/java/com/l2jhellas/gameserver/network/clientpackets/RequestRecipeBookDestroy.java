@@ -1,9 +1,12 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.gameserver.datatables.xml.RecipeData;
+import com.l2jhellas.gameserver.enums.player.StoreType;
 import com.l2jhellas.gameserver.model.L2RecipeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.RecipeBookItemList;
+import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public final class RequestRecipeBookDestroy extends L2GameClientPacket
 {
@@ -20,21 +23,22 @@ public final class RequestRecipeBookDestroy extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		final L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar != null)
 		{
-			L2RecipeList rp = RecipeData.getInstance().getRecipeList(_recipeID - 1);
+			if (activeChar.getPrivateStoreType() != StoreType.NONE)
+			{
+				activeChar.sendPacket(SystemMessageId.CANT_ALTER_RECIPEBOOK_WHILE_CRAFTING);
+				return;
+			}
+			
+			final L2RecipeList rp = RecipeData.getInstance().getRecipeList(_recipeID - 1);
 			if (rp == null)
 				return;
-			activeChar.unregisterRecipeList(_recipeID);
 			
-			RecipeBookItemList response = new RecipeBookItemList(rp.isDwarvenRecipe(), activeChar.getMaxMp());
-			if (rp.isDwarvenRecipe())
-				response.addRecipes(activeChar.getDwarvenRecipeBook());
-			else
-				response.addRecipes(activeChar.getCommonRecipeBook());
-			
-			activeChar.sendPacket(response);
+			activeChar.unregisterRecipeList(_recipeID);	
+			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_HAS_BEEN_DELETED).addItemName(rp.getRecipeId()));
+			activeChar.sendPacket(new RecipeBookItemList(activeChar, rp.isDwarvenRecipe()));
 		}
 	}
 	

@@ -28,9 +28,9 @@ import Extensions.fake.roboto.ai.TitanAI;
 import Extensions.fake.roboto.ai.WindRiderAI;
 
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
-import com.l2jhellas.gameserver.emum.Sex;
-import com.l2jhellas.gameserver.emum.player.ClassId;
-import com.l2jhellas.gameserver.emum.player.ClassRace;
+import com.l2jhellas.gameserver.enums.Sex;
+import com.l2jhellas.gameserver.enums.player.ClassId;
+import com.l2jhellas.gameserver.enums.player.ClassRace;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.appearance.PcAppearance;
@@ -306,11 +306,11 @@ public class FakeHelpers
 		{
 			player.getInventory().addItem("Armors", id, 1, player, null);
 			L2ItemInstance item = player.getInventory().getItemByItemId(id);
-			// enchant the item??
 			player.getInventory().equipItemAndRecord(item);
-			player.getInventory().reloadEquippedItems();
-			player.broadcastUserInfo();
 		}
+		player.getInventory().reloadEquippedItems();
+		player.broadcastUserInfo();
+
 	}
 	
 	public static void giveWeaponsByClass(FakePlayer player, boolean randomlyEnchant)

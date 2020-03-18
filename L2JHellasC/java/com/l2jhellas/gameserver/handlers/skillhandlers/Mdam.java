@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
-import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.gameserver.enums.skills.L2SkillType;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -68,7 +68,7 @@ public class Mdam implements ISkillHandler
 			
 			if (activeChar instanceof L2PcInstance && target instanceof L2PcInstance && target.isAlikeDead() && target.isFakeDeath())
 			{
-				target.stopFakeDeath(null);
+				target.getActingPlayer().stopFakeDeath(null);
 			}
 			else if (target.isAlikeDead())
 			{
@@ -97,7 +97,8 @@ public class Mdam implements ISkillHandler
 			boolean mcrit = Formulas.calcMCrit(activeChar.getMCriticalHit(target, skill));
 			
 			int damage = (int) Formulas.calcMagicDam(activeChar, target, skill, ss, bss, mcrit);
-			
+			final byte reflect = Formulas.calcSkillReflect(target, skill);
+
 			// Why are we trying to reduce the current target HP here?
 			// Why not inside the below "if" condition, after the effects
 			// processing as it should be?
@@ -116,36 +117,30 @@ public class Mdam implements ISkillHandler
 					target.breakCast();
 				}
 				
-				activeChar.sendDamageMessage(target, damage, mcrit, false, false);
+				if ((reflect & 2) != 0)
+					activeChar.reduceCurrentHp(damage, target);
+				else
+				{
+					activeChar.sendDamageMessage(target, damage, mcrit, false, false);
+					target.reduceCurrentHp(damage, activeChar);
+				}
 				
 				if (skill.hasEffects())
 				{
-					if (target.reflectSkill(skill))
+					if ((reflect & 1) != 0)
 					{
 						activeChar.stopSkillEffects(skill.getId());
-						skill.getEffects(null, activeChar);
-						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
-						sm.addSkillName(skill.getId());
-						activeChar.sendPacket(sm);
+						skill.getEffects(target, activeChar);
+						activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT).addSkillName(skill));
 					}
 					else
 					{
 						// activate attacked effects, if any
 						target.stopSkillEffects(skill.getId());
-						Formulas.getInstance();
 						if (Formulas.calcSkillSuccess(activeChar, target, skill, false, ss, bss))
 							skill.getEffects(activeChar, target);
-						else
-						{
-							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2);
-							sm.addString(target.getName());
-							sm.addSkillName(skill.getDisplayId());
-							activeChar.sendPacket(sm);
-						}
 					}
-				}
-				
-				target.reduceCurrentHp(damage, activeChar);
+				}			
 			}
 		}
 		// self Effect :]

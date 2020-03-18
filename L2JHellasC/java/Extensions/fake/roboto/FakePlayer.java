@@ -3,8 +3,8 @@ package Extensions.fake.roboto;
 import Extensions.fake.roboto.ai.FakePlayerAI;
 import Extensions.fake.roboto.helpers.FakeHelpers;
 
-import com.l2jhellas.gameserver.emum.skills.L2SkillTargetType;
-import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.gameserver.enums.skills.L2SkillTargetType;
+import com.l2jhellas.gameserver.enums.skills.L2SkillType;
 import com.l2jhellas.gameserver.geometry.Point3D;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;

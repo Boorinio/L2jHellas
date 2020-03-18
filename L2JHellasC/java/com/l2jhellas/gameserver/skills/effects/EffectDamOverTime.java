@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.skills.effects;
 
-import com.l2jhellas.gameserver.emum.skills.L2SkillTargetType;
+import com.l2jhellas.gameserver.enums.skills.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.network.SystemMessageId;
@@ -32,8 +32,7 @@ public final class EffectDamOverTime extends L2Effect
 		{
 			if (getSkill().isToggle())
 			{
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.SKILL_REMOVED_DUE_LACK_HP);
-				getEffected().sendPacket(sm);
+				getEffected().sendPacket(SystemMessage.getSystemMessage(SystemMessageId.SKILL_REMOVED_DUE_LACK_HP));
 				return false;
 			}
 			
@@ -41,7 +40,12 @@ public final class EffectDamOverTime extends L2Effect
 			// 1947: "DOT skills shouldn't kill"
 			// Well, some of them should ;-)
 			if (getSkill().getId() != 4082)
+			{
+				if (getEffected().getCurrentHp() <= 1)
+					return true;
+				
 				damage = getEffected().getCurrentHp() - 1;
+			}
 		}
 		
 		boolean awake = !(getEffected() instanceof L2Attackable) && !(getSkill().getTargetType() == L2SkillTargetType.TARGET_SELF && getSkill().isToggle());

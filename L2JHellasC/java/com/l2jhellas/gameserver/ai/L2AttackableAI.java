@@ -12,8 +12,8 @@ import java.util.stream.Stream;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
-import com.l2jhellas.gameserver.emum.ZoneId;
-import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.gameserver.enums.ZoneId;
+import com.l2jhellas.gameserver.enums.skills.L2SkillType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -30,9 +30,11 @@ import com.l2jhellas.gameserver.model.actor.instance.L2FriendlyMobInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2GuardInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RiftInvaderInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
@@ -52,7 +54,7 @@ public class L2AttackableAI extends L2CharacterAI
 	private int chaostime = 0;
 	int lastBuffTick;
 	
-	public L2AttackableAI(L2Character.AIAccessor accessor)
+	public L2AttackableAI(L2Character accessor)
 	{
 		super(accessor);
 		_attackTimeout = Integer.MAX_VALUE;
@@ -81,13 +83,39 @@ public class L2AttackableAI extends L2CharacterAI
 		{			
 			if (player.isGM() && !player.getAccessLevel().canTakeAggro())
 				return false;
-			
+
 			if (player.isRecentFakeDeath())
 				return false;
 			
 			if (!(me.isRaid()) && !(me.canSeeThroughSilentMove()) && player.isSilentMoving())
 				return false;
 
+			if(me instanceof L2SiegeGuardInstance)
+			{			
+				final L2SiegeGuardInstance sGuard = (L2SiegeGuardInstance) me;
+
+				// Check if the target isn't another guard, folk or a door
+				if (target instanceof L2SiegeGuardInstance || target instanceof L2NpcInstance || target instanceof L2DoorInstance || target.isAlikeDead() || target.isInvul())
+					return false;
+				
+				// Get the owner if the target is a summon
+				if (target instanceof L2Summon)
+				{
+					L2PcInstance owner = ((L2Summon) target).getOwner();
+					if (sGuard.isInsideRadius(owner, 1000, true, false))
+						target = owner;
+				}
+
+				if (sGuard.getCastle().getSiege().checkIsDefender(player.getClan()))
+				{
+					sGuard.stopHating(player);
+					return false;
+				}
+					
+				if (player.isSilentMoving() && !sGuard.isInsideRadius(player, 250, false, false))
+					return false;						
+			}
+			
 			if (me instanceof L2GuardInstance)
 			{
 				L2World.getInstance().forEachVisibleObjectInRange(me, L2GuardInstance.class, 600, guard ->
@@ -178,7 +206,7 @@ public class L2AttackableAI extends L2CharacterAI
 	public void startAITask()
 	{
 		if (_aiTask == null)
-			_aiTask = ThreadPoolManager.getInstance().scheduleAiAtFixedRate(this::onEvtThink, 1000, 1000);
+			_aiTask = ThreadPoolManager.getInstance().scheduleAiAtFixedRate(this::onEvtThink, 1100, 1100);
 	}
 	
 	@Override
@@ -204,7 +232,7 @@ public class L2AttackableAI extends L2CharacterAI
 			{
 				super.changeIntention(AI_INTENTION_IDLE, null, null);			
 				stopAITask();				
-				_accessor.detachAI();				
+				_actor.detachAI();				
 				return;
 			}
 		}
@@ -258,7 +286,7 @@ public class L2AttackableAI extends L2CharacterAI
 				
 		if (_globalAggro >= 0)
 		{
-			if (npc.isAggressive() || (npc instanceof L2GuardInstance))
+			if (!npc.isCastingNow() && !npc.isAttackingNow() && npc.isAggressive() || (npc instanceof L2GuardInstance))
 			{
 			    final int range = npc instanceof L2GuardInstance ? 600 : npc.getAggroRange();
 			    L2World.getInstance().forEachVisibleObjectInRange(npc, L2Character.class, range, t ->
@@ -306,9 +334,9 @@ public class L2AttackableAI extends L2CharacterAI
 		if (!npc.canReturnToSpawnPoint())
 			return;
 		
-		if ((npc instanceof L2GuardInstance) && !npc.isWalker())
+		if ((npc instanceof L2GuardInstance) && !npc.isWalker()  || npc instanceof L2SiegeGuardInstance)
 			npc.returnHome();
-		
+
 		final L2Character leader = npc.getLeader();
 		if ((leader != null) && !leader.isAlikeDead())
 		{
@@ -450,7 +478,7 @@ public class L2AttackableAI extends L2CharacterAI
 			npc.returnHome();
 			return;
 		}
-				
+			
 		final int collision = npc.getTemplate().getCollisionRadius();
 				
 		if (npc.getFactionId() != null)
@@ -715,12 +743,12 @@ public class L2AttackableAI extends L2CharacterAI
 			
 			setTarget(target);
         }
-        
+		
 		final double dista = Math.sqrt(npc.getPlanDistanceSq(target.getX(), target.getY()));
 		int dist2 = (int) dista - npc.getTemplate().collisionRadius;
 		
 		if (dist2 > range)
-		{
+		{		
 			if (target.isMoving())
 				range -= 30;
 			
@@ -768,7 +796,7 @@ public class L2AttackableAI extends L2CharacterAI
 		return true;
 	}
 	
-	private boolean checkTarget(L2Object target)
+	public boolean checkTarget(L2Object target)
 	{
 		if (target == null)
 			return false;
@@ -915,7 +943,8 @@ public class L2AttackableAI extends L2CharacterAI
 
 		if (!me.isCoreAIDisabled() && (me.getAI().getIntention() != AI_INTENTION_ATTACK || me.getMostHated() != target))
 		{
-			me.setRunning();
+			if (!me.isRunning())
+				me.setRunning();
 			me.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, attacker);		
 		}
 		
@@ -949,7 +978,8 @@ public class L2AttackableAI extends L2CharacterAI
 			
 			if (!me.isCoreAIDisabled() && getIntention() != CtrlIntention.AI_INTENTION_ATTACK)
 			{
-				me.setRunning();
+				if (!me.isRunning())
+					 me.setRunning();
 				me.getAI().setIntention(CtrlIntention.AI_INTENTION_ATTACK, target);
 			}
 			

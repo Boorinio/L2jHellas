@@ -253,9 +253,6 @@
 	<admin command="admin_geo_load" accessLevel="7" />
 	<admin command="admin_geo_unload" accessLevel="7" />
 
-	<!-- ADMIN GM -->
-	<admin command="admin_gm" accessLevel="7" />
-
 	<!-- ADMIN GM CHAT -->
 	<admin command="admin_gmchat" accessLevel="7" />
 	<admin command="admin_snoop" accessLevel="7" />

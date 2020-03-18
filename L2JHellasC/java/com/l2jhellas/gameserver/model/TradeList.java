@@ -44,6 +44,15 @@ public class TradeList
 			_price = price;
 		}
 		
+		public TradeItem(L2Item item, int count, int price , int enchant)
+		{
+			_objectId = 0;
+			_item = item;
+			_enchant = enchant;
+			_count = count;
+			_price = price;
+		}
+		
 		public TradeItem(TradeItem item, int count, int price)
 		{
 			_objectId = item.getObjectId();
@@ -259,10 +268,13 @@ public class TradeList
 			return null;
 		}
 		
+		int _count = _owner.getInventory().getInventoryItemCount(item.getItemId(),item.getEnchantLevel());
+
+		
 		if (!item.isTradeable() || item.isQuestItem())
 			return null;
 		
-		if (count <= 0 || count > item.getCount())
+		if (count <= 0 || count > item.getCount() || count > _count)
 			return null;
 		
 		if (!item.isStackable() && count > 1)
@@ -285,7 +297,7 @@ public class TradeList
 		return titem;
 	}
 	
-	public synchronized TradeItem addItemByItemId(int itemId, int count, int price)
+	public synchronized TradeItem addItemByItemId(int itemId, int count, int price, int enchant)
 	{
 		if (isLocked())
 		{
@@ -312,7 +324,7 @@ public class TradeList
 		if ((Integer.MAX_VALUE / count) < price)
 			return null;
 		
-		TradeItem titem = new TradeItem(item, count, price);
+		TradeItem titem = new TradeItem(item, count, price,enchant);
 		
 		_items.add(titem);
 		

@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.player.ChatType;
+import com.l2jhellas.gameserver.enums.player.ChatType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.util.Broadcast;

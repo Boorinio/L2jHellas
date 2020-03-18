@@ -221,17 +221,11 @@ public class GameServerThread extends Thread
 	{
 		if (isAuthed())
 		{
-			PlayerLogout plo = new PlayerLogout(data);
+			final PlayerLogout plo = new PlayerLogout(data);
 			_accountsOnGameServer.remove(plo.getAccount());
-			if (Config.DEBUG)
-			{
-				_log.info("Player " + plo.getAccount() + " logged out from gameserver [" + getServerId() + "] " + GameServerTable.getInstance().getServerNameById(getServerId()));
-			}
 		}
 		else
-		{
 			forceClose(LoginServerFail.NOT_AUTHED);
-		}
 	}
 	
 	private void onReceiveChangeAccessLevel(byte[] data)

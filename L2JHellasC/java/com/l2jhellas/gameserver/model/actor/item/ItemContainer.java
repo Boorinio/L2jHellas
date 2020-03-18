@@ -4,14 +4,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.emum.items.ItemLocation;
+import com.l2jhellas.gameserver.enums.items.ItemLocation;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -21,12 +26,12 @@ import com.l2jhellas.util.database.L2DatabaseFactory;
 public abstract class ItemContainer
 {
 	protected static final Logger _log = Logger.getLogger(ItemContainer.class.getName());
-	
-	protected final List<L2ItemInstance> _items;
+
+	protected final Map<Integer, L2ItemInstance> _items = new ConcurrentHashMap<>();
 	
 	protected ItemContainer()
 	{
-		_items = new ArrayList<>();
+		
 	}
 	
 	public abstract L2Character getOwner();
@@ -42,57 +47,50 @@ public abstract class ItemContainer
 	{
 		return _items.size();
 	}
-	
-	public L2ItemInstance[] getItems()
+
+	public Collection<L2ItemInstance> getItems()
 	{
-		synchronized (_items)
+		return getItems(Objects::nonNull);
+	}
+
+	@SafeVarargs
+	public final Collection<L2ItemInstance> getItems(Predicate<L2ItemInstance> filter, Predicate<L2ItemInstance>... filters)
+	{
+		for (Predicate<L2ItemInstance> additionalFilter : filters)
 		{
-			return _items.toArray(new L2ItemInstance[_items.size()]);
+			filter = filter.and(additionalFilter);
 		}
+		return _items.values().stream().filter(filter).collect(Collectors.toCollection(LinkedList::new));
 	}
 	
 	public L2ItemInstance getItemByItemId(int itemId)
 	{
-		for (L2ItemInstance item : _items)
-			if (item != null && item.getItemId() == itemId)
-				return item;
-		
-		return null;
+		return _items.values().stream().filter(item -> item.getItemId() == itemId).findFirst().orElse(null);
 	}
-	
-	public L2ItemInstance getItemByItemId(int itemId, L2ItemInstance itemToIgnore)
-	{
-		for (L2ItemInstance item : _items)
-			if (item != null && item.getItemId() == itemId && !item.equals(itemToIgnore))
-				return item;
-		
-		return null;
-	}
-	
+
 	public L2ItemInstance getItemByObjectId(int objectId)
 	{
-		for (L2ItemInstance item : _items)
-			if (item.getObjectId() == objectId)
-				return item;
-		
-		return null;
+		return _items.get(objectId);
 	}
 	
 	public int getInventoryItemCount(int itemId, int enchantLevel)
 	{
 		int count = 0;
 		
-		for (L2ItemInstance item : _items)
+		for (L2ItemInstance item : _items.values())
+		{
 			if (item.getItemId() == itemId && ((item.getEnchantLevel() == enchantLevel) || (enchantLevel < 0)))
-				// if (item.isAvailable((L2PcInstance)getOwner(), true) || item.getItem().getType2() == 3)//available or quest item
+			{
 				if (item.isStackable())
-					count = item.getCount();
-				else
+					return item.getCount();
+		
 					count++;
+			}
+		}
 		
 		return count;
 	}
-	
+			
 	public L2ItemInstance addItem(String process, L2ItemInstance item, L2PcInstance actor, L2Object reference)
 	{
 		L2ItemInstance olditem = getItemByItemId(item.getItemId());
@@ -288,11 +286,8 @@ public abstract class ItemContainer
 	{
 		synchronized (item)
 		{
-			// check if item is present in this container
-			if (!_items.contains(item))
-			{
+			if (!_items.containsKey(item.getObjectId()))
 				return null;
-			}
 			
 			removeItem(item);
 			ItemTable.getInstance().destroyItem(process, item, actor, reference);
@@ -352,7 +347,7 @@ public abstract class ItemContainer
 	
 	public synchronized void destroyAllItems(String process, L2PcInstance actor, L2Object reference)
 	{
-		for (L2ItemInstance item : _items)
+		for (L2ItemInstance item : _items.values())
 			destroyItem(process, item, actor, reference);
 	}
 	
@@ -360,7 +355,7 @@ public abstract class ItemContainer
 	{
 		int count = 0;
 		
-		for (L2ItemInstance item : _items)
+		for (L2ItemInstance item : _items.values())
 			if (item.getItemId() == 57)
 			{
 				count = item.getCount();
@@ -372,12 +367,12 @@ public abstract class ItemContainer
 	
 	protected void addItem(L2ItemInstance item)
 	{
-		_items.add(item);
+		_items.put(item.getObjectId(), item);
 	}
 	
-	protected void removeItem(L2ItemInstance item)
+	protected boolean removeItem(L2ItemInstance item)
 	{
-		_items.remove(item);
+		return _items.remove(item.getObjectId()) != null;
 	}
 	
 	protected void refreshWeight()
@@ -389,7 +384,7 @@ public abstract class ItemContainer
 		
 		if (getOwner() != null)
 		{
-			for (L2ItemInstance item : _items)
+			for (L2ItemInstance item : _items.values())
 			{
 				if (item != null)
 				{
@@ -405,7 +400,7 @@ public abstract class ItemContainer
 	{
 		if (getOwner() != null)
 		{
-			for (L2ItemInstance item : _items)
+			for (L2ItemInstance item : _items.values())
 			{
 				if (item != null)
 					item.updateDatabase();

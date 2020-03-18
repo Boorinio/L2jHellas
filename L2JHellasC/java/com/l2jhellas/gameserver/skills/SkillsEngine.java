@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import com.PackRoot;
-import com.l2jhellas.gameserver.emum.items.L2EtcItemType;
 import com.l2jhellas.gameserver.engines.Item;
+import com.l2jhellas.gameserver.enums.items.L2EtcItemType;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.item.L2EtcItem;
 import com.l2jhellas.gameserver.model.actor.item.L2Item;
@@ -45,7 +45,7 @@ public class SkillsEngine
 		File dir = new File(PackRoot.DATAPACK_ROOT, dirname);
 		if (!dir.exists())
 		{
-			_log.config("Dir " + dir.getAbsolutePath() + " not exists");
+			_log.info("Dir " + dir.getAbsolutePath() + " not exists");
 			return;
 		}
 		File[] files = dir.listFiles();
@@ -86,7 +86,7 @@ public class SkillsEngine
 				count++;
 			}
 		}
-		_log.config("SkillsEngine: Loaded " + count + " Skill templates from XML files.");
+		_log.info("SkillsEngine: Loaded " + count + " Skill templates from XML files.");
 	}
 	
 	public List<L2Armor> loadArmors(Map<Integer, Item> armorData)

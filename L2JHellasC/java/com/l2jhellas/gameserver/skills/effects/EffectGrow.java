@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.skills.effects;
 
-import com.l2jhellas.gameserver.emum.skills.AbnormalEffect;
+import com.l2jhellas.gameserver.enums.skills.AbnormalEffect;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.skills.Env;

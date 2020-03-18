@@ -1,224 +1,392 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.emum.sound.Music;
+import com.l2jhellas.gameserver.enums.skills.FrequentSkill;
+import com.l2jhellas.gameserver.enums.sound.Music;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
+import com.l2jhellas.gameserver.model.L2Skill;
+import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
+import com.l2jhellas.gameserver.model.actor.instance.L2MonsterInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.model.actor.position.Location;
+import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
-import com.l2jhellas.gameserver.network.serverpackets.Earthquake;
+import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.SpecialCamera;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
+import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.StatsSet;
+import com.l2jhellas.util.MathUtil;
 import com.l2jhellas.util.Rnd;
 
 public class Antharas extends AbstractNpcAI
 {
-	
+	private static L2BossZone _Zone = GrandBossManager.getZoneById(110001);
+
 	public static final int ANTHARAS = 29019;
+	private static final int[] ANTHARAS_IDS ={29066,29067,29068};
 	
-	// Antharas Status Tracking :
-	public static final byte DORMANT = 0; // Antharas is spawned and no one has entered yet. Entry is unlocked
-	public static final byte WAITING = 1; // Antharas is spawend and someone has entered, triggering a 30 minute window for additional people to enter
-	// before he unleashes his attack. Entry is unlocked
-	public static final byte FIGHTING = 2; // Antharas is engaged in battle, annihilating his foes. Entry is locked
-	public static final byte DEAD = 3; // Antharas has been killed. Entry is locked
+	public static final byte DORMANT = 0; // No one has entered yet. Entry is unlocked.
+	public static final byte WAITING = 1; // Someone has entered, triggering a 30 minute window for additional people to enter. Entry is unlocked.
+	public static final byte FIGHTING = 2; // Antharas is engaged in battle, annihilating his foes. Entry is locked.
+	public static final byte DEAD = 3; // Antharas has been killed. Entry is locked.
 	
-	private static long _LastAction = 0;
+	private long _action = 0; 
+	private L2PcInstance _actualVictim;
+	private final List<L2Npc> _monsters = new CopyOnWriteArrayList<>();
 	
-	private static L2BossZone _Zone;
+	private int _antharasId; 
+	private L2Skill _skillRegen; 
+	private int _minionTimer;
 	
-	// Boss: Antharas
 	public Antharas()
 	{
 		super("antharas", "ai");
-		int[] mob =
+		int[] mob = {ANTHARAS,29066, 29067, 29068, 29069, 29070, 29071, 29072, 29073, 29074, 29075, 29076};
+		
+		registerMobs(mob, QuestEventType.ON_ATTACK, QuestEventType.ON_KILL, QuestEventType.ON_SPAWN);
+		
+		final StatsSet info = GrandBossManager.getStatsSet(ANTHARAS);	
+		switch (GrandBossManager.getInstance().getBossStatus(ANTHARAS))
 		{
-			ANTHARAS
-		};
-		registerMobs(mob);
-		_Zone = GrandBossManager.getZone(179700, 113800, -7709);
-		StatsSet info = GrandBossManager.getStatsSet(ANTHARAS);
-		int status = GrandBossManager.getBossStatus(ANTHARAS);
-		if (status == DEAD)
-		{
-			// load the unlock date and time for antharas from DB
-			long temp = (info.getLong("respawn_time") - System.currentTimeMillis());
-			// if antharas is locked until a certain time, mark it so and start the unlock timer
-			// the unlock time has not yet expired. Mark Antharas as currently locked. Setup a timer
-			// to fire at the correct time (calculate the time between now and the unlock time,
-			// setup a timer to fire after that many msec)
-			if (temp > 0)
-			{
-				startQuestTimer("antharas_unlock", temp, null, null, false);
-			}
-			else
-			{
-				// the time has already expired while the server was offline. Immediately spawn antharas in his cave.
-				// also, the status needs to be changed to DORMANT
-				L2GrandBossInstance antharas = (L2GrandBossInstance) addSpawn(ANTHARAS, 185708, 114298, -8221, 32768, false, 0, false);
-				GrandBossManager.setBossStatus(ANTHARAS, DORMANT);
-				antharas.broadcastPacket(new Earthquake(185708, 114298, -8221, 20, 10));
-				GrandBossManager.addBoss(antharas);
-			}
-		}
-		else
-		{
-			int loc_x = info.getInteger("loc_x");
-			int loc_y = info.getInteger("loc_y");
-			int loc_z = info.getInteger("loc_z");
-			int heading = info.getInteger("heading");
-			int hp = info.getInteger("currentHP");
-			int mp = info.getInteger("currentMP");
-			L2GrandBossInstance antharas = (L2GrandBossInstance) addSpawn(ANTHARAS, loc_x, loc_y, loc_z, heading, false, 0, false);
-			GrandBossManager.addBoss(antharas);
-			antharas.setCurrentHpMp(hp, mp);
-			if (status == WAITING)
-			{
-				// Start timer to lock entry after 30 minutes
-				startQuestTimer("waiting", Config.Antharas_Wait_Time, antharas, null, false);
-			}
-			else if (status == FIGHTING)
-			{
-				_LastAction = System.currentTimeMillis();
-				// Start repeating timer to check for inactivity
-				startQuestTimer("antharas_despawn", 60000, antharas, null, true);
-			}
+			case DEAD:
+				long temp = (info.getLong("respawn_time") - System.currentTimeMillis());
+				if (temp > 0)
+					startQuestTimer("antharas_unlock", null, null, temp);
+				else
+					GrandBossManager.setBossStatus(ANTHARAS, DORMANT);
+				break;
+			
+			case WAITING:
+				startQuestTimer("beginning", null, null, Config.Antharas_Wait_Time);
+				break;
+			
+			case FIGHTING:
+				final int loc_x = info.getInteger("loc_x");
+				final int loc_y = info.getInteger("loc_y");
+				final int loc_z = info.getInteger("loc_z");
+				final int heading = info.getInteger("heading");
+				final int hp = info.getInteger("currentHP");
+				final int mp = info.getInteger("currentMP");
+				
+				checkAntharas();	
+				final L2Npc antharas = addSpawn(_antharasId, loc_x, loc_y, loc_z, heading, false, 0, false);
+				GrandBossManager.addBoss(ANTHARAS, (L2GrandBossInstance) antharas);			
+				antharas.setCurrentHpMp(hp, mp);
+				antharas.setRunning();		
+				_action = System.currentTimeMillis();
+				
+				startQuestTimer("regen_task", antharas, null, 60000,true);
+				startQuestTimer("skill_task", antharas, null, 2000,true);
+				startQuestTimer("spawn_minions", antharas, null, _minionTimer,true);
+				break;
 		}
 	}
-	
+
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		if (npc != null)
+		if (event.equalsIgnoreCase("beginning"))
 		{
-			long temp = 0;
-			if (event.equalsIgnoreCase("waiting"))
-			{
-				npc.teleToLocation(185452, 114835, -8221);
-				npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(181911, 114835, -7678, 0));
-				startQuestTimer("antharas_has_arrived", 2000, npc, null, true);
-				npc.broadcastPacket(Music.BS02_A_10000.getPacket());
-				GrandBossManager.setBossStatus(ANTHARAS, FIGHTING);
-			}
-			else if (event.equalsIgnoreCase("camera_1"))
-			{
-				startQuestTimer("camera_2", 3000, npc, null, false);
-				npc.broadcastPacket(new SpecialCamera(npc.getObjectId(), 700, 13, -19, 0, 20000));
-			}
-			else if (event.equalsIgnoreCase("camera_2"))
-			{
-				startQuestTimer("camera_3", 10000, npc, null, false);
-				npc.broadcastPacket(new SpecialCamera(npc.getObjectId(), 700, 13, 0, 6000, 20000));
-			}
-			else if (event.equalsIgnoreCase("camera_3"))
-			{
-				startQuestTimer("camera_4", 200, npc, null, false);
-				npc.broadcastPacket(new SpecialCamera(npc.getObjectId(), 3700, 0, -3, 0, 10000));
-			}
-			else if (event.equalsIgnoreCase("camera_4"))
-			{
-				startQuestTimer("camera_5", 10800, npc, null, false);
-				npc.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1100, 0, -3, 22000, 30000));
-			}
-			else if (event.equalsIgnoreCase("camera_5"))
-			{
-				startQuestTimer("antharas_despawn", 60000, npc, null, true);
-				npc.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1100, 0, -3, 300, 7000));
-				_LastAction = System.currentTimeMillis();
-			}
-			else if (event.equalsIgnoreCase("antharas_despawn"))
-			{
-				temp = (System.currentTimeMillis() - _LastAction);
-				if (temp > 900000)
-				{
-					npc.teleToLocation(185708, 114298, -8221);
-					GrandBossManager.setBossStatus(ANTHARAS, DORMANT);
-					npc.setCurrentHpMp(npc.getMaxHp(), npc.getMaxMp());
-					_Zone.oustAllPlayers();
-					cancelQuestTimer("antharas_despawn", npc, null);
-				}
-			}
-			else if (event.equalsIgnoreCase("antharas_has_arrived"))
-			{
-				int dx = Math.abs(npc.getX() - 181911);
-				int dy = Math.abs(npc.getY() - 114835);
-				if (dx <= 50 && dy <= 50)
-				{
-					startQuestTimer("camera_1", 2000, npc, null, false);
-					npc.getSpawn().setLocx(181911);
-					npc.getSpawn().setLocy(114835);
-					npc.getSpawn().setLocz(-7678);
-					npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
-					getQuestTimer("antharas_has_arrived", npc, null);
-				}
-				else
-				{
-					npc.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(181911, 114835, -7678, 0));
-				}
-			}
-			else if (event.equalsIgnoreCase("spawn_cubes"))
-			{
-				addSpawn(31859, 177615, 114941, -7709, 0, false, 900000, false);
-				int radius = 1500;
-				for (int i = 0; i < 20; i++)
-				{
-					int x = (int) (radius * Math.cos(i * .331)); // .331~2pi/19
-					int y = (int) (radius * Math.sin(i * .331));
-					addSpawn(31859, 177615 + x, 114941 + y, -7709, 0, false, 900000, false);
-				}
-				cancelQuestTimer("antharas_despawn", npc, null);
-				startQuestTimer("remove_players", 900000, null, null, false);
-			}
+			checkAntharas();
+			
+			final L2Npc antharas = addSpawn(_antharasId, 181323, 114850, -7623, 32542, false, 0, false);
+			GrandBossManager.addBoss(ANTHARAS, (L2GrandBossInstance) antharas);
+			antharas.setIsInvul(true);
+			
+			startQuestTimer("spawn_1", antharas, null, 16);
+			startQuestTimer("spawn_2", antharas, null, 3016);
+			startQuestTimer("spawn_3", antharas, null, 13016);
+			startQuestTimer("spawn_4", antharas, null, 13216);
+			startQuestTimer("spawn_5", antharas, null, 24016);
+			startQuestTimer("spawn_6", antharas, null, 25916);
 		}
-		else
+		if (event.equalsIgnoreCase("regen_task"))
 		{
-			if (event.equalsIgnoreCase("antharas_unlock"))
+			if (_action + 1800000 < System.currentTimeMillis())
 			{
-				L2GrandBossInstance antharas = (L2GrandBossInstance) addSpawn(ANTHARAS, 185708, 114298, -8221, 32768, false, 0, false);
-				GrandBossManager.addBoss(antharas);
 				GrandBossManager.setBossStatus(ANTHARAS, DORMANT);
-				antharas.broadcastPacket(new Earthquake(185708, 114298, -8221, 20, 10));
-			}
-			else if (event.equalsIgnoreCase("remove_players"))
-			{
 				_Zone.oustAllPlayers();
+				
+				CancelTimers(npc);
+				
+				npc.deleteMe();
+				return null;
+			}
+			_skillRegen.getEffects(npc, npc);
+		}
+		else if (event.equalsIgnoreCase("spawn_1"))
+			_Zone.broadcastPacket(new SpecialCamera(npc.getObjectId(), 700, 13, -19, 0, 20000, 0, 0, 1, 0));
+		else if (event.equalsIgnoreCase("spawn_2"))
+		{
+			npc.broadcastPacket(new SocialAction(npc.getObjectId(), 1));
+			_Zone.broadcastPacket(new SpecialCamera(npc.getObjectId(), 700, 13, 0, 6000, 20000, 0, 0, 1, 0));
+		}
+		else if (event.equalsIgnoreCase("spawn_3"))
+			_Zone.broadcastPacket(new SpecialCamera(npc.getObjectId(), 3700, 0, -3, 0, 10000, 0, 0, 1, 0));
+		else if (event.equalsIgnoreCase("spawn_4"))
+		{
+			npc.broadcastPacket(new SocialAction(npc.getObjectId(), 2));
+			_Zone.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1100, 0, -3, 22000, 30000, 0, 0, 1, 0));
+		}
+		else if (event.equalsIgnoreCase("spawn_5"))
+			_Zone.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1100, 0, -3, 300, 7000, 0, 0, 1, 0));
+		else if (event.equalsIgnoreCase("spawn_6"))
+		{
+			_action = System.currentTimeMillis();
+			
+			GrandBossManager.setBossStatus(ANTHARAS, FIGHTING);
+			npc.setIsInvul(false);
+			npc.setRunning();
+			
+			startQuestTimer("regen_task", npc, null, 60000,true);
+			startQuestTimer("skill_task", npc, null, 2000,true);
+			startQuestTimer("spawn_minions", npc, null, _minionTimer,true);
+		}
+		else if (event.equalsIgnoreCase("skill_task"))
+			callSkill(npc);
+		else if (event.equalsIgnoreCase("spawn_minions"))
+		{
+			boolean isBehemoth = Rnd.get(100) < 60;
+			int mobNumber = isBehemoth ? 2 : 3;
+			
+			for (int i = 0; i < mobNumber; i++)
+			{
+				if (_monsters.size() > 9)
+					break;
+				
+				final int npcId = isBehemoth ? 29069 : Rnd.get(29070, 29076);
+				final L2Npc dragon = addSpawn(npcId, npc.getX() + Rnd.get(-200, 200), npc.getY() + Rnd.get(-200, 200), npc.getZ(), 0, false, 0, true);
+				((L2MonsterInstance) dragon).setIsRaidMinion(true);
+				
+				_monsters.add(dragon);
+				
+				final L2PcInstance victim = getRandomPlayer(dragon);
+				if (victim != null)
+					attack(((L2Attackable) dragon), victim);
+				
+				if (!isBehemoth)
+					startQuestTimer("self_destruct", dragon, null, (_minionTimer / 3));
 			}
 		}
+		else if (event.equalsIgnoreCase("self_destruct"))
+		{
+			L2Skill skill;
+			switch (npc.getNpcId())
+			{
+				case 29070:
+				case 29071:
+				case 29072:
+				case 29073:
+				case 29074:
+				case 29075:
+					skill = SkillTable.getInstance().getInfo(5097, 1);
+					break;
+				default:
+					skill = SkillTable.getInstance().getInfo(5094, 1);
+			}
+			npc.doCast(skill);
+		}
+		else if (event.equalsIgnoreCase("die_1"))
+		{
+			addSpawn(31859, 177615, 114941, -7709, 0, false, 900000, false);
+			startQuestTimer("remove_players", null, null, 900000);
+		}
+		else if (event.equalsIgnoreCase("antharas_unlock"))
+			GrandBossManager.setBossStatus(ANTHARAS, DORMANT);
+		else if (event.equalsIgnoreCase("remove_players"))
+			_Zone.oustAllPlayers();
+				
 		return super.onAdvEvent(event, npc, player);
 	}
-	
+
 	@Override
 	public String onAttack(L2Npc npc, L2PcInstance attacker, int damage, boolean isPet)
 	{
-		if (GrandBossManager.getBossStatus(ANTHARAS) != FIGHTING)
-		{
-			_Zone.oustAllPlayers();
+		if (npc.isInvul())
 			return null;
+		
+		if (attacker.isPlayable())
+		{
+			if (testCursesOnAttack(npc, attacker))
+				return null;
+			
+			_action = System.currentTimeMillis();
 		}
-		_LastAction = System.currentTimeMillis();
+		
 		return super.onAttack(npc, attacker, damage, isPet);
+	}
+	
+	private void checkAntharas()
+	{
+		final int playersNumber = _Zone.getAllowedPlayers().size();
+		if (playersNumber < 45)
+		{
+			_antharasId = ANTHARAS_IDS[0];
+			_skillRegen = SkillTable.getInstance().getInfo(4239, 1);
+			_minionTimer = 180000;
+		}
+		else if (playersNumber < 63)
+		{
+			_antharasId = ANTHARAS_IDS[1];
+			_skillRegen = SkillTable.getInstance().getInfo(4240, 1);
+			_minionTimer = 150000;
+		}
+		else
+		{
+			_antharasId = ANTHARAS_IDS[2];
+			_skillRegen = SkillTable.getInstance().getInfo(4241, 1);
+			_minionTimer = 120000;
+		}
 	}
 	
 	@Override
 	public String onKill(L2Npc npc, L2PcInstance killer, boolean isPet)
 	{
-		if (npc.getNpcId() == ANTHARAS)
+		if (npc.getNpcId() == _antharasId)
 		{
-			npc.broadcastPacket(Music.BS01_D_10000.getPacket());
-			startQuestTimer("spawn_cubes", 10000, npc, null, false);
+			CancelTimers(npc);
+			
+			_Zone.broadcastPacket(new SpecialCamera(npc.getObjectId(), 1200, 20, -10, 10000, 13000, 0, 0, 0, 0));
+			_Zone.broadcastPacket(Music.BS01_D_10000.getPacket());
+			startQuestTimer("die_1", null, null, 8000);
+			
 			GrandBossManager.setBossStatus(ANTHARAS, DEAD);
+			
 			long respawnTime = (Config.Interval_Of_Antharas_Spawn + Rnd.get(Config.Random_Of_Antharas_Spawn) * 3600000);
-			startQuestTimer("antharas_unlock", respawnTime, null, null, false);
-			// also save the respawn time so that the info is maintained past reboots
+			startQuestTimer("antharas_unlock", null, null, respawnTime);
+			
 			StatsSet info = GrandBossManager.getStatsSet(ANTHARAS);
-			info.set("respawn_time", (System.currentTimeMillis() + respawnTime));
+			info.set("respawn_time", System.currentTimeMillis() + respawnTime);
 			GrandBossManager.setStatsSet(ANTHARAS, info);
 		}
+		else
+		{
+			cancelQuestTimers("self_destruct");
+			_monsters.remove(npc);
+		}	
+	
 		return super.onKill(npc, killer, isPet);
+	}
+	
+	private void callSkill(L2Npc npc)
+	{
+		if (npc.isInvul() || npc.isCastingNow())
+			return;
+		
+		if (_actualVictim == null || _actualVictim.isDead() || !npc.isInSurroundingRegion(_actualVictim) || Rnd.get(10) == 0)
+			_actualVictim = getRandomPlayer(npc);
+		
+		if (_actualVictim == null)
+			return;
+		
+		final L2Skill skill = getRandomSkill(npc);
+		
+		if (MathUtil.checkIfInRange((skill.getCastRange() < 600) ? 600 : skill.getCastRange(), npc, _actualVictim, true))
+		{
+			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_IDLE);
+			npc.setTarget(_actualVictim);
+			npc.doCast(skill);
+		}
+		else
+			npc.getAI().setIntention(CtrlIntention.AI_INTENTION_FOLLOW, _actualVictim, null);
+	}
+	
+	private static L2Skill getRandomSkill(L2Npc npc)
+	{
+		final double hpRatio = npc.getCurrentHp() / npc.getMaxHp();
+		
+		final int[] playersAround = getPlayersCountInPositions(1100, npc, false);
+		
+		if (hpRatio < 0.25)
+		{
+			if (Rnd.get(100) < 30)
+				return FrequentSkill.ANTHARAS_MOUTH.getSkill();
+			
+			if (playersAround[1] >= 10 && Rnd.get(100) < 80)
+				return FrequentSkill.ANTHARAS_TAIL.getSkill();
+			
+			if (playersAround[0] >= 10)
+			{
+				if (Rnd.get(100) < 40)
+					return FrequentSkill.ANTHARAS_DEBUFF.getSkill();
+				
+				if (Rnd.get(100) < 10)
+					return FrequentSkill.ANTHARAS_JUMP.getSkill();
+			}
+			
+			if (Rnd.get(100) < 10)
+				return FrequentSkill.ANTHARAS_METEOR.getSkill();
+		}
+		else if (hpRatio < 0.5)
+		{
+			if (playersAround[1] >= 10 && Rnd.get(100) < 80)
+				return FrequentSkill.ANTHARAS_TAIL.getSkill();
+			
+			if (playersAround[0] >= 10)
+			{
+				if (Rnd.get(100) < 40)
+					return FrequentSkill.ANTHARAS_DEBUFF.getSkill();
+				
+				if (Rnd.get(100) < 10)
+					return FrequentSkill.ANTHARAS_JUMP.getSkill();
+			}
+			
+			if (Rnd.get(100) < 7)
+				return FrequentSkill.ANTHARAS_METEOR.getSkill();
+		}
+		else if (hpRatio < 0.75)
+		{
+			if (playersAround[1] >= 10 && Rnd.get(100) < 80)
+				return FrequentSkill.ANTHARAS_TAIL.getSkill();
+			
+			if (playersAround[0] >= 10 && Rnd.get(100) < 10)
+				return FrequentSkill.ANTHARAS_JUMP.getSkill();
+			
+			if (Rnd.get(100) < 5)
+				return FrequentSkill.ANTHARAS_METEOR.getSkill();
+		}
+		else
+		{
+			if (playersAround[1] >= 10 && Rnd.get(100) < 80)
+				return FrequentSkill.ANTHARAS_TAIL.getSkill();
+			
+			if (Rnd.get(100) < 3)
+				return FrequentSkill.ANTHARAS_METEOR.getSkill();
+		}
+		
+		if (Rnd.get(100) < 6)
+			return FrequentSkill.ANTHARAS_BREATH.getSkill();
+		
+		if (Rnd.get(100) < 50)
+			return FrequentSkill.ANTHARAS_NORMAL_ATTACK.getSkill();
+		
+		if (Rnd.get(100) < 5)
+		{
+			if (Rnd.get(100) < 50)
+				return FrequentSkill.ANTHARAS_FEAR.getSkill();
+			
+			return FrequentSkill.ANTHARAS_SHORT_FEAR.getSkill();
+		}
+		
+		return FrequentSkill.ANTHARAS_NORMAL_ATTACK_EX.getSkill();
+	}
+	
+	private void CancelTimers(L2Npc npc)
+	{
+		cancelQuestTimers("regen_task");
+		cancelQuestTimers("skill_task");
+		cancelQuestTimers("spawn_minions");
+		
+		cancelQuestTimers("self_destruct");
+		
+		_monsters.forEach(L2Npc::deleteMe);
+		_monsters.clear();
 	}
 	
 	public static void main(String[] args)

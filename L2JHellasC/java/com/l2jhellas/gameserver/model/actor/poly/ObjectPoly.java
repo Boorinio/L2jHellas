@@ -2,7 +2,7 @@ package com.l2jhellas.gameserver.model.actor.poly;
 
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
-import com.l2jhellas.gameserver.emum.PolyType;
+import com.l2jhellas.gameserver.enums.PolyType;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 

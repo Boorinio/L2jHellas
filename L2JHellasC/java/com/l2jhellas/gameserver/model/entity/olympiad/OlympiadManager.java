@@ -3,7 +3,6 @@ package com.l2jhellas.gameserver.model.entity.olympiad;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -16,13 +15,12 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 
 public class OlympiadManager
 {
-	private final List<String> _nonClassBasedRegisters;
-	private final Map<Integer, List<String>> _classBasedRegisters;
+	private final List<Integer> _nonClassBasedRegisters = new CopyOnWriteArrayList<>();
+	private final Map<Integer, List<Integer>> _classBasedRegisters = new ConcurrentHashMap<>();
 	
 	protected OlympiadManager()
 	{
-		_nonClassBasedRegisters = new CopyOnWriteArrayList<>();
-		_classBasedRegisters = new ConcurrentHashMap<>();
+
 	}
 	
 	public static final OlympiadManager getInstance()
@@ -30,20 +28,20 @@ public class OlympiadManager
 		return SingletonHolder._instance;
 	}
 	
-	public final List<String> getRegisteredNonClassBased()
+	public final List<Integer> getRegisteredNonClassBased()
 	{
 		return _nonClassBasedRegisters;
 	}
 	
-	public final Map<Integer, List<String>> getRegisteredClassBased()
+	public final Map<Integer, List<Integer>> getRegisteredClassBased()
 	{
 		return _classBasedRegisters;
 	}
 	
-	protected final List<List<String>> hasEnoughRegisteredClassed()
+	protected final List<List<Integer>> hasEnoughRegisteredClassed()
 	{
-		List<List<String>> result = null;
-		for (Entry<Integer, List<String>> classList : _classBasedRegisters.entrySet())
+		List<List<Integer>> result = null;
+		for (Map.Entry<Integer, List<Integer>> classList : _classBasedRegisters.entrySet())
 		{
 			if (classList.getValue() != null && classList.getValue().size() >= Config.ALT_OLY_CLASSED)
 			{
@@ -74,26 +72,28 @@ public class OlympiadManager
 	
 	private final boolean isRegistered(L2PcInstance player, boolean showMessage)
 	{
-		if (_nonClassBasedRegisters.contains(player.getName()))
+		final Integer objId = Integer.valueOf(player.getObjectId());
+		
+		if (_nonClassBasedRegisters.contains(objId))
 		{
 			if (showMessage)
-				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT));
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_ARE_ALREADY_ON_THE_WAITING_LIST_FOR_ALL_CLASSES_WAITING_TO_PARTICIPATE_IN_THE_GAME));
 			
 			return true;
 		}
 		
-		final List<String> classed = _classBasedRegisters.get(player.getBaseClass());
-		if (classed != null && classed.contains(player.getName()))
+		final List<Integer> classed = _classBasedRegisters.get(player.getBaseClass());
+		if (classed != null && classed.contains(objId))
 		{
 			if (showMessage)
-				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_HAVE_ALREADY_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_AN_EVENT));
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_ARE_ALREADY_ON_THE_WAITING_LIST_TO_PARTICIPATE_IN_THE_GAME_FOR_YOUR_CLASS));
 			
 			return true;
 		}
 		
 		return false;
 	}
-	
+
 	public final boolean isRegisteredInComp(L2PcInstance noble)
 	{
 		return isRegistered(noble, false) || isInCompetition(noble, false);
@@ -144,13 +144,13 @@ public class OlympiadManager
 				if (!checkNoble(player))
 					return false;
 				
-				List<String> classed = _classBasedRegisters.get(player.getBaseClass());
+				List<Integer> classed = _classBasedRegisters.get(player.getBaseClass());
 				if (classed != null)
-					classed.add(player.getName().toLowerCase());
+					classed.add(player.getObjectId());
 				else
 				{
 					classed = new CopyOnWriteArrayList<>();
-					classed.add(player.getName().toLowerCase());
+					classed.add(player.getObjectId());
 					_classBasedRegisters.put(player.getBaseClass(), classed);
 				}
 				
@@ -163,7 +163,7 @@ public class OlympiadManager
 				if (!checkNoble(player))
 					return false;
 				
-				_nonClassBasedRegisters.add(player.getName().toLowerCase());
+				_nonClassBasedRegisters.add(player.getObjectId());
 				player.sendPacket(SystemMessageId.YOU_HAVE_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_NO_CLASS_GAMES);
 				break;
 			}
@@ -171,60 +171,55 @@ public class OlympiadManager
 		return true;
 	}
 	
-	public final boolean unRegisterNoble(L2PcInstance noble)
+	public final boolean unRegisterNoble(L2PcInstance player)
 	{
-		if (!Olympiad._inCompPeriod)
+		if (!Olympiad.getInstance().inCompPeriod())
 		{
-			noble.sendPacket(SystemMessageId.THE_OLYMPIAD_GAME_IS_NOT_CURRENTLY_IN_PROGRESS);
+			player.sendPacket(SystemMessageId.THE_OLYMPIAD_GAME_IS_NOT_CURRENTLY_IN_PROGRESS);
 			return false;
 		}
 		
-		if (!noble.isNoble())
+		if (!player.isNoble())
 		{
-			noble.sendPacket(SystemMessageId.NOBLESSE_ONLY);
+			player.sendPacket(SystemMessageId.NOBLESSE_ONLY);
 			return false;
 		}
 		
-		if (!isRegistered(noble, false))
+		if (!isRegistered(player, false))
 		{
-			noble.sendPacket(SystemMessageId.YOU_HAVE_NOT_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_A_GAME);
+			player.sendPacket(SystemMessageId.YOU_HAVE_NOT_BEEN_REGISTERED_IN_A_WAITING_LIST_OF_A_GAME);
 			return false;
 		}
 		
-		if (isInCompetition(noble, false))
+		if (isInCompetition(player, false))
 			return false;
+
+		final Integer objectId = Integer.valueOf(player.getObjectId());
 		
-		String player = noble.getName().toLowerCase();
-		if (_nonClassBasedRegisters.remove(player))
-		{
-			noble.sendPacket(SystemMessageId.YOU_HAVE_BEEN_DELETED_FROM_THE_WAITING_LIST_OF_A_GAME);
-			return true;
-		}
-		
-		final List<String> classed = _classBasedRegisters.get(noble.getBaseClass());
-		if (classed != null && classed.remove(player))
-		{
-			_classBasedRegisters.remove(noble.getBaseClass());
-			_classBasedRegisters.put(noble.getBaseClass(), classed);
-			
-			noble.sendPacket(SystemMessageId.YOU_HAVE_BEEN_DELETED_FROM_THE_WAITING_LIST_OF_A_GAME);
-			return true;
-		}
-		
-		return false;
+		if(_nonClassBasedRegisters.contains(objectId))
+		   _nonClassBasedRegisters.remove(objectId);
+
+		final List<Integer> classed = _classBasedRegisters.get(player.getBaseClass());
+		if (classed != null && classed.remove(objectId))
+			_classBasedRegisters.remove(player.getBaseClass());
+
+		player.sendPacket(SystemMessageId.YOU_HAVE_BEEN_DELETED_FROM_THE_WAITING_LIST_OF_A_GAME);
+
+		return true;
 	}
-	
+
 	public final void removeDisconnectedCompetitor(L2PcInstance player)
 	{
 		final OlympiadGameTask task = OlympiadGameManager.getInstance().getOlympiadTask(player.getOlympiadGameId());
 		if (task != null && task.isGameStarted())
 			task.getGame().handleDisconnect(player);
 		
-		if (_nonClassBasedRegisters.remove(player.getName()))
+		final Integer objId = Integer.valueOf(player.getObjectId());
+		if (_nonClassBasedRegisters.remove(objId))
 			return;
 		
-		final List<String> classed = _classBasedRegisters.get(player.getBaseClass());
-		if (classed != null && classed.remove(player.getName()))
+		final List<Integer> classed = _classBasedRegisters.get(player.getBaseClass());
+		if (classed != null && classed.remove(objId))
 			return;
 	}
 	

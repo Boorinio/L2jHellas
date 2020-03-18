@@ -8,15 +8,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.communitybbs.BB.Forum;
 import com.l2jhellas.gameserver.communitybbs.Manager.ForumsBBSManager;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
-import com.l2jhellas.gameserver.emum.ZoneId;
+import com.l2jhellas.gameserver.enums.ZoneId;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -462,6 +464,18 @@ public class L2Clan
 		}
 		
 		return result.toArray(new L2PcInstance[result.size()]);
+	}
+	
+	public List<L2PcInstance> getOnlineMembers(int exclude)
+	{
+		//@formatter:off
+		return _members.values().stream()
+			.filter(member -> member.getObjectId() != exclude)
+			.filter(L2ClanMember::isOnline)
+			.map(L2ClanMember::getPlayerInstance)
+			.filter(Objects::nonNull)
+			.collect(Collectors.toList());
+		//@formatter:on
 	}
 	
 	public Integer[] getOfflineMembersIds()
@@ -1482,7 +1496,7 @@ public class L2Clan
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
 			// Retrieve all skills of this L2PcInstance from the database
-			PreparedStatement statement = con.prepareStatement("SELECT privs,rank,party FROM clan_privs WHERE clan_id=?");
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM clan_privs WHERE clan_id=?");
 			statement.setInt(1, getClanId());
 			// _log.warning(L2Clan.class.getName() + ": clanPrivs restore for ClanId : "+getClanId());
 			try (ResultSet rset = statement.executeQuery())
@@ -2217,25 +2231,15 @@ public class L2Clan
 		{
 			L2PcInstance leader = getLeader().getPlayerInstance();
 			if (3 < level)
-			{
 				SiegeManager.addSiegeSkills(leader);
-			}
 			else if (4 > level)
-			{
 				SiegeManager.removeSiegeSkills(leader);
-			}
 			if (4 < level)
-			{
 				leader.sendPacket(SystemMessageId.CLAN_CAN_ACCUMULATE_CLAN_REPUTATION_POINTS);
-			}
 		}
 		
-		// notify all the members about it
 		broadcastToOnlineMembers(SystemMessage.getSystemMessage(SystemMessageId.CLAN_LEVEL_INCREASED));
 		broadcastToOnlineMembers(new PledgeShowInfoUpdate(this));
-		
-		// clan.broadcastToOnlineMembers(new PledgeStatusChanged(clan));
-		// clan.broadcastClanStatus();
 	}
 	
 	public int getSiegeKills()

@@ -43,7 +43,6 @@ import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminExpSp;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminFence;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminFightCalculator;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminGeodata;
-import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminGm;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminGmChat;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminHeal;
 import com.l2jhellas.gameserver.handlers.admincommandhandlers.AdminHelpPage;
@@ -292,7 +291,6 @@ public class MasterHandler
 			AdminExpSp.class,
 			AdminFightCalculator.class,
 			AdminGeodata.class,
-			AdminGm.class,
 			AdminGmChat.class,
 			AdminHeal.class,
 			AdminHelpPage.class,

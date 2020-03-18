@@ -3,9 +3,9 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.items.ItemLocation;
-import com.l2jhellas.gameserver.emum.items.L2WeaponType;
-import com.l2jhellas.gameserver.emum.player.ClassRace;
+import com.l2jhellas.gameserver.enums.items.ItemLocation;
+import com.l2jhellas.gameserver.enums.items.L2WeaponType;
+import com.l2jhellas.gameserver.enums.player.ClassRace;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.item.Inventory;

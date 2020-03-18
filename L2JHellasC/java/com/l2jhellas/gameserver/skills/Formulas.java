@@ -4,10 +4,10 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
-import com.l2jhellas.gameserver.emum.ZoneId;
-import com.l2jhellas.gameserver.emum.items.L2WeaponType;
-import com.l2jhellas.gameserver.emum.player.Position;
-import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.gameserver.enums.ZoneId;
+import com.l2jhellas.gameserver.enums.items.L2WeaponType;
+import com.l2jhellas.gameserver.enums.player.Position;
+import com.l2jhellas.gameserver.enums.skills.L2SkillType;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
@@ -19,28 +19,44 @@ import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2DoorInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
-import com.l2jhellas.gameserver.model.actor.item.Inventory;
 import com.l2jhellas.gameserver.model.entity.ClanHall;
 import com.l2jhellas.gameserver.model.entity.Siege;
 import com.l2jhellas.gameserver.model.zone.type.L2MotherTreeZone;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.skills.conditions.ConditionPlayerState;
-import com.l2jhellas.gameserver.skills.conditions.ConditionPlayerState.CheckPlayerState;
-import com.l2jhellas.gameserver.skills.conditions.ConditionUsingItemType;
-import com.l2jhellas.gameserver.skills.funcs.Func;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncAtkAccuracy;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncAtkCritical;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncAtkEvasion;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncBowAtkRange;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncHennaCON;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncHennaDEX;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncHennaINT;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncHennaMEN;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncHennaSTR;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncHennaWIT;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncMAtkCritical;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncMAtkMod;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncMAtkSpeed;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncMDefMod;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncMaxCpAdd;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncMaxCpMul;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncMaxHpAdd;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncMaxHpMul;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncMaxMpAdd;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncMaxMpMul;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncMoveSpeed;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncPAtkMod;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncPAtkSpeed;
+import com.l2jhellas.gameserver.skills.funcsCalc.FuncPDefMod;
 import com.l2jhellas.gameserver.templates.L2Armor;
-import com.l2jhellas.gameserver.templates.L2PcTemplate;
 import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 
 public final class Formulas
-{
-	
+{	
 	protected static final Logger _log = Logger.getLogger(L2Character.class.getName());
 	private static final int HP_REGENERATE_PERIOD = 3000; // 3 secs
-	
 	public static final int MAX_STAT_VALUE = 100;
 	
 	private static final double[] STRCompute = new double[]
@@ -74,12 +90,12 @@ public final class Formulas
 		-0.060
 	}; // {1.010, -0.060}; for C1
 	
-	protected static final double[] WITbonus = new double[MAX_STAT_VALUE];
-	protected static final double[] MENbonus = new double[MAX_STAT_VALUE];
-	protected static final double[] INTbonus = new double[MAX_STAT_VALUE];
-	protected static final double[] STRbonus = new double[MAX_STAT_VALUE];
-	protected static final double[] DEXbonus = new double[MAX_STAT_VALUE];
-	protected static final double[] CONbonus = new double[MAX_STAT_VALUE];
+	public static final double[] WITbonus = new double[MAX_STAT_VALUE];
+	public static final double[] MENbonus = new double[MAX_STAT_VALUE];
+	public static final double[] INTbonus = new double[MAX_STAT_VALUE];
+	public static final double[] STRbonus = new double[MAX_STAT_VALUE];
+	public static final double[] DEXbonus = new double[MAX_STAT_VALUE];
+	public static final double[] CONbonus = new double[MAX_STAT_VALUE];
 	
 	// These values are 100% matching retail tables, no need to change and no need add
 	// calculation into the stat bonus when accessing (not efficient),
@@ -99,689 +115,7 @@ public final class Formulas
 		for (int i = 0; i < MENbonus.length; i++)
 			MENbonus[i] = Math.floor(Math.pow(MENCompute[0], i - MENCompute[1]) * 100 + .5d) / 100;
 	}
-	
-	static class FuncAddLevel3 extends Func
-	{
-		static final FuncAddLevel3[] _instancies = new FuncAddLevel3[Stats.NUM_STATS];
-		
-		static Func getInstance(Stats stat)
-		{
-			int pos = stat.ordinal();
-			if (_instancies[pos] == null)
-				_instancies[pos] = new FuncAddLevel3(stat);
-			return _instancies[pos];
-		}
-		
-		private FuncAddLevel3(Stats pStat)
-		{
-			super(pStat, 0x10, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			env.value += env.player.getLevel() / 3.0;
-		}
-	}
-	
-	static class FuncMultLevelMod extends Func
-	{
-		static final FuncMultLevelMod[] _instancies = new FuncMultLevelMod[Stats.NUM_STATS];
-		
-		static Func getInstance(Stats stat)
-		{
-			int pos = stat.ordinal();
-			if (_instancies[pos] == null)
-				_instancies[pos] = new FuncMultLevelMod(stat);
-			return _instancies[pos];
-		}
-		
-		private FuncMultLevelMod(Stats pStat)
-		{
-			super(pStat, 0x20, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			env.value *= env.player.getLevelMod();
-		}
-	}
-	
-	static class FuncMultRegenResting extends Func
-	{
-		static final FuncMultRegenResting[] _instancies = new FuncMultRegenResting[Stats.NUM_STATS];
-		
-		static Func getInstance(Stats stat)
-		{
-			int pos = stat.ordinal();
-			
-			if (_instancies[pos] == null)
-				_instancies[pos] = new FuncMultRegenResting(stat);
-			
-			return _instancies[pos];
-		}
-		
-		private FuncMultRegenResting(Stats pStat)
-		{
-			super(pStat, 0x20, null);
-			setCondition(new ConditionPlayerState(CheckPlayerState.RESTING, true));
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			if (!cond.test(env))
-				return;
-			
-			env.value *= 1.45;
-		}
-	}
-	
-	static class FuncPAtkMod extends Func
-	{
-		static final FuncPAtkMod _fpa_instance = new FuncPAtkMod();
-		
-		static Func getInstance()
-		{
-			return _fpa_instance;
-		}
-		
-		private FuncPAtkMod()
-		{
-			super(Stats.POWER_ATTACK, 0x30, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			env.value *= STRbonus[env.player.getSTR()] * env.player.getLevelMod();
-		}
-	}
-	
-	static class FuncMAtkMod extends Func
-	{
-		static final FuncMAtkMod _fma_instance = new FuncMAtkMod();
-		
-		static Func getInstance()
-		{
-			return _fma_instance;
-		}
-		
-		private FuncMAtkMod()
-		{
-			super(Stats.MAGIC_ATTACK, 0x20, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			double intb = INTbonus[env.player.getINT()];
-			double lvlb = env.player.getLevelMod();
-			env.value *= (lvlb * lvlb) * (intb * intb);
-		}
-	}
-	
-	static class FuncMDefMod extends Func
-	{
-		static final FuncMDefMod _fmm_instance = new FuncMDefMod();
-		
-		static Func getInstance()
-		{
-			return _fmm_instance;
-		}
-		
-		private FuncMDefMod()
-		{
-			super(Stats.MAGIC_DEFENCE, 0x20, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			if (env.player instanceof L2PcInstance)
-			{
-				L2PcInstance p = (L2PcInstance) env.player;
-				if (p.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LFINGER) != null)
-					env.value -= 5;
-				if (p.getInventory().getPaperdollItem(Inventory.PAPERDOLL_RFINGER) != null)
-					env.value -= 5;
-				if (p.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LEAR) != null)
-					env.value -= 9;
-				if (p.getInventory().getPaperdollItem(Inventory.PAPERDOLL_REAR) != null)
-					env.value -= 9;
-				if (p.getInventory().getPaperdollItem(Inventory.PAPERDOLL_NECK) != null)
-					env.value -= 13;
-			}
-			env.value *= MENbonus[env.player.getMEN()] * env.player.getLevelMod();
-		}
-	}
-	
-	static class FuncPDefMod extends Func
-	{
-		static final FuncPDefMod _fmm_instance = new FuncPDefMod();
-		
-		static Func getInstance()
-		{
-			return _fmm_instance;
-		}
-		
-		private FuncPDefMod()
-		{
-			super(Stats.POWER_DEFENCE, 0x20, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			if (env.player instanceof L2PcInstance)
-			{
-				L2PcInstance p = (L2PcInstance) env.player;
-				if (p.getInventory().getPaperdollItem(Inventory.PAPERDOLL_HEAD) != null)
-					env.value -= 12;
-				if (p.getInventory().getPaperdollItem(Inventory.PAPERDOLL_CHEST) != null)
-					env.value -= ((p.isMageClass()) ? 15 : 31);
-				if (p.getInventory().getPaperdollItem(Inventory.PAPERDOLL_LEGS) != null)
-					env.value -= ((p.isMageClass()) ? 8 : 18);
-				if (p.getInventory().getPaperdollItem(Inventory.PAPERDOLL_GLOVES) != null)
-					env.value -= 8;
-				if (p.getInventory().getPaperdollItem(Inventory.PAPERDOLL_FEET) != null)
-					env.value -= 7;
-			}
-			env.value *= env.player.getLevelMod();
-		}
-	}
-	
-	static class FuncBowAtkRange extends Func
-	{
-		private static final FuncBowAtkRange _fbar_instance = new FuncBowAtkRange();
-		
-		static Func getInstance()
-		{
-			return _fbar_instance;
-		}
-		
-		private FuncBowAtkRange()
-		{
-			super(Stats.POWER_ATTACK_RANGE, 0x10, null);
-			setCondition(new ConditionUsingItemType(L2WeaponType.BOW.mask()));
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			if (!cond.test(env))
-				return;
-			env.value += 370;
-		}
-	}
-	
-	static class FuncAtkAccuracy extends Func
-	{
-		static final FuncAtkAccuracy _faa_instance = new FuncAtkAccuracy();
-		
-		static Func getInstance()
-		{
-			return _faa_instance;
-		}
-		
-		private FuncAtkAccuracy()
-		{
-			super(Stats.ACCURACY_COMBAT, 0x10, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			L2Character p = env.player;
-			// [Square(DEX)]*6 + lvl + weapon hitbonus;
-			env.value += Math.sqrt(p.getDEX()) * 6;
-			env.value += p.getLevel();
-			if (p instanceof L2Summon)
-				env.value += (p.getLevel() < 60) ? 4 : 5;
-		}
-	}
-	
-	static class FuncAtkEvasion extends Func
-	{
-		static final FuncAtkEvasion _fae_instance = new FuncAtkEvasion();
-		
-		static Func getInstance()
-		{
-			return _fae_instance;
-		}
-		
-		private FuncAtkEvasion()
-		{
-			super(Stats.EVASION_RATE, 0x10, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			L2Character p = env.player;
-			// [Square(DEX)]*6 + lvl;
-			env.value += Math.sqrt(p.getDEX()) * 6;
-			env.value += p.getLevel();
-		}
-	}
-	
-	static class FuncAtkCritical extends Func
-	{
-		static final FuncAtkCritical _fac_instance = new FuncAtkCritical();
-		
-		static Func getInstance()
-		{
-			return _fac_instance;
-		}
-		
-		private FuncAtkCritical()
-		{
-			super(Stats.CRITICAL_RATE, 0x09, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			L2Character p = env.player;
-			if (p instanceof L2Summon)
-				env.value = 40;
-			else if (p instanceof L2PcInstance && p.getActiveWeaponInstance() == null)
-				env.value = 40;
-			else
-			{
-				env.value *= DEXbonus[p.getDEX()];
-				env.value *= 10;
-				if (env.value > Config.MAX_PCRIT_RATE)
-					env.value = Config.MAX_PCRIT_RATE;
-				
-			}
-		}
-	}
-	
-	static class FuncMAtkCritical extends Func
-	{
-		static final FuncMAtkCritical _fac_instance = new FuncMAtkCritical();
-		
-		static Func getInstance()
-		{
-			return _fac_instance;
-		}
-		
-		private FuncMAtkCritical()
-		{
-			super(Stats.MCRITICAL_RATE, 0x30, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			L2Character p = env.player;
-			if (p instanceof L2Summon)
-				env.value = 8;
-			else if (p instanceof L2PcInstance && p.getActiveWeaponInstance() == null)
-				env.value = 8;
-			else
-			{
-				env.value *= WITbonus[p.getWIT()];
-			}
-		}
-	}
-	
-	static class FuncMoveSpeed extends Func
-	{
-		static final FuncMoveSpeed _fms_instance = new FuncMoveSpeed();
-		
-		static Func getInstance()
-		{
-			return _fms_instance;
-		}
-		
-		private FuncMoveSpeed()
-		{
-			super(Stats.RUN_SPEED, 0x30, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			L2Character p = env.player;
-			env.value *= DEXbonus[p.getDEX()];
-		}
-	}
-	
-	static class FuncPAtkSpeed extends Func
-	{
-		static final FuncPAtkSpeed _fas_instance = new FuncPAtkSpeed();
-		
-		static Func getInstance()
-		{
-			return _fas_instance;
-		}
-		
-		private FuncPAtkSpeed()
-		{
-			super(Stats.POWER_ATTACK_SPEED, 0x20, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			L2Character p = env.player;
-			env.value *= DEXbonus[p.getDEX()];
-		}
-	}
-	
-	static class FuncMAtkSpeed extends Func
-	{
-		static final FuncMAtkSpeed _fas_instance = new FuncMAtkSpeed();
-		
-		static Func getInstance()
-		{
-			return _fas_instance;
-		}
-		
-		private FuncMAtkSpeed()
-		{
-			super(Stats.MAGIC_ATTACK_SPEED, 0x20, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			L2Character p = env.player;
-			env.value *= WITbonus[p.getWIT()];
-		}
-	}
-	
-	static class FuncHennaSTR extends Func
-	{
-		static final FuncHennaSTR _fh_instance = new FuncHennaSTR();
-		
-		static Func getInstance()
-		{
-			return _fh_instance;
-		}
-		
-		private FuncHennaSTR()
-		{
-			super(Stats.STAT_STR, 0x10, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			// L2PcTemplate t = (L2PcTemplate)env._player.getTemplate();
-			L2PcInstance pc = (L2PcInstance) env.player;
-			if (pc != null)
-				env.value += pc.getHennaStatSTR();
-		}
-	}
-	
-	static class FuncHennaDEX extends Func
-	{
-		static final FuncHennaDEX _fh_instance = new FuncHennaDEX();
-		
-		static Func getInstance()
-		{
-			return _fh_instance;
-		}
-		
-		private FuncHennaDEX()
-		{
-			super(Stats.STAT_DEX, 0x10, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			// L2PcTemplate t = (L2PcTemplate)env._player.getTemplate();
-			L2PcInstance pc = (L2PcInstance) env.player;
-			if (pc != null)
-				env.value += pc.getHennaStatDEX();
-		}
-	}
-	
-	static class FuncHennaINT extends Func
-	{
-		static final FuncHennaINT _fh_instance = new FuncHennaINT();
-		
-		static Func getInstance()
-		{
-			return _fh_instance;
-		}
-		
-		private FuncHennaINT()
-		{
-			super(Stats.STAT_INT, 0x10, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			// L2PcTemplate t = (L2PcTemplate)env._player.getTemplate();
-			L2PcInstance pc = (L2PcInstance) env.player;
-			if (pc != null)
-				env.value += pc.getHennaStatINT();
-		}
-	}
-	
-	static class FuncHennaMEN extends Func
-	{
-		static final FuncHennaMEN _fh_instance = new FuncHennaMEN();
-		
-		static Func getInstance()
-		{
-			return _fh_instance;
-		}
-		
-		private FuncHennaMEN()
-		{
-			super(Stats.STAT_MEN, 0x10, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			// L2PcTemplate t = (L2PcTemplate)env._player.getTemplate();
-			L2PcInstance pc = (L2PcInstance) env.player;
-			if (pc != null)
-				env.value += pc.getHennaStatMEN();
-		}
-	}
-	
-	static class FuncHennaCON extends Func
-	{
-		static final FuncHennaCON _fh_instance = new FuncHennaCON();
-		
-		static Func getInstance()
-		{
-			return _fh_instance;
-		}
-		
-		private FuncHennaCON()
-		{
-			super(Stats.STAT_CON, 0x10, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			// L2PcTemplate t = (L2PcTemplate)env._player.getTemplate();
-			L2PcInstance pc = (L2PcInstance) env.player;
-			if (pc != null)
-				env.value += pc.getHennaStatCON();
-		}
-	}
-	
-	static class FuncHennaWIT extends Func
-	{
-		static final FuncHennaWIT _fh_instance = new FuncHennaWIT();
-		
-		static Func getInstance()
-		{
-			return _fh_instance;
-		}
-		
-		private FuncHennaWIT()
-		{
-			super(Stats.STAT_WIT, 0x10, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			// L2PcTemplate t = (L2PcTemplate)env._player.getTemplate();
-			L2PcInstance pc = (L2PcInstance) env.player;
-			if (pc != null)
-				env.value += pc.getHennaStatWIT();
-		}
-	}
-	
-	static class FuncMaxHpAdd extends Func
-	{
-		static final FuncMaxHpAdd _fmha_instance = new FuncMaxHpAdd();
-		
-		static Func getInstance()
-		{
-			return _fmha_instance;
-		}
-		
-		private FuncMaxHpAdd()
-		{
-			super(Stats.MAX_HP, 0x10, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			L2PcTemplate t = (L2PcTemplate) env.player.getTemplate();
-			int lvl = env.player.getLevel() - t.classBaseLevel;
-			double hpmod = t.lvlHpMod * lvl;
-			double hpmax = (t.lvlHpAdd + hpmod) * lvl;
-			double hpmin = (t.lvlHpAdd * lvl) + hpmod;
-			env.value += (hpmax + hpmin) / 2;
-		}
-	}
-	
-	static class FuncMaxHpMul extends Func
-	{
-		static final FuncMaxHpMul _fmhm_instance = new FuncMaxHpMul();
-		
-		static Func getInstance()
-		{
-			return _fmhm_instance;
-		}
-		
-		private FuncMaxHpMul()
-		{
-			super(Stats.MAX_HP, 0x20, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			L2Character p = env.player;
-			env.value *= CONbonus[p.getCON()];
-		}
-	}
-	
-	static class FuncMaxCpAdd extends Func
-	{
-		static final FuncMaxCpAdd _fmca_instance = new FuncMaxCpAdd();
-		
-		static Func getInstance()
-		{
-			return _fmca_instance;
-		}
-		
-		private FuncMaxCpAdd()
-		{
-			super(Stats.MAX_CP, 0x10, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			L2PcTemplate t = (L2PcTemplate) env.player.getTemplate();
-			int lvl = env.player.getLevel() - t.classBaseLevel;
-			double cpmod = t.lvlCpMod * lvl;
-			double cpmax = (t.lvlCpAdd + cpmod) * lvl;
-			double cpmin = (t.lvlCpAdd * lvl) + cpmod;
-			env.value += (cpmax + cpmin) / 2;
-		}
-	}
-	
-	static class FuncMaxCpMul extends Func
-	{
-		static final FuncMaxCpMul _fmcm_instance = new FuncMaxCpMul();
-		
-		static Func getInstance()
-		{
-			return _fmcm_instance;
-		}
-		
-		private FuncMaxCpMul()
-		{
-			super(Stats.MAX_CP, 0x20, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			L2Character p = env.player;
-			env.value *= CONbonus[p.getCON()];
-		}
-	}
-	
-	static class FuncMaxMpAdd extends Func
-	{
-		static final FuncMaxMpAdd _fmma_instance = new FuncMaxMpAdd();
-		
-		static Func getInstance()
-		{
-			return _fmma_instance;
-		}
-		
-		private FuncMaxMpAdd()
-		{
-			super(Stats.MAX_MP, 0x10, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			L2PcTemplate t = (L2PcTemplate) env.player.getTemplate();
-			int lvl = env.player.getLevel() - t.classBaseLevel;
-			double mpmod = t.lvlMpMod * lvl;
-			double mpmax = (t.lvlMpAdd + mpmod) * lvl;
-			double mpmin = (t.lvlMpAdd * lvl) + mpmod;
-			env.value += (mpmax + mpmin) / 2;
-		}
-	}
-	
-	static class FuncMaxMpMul extends Func
-	{
-		static final FuncMaxMpMul _fmmm_instance = new FuncMaxMpMul();
-		
-		static Func getInstance()
-		{
-			return _fmmm_instance;
-		}
-		
-		private FuncMaxMpMul()
-		{
-			super(Stats.MAX_MP, 0x20, null);
-		}
-		
-		@Override
-		public void calc(Env env)
-		{
-			L2Character p = env.player;
-			env.value *= MENbonus[p.getMEN()];
-		}
-	}
-	
+
 	private static final Formulas _instance = new Formulas();
 	
 	public static Formulas getInstance()
@@ -1623,18 +957,20 @@ public final class Formulas
 			value = skill.getEffectPower();
 			type = skill.getEffectType();
 		}
+		
 		// TODO: Temporary fix for skills with EffectPower = 0 or EffectType not set
 		if (value == 0 || type == null)
 		{
 			if (skill.getSkillType() == L2SkillType.PDAM)
 			{
-				value = 40;
+				value = skill.getEffectPower() > 0 ? skill.getEffectPower() : 40;
 				type = L2SkillType.STUN;
 			}
+			
 			if (skill.getSkillType() == L2SkillType.MDAM)
 			{
-				value = 20;
-				type = L2SkillType.PARALYZE;
+				value = skill.getEffectPower() > 0 ? skill.getEffectPower() : 20;
+				type = skill.getSkillType() != null ? L2SkillType.MDAM : L2SkillType.PARALYZE;
 			}
 		}
 		
@@ -1902,11 +1238,9 @@ public final class Formulas
 		
 		return result;
 	}
-	
-	@SuppressWarnings("incomplete-switch")
+
 	public static byte calcSkillReflect(L2Character target, L2Skill skill)
 	{
-		
 		// Only magic and melee skills can be reflected.
 		if (!skill.isMagic() && (skill.getCastRange() == -1 || skill.getCastRange() > 40))
 			return 0;
@@ -1945,5 +1279,4 @@ public final class Formulas
 		
 		return reflect;
 	}
-
 }

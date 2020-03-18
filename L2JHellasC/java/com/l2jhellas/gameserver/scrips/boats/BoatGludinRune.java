@@ -4,8 +4,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.emum.player.ChatType;
-import com.l2jhellas.gameserver.emum.sound.Sound;
+import com.l2jhellas.gameserver.enums.player.ChatType;
+import com.l2jhellas.gameserver.enums.sound.Sound;
 import com.l2jhellas.gameserver.instancemanager.BoatManager;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
 import com.l2jhellas.gameserver.model.actor.L2Vehicle;
@@ -16,7 +16,6 @@ public class BoatGludinRune implements Runnable
 {
 	private static final Logger _log = Logger.getLogger(BoatGludinRune.class.getName());
 	
-	// Time: 1151s
 	private static final VehiclePathPoint[] GLUDIN_TO_RUNE =
 	{
 		new VehiclePathPoint(-95686, 155514, -3610, 150, 800),
@@ -53,7 +52,6 @@ public class BoatGludinRune implements Runnable
 		new VehiclePathPoint(34381, -37680, -3610, 200, 800)
 	};
 	
-	// Time: 967s
 	private static final VehiclePathPoint[] RUNE_TO_GLUDIN =
 	{
 		new VehiclePathPoint(32750, -39300, -3610, 150, 800),
@@ -188,15 +186,11 @@ public class BoatGludinRune implements Runnable
 					if (BoatManager.getInstance().dockBusy(BoatManager.RUNE_HARBOR))
 					{
 						if (_shoutCount == 0)
-						{
 							BoatManager.getInstance().broadcastPacket(RUNE_DOCK[0], GLUDIN_DOCK[0], BUSY_RUNE);
-						}
 						
 						_shoutCount++;
 						if (_shoutCount > 35)
-						{
 							_shoutCount = 0;
-						}
 						
 						ThreadPoolManager.getInstance().scheduleGeneral(this, 5000);
 						return;
@@ -248,15 +242,11 @@ public class BoatGludinRune implements Runnable
 					if (BoatManager.getInstance().dockBusy(BoatManager.GLUDIN_HARBOR))
 					{
 						if (_shoutCount == 0)
-						{
 							BoatManager.getInstance().broadcastPacket(GLUDIN_DOCK[0], RUNE_DOCK[0], BUSY_GLUDIN);
-						}
 						
 						_shoutCount++;
 						if (_shoutCount > 35)
-						{
 							_shoutCount = 0;
-						}
 						
 						ThreadPoolManager.getInstance().scheduleGeneral(this, 5000);
 						return;
@@ -273,9 +263,7 @@ public class BoatGludinRune implements Runnable
 			_shoutCount = 0;
 			_cycle++;
 			if (_cycle > 19)
-			{
 				_cycle = 0;
-			}
 		}
 		catch (Exception e)
 		{

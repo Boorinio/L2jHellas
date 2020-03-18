@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.emum.items.L2WeaponType;
+import com.l2jhellas.gameserver.enums.items.L2WeaponType;
 import com.l2jhellas.gameserver.model.L2Skill;
 
 public class SkillTable
@@ -12,9 +12,7 @@ public class SkillTable
 	private static Logger _log = Logger.getLogger(SkillTable.class.getName());
 	
 	private static Map<Integer, L2Skill> _skills = new HashMap<>();
-	
-	private final boolean _initialized = true;
-	
+		
 	protected SkillTable()
 	{
 		SkillsEngine.getInstance().loadAllSkills(_skills);
@@ -24,14 +22,10 @@ public class SkillTable
 	public static void reload()
 	{
 		_skills.clear();
-		getInstance();
+		SkillsEngine.getInstance().loadAllSkills(_skills);
+		_log.info(SkillTable.class.getSimpleName() + ": Loaded " + _skills.size() + " skills.");
 	}
-	
-	public boolean isInitialized()
-	{
-		return _initialized;
-	}
-	
+
 	public static int getSkillHashCode(L2Skill skill)
 	{
 		return SkillTable.getSkillHashCode(skill.getId(), skill.getLevel());

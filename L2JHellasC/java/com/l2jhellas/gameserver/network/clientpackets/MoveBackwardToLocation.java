@@ -8,14 +8,15 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
-import com.l2jhellas.gameserver.emum.items.L2WeaponType;
+import com.l2jhellas.gameserver.enums.items.L2WeaponType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.PartyMemberPosition;
+import com.l2jhellas.gameserver.network.serverpackets.MoveToLocation;
 import com.l2jhellas.gameserver.network.serverpackets.StopMove;
 import com.l2jhellas.util.IllegalPlayerAction;
+import com.l2jhellas.util.MathUtil;
 import com.l2jhellas.util.Util;
 
 public class MoveBackwardToLocation extends L2GameClientPacket
@@ -63,20 +64,13 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 			}
 			catch (BufferUnderflowException e)
 			{
-				L2PcInstance activeChar = getClient().getActiveChar();
-				activeChar.sendPacket(SystemMessageId.HACKING_TOOL);
-				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
-				try
+				final L2PcInstance activeChar = getClient().getActiveChar();
+				if(activeChar != null)
 				{
-					Thread.sleep(5000);
-				}
-				catch (InterruptedException ie)
-				{
-				}
-				finally
-				{
-					Util.handleIllegalPlayerAction(activeChar, "Player " + activeChar.getName() + " trying to use L2Walker!", IllegalPlayerAction.PUNISH_KICK);
-					activeChar.closeNetConnection(false);
+				  activeChar.sendPacket(SystemMessageId.HACKING_TOOL);
+				  activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+				  Util.handleIllegalPlayerAction(activeChar, "Player " + activeChar.getName() + " trying to use L2Walker!", IllegalPlayerAction.PUNISH_KICK);
+				  activeChar.closeNetConnection(false);
 				}
 			}
 		}
@@ -95,7 +89,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 		// Like L2OFF movements prohibited when char is sitting
 		if (activeChar.isSitting())
 		{
-			getClient().sendPacket(ActionFailed.STATIC_PACKET);
+			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		
@@ -122,6 +116,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 		if (DoorData.getInstance().checkIfDoorsBetween(activeChar.getX(), activeChar.getY(), activeChar.getZ(), _targetX, _targetY, _targetZ) >0)
 		{
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
+			ThreadPoolManager.getInstance().executeAi(() -> activeChar.getAI().notifyEvent(CtrlEvent.EVT_ARRIVED));
 			return;
 		}
 		
@@ -139,10 +134,7 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 		}
 		
 		if (activeChar.getActiveEnchantItem() != null)
-		{
 			activeChar.cancellEnchant();
-			activeChar.sendPacket(SystemMessageId.ENCHANT_SCROLL_CANCELLED);
-		}
 
 		if (_moveMovement == 0 && !Config.GEODATA) // cursor movement without geodata is disabled
 		{
@@ -169,15 +161,21 @@ public class MoveBackwardToLocation extends L2GameClientPacket
 				activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 				return;
 			}
-						
-			activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(_targetX, _targetY, _targetZ, 0));
-				
-			if (activeChar.isSpawnProtected())
-				activeChar.onActionRequest();
+	
+			if (activeChar.isInBoat())
+			{
+				activeChar.setHeading(MathUtil.calculateHeadingFrom(_originX, _originY, _targetX, _targetY));				
+			    activeChar.broadcastPacket(new MoveToLocation(activeChar, new Location(_targetX, _targetY, _targetZ)));
+			}
+			else
+				activeChar.getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(_targetX, _targetY, _targetZ));
 			
-			if (activeChar.getParty() != null)
-				activeChar.getParty().broadcastToPartyMembers(activeChar, new PartyMemberPosition(activeChar.getParty()));
-			
+			if(activeChar.getPet() != null)
+			{
+			    double distance = Math.hypot(_targetX - activeChar.getX(), _targetY - activeChar.getY());
+			    activeChar.SummonRotate(activeChar.getPet(), distance);
+			}	
+
 			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 		}
 	}

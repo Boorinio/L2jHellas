@@ -4,7 +4,6 @@ public abstract class ClientBasePacket
 {
 	private final byte[] _decrypt;
 	private int _off;
-	private String _result;
 	
 	public ClientBasePacket(byte[] decrypt)
 	{
@@ -49,18 +48,18 @@ public abstract class ClientBasePacket
 	
 	public String readS()
 	{
-		_result = null;
+		String result = null;
 		try
 		{
-			_result = new String(_decrypt, _off, _decrypt.length - _off, "UTF-16LE");
-			_result = _result.substring(0, _result.indexOf(0x00));
+			result = new String(_decrypt, _off, _decrypt.length - _off, "UTF-16LE");
+			result = result.substring(0, result.indexOf(0x00));
+			_off += result.length() * 2 + 2;
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
-		_off += _result.length() * 2 + 2;
-		return _result;
+		return result;
 	}
 	
 	public final byte[] readB(int length)

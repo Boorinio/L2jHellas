@@ -40,26 +40,29 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 		_playerTwo.player.setOlympiadGameId(id);
 	}
 	
-	protected static final Participant[] createListOfParticipants(List<String> list)
+	protected static final Participant[] createListOfParticipants(List<Integer> list)
 	{
 		if (list == null || list.isEmpty() || list.size() < 2)
 			return null;
-		String playerOneName;
+		
+		int playerOneObjectId = 0;
 		L2PcInstance playerOne = null;
 		L2PcInstance playerTwo = null;
 		
 		while (list.size() > 1)
 		{
-			playerOneName = list.remove(Rnd.get(list.size()));
-			playerOne = L2World.getInstance().getPlayer(playerOneName);
-			if (playerOne == null || playerOne.isOnline() == 0)
+			playerOneObjectId = list.remove(Rnd.get(list.size()));
+			playerOne = L2World.getInstance().getPlayer(playerOneObjectId);
+			if (playerOne == null || !playerOne.isbOnline())
 				continue;
+			
 			playerTwo = L2World.getInstance().getPlayer(list.remove(Rnd.get(list.size())));
-			if (playerTwo == null || playerTwo.isOnline() == 0)
+			if (playerTwo == null || !playerTwo.isbOnline())
 			{
-				list.add(playerOneName);
+				list.add(playerOneObjectId);
 				continue;
 			}
+			
 			Participant[] result = new Participant[2];
 			result[0] = new Participant(playerOne, 1);
 			result[1] = new Participant(playerTwo, 2);
@@ -77,7 +80,10 @@ abstract public class OlympiadGameNormal extends AbstractOlympiadGame
 	
 	@Override
 	protected final boolean portPlayersToArena(Location location)
-	{
+	{		
+		if (_playerOne.player == null || _playerTwo.player == null || !_playerOne.player.isbOnline() || !_playerTwo.player.isbOnline())
+			return false;
+		
 		boolean result = true;
 		
 		Location loc1 = new Location(location.getX() + 900, location.getY(), location.getZ());

@@ -19,7 +19,7 @@ public class VehicleDeparture extends L2GameServerPacket
 		_y = boat.getYdestination();
 		_z = boat.getZdestination();
 		_moveSpeed = (int) boat.getStat().getMoveSpeed();
-		_rotationSpeed = boat.getRotationSpeed();
+		_rotationSpeed = boat.getStat().getRotationSpeed();
 	}
 	
 	@Override

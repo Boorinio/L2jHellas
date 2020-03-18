@@ -29,7 +29,7 @@ public class IceFairySirra extends AbstractNpcAI
 	private static final Logger _log = Logger.getLogger(IceFairySirra.class.getName());
 	private static final int STEWARD = 32029;
 	private static final int SILVER_HEMOCYTE = 8057;
-	L2ZoneType _Zone;
+	L2ZoneType _Zone = ZoneManager.getInstance().getZoneById(110016);
 	private static L2PcInstance _player = null;
 	protected ArrayList<L2Npc> _allMobs = new ArrayList<>();
 	protected Future<?> _onDeadEventTask = null;
@@ -52,9 +52,7 @@ public class IceFairySirra extends AbstractNpcAI
 	}
 	
 	public void init()
-	{
-		_Zone = ZoneManager.getInstance().getZoneById(110016);
-		
+	{				
 		L2Npc steward = findTemplate(STEWARD);
 		if (steward != null)
 			steward.setBusy(false);

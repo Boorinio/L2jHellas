@@ -352,6 +352,7 @@ public class AdminSkill implements IAdminCommandHandler
 				activeChar.sendMessage("You gave the skill " + name + " to " + player.getName() + ".");
 				_log.log(Level.FINE, getClass().getSimpleName() + ": [GM]" + activeChar.getName() + " gave skill " + name + " to " + player.getName() + ".");
 				activeChar.sendSkillList();
+				player.sendSkillList();
 			}
 			else
 				activeChar.sendMessage("Error: there is no such skill.");

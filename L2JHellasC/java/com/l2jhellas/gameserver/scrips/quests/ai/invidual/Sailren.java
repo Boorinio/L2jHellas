@@ -51,7 +51,7 @@ public class Sailren extends AbstractNpcAI
 		
 		final StatsSet info = GrandBossManager.getStatsSet(SAILREN);
 		
-		switch (GrandBossManager.getBossStatus(SAILREN))
+		switch (GrandBossManager.getInstance().getBossStatus(SAILREN))
 		{
 			case DEAD: // Launch the timer to set DORMANT, or set DORMANT directly if timer expired while offline.
 				final long temp = (info.getLong("respawn_time") - System.currentTimeMillis());

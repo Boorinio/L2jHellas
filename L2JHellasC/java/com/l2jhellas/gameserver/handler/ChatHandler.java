@@ -3,7 +3,7 @@ package com.l2jhellas.gameserver.handler;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.l2jhellas.gameserver.emum.player.ChatType;
+import com.l2jhellas.gameserver.enums.player.ChatType;
 
 public class ChatHandler implements IHandler<IChatHandler, ChatType>
 {

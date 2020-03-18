@@ -1,5 +1,6 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.Collection;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
@@ -20,7 +21,7 @@ public class WareHouseWithdrawalList extends L2GameServerPacket
 	
 	private L2PcInstance _activeChar;
 	private int _playerAdena;
-	private L2ItemInstance[] _items;
+	private Collection<L2ItemInstance> _items;
 	private int _whType;
 	
 	public WareHouseWithdrawalList(L2PcInstance player, int type)
@@ -54,7 +55,7 @@ public class WareHouseWithdrawalList extends L2GameServerPacket
 		writeC(0x42);
 		writeH(_whType);
 		writeD(_playerAdena);
-		writeH(_items.length);
+		writeH(_items.size());
 		
 		for (L2ItemInstance temp : _items)
 		{

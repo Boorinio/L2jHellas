@@ -2,7 +2,7 @@ package com.l2jhellas.gameserver.handlers.skillhandlers;
 
 import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.gameserver.enums.skills.L2SkillType;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.instancemanager.DuelManager;
 import com.l2jhellas.gameserver.model.L2Effect;
@@ -58,11 +58,8 @@ public class Continuous implements ISkillHandler
 			if (target == null)
 				continue;
 			
-			if (skill.getSkillType() != L2SkillType.BUFF && skill.getSkillType() != L2SkillType.HOT && skill.getSkillType() != L2SkillType.CPHOT && skill.getSkillType() != L2SkillType.MPHOT && skill.getSkillType() != L2SkillType.UNDEAD_DEFENSE && skill.getSkillType() != L2SkillType.AGGDEBUFF && skill.getSkillType() != L2SkillType.CONT)
-			{
-				if (target.reflectSkill(skill))
-					target = activeChar;
-			}
+			if (Formulas.calcSkillReflect(target, skill) == 1)
+				target = activeChar;
 			
 			// Walls and Door should not be buffed
 			if (target instanceof L2DoorInstance && (skill.getSkillType() == L2SkillType.BUFF || skill.getSkillType() == L2SkillType.HOT))

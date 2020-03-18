@@ -18,7 +18,8 @@ import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
 
 public class QueenAnt extends AbstractNpcAI
-{
+{	
+	private static L2BossZone _Zone = GrandBossManager.getZoneById(110012);
 	
 	private static final int QUEEN = 29001;
 	private static final int LARVA = 29002;
@@ -29,8 +30,7 @@ public class QueenAnt extends AbstractNpcAI
 	// QUEEN Status Tracking :
 	private static final byte ALIVE = 0; // Queen Ant is spawned.
 	private static final byte DEAD = 1; // Queen Ant has been killed.
-	
-	private static L2BossZone _Zone;
+
 	private static List<L2Attackable> _Minions = new ArrayList<>();
 	
 	public QueenAnt()
@@ -45,10 +45,9 @@ public class QueenAnt extends AbstractNpcAI
 			ROYAL
 		};
 		registerMobs(mobs);
-		_Zone = GrandBossManager.getZone(-21610, 181594, -5734);
 		
 		StatsSet info = GrandBossManager.getStatsSet(QUEEN);
-		int status = GrandBossManager.getBossStatus(QUEEN);
+		int status = GrandBossManager.getInstance().getBossStatus(QUEEN);
 		if (status == DEAD)
 		{
 			// load the unlock date and time for queen ant from DB
@@ -234,7 +233,7 @@ public class QueenAnt extends AbstractNpcAI
 			startQuestTimer("despawn_royals", 20000, null, null, false);
 			cancelQuestTimers("spawn_minion");
 		}
-		else if (GrandBossManager.getBossStatus(QUEEN) == ALIVE)
+		else if (GrandBossManager.getInstance().getBossStatus(QUEEN) == ALIVE)
 		{
 			if (npcId == ROYAL)
 			{

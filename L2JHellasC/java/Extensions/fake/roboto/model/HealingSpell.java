@@ -1,6 +1,6 @@
 package Extensions.fake.roboto.model;
 
-import com.l2jhellas.gameserver.emum.skills.L2SkillTargetType;
+import com.l2jhellas.gameserver.enums.skills.L2SkillTargetType;
 
 public class HealingSpell extends BotSkill
 {

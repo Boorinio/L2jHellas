@@ -34,6 +34,7 @@ import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.model.zone.L2ZoneType;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
+import com.l2jhellas.gameserver.network.serverpackets.QuestList;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -187,6 +188,8 @@ public class Quest
 		{
 			player.processQuestEvent(q.getName(), "enter");
 		}
+		
+		player.sendPacket(new QuestList(player));
 	}
 	
 	public L2PcInstance getRandomPartyMember(L2PcInstance player, L2Object object)
@@ -402,6 +405,16 @@ public class Quest
 		return null;
 	}
 	
+	public void startQuestTimer(String name, L2Npc npc, L2PcInstance player,long time)
+	{
+		startQuestTimer(name,time,npc,player,false);
+	}
+	
+	public void startQuestTimer(String name, L2Npc npc, L2PcInstance player,long time,boolean repeating)
+	{
+		startQuestTimer(name,time,npc,player,repeating);
+	}
+	
 	public void startQuestTimer(String name, long time, L2Npc npc, L2PcInstance player, boolean repeating)
 	{
 		// Get quest timers for this timer type.
@@ -509,6 +522,11 @@ public class Quest
 	{
 		return addSpawn(npcId, loc.getX(), loc.getY(), loc.getZ(), loc.getHeading(), randomOffset, despawnDelay, isSummonSpawn);
 	}
+
+	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, long despawnDelay)
+	{
+		return addSpawn(npcId, x, y, z, heading, randomOffset, despawnDelay, false);
+	}
 	
 	public L2Npc addSpawn(int npcId, int x, int y, int z, int heading, boolean randomOffset, long despawnDelay, boolean isSummonSpawn)
 	{
@@ -532,6 +550,7 @@ public class Quest
 				spawn.setLocz(z + 20);
 				spawn.stopRespawn();
 				result = spawn.doSpawn();
+				spawn.getLastSpawn().broadcastInfo();
 				
 				if (despawnDelay > 0)
 					result.scheduleDespawn(despawnDelay);

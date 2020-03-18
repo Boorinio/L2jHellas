@@ -105,7 +105,7 @@ public class VanHalter extends AbstractNpcAI
 		
 		addEventId(29062, QuestEventType.ON_ATTACK);
 		
-		registerMobs(mobs);
+		registerMobs(mobs,QuestEventType.ON_ATTACK, QuestEventType.ON_KILL);
 		
 		_isLocked = false;
 		_isCaptainSpawned = false;
@@ -201,7 +201,7 @@ public class VanHalter extends AbstractNpcAI
 			_setBleedTask.cancel(false);
 		_setBleedTask = ThreadPoolManager.getInstance().scheduleGeneral(new Bleeding(), 2000L);
 		
-		Integer status = GrandBossManager.getBossStatus(29062);
+		Integer status = GrandBossManager.getInstance().getBossStatus(29062);
 		if (status.intValue() == 0)
 			enterInterval();
 		else
@@ -988,7 +988,7 @@ public class VanHalter extends AbstractNpcAI
 		if (_intervalTask != null)
 			_intervalTask.cancel(false);
 		
-		Integer status = GrandBossManager.getBossStatus(29062);
+		Integer status = GrandBossManager.getInstance().getBossStatus(29062);
 		
 		if (status.intValue() != 0)
 		{

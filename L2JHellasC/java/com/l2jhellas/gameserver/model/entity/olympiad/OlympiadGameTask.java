@@ -63,11 +63,11 @@ public final class OlympiadGameTask implements Runnable
 	
 	private final L2OlympiadStadiumZone _zone;
 	private AbstractOlympiadGame _game;
-	private GameState _state = GameState.IDLE;
+	public GameState _state = GameState.IDLE;
 	private boolean _needAnnounce = false;
 	private int _countDown = 0;
 	
-	private static enum GameState
+	public static enum GameState
 	{
 		BEGIN,
 		TELE_TO_ARENA,
@@ -85,7 +85,6 @@ public final class OlympiadGameTask implements Runnable
 	public OlympiadGameTask(L2OlympiadStadiumZone zone)
 	{
 		_zone = zone;
-		zone.registerTask(this);
 	}
 	
 	public final boolean isRunning()
@@ -200,7 +199,7 @@ public final class OlympiadGameTask implements Runnable
 						sm.addNumber(_countDown);
 						_game.broadcastPacket(sm);
 						
-						if (_countDown == 20)
+						if (_countDown == 59)
 							_game.buffAndHealPlayers();
 					}
 					
@@ -333,118 +332,48 @@ public final class OlympiadGameTask implements Runnable
 	
 	private final boolean startGame()
 	{
-		try
-		{
-			// Checking for opponents and teleporting to arena
-			if (_game.checkDefaulted())
-				return false;
+		// Checking for opponents and teleporting to arena
+		if (_game.checkDefaulted())
+			return false;
 			
-			if (!_game.portPlayersToArena(_zone.getCoordinates(_game._stadiumID)))
-				return false;
+		if (!_game.portPlayersToArena(_zone.getCoordinates(_game._stadiumID)))
+			return false;
 			
-			_game.removals();
-			_needAnnounce = true;
-			OlympiadGameManager.getInstance().startBattle(); // inform manager
-			return true;
-		}
-		catch (Exception e)
-		{
-			_log.warning(OlympiadGameTask.class.getName() + ": error startGame");
-		}
-		return false;
+		_game.removals();
+		_needAnnounce = true;
+		OlympiadGameManager.getInstance().startBattle(); // inform manager
+		return true;
 	}
 	
 	private final boolean startBattle()
 	{
-		try
+		if (_game.checkBattleStatus() && _game.makeCompetitionStart())
 		{
-			if (_game.checkBattleStatus() && _game.makeCompetitionStart())
-			{
-				// game successfully started
-				_game.broadcastOlympiadInfo(_zone);
-				_game.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.STARTS_THE_GAME));
-				_zone.updateZoneStatusForCharactersInside();
-				return true;
-			}
-		}
-		catch (Exception e)
-		{
-			_log.warning(OlympiadGameTask.class.getName() + ": error startBattle");
+			// game successfully started
+			_game.broadcastOlympiadInfo(_zone);
+			_game.broadcastPacket(SystemMessage.getSystemMessage(SystemMessageId.STARTS_THE_GAME));
+			_zone.updateZoneStatusForCharactersInside();
+			return true;
 		}
 		return false;
 	}
 	
 	private final boolean checkBattle()
 	{
-		try
-		{
-			return _game.haveWinner();
-		}
-		catch (Exception e)
-		{
-			_log.warning(OlympiadGameTask.class.getName() + ": error");
-		}
-		
-		return true;
+		return _game.haveWinner();
 	}
 	
 	private final void stopGame()
 	{
-		try
-		{
-			_game.validateWinner(_zone);
-		}
-		catch (Exception e)
-		{
-			_log.warning(OlympiadGameTask.class.getName() + ": error");
-		}
-		
-		try
-		{
-			_zone.updateZoneStatusForCharactersInside();
-		}
-		catch (Exception e)
-		{
-			_log.warning(OlympiadGameTask.class.getName() + ": error");
-		}
-		
-		try
-		{
-			_game.cleanEffects();
-		}
-		catch (Exception e)
-		{
-			_log.warning(OlympiadGameTask.class.getName() + ": error");
-		}
+		_game.validateWinner(_zone);
+		_zone.updateZoneStatusForCharactersInside();
+		_game.cleanEffects();
 	}
 	
 	private final void cleanupGame()
 	{
-		try
-		{
-			_game.playersStatusBack();
-		}
-		catch (Exception e)
-		{
-			_log.warning(OlympiadGameTask.class.getName() + ": error");
-		}
-		
-		try
-		{
-			_game.portPlayersBack();
-		}
-		catch (Exception e)
-		{
-			_log.warning(OlympiadGameTask.class.getName() + ": error");
-		}
-		
-		try
-		{
-			_game.clearPlayers();
-		}
-		catch (Exception e)
-		{
-			_log.warning(OlympiadGameTask.class.getName() + ": error");
-		}
+		_game.playersStatusBack();
+		_game.portPlayersBack();
+		_game.clearPlayers();
 	}
 }

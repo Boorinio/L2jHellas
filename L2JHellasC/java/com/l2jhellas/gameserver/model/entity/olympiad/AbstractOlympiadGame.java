@@ -3,7 +3,7 @@ package com.l2jhellas.gameserver.model.entity.olympiad;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.emum.skills.HeroSkills;
+import com.l2jhellas.gameserver.enums.skills.HeroSkills;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Summon;

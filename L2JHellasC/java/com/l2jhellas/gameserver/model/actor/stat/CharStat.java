@@ -3,8 +3,8 @@ package com.l2jhellas.gameserver.model.actor.stat;
 import Extensions.Balancer.BalanceLoad;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.ZoneId;
-import com.l2jhellas.gameserver.emum.items.L2WeaponType;
+import com.l2jhellas.gameserver.enums.ZoneId;
+import com.l2jhellas.gameserver.enums.items.L2WeaponType;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -359,7 +359,10 @@ public class CharStat
 	
 	public final int getPhysicalAttackRange()
 	{
-		return getActiveChar().getAttackType().equals(L2WeaponType.BOW)? (int) calcStat(Stats.POWER_ATTACK_RANGE, _activeChar.getTemplate().baseAtkRange, null, null) : getActiveChar().getAttackType().getRange();
+		if(getActiveChar().isNpc())
+			return (int) calcStat(Stats.POWER_ATTACK_RANGE, getActiveChar().getTemplate().baseAtkRange, null, null);
+		
+		return getActiveChar().getAttackType().equals(L2WeaponType.BOW) ? (int) calcStat(Stats.POWER_ATTACK_RANGE, getActiveChar().getTemplate().baseAtkRange, null, null) : getActiveChar().getAttackType().getRange();
 	}
 	
 	public final double getWeaponReuseModifier(L2Character target)

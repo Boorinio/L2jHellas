@@ -1114,8 +1114,6 @@
 		<set name="skillType" val="WARRIOR_BANE" />
 		<set name="isMagic" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 		</for>
 	</skill>
@@ -1131,8 +1129,6 @@
 		<set name="skillType" val="MAGE_BANE" />
 		<set name="isMagic" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 		</for>
 	</skill>
@@ -1493,8 +1489,6 @@
 		<set name="skillType" val="DEBUFF" />
 		<set name="isMagic" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="1" name="Buff" time="120" val="0" stackOrder="10" stackType="pDef">
 				<mul order="0x30" stat="pDef" val="0.9" />
@@ -1516,8 +1510,6 @@
 		<set name="skillType" val="DEBUFF" />
 		<set name="isMagic" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="1" name="Buff" time="120" val="0" stackOrder="99" stackType="SpeedUp">
 				<mul order="0x30" stat="runSpd" val="0.9" />
@@ -1631,8 +1623,6 @@
 		<set name="skillType" val="DEBUFF" />
 		<set name="isMagic" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="1" name="Buff" time="120" val="0">
 				<mul stat="pAtk" order="0x30" val="0.9" />
@@ -1775,8 +1765,6 @@
 		<set name="skillRadius" val="200" />
 		<set name="skillType" val="DEBUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<set name="isMagic" val="true" />
 		<for>
 			<effect count="1" name="Buff" time="30" val="0">
@@ -1803,8 +1791,6 @@
 		<set name="skillRadius" val="200" />
 		<set name="skillType" val="DEBUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<set name="isMagic" val="true" />
 		<for>
 			<effect count="5" name="Fear" time="6" val="0">
@@ -2231,8 +2217,6 @@
 		<set name="skillRadius" val="200" />
 		<set name="skillType" val="MANADAM" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<set name="isMagic" val="true" />
 		<enchant1 name="power" val="#ench1Power" />
 		<enchant2 name="mpConsume" val="#ench2MpConsume" />

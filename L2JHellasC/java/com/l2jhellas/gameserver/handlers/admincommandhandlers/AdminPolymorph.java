@@ -2,7 +2,7 @@ package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
 import java.util.StringTokenizer;
 
-import com.l2jhellas.gameserver.emum.PolyType;
+import com.l2jhellas.gameserver.enums.PolyType;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;

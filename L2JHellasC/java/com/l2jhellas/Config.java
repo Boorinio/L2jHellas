@@ -24,7 +24,6 @@ import Extensions.RankSystem.Rank;
 import Extensions.RankSystem.RankTable;
 
 import com.l2jhellas.gameserver.geodata.PathFindBuffers;
-import com.l2jhellas.shield.antiflood.FloodProtectorConfig;
 import com.l2jhellas.util.StringUtil;
 
 public final class Config
@@ -43,7 +42,6 @@ public final class Config
 	
 	private static final String RATES_CONFIG_FILE = "./config/Main/Rates.ini";
 	private static final String OTHER_CONFIG_FILE = "./config/Main/Other.ini";
-	private static final String FLOOD_PROTECTORS_FILE = "./config/Main/AntiFlood.ini";
 	private static final String PVP_CONFIG_FILE = "./config/Main/PvP.ini";
 	private static final String GRANDBOSS_CONFIG_FILE = "./config/Main/GrandBoss.ini";
 	// Events Folder
@@ -90,12 +88,6 @@ public final class Config
 	public static double WEIGHT2;
 	public static boolean COMPACT_GEO;
 	public static int COORD_SYNCHRONIZE;
-	
-	// ===============================================================================
-	// ================================
-	// GameServer LoginServer Configs
-	// ================================
-	
 	
 	// ================================
 	// Champions config
@@ -927,7 +919,6 @@ public final class Config
 	public static String PET_NAME_TEMPLATE;
 	public static int MAX_CHARACTERS_NUMBER_PER_ACCOUNT;
 	public static int MAXIMUM_ONLINE_USERS;
-	public static int FLOODPROTECTOR_INITIALSIZE;
 	public static boolean ALLOW_DUALBOX;
 	public static boolean ENABLE_PACKET_PROTECTION;
 	public static int MAX_UNKNOWN_PACKETS;
@@ -987,18 +978,21 @@ public final class Config
 	public static int CLIENT_PACKET_QUEUE_MAX_UNDERFLOWS_PER_MIN = 1; // default 1
 	public static int CLIENT_PACKET_QUEUE_MAX_UNKNOWN_PER_MIN = 5; // default 5
 	
-	public static FloodProtectorConfig FLOOD_PROTECTOR_USE_ITEM;
-	public static FloodProtectorConfig FLOOD_PROTECTOR_ROLL_DICE;
-	public static FloodProtectorConfig FLOOD_PROTECTOR_FIREWORK;
-	public static FloodProtectorConfig FLOOD_PROTECTOR_ITEM_PET_SUMMON;
-	public static FloodProtectorConfig FLOOD_PROTECTOR_HERO_VOICE;
-	public static FloodProtectorConfig FLOOD_PROTECTOR_GLOBAL_CHAT;
-	public static FloodProtectorConfig FLOOD_PROTECTOR_SUBCLASS;
-	public static FloodProtectorConfig FLOOD_PROTECTOR_DROP_ITEM;
-	public static FloodProtectorConfig FLOOD_PROTECTOR_SERVER_BYPASS;
-	public static FloodProtectorConfig FLOOD_PROTECTOR_MULTISELL;
-	public static FloodProtectorConfig FLOOD_PROTECTOR_TRANSACTION;
-	public static FloodProtectorConfig FLOOD_PROTECTOR_SOCIALACTION;
+	/** Flood Protectors */
+	public static int ROLL_DICE;
+	public static int HERO_VOICE;
+	public static int SUBCLASS;
+	public static int DROP_ITEM;
+	public static int SERVER_BYPASS;
+	public static int MULTISELL;
+	public static int MANUFACTURE;
+	public static int MANOR;
+	public static int SENDMAIL;
+	public static int CHARACTER_SELECT;
+	public static int GLOBAL_CHAT;
+	public static int TRADE_CHAT;
+	public static int USE_ITEM;
+	public static int SOCIAL;
 	
 	public static enum ObjectMapType
 	{
@@ -1016,19 +1010,6 @@ public final class Config
 	{
 		if (Server.serverMode == Server.MODE_GAMESERVER)
 		{
-			FLOOD_PROTECTOR_USE_ITEM = new FloodProtectorConfig("UseItemFloodProtector");
-			FLOOD_PROTECTOR_ROLL_DICE = new FloodProtectorConfig("RollDiceFloodProtector");
-			FLOOD_PROTECTOR_FIREWORK = new FloodProtectorConfig("FireworkFloodProtector");
-			FLOOD_PROTECTOR_ITEM_PET_SUMMON = new FloodProtectorConfig("ItemPetSummonFloodProtector");
-			FLOOD_PROTECTOR_HERO_VOICE = new FloodProtectorConfig("HeroVoiceFloodProtector");
-			FLOOD_PROTECTOR_GLOBAL_CHAT = new FloodProtectorConfig("GlobalChatFloodProtector");
-			FLOOD_PROTECTOR_SUBCLASS = new FloodProtectorConfig("SubclassFloodProtector");
-			FLOOD_PROTECTOR_DROP_ITEM = new FloodProtectorConfig("DropItemFloodProtector");
-			FLOOD_PROTECTOR_SERVER_BYPASS = new FloodProtectorConfig("ServerBypassFloodProtector");
-			FLOOD_PROTECTOR_MULTISELL = new FloodProtectorConfig("MultiSellFloodProtector");
-			FLOOD_PROTECTOR_TRANSACTION = new FloodProtectorConfig("TransactionFloodProtector");
-			FLOOD_PROTECTOR_SOCIALACTION = new FloodProtectorConfig("SocialActionFloodProtector");
-			
 			Properties altSettings = new Properties();
 			try (InputStream is = new FileInputStream(new File(ALT_SETTINGS_FILE)))
 			{
@@ -1193,19 +1174,7 @@ public final class Config
 			// other
 			ALT_GAME_VIEWNPC = Boolean.parseBoolean(altSettings.getProperty("AltGameViewNpc", "False"));
 			PLAYER_ALT_GAME_VIEWNPC = Boolean.parseBoolean(altSettings.getProperty("PlayerAltGameViewNpc", "False"));
-			
-			// Load FloodProtector L2Properties file
-			Properties FloodProtectors = new Properties();
-			try (InputStream is = new FileInputStream(new File(FLOOD_PROTECTORS_FILE)))
-			{
-				FloodProtectors.load(is);
-			}
-			catch (Exception e)
-			{
-				_log.severe(Config.class.getName() + ": Error while loading " + FLOOD_PROTECTORS_FILE + " settings!");
-			}
-			loadFloodProtectorConfigs(FloodProtectors);
-			
+
 			Properties clanhallSettings = new Properties();
 			try (InputStream is = new FileInputStream(new File(CLANHALL_CONFIG_FILE)))
 			{
@@ -1877,15 +1846,15 @@ public final class Config
 			
 			if (USE_SAY_FILTER)
 			{
+				FILTER_LIST.clear();
 				try (LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(new File(CHAT_FILTER_FILE)))))
 				{
 					String line = null;
 					while ((line = lnr.readLine()) != null)
 					{
 						if (line.trim().length() == 0 || line.startsWith("#"))
-						{
 							continue;
-						}
+						
 						FILTER_LIST.add(line.trim());
 					}
 					_log.info("Chat Filter: Loaded " + FILTER_LIST.size() + " words ");
@@ -2178,6 +2147,21 @@ public final class Config
 			GRIDS_ALWAYS_ON = Boolean.parseBoolean(optionsSettings.getProperty("GridsAlwaysOn", "False"));
 			GRID_NEIGHBOR_TURNON_TIME = Integer.parseInt(optionsSettings.getProperty("GridNeighborTurnOnTime", "30"));
 			GRID_NEIGHBOR_TURNOFF_TIME = Integer.parseInt(optionsSettings.getProperty("GridNeighborTurnOffTime", "300"));
+			
+			ROLL_DICE = Integer.valueOf(optionsSettings.getProperty("RollDice", "100"));
+			HERO_VOICE = Integer.valueOf(optionsSettings.getProperty("HeroVoice", "100"));
+			SUBCLASS = Integer.valueOf(optionsSettings.getProperty("Subclass", "100"));
+			DROP_ITEM = Integer.valueOf(optionsSettings.getProperty("DropItem", "100"));
+			SERVER_BYPASS = Integer.valueOf(optionsSettings.getProperty("ServerBypass", "100"));
+			MULTISELL = Integer.valueOf(optionsSettings.getProperty("Multisell", "100"));
+			MANUFACTURE = Integer.valueOf(optionsSettings.getProperty("Manufacture", "100"));
+			MANOR = Integer.valueOf(optionsSettings.getProperty("Manor", "100"));
+			SENDMAIL = Integer.valueOf(optionsSettings.getProperty("SendMail", "100"));
+			CHARACTER_SELECT = Integer.valueOf(optionsSettings.getProperty("CharacterSelect", "100"));
+			GLOBAL_CHAT = Integer.valueOf(optionsSettings.getProperty("GlobalChat", "100"));
+			TRADE_CHAT = Integer.valueOf(optionsSettings.getProperty("TradeChat", "100"));
+			USE_ITEM = Integer.valueOf(optionsSettings.getProperty("UseItem", "100"));
+			SOCIAL = Integer.valueOf(optionsSettings.getProperty("Social", "100"));
 			
 			Properties otherSettings = new Properties();
 			try (InputStream is = new FileInputStream(new File(OTHER_CONFIG_FILE)))
@@ -2772,7 +2756,6 @@ public final class Config
 			PET_NAME_TEMPLATE = serverSettings.getProperty("PetNameTemplate", ".*");
 			MAX_CHARACTERS_NUMBER_PER_ACCOUNT = Integer.parseInt(serverSettings.getProperty("CharMaxNumber", "0"));
 			MAXIMUM_ONLINE_USERS = Integer.parseInt(serverSettings.getProperty("MaximumOnlineUsers", "100"));
-			FLOODPROTECTOR_INITIALSIZE = Integer.parseInt(serverSettings.getProperty("FloodProtectorInitialSize", "50"));
 			ALLOW_DUALBOX = Boolean.parseBoolean(serverSettings.getProperty("AllowDualBox", "True"));
 			ENABLE_PACKET_PROTECTION = Boolean.parseBoolean(serverSettings.getProperty("PacketProtection", "False"));
 			MAX_UNKNOWN_PACKETS = Integer.parseInt(serverSettings.getProperty("UnknownPacketsBeforeBan", "5"));
@@ -3548,31 +3531,6 @@ public final class Config
 		}
 		return true;
 	}
-	
-	private static void loadFloodProtectorConfigs(final Properties properties)
-	{
-		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_USE_ITEM, "UseItem", "4");
-		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_ROLL_DICE, "RollDice", "42");
-		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_FIREWORK, "Firework", "42");
-		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_ITEM_PET_SUMMON, "ItemPetSummon", "16");
-		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_HERO_VOICE, "HeroVoice", "100");
-		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_GLOBAL_CHAT, "GlobalChat", "5");
-		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_SUBCLASS, "Subclass", "20");
-		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_DROP_ITEM, "DropItem", "10");
-		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_SERVER_BYPASS, "ServerBypass", "5");
-		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_MULTISELL, "MultiSell", "1");
-		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_TRANSACTION, "Transaction", "10");
-		loadFloodProtectorConfig(properties, FLOOD_PROTECTOR_SOCIALACTION, "SocialAction", "40");
-	}
-	
-	private static void loadFloodProtectorConfig(final Properties properties, final FloodProtectorConfig config, final String configString, final String defaultInterval)
-	{
-		config.FLOOD_PROTECTION_INTERVAL = Integer.parseInt(properties.getProperty(StringUtil.concat("FloodProtector", configString, "Interval"), defaultInterval));
-		config.LOG_FLOODING = Boolean.parseBoolean(properties.getProperty(StringUtil.concat("FloodProtector", configString, "LogFlooding"), "False"));
-		config.PUNISHMENT_LIMIT = Integer.parseInt(properties.getProperty(StringUtil.concat("FloodProtector", configString, "PunishmentLimit"), "0"));
-		config.PUNISHMENT_TYPE = properties.getProperty(StringUtil.concat("FloodProtector", configString, "PunishmentType"), "none");
-		config.PUNISHMENT_TIME = Integer.parseInt(properties.getProperty(StringUtil.concat("FloodProtector", configString, "PunishmentTime"), "0"));
-	}
 
 	public static void saveHexid(int serverId, String string)
 	{
@@ -3599,36 +3557,6 @@ public final class Config
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	public static String FILTER_FILE = "./config/chatfilter.txt";
-	
-	public static void loadFilter()
-	{
-		try (LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(new File(FILTER_FILE)))))
-		{
-			String line = null;
-			while ((line = lnr.readLine()) != null)
-			{
-				if (line.trim().length() == 0 || line.startsWith("#"))
-				{
-					continue;
-				}
-				
-				FILTER_LIST.add(line.trim());
-			}
-			_log.info("Loaded " + FILTER_LIST.size() + " Filter Words.");
-		}
-		catch (Exception e)
-		{
-			_log.warning(Config.class.getName() + ": Config: Failed to Load " + FILTER_FILE + " File.");
-		}
-	}
-	
-	public static void unallocateFilterBuffer()
-	{
-		_log.info("Cleaning Chat Filter..");
-		FILTER_LIST.clear();
 	}
 	
 	private static int[][] parseItemsList(String line)

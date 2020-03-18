@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.skills.l2skills;
 
-import com.l2jhellas.gameserver.emum.skills.L2SkillTargetType;
+import com.l2jhellas.gameserver.enums.skills.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -104,28 +104,20 @@ public class L2SkillDrain extends L2Skill
 				
 				if (hasEffects() && getTargetType() != L2SkillTargetType.TARGET_CORPSE_MOB)
 				{
-					if (target.reflectSkill(this))
+					if ((Formulas.calcSkillReflect(target, this) & 1) > 0)
 					{
 						activeChar.stopSkillEffects(getId());
-						getEffects(null, activeChar);
-						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
-						sm.addSkillName(getId());
-						activeChar.sendPacket(sm);
+						getEffects(target, activeChar);
+						activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT).addSkillName(getId()));
 					}
 					else
 					{
 						// activate attacked effects, if any
 						target.stopSkillEffects(getId());
-						Formulas.getInstance();
 						if (Formulas.calcSkillSuccess(activeChar, target, this, false, ss, bss))
 							getEffects(activeChar, target);
 						else
-						{
-							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2);
-							sm.addString(target.getName());
-							sm.addSkillName(getDisplayId());
-							activeChar.sendPacket(sm);
-						}
+							activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2).addCharName(target).addSkillName(getId()));
 					}
 				}
 				

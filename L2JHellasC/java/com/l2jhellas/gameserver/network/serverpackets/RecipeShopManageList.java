@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.Collection;
+
 import com.l2jhellas.gameserver.model.L2ManufactureItem;
 import com.l2jhellas.gameserver.model.L2ManufactureList;
 import com.l2jhellas.gameserver.model.L2RecipeList;
@@ -10,18 +12,15 @@ public class RecipeShopManageList extends L2GameServerPacket
 	private static final String _S__D8_RecipeShopManageList = "[S] d8 RecipeShopManageList";
 	private final L2PcInstance _seller;
 	private final boolean _isDwarven;
-	private L2RecipeList[] _recipes;
+	private final Collection<L2RecipeList> _recipes;
+
 	
 	public RecipeShopManageList(L2PcInstance seller, boolean isDwarven)
 	{
 		_seller = seller;
 		_isDwarven = isDwarven;
-		
-		if (_isDwarven && _seller.hasDwarvenCraft())
-			_recipes = _seller.getDwarvenRecipeBook();
-		else
-			_recipes = _seller.getCommonRecipeBook();
-		
+		_recipes = (isDwarven && seller.hasDwarvenCraft()) ? seller.getDwarvenRecipeBook() : seller.getCommonRecipeBook();
+
 		// clean previous recipes
 		if (_seller.getCreateList() != null)
 		{
@@ -43,25 +42,21 @@ public class RecipeShopManageList extends L2GameServerPacket
 		writeD(_isDwarven ? 0x00 : 0x01);
 		
 		if (_recipes == null)
-		{
 			writeD(0);
-		}
 		else
 		{
-			writeD(_recipes.length);// number of items in recipe book
+			writeD(_recipes.size());// number of items in recipe book
 			
-			for (int i = 0; i < _recipes.length; i++)
+			int i = 0;
+			for (L2RecipeList rp : _recipes)
 			{
-				L2RecipeList temp = _recipes[i];
-				writeD(temp.getId());
-				writeD(i + 1);
+				writeD(rp.getId());
+				writeD(++i);
 			}
 		}
 		
 		if (_seller.getCreateList() == null)
-		{
 			writeD(0);
-		}
 		else
 		{
 			L2ManufactureList list = _seller.getCreateList();

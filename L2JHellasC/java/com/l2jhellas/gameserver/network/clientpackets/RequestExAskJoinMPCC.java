@@ -1,6 +1,5 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.group.party.L2CommandChannel;
 import com.l2jhellas.gameserver.model.actor.group.party.L2Party;
@@ -75,13 +74,8 @@ public final class RequestExAskJoinMPCC extends L2GameClientPacket
 			return;
 		}
 		
-		final L2Clan requestorClan = activeChar.getClan();
-		
-		if (requestorClan == null || requestorClan.getLeaderId() != activeChar.getObjectId() || requestorClan.getLevel() < 5 || activeChar.getSkill(391) == null)
-		{
-			activeChar.sendPacket(SystemMessageId.COMMAND_CHANNEL_ONLY_BY_LEVEL_5_CLAN_LEADER_PARTY_LEADER);
+		if (!L2CommandChannel.AuthCheck(activeChar, false))
 			return;
-		}
 		
 		final L2PcInstance targetLeader = targetParty.getLeader();
 		

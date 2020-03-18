@@ -8,7 +8,6 @@ import com.l2jhellas.gameserver.model.zone.type.L2OlympiadStadiumZone;
 
 public class OlympiadStadiaManager
 {
-	
 	private final List<L2OlympiadStadiumZone> _olympiadStadias = new ArrayList<>();
 	
 	public OlympiadStadiaManager()
@@ -27,30 +26,21 @@ public class OlympiadStadiaManager
 	
 	public final L2OlympiadStadiumZone getStadium(L2Character character)
 	{
-		for (L2OlympiadStadiumZone temp : _olympiadStadias)
-			if (temp.isCharacterInZone(character))
-				return temp;
-		
-		return null;
+		return  _olympiadStadias.stream().filter(stad -> stad != null && stad.isCharacterInZone(character)).findFirst().orElse(null);
 	}
 	
-	@Deprecated
 	public final L2OlympiadStadiumZone getOlympiadStadiumById(int olympiadStadiumId)
 	{
-		for (L2OlympiadStadiumZone temp : _olympiadStadias)
-			if (temp.getStadiumId() == olympiadStadiumId)
-				return temp;
-		return null;
+		return  _olympiadStadias.stream().filter(stad -> stad != null && stad.getStadiumId() == olympiadStadiumId).findFirst().orElse(null);
+	}
+
+	public static OlympiadStadiaManager getInstance()
+	{
+		return SingletonHolder._instance;
 	}
 	
-	private static OlympiadStadiaManager _instance;
-	
-	public static final OlympiadStadiaManager getInstance()
+	private static class SingletonHolder
 	{
-		if (_instance == null)
-		{
-			_instance = new OlympiadStadiaManager();
-		}
-		return _instance;
+		protected static final OlympiadStadiaManager _instance = new OlympiadStadiaManager();
 	}
 }

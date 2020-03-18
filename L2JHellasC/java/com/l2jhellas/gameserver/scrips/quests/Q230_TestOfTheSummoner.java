@@ -3,7 +3,7 @@ package com.l2jhellas.gameserver.scrips.quests;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.l2jhellas.gameserver.emum.player.ClassId;
+import com.l2jhellas.gameserver.enums.player.ClassId;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;

@@ -27,10 +27,12 @@ import com.l2jhellas.gameserver.model.entity.events.engines.L2Event;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 import com.l2jhellas.gameserver.network.serverpackets.ServerClose;
+import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.mmocore.network.MMOClient;
 import com.l2jhellas.mmocore.network.MMOConnection;
 import com.l2jhellas.mmocore.network.ReceivablePacket;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
 public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> implements Runnable
@@ -66,7 +68,26 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 	
 	private final ArrayBlockingQueue<ReceivablePacket<L2GameClient>> _packetQueue;
 	private final ReentrantLock _queueLock = new ReentrantLock();
-	
+	private final long[] _floodProtectors = new long[FloodProtectors.Action.VALUES_LENGTH];
+
+	private static final String DELETE_CHAR_FRIENDS = "DELETE FROM character_friends WHERE char_id=? OR friend_id=?";
+	private static final String DELETE_CHAR_HENNAS = "DELETE FROM character_hennas WHERE char_obj_id=?";
+	private static final String DELETE_CHAR_MACROS = "DELETE FROM character_macroses WHERE char_obj_id=?";
+	private static final String DELETE_CHAR_QUESTS = "DELETE FROM character_quests WHERE char_id=?";
+	private static final String DELETE_CHAR_RECIPES = "DELETE FROM character_recipebook WHERE char_id=?";
+	private static final String DELETE_CHAR_SHORTCUTS = "DELETE FROM character_shortcuts WHERE char_obj_id=?";
+	private static final String DELETE_CHAR_SKILLS = "DELETE FROM character_skills WHERE char_obj_id=?";
+	private static final String DELETE_CHAR_SKILLS_SAVE = "DELETE FROM character_skills_save WHERE char_obj_id=?";
+	private static final String DELETE_CHAR_SUBCLASSES = "DELETE FROM character_subclasses WHERE char_obj_id=?";
+	private static final String DELETE_CHAR_HERO = "DELETE FROM heroes WHERE char_id=?";
+	private static final String DELETE_CHAR_NOBLE = "DELETE FROM olympiad_nobles WHERE char_id=?";
+	private static final String DELETE_CHAR_SEVEN_SIGNS = "DELETE FROM seven_signs WHERE char_obj_id=?";
+	private static final String DELETE_CHAR_PETS = "DELETE FROM pets WHERE item_obj_id IN (SELECT object_id FROM items WHERE items.owner_id=?)";
+	private static final String DELETE_CHAR_AUGMENTS = "DELETE FROM augmentations WHERE item_id IN (SELECT object_id FROM items WHERE items.owner_id=?)";
+	private static final String DELETE_CHAR_ITEMS = "DELETE FROM items WHERE owner_id=?";
+	private static final String DELETE_CHAR_RBP = "DELETE FROM character_raid_points WHERE char_id=?";
+	private static final String DELETE_CHAR = "DELETE FROM characters WHERE obj_Id=?";
+
 	public L2GameClient(MMOConnection<L2GameClient> con)
 	{
 		super(con);
@@ -263,104 +284,119 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 		}
 	}
 	
-	public static void deleteCharByObjId(int objid)
+	public static void deleteCharByObjId(int objectId)
 	{
-		if (objid < 0)
+		if (objectId < 0)
 			return;
-		
+				
 		try (Connection con = L2DatabaseFactory.getInstance().getConnection())
 		{
-			PreparedStatement statement;
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR_FRIENDS))
+			{
+				ps.setInt(1, objectId);
+				ps.setInt(2, objectId);
+				ps.execute();
+			}
 			
-			statement = con.prepareStatement("DELETE FROM character_friends WHERE char_id=? OR friend_id=?");
-			statement.setInt(1, objid);
-			statement.setInt(2, objid);
-			statement.execute();
-			statement.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR_HENNAS))
+			{
+				ps.setInt(1, objectId);
+				ps.execute();
+			}
 			
-			statement = con.prepareStatement("DELETE FROM character_hennas WHERE char_obj_id=?");
-			statement.setInt(1, objid);
-			statement.execute();
-			statement.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR_MACROS))
+			{
+				ps.setInt(1, objectId);
+				ps.execute();
+			}
+
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR_QUESTS))
+			{
+				ps.setInt(1, objectId);
+				ps.execute();
+			}
 			
-			statement = con.prepareStatement("DELETE FROM character_macroses WHERE char_obj_id=?");
-			statement.setInt(1, objid);
-			statement.execute();
-			statement.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR_RECIPES))
+			{
+				ps.setInt(1, objectId);
+				ps.execute();
+			}
 			
-			statement = con.prepareStatement("DELETE FROM character_quests WHERE charId=?");
-			statement.setInt(1, objid);
-			statement.execute();
-			statement.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR_SHORTCUTS))
+			{
+				ps.setInt(1, objectId);
+				ps.execute();
+			}
 			
-			statement = con.prepareStatement("DELETE FROM character_recipebook WHERE charId=?");
-			statement.setInt(1, objid);
-			statement.execute();
-			statement.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR_SKILLS))
+			{
+				ps.setInt(1, objectId);
+				ps.execute();
+			}
 			
-			statement = con.prepareStatement("DELETE FROM character_shortcuts WHERE char_obj_id=?");
-			statement.setInt(1, objid);
-			statement.execute();
-			statement.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR_SKILLS_SAVE))
+			{
+				ps.setInt(1, objectId);
+				ps.execute();
+			}
 			
-			statement = con.prepareStatement("DELETE FROM character_skills WHERE char_obj_id=?");
-			statement.setInt(1, objid);
-			statement.execute();
-			statement.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR_SUBCLASSES))
+			{
+				ps.setInt(1, objectId);
+				ps.execute();
+			}
 			
-			statement = con.prepareStatement("DELETE FROM character_skills_save WHERE char_obj_id=?");
-			statement.setInt(1, objid);
-			statement.execute();
-			statement.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR_HERO))
+			{
+				ps.setInt(1, objectId);
+				ps.execute();
+			}
 			
-			statement = con.prepareStatement("DELETE FROM character_subclasses WHERE char_obj_id=?");
-			statement.setInt(1, objid);
-			statement.execute();
-			statement.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR_NOBLE))
+			{
+				ps.setInt(1, objectId);
+				ps.execute();
+			}
 			
-			statement = con.prepareStatement("DELETE FROM heroes WHERE char_id=?");
-			statement.setInt(1, objid);
-			statement.execute();
-			statement.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR_SEVEN_SIGNS))
+			{
+				ps.setInt(1, objectId);
+				ps.execute();
+			}
 			
-			statement = con.prepareStatement("DELETE FROM olympiad_nobles WHERE char_id=?");
-			statement.setInt(1, objid);
-			statement.execute();
-			statement.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR_PETS))
+			{
+				ps.setInt(1, objectId);
+				ps.execute();
+			}
 			
-			statement = con.prepareStatement("DELETE FROM seven_signs WHERE char_obj_id=?");
-			statement.setInt(1, objid);
-			statement.execute();
-			statement.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR_AUGMENTS))
+			{
+				ps.setInt(1, objectId);
+				ps.execute();
+			}
 			
-			statement = con.prepareStatement("DELETE FROM pets WHERE item_obj_id IN (SELECT object_id FROM items WHERE items.owner_id=?)");
-			statement.setInt(1, objid);
-			statement.execute();
-			statement.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR_ITEMS))
+			{
+				ps.setInt(1, objectId);
+				ps.execute();
+			}
 			
-			statement = con.prepareStatement("DELETE FROM augmentations WHERE item_id IN (SELECT object_id FROM items WHERE items.owner_id=?)");
-			statement.setInt(1, objid);
-			statement.execute();
-			statement.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR_RBP))
+			{
+				ps.setInt(1, objectId);
+				ps.execute();
+			}
 			
-			statement = con.prepareStatement("DELETE FROM items WHERE owner_id=?");
-			statement.setInt(1, objid);
-			statement.execute();
-			statement.close();
-			
-			statement = con.prepareStatement("DELETE FROM character_raid_points WHERE char_id=?");
-			statement.setInt(1, objid);
-			statement.execute();
-			statement.close();
-			
-			statement = con.prepareStatement("DELETE FROM characters WHERE obj_Id=?");
-			statement.setInt(1, objid);
-			statement.execute();
-			statement.close();
+			try (PreparedStatement ps = con.prepareStatement(DELETE_CHAR))
+			{
+				ps.setInt(1, objectId);
+				ps.execute();
+			}
 		}
 		catch (Exception e)
 		{
-			_log.log(Level.SEVERE, "Error deleting character.", e);
+			_log.log(Level.SEVERE, "Error deleting player.", e);
 		}
 	}
 	
@@ -454,6 +490,19 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 	{
 		_isDetached = true;
 		close(ServerClose.STATIC_PACKET);
+		synchronized (this)
+		{
+			if (_cleanupTask != null)
+				cancelCleanup();
+			
+			_cleanupTask = ThreadPoolManager.getInstance().scheduleGeneral(new CleanupTask(), 0); // instant
+		}
+	}
+	
+	public void closeNow(boolean wrongProtocol)
+	{
+		_isDetached = true;
+		close(wrongProtocol ? SystemMessage.getSystemMessage(SystemMessageId.WRONG_PROTOCOL_CONTINUE) : ServerClose.STATIC_PACKET);
 		synchronized (this)
 		{
 			if (_cleanupTask != null)
@@ -728,5 +777,10 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 			return task.cancel(true);
 		}
 		return false;
+	}
+	
+	public long[] getFloodProtectors()
+	{
+		return _floodProtectors;
 	}
 }

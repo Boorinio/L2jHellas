@@ -3,6 +3,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Collection;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,7 +12,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.xml.PetData;
-import com.l2jhellas.gameserver.emum.items.ItemLocation;
+import com.l2jhellas.gameserver.enums.items.ItemLocation;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
@@ -566,10 +567,9 @@ public class L2PetInstance extends L2Summon
 		try
 		{
 			Inventory petInventory = getInventory();
-			L2ItemInstance[] items = petInventory.getItems();
-			for (int i = 0; (i < items.length); i++)
+			Collection<L2ItemInstance> items = petInventory.getItems();
+			for (L2ItemInstance giveit : items)
 			{
-				L2ItemInstance giveit = items[i];
 				if (((giveit.getItem().getWeight() * giveit.getCount()) + getOwner().getInventory().getTotalWeight()) < getOwner().getMaxLoad())
 				{
 					// If the owner can carry it give it to them
@@ -659,10 +659,9 @@ public class L2PetInstance extends L2Summon
 	{
 		try
 		{
-			L2ItemInstance[] items = getInventory().getItems();
-			for (int i = 0; (i < items.length); i++)
+			for (L2ItemInstance items : getInventory().getItems())
 			{
-				dropItemHere(items[i]);
+				dropItemHere(items);
 			}
 		}
 		catch (Exception e)

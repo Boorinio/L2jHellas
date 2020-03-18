@@ -1,25 +1,24 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.Collection;
+
 import com.l2jhellas.gameserver.model.L2RecipeList;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public class RecipeBookItemList extends L2GameServerPacket
 {
 	private static final String _S__D6_RECIPEBOOKITEMLIST = "[S] D6 RecipeBookItemList";
-	private L2RecipeList[] _recipes;
+	private Collection<L2RecipeList> _recipes;
 	private final boolean _isDwarvenCraft;
 	private final int _maxMp;
 	
-	public RecipeBookItemList(boolean isDwarvenCraft, int maxMp)
+	public RecipeBookItemList(L2PcInstance player,boolean isDwarvenCraft)
 	{
+		_recipes = (isDwarvenCraft) ? player.getDwarvenRecipeBook() : player.getCommonRecipeBook();
 		_isDwarvenCraft = isDwarvenCraft;
-		_maxMp = maxMp;
+		_maxMp = player.getMaxMp();
 	}
-	
-	public void addRecipes(L2RecipeList[] recipeBook)
-	{
-		_recipes = recipeBook;
-	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
@@ -32,7 +31,7 @@ public class RecipeBookItemList extends L2GameServerPacket
 			writeD(0);
 		else
 		{
-			writeD(_recipes.length);// number of items in recipe book
+			writeD(_recipes.size());// number of items in recipe book
 			
 			int i = 0;
 			for (L2RecipeList recipe : _recipes)

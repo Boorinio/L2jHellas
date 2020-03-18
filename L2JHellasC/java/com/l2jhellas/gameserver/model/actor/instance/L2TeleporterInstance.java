@@ -29,9 +29,7 @@ public final class L2TeleporterInstance extends L2NpcInstance
 	
 	@Override
 	public void onBypassFeedback(L2PcInstance player, String command)
-	{
-		player.sendPacket(ActionFailed.STATIC_PACKET);
-		
+	{		
 		int condition = validateCondition(player);
 		
 		StringTokenizer st = new StringTokenizer(command, " ");
@@ -149,35 +147,49 @@ public final class L2TeleporterInstance extends L2NpcInstance
 			doTeleport(player, Integer.parseInt(st.nextToken()));
 			player.setIsIn7sDungeon(false);
 		}
+		else if (command.startsWith("Chat") || actualCommand.startsWith("Chat"))
+		{
+			int val = 0;
+			try
+			{
+				val = Integer.parseInt(command.substring(5));
+			}
+			catch (IndexOutOfBoundsException ioobe)
+			{
+			}
+			catch (NumberFormatException nfe)
+			{
+			}
+			
+			showChatWindow(player, val);
+		}
+		else		
+		    super.onBypassFeedback(player, command);
 		
-		super.onBypassFeedback(player, command);
+		player.sendPacket(ActionFailed.STATIC_PACKET);
 	}
 	
 	@Override
 	public String getHtmlPath(int npcId, int val)
 	{
-		String pom = "";
+		String filename = "";
 		if (val == 0)
-		{
-			pom = "" + npcId;
-		}
+			filename = "" + npcId;
 		else
-		{
-			pom = npcId + "-" + val;
-		}
+			filename = npcId + "-" + val;
 		
-		return "data/html/teleporter/" + pom + ".htm";
+		return "data/html/teleporter/" + filename + ".htm";
 	}
-	
+
 	@Override
-	public void showChatWindow(L2PcInstance player)
+	public void showChatWindow(L2PcInstance player, int val)
 	{
 		String filename = "data/html/teleporter/castleteleporter-no.htm";
 		
 		int condition = validateCondition(player);
 		if (condition == COND_REGULAR)
 		{
-			super.showChatWindow(player);
+			super.showChatWindow(player, getHtmlPath(getNpcId(), val));
 			return;
 		}
 		else if (condition > COND_ALL_FALSE)
@@ -186,13 +198,10 @@ public final class L2TeleporterInstance extends L2NpcInstance
 				filename = "data/html/teleporter/castleteleporter-busy.htm"; // Busy because of siege
 			else if (condition == COND_OWNER) // Clan owns castle
 				filename = getHtmlPath(getNpcId(), 0); // Owner message window
-		}
-		
-		NpcHtmlMessage html = new NpcHtmlMessage(getObjectId());
-		html.setFile(filename);
-		html.replace("%objectId%", String.valueOf(getObjectId()));
-		html.replace("%npcname%", getName());
-		player.sendPacket(html);
+			
+			super.showChatWindow(player,filename);
+			return;
+		}	
 	}
 	
 	private void doTeleport(L2PcInstance player, int val)

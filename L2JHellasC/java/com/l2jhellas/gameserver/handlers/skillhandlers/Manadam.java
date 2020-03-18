@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
-import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.gameserver.enums.skills.L2SkillType;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -55,7 +55,7 @@ public class Manadam implements ISkillHandler
 			if(target==null)
 				continue;
 			
-			if (target.reflectSkill(skill))
+			if (Formulas.calcSkillReflect(target, skill) == 1)
 				target = activeChar;
 			
 			boolean acted = Formulas.calcMagicAffected(activeChar, target, skill);

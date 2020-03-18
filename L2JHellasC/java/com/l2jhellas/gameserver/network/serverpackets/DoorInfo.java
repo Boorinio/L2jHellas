@@ -12,16 +12,22 @@ public class DoorInfo extends L2GameServerPacket
 	public DoorInfo(L2DoorInstance door)
 	{
 		_door = door;
-		_Hp = _door.getCastle() != null && _door.getCastle().getSiege().getIsInProgress();
+		_Hp = door.getCastle() != null && door.getCastle().getSiege().getIsInProgress();
 	}
 	
 	@Override
 	protected final void writeImpl()
-	{
-		writeC(0x4c);
-		writeD(_door.getObjectId());
-		writeD(_door.getDoorId());
-		writeD(_Hp ? 1 : 0);
+	{		
+        writeC(0x4c);
+        writeD(_door.getObjectId());
+        writeD(_door.getDoorId());
+        writeD((_Hp) ? 1 : 0);
+        writeD(1);
+        writeD(!_door.getOpen() ? 1 : 0);
+        writeD((int) _door.getCurrentHp());
+        writeD(_door.getMaxHp());
+        writeD((_Hp) ? 1 : 0);
+        writeD(_door.getDamage());
 	}
 	
 	@Override

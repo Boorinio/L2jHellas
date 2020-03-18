@@ -12,7 +12,7 @@ import com.l2jhellas.gameserver.network.serverpackets.VehicleStarted;
 
 public class L2BoatAI extends L2CharacterAI
 {
-	public L2BoatAI(L2Vehicle.AIAccessor accessor)
+	public L2BoatAI(L2Vehicle accessor)
 	{
 		super(accessor);
 	}
@@ -44,7 +44,7 @@ public class L2BoatAI extends L2CharacterAI
 	protected void clientStopMoving(Location pos)
 	{
 		if (_actor.isMoving())
-			_accessor.stopMove(pos);
+			_actor.stopMove(pos);
 		
 		if (_clientMoving || pos != null)
 		{

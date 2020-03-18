@@ -26,7 +26,7 @@ import org.xml.sax.SAXException;
 import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.InfoCache;
-import com.l2jhellas.gameserver.emum.player.ClassId;
+import com.l2jhellas.gameserver.enums.player.ClassId;
 import com.l2jhellas.gameserver.model.L2DropData;
 import com.l2jhellas.gameserver.model.L2MinionData;
 import com.l2jhellas.gameserver.model.L2Skill;

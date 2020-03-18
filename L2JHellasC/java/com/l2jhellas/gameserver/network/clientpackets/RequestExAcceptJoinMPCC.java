@@ -46,9 +46,8 @@ public final class RequestExAcceptJoinMPCC extends L2GameClientPacket
 			
 			if (channel == null)
 			{
-				if (!requestor.destroyItemByItemId("CCCreation", 8871, 1, player, true))
+				if (!L2CommandChannel.AuthCheck(requestor, true))
 					return;
-				
 				channel = new L2CommandChannel(requestor);
 			}
 			else

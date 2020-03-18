@@ -1,12 +1,14 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.player.StoreType;
+import com.l2jhellas.gameserver.enums.player.StoreType;
 import com.l2jhellas.gameserver.model.ItemRequest;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.TradeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.shield.antiflood.FloodProtectors.Action;
 import com.l2jhellas.util.Util;
 
 public final class RequestPrivateStoreSell extends L2GameClientPacket
@@ -68,11 +70,9 @@ public final class RequestPrivateStoreSell extends L2GameClientPacket
 	{
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
-		{
 			return;
-		}
 		
-		if (!player.getAntiFlood().getTransaction().tryPerformAction("privatestoresell"))
+		if (!FloodProtectors.performAction(getClient(), Action.MANUFACTURE))
 		{
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			player.sendMessage("You selling items too fast");

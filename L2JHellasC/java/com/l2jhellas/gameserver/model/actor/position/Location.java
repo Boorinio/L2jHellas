@@ -18,6 +18,13 @@ public class Location
 		_z = z;
 	}
 	
+	public Location(L2Character character)
+	{
+		_x = character.getX();
+		_y = character.getY();
+		_z = character.getZ();
+	}
+	
 	public Location()
 	{
 
@@ -56,6 +63,11 @@ public class Location
 	public int getHeading()
 	{
 		return _heading;
+	}
+	
+	public void setHeading(int heading)
+	{
+		_heading = heading;
 	}
 	
 	public void setXYZ(int x, int y, int z)

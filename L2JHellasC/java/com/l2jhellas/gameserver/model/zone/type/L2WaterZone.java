@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.model.zone.type;
 
-import com.l2jhellas.gameserver.emum.ZoneId;
+import com.l2jhellas.gameserver.enums.ZoneId;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;

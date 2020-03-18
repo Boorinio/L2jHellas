@@ -1,12 +1,14 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.Collection;
+
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 
 public class PetItemList extends L2GameServerPacket
 {
 	private static final String _S__cb_PETITEMLIST = "[S] b2  PetItemList";
-	private final L2ItemInstance[] _items;
+	private final Collection<L2ItemInstance> _items;
 	
 	public PetItemList(L2PetInstance character)
 	{
@@ -18,7 +20,7 @@ public class PetItemList extends L2GameServerPacket
 	{
 		writeC(0xB2);
 
-		writeH(_items.length);
+		writeH(_items.size());
 		
 		for (L2ItemInstance temp : _items)
 		{

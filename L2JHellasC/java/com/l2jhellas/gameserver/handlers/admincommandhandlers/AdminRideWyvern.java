@@ -2,10 +2,6 @@ package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.Ride;
-import com.l2jhellas.gameserver.network.serverpackets.SetupGauge;
-import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 
 public class AdminRideWyvern implements IAdminCommandHandler
 {
@@ -24,57 +20,29 @@ public class AdminRideWyvern implements IAdminCommandHandler
 	{
 		if (command.startsWith("admin_ride"))
 		{
-			if (activeChar.isMounted() || activeChar.getPet() != null)
+			if (activeChar.isCursedWeaponEquiped())
 			{
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-				sm.addString("Already Have a Pet or Mounted.");
-				activeChar.sendPacket(sm);
+				activeChar.sendMessage("You can't use //ride owning a Cursed Weapon.");
 				return false;
 			}
+			
 			if (command.startsWith("admin_ride_wyvern"))
 				_petRideId = 12621;
 			else if (command.startsWith("admin_ride_strider"))
 				_petRideId = 12526;
 			else
 			{
-				SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_S2);
-				sm.addString("Command '" + command + "' not recognized");
-				activeChar.sendPacket(sm);
+				activeChar.sendMessage("Command '" + command + "' not recognized");
 				return false;
 			}
 			
 			if (activeChar.isMounted())
-			{
-				final Ride dismount = new Ride(activeChar.getObjectId(), Ride.ACTION_DISMOUNT, 0);
-				activeChar.sendPacket(new SetupGauge(3, 0, 0));
-				activeChar.setMountType(0);
-				activeChar.setMountObjectID(0);
-				activeChar.broadcastPacket(dismount);
-				activeChar.broadcastUserInfo();
-			}
+				activeChar.dismount();
 			
-			if (activeChar.getPet() != null)
-				activeChar.getPet().unSummon(activeChar);
-			
-			if (!activeChar.disarmWeapons())
-				return false;
-			
-			final Ride RideMount = new Ride(activeChar.getObjectId(), Ride.ACTION_MOUNT, _petRideId);
-			activeChar.sendPacket(RideMount);
-			activeChar.broadcastPacket(RideMount);
-			activeChar.setMountType(RideMount.getMountType());
-			activeChar.setMountObjectID(_petRideId);
-			activeChar.broadcastUserInfo();
+			activeChar.mount(_petRideId);
 		}
 		else if (command.equals("admin_unride"))
-		{
-			final Ride dismount = new Ride(activeChar.getObjectId(), Ride.ACTION_DISMOUNT, 0);
-			activeChar.sendPacket(new SetupGauge(3, 0, 0));
-			activeChar.setMountType(0);
-			activeChar.setMountObjectID(0);
-			activeChar.broadcastPacket(dismount);
-			activeChar.broadcastUserInfo();
-		}
+			activeChar.dismount();
 		return true;
 	}
 	

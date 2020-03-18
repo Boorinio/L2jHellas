@@ -15,10 +15,9 @@ import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.sql.SpawnTable;
 import com.l2jhellas.gameserver.datatables.xml.HelperBuffData;
-import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
 import com.l2jhellas.gameserver.datatables.xml.MultisellData;
-import com.l2jhellas.gameserver.emum.player.ChatType;
-import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.gameserver.enums.player.ChatType;
+import com.l2jhellas.gameserver.enums.skills.L2SkillType;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.DimensionalRiftManager;
@@ -34,7 +33,6 @@ import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2Spawn;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.MobGroupTable;
-import com.l2jhellas.gameserver.model.actor.instance.L2ControlTowerInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2ControllableMobInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2FestivalGuideInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2FishermanInstance;
@@ -675,24 +673,8 @@ public class L2Npc extends L2Character
 	
 	public final Castle getCastle()
 	{
-		// Get castle this NPC belongs to (excluding L2Attackable)
-		if (_castleIndex < 0)
-		{
-			L2TownZone town = MapRegionTable.getTown(getX(), getY(), getZ());
-			
-			if (town != null)
-				_castleIndex = CastleManager.getInstance().getCastleIndex(town.getTaxById());
-			
-			if (_castleIndex < 0)
-				_castleIndex = CastleManager.getInstance().findNearestCastleIndex(this);
-			else
-				_isInTown = true; // Npc was spawned in town
-		}
-		
-		if (_castleIndex < 0)
-			return null;
-		
-		return CastleManager.getInstance().getCastles().get(_castleIndex);
+		L2TownZone town = ZoneManager.getInstance().getClosestZone(this, L2TownZone.class);
+		return town != null ? CastleManager.getInstance().getCastleById(town.getTaxById()) : null;
 	}
 	
 	public final boolean getIsInTown()
@@ -1019,6 +1001,7 @@ public class L2Npc extends L2Character
 		
 		return "data/html/npcdefault.htm";
 	}
+
 	
 	public static void QuestWindowGeneral(L2PcInstance player, L2Npc npc)
 	{
@@ -1462,7 +1445,7 @@ public class L2Npc extends L2Character
 		
 		return false;
 	}
-	
+
 	public void showChatWindow(L2PcInstance player, int val)
 	{
 		if (player.getKarma() > 0)
@@ -1909,15 +1892,12 @@ public class L2Npc extends L2Character
 	{
 		if (isDecayed())
 			return;
+		
 		setDecayed(true);
 		
 		// reset champion status if the thing is a mob
 		setChampion(false);
-		
-		// Manage Life Control Tower
-		if (this instanceof L2ControlTowerInstance)
-			((L2ControlTowerInstance) this).onDeath();
-		
+
 		// Remove the L2NpcInstance from the world when the decay task is launched
 		super.onDecay();
 		

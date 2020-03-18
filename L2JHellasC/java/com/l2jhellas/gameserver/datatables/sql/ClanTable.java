@@ -31,7 +31,6 @@ public class ClanTable
 		
 	private final Map<Integer, L2Clan> _clans = new ConcurrentHashMap<>();
 
-	
 	protected ClanTable()
 	{
 		L2Clan clan;

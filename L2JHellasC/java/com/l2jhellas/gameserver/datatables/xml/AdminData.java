@@ -14,13 +14,13 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.PackRoot;
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.engines.DocumentParser;
 import com.l2jhellas.gameserver.model.L2AccessLevel;
 import com.l2jhellas.gameserver.model.L2AdminCommandAccessRight;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
+import com.l2jhellas.gameserver.network.serverpackets.PlaySound;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
@@ -178,13 +178,9 @@ public class AdminData implements DocumentParser
 		for (Entry<L2PcInstance, Boolean> entry : _gmList.entrySet())
 		{
 			if (!entry.getValue())
-			{
 				tmpGmList.add(entry.getKey().getName());
-			}
 			else if (includeHidden)
-			{
 				tmpGmList.add(entry.getKey().getName() + " (invis)");
-			}
 		}
 		
 		return tmpGmList;
@@ -192,37 +188,24 @@ public class AdminData implements DocumentParser
 	
 	public void addGm(L2PcInstance player, boolean hidden)
 	{
-		if (Config.DEBUG)
-		{
-			_log.fine("added gm: " + player.getName());
-		}
 		_gmList.put(player, hidden);
 	}
 	
 	public void deleteGm(L2PcInstance player)
 	{
-		if (Config.DEBUG)
-		{
-			_log.fine("deleted gm: " + player.getName());
-		}
-		
 		_gmList.remove(player);
 	}
 	
 	public void showGm(L2PcInstance player)
 	{
 		if (_gmList.containsKey(player))
-		{
 			_gmList.put(player, false);
-		}
 	}
 	
 	public void hideGm(L2PcInstance player)
 	{
 		if (_gmList.containsKey(player))
-		{
 			_gmList.put(player, true);
-		}
 	}
 	
 	public boolean isGmOnline(boolean includeHidden)
@@ -240,19 +223,15 @@ public class AdminData implements DocumentParser
 	{
 		if (isGmOnline(player.isGM()))
 		{
-			SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.GM_LIST);
-			player.sendPacket(sm);
-			
+			player.sendPacket(SystemMessageId.GM_LIST);
+
 			for (String name : getAllGmNames(player.isGM()))
-			{
-				sm = SystemMessage.getSystemMessage(SystemMessageId.GM_S1);
-				sm.addString(name);
-				player.sendPacket(sm);
-			}
+				player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.GM_S1).addString(name));
 		}
 		else
 		{
 			player.sendPacket(SystemMessageId.NO_GM_PROVIDING_SERVICE_NOW);
+			player.sendPacket(PlaySound.createSound("systemmsg_e.702"));
 		}
 	}
 	

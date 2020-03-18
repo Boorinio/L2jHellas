@@ -11,11 +11,10 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_REST;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.emum.player.DuelState;
-import com.l2jhellas.gameserver.emum.skills.L2SkillTargetType;
+import com.l2jhellas.gameserver.enums.player.DuelState;
+import com.l2jhellas.gameserver.enums.skills.L2SkillTargetType;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.actor.L2Character.AIAccessor;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2StaticObjectInstance;
 import com.l2jhellas.gameserver.model.actor.position.Location;
@@ -35,7 +34,7 @@ public class L2PlayerAI extends L2CharacterAI
 		_nextIntention = new IntentionCommand(intention, arg0, arg1);
 	}
 	
-	public L2PlayerAI(AIAccessor accessor)
+	public L2PlayerAI(L2PcInstance accessor)
 	{
 		super(accessor);
 	}
@@ -247,7 +246,7 @@ public class L2PlayerAI extends L2CharacterAI
 			return;
 		
 		setIntention(AI_INTENTION_ACTIVE);
-		((L2PcInstance.AIAccessor) _accessor).doPickupItem(target);
+		_actor.getActingPlayer().doPickupItem(target);
 		_actor.setIsParalyzed(true);
 		ThreadPoolManager.getInstance().scheduleGeneral(() -> _actor.setIsParalyzed(false), (int) (660 / _actor.getStat().getMovementSpeedMultiplier()));		
 		return;

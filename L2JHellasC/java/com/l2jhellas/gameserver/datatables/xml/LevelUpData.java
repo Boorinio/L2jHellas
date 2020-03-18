@@ -7,8 +7,8 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import com.l2jhellas.gameserver.emum.player.ClassId;
 import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.enums.player.ClassId;
 import com.l2jhellas.gameserver.model.L2LvlupData;
 
 public class LevelUpData implements DocumentParser

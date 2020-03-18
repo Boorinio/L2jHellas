@@ -1,20 +1,28 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 
 public class GMViewItemList extends L2GameServerPacket
 {
 	private static final String _S__AD_GMVIEWITEMLIST = "[S] 94 GMViewItemList";
-	private final L2ItemInstance[] _items;
-	private final L2PcInstance _cha;
+	private final List<L2ItemInstance> _items = new ArrayList<>();
+
+	private final int _limit;
 	private final String _playerName;
 	
 	public GMViewItemList(L2PcInstance cha)
 	{
-		_items = cha.getInventory().getItems();
 		_playerName = cha.getName();
-		_cha = cha;
+		_limit = cha.getInventoryLimit();
+		
+		for (L2ItemInstance item : cha.getInventory().getItems())
+		{
+			_items.add(item);
+		}
 	}
 	
 	@Override
@@ -22,9 +30,9 @@ public class GMViewItemList extends L2GameServerPacket
 	{
 		writeC(0x94);
 		writeS(_playerName);
-		writeD(_cha.getInventoryLimit()); // inventory limit
+		writeD(_limit); // inventory limit
 		writeH(0x01); // show window ??
-		writeH(_items.length);
+		writeH(_items.size());
 		
 		for (L2ItemInstance temp : _items)
 		{

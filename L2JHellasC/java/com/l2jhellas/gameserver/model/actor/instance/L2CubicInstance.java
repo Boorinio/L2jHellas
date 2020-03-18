@@ -1,11 +1,11 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.handler.SkillHandler;
@@ -183,52 +183,31 @@ public class L2CubicInstance
 				return;
 			}
 			
-			if (_target != null)
+			if (Rnd.get(1, 100) < _chance && _target != null && !_target.isDead())
 			{
 				try
 				{
-					if (Rnd.get(1, 100) < _chance)
+					final L2Skill skill = SkillTable.getInstance().getInfo(_skills.get(Rnd.get(_skills.size())), _level);
+					if (skill != null)
 					{
-						final L2Skill skill = SkillTable.getInstance().getInfo(_skills.get(Rnd.get(_skills.size())), _level);
-						if (skill != null)
-						{
-							final L2Character[] targets =
-							{
-								_target
-							};
-							final ISkillHandler handler = SkillHandler.getInstance().getHandler(skill.getSkillType());
-							
-							int x, y, z;
-							
-							// range for cubic skills
-							final int range = 900;
-							
-							x = (_owner.getX() - _target.getX());
-							y = (_owner.getY() - _target.getY());
-							z = (_owner.getZ() - _target.getZ());
-							
-							if ((x * x) + (y * y) + (z * z) <= (range * range))
-							{
-								if (handler != null)
-								{
-									handler.useSkill(_owner, skill, targets);
-								}
-								else
-								{
-									skill.useSkill(_owner, targets);
-								}
+						final L2Character[] targets ={_target};
+						final ISkillHandler handler = SkillHandler.getInstance().getHandler(skill.getSkillType());
+						final int range = 900;
+						
+						if (_target.isInsideRadius(_owner, range,true,false))
+						{						
+							if (handler != null)
+								handler.useSkill(_owner, skill, targets);	
+							else
+								skill.useSkill(_owner, targets);
 								
-								MagicSkillUse msu = new MagicSkillUse(_owner, _target, skill.getId(), _level, 0, 0);
-								_owner.broadcastPacket(msu);
-							}
+							_owner.broadcastPacket(new MagicSkillUse(_owner, _target, skill.getId(), _level, 0, 0));
 						}
 					}
 				}
 				catch (Exception e)
 				{
-					_log.severe(L2CubicInstance.class.getName() + ": Throwable: Action");
-					if (Config.DEVELOPER)
-						e.printStackTrace();
+
 				}
 			}
 		}
@@ -262,53 +241,18 @@ public class L2CubicInstance
 					final L2Skill skill = SkillTable.getInstance().getInfo(_skills.get(Rnd.get(_skills.size())), _level);
 					if (skill != null)
 					{
-						L2Character target, caster;
+						L2Character target;
 						target = null;
 						if (_owner.isInParty())
 						{
-							caster = _owner;
 							L2PcInstance player = _owner;
 							L2Party party = player.getParty();
-							double percentleft = 100.0;
 							
 							if (_owner.isInDuel() && !DuelManager.getInstance().getDuel(_owner.getDuelId()).isPartyDuel())
 								party = null;
 							
 							if (party != null && !_owner.isInOlympiadMode())
-							{
-								// Get all visible objects in a spheric area near the L2Character
-								// Get a list of Party Members
-								List<L2PcInstance> partyList = party.getPartyMembers();
-								L2Character partyMember = null;
-								int x, y, z;
-								
-								// range for cubic skills
-								int range = 900;
-								
-								for (int i = 0; i < partyList.size(); i++)
-								{
-									partyMember = partyList.get(i);
-									if (!partyMember.isDead())
-									{
-										// if party member not dead, check if he is in castrange of heal cubic
-										x = (caster.getX() - partyMember.getX());
-										y = (caster.getY() - partyMember.getY());
-										z = (caster.getZ() - partyMember.getZ());
-										if ((x * x) + (y * y) + (z * z) > range * range)
-											continue;
-										
-										// member is in cubic casting range, check if he need heal and if he have the lowest HP
-										if (partyMember.getCurrentHp() < partyMember.getMaxHp())
-										{
-											if (percentleft > (partyMember.getCurrentHp() / partyMember.getMaxHp()))
-											{
-												percentleft = (partyMember.getCurrentHp() / partyMember.getMaxHp());
-												target = partyMember;
-											}
-										}
-									}
-								}
-							}
+								target = party.getPartyMembers().stream().filter(member -> member != null && !member.isDead() && member.isInsideRadius(_owner, 900,true,false)).sorted(Comparator.comparingInt(L2Character::getCurrentHpPercent).reversed()).findFirst().orElse(null);
 						}
 						else
 						{
@@ -317,21 +261,14 @@ public class L2CubicInstance
 						}
 						if (target != null)
 						{
-							L2Character[] targets =
-							{
-								target
-							};
+							L2Character[] targets ={target};
 							ISkillHandler handler = SkillHandler.getInstance().getHandler(skill.getSkillType());
 							if (handler != null)
-							{
 								handler.useSkill(_owner, skill, targets);
-							}
 							else
-							{
 								skill.useSkill(_owner, targets);
-							}
-							MagicSkillUse msu = new MagicSkillUse(_owner, target, skill.getId(), _level, 0, 0);
-							_owner.broadcastPacket(msu);
+							
+							_owner.broadcastPacket(new MagicSkillUse(_owner, target, skill.getId(), _level, 0, 0));
 						}
 					}
 				}

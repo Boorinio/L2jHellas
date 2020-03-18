@@ -4,8 +4,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.emum.player.ChatType;
-import com.l2jhellas.gameserver.emum.sound.Sound;
+import com.l2jhellas.gameserver.enums.player.ChatType;
+import com.l2jhellas.gameserver.enums.sound.Sound;
 import com.l2jhellas.gameserver.instancemanager.BoatManager;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
 import com.l2jhellas.gameserver.model.actor.L2Vehicle;
@@ -15,8 +15,7 @@ import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 public class BoatInnadrilTour implements Runnable
 {
 	private static final Logger _log = Logger.getLogger(BoatInnadrilTour.class.getName());
-	
-	// Time: 1867s
+
 	private static final VehiclePathPoint[] TOUR =
 	{
 		new VehiclePathPoint(105129, 226240, -3610, 150, 800),
@@ -138,9 +137,7 @@ public class BoatInnadrilTour implements Runnable
 			}
 			_cycle++;
 			if (_cycle > 9)
-			{
 				_cycle = 0;
-			}
 		}
 		catch (Exception e)
 		{

@@ -12,7 +12,7 @@ import Extensions.fake.roboto.model.OffensiveSpell;
 import Extensions.fake.roboto.model.SpellUsageCondition;
 import Extensions.fake.roboto.model.SupportSpell;
 
-import com.l2jhellas.gameserver.emum.items.ShotType;
+import com.l2jhellas.gameserver.enums.items.ShotType;
 
 public class DuelistAI extends CombatAI implements IConsumableSpender
 {

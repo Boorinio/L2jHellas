@@ -39,7 +39,7 @@ public class OnlinePlayersCmd implements IVoicedCommandHandler
 		{
 			int count = town.getKnownTypeInside(L2PcInstance.class).size();
 			player.sendMessage("====================\n");
-			player.sendMessage("There are " + count + " characters inside that town\n");
+			player.sendMessage("There are " + count + " players inside that town\n");
 			player.sendMessage("====================");
 		}
 	}

@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.emum.items.ItemLocation;
+import com.l2jhellas.gameserver.enums.items.ItemLocation;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.TradeList;
 import com.l2jhellas.gameserver.model.TradeList.TradeItem;
@@ -92,7 +92,7 @@ public final class AddTradeItem extends L2GameClientPacket
 		if (tradeitem != null)
 		{
 			player.sendPacket(new TradeOwnAdd(tradeitem));
-			player.sendPacket(new TradeUpdateItems(tradeitem, item.getCount() - tradeitem.getCount()));
+			player.sendPacket(new TradeUpdateItems(trade,player));
 			trade.getPartner().sendPacket(new TradeOtherAdd(tradeitem));
 		}
 	}

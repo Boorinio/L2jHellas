@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.PetData;
-import com.l2jhellas.gameserver.emum.player.StoreType;
+import com.l2jhellas.gameserver.enums.player.StoreType;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
@@ -15,6 +15,8 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.shield.antiflood.FloodProtectors.Action;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
 
@@ -41,6 +43,12 @@ public final class RequestDestroyItem extends L2GameClientPacket
 		if (activeChar == null)
 			return;
 		
+		if (!FloodProtectors.performAction(getClient(), Action.USE_ITEM))
+		{
+			activeChar.sendMessage("You destroying items too fast.");
+			return;
+		}
+		
 		if (_count <= 0)
 		{
 			if (_count < 0)
@@ -49,12 +57,7 @@ public final class RequestDestroyItem extends L2GameClientPacket
 		}
 		
 		int count = _count;
-		
-		if (!activeChar.getAntiFlood().getTransaction().tryPerformAction("destroy"))
-		{
-			activeChar.sendMessage("You destroying items too fast.");
-			return;
-		}
+
 		if (activeChar.getActiveEnchantItem() != null || activeChar.getActiveWarehouse() != null || activeChar.getActiveTradeList() != null)
 		{
 			activeChar.sendMessage("You can't destroy items when you are enchanting, got active warehouse or active trade.");

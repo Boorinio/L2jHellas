@@ -1,6 +1,6 @@
 package com.l2jhellas.util;
 
-import com.l2jhellas.gameserver.emum.player.ChatType;
+import com.l2jhellas.gameserver.enums.player.ChatType;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2World;

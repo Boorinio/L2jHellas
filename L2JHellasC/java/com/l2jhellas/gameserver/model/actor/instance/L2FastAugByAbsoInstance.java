@@ -1,5 +1,6 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
+import java.util.Collection;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.gameserver.ai.CtrlIntention;
@@ -154,7 +155,7 @@ public final class L2FastAugByAbsoInstance extends L2NpcInstance
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		StringBuilder tb = new StringBuilder("");
 		String Rem = "RemoveAug";
-		L2ItemInstance[] invitems = player.getInventory().getItems();
+		Collection<L2ItemInstance> invitems = player.getInventory().getItems();
 		
 		tb.append("<html><head><title>By AbsolutePower</title></head><body>");
 		tb.append("<center>");
@@ -194,7 +195,7 @@ public final class L2FastAugByAbsoInstance extends L2NpcInstance
 		NpcHtmlMessage nhm = new NpcHtmlMessage(5);
 		StringBuilder tb = new StringBuilder("");
 		String Rem = "GobackToAugList";
-		L2ItemInstance[] invitems = player.getInventory().getItems();
+		Collection<L2ItemInstance> invitems = player.getInventory().getItems();
 		
 		tb.append("<html><head><title>By AbsolutePower</title></head><body>");
 		tb.append("<center>");

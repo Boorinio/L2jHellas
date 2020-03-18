@@ -2,8 +2,8 @@ package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 
 import com.l2jhellas.gameserver.MonsterRace;
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.emum.sound.Music;
-import com.l2jhellas.gameserver.emum.sound.Sound;
+import com.l2jhellas.gameserver.enums.sound.Music;
+import com.l2jhellas.gameserver.enums.sound.Sound;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;

@@ -55,7 +55,7 @@ public class ChanceSkillList extends ConcurrentHashMap<L2Skill, ChanceCondition>
 	{
 		onEvent(ChanceCondition.EVT_EVADED_HIT, attacker);
 	}
-	
+
 	public void onSkillHit(L2Character target, boolean ownerWasHit, boolean wasMagic, boolean wasOffensive)
 	{
 		int event;

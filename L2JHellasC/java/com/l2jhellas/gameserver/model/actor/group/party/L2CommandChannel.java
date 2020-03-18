@@ -2,20 +2,25 @@ package com.l2jhellas.gameserver.model.actor.group.party;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2RaidBossInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 import com.l2jhellas.gameserver.network.serverpackets.ExCloseMPCC;
+import com.l2jhellas.gameserver.network.serverpackets.ExMPCCPartyInfoUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ExOpenMPCC;
 import com.l2jhellas.gameserver.network.serverpackets.L2GameServerPacket;
 
 public class L2CommandChannel
 {
-	private List<L2Party> _partys = new ArrayList<>();
+	private final List<L2Party> _partys = new CopyOnWriteArrayList<>();
+
 	private L2PcInstance _commandLeader = null;
 	private int _channelLvl;
 	
@@ -31,12 +36,13 @@ public class L2CommandChannel
 	public void addParty(L2Party party)
 	{
 		if (party == null || _partys.contains(party))
-			return;
+			return;	
 		
+		party.broadcastToPartyMembers(new ExMPCCPartyInfoUpdate(party, 1));
+
 		_partys.add(party);
 		
-		if (party.getLevel() > _channelLvl)
-			_channelLvl = party.getLevel();
+		recalculateLevel();
 		
 		party.setCommandChannel(this);
 		party.broadcastToPartyMembers(new ExOpenMPCC());
@@ -44,7 +50,7 @@ public class L2CommandChannel
 	
 	public boolean removeParty(L2Party party)
 	{
-		if (party == null || !_partys.contains(party))
+		if (party == null || _partys.isEmpty() || !_partys.contains(party))
 			return false;
 		
 		if (_partys.size() == 2)
@@ -56,16 +62,21 @@ public class L2CommandChannel
 			party.setCommandChannel(null);
 			party.broadcastToPartyMembers(new ExCloseMPCC());
 			
-			_channelLvl = 0;
-			
-			for (L2Party pty : _partys)
-			{
-				if (pty.getLevel() > _channelLvl)
-					_channelLvl = pty.getLevel();
-			}
-			
+			recalculateLevel();
+			party.broadcastToPartyMembers(new ExMPCCPartyInfoUpdate(party, 0));			
 		}
 		return true;
+	}
+	
+	public void recalculateLevel()
+	{
+		_channelLvl = 0;
+		
+		for (L2Party pty : _partys)
+		{
+			if (pty.getLevel() > _channelLvl)
+				_channelLvl = pty.getLevel();
+		}
 	}
 	
 	public void disbandChannel()
@@ -75,7 +86,7 @@ public class L2CommandChannel
 			if (party != null)
 				removeParty(party);
 		}
-		_partys = null;
+		_partys.clear();
 	}
 	
 	public int getMemberCount()
@@ -164,6 +175,27 @@ public class L2CommandChannel
 			default: // normal Raidboss
 				return (getMemberCount() > 18);
 		}
+	}
+	
+	public static boolean AuthCheck(L2PcInstance player, boolean del)
+	{
+		final L2Clan requestorClan = player.getClan();
+		
+		if (requestorClan == null || requestorClan.getLeaderId() != player.getObjectId() || requestorClan.getLevel() < 5)
+		{
+			player.sendPacket(SystemMessageId.COMMAND_CHANNEL_ONLY_BY_LEVEL_5_CLAN_LEADER_PARTY_LEADER);
+			return false;
+		}
+		
+		if (player.getSkill(391) != null)
+			return true;
+		
+		final boolean has = (del) ? player.destroyItemByItemId("CC Creation", 8871, 1, player, true) : player.getInventory().getItemByItemId(8871) != null;
+		
+		if (!has)
+			player.sendPacket(SystemMessageId.CANNOT_LONGER_SETUP_COMMAND_CHANNEL);
+		
+		return has;
 	}
 	
 	public boolean isLeader(L2PcInstance player)

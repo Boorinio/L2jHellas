@@ -16,6 +16,7 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2VillageMasterInstance;
 import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.gameserver.network.serverpackets.AcquireSkillDone;
 import com.l2jhellas.gameserver.network.serverpackets.ExStorageMaxCount;
 import com.l2jhellas.gameserver.network.serverpackets.PledgeSkillList;
 import com.l2jhellas.gameserver.network.serverpackets.ShortCutRegister;
@@ -253,6 +254,8 @@ public class RequestAquireSkill extends L2GameClientPacket
 			
 			player.getClan().broadcastToOnlineMembers(new PledgeSkillList(player.getClan()));
 			
+			player.sendPacket(AcquireSkillDone.STATIC_PACKET);
+
 			for (L2PcInstance member : player.getClan().getOnlineMembers())
 			{
 				member.sendSkillList();
@@ -269,6 +272,8 @@ public class RequestAquireSkill extends L2GameClientPacket
 			return;
 		}
 		
+		player.sendPacket(AcquireSkillDone.STATIC_PACKET);
+
 		player.addSkill(skill, true);
 		
 		if (Config.DEBUG)

@@ -38,8 +38,6 @@
 		<set name="hitTime" val="1000" />
 		<set name="skillType" val="PDAM" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 		</for>
 	</skill>
@@ -141,8 +139,6 @@
 		<set name="hitTime" val="6000" />
 		<set name="skillType" val="PDAM" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="1" name="Stun" time="9" val="0" stackOrder="1" stackType="Stun" />
 		</for>
@@ -159,8 +155,6 @@
 		<set name="hitTime" val="3000" />
 		<set name="skillType" val="PDAM" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="1" name="Stun" time="9" val="0" stackOrder="1" stackType="Stun" />
 			<!-- FLY AWAY SKILL -->
@@ -196,8 +190,6 @@
 		<set name="hitTime" val="2800" />
 		<set name="skillType" val="DEBUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect name="Buff" time="120" count="1" val="0">
 				<sub order="0x40" stat="accCombat" val="19" />
@@ -519,8 +511,6 @@
 		<set name="hitTime" val="2300" />
 		<set name="skillType" val="PDAM" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 		</for>
 	</skill>
@@ -535,8 +525,6 @@
 		<set name="hitTime" val="1500" />
 		<set name="skillType" val="PDAM" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<set name="baseCritRate" val="15" />
 		<for>
 		</for>
@@ -583,8 +571,6 @@
 		<set name="hitTime" val="3000" />
 		<set name="skillType" val="PDAM" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 		</for>
 	</skill>
@@ -695,8 +681,6 @@
 		<set name="isSuicideAttack" val="true" />
 		<set name="element" val="2" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 		</for>
 	</skill>
@@ -747,8 +731,6 @@
 		<set name="isMagic" val="false" />
 		<set name="isSuicideAttack" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 		</for>
 	</skill>
@@ -1225,8 +1207,6 @@
 		<set name="reuseDelay" val="8000" /> <!-- SHOULD BE 0 -->
 		<set name="skillType" val="PDAM" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 		</for>
 	</skill>
@@ -1243,8 +1223,6 @@
 		<set name="skillType" val="STUN" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="reuseDelay" val="8000" /> <!-- SHOULD BE 0 -->
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="1" name="Stun" time="9" val="0" stackOrder="1" stackType="Stun" />
 		</for>
@@ -1347,8 +1325,6 @@
 		<set name="skillType" val="CANCEL" />
 		<set name="isMagic" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<set name="negateStats" val="BUFF" />
 		<set name="negatePower" val="8.0" />
 		<for>
@@ -1457,8 +1433,6 @@
 		<set name="skillType" val="POISON" />
 		<set name="isMagic" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="10" name="DamOverTime" time="3" val="#dmg" abnormal="poison" />
 		</for>
@@ -1479,8 +1453,6 @@
 		<set name="hitTime" val="3300" />
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect name="Buff" time="15" count="1" val="0" stackOrder="#Tab-pAtk" stackType="pAtkDown">
 				<mul order="0x30" stat="pAtk" val="#Tab-pAtk" />
@@ -1503,8 +1475,6 @@
 		<set name="hitTime" val="3300" />
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect name="Buff" time="15" count="1" val="0" stackOrder="#Tab-pAtkSpd" stackType="pAtkSpdDown">
 				<mul order="0x30" stat="pAtkSpd" val="#Tab-pAtkSpd" />
@@ -1525,8 +1495,6 @@
 		<set name="hitTime" val="3300" />
 		<set name="skillType" val="SLEEP" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="1" name="Sleep" time="30" val="0" />
 		</for>
@@ -1545,8 +1513,6 @@
 		<set name="hitTime" val="3300" />
 		<set name="skillType" val="ROOT" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="1" name="Root" time="30" val="0" stackOrder="1" stackType="Root" />
 		</for>
@@ -1566,8 +1532,6 @@
 		<set name="hitTime" val="3300" />
 		<set name="skillType" val="DEBUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="1" name="Buff" time="30" val="0" stackOrder="#Tab-runSpd" stackType="RunSpeedDown">
 				<mul order="0x30" stat="runSpd" val="#Tab-runSpd" />
@@ -1590,8 +1554,6 @@
 		<set name="hitTime" val="3300" />
 		<set name="skillType" val="BLEED" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="7" name="DamOverTime" time="3" val="#damage" />
 		</for>
@@ -1610,8 +1572,6 @@
 		<set name="hitTime" val="3300" />
 		<set name="skillType" val="PARALYZE" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="1" name="Paralyze" time="120" val="0" />
 		</for>
@@ -1630,8 +1590,6 @@
 		<set name="hitTime" val="3300" />
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="1" name="Buff" time="30" val="0">
 				<sub order="0x40" stat="maxMp" val="#Tab-maxMp" />

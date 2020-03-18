@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.l2jhellas.gameserver.emum.items.ItemLocation;
+import com.l2jhellas.gameserver.enums.items.ItemLocation;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.CastleManorManager.CropProcure;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;

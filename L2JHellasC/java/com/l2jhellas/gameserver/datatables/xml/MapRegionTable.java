@@ -8,9 +8,9 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import com.l2jhellas.gameserver.SevenSigns;
-import com.l2jhellas.gameserver.emum.ZoneId;
-import com.l2jhellas.gameserver.emum.player.ClassRace;
 import com.l2jhellas.gameserver.engines.DocumentParser;
+import com.l2jhellas.gameserver.enums.ZoneId;
+import com.l2jhellas.gameserver.enums.player.ClassRace;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.ClanHallManager;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;

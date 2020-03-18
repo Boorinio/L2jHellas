@@ -19,7 +19,7 @@ public final class RequestBlock extends L2GameClientPacket
 	private final static int ALLUNBLOCK = 4;
 	
 	private String _name;
-	private Integer _type;
+	private int _type;
 	
 	@Override
 	protected void readImpl()
@@ -68,12 +68,10 @@ public final class RequestBlock extends L2GameClientPacket
 				break;
 			
 			case ALLBLOCK:
-				activeChar.sendPacket(SystemMessageId.MESSAGE_REFUSAL_MODE);
 				BlockList.setBlockAll(activeChar, true);
 				break;
 			
 			case ALLUNBLOCK:
-				activeChar.sendPacket(SystemMessageId.MESSAGE_ACCEPTANCE_MODE);
 				BlockList.setBlockAll(activeChar, false);
 				break;
 			

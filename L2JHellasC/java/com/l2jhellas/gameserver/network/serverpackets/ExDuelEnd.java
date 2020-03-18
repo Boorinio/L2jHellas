@@ -3,11 +3,11 @@ package com.l2jhellas.gameserver.network.serverpackets;
 public class ExDuelEnd extends L2GameServerPacket
 {
 	private static final String _S__FE_4E_EXDUELEND = "[S] FE:4E ExDuelEnd";
-	private final int _unk1;
+	private final int _isPartyDuel;
 	
-	public ExDuelEnd(int unk1)
+	public ExDuelEnd(int isPartyDuel)
 	{
-		_unk1 = unk1;
+		_isPartyDuel = isPartyDuel;
 	}
 	
 	@Override
@@ -15,7 +15,7 @@ public class ExDuelEnd extends L2GameServerPacket
 	{
 		writeC(0xfe);
 		writeH(0x4e);
-		writeD(_unk1);
+		writeD(_isPartyDuel);
 	}
 	
 	@Override

@@ -4,6 +4,8 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.shield.antiflood.FloodProtectors.Action;
 import com.l2jhellas.util.Util;
 
 public class RequestSocialAction extends L2GameClientPacket
@@ -29,7 +31,7 @@ public class RequestSocialAction extends L2GameClientPacket
 			return;
 		
 		// Flood protect
-		if (!activeChar.getAntiFlood().getSocial().tryPerformAction("Social"))
+		if (!FloodProtectors.performAction(getClient(), Action.SOCIAL_ACTION))
 			return;
 		
 		// You cannot do anything else while fishing

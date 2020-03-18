@@ -3,8 +3,8 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.items.L2EtcItemType;
-import com.l2jhellas.gameserver.emum.player.StoreType;
+import com.l2jhellas.gameserver.enums.items.L2EtcItemType;
+import com.l2jhellas.gameserver.enums.player.StoreType;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.item.L2Item;
@@ -13,6 +13,8 @@ import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.shield.antiflood.FloodProtectors.Action;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
@@ -45,8 +47,7 @@ public final class RequestDropItem extends L2GameClientPacket
 		if ((activeChar == null) || activeChar.isDead())
 			return;
 		
-		// Flood protect drop to avoid packet lag
-		if (!activeChar.getAntiFlood().getDropItem().tryPerformAction("drop item"))
+		if (!FloodProtectors.performAction(getClient(), Action.DROP_ITEM))
 			return;
 		
 		final L2ItemInstance item = activeChar.getInventory().getItemByObjectId(_objectId);

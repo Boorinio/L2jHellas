@@ -1,6 +1,7 @@
 package com.l2jhellas.gameserver.model.actor;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,7 +16,7 @@ import com.l2jhellas.gameserver.ai.L2AttackableAI;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2SiegeGuardAI;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.emum.player.ChatType;
+import com.l2jhellas.gameserver.enums.player.ChatType;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.L2DropCategory;
 import com.l2jhellas.gameserver.model.L2DropData;
@@ -521,7 +522,7 @@ public class L2Attackable extends L2Npc
 			synchronized (this)
 			{
 				if (_ai == null)
-					_ai = new L2AttackableAI(new AIAccessor());
+					_ai = new L2AttackableAI(this);
 				
 				return _ai;
 			}
@@ -1992,9 +1993,7 @@ public class L2Attackable extends L2Npc
 	@Override
 	public void moveToLocation(int x, int y, int z, int offset)
 	{
-		if (isAttackingNow())
-			breakAttack();
-		
+		abortAllAttacks();		
 		super.moveToLocation(x, y, z, offset);
 	}
 	
@@ -2129,7 +2128,7 @@ public class L2Attackable extends L2Npc
 			}
 			crystalQTY = 0;
 			
-			L2ItemInstance[] inv = player.getInventory().getItems();
+			Collection<L2ItemInstance> inv = player.getInventory().getItems();
 			for (L2ItemInstance item : inv)
 			{
 				int itemId = item.getItemId();

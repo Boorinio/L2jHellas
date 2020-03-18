@@ -1,8 +1,5 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import java.util.logging.Logger;
-
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.RecipeData;
 import com.l2jhellas.gameserver.model.L2RecipeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -10,7 +7,6 @@ import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 public class RecipeItemMakeInfo extends L2GameServerPacket
 {
 	private static final String _S__D7_RECIPEITEMMAKEINFO = "[S] D7 RecipeItemMakeInfo";
-	private static Logger _log = Logger.getLogger(RecipeItemMakeInfo.class.getName());
 	
 	private final int _id;
 	private final L2PcInstance _activeChar;
@@ -45,8 +41,6 @@ public class RecipeItemMakeInfo extends L2GameServerPacket
 			writeD(_activeChar.getMaxMp());
 			writeD(_success ? 1 : 0); // item creation success/failed
 		}
-		else if (Config.DEBUG)
-			_log.info("No recipe found with ID = " + _id);
 	}
 	
 	@Override

@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import com.PackRoot;
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.cache.HtmCache;
-import com.l2jhellas.gameserver.emum.player.ChatType;
+import com.l2jhellas.gameserver.enums.player.ChatType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;

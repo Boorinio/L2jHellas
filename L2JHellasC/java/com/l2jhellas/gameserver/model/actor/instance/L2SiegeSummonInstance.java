@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import com.l2jhellas.gameserver.emum.ZoneId;
+import com.l2jhellas.gameserver.enums.ZoneId;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 

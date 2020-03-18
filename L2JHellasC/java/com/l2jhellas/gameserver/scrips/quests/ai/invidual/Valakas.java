@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.emum.sound.Music;
+import com.l2jhellas.gameserver.enums.sound.Music;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.holder.SkillHolder;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
@@ -19,10 +19,12 @@ import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.position.Location;
+import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.network.serverpackets.SocialAction;
 import com.l2jhellas.gameserver.network.serverpackets.SpecialCamera;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
+import com.l2jhellas.gameserver.scrips.quests.ai.teleports.GrandBossTeleporters;
 import com.l2jhellas.gameserver.skills.SkillTable;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Util;
@@ -82,19 +84,19 @@ public class Valakas extends AbstractNpcAI
 		new Location(215456, -117328, -1392),
 		new Location(213200, -118160, -1424)
 	};
-	private static final Location ATTACKER_REMOVE = new Location(150037, -57255, -2976);
+	
 	private static final Location VALAKAS_LAIR = new Location(212852, -114842, -1632);
 	private static final Location VALAKAS_REGENERATION_LOC = new Location(-105200, -253104, -15264);
 	// Valakas status.
-	private static final byte DORMANT = 0; // Valakas is spawned and no one has entered yet. Entry is unlocked.
+	public static final byte DORMANT = 0; // Valakas is spawned and no one has entered yet. Entry is unlocked.
 	private static final byte WAITING = 1; // Valakas is spawned and someone has entered, triggering a 30 minute window for additional people to enter. Entry is unlocked.
 	private static final byte FIGHTING = 2; // Valakas is engaged in battle, annihilating his foes. Entry is locked.
 	private static final byte DEAD = 3; // Valakas has been killed. Entry is locked.
 	// Misc
 	private long _timeTracker = 0; // Time tracker for last attack on Valakas.
 	private L2Playable _actualVictim; // Actual target of Valakas.
-	private static L2BossZone ZONE;
-	
+	private static L2BossZone ZONE = GrandBossManager.getZoneById(110010);
+
 	public Valakas()
 	{
 		super(Valakas.class.getSimpleName(), "ai/individual");
@@ -104,11 +106,10 @@ public class Valakas extends AbstractNpcAI
 			VALAKAS
 		};
 		
-		registerMobs(mob);
+		registerMobs(mob,QuestEventType.ON_ATTACK, QuestEventType.ON_KILL, QuestEventType.ON_SPAWN);
 		
-		ZONE = GrandBossManager.getZone(212852, -114842, -1632);
 		final StatsSet info = GrandBossManager.getStatsSet(VALAKAS);
-		final int status = GrandBossManager.getBossStatus(VALAKAS);
+		final int status = GrandBossManager.getInstance().getBossStatus(VALAKAS);
 		
 		if (status == DEAD)
 		{
@@ -206,7 +207,7 @@ public class Valakas extends AbstractNpcAI
 			else if (event.equalsIgnoreCase("regen_task"))
 			{
 				// Inactivity task - 15min
-				if (GrandBossManager.getBossStatus(VALAKAS) == FIGHTING)
+				if (GrandBossManager.getInstance().getBossStatus(VALAKAS) == FIGHTING)
 				{
 					if ((_timeTracker + 900000) < System.currentTimeMillis())
 					{
@@ -271,7 +272,7 @@ public class Valakas extends AbstractNpcAI
 				ZONE.broadcastPacket(new SpecialCamera(npc.getObjectId(), 750, 170, -10, 3400, 4000, 10, -15, 1, 0));
 			else if (event.equalsIgnoreCase("spawn_10"))
 			{
-				GrandBossManager.setBossStatus(VALAKAS, FIGHTING);
+				GrandBossManager.setBossStatus(VALAKAS, GrandBossTeleporters._valakasPlayersCount >= 300 ? FIGHTING : 1);
 				npc.setIsInvul(false);
 				
 				startQuestTimer("regen_task", 60000, npc, null, true);
@@ -341,16 +342,8 @@ public class Valakas extends AbstractNpcAI
 		}
 		
 		if (npc.isInvul())
-		{
 			return null;
-		}
-		
-		if (GrandBossManager.getBossStatus(VALAKAS) != FIGHTING)
-		{
-			attacker.teleToLocation(ATTACKER_REMOVE, false);
-			return null;
-		}
-		
+
 		// Debuff strider-mounted players.
 		if (attacker.getMountType() == 1)
 		{

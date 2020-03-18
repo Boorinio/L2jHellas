@@ -228,8 +228,6 @@
 		<set name="coolTime" val="500" />
 		<set name="skillType" val="PDAM" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 		</for>
 	</skill>
@@ -495,8 +493,6 @@
 		<set name="skillType" val="MDAM" />
 		<set name="isMagic" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 		</for>
 	</skill>

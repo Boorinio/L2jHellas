@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.sound.Music;
+import com.l2jhellas.gameserver.enums.sound.Music;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
@@ -34,7 +34,7 @@ public class Core extends AbstractNpcAI
 		addKillId(CORE, DEATH_KNIGHT, DOOM_WRAITH, SUSCEPTOR);
 		
 		final StatsSet info = GrandBossManager.getStatsSet(CORE);
-		final int status = GrandBossManager.getBossStatus(CORE);
+		final int status = GrandBossManager.getInstance().getBossStatus(CORE);
 		if (status == DEAD)
 		{
 			// load the unlock date and time for Core from DB
@@ -168,7 +168,7 @@ public class Core extends AbstractNpcAI
 			startQuestTimer("despawn_minions", 20000, null, null, false);
 			cancelQuestTimers("spawn_minion");
 		}
-		else if (GrandBossManager.getBossStatus(CORE) == ALIVE && _minions != null && _minions.contains(npc))
+		else if (GrandBossManager.getInstance().getBossStatus(CORE) == ALIVE && _minions != null && _minions.contains(npc))
 		{
 			_minions.remove(npc);
 			startQuestTimer("spawn_minion", 60000, npc, null, false);

@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.emum.player.StoreType;
+import com.l2jhellas.gameserver.enums.player.StoreType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 
 public final class RequestRecipeShopManageQuit extends L2GameClientPacket
@@ -16,13 +16,12 @@ public final class RequestRecipeShopManageQuit extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance player = getClient().getActiveChar();
+		final L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
 			return;
 		
 		player.setPrivateStoreType(StoreType.NONE);
 		player.broadcastUserInfo();
-		player.standUp();
 	}
 	
 	@Override

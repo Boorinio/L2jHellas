@@ -5,6 +5,7 @@ public class Manager
 	public static void reloadAll()
 	{
 		OlympiadStadiaManager.getInstance().clearStadium();
+		GrandBossManager.getInstance().reload();
 		ZoneManager.getInstance().reload();
 		ItemsOnGroundManager.getInstance().reload();
 		AuctionManager.getInstance().reload();
@@ -16,7 +17,6 @@ public class Manager
 		DimensionalRiftManager.getInstance().reload();
 		DuelManager.getInstance();
 		FourSepulchersManager.getInstance();
-		GrandBossManager.getInstance().reload();
 		MercTicketManager.getInstance().reload();
 		PetitionManager.getInstance();
 		RaidBossSpawnManager.getInstance().reloadBosses();

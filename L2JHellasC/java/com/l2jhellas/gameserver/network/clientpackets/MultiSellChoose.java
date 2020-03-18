@@ -22,6 +22,8 @@ import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Armor;
 import com.l2jhellas.gameserver.templates.L2Weapon;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.shield.antiflood.FloodProtectors.Action;
 
 public class MultiSellChoose extends L2GameClientPacket
 {
@@ -48,19 +50,26 @@ public class MultiSellChoose extends L2GameClientPacket
 	@Override
 	public void runImpl()
 	{
-		if (_amount < 1 || _amount > 5000)
+		final L2PcInstance player = getClient().getActiveChar();
+
+		if (player == null)
+			return;
+		
+		if (_amount < 1 || _amount > 9999)
+			return;
+		
+		if (!FloodProtectors.performAction(getClient(), Action.MULTISELL))
 			return;
 		
 		final MultiSellListContainer list = MultisellData.getInstance().getList(_listId);
-		final L2PcInstance player = getClient().getActiveChar();
-		if (list == null || player == null)
+		
+		if (list == null)
 			return;
 		
 		if (_entryId < 1 || _entryId > list.getEntries().size())
 			return;
 		
-		if (!player.getAntiFlood().getMultiSell().tryPerformAction("multisell choose"))
-			return;
+
 		
 		for (MultiSellEntry entry : list.getEntries())
 		{

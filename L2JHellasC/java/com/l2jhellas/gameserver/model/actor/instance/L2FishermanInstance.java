@@ -10,7 +10,7 @@ import com.l2jhellas.gameserver.model.L2SkillLearn;
 import com.l2jhellas.gameserver.model.L2TradeList;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.AquireSkillList;
+import com.l2jhellas.gameserver.network.serverpackets.AcquireSkillList;
 import com.l2jhellas.gameserver.network.serverpackets.BuyList;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SellList;
@@ -108,7 +108,7 @@ public class L2FishermanInstance extends L2NpcInstance
 	public void showSkillList(L2PcInstance player)
 	{
 		L2SkillLearn[] skills = SkillTreeData.getInstance().getAvailableSkills(player);
-		AquireSkillList asl = new AquireSkillList(AquireSkillList.skillType.Fishing);
+		AcquireSkillList asl = new AcquireSkillList(AcquireSkillList.skillType.Fishing);
 		
 		int counts = 0;
 		

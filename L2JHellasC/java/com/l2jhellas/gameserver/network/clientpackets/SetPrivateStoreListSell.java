@@ -1,50 +1,47 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.ZoneId;
-import com.l2jhellas.gameserver.emum.player.StoreType;
+import com.l2jhellas.gameserver.enums.ZoneId;
+import com.l2jhellas.gameserver.enums.player.StoreType;
 import com.l2jhellas.gameserver.model.TradeList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.actor.item.Inventory;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreManageListSell;
 import com.l2jhellas.gameserver.network.serverpackets.PrivateStoreMsgSell;
 import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
-import com.l2jhellas.util.Util;
 
 public class SetPrivateStoreListSell extends L2GameClientPacket
 {
 	private static final String _C__74_SETPRIVATESTORELISTSELL = "[C] 74 SetPrivateStoreListSell";
 	
-	private int _count;
 	private boolean _packageSale;
-	private int[] _items; // count * 3
+	private Item[] _items = null;
+	private int _count;
+
 	
 	@Override
 	protected void readImpl()
 	{
 		_packageSale = (readD() == 1);
 		_count = readD();
-		if (_count <= 0 || _count * 12 > _buf.remaining() || _count > Config.MAX_ITEM_IN_PACKET)
-		{
-			_count = 0;
-			_items = null;
+		if (_count < 1 || _count * 12 > _buf.remaining() || _count > Config.MAX_ITEM_IN_PACKET)
 			return;
-		}
-		_items = new int[_count * 3];
-		for (int x = 0; x < _count; x++)
+
+		_items = new Item[_count];
+
+		for (int i = 0; i < _count; i++)
 		{
 			int objectId = readD();
-			_items[x * 3 + 0] = objectId;
-			long cnt = readD();
-			if (cnt > Integer.MAX_VALUE || cnt < 0)
+			int cnt = readD();
+			int price = readD();
+			
+			if ((objectId < 1) || (cnt < 1) || cnt > Integer.MAX_VALUE || (price < 0))
 			{
-				_count = 0;
 				_items = null;
 				return;
 			}
-			_items[x * 3 + 1] = (int) cnt;
-			int price = readD();
-			_items[x * 3 + 2] = price;
+			_items[i] = new Item(objectId, cnt, price);
 		}
 	}
 	
@@ -55,6 +52,16 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
 		if (player == null)
 			return;
 		
+		final TradeList tradeList = player.getSellList();
+		tradeList.clear();
+		
+		if (_items == null)
+		{
+			player.sendPacket(SystemMessageId.INCORRECT_ITEM_COUNT);
+			player.setPrivateStoreType(StoreType.NONE);
+			player.broadcastUserInfo();
+			return;
+		}
 		if (!player.getAccessLevel().allowTransaction())
 		{
 			player.sendMessage("Transactions are disabled for your Access Level.");
@@ -81,26 +88,34 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
 		if (player.isAlikeDead() || player.isMounted() || player.isProcessingRequest())
 			 return;
 		
-		TradeList tradeList = player.getSellList();
-		tradeList.clear();
+		
+		// Check maximum number of allowed slots for pvt shops
+		if (_items.length > player.getPrivateSellStoreLimit())
+		{
+			player.sendPacket(new PrivateStoreManageListSell(player, _packageSale));
+			player.sendPacket(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
+			return;
+		}
+
 		tradeList.setPackaged(_packageSale);
 		
-		for (int i = 0; i < _count; i++)
+		long totalCost = player.getAdena();
+		for (Item i : _items)
 		{
-			int objectId = _items[i * 3 + 0];
-			int count = _items[i * 3 + 1];
-			int price = _items[i * 3 + 2];
-			
-			if (price <= 0)
+			if (!i.addToTradeList(tradeList))
 			{
-				String msgErr = "[SetPrivateStoreListSell] player " + getClient().getActiveChar().getName() + " tried an overflow exploit (use PHX), ban this player!";
-				Util.handleIllegalPlayerAction(getClient().getActiveChar(), msgErr, Config.DEFAULT_PUNISH);
-				_count = 0;
-				_items = null;
+				player.sendPacket(SystemMessageId.EXCEEDED_THE_MAXIMUM);
+				player.sendPacket(new PrivateStoreManageListSell(player, _packageSale));
 				return;
 			}
 			
-			tradeList.addItem(objectId, count, price);
+			totalCost += i.getPrice();
+			if (!validateCount(Inventory.ADENA_ID, totalCost))
+			{
+				player.sendPacket(SystemMessageId.EXCEEDED_THE_MAXIMUM);
+				player.sendPacket(new PrivateStoreManageListSell(player, _packageSale));
+				return;
+			}
 		}
 		
 		if (_count <= 0)
@@ -110,21 +125,49 @@ public class SetPrivateStoreListSell extends L2GameClientPacket
 			player.broadcastUserInfo();
 			return;
 		}
-		
-		// Check maximum number of allowed slots for pvt shops
-		if (_count > player.getPrivateSellStoreLimit())
-		{
-			player.sendPacket(new PrivateStoreManageListSell(player, _packageSale));
-			player.sendPacket(SystemMessageId.YOU_HAVE_EXCEEDED_QUANTITY_THAT_CAN_BE_INPUTTED);
-			return;
-		}
-		
+
 		player.sitDown();
 		player.setPrivateStoreType((_packageSale) ? StoreType.PACKAGE_SELL : StoreType.SELL);
 		player.broadcastUserInfo();
 		player.broadcastPacket(new PrivateStoreMsgSell(player));
 	}
 	
+	private static class Item
+	{
+		private final int _objectId;
+		private final long _count;
+		private final long _price;
+		
+		public Item(int objectId, long count, long price)
+		{
+			_objectId = objectId;
+			_count = count;
+			_price = price;
+		}
+		
+		public boolean addToTradeList(TradeList list)
+		{
+			if (!validateCount(Inventory.ADENA_ID, _price * _count))
+				return false;
+			
+			list.addItem(_objectId, (int)_count, (int)_price);
+			return true;
+		}
+		
+		public long getPrice()
+		{
+			return _count * _price;
+		}
+	}
+	protected static boolean validateCount(int itemId, long count)
+	{
+		return (count > 0) && (count <= getMaximumAllowedCount(itemId));
+	}
+	
+	protected static long getMaximumAllowedCount(int itemId)
+	{
+		return itemId == Inventory.ADENA_ID ? 2000000001 : Integer.MAX_VALUE;
+	}
 	@Override
 	public String getType()
 	{

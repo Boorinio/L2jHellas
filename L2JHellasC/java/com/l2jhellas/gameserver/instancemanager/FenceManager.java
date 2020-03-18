@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
-import com.l2jhellas.gameserver.emum.FenceState;
+import com.l2jhellas.gameserver.enums.FenceState;
 import com.l2jhellas.gameserver.model.actor.instance.L2FenceInstance;
 
 public final class FenceManager

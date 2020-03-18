@@ -1,18 +1,18 @@
 package com.l2jhellas.gameserver.model.actor.appearance;
 
-import com.l2jhellas.gameserver.emum.Sex;
+import com.l2jhellas.gameserver.enums.Sex;
 
 public class PcAppearance
 {
 	private byte _face;
 	private byte _hairColor;
 	private byte _hairStyle;
+	
 	private Sex _sex;
 	
 	private boolean _invisible = false;
 	
-	private int _nameColor = 0xFFFFFF;
-	
+	private int _nameColor = 0xFFFFFF;	
 	private int _titleColor = 0xFFFF77;
 	
 	public PcAppearance(byte Face, byte HColor, byte HStyle, Sex sex)

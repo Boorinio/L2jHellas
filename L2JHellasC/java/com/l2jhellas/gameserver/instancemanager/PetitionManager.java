@@ -10,9 +10,9 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.AdminData;
-import com.l2jhellas.gameserver.emum.player.ChatType;
-import com.l2jhellas.gameserver.emum.player.PetitionState;
-import com.l2jhellas.gameserver.emum.player.PetitionType;
+import com.l2jhellas.gameserver.enums.player.ChatType;
+import com.l2jhellas.gameserver.enums.player.PetitionState;
+import com.l2jhellas.gameserver.enums.player.PetitionType;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;

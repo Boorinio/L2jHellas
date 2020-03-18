@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.model.actor.item;
 
-import com.l2jhellas.gameserver.emum.items.L2EtcItemType;
+import com.l2jhellas.gameserver.enums.items.L2EtcItemType;
 import com.l2jhellas.gameserver.templates.StatsSet;
 
 public final class L2EtcItem extends L2Item

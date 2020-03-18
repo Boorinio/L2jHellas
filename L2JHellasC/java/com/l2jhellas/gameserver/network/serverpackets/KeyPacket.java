@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.Arrays;
+
 public final class KeyPacket extends L2GameServerPacket
 {
 	private static final String _S__01_KEYPACKET = "[S] 01 KeyPacket";
@@ -8,7 +10,7 @@ public final class KeyPacket extends L2GameServerPacket
 	
 	public KeyPacket(byte[] key)
 	{
-		_key = key;
+		_key = Arrays.copyOfRange(key, 0, 8);
 	}
 	
 	@Override

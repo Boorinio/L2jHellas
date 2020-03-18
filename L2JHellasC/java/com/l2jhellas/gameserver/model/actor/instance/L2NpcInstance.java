@@ -2,7 +2,7 @@ package com.l2jhellas.gameserver.model.actor.instance;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
-import com.l2jhellas.gameserver.emum.player.ClassId;
+import com.l2jhellas.gameserver.enums.player.ClassId;
 import com.l2jhellas.gameserver.model.L2EnchantSkillLearn;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2SkillLearn;
@@ -10,7 +10,7 @@ import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.AbstractNpcInfo.NpcInfo;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.AquireSkillList;
+import com.l2jhellas.gameserver.network.serverpackets.AcquireSkillList;
 import com.l2jhellas.gameserver.network.serverpackets.ExEnchantSkillList;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.ServerObjectInfo;
@@ -71,7 +71,7 @@ public class L2NpcInstance extends L2Npc
 		}
 		
 		L2SkillLearn[] skills = SkillTreeData.getInstance().getAvailableSkills(player, classId);
-		AquireSkillList asl = new AquireSkillList(AquireSkillList.skillType.Usual);
+		AcquireSkillList asl = new AcquireSkillList(AcquireSkillList.skillType.Usual);
 		int counts = 0;
 		
 		for (L2SkillLearn s : skills)

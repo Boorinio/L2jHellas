@@ -7,8 +7,8 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ClanTable;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
-import com.l2jhellas.gameserver.emum.ZoneId;
-import com.l2jhellas.gameserver.emum.player.ClassId;
+import com.l2jhellas.gameserver.enums.ZoneId;
+import com.l2jhellas.gameserver.enums.player.ClassId;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.instancemanager.SiegeManager;
 import com.l2jhellas.gameserver.model.L2Clan;
@@ -21,13 +21,15 @@ import com.l2jhellas.gameserver.model.entity.Castle;
 import com.l2jhellas.gameserver.model.quest.QuestState;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.AquireSkillList;
+import com.l2jhellas.gameserver.network.serverpackets.AcquireSkillList;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.shield.antiflood.FloodProtectors.Action;
 import com.l2jhellas.util.Util;
 
 public class L2VillageMasterInstance extends L2NpcInstance
@@ -321,11 +323,8 @@ public class L2VillageMasterInstance extends L2NpcInstance
 					
 					boolean allowAddition = true;
 					
-					if (!player.getAntiFlood().getSubclass().tryPerformAction("add subclass"))
-					{
-						_log.warning(L2VillageMasterInstance.class.getName() + ": Player " + player.getName() + " has performed a subclass change too fast");
+					if (!FloodProtectors.performAction(player.getClient(), Action.SUBCLASS))
 						return;
-					}
 					
 					if (!ItemRestriction(player))
 						return;// Check the player for items during subclass..to avoid bugs
@@ -408,11 +407,8 @@ public class L2VillageMasterInstance extends L2NpcInstance
 					if (player.isLearningSkill())
 						return;
 					
-					if (!player.getAntiFlood().getSubclass().tryPerformAction("add subclass"))
-					{
-						_log.warning(L2VillageMasterInstance.class.getName() + ": Player " + player.getName() + " has performed a subclass change too fast");
+					if (!FloodProtectors.performAction(player.getClient(), Action.SUBCLASS))
 						return;
-					}
 					
 					if (player._inEventCTF || player._inEventDM || player._inEventTvT || player._inEventVIP)
 					{
@@ -499,11 +495,8 @@ public class L2VillageMasterInstance extends L2NpcInstance
 					if (!isValidNewSubClass(player, paramTwo))
 						return;
 					
-					if (!player.getAntiFlood().getSubclass().tryPerformAction("change class"))
-					{
-						_log.warning(L2VillageMasterInstance.class.getName() + ": Player " + player.getName() + " has performed a subclass change too fast");
+					if (!FloodProtectors.performAction(player.getClient(), Action.SUBCLASS))
 						return;
-					}
 					
 					if (Config.CHECK_SKILLS_ON_ENTER && !Config.ALT_GAME_SKILL_LEARN)
 						player.checkAllowedSkills();
@@ -907,7 +900,7 @@ public class L2VillageMasterInstance extends L2NpcInstance
 			return;
 		
 		L2PledgeSkillLearn[] skills = SkillTreeData.getInstance().getAvailablePledgeSkills(player);
-		AquireSkillList asl = new AquireSkillList(AquireSkillList.skillType.Clan);
+		AcquireSkillList asl = new AcquireSkillList(AcquireSkillList.skillType.Clan);
 		int counts = 0;
 		
 		for (L2PledgeSkillLearn s : skills)

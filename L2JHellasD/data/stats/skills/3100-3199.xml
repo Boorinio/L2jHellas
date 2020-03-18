@@ -1521,8 +1521,6 @@
 		<set name="staticReuse" val="true" />
 		<set name="isMagic" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="1000" />
 	</skill>
 	<skill id="3181" levels="10" name="Item Skill: Hydro Blast">
 		<table name="#mpConsume_Init"> 9 9 10 10 11 12 12 13 14 14 </table>
@@ -1542,8 +1540,6 @@
 		<set name="staticReuse" val="true" />
 		<set name="isMagic" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="1000" />
 	</skill>
 	<skill id="3182" levels="10" name="Item Skill: Hurricane">
 		<table name="#mpConsume_Init"> 9 9 10 10 11 12 12 13 14 14 </table>
@@ -1563,8 +1559,6 @@
 		<set name="staticReuse" val="true" />
 		<set name="isMagic" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="1000" />
 	</skill>
 	<skill id="3183" levels="10" name="Item Skill: Stone">
 		<table name="#mpConsume_Init"> 9 9 10 10 11 12 12 13 14 14 </table>
@@ -1583,8 +1577,6 @@
 		<set name="staticReuse" val="true" />
 		<set name="isMagic" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="1000" />
 	</skill>
 	<skill id="3184" levels="10" name="Item Skill: Solar Flare">
 		<table name="#mpConsume_Init"> 9 9 10 10 11 12 12 13 14 14 </table>
@@ -1604,8 +1596,6 @@
 		<set name="element" val="5" /> <!-- Holy -->
 		<set name="isMagic" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="1000" />
 	</skill>
 	<skill id="3185" levels="10" name="Item Skill: Shadow Flare">
 		<table name="#mpConsume_Init"> 9 9 10 10 11 12 12 13 14 14 </table>
@@ -1625,8 +1615,6 @@
 		<set name="element" val="6" /> <!-- Dark -->
 		<set name="isMagic" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="1000" />
 	</skill>
 	<skill id="3186" levels="10" name="Item Skill: Aura Flare">
 		<table name="#mpConsume_Init"> 9 9 10 10 11 12 12 13 14 14 </table>
@@ -1645,8 +1633,6 @@
 		<set name="staticReuse" val="true" />
 		<set name="isMagic" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 	</skill>
 	<skill id="3187" levels="10" name="Item Skill: Slow">
 		<table name="#mpConsume_Init"> 9 9 10 10 11 12 12 13 14 14 </table>

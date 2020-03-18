@@ -2,7 +2,6 @@ package com.l2jhellas.gameserver.network.clientpackets;
 
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.network.serverpackets.KeyPacket;
 
 public final class ProtocolVersion extends L2GameClientPacket
@@ -21,29 +20,18 @@ public final class ProtocolVersion extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		// this packet is never encrypted
-		if (_version == -2)
+		switch (_version)
 		{
-			if (Config.DEBUG)
-				_log.info("Ping received.");
-			// this is just a ping attempt from the new C2 client
-			getClient().closeNow();
-		}
-		else if (_version < 1 || _version > 999)
-		{
-			_log.info("Client: " + getClient().toString() + " -> Protocol Revision: " + _version + " is invalid. Minimum is " + 1 + " and Maximum is " + 999 + " are supported. Closing connection.");
-			_log.warning(ProtocolVersion.class.getName() + ": Wrong Protocol Version " + _version);
-			getClient().closeNow();
-		}
-		else
-		{
-			if (Config.DEBUG)
-			{
-				_log.fine("Client Protocol Revision is ok: " + _version);
-			}
+			case 737:
+			case 740:
+			case 744:
+			case 746:
+				getClient().sendPacket(new KeyPacket(getClient().enableCrypt()));
+				break;
 			
-			KeyPacket pk = new KeyPacket(getClient().enableCrypt());
-			getClient().sendPacket(pk);
+			default:
+				getClient().closeNow();
+				break;
 		}
 	}
 	

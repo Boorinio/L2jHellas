@@ -9,7 +9,7 @@ import com.l2jhellas.gameserver.SevenSignsFestival;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.emum.player.PartyLootType;
+import com.l2jhellas.gameserver.enums.player.PartyLootType;
 import com.l2jhellas.gameserver.instancemanager.DuelManager;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;

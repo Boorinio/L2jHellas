@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.IconData;
-import com.l2jhellas.gameserver.emum.items.L2ArmorType;
-import com.l2jhellas.gameserver.emum.items.L2EtcItemType;
-import com.l2jhellas.gameserver.emum.items.L2WeaponType;
+import com.l2jhellas.gameserver.enums.items.L2ArmorType;
+import com.l2jhellas.gameserver.enums.items.L2EtcItemType;
+import com.l2jhellas.gameserver.enums.items.L2WeaponType;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -495,8 +495,7 @@ public abstract class L2Item
 		{
 			
 			if (items.get(0).equals(i.getItemId()) || isHeroItem() && ((activeChar instanceof L2PcInstance) && activeChar.getActingPlayer().isInOlympiadMode()))
-			{
-				
+			{				
 				activeChar.getActingPlayer().sendPacket(SystemMessageId.THIS_ITEM_IS_NOT_AVAILABLE_FOR_THE_OLYMPIAD_EVENT);
 				return false;
 			}

@@ -4,8 +4,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.emum.player.ChatType;
-import com.l2jhellas.gameserver.emum.sound.Sound;
+import com.l2jhellas.gameserver.enums.player.ChatType;
+import com.l2jhellas.gameserver.enums.sound.Sound;
 import com.l2jhellas.gameserver.instancemanager.BoatManager;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
 import com.l2jhellas.gameserver.model.actor.L2Vehicle;
@@ -16,7 +16,6 @@ public class BoatTalkingGludin implements Runnable
 {
 	private static final Logger _log = Logger.getLogger(BoatTalkingGludin.class.getName());
 	
-	// Time: 919s
 	private static final VehiclePathPoint[] TALKING_TO_GLUDIN =
 	{
 		new VehiclePathPoint(-121385, 261660, -3610, 180, 800),
@@ -35,8 +34,7 @@ public class BoatTalkingGludin implements Runnable
 	{
 		new VehiclePathPoint(-95686, 150514, -3610, 150, 800)
 	};
-	
-	// Time: 780s
+
 	private static final VehiclePathPoint[] GLUDIN_TO_TALKING =
 	{
 		new VehiclePathPoint(-95686, 155514, -3610, 180, 800),

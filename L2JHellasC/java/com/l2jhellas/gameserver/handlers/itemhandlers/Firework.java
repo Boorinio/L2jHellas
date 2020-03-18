@@ -1,5 +1,6 @@
 package com.l2jhellas.gameserver.handlers.itemhandlers;
 
+
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Playable;
@@ -8,6 +9,8 @@ import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.skills.SkillTable;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.shield.antiflood.FloodProtectors.Action;
 
 public class Firework implements IItemHandler
 {
@@ -26,7 +29,7 @@ public class Firework implements IItemHandler
 			
 		L2PcInstance activeChar = (L2PcInstance) playable;
 		
-		if (!activeChar.getAntiFlood().getFirework().tryPerformAction("firework"))
+		if (!FloodProtectors.performAction(activeChar.getClient(), Action.USE_ITEM))
 			return;
 		
 		int itemId = item.getItemId();

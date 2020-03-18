@@ -3,8 +3,8 @@ package com.l2jhellas.gameserver.handlers.skillhandlers;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.items.L2WeaponType;
-import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.gameserver.enums.items.L2WeaponType;
+import com.l2jhellas.gameserver.enums.skills.L2SkillType;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -58,7 +58,7 @@ public class StrSiegeAssault implements ISkillHandler
 				L2ItemInstance weapon = activeChar.getActiveWeaponInstance();
 				if (activeChar instanceof L2PcInstance && target instanceof L2PcInstance && target.isAlikeDead() && target.isFakeDeath())
 				{
-					target.stopFakeDeath(null);
+					target.getActingPlayer().stopFakeDeath(null);
 				}
 				else if (target.isAlikeDead())
 					continue;

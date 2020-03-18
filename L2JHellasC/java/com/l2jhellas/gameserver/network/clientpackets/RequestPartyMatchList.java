@@ -67,9 +67,7 @@ public class RequestPartyMatchList extends L2GameClientPacket
 			int maxid = PartyMatchRoomList.getInstance().getMaxId();
 			
 			PartyMatchRoom room = new PartyMatchRoom(maxid, _roomtitle, _loot, _lvlmin, _lvlmax, _membersmax, activeChar);
-			
-			_log.info("PartyMatchRoom #" + maxid + " created by " + activeChar.getName());
-			
+						
 			// Remove from waiting list, and add to current room
 			PartyMatchWaitingList.getInstance().removePlayer(activeChar);
 			PartyMatchRoomList.getInstance().addPartyMatchRoom(maxid, room);

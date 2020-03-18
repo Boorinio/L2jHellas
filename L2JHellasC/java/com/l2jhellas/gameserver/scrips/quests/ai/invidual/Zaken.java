@@ -7,7 +7,7 @@ import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.datatables.xml.DoorData;
-import com.l2jhellas.gameserver.emum.sound.Music;
+import com.l2jhellas.gameserver.enums.sound.Music;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -18,6 +18,7 @@ import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2GrandBossInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.model.quest.QuestEventType;
 import com.l2jhellas.gameserver.model.zone.type.L2BossZone;
 import com.l2jhellas.gameserver.scrips.quests.ai.AbstractNpcAI;
 import com.l2jhellas.gameserver.skills.SkillTable;
@@ -106,7 +107,7 @@ public class Zaken extends AbstractNpcAI
 	private static final byte ALIVE = 0; // Zaken is spawned.
 	private static final byte DEAD = 1; // Zaken has been killed.
 	
-	private static L2BossZone _Zone;
+	private static L2BossZone _Zone = GrandBossManager.getZoneById(110000);
 	
 	public Zaken()
 	{
@@ -159,12 +160,10 @@ public class Zaken extends AbstractNpcAI
 			pirates_zombie_captain_b,
 			pirates_zombie_b
 		};
-		registerMobs(mobs);
-		_Zone = GrandBossManager.getZone(55312, 219168, -3223);
+		registerMobs(mobs,QuestEventType.ON_ATTACK, QuestEventType.ON_KILL,QuestEventType.ON_SKILL_SEE, QuestEventType.ON_AGGRO_RANGE_ENTER,QuestEventType.ON_SPELL_FINISHED);
 		
 		StatsSet info = GrandBossManager.getStatsSet(ZAKEN);
-		int status = GrandBossManager.getBossStatus(ZAKEN);
-		if (status == DEAD)
+		if (GrandBossManager.getInstance().getBossStatus(ZAKEN) == DEAD)
 		{
 			// load the unlock date and time for zaken from DB
 			long temp = info.getLong("respawn_time") - System.currentTimeMillis();
@@ -229,8 +228,7 @@ public class Zaken extends AbstractNpcAI
 	@Override
 	public String onAdvEvent(String event, L2Npc npc, L2PcInstance player)
 	{
-		int status = GrandBossManager.getBossStatus(ZAKEN);
-		if (status == DEAD && !event.equalsIgnoreCase("zaken_unlock"))
+		if (GrandBossManager.getInstance().getBossStatus(ZAKEN) == DEAD  && !event.equalsIgnoreCase("zaken_unlock"))
 			return super.onAdvEvent(event, npc, player);
 		
 		if (event.equalsIgnoreCase("1001"))
@@ -817,12 +815,10 @@ public class Zaken extends AbstractNpcAI
 			info.set("respawn_time", System.currentTimeMillis() + respawnTime);
 			GrandBossManager.setStatsSet(ZAKEN, info);
 		}
-		else if (GrandBossManager.getBossStatus(ZAKEN) == ALIVE)
+		else if (GrandBossManager.getInstance().getBossStatus(ZAKEN) == ALIVE)
 		{
 			if (npcId != ZAKEN)
-			{
 				startQuestTimer("CreateOnePrivateEx", ((30 + Rnd.get(60)) * 1000), npc, null, false);
-			}
 		}
 		return super.onKill(npc, killer, isPet);
 	}

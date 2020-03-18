@@ -151,7 +151,7 @@ public class VoteRewardTopzone
 				Config.TOPZONE_SERVER_LINK += ".html";
 			
 			URLConnection con = new URL(Config.TOPZONE_SERVER_LINK).openConnection();
-			con.addRequestProperty("User-L2Topzone", "Mozilla/4.76");
+			con.addRequestProperty("User-Agent", "Mozilla");
 			BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			
 			String line;

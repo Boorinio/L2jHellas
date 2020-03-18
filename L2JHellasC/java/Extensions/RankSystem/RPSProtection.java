@@ -3,7 +3,7 @@ package Extensions.RankSystem;
 import java.util.Map;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.ZoneId;
+import com.l2jhellas.gameserver.enums.ZoneId;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.events.CTF;
 import com.l2jhellas.gameserver.model.entity.events.DM;

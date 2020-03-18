@@ -106,7 +106,7 @@ public class AdminRes implements IAdminCommandHandler
 				radius = Integer.parseInt(radiusStr);
 				
 				for (L2Character knownChar : L2World.getInstance().getVisibleObjects(activeChar, L2Character.class, radius))
-					if (!(knownChar instanceof L2PcInstance) && !(knownChar instanceof L2ControllableMobInstance))
+					if (!(knownChar.isPlayer()) && !(knownChar instanceof L2ControllableMobInstance))
 					{
 						doResurrect(knownChar);
 					}
@@ -120,7 +120,7 @@ public class AdminRes implements IAdminCommandHandler
 			return;
 		}
 		
-		if (obj == null || obj instanceof L2PcInstance || obj instanceof L2ControllableMobInstance)
+		if (obj == null || obj.isPlayer() || obj instanceof L2ControllableMobInstance)
 		{
 			activeChar.sendPacket(SystemMessageId.INCORRECT_TARGET);
 			return;

@@ -1,11 +1,6 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import com.l2jhellas.gameserver.emum.player.StoreType;
-import com.l2jhellas.gameserver.model.L2ManufactureList;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
-import com.l2jhellas.gameserver.network.serverpackets.RecipeShopManageList;
-
 public final class RequestRecipeShopManageList extends L2GameClientPacket
 {
 	private static final String _C__B0_RequestRecipeShopManageList = "[C] b0 RequestRecipeShopManageList";
@@ -19,29 +14,11 @@ public final class RequestRecipeShopManageList extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance player = getClient().getActiveChar();
+		final L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
 			return;
 		
-		// Player shouldn't be able to set stores if he/she is alike dead (dead or fake death)
-		if (player.isAlikeDead())
-		{
-			sendPacket(ActionFailed.STATIC_PACKET);
-			return;
-		}
-		if (player.getPrivateStoreType() != StoreType.NONE)
-		{
-			player.setPrivateStoreType(StoreType.NONE);
-			player.broadcastUserInfo();
-			if (player.isSitting())
-				player.standUp();
-		}
-		if (player.getCreateList() == null)
-		{
-			player.setCreateList(new L2ManufactureList());
-		}
-		
-		player.sendPacket(new RecipeShopManageList(player, true));
+		player.openWorkshop(true);
 		
 	}
 	

@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import com.l2jhellas.gameserver.emum.FenceState;
+import com.l2jhellas.gameserver.enums.FenceState;
 import com.l2jhellas.gameserver.idfactory.IdFactory;
 import com.l2jhellas.gameserver.instancemanager.FenceManager;
 import com.l2jhellas.gameserver.model.L2Object;

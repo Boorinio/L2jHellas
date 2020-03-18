@@ -2,7 +2,7 @@ package com.l2jhellas.gameserver.scrips.quests.ai.invidual;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.emum.sound.Music;
+import com.l2jhellas.gameserver.enums.sound.Music;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -78,7 +78,7 @@ public class Orfen extends AbstractNpcAI
 		_IsTeleported = false;
 		
 		final StatsSet info = GrandBossManager.getStatsSet(ORFEN);
-		final int status = GrandBossManager.getBossStatus(ORFEN);
+		final int status = GrandBossManager.getInstance().getBossStatus(ORFEN);
 		
 		if (status == DEAD)
 		{

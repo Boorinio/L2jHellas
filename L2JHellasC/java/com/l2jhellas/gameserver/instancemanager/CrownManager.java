@@ -2,7 +2,7 @@ package com.l2jhellas.gameserver.instancemanager;
 
 import java.util.logging.Logger;
 
-import com.l2jhellas.gameserver.emum.items.CrownList;
+import com.l2jhellas.gameserver.enums.items.CrownList;
 import com.l2jhellas.gameserver.model.L2Clan;
 import com.l2jhellas.gameserver.model.L2ClanMember;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;

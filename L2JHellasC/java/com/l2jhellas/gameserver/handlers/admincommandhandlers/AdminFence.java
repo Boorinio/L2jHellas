@@ -3,7 +3,7 @@ package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import com.l2jhellas.gameserver.emum.FenceState;
+import com.l2jhellas.gameserver.enums.FenceState;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.instancemanager.FenceManager;
 import com.l2jhellas.gameserver.model.L2Object;

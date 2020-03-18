@@ -21,6 +21,8 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.shield.antiflood.FloodProtectors.Action;
 import com.l2jhellas.util.Util;
 
 public final class RequestWearItem extends L2GameClientPacket
@@ -92,6 +94,9 @@ public final class RequestWearItem extends L2GameClientPacket
 		// Get the current player and return if null
 		L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
+			return;
+		
+		if (!FloodProtectors.performAction(getClient(), Action.USE_ITEM))
 			return;
 		
 		// If Alternate rule Karma punishment is set to true, forbid Wear to player with Karma

@@ -530,8 +530,6 @@
 		<set name="hitTime" val="1200" />
 		<set name="skillType" val="AGGDAMAGE" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect name="TargetMe" time="3" val="0" />
 		</for>
@@ -945,9 +943,6 @@
 		<set name="hitTime" val="1067" />
 		<set name="coolTime" val="733" />
 		<set name="skillType" val="PDAM" />
-		<set name="effectRange" val="-1" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<cond msg="Pole required.">
 			<using kind="Pole" />
@@ -1094,8 +1089,6 @@
 		<set name="skillType" val="PDAM" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="ignoreShld" val="true" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<set name="effectType" val="STUN" />
 		<set name="effectPower" val="50" />
 		<cond msg="Pole required.">
@@ -1737,8 +1730,6 @@
 		<set name="skillType" val="POISON" />
 		<set name="isDebuff" val="true" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<cond msg="Dual Sword required.">
 			<using kind="Dual Sword" />
 		</cond>
@@ -2057,8 +2048,6 @@
 		<set name="hitTime" val="2000" />
 		<set name="skillType" val="PDAM" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<set name="effectType" val="FEAR" />
 		<set name="effectPower" val="15" />
 		<for>

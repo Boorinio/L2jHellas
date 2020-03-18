@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
-import com.l2jhellas.gameserver.emum.items.L2WeaponType;
-import com.l2jhellas.gameserver.emum.player.Position;
-import com.l2jhellas.gameserver.emum.skills.L2SkillType;
-import com.l2jhellas.gameserver.emum.sound.Sound;
+import com.l2jhellas.gameserver.enums.items.L2WeaponType;
+import com.l2jhellas.gameserver.enums.player.Position;
+import com.l2jhellas.gameserver.enums.skills.L2SkillType;
+import com.l2jhellas.gameserver.enums.sound.Sound;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -59,15 +59,15 @@ public class Blow implements ISkillHandler
 				success = (success && Formulas.calcBlow(activeChar, target, _successChance));
 			if (!skillIsEvaded && success)
 			{
+				final byte reflect = Formulas.calcSkillReflect(target, skill);
+
 				if (skill.hasEffects())
 				{
-					if (target.reflectSkill(skill))
+					if (reflect == 1)
 					{
 						activeChar.stopSkillEffects(skill.getId());
-						skill.getEffects(null, activeChar);
-						SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
-						sm.addSkillName(skill.getId());
-						activeChar.sendPacket(sm);
+						skill.getEffects(target, activeChar);
+						activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT).addSkillName(skill));
 					}
 				}
 				L2ItemInstance weapon = activeChar.getActiveWeaponInstance();
@@ -151,6 +151,18 @@ public class Blow implements ISkillHandler
 				}
 				else
 					target.reduceCurrentHp(damage, activeChar);
+				
+				if ((reflect & 2) != 0)
+				{
+					if (target.isPlayer())
+						target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.COUNTERED_S1_ATTACK).addCharName(activeChar));
+					
+					if (activeChar.isPlayer())
+						activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_PERFORMING_COUNTERATTACK).addCharName(target));
+					
+					double vdamage = (700 * target.getPAtk(activeChar) / activeChar.getPDef(target));
+					activeChar.reduceCurrentHp(vdamage, target);
+				}
 				
 				if (activeChar instanceof L2PcInstance)
 				{

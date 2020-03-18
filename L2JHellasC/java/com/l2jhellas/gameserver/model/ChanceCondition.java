@@ -2,7 +2,6 @@ package com.l2jhellas.gameserver.model;
 
 import java.util.logging.Logger;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.templates.StatsSet;
 import com.l2jhellas.util.Rnd;
 
@@ -81,25 +80,14 @@ public final class ChanceCondition
 	
 	public static ChanceCondition parse(StatsSet set)
 	{
-		try
-		{
-			TriggerType trigger = set.getEnum("chanceType", TriggerType.class, null);
-			int chance = set.getInteger("activationChance", 0);
-			if (trigger != null && chance > 0)
-				return new ChanceCondition(trigger, chance);
-		}
-		catch (Exception e)
-		{
-			_log.warning(ChanceCondition.class.getSimpleName() + ": ChanceCondition: Condition parse error.");
-			if (Config.DEVELOPER)
-				e.printStackTrace();
-		}
-		return null;
+		final TriggerType trigger = set.getEnum("chanceType", TriggerType.class, null);
+		final int chance = set.getInteger("activationChance", -1);	
+		return (trigger == null) ? null : new ChanceCondition(trigger, chance);
 	}
-	
+
 	public boolean trigger(int event)
 	{
-		return _triggerType.check(event) && Rnd.get(100) < _chance;
+		return _triggerType.check(event) && (_chance < 0 || Rnd.get(100) < _chance);
 	}
 	
 	@Override

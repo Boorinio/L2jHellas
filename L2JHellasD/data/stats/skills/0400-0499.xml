@@ -114,8 +114,6 @@
 		<set name="hitTime" val="3000" />
 		<set name="skillType" val="ROOT" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="1" name="Root" time="10" val="0" stackOrder="1" stackType="Root" />
 		</for>
@@ -193,8 +191,6 @@
 		<set name="hitTime" val="3000" />
 		<set name="skillType" val="DEBUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="1" name="Buff" time="30" val="0">
 				<mul order="0x30" stat="runSpd" val="0.5" />
@@ -216,8 +212,6 @@
 		<set name="hitTime" val="3000" />
 		<set name="skillType" val="DEBUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<set name="weaponsAllowed" val="512" />
 		<for>
 			<effect count="1" name="Buff" time="15" val="0">
@@ -318,8 +312,6 @@
 		<set name="hitTime" val="2000" />
 		<set name="skillType" val="DEBUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="1" name="Buff" time="30" val="0" stackOrder="#Tab-accCombat" stackType="accuracyDown">
 				<sub order="0x40" stat="accCombat" val="#Tab-accCombat" />
@@ -820,8 +812,6 @@
 		<set name="target" val="TARGET_AURA" />
 		<set name="skillType" val="DEBUFF" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<set name="hitTime" val="2500" />
 		<set name="reuseDelay" val="480000" />
 		<for>
@@ -1132,8 +1122,6 @@
 		<set name="hitTime" val="500" />
 		<set name="skillType" val="STUN" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="1" name="Stun" time="5" val="0"> <!-- guessed -->
 				<using kind="Pole" />

@@ -1,8 +1,10 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
+
 import com.l2jhellas.gameserver.controllers.RecipeController;
-import com.l2jhellas.gameserver.emum.player.StoreType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.shield.antiflood.FloodProtectors.Action;
 
 public final class RequestRecipeItemMakeSelf extends L2GameClientPacket
 {
@@ -19,22 +21,16 @@ public final class RequestRecipeItemMakeSelf extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
-		L2PcInstance activeChar = getClient().getActiveChar();
+		if (!FloodProtectors.performAction(getClient(), Action.MANUFACTURE))
+			return;
+		
+		final L2PcInstance activeChar = getClient().getActiveChar();
 		if (activeChar == null)
 			return;
-		
-		if (activeChar.getPrivateStoreType() != StoreType.NONE)
-		{
-			activeChar.sendMessage("Cannot make items while trading.");
+
+		if (activeChar.isInStoreMode() || activeChar.isInCraftMode())
 			return;
-		}
-		
-		if (activeChar.isInCraftMode())
-		{
-			activeChar.sendMessage("Currently in craft mode.");
-			return;
-		}
-		
+
 		RecipeController.getInstance().requestMakeItem(activeChar, _id);
 	}
 	

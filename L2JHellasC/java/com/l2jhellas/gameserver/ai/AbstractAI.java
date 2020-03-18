@@ -13,6 +13,7 @@ import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
+import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.position.Location;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
@@ -26,14 +27,12 @@ import com.l2jhellas.gameserver.network.serverpackets.MoveToPawn;
 import com.l2jhellas.gameserver.network.serverpackets.StopMove;
 import com.l2jhellas.gameserver.taskmanager.AttackStanceTaskManager;
 
-abstract class AbstractAI implements Ctrl
+public abstract class AbstractAI implements Ctrl
 {
 	protected static final Logger _log = Logger.getLogger(AbstractAI.class.getName());
 	
 	protected final L2Character _actor;
-	
-	protected final L2Character.AIAccessor _accessor;
-	
+		
 	private final Location _tempMovePos = new Location();
 
 	protected CtrlIntention _intention = AI_INTENTION_IDLE;
@@ -51,7 +50,7 @@ abstract class AbstractAI implements Ctrl
 	protected L2Character _attackTarget;
 	protected L2Character _followTarget;
 	
-	L2Skill _skill;
+	protected L2Skill _skill;
 	
 	private int _moveToPawnTimeout;
 	
@@ -61,12 +60,9 @@ abstract class AbstractAI implements Ctrl
 	
 	private NextAction _nextAction;
 	
-	protected AbstractAI(L2Character.AIAccessor accessor)
-	{
-		_accessor = accessor;
-		
-		// Get the L2Character managed by this Accessor AI
-		_actor = accessor.getActor();
+	protected AbstractAI(L2Character character)
+	{		
+		_actor = character;
 	}
 	
 	@Override
@@ -543,6 +539,12 @@ abstract class AbstractAI implements Ctrl
 					return;
 				}
 				
+				if (_actor instanceof L2Summon && !_actor.isInsideRadius(_followTarget, _range, true, false))
+				{
+					moveToPawn(_followTarget, _range);
+					return;
+				}
+
 				if (!_actor.isAttackingNow() && !_actor.isCastingNow() && !_actor.isInsideRadius(_followTarget, _range, true, false))
 					moveToPawn(_followTarget, _range);
 			}

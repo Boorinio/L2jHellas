@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
-import com.l2jhellas.gameserver.emum.sound.Music;
+import com.l2jhellas.gameserver.enums.sound.Music;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.instancemanager.GrandBossManager;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -95,7 +95,7 @@ public class Baium extends AbstractNpcAI
 		registerMobs(mob, QuestEventType.ON_ATTACK, QuestEventType.ON_KILL, QuestEventType.ON_SPAWN);
 		
 		final StatsSet info = GrandBossManager.getStatsSet(LIVE_BAIUM);
-		final int status = GrandBossManager.getBossStatus(LIVE_BAIUM);
+		final int status = GrandBossManager.getInstance().getBossStatus(LIVE_BAIUM);
 		
 		if (status == DEAD)
 		{
@@ -298,7 +298,7 @@ public class Baium extends AbstractNpcAI
 			if (_baiumLair == null)
 				return "<html><body>Angelic Vortex:<br>You may not enter!</body></html>";
 		}
-		if (npcId == STONE_BAIUM && GrandBossManager.getBossStatus(LIVE_BAIUM) == ASLEEP)
+		if (npcId == STONE_BAIUM && GrandBossManager.getInstance().getBossStatus(LIVE_BAIUM) == ASLEEP)
 		{
 			GrandBossManager.setBossStatus(LIVE_BAIUM, AWAKE);
 			

@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.emum.player.PartyLootType;
+import com.l2jhellas.gameserver.enums.player.PartyLootType;
 
 public class AskJoinParty extends L2GameServerPacket
 {

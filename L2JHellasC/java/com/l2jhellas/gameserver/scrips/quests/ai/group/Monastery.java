@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.group;
 
-import com.l2jhellas.gameserver.emum.Sex;
-import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.gameserver.enums.Sex;
+import com.l2jhellas.gameserver.enums.skills.L2SkillType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;

@@ -40,15 +40,15 @@ public class GrandBossTeleporters extends Quest
 		new Location(10769, -24107, -3672)
 	};
 	
-	private static int _valakasPlayersCount = 0;
+	public static int _valakasPlayersCount = 0;
 	
 	public GrandBossTeleporters()
 	{
 		super(-1, qn, "teleports");
 		
-		addFirstTalkId(29055, 31862);
-		addStartNpc(13001, 29055, 31859, 31384, 31385, 31540, 31686, 31687, 31759, 31862, 32107, 32109);
-		addTalkId(13001, 29055, 31859, 31384, 31385, 31540, 31686, 31687, 31759, 31862, 32107, 32109);
+		addFirstTalkId(29055, 31862,29061);
+		addStartNpc(13001,29055, 31859, 31384, 31385, 31540, 31686, 31687, 31759, 31862, 32107, 32109);
+		addTalkId(13001,29055, 31859, 31384, 31385, 31540, 31686, 31687, 31759, 31862, 32107, 32109);
 	}
 	
 	@Override
@@ -107,9 +107,11 @@ public class GrandBossTeleporters extends Quest
 			case 29055:
 				htmltext = "29055-01.htm";
 				break;
-			
+			case 29061:
+				player.teleToLocation(150037 + Rnd.get(400), -57720 + Rnd.get(400), -2976, false);
+				break;
 			case 31862:
-				final int status = GrandBossManager.getBossStatus(29020);
+				final int status = GrandBossManager.getInstance().getBossStatus(29020);
 				if (status == Baium.AWAKE)
 					htmltext = "31862-01.htm";
 				else if (status == Baium.DEAD)
@@ -134,7 +136,7 @@ public class GrandBossTeleporters extends Quest
 		switch (npc.getNpcId())
 		{
 			case 13001:
-				status = GrandBossManager.getBossStatus(Antharas.ANTHARAS);
+				status = GrandBossManager.getInstance().getBossStatus(Antharas.ANTHARAS);
 				if (status == Antharas.FIGHTING)
 					htmltext = "13001-02.htm";
 				else if (status == Antharas.DEAD)
@@ -158,13 +160,12 @@ public class GrandBossTeleporters extends Quest
 						htmltext = "13001-03.htm";
 				}
 				break;
-			
 			case 31859:
 				player.teleToLocation(79800 + Rnd.get(600), 151200 + Rnd.get(1100), -3534, false);
 				break;
 			
 			case 31385:
-				status = GrandBossManager.getBossStatus(Valakas.VALAKAS);
+				status = GrandBossManager.getInstance().getBossStatus(Valakas.VALAKAS);
 				if (status == 0 || status == 1)
 				{
 					if (_valakasPlayersCount >= 200)
@@ -178,7 +179,7 @@ public class GrandBossTeleporters extends Quest
 						
 						_valakasPlayersCount++;
 						
-						if (status == 0)
+						if (status == Valakas.DORMANT)
 						{
 							L2GrandBossInstance valakas = GrandBossManager.getInstance().getBoss(Valakas.VALAKAS);
 							GrandBossManager.setBossStatus(Valakas.VALAKAS, 1);
@@ -193,7 +194,6 @@ public class GrandBossTeleporters extends Quest
 				else
 					htmltext = "31385-01.htm";
 				break;
-			
 			case 31384:
 				DoorData.getInstance().getDoor(24210004).openMe();
 				break;
@@ -221,8 +221,7 @@ public class GrandBossTeleporters extends Quest
 			
 			case 31759:
 				player.teleToLocation(150037, -57720, -2976, true);
-				break;
-			
+				break;				
 			case 32107:
 				player.teleToLocation(sailrenTeleOut[Rnd.get(sailrenTeleOut.length)], true);
 				break;
@@ -236,7 +235,7 @@ public class GrandBossTeleporters extends Quest
 				{
 					if (st.hasQuestItems(8784))
 					{
-						status = GrandBossManager.getBossStatus(Sailren.SAILREN);
+						status = GrandBossManager.getInstance().getBossStatus(Sailren.SAILREN);
 						if (status == Sailren.DORMANT)
 						{
 							final List<L2PcInstance> party = player.getParty().getPartyMembers();

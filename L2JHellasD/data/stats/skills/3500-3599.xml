@@ -849,6 +849,7 @@
 	</skill>
 	<skill id="3557" levels="1" name="Necklace of Valakas">
 		<set name="power" val="0.0" />
+		<set name="magicLvl" val="75" />
 		<set name="target" val="TARGET_SELF" />
 		<set name="skillType" val="BUFF" />
 		<set name="operateType" val="OP_PASSIVE" />

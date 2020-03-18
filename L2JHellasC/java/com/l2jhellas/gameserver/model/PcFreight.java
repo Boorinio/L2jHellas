@@ -1,9 +1,9 @@
 package com.l2jhellas.gameserver.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
-import com.l2jhellas.gameserver.emum.items.ItemLocation;
+import com.l2jhellas.gameserver.enums.items.ItemLocation;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.item.ItemContainer;
 import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
@@ -44,7 +44,7 @@ public class PcFreight extends ItemContainer
 	public int getSize()
 	{
 		int size = 0;
-		for (L2ItemInstance item : _items)
+		for (L2ItemInstance item : _items.values())
 		{
 			if (item.getEquipSlot() == 0 || _activeLocationId == 0 || item.getEquipSlot() == _activeLocationId)
 				size++;
@@ -53,26 +53,15 @@ public class PcFreight extends ItemContainer
 	}
 	
 	@Override
-	public L2ItemInstance[] getItems()
+	public Collection<L2ItemInstance> getItems()
 	{
-		List<L2ItemInstance> list = new ArrayList<>();
-		for (L2ItemInstance item : _items)
-		{
-			if (item.getEquipSlot() == 0 || item.getEquipSlot() == _activeLocationId)
-				list.add(item);
-		}
-		
-		return list.toArray(new L2ItemInstance[list.size()]);
+		return _items.values().stream().filter(i -> i.getLocationSlot() == 0 || i.getLocationSlot() == _activeLocationId).collect(Collectors.toList());
 	}
 	
 	@Override
 	public L2ItemInstance getItemByItemId(int itemId)
 	{
-		for (L2ItemInstance item : _items)
-			if ((item.getItemId() == itemId) && (item.getEquipSlot() == 0 || _activeLocationId == 0 || item.getEquipSlot() == _activeLocationId))
-				return item;
-		
-		return null;
+		return _items.values().stream().filter(it -> it.getItemId() == itemId && (it.getEquipSlot() == 0 || _activeLocationId == 0 || it.getEquipSlot() == _activeLocationId)).findFirst().orElse(null);
 	}
 	
 	@Override

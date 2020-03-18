@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.model.actor.item;
 
+import java.util.Objects;
+
 
 public class ItemInfo
 {
@@ -27,8 +29,7 @@ public class ItemInfo
 	
 	public ItemInfo(L2ItemInstance item)
 	{
-		if (item == null)
-			return;
+		Objects.requireNonNull(item);
 		
 		// Get the Identifier of the L2ItemInstance
 		_objectId = item.getObjectId();

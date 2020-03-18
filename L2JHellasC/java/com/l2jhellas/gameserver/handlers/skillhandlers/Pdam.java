@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
-import com.l2jhellas.gameserver.emum.items.L2WeaponType;
-import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.gameserver.enums.items.L2WeaponType;
+import com.l2jhellas.gameserver.enums.skills.L2SkillType;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -43,13 +43,13 @@ public class Pdam implements ISkillHandler
 		{
 			L2Character target = (L2Character) target2;
 			L2ItemInstance weapon = activeChar.getActiveWeaponInstance();
-			if (activeChar instanceof L2PcInstance && target instanceof L2PcInstance && target.isAlikeDead() && target.isFakeDeath())
-			{
-				target.stopFakeDeath(null);
-			}
-			else if (target.isAlikeDead())
+			
+			if (target.isDead())
 				continue;
 			
+			if (activeChar instanceof L2PcInstance && target.isPlayer() && target.isAlikeDead() && target.isFakeDeath())
+				target.getActingPlayer().stopFakeDeath(null);
+		
 			boolean dual = activeChar.isUsingDualWeapon();
 			byte shld = Formulas.calcShldUse(activeChar, target);
 			// PDAM critical chance not affected by buffs, only by STR. Only
@@ -79,34 +79,28 @@ public class Pdam implements ISkillHandler
 				{
 					activeChar.sendDamageMessage(target, damage, false, crit, false);
 					
+					final byte reflect = Formulas.calcSkillReflect(target, skill);
+
 					if (skill.hasEffects())
 					{
-						if (target.reflectSkill(skill))
+						L2Effect[] effects;
+						if ((reflect & 1) != 0)
 						{
 							activeChar.stopSkillEffects(skill.getId());
-							skill.getEffects(null, activeChar);
-							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
-							sm.addSkillName(skill.getId());
-							activeChar.sendPacket(sm);
+							effects = skill.getEffects(target, activeChar);
+							if (effects != null && effects.length > 0)
+								activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT).addSkillName(skill));
 						}
 						else
 						{
-							// activate attacked effects, if any
 							target.stopSkillEffects(skill.getId());
 							if (Formulas.calcSkillSuccess(activeChar, target, skill, false, false, false))
 							{
 								skill.getEffects(activeChar, target);
-								SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT);
-								sm.addSkillName(skill.getId());
-								target.sendPacket(sm);
+								target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.YOU_FEEL_S1_EFFECT).addSkillName(skill.getId()));
 							}
 							else
-							{
-								SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2);
-								sm.addString(target.getName());
-								sm.addSkillName(skill.getDisplayId());
-								activeChar.sendPacket(sm);
-							}
+								activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_RESISTED_YOUR_S2).addString(target.getName()).addSkillName(skill.getDisplayId()));
 						}
 					}
 					
@@ -118,7 +112,7 @@ public class Pdam implements ISkillHandler
 						// npc then hp to 50%)
 						if (skill.getLethalChance2() > 0 && chance >= skill.getLethalChance2())
 						{
-							if (target instanceof L2PcInstance)
+							if (target.isPlayer())
 							{
 								L2PcInstance player = (L2PcInstance) target;
 								if (!player.isInvul())
@@ -139,7 +133,7 @@ public class Pdam implements ISkillHandler
 							// If is a monster damage is (CurrentHp - 1) so HP = 1
 							if (target instanceof L2Npc)
 								target.reduceCurrentHp(target.getCurrentHp() - 1, activeChar);
-							else if (target instanceof L2PcInstance) // If is a active player set his HP and CP to 1
+							else if (target.isPlayer()) // If is a active player set his HP and CP to 1
 							{
 								L2PcInstance player = (L2PcInstance) target;
 								if (!player.isInvul())
@@ -183,26 +177,30 @@ public class Pdam implements ISkillHandler
 										player.setCurrentHp(player.getCurrentHp() - damage);
 								}
 								
-								SystemMessage smsg = SystemMessage.getSystemMessage(SystemMessageId.S1_GAVE_YOU_S2_DMG);
-								smsg.addString(activeChar.getName());
-								smsg.addNumber(damage);
-								player.sendPacket(smsg);
+								player.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_GAVE_YOU_S2_DMG).addString(activeChar.getName()).addNumber(damage));
 							}
 							
 							else
 								target.reduceCurrentHp(damage, activeChar);
 						}
 						else
-						{
 							target.reduceCurrentHp(damage, activeChar);
-						}
+					}
+					
+					if ((reflect & 2) != 0)
+					{
+						if (target.isPlayer())
+							target.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.COUNTERED_S1_ATTACK).addCharName(activeChar));
+						
+						if (activeChar.isPlayer())
+							activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_PERFORMING_COUNTERATTACK).addCharName(target));
+						
+						double vdamage = (700 * target.getPAtk(activeChar) / activeChar.getPDef(target));
+						activeChar.reduceCurrentHp(vdamage, target);
 					}
 				}
 				else
-				// No - damage
-				{
 					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.ATTACK_FAILED));
-				}
 				
 				if (skill.getId() == 345 || skill.getId() == 346) // Sonic Rage or Raging Force
 				{
@@ -217,16 +215,11 @@ public class Pdam implements ISkillHandler
 							if (activeChar instanceof L2PcInstance)
 							{
 								activeChar.sendPacket(new EtcStatusUpdate((L2PcInstance) activeChar));
-								SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.FORCE_INCREASED_TO_S1);
-								sm.addNumber(effectcharge);
-								activeChar.sendPacket(sm);
+								activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.FORCE_INCREASED_TO_S1).addNumber(effectcharge));
 							}
 						}
 						else
-						{
-							SystemMessage sm = SystemMessage.getSystemMessage(SystemMessageId.FORCE_MAXLEVEL_REACHED);
-							activeChar.sendPacket(sm);
-						}
+							activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.FORCE_MAXLEVEL_REACHED));
 					}
 					else
 					{

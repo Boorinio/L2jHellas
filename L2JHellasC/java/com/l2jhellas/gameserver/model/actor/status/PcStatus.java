@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.model.actor.status;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.player.DuelState;
+import com.l2jhellas.gameserver.enums.player.DuelState;
 import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.L2Playable;

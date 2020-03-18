@@ -6,7 +6,7 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.ai.L2SummonAI;
-import com.l2jhellas.gameserver.emum.skills.L2SkillTargetType;
+import com.l2jhellas.gameserver.enums.skills.L2SkillTargetType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.handler.ItemHandler;
@@ -62,28 +62,17 @@ public abstract class L2Summon extends L2Playable
 	private final int _spiritShotsPerHit = 1;
 	protected boolean _showSummonAnimation;
 	
-	public class AIAccessor extends L2Character.AIAccessor
+
+	public L2Summon getSummon()
 	{
-		protected AIAccessor()
-		{
-		}
-		
-		public L2Summon getSummon()
-		{
-			return L2Summon.this;
-		}
-		
-		public boolean isAutoFollow()
-		{
-			return getFollowStatus();
-		}
-		
-		public void doPickupItem(L2Object object)
-		{
-			L2Summon.this.doPickupItem(object);
-		}
+		return L2Summon.this;
 	}
-	
+		
+	public boolean isAutoFollow()
+	{
+		return getFollowStatus();
+	}
+
 	public L2Summon(int objectId, L2NpcTemplate template, L2PcInstance owner)
 	{
 		super(objectId, template);
@@ -91,7 +80,7 @@ public abstract class L2Summon extends L2Playable
 		getStatus(); // init status
 
 		_owner = owner;
-		_ai = new L2SummonAI(new L2Summon.AIAccessor());
+		_ai = new L2SummonAI(this);
 		
 		//setXYZInvisible(owner.getX() + 30, owner.getY() + 30, owner.getZ());
 		Formulas.addFuncsToNewSummon(this);
@@ -124,7 +113,7 @@ public abstract class L2Summon extends L2Playable
 			synchronized (this)
 			{
 				if (_ai == null)
-					_ai = new L2SummonAI(new L2Summon.AIAccessor());
+					_ai = new L2SummonAI(this);
 			}
 		}
 		
@@ -831,5 +820,11 @@ public abstract class L2Summon extends L2Playable
 		}
 		else
 		    activeChar.sendPacket(new SummonInfo(this, activeChar, 0));
+	}
+	
+	@Override
+	public void setXYZ(int x, int y, int z)
+	{	
+		super.setXYZ(x, y, z);		
 	}
 }

@@ -161,8 +161,6 @@
 		<set name="hitTime" val="2000" />
 		<set name="operateType" val="OP_ACTIVE" />
 		<set name="isMagic" val="true" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 			<effect count="1" name="Buff" time="30" val="0" stackOrder="100" stackType="CurseShade">
 				<mul order="0x30" stat="mDef" val="#Tab-mDef" />
@@ -646,8 +644,6 @@
 		<set name="skillType" val="PDAM" />
 		<set name="hitTime" val="830" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 		</for>
 	</skill>
@@ -663,8 +659,6 @@
 		<set name="skillType" val="PDAM" />
 		<set name="hitTime" val="830" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 		</for>
 	</skill>
@@ -680,8 +674,6 @@
 		<set name="skillType" val="PDAM" />
 		<set name="hitTime" val="830" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 		</for>
 	</skill>
@@ -697,8 +689,6 @@
 		<set name="skillType" val="PDAM" />
 		<set name="hitTime" val="830" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 		</for>
 	</skill>
@@ -714,8 +704,6 @@
 		<set name="skillType" val="PDAM" />
 		<set name="hitTime" val="830" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 		</for>
 	</skill>

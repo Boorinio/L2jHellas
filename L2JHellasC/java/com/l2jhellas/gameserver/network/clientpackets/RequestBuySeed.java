@@ -16,6 +16,8 @@ import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.shield.antiflood.FloodProtectors.Action;
 import com.l2jhellas.util.Util;
 
 public class RequestBuySeed extends L2GameClientPacket
@@ -58,6 +60,9 @@ public class RequestBuySeed extends L2GameClientPacket
 	@Override
 	protected void runImpl()
 	{
+		if (!FloodProtectors.performAction(getClient(), Action.MANOR))
+			return;
+		
 		long totalPrice = 0;
 		int slots = 0;
 		int totalWeight = 0;

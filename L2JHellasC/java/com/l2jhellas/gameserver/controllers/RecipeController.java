@@ -2,6 +2,7 @@ package com.l2jhellas.gameserver.controllers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -53,10 +54,7 @@ public class RecipeController
 		
 		if (maker == null)
 		{
-			RecipeBookItemList response = new RecipeBookItemList(isDwarvenCraft, player.getMaxMp());
-			response.addRecipes(isDwarvenCraft ? player.getDwarvenRecipeBook() : player.getCommonRecipeBook());
-			player.sendPacket(response);
-			response = null;
+			player.sendPacket(new RecipeBookItemList(player,isDwarvenCraft));
 			return;
 		}
 		
@@ -79,8 +77,8 @@ public class RecipeController
 		if (recipeList == null)
 			return;
 		
-		List<L2RecipeList> dwarfRecipes = Arrays.asList(manufacturer.getDwarvenRecipeBook());
-		List<L2RecipeList> commonRecipes = Arrays.asList(manufacturer.getCommonRecipeBook());
+		List<Collection<L2RecipeList>> dwarfRecipes = Arrays.asList(manufacturer.getDwarvenRecipeBook());
+		List<Collection<L2RecipeList>> commonRecipes = Arrays.asList(manufacturer.getCommonRecipeBook());
 		
 		if (!dwarfRecipes.contains(recipeList) && !commonRecipes.contains(recipeList))
 		{
@@ -117,7 +115,7 @@ public class RecipeController
 	
 	public synchronized void requestMakeItem(L2PcInstance player, int recipeListId)
 	{
-		if (player.isInDuel())
+		if (player.isInDuel() || player.isInCombat())
 		{
 			player.sendPacket(SystemMessageId.CANT_OPERATE_PRIVATE_STORE_DURING_COMBAT);
 			return;
@@ -130,8 +128,8 @@ public class RecipeController
 			return;
 		}
 		
-		List<L2RecipeList> dwarfRecipes = Arrays.asList(player.getDwarvenRecipeBook());
-		List<L2RecipeList> commonRecipes = Arrays.asList(player.getCommonRecipeBook());
+		List<Collection<L2RecipeList>> dwarfRecipes = Arrays.asList(player.getDwarvenRecipeBook());
+		List<Collection<L2RecipeList>> commonRecipes = Arrays.asList(player.getCommonRecipeBook());
 		
 		if (!dwarfRecipes.contains(recipeList) && !commonRecipes.contains(recipeList))
 		{

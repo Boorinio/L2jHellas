@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.handlers.skillhandlers;
 
-import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.gameserver.enums.skills.L2SkillType;
 import com.l2jhellas.gameserver.handler.ISkillHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -70,7 +70,7 @@ public class CpDam implements ISkillHandler
 			
 			if (activeChar instanceof L2PcInstance && target instanceof L2PcInstance && target.isAlikeDead() && target.isFakeDeath())
 			{
-				target.stopFakeDeath(null);
+				target.getActingPlayer().stopFakeDeath(null);
 			}
 			else if (target.isAlikeDead())
 			{

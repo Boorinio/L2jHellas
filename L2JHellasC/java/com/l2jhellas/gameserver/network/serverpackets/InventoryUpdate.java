@@ -1,85 +1,69 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Map;
+import java.util.concurrent.ConcurrentSkipListMap;
 
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.item.ItemInfo;
 import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 
 public class InventoryUpdate extends L2GameServerPacket
 {
-	private static Logger _log = Logger.getLogger(InventoryUpdate.class.getName());
 	private static final String _S__37_INVENTORYUPDATE = "[S] 27 InventoryUpdate";
-	
-	private final List<ItemInfo> _items;
-	
+	private final Map<Integer, ItemInfo> _items = new ConcurrentSkipListMap<>();
+
 	public InventoryUpdate()
 	{
-		_items = new ArrayList<>();
-		if (Config.DEBUG)
-		{
-			showDebug();
-		}
+
 	}
 	
 	public InventoryUpdate(List<ItemInfo> items)
 	{
-		_items = items;
-		if (Config.DEBUG)
+		for (ItemInfo item : items)
 		{
-			showDebug();
+			_items.put(item.getObjectId(), item);
 		}
 	}
 	
 	public void addItem(L2ItemInstance item)
 	{
 		if (item != null)
-			_items.add(new ItemInfo(item));
+			_items.put(item.getObjectId(),new ItemInfo(item));
 	}
 	
 	public void addNewItem(L2ItemInstance item)
 	{
 		if (item != null)
-			_items.add(new ItemInfo(item, 1));
+			_items.put(item.getObjectId(),new ItemInfo(item, 1));
 	}
 	
 	public void addModifiedItem(L2ItemInstance item)
 	{
 		if (item != null)
-			_items.add(new ItemInfo(item, 2));
+			_items.put(item.getObjectId(),new ItemInfo(item, 2));
 	}
 	
 	public void addRemovedItem(L2ItemInstance item)
 	{
 		if (item != null)
-			_items.add(new ItemInfo(item, 3));
+			_items.put(item.getObjectId(),new ItemInfo(item, 3));
 	}
 	
 	public void addItems(List<L2ItemInstance> items)
 	{
 		if (items != null)
-			for (L2ItemInstance item : items)
-				if (item != null)
-					_items.add(new ItemInfo(item));
+		for (L2ItemInstance item : items)
+			if (item != null)
+			_items.put(item.getObjectId(), new ItemInfo(item));
 	}
-	
-	private void showDebug()
-	{
-		for (ItemInfo item : _items)
-		{
-			_log.fine("oid:" + Integer.toHexString(item.getObjectId()) + " item:" + item.getItem().getItemName() + " last change:" + item.getChange());
-		}
-	}
-	
+
 	@Override
 	protected final void writeImpl()
 	{
 		writeC(0x27);
 		int count = _items.size();
 		writeH(count);
-		for (ItemInfo item : _items)
+		for (ItemInfo item : _items.values())
 		{
 			writeH(item.getChange()); // Update type : 01-add, 02-modify, 03-remove
 			writeH(item.getItem().getType1()); // Item Type 1 : 00-weapon/ring/earring/necklace, 01-armor/shield, 04-item/questitem/adena

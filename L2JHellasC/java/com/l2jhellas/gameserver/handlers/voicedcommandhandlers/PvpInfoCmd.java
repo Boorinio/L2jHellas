@@ -35,9 +35,7 @@ public class PvpInfoCmd implements IVoicedCommandHandler
 				pc.setTarget((L2PcInstance) activeChar.getTarget());
 			else
 				pc.setTarget(activeChar);
-			
-			activeChar.sendMessage("PvP Status executed on self!");
-			
+						
 			RPSHtmlPvpStatus.sendPage(activeChar, pc.getTarget());
 		}
 		return true;

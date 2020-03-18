@@ -21,18 +21,20 @@ import com.l2jhellas.gameserver.network.serverpackets.MagicSkillLaunched;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.Ride;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.shield.antiflood.FloodProtectors.Action;
 
 public class SummonItems implements IItemHandler
 {
 	@Override
 	public void useItem(L2Playable playable, L2ItemInstance item)
 	{
-		L2PcInstance activeChar = (L2PcInstance) playable;
-		
-		if (!activeChar.getAntiFlood().getItemPetSummon().tryPerformAction("summon items"))
-			return;
+		final L2PcInstance activeChar = (L2PcInstance) playable;
 		
 		if (!(playable instanceof L2PcInstance))
+			return;
+		
+		if (!FloodProtectors.performAction(activeChar.getClient(), Action.USE_ITEM))
 			return;
 		
 		if ((activeChar._inEventTvT && TvT._started && !Config.TVT_ALLOW_SUMMON) || (activeChar._inEventCTF && CTF._started && !Config.CTF_ALLOW_SUMMON) || (activeChar._inEventDM && DM._started && !Config.DM_ALLOW_SUMMON))

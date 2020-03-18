@@ -10,7 +10,7 @@ import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_MOVE_TO;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_PICK_UP;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_REST;
 
-import com.l2jhellas.gameserver.emum.items.ItemLocation;
+import com.l2jhellas.gameserver.enums.items.ItemLocation;
 import com.l2jhellas.gameserver.geometry.Point3D;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -32,9 +32,9 @@ public class L2CharacterAI extends AbstractAI
 		clientStartAutoAttack();
 	}
 	
-	public L2CharacterAI(L2Character.AIAccessor accessor)
+	public L2CharacterAI(L2Character character)
 	{
-		super(accessor);
+		super(character);
 	}
 	
 	public static class IntentionCommand
@@ -671,9 +671,9 @@ public class L2CharacterAI extends AbstractAI
 		if (target == null || target.isAlikeDead())
 		{
 			// check if player is fakedeath
-			if (target != null && target.isFakeDeath())
+			if (target != null && target.getActingPlayer() !=null && target.isFakeDeath())
 			{
-				target.stopFakeDeath(null);
+				target.getActingPlayer().stopFakeDeath(null);
 				return false;
 			}
 			

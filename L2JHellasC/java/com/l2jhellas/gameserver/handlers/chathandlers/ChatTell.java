@@ -1,7 +1,7 @@
 package com.l2jhellas.gameserver.handlers.chathandlers;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.player.ChatType;
+import com.l2jhellas.gameserver.enums.player.ChatType;
 import com.l2jhellas.gameserver.handler.IChatHandler;
 import com.l2jhellas.gameserver.model.BlockList;
 import com.l2jhellas.gameserver.model.L2World;

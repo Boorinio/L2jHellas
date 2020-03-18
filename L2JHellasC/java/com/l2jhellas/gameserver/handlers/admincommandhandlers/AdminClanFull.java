@@ -20,40 +20,36 @@ public class AdminClanFull implements IAdminCommandHandler
 	{
 		if (command.startsWith("admin_clanfull"))
 		{
-			try
+			final L2PcInstance player = activeChar.getTarget().getActingPlayer();
+			
+			if (player == null)
 			{
-				adminAddClanSkill(activeChar);
+				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.INCORRECT_TARGET));
+				return false;
 			}
-			catch (Exception e)
+					
+			if (!player.isClanLeader())
 			{
-				activeChar.sendMessage("Usage: //clanfull");
+				activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_IS_NOT_A_CLAN_LEADER).addCharName(player));
+				return false;
 			}
+			
+			if (player.getClan().getLevel() == Config.CLAN_LEVEL)
+			{
+				activeChar.sendMessage(player.getName() + " clan is already " + Config.CLAN_LEVEL + " level.");
+				return false;
+			}
+			
+			player.getClan().changeLevel(Config.CLAN_LEVEL);
+			player.ClanSkills();
+			player.sendPacket(new EtcStatusUpdate(activeChar));
+			player.sendPacket(new PledgeShowInfoUpdate(player.getClan()));			
+			player.getClan().updateClanInDB();
+			player.store();
 		}
 		return true;
 	}
-	
-	private static void adminAddClanSkill(L2PcInstance activeChar)
-	{
-		final L2PcInstance player = activeChar.getTarget().getActingPlayer();
-		
-		if (player == null)
-		{
-			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.INCORRECT_TARGET));
-			return;
-		}
-				
-		if (!player.isClanLeader())
-		{
-			activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.S1_IS_NOT_A_CLAN_LEADER).addCharName(player));
-			return;
-		}
-		
-		player.getClan().changeLevel(Config.CLAN_LEVEL);
-		player.ClanSkills();
-		player.sendPacket(new EtcStatusUpdate(activeChar));
-		player.sendPacket(new PledgeShowInfoUpdate(player.getClan()));
-	}
-	
+
 	@Override
 	public String[] getAdminCommandList()
 	{

@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
-import com.l2jhellas.gameserver.emum.player.PlayerCreateFailReason;
+import com.l2jhellas.gameserver.enums.player.PlayerCreateFailReason;
 
 public class CharCreateFail extends L2GameServerPacket
 {

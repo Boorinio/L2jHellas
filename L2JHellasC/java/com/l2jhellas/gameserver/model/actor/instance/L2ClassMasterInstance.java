@@ -4,13 +4,14 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.NpcData;
 import com.l2jhellas.gameserver.datatables.xml.CharTemplateData;
-import com.l2jhellas.gameserver.emum.player.ClassId;
+import com.l2jhellas.gameserver.enums.player.ClassId;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.item.Inventory;
 import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.HennaInfo;
 import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
+import com.l2jhellas.gameserver.network.serverpackets.MoveToPawn;
 import com.l2jhellas.gameserver.network.serverpackets.MyTargetSelected;
 import com.l2jhellas.gameserver.network.serverpackets.NpcHtmlMessage;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
@@ -72,8 +73,8 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 		}
 		else if (isInsideRadius(player, INTERACTION_DISTANCE, false, false) || Config.ALLOW_REMOTE_CLASS_MASTER)
 		{
-			if (Config.DEBUG)
-				_log.fine("ClassMaster activated");
+			if (!player.isSitting())
+			     player.sendPacket(new MoveToPawn(player, this, INTERACTION_DISTANCE));
 			
 			ClassId classId = player.getClassId();
 			int jobLevel = 0;
@@ -165,30 +166,22 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 		if (command.startsWith("1stClass"))
 		{
 			if (player.isGM())
-			{
 				showChatWindow1st(player);
-			}
 		}
 		else if (command.startsWith("2ndClass"))
 		{
 			if (player.isGM())
-			{
 				showChatWindow2nd(player);
-			}
 		}
 		else if (command.startsWith("3rdClass"))
 		{
 			if (player.isGM())
-			{
 				showChatWindow3rd(player);
-			}
 		}
 		else if (command.startsWith("baseClass"))
 		{
 			if (player.isGM())
-			{
 				showChatWindowBase(player);
-			}
 		}
 		else if (command.startsWith("change_class"))
 		{
@@ -204,9 +197,7 @@ public final class L2ClassMasterInstance extends L2NpcInstance
 			
 		}
 		else
-		{
 			super.onBypassFeedback(player, command);
-		}
 	}
 	
 	private void showChatWindowChooseClass(L2PcInstance player)

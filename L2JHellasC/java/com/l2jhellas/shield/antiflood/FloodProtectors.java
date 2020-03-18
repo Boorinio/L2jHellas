@@ -1,97 +1,58 @@
 package com.l2jhellas.shield.antiflood;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.L2GameClient;
+
 
 public final class FloodProtectors
 {
-	private final FloodProtectorAction _useItem;	
-	private final FloodProtectorAction _rollDice;	
-	private final FloodProtectorAction _firework;	
-	private final FloodProtectorAction _itemPetSummon;	
-	private final FloodProtectorAction _heroVoice;	
-	private final FloodProtectorAction _globalChat;	
-	private final FloodProtectorAction _subclass;	
-	private final FloodProtectorAction _dropItem;
-	private final FloodProtectorAction _serverBypass;	
-	private final FloodProtectorAction _multiSell;	
-	private final FloodProtectorAction _transaction;	
-	private final FloodProtectorAction _social;
+	public static enum Action
+	{
+		DICE_ROLL(Config.ROLL_DICE),
+		HERO_VOICE(Config.HERO_VOICE),
+		SUBCLASS(Config.SUBCLASS),
+		DROP_ITEM(Config.DROP_ITEM),
+		SERVER_BYPASS(Config.SERVER_BYPASS),
+		MULTISELL(Config.MULTISELL),
+		MANUFACTURE(Config.MANUFACTURE),
+		MANOR(Config.MANOR),
+		SENDMAIL(Config.SENDMAIL),
+		CHARACTER_SELECT(Config.CHARACTER_SELECT),
+		GLOBAL_CHAT(Config.GLOBAL_CHAT),
+		TRADE_CHAT(Config.TRADE_CHAT),
+		USE_ITEM(Config.USE_ITEM),
+		SOCIAL_ACTION(Config.SOCIAL);
 		
-	public FloodProtectors(final L2PcInstance player)
-	{
-		super();
-		_useItem = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_USE_ITEM);
-		_rollDice = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_ROLL_DICE);
-		_firework = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_FIREWORK);
-		_itemPetSummon = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_ITEM_PET_SUMMON);
-		_heroVoice = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_HERO_VOICE);
-		_globalChat = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_GLOBAL_CHAT);
-		_subclass = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_SUBCLASS);
-		_dropItem = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_DROP_ITEM);
-		_serverBypass = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_SERVER_BYPASS);
-		_multiSell = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_MULTISELL);
-		_transaction = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_TRANSACTION);
-		_social = new FloodProtectorAction(player, Config.FLOOD_PROTECTOR_SOCIALACTION);	
+		private final int _Reuse;
+		
+		private Action(int reuse)
+		{
+			_Reuse = reuse;
+		}		
+		public int getReuse()
+		{
+			return _Reuse;
+		}
+		
+		public static final int VALUES_LENGTH = Action.values().length;
 	}
 	
-	public FloodProtectorAction getUseItem()
+	public static boolean performAction(L2GameClient client, Action action)
 	{
-		return _useItem;
-	}
-	
-	public FloodProtectorAction getRollDice()
-	{
-		return _rollDice;
-	}
-	
-	public FloodProtectorAction getFirework()
-	{
-		return _firework;
-	}
-	
-	public FloodProtectorAction getItemPetSummon()
-	{
-		return _itemPetSummon;
-	}
-	
-	public FloodProtectorAction getHeroVoice()
-	{
-		return _heroVoice;
-	}
-	
-	public FloodProtectorAction getGlobalChat()
-	{
-		return _globalChat;
-	}
-	
-	public FloodProtectorAction getSubclass()
-	{
-		return _subclass;
-	}
-	
-	public FloodProtectorAction getDropItem()
-	{
-		return _dropItem;
-	}
-	
-	public FloodProtectorAction getServerBypass()
-	{
-		return _serverBypass;
-	}
-	
-	public FloodProtectorAction getMultiSell()
-	{
-		return _multiSell;
-	}
-	
-	public FloodProtectorAction getTransaction()
-	{
-		return _transaction;
-	}
-	
-	public FloodProtectorAction getSocial()
-	{
-		return _social;
+		final int reuseDelay = action.getReuse();	
+		
+		if (reuseDelay == 0)
+			return true;
+		
+		long[] value = client.getFloodProtectors();
+		
+		synchronized (value)
+		{
+			if (value[action.ordinal()] > System.currentTimeMillis())
+				return false;
+			
+			value[action.ordinal()] = System.currentTimeMillis() + reuseDelay;
+			return true;
+		}
 	}
 }

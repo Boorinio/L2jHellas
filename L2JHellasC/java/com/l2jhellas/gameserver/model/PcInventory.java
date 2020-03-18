@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.l2jhellas.gameserver.emum.items.ItemLocation;
-import com.l2jhellas.gameserver.emum.items.L2EtcItemType;
+import com.l2jhellas.gameserver.enums.items.ItemLocation;
+import com.l2jhellas.gameserver.enums.items.L2EtcItemType;
 import com.l2jhellas.gameserver.model.TradeList.TradeItem;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.item.Inventory;
@@ -78,7 +78,7 @@ public class PcInventory extends Inventory
 	public L2ItemInstance[] getUniqueItems(boolean allowAdena, boolean allowAncientAdena, boolean onlyAvailable)
 	{
 		List<L2ItemInstance> list = new ArrayList<>();
-		for (L2ItemInstance item : _items)
+		for (L2ItemInstance item : _items.values())
 		{
 			if ((!allowAdena && item.getItemId() == 57))
 				continue;
@@ -109,7 +109,7 @@ public class PcInventory extends Inventory
 	public L2ItemInstance[] getUniqueItemsByEnchantLevel(boolean allowAdena, boolean allowAncientAdena, boolean onlyAvailable)
 	{
 		List<L2ItemInstance> list = new ArrayList<>();
-		for (L2ItemInstance item : _items)
+		for (L2ItemInstance item : _items.values())
 		{
 			if ((!allowAdena && item.getItemId() == 57))
 				continue;
@@ -133,7 +133,7 @@ public class PcInventory extends Inventory
 	public L2ItemInstance[] getAllItemsByItemId(int itemId)
 	{
 		List<L2ItemInstance> list = new ArrayList<>();
-		for (L2ItemInstance item : _items)
+		for (L2ItemInstance item : _items.values())
 		{
 			if (item.getItemId() == itemId)
 				list.add(item);
@@ -145,7 +145,7 @@ public class PcInventory extends Inventory
 	public L2ItemInstance[] getAllItemsByItemId(int itemId, int enchantment)
 	{
 		List<L2ItemInstance> list = new ArrayList<>();
-		for (L2ItemInstance item : _items)
+		for (L2ItemInstance item : _items.values())
 		{
 			if ((item.getItemId() == itemId) && (item.getEnchantLevel() == enchantment))
 				list.add(item);
@@ -157,7 +157,7 @@ public class PcInventory extends Inventory
 	public L2ItemInstance[] getAvailableItems(boolean allowAdena)
 	{
 		List<L2ItemInstance> list = new ArrayList<>();
-		for (L2ItemInstance item : _items)
+		for (L2ItemInstance item : _items.values())
 			if (item != null && item.isAvailable(getOwner(), allowAdena))
 				list.add(item);
 		
@@ -167,7 +167,7 @@ public class PcInventory extends Inventory
 	public L2ItemInstance[] getAugmentedItems()
 	{
 		List<L2ItemInstance> list = new ArrayList<>();
-		for (L2ItemInstance item : _items)
+		for (L2ItemInstance item : _items.values())
 			if (item != null && item.isAugmented())
 				list.add(item);
 		
@@ -177,7 +177,7 @@ public class PcInventory extends Inventory
 	public TradeList.TradeItem[] getAvailableItems(TradeList tradeList)
 	{
 		List<TradeList.TradeItem> list = new ArrayList<>();
-		for (L2ItemInstance item : _items)
+		for (L2ItemInstance item : _items.values())
 			if (item.isAvailable(getOwner(), false))
 			{
 				TradeList.TradeItem adjItem = tradeList.adjustAvailableItem(item);
@@ -190,7 +190,7 @@ public class PcInventory extends Inventory
 	
 	public void adjustAvailableItem(TradeItem item)
 	{
-		for (L2ItemInstance adjItem : _items)
+		for (L2ItemInstance adjItem : _items.values())
 		{
 			if (adjItem.getItemId() == item.getItem().getItemId())
 			{
@@ -358,7 +358,7 @@ public class PcInventory extends Inventory
 	}
 	
 	@Override
-	protected void removeItem(L2ItemInstance item)
+	protected boolean removeItem(L2ItemInstance item)
 	{
 		// Removes any reference to the item from Shortcut bar
 		getOwner().removeItemFromShortCut(item.getObjectId());
@@ -372,7 +372,7 @@ public class PcInventory extends Inventory
 		else if (item.getItemId() == ANCIENT_ADENA_ID)
 			_ancientAdena = null;
 		
-		super.removeItem(item);
+		return super.removeItem(item);
 	}
 	
 	@Override
@@ -474,7 +474,7 @@ public class PcInventory extends Inventory
 	public List<L2ItemInstance> getItemsByItemId(int itemId)
 	{
 		List<L2ItemInstance> returnList = new ArrayList<>();
-		for (L2ItemInstance item : _items)
+		for (L2ItemInstance item : _items.values())
 		{
 			if (item != null && item.getItemId() == itemId)
 				returnList.add(item);

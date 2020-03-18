@@ -1,5 +1,7 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
+import java.util.Collection;
+
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.item.L2Item;
 import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
@@ -8,7 +10,7 @@ import com.l2jhellas.gameserver.templates.L2Weapon;
 public class GMViewWarehouseWithdrawList extends L2GameServerPacket
 {
 	private static final String _S__95_GMViewWarehouseWithdrawList = "[S] 95 GMViewWarehouseWithdrawList";
-	private final L2ItemInstance[] _items;
+	private final Collection<L2ItemInstance> _items;
 	private final String _playerName;
 	private final L2PcInstance _activeChar;
 	private final int _money;
@@ -27,7 +29,7 @@ public class GMViewWarehouseWithdrawList extends L2GameServerPacket
 		writeC(0x95);
 		writeS(_playerName);
 		writeD(_money);
-		writeH(_items.length);
+		writeH(_items.size());
 		
 		for (L2ItemInstance item : _items)
 		{

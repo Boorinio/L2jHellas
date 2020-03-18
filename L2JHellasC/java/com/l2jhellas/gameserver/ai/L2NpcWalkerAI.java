@@ -22,7 +22,7 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 	private L2NpcWalkerNode _currentNode;
 	private int _currentPos;
 	
-	public L2NpcWalkerAI(L2Character.AIAccessor accessor)
+	public L2NpcWalkerAI(L2Character accessor)
 	{
 		super(accessor);
 		
@@ -83,7 +83,7 @@ public class L2NpcWalkerAI extends L2CharacterAI implements Runnable
 		getActor().setIsRunning(_currentNode.getRunning());
 		
 		_walkingToNextPoint = true;
-		
+
 		setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(_currentNode.getMoveX(), _currentNode.getMoveY(), _currentNode.getMoveZ(), 0));		
 	}
 	

@@ -5,9 +5,10 @@ import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
-import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.Dice;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.shield.antiflood.FloodProtectors.Action;
 import com.l2jhellas.util.Broadcast;
 import com.l2jhellas.util.Rnd;
 
@@ -29,10 +30,9 @@ public class RollingDice implements IItemHandler
 		
 		L2PcInstance activeChar = (L2PcInstance) playable;
 		
-		if (!activeChar.getAntiFlood().getRollDice().tryPerformAction("roll dice"))
+		if (!FloodProtectors.performAction(activeChar.getClient(), Action.DICE_ROLL))
 		{
 			activeChar.sendPacket(SystemMessageId.YOU_MAY_NOT_THROW_THE_DICE_AT_THIS_TIME_TRY_AGAIN_LATER);
-			activeChar.sendPacket(ActionFailed.STATIC_PACKET);
 			return;
 		}
 		

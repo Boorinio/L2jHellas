@@ -3,15 +3,17 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.items.L2EtcItemType;
-import com.l2jhellas.gameserver.emum.items.L2WeaponType;
-import com.l2jhellas.gameserver.emum.player.StoreType;
+import com.l2jhellas.gameserver.enums.items.L2EtcItemType;
+import com.l2jhellas.gameserver.enums.items.L2WeaponType;
+import com.l2jhellas.gameserver.enums.player.StoreType;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.model.actor.item.L2ItemInstance;
 import com.l2jhellas.gameserver.network.SystemMessageId;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.shield.antiflood.FloodProtectors.Action;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
@@ -37,10 +39,11 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 		if ((player == null) || (player.getPet() == null) || !(player.getPet() instanceof L2PetInstance))
 			return;
 		
-		if (_amount <= 0)
-		{
+		if (!FloodProtectors.performAction(player.getClient(), Action.USE_ITEM))
 			return;
-		}
+		
+		if (_amount <= 0)
+			return;
 		
 		// Alt game - Karma punishment
 		if (!Config.ALT_GAME_KARMA_PLAYER_CAN_TRADE && player.getKarma() > 0)
@@ -87,12 +90,7 @@ public final class RequestGiveItemToPet extends L2GameClientPacket
 			player.sendMessage("Hero weapons protection,arrows or shot, you can't use pet's inventory.");
 			return;
 		}
-		if (!player.getAntiFlood().getTransaction().tryPerformAction("giveitemtopet"))
-		{
-			player.sendMessage("You give items to pet too fast.");
-			return;
-		}
-		
+
 		final L2PetInstance pet = (L2PetInstance) player.getPet();
 		if (pet.isDead())
 		{

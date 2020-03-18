@@ -17,10 +17,7 @@ public class NoblesseTeleport extends Quest
 	@Override
 	public String onTalk(L2Npc npc, L2PcInstance player)
 	{
-		if (player.isNoble())
-			return "noble.htm";
-		
-		return "nobleteleporter-no.htm";
+		return player.isNoble() ? "noble.htm" : "nobleteleporter-no.htm";
 	}
 	
 	public static void main(String[] args)

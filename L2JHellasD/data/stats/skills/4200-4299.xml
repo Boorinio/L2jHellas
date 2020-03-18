@@ -408,8 +408,6 @@
 		<set name="hitTime" val="1500" />
 		<set name="skillType" val="PDAM" />
 		<set name="operateType" val="OP_ACTIVE" />
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<for>
 		</for>
 	</skill>

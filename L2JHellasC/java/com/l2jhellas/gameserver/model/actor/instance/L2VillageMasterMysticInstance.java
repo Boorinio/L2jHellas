@@ -1,8 +1,8 @@
 package com.l2jhellas.gameserver.model.actor.instance;
 
-import com.l2jhellas.gameserver.emum.player.ClassId;
-import com.l2jhellas.gameserver.emum.player.ClassRace;
-import com.l2jhellas.gameserver.emum.player.ClassType;
+import com.l2jhellas.gameserver.enums.player.ClassId;
+import com.l2jhellas.gameserver.enums.player.ClassRace;
+import com.l2jhellas.gameserver.enums.player.ClassType;
 import com.l2jhellas.gameserver.templates.L2NpcTemplate;
 
 public final class L2VillageMasterMysticInstance extends L2VillageMasterInstance

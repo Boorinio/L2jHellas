@@ -3,7 +3,10 @@ package com.l2jhellas.gameserver.scrips.quests.ai;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
+import com.l2jhellas.gameserver.enums.skills.FrequentSkill;
+import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Character;
@@ -12,6 +15,7 @@ import com.l2jhellas.gameserver.model.actor.L2Playable;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.quest.Quest;
 import com.l2jhellas.gameserver.model.quest.QuestEventType;
+import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.util.Rnd;
 import com.l2jhellas.util.Util;
 
@@ -144,5 +148,40 @@ public abstract class AbstractNpcAI extends Quest
 	public static int getRandom(int min, int max)
 	{
 		return Rnd.get(min, max);
+	}
+	
+	protected static boolean testCursesOnAttack(L2Npc npc,L2Character attacker)
+	{
+		return testCursesOnAttack(npc, attacker, npc.getNpcId());
+	}
+	
+	protected static boolean testCursesOnAttack(L2Npc npc,L2Character attacker, int npcId)
+	{
+		if (Config.RAID_DISABLE_CURSE)
+			return false;
+		
+		if (attacker.getLevel() - npc.getLevel() > 8)
+		{
+			final L2Skill curse = FrequentSkill.RAID_CURSE2.getSkill();
+			if (attacker.getFirstEffect(curse) == null)
+			{
+				npc.broadcastPacket(new MagicSkillUse(npc, attacker, curse.getId(), curse.getLevel(), 300, 0));
+				curse.getEffects(npc, attacker);
+				
+				((L2Attackable) npc).stopHating(attacker);
+				return true;
+			}
+		}
+		
+		if (npc.getNpcId() == npcId && attacker.isPlayer() && ((L2PcInstance) attacker).isMounted())
+		{
+			final L2Skill curse = FrequentSkill.RAID_ANTI_STRIDER_SLOW.getSkill();
+			if (attacker.getFirstEffect(curse) == null)
+			{
+				npc.broadcastPacket(new MagicSkillUse(npc, attacker, curse.getId(), curse.getLevel(), 300, 0));
+				curse.getEffects(npc, attacker);
+			}
+		}
+		return false;
 	}
 }

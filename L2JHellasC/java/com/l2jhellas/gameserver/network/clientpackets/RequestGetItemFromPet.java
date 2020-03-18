@@ -6,6 +6,8 @@ import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2PetInstance;
 import com.l2jhellas.gameserver.network.serverpackets.ActionFailed;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.shield.antiflood.FloodProtectors.Action;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 
@@ -33,6 +35,10 @@ public final class RequestGetItemFromPet extends L2GameClientPacket
 		L2PcInstance player = getClient().getActiveChar();
 		if ((player == null) || (player.getPet() == null) || !(player.getPet() instanceof L2PetInstance))
 			return;
+		
+		if (!FloodProtectors.performAction(player.getClient(), Action.USE_ITEM))
+			return;
+		
 		final L2PetInstance pet = (L2PetInstance) player.getPet();
 		
 		if (player.getActiveEnchantItem() != null)
@@ -53,13 +59,7 @@ public final class RequestGetItemFromPet extends L2GameClientPacket
 			Util.handleIllegalPlayerAction(player, "[RequestGetItemFromPet] count < 0! ban! oid: " + _objectId + " owner: " + player.getName(), Config.DEFAULT_PUNISH);
 			return;
 		}
-		
-		if (!player.getAntiFlood().getTransaction().tryPerformAction("getfrompet"))
-		{
-			player.sendMessage("You get items from pet too fast.");
-			return;
-		}
-		
+
 		if (pet.transferItem("Transfer", _objectId, _amount, player.getInventory(), player, pet) == null)
 		{
 			_log.warning(RequestGetItemFromPet.class.getName() + ": Invalid item transfer request: " + pet.getName() + "(pet) --> " + player.getName());

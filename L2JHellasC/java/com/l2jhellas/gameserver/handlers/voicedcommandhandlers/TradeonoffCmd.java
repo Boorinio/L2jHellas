@@ -15,18 +15,7 @@ public class TradeonoffCmd implements IVoicedCommandHandler
 	public boolean useVoicedCommand(String command, L2PcInstance activeChar, String target)
 	{
 		if (command.startsWith(VOICED_COMMANDS[0]) || command.startsWith(VOICED_COMMANDS[1]))
-		{
-			if (activeChar.getTradeRefusal())
-			{
-				activeChar.setTradeRefusal(false);
-				activeChar.sendMessage("Trade refusal is disabled.");
-			}
-			else
-			{
-				activeChar.setTradeRefusal(true);
-				activeChar.sendMessage("Trade refusal is enabled.");
-			}
-		}
+			activeChar.setTradeRefusal(activeChar.getTradeRefusal() ? false : true);
 		return true;
 	}
 	

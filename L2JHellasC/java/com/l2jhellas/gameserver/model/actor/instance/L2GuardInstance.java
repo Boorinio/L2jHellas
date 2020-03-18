@@ -52,7 +52,7 @@ public final class L2GuardInstance extends L2Attackable
 	{
 		if (!canTarget(player))
 			return;
-		
+
 		if (getObjectId() != player.getTargetId())
 		{
 			player.setTarget(this);

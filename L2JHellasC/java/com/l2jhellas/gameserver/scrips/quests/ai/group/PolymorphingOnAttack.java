@@ -3,7 +3,7 @@ package com.l2jhellas.gameserver.scrips.quests.ai.group;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.l2jhellas.gameserver.emum.player.ChatType;
+import com.l2jhellas.gameserver.enums.player.ChatType;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
 import com.l2jhellas.gameserver.model.actor.L2Npc;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;

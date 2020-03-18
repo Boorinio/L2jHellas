@@ -3,7 +3,6 @@ package com.l2jhellas.gameserver.skills.effects;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.model.L2Effect;
 import com.l2jhellas.gameserver.model.actor.instance.L2NpcInstance;
-import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeFlagInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeGuardInstance;
 import com.l2jhellas.gameserver.model.actor.instance.L2SiegeSummonInstance;
@@ -31,18 +30,27 @@ public final class EffectFear extends L2Effect
 		if (!getEffected().isAfraid())
 		{
 			// Fear skills cannot be used l2pcinstance to l2pcinstance. Heroic Dread, Curse: Fear, Fear and Horror are the exceptions.
-			if (getEffected() instanceof L2PcInstance && getEffector() instanceof L2PcInstance && getSkill().getId() != 1376 && getSkill().getId() != 1169 && getSkill().getId() != 65 && getSkill().getId() != 1092)
-				return false;
-			if (getEffected() instanceof L2NpcInstance)
-				return false;
-			if (getEffected() instanceof L2SiegeGuardInstance)
-				return false;
-			// Fear skills cannot be used on Headquarters Flag.
-			if (getEffected() instanceof L2SiegeFlagInstance)
-				return false;
+			if(getEffected().isPlayer() && getEffector().isPlayer())
+			{
+				switch (getSkill().getId())
+				{
+					case 1376:
+					case 1169:
+					case 65:
+					case 1092:
+					case 98:
+					case 1272:
+					case 1381:
+					case 763:
+						break;
+					
+					default:
+						return false;
+				}			
+			}
 			
-			if (getEffected() instanceof L2SiegeSummonInstance)
-				return false;
+		if (getEffected() instanceof L2NpcInstance || getEffected() instanceof L2SiegeSummonInstance || getEffected() instanceof L2SiegeGuardInstance || getEffected() instanceof L2SiegeFlagInstance)
+			return false;
 			
 			getEffected().startFear();
 			
@@ -63,7 +71,16 @@ public final class EffectFear extends L2Effect
 			getEffected().getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(posX, posY, posZ, 0));
 			return true;
 		}
+		
 		return false;
+	}
+	
+	@Override
+	public void onExit()
+	{
+		getEffected().stopEffects(EffectType.FEAR);
+		getEffected().updateAbnormalEffect();
+		getEffected().stopMove(null);
 	}
 	
 	@Override

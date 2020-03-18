@@ -7,12 +7,12 @@ import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.SkillTreeData;
-import com.l2jhellas.gameserver.emum.ZoneId;
-import com.l2jhellas.gameserver.emum.items.L2ArmorType;
-import com.l2jhellas.gameserver.emum.player.ClassId;
-import com.l2jhellas.gameserver.emum.skills.HeroSkills;
-import com.l2jhellas.gameserver.emum.skills.L2SkillTargetType;
-import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.gameserver.enums.ZoneId;
+import com.l2jhellas.gameserver.enums.items.L2ArmorType;
+import com.l2jhellas.gameserver.enums.player.ClassId;
+import com.l2jhellas.gameserver.enums.skills.HeroSkills;
+import com.l2jhellas.gameserver.enums.skills.L2SkillTargetType;
+import com.l2jhellas.gameserver.enums.skills.L2SkillType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.holder.IntIntHolder;
 import com.l2jhellas.gameserver.model.actor.L2Attackable;
@@ -1037,7 +1037,7 @@ public abstract class L2Skill
 		}
 		return true;
 	}
-	
+
 	@SuppressWarnings("cast")
 	public final L2Object[] getTargetList(L2Character activeChar, boolean onlyFirst)
 	{
@@ -1048,8 +1048,7 @@ public abstract class L2Skill
 		L2SkillTargetType targetType = getTargetType();
 		
 		target = null;
-		
-		// Get the L2Objcet targeted by the user of the skill at this moment
+
 		L2Object objTarget = activeChar.getTarget();
 		
 		// Get the type of the skill
@@ -1095,8 +1094,13 @@ public abstract class L2Skill
 						break;
 				}
 				
-				// Check for null target or any other invalid target
-				if (target == null || target.isDead() || (target == activeChar && !canTargetSelf))
+				if (target == null)
+				{
+					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.TARGET_CANT_FOUND));
+					return null;
+				}
+
+				if (target.isDead() || (target == activeChar && !canTargetSelf))
 				{
 					activeChar.sendPacket(SystemMessage.getSystemMessage(SystemMessageId.TARGET_IS_INCORRECT));
 					return null;
@@ -2046,12 +2050,9 @@ public abstract class L2Skill
 	
 	public final L2Effect[] getEffects(L2Character effector, L2Character effected)
 	{
-		if (isPassive())
+		if (!hasEffects() || isPassive())
 			return _emptyEffectSet;
-		
-		if (_effectTemplates == null)
-			return _emptyEffectSet;
-		
+
 		// doors and siege flags cannot receive any effects
 		if (effected instanceof L2DoorInstance || effected instanceof L2SiegeFlagInstance)
 			return _emptyEffectSet;

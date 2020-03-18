@@ -3,12 +3,12 @@ package com.l2jhellas.gameserver.ai;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_FOLLOW;
 import static com.l2jhellas.gameserver.ai.CtrlIntention.AI_INTENTION_IDLE;
 
-import com.l2jhellas.gameserver.emum.skills.L2SkillType;
+import com.l2jhellas.Config;
+import com.l2jhellas.gameserver.enums.skills.L2SkillType;
 import com.l2jhellas.gameserver.geodata.GeoEngine;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.actor.L2Character;
-import com.l2jhellas.gameserver.model.actor.L2Character.AIAccessor;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.util.Rnd;
 
@@ -16,7 +16,7 @@ public class L2SummonAI extends L2CharacterAI
 {
 	private boolean _thinking; // to prevent recursive thinking
 	
-	public L2SummonAI(AIAccessor accessor)
+	public L2SummonAI(L2Summon accessor)
 	{
 		super(accessor);
 	}
@@ -76,14 +76,16 @@ public class L2SummonAI extends L2CharacterAI
 	
 	private void thinkPickUp()
 	{
-		if (_actor.isAllSkillsDisabled())
+		final L2Summon summon = (L2Summon) _actor;
+
+		if (summon.isAllSkillsDisabled())
 			return;
 		if (checkTargetLost(getTarget()))
 			return;
 		if (maybeMoveToPawn(getTarget(), 36))
 			return;
 		setIntention(AI_INTENTION_IDLE);
-		((L2Summon.AIAccessor) _accessor).doPickupItem(getTarget());
+		summon.doPickupItem(getTarget());
 		return;
 	}
 	
@@ -143,7 +145,7 @@ public class L2SummonAI extends L2CharacterAI
 	
 	private void avoidAttack()
 	{		
-		if (((L2Summon) _actor).getOwner() !=null && ((L2Summon) _actor).getOwner().isInsideRadius(_actor,150,false,false) && !_actor.isAttackingNow() && !_actor.isCastingNow() && !_clientMoving && !_actor.isDead() && !_actor.isMovementDisabled() && (_actor.getMoveSpeed() > 0))
+		if (Config.GEODATA && ((L2Summon) _actor).getOwner() !=null && ((L2Summon) _actor).getOwner().isInsideRadius(_actor,150,false,false) && !_actor.isAttackingNow() && !_actor.isCastingNow() && !_clientMoving && !_actor.isDead() && !_actor.isMovementDisabled() && (_actor.getMoveSpeed() > 0))
 		{
 			final int ownerX = ((L2Summon) _actor).getOwner().getX();
 			final int ownerY = ((L2Summon) _actor).getOwner().getY();

@@ -7,10 +7,9 @@ import java.util.List;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.L2BoatAI;
-import com.l2jhellas.gameserver.ai.L2CharacterAI;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
 import com.l2jhellas.gameserver.datatables.xml.MapRegionTable;
-import com.l2jhellas.gameserver.emum.ZoneId;
+import com.l2jhellas.gameserver.enums.ZoneId;
 import com.l2jhellas.gameserver.instancemanager.ZoneManager;
 import com.l2jhellas.gameserver.model.L2World;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
@@ -42,15 +41,10 @@ public class L2Vehicle extends L2Character
 	public L2Vehicle(int objectId, L2CharTemplate template)
 	{
 		super(objectId, template);
-		setAI(new L2BoatAI(new AIAccessor()));
+		setIsFlying(true);
+		setAI(new L2BoatAI(this));
 	}
-	
-	@Override
-	public boolean isFlying()
-	{
-		return true;
-	}
-	
+
 	public boolean canBeControlled()
 	{
 		return _engine == null;
@@ -69,13 +63,6 @@ public class L2Vehicle extends L2Character
 	
 	private int _moveSpeed = 0;
 	private int _rotationSpeed = 0;
-	
-    @Override
-    public void setXYZ(int x, int y, int z)
-    {
-    	super.setXYZ(x, y, z);
-    	updatePeopleInTheBoat(x, y, z);
-    }
     
 	@Override
 	public int getMoveSpeed()
@@ -103,19 +90,17 @@ public class L2Vehicle extends L2Character
 		_runState = 0;
 		_currentPath = path;
 		
-		if (_currentPath != null && _currentPath.length > 0)
-		{
-			final VehiclePathPoint point = _currentPath[0];
+		if (_currentPath == null)		
+			return;		
+		
+		final VehiclePathPoint point = _currentPath[0];
 			
-			if (point.getMoveSpeed() > 0)
-				getStat().setMoveSpeed(point.getMoveSpeed());
-			if (point.getRotationSpeed() > 0)
-				getStat().setRotationSpeed(point.getRotationSpeed());
+		if (point.getMoveSpeed() > 0)
+			getStat().setMoveSpeed(point.getMoveSpeed());
+		if (point.getRotationSpeed() > 0)
+			getStat().setRotationSpeed(point.getRotationSpeed());
 			
-			getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(point.getX(), point.getY(), point.getZ(), 0));
-			return;
-		}
-		getAI().setIntention(CtrlIntention.AI_INTENTION_ACTIVE);
+		getAI().setIntention(CtrlIntention.AI_INTENTION_MOVE_TO, new Location(point.getX(), point.getY(), point.getZ(), 0));
 	}
 	
 	@Override
@@ -150,12 +135,10 @@ public class L2Vehicle extends L2Character
 						m._yDestination = point.getY();
 						m._zDestination = point.getZ();
 						m._heading = 0;
-						
-						final double dx = point.getX() - getX();
-						final double dy = point.getY() - getY();
-						final double distance = Math.sqrt(dx * dx + dy * dy);
-						
-						if (distance > 1) // vertical movement heading check
+
+						final double distance = Math.hypot(point.getX() - getX(), point.getY() - getY());
+
+						if (distance > 1)
 							setHeading(Util.calculateHeadingFrom(getX(), getY(), point.getX(), point.getY()));
 						
 						m._moveStartTime = GameTimeController.getInstance().getGameTicks();
@@ -179,9 +162,7 @@ public class L2Vehicle extends L2Character
 	public final VehicleStat getStat()
 	{
 		if (super.getStat() == null || !(super.getStat() instanceof VehicleStat))
-		{
 			setStat(new VehicleStat(this));
-		}
 		return (VehicleStat) super.getStat();
 	}
 
@@ -202,7 +183,6 @@ public class L2Vehicle extends L2Character
 	
 	public void oustPlayers()
 	{
-		// Use iterator because oustPlayer will try to remove player from _passengers
 		final Iterator<L2PcInstance> iter = _passengers.iterator();
 		while (iter.hasNext())
 		{
@@ -235,8 +215,7 @@ public class L2Vehicle extends L2Character
 	{
 		if (player == null || _passengers.contains(player))
 			return false;
-		
-		// already in other vehicle
+
 		if (player.getVehicle() != null && player.getVehicle() != this)
 			return false;
 		
@@ -249,8 +228,7 @@ public class L2Vehicle extends L2Character
 	}
 	
 	public void removePassenger(L2PcInstance player)
-	{
-		
+	{	
 		try
 		{
 			_passengers.remove(player);
@@ -422,33 +400,7 @@ public class L2Vehicle extends L2Character
 	{
 		return false;
 	}
-	
-	@Override
-	public void setAI(L2CharacterAI newAI)
-	{
-		if (_ai == null)
-			_ai = newAI;
-	}
 
-	public class AIAccessor extends L2Character.AIAccessor
-	{
-		public AIAccessor()
-		{
-		}
-		
-		@Override
-		public void detachAI()
-		{
-			
-		}
-		
-		public L2Vehicle getVehicle()
-		{
-			return L2Vehicle.this;
-		}
-		
-	}	
-	
 	protected void updatePeopleInTheBoat(int x, int y, int z)
 	{
 		for(L2PcInstance player : _passengers)
@@ -473,6 +425,5 @@ public class L2Vehicle extends L2Character
 	public void sendInfo(L2PcInstance activeChar)
 	{
 		activeChar.sendPacket(new VehicleInfo(this));
-	}
-	
+	}	
 }

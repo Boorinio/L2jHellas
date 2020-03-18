@@ -4,8 +4,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.gameserver.ThreadPoolManager;
-import com.l2jhellas.gameserver.emum.player.ChatType;
-import com.l2jhellas.gameserver.emum.sound.Sound;
+import com.l2jhellas.gameserver.enums.player.ChatType;
+import com.l2jhellas.gameserver.enums.sound.Sound;
 import com.l2jhellas.gameserver.instancemanager.BoatManager;
 import com.l2jhellas.gameserver.model.VehiclePathPoint;
 import com.l2jhellas.gameserver.model.actor.L2Vehicle;
@@ -15,8 +15,7 @@ import com.l2jhellas.gameserver.network.serverpackets.CreatureSay;
 public class BoatRunePrimeval implements Runnable
 {
 	private static final Logger _log = Logger.getLogger(BoatRunePrimeval.class.getName());
-	
-	// Time: 239s
+
 	private static final VehiclePathPoint[] RUNE_TO_PRIMEVAL =
 	{
 		new VehiclePathPoint(32750, -39300, -3610, 180, 800),
@@ -32,8 +31,7 @@ public class BoatRunePrimeval implements Runnable
 		new VehiclePathPoint(7000, -27279, -3610, 150, 1800),
 		new VehiclePathPoint(10342, -27279, -3610, 150, 1800)
 	};
-	
-	// Time: 221s
+
 	private static final VehiclePathPoint[] PRIMEVAL_TO_RUNE =
 	{
 		new VehiclePathPoint(15528, -27279, -3610, 180, 800),

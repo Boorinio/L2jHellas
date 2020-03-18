@@ -86,7 +86,8 @@ public class BoatManager
 		npcDat.set("baseMDef", 100);
 		
 		L2CharTemplate template = new L2CharTemplate(npcDat);
-		L2Vehicle boat = new L2Vehicle(IdFactory.getInstance().getNextId(), template);
+		
+		final L2Vehicle boat = new L2Vehicle(IdFactory.getInstance().getNextId(),template);
 		
 		_boats.put(boat.getObjectId(), boat);
 		
@@ -115,17 +116,11 @@ public class BoatManager
 	{
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
-			double dx = (double) player.getX() - point1.getX();
-			double dy = (double) player.getY() - point1.getY();
-			
-			if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
+			if (Math.hypot(player.getX() - point1.getX(), player.getY() - point1.getY()) < BOAT_BROADCAST_RADIUS)
 				player.sendPacket(packet);
 			else
 			{
-				dx = (double) player.getX() - point2.getX();
-				dy = (double) player.getY() - point2.getY();
-				
-				if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
+				if (Math.hypot(player.getX() - point2.getX(), player.getY() - point2.getY()) < BOAT_BROADCAST_RADIUS) 
 					player.sendPacket(packet);
 			}
 		}
@@ -135,20 +130,14 @@ public class BoatManager
 	{
 		for (L2PcInstance player : L2World.getInstance().getAllPlayers().values())
 		{
-			double dx = (double) player.getX() - point1.getX();
-			double dy = (double) player.getY() - point1.getY();
-			
-			if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
+			if (Math.hypot(player.getX() - point1.getX(), player.getY() - point1.getY()) < BOAT_BROADCAST_RADIUS)
 			{
 				for (L2GameServerPacket p : packets)
 					player.sendPacket(p);
 			}
 			else
 			{
-				dx = (double) player.getX() - point2.getX();
-				dy = (double) player.getY() - point2.getY();
-				
-				if (Math.sqrt(dx * dx + dy * dy) < BOAT_BROADCAST_RADIUS)
+				if (Math.hypot(player.getX() - point2.getX(), player.getY() - point2.getY()) < BOAT_BROADCAST_RADIUS) 
 					for (L2GameServerPacket p : packets)
 						player.sendPacket(p);
 			}

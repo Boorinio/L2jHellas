@@ -11,7 +11,6 @@ import com.l2jhellas.gameserver.model.actor.L2Character;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.network.serverpackets.MagicSkillUse;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
-import com.l2jhellas.gameserver.network.serverpackets.UserInfo;
 
 public class AdminTest implements IAdminCommandHandler
 {
@@ -86,28 +85,7 @@ public class AdminTest implements IAdminCommandHandler
 		}
 		else if (command.equals("admin_test"))
 		{
-			activeChar.sendMessage("Now the server will send a packet that client cannot read correctly");
-			activeChar.sendMessage("generating a critical error..");
-			
-			int i = 5;
-			while (i > 0)
-			{
-				
-				activeChar.sendMessage("Client will crash in " + i + " seconds");
-				
-				try
-				{
-					Thread.sleep(1000);
-					i--;
-				}
-				catch (InterruptedException e)
-				{
-				}
-			}
-			UserInfo ui = new UserInfo(activeChar);
-			ui._critical_test = true;
-			
-			activeChar.sendPacket(ui);
+			activeChar.sendMessage("command removed");
 		}
 		else if (command.startsWith("admin_oly_obs_mode"))
 		{

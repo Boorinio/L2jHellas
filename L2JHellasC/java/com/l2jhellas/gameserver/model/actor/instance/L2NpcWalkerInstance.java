@@ -12,7 +12,7 @@ public class L2NpcWalkerInstance extends L2Npc
 	public L2NpcWalkerInstance(int objectId, L2NpcTemplate template)
 	{
 		super(objectId, template);
-		setAI(new L2NpcWalkerAI(new L2NpcWalkerAIAccessor()));
+		setAI(new L2NpcWalkerAI(this));
 	}
 	
 	@Override
@@ -39,12 +39,9 @@ public class L2NpcWalkerInstance extends L2Npc
 		return super.getAI();
 	}
 	
-	protected class L2NpcWalkerAIAccessor extends L2Character.AIAccessor
+	@Override
+	public void detachAI()
 	{
-		
-		@Override
-		public void detachAI()
-		{
-		}
 	}
+
 }

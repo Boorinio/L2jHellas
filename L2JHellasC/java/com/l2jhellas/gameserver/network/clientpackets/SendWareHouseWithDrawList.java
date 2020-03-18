@@ -16,6 +16,8 @@ import com.l2jhellas.gameserver.network.serverpackets.InventoryUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.ItemList;
 import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.shield.antiflood.FloodProtectors.Action;
 
 public final class SendWareHouseWithDrawList extends L2GameClientPacket
 {
@@ -57,7 +59,7 @@ public final class SendWareHouseWithDrawList extends L2GameClientPacket
 		final L2PcInstance player = getClient().getActiveChar();
 		if (player == null)
 			return;
-		if (!player.getAntiFlood().getTransaction().tryPerformAction("withdraw"))
+		if (!FloodProtectors.performAction(getClient(), Action.MANUFACTURE))
 		{
 			player.sendMessage("You withdrawing items too fast.");
 			return;

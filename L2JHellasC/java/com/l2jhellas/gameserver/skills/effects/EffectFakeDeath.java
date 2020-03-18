@@ -21,14 +21,14 @@ public final class EffectFakeDeath extends L2Effect
 	@Override
 	public boolean onStart()
 	{
-		getEffected().startFakeDeath();
+		getEffected().getActingPlayer().startFakeDeath();
 		return true;
 	}
 	
 	@Override
 	public void onExit()
 	{
-		getEffected().stopFakeDeath(this);
+		getEffected().getActingPlayer().stopFakeDeath(this);
 	}
 	
 	@Override

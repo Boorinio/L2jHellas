@@ -6,9 +6,9 @@ import com.l2jhellas.gameserver.ai.CtrlEvent;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.ai.NextAction;
 import com.l2jhellas.gameserver.controllers.GameTimeController;
-import com.l2jhellas.gameserver.emum.items.L2ArmorType;
-import com.l2jhellas.gameserver.emum.items.L2WeaponType;
-import com.l2jhellas.gameserver.emum.player.StoreType;
+import com.l2jhellas.gameserver.enums.items.L2ArmorType;
+import com.l2jhellas.gameserver.enums.items.L2WeaponType;
+import com.l2jhellas.gameserver.enums.player.StoreType;
 import com.l2jhellas.gameserver.handler.IItemHandler;
 import com.l2jhellas.gameserver.handler.ItemHandler;
 import com.l2jhellas.gameserver.instancemanager.CastleManager;
@@ -26,6 +26,8 @@ import com.l2jhellas.gameserver.network.serverpackets.PetItemList;
 import com.l2jhellas.gameserver.network.serverpackets.ShowCalculator;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.templates.L2Weapon;
+import com.l2jhellas.shield.antiflood.FloodProtectors;
+import com.l2jhellas.shield.antiflood.FloodProtectors.Action;
 
 public final class UseItem extends L2GameClientPacket
 {
@@ -48,7 +50,7 @@ public final class UseItem extends L2GameClientPacket
 			return;
 		
 		// Flood protect UseItem
-		if (!activeChar.getAntiFlood().getUseItem().tryPerformAction("use item"))
+		if (!FloodProtectors.performAction(getClient(),Action.USE_ITEM))
 			return;
 		
 		if (activeChar.getPrivateStoreType() != StoreType.NONE)

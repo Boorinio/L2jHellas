@@ -1,12 +1,13 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.xml.RecipeData;
-import com.l2jhellas.gameserver.emum.ZoneId;
-import com.l2jhellas.gameserver.emum.player.StoreType;
+import com.l2jhellas.gameserver.enums.ZoneId;
+import com.l2jhellas.gameserver.enums.player.StoreType;
 import com.l2jhellas.gameserver.model.L2ManufactureItem;
 import com.l2jhellas.gameserver.model.L2ManufactureList;
 import com.l2jhellas.gameserver.model.L2RecipeList;
@@ -73,8 +74,8 @@ public final class RequestRecipeShopListSet extends L2GameClientPacket
 			return;
 		}
 
-		final List<L2RecipeList> dwarfRecipes = Arrays.asList(player.getDwarvenRecipeBook());
-		final List<L2RecipeList> commonRecipes = Arrays.asList(player.getCommonRecipeBook());
+		final List<Collection<L2RecipeList>> dwarfRecipes = Arrays.asList(player.getDwarvenRecipeBook());
+		final List<Collection<L2RecipeList>> commonRecipes = Arrays.asList(player.getCommonRecipeBook());
 	
 		L2ManufactureList createList = new L2ManufactureList();
 		createList.clear();

@@ -3,7 +3,7 @@ package com.l2jhellas.gameserver.network.clientpackets;
 import java.util.Collection;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.player.ChatType;
+import com.l2jhellas.gameserver.enums.player.ChatType;
 import com.l2jhellas.gameserver.handler.ChatHandler;
 import com.l2jhellas.gameserver.handler.IChatHandler;
 import com.l2jhellas.gameserver.model.L2Object;

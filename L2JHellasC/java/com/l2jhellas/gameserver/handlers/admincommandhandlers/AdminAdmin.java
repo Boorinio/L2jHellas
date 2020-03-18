@@ -8,7 +8,6 @@ import com.l2jhellas.gameserver.datatables.xml.AdminData;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
 import com.l2jhellas.gameserver.model.entity.olympiad.Olympiad;
-import com.l2jhellas.gameserver.network.SystemMessageId;
 
 public class AdminAdmin implements IAdminCommandHandler
 {
@@ -87,16 +86,7 @@ public class AdminAdmin implements IAdminCommandHandler
 		}
 		else if (command.startsWith("admin_silence"))
 		{
-			if (activeChar.getMessageRefusal()) // already in message refusal mode
-			{
-				activeChar.setMessageRefusal(false);
-				activeChar.sendPacket(SystemMessageId.MESSAGE_ACCEPTANCE_MODE);
-			}
-			else
-			{
-				activeChar.setMessageRefusal(true);
-				activeChar.sendPacket(SystemMessageId.MESSAGE_REFUSAL_MODE);
-			}
+			activeChar.setMessageRefusal(activeChar.getMessageRefusal() ? false : true);
 			AdminHelpPage.showHelpPage(activeChar, "main_menu.htm");
 		}
 		else if (command.startsWith("admin_saveolymp"))
@@ -166,29 +156,11 @@ public class AdminAdmin implements IAdminCommandHandler
 			try
 			{
 				String mode = command.substring(15);
-				if (mode.equalsIgnoreCase("on"))
-				{
-					activeChar.setTradeRefusal(true);
-					activeChar.sendMessage("Trade refusal is enabled");
-				}
-				else if (mode.equalsIgnoreCase("off"))
-				{
-					activeChar.setTradeRefusal(false);
-					activeChar.sendMessage("Trade refusal is disabled");
-				}
+				activeChar.setTradeRefusal(mode.equalsIgnoreCase("on") ? true : false);
 			}
 			catch (Exception ex)
 			{
-				if (activeChar.getTradeRefusal())
-				{
-					activeChar.setTradeRefusal(false);
-					activeChar.sendMessage("Trade refusal is disabled");
-				}
-				else
-				{
-					activeChar.setTradeRefusal(true);
-					activeChar.sendMessage("Trade refusal is enabled");
-				}
+				activeChar.setTradeRefusal(activeChar.getTradeRefusal() ? false : true);
 			}
 			AdminHelpPage.showHelpPage(activeChar, "main_menu.htm");
 		}

@@ -1,8 +1,8 @@
 package com.l2jhellas.gameserver.network.serverpackets;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.ZoneId;
-import com.l2jhellas.gameserver.emum.skills.AbnormalEffect;
+import com.l2jhellas.gameserver.enums.ZoneId;
+import com.l2jhellas.gameserver.enums.skills.AbnormalEffect;
 import com.l2jhellas.gameserver.instancemanager.CursedWeaponsManager;
 import com.l2jhellas.gameserver.model.actor.L2Summon;
 import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
@@ -13,7 +13,6 @@ public class UserInfo extends L2GameServerPacket
 	private static final String _S__04_USERINFO = "[S] 04 UserInfo";
 	private final L2PcInstance _activeChar;
 	private int _relation;
-	public boolean _critical_test = false;
 	
 	public UserInfo(L2PcInstance character)
 	{
@@ -272,7 +271,7 @@ public class UserInfo extends L2GameServerPacket
 		
 		writeD(_activeChar.getAppearance().getTitleColor());
 
-		writeD(_activeChar.isCursedWeaponEquiped() ? CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()) : 0);
+		writeD(_activeChar.isCursedWeaponEquiped() ? CursedWeaponsManager.getInstance().getLevel(_activeChar.getCursedWeaponEquipedId()) : 0);		
 	}
 	
 	@Override

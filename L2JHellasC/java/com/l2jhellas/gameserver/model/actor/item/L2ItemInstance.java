@@ -4,14 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.ThreadPoolManager;
 import com.l2jhellas.gameserver.ai.CtrlIntention;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
-import com.l2jhellas.gameserver.emum.items.ItemLocation;
-import com.l2jhellas.gameserver.emum.items.L2EtcItemType;
+import com.l2jhellas.gameserver.enums.items.ItemLocation;
+import com.l2jhellas.gameserver.enums.items.L2EtcItemType;
 import com.l2jhellas.gameserver.instancemanager.ItemsOnGroundManager;
 import com.l2jhellas.gameserver.model.L2Augmentation;
 import com.l2jhellas.gameserver.model.L2Object;
@@ -27,6 +28,7 @@ import com.l2jhellas.gameserver.network.serverpackets.StatusUpdate;
 import com.l2jhellas.gameserver.network.serverpackets.SystemMessage;
 import com.l2jhellas.gameserver.skills.funcs.Func;
 import com.l2jhellas.gameserver.templates.L2Armor;
+import com.l2jhellas.gameserver.templates.L2Weapon;
 import com.l2jhellas.util.IllegalPlayerAction;
 import com.l2jhellas.util.Util;
 import com.l2jhellas.util.database.L2DatabaseFactory;
@@ -101,6 +103,8 @@ public final class L2ItemInstance extends L2Object
 	private boolean _storedInDb; // if DB data is up-to-date.
 	
 	private ScheduledFuture<?> itemLootShedule = null;
+	
+	private final ReentrantLock _dbLock = new ReentrantLock();
 	
 	public L2ItemInstance(int objectId, int itemId)
 	{
@@ -636,23 +640,29 @@ public final class L2ItemInstance extends L2Object
 	public void updateDatabase()
 	{
 		if (isWear()) // avoid saving weared items
-		{
 			return;
-		}
-		if (_existsInDb)
+		
+		_dbLock.lock();
+		try
 		{
-			if (_ownerId == 0 || _loc == ItemLocation.VOID || (_count == 0 && _loc != ItemLocation.LEASE))
-				removeFromDb();
+			if (_existsInDb)
+			{
+				if (_ownerId == 0 || _loc == ItemLocation.VOID || (getCount() == 0 && _loc != ItemLocation.LEASE))
+					removeFromDb();
+				else
+					updateInDb();
+			}
 			else
-				updateInDb();
+			{
+				if (_ownerId == 0 || _loc == ItemLocation.VOID || (getCount() == 0 && _loc != ItemLocation.LEASE))
+					return;
+				
+				insertIntoDb();
+			}
 		}
-		else
+		finally
 		{
-			if (_count == 0 && _loc != ItemLocation.LEASE)
-				return;
-			if (_loc == ItemLocation.VOID || _ownerId == 0)
-				return;
-			insertIntoDb();
+			_dbLock.unlock();
 		}
 	}
 
@@ -806,6 +816,8 @@ public final class L2ItemInstance extends L2Object
 	
 	private void insertIntoDb()
 	{
+		assert !_existsInDb && getObjectId() != 0;
+
 		if (_wear)
 			return;
 		
@@ -987,9 +999,31 @@ public final class L2ItemInstance extends L2Object
 		return getItem().isQuestItem();
 	}
 	
+	public boolean isWeapon()
+	{
+		return getItem() instanceof L2Weapon;
+	}
+	
+	public boolean isArmor()
+	{
+		return getItem() instanceof L2Armor;
+	}
+	
 	public void setDropperObjectId(int id)
 	{
 		_dropperObjectId = id;
+	}
+	
+	public long getTotalWeight()
+	{
+		try
+		{
+			return Math.multiplyExact(getItem().getWeight(), getCount());
+		}
+		catch (ArithmeticException ae)
+		{
+			return Long.MAX_VALUE;
+		}
 	}
 	
 	@Override

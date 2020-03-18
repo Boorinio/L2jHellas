@@ -1,6 +1,6 @@
 package com.l2jhellas.gameserver.scrips.quests.ai.custom;
 
-import com.l2jhellas.gameserver.datatables.xml.SkillTreeData.FrequentSkill;
+import com.l2jhellas.gameserver.enums.skills.FrequentSkill;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
 import com.l2jhellas.gameserver.model.PcInventory;

@@ -390,10 +390,9 @@
 		<table name="#magicLvl"> 58 62 66 70 74 </table>
 		<table name="#mpConsume"> 54 58 62 65 69 </table>
 		<table name="#power"> 49 53 58 61 65 </table>
-		<set name="castRange" val="-1" />
-		<set name="effectRange" val="-1" />
 		<set name="hitTime" val="1000" />
 		<set name="isMagic" val="true" />
+		<set name="isDebuff" val="true" />
 		<set name="itemConsumeId" val="3031" />
 		<set name="itemConsumeCount" val="#itemConsumeCount" />
 		<set name="magicLvl" val="#magicLvl" />
@@ -404,8 +403,9 @@
 		<set name="skillRadius" val="200" />
 		<set name="skillType" val="MDAM" />
 		<set name="target" val="TARGET_AURA" />
+		<set name="effectPower" val="100" />
 		<for>
-			<effect count="1" name="RemoveTarget" time="1" val="0" />
+			<effect count="1" name="RemoveTarget" time="1" val="0" effectType="DEBUFF" />
 		</for>
 	</skill>
 	<skill id="1418" levels="1" name="Celestial Shield">

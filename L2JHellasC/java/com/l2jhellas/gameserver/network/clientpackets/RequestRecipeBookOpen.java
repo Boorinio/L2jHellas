@@ -1,14 +1,12 @@
 package com.l2jhellas.gameserver.network.clientpackets;
 
-import java.util.logging.Logger;
-
-import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.controllers.RecipeController;
-import com.l2jhellas.gameserver.emum.player.StoreType;
+import com.l2jhellas.gameserver.enums.player.StoreType;
+import com.l2jhellas.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jhellas.gameserver.network.SystemMessageId;
 
 public final class RequestRecipeBookOpen extends L2GameClientPacket
 {
-	private static Logger _log = Logger.getLogger(RequestRecipeBookOpen.class.getName());
 	private static final String _C__AC_REQUESTRECIPEBOOKOPEN = "[C] AC RequestRecipeBookOpen";
 	
 	private boolean _isDwarvenCraft;
@@ -17,25 +15,29 @@ public final class RequestRecipeBookOpen extends L2GameClientPacket
 	protected void readImpl()
 	{
 		_isDwarvenCraft = (readD() == 0);
-		if (Config.DEBUG)
-		{
-			_log.info("RequestRecipeBookOpen : " + (_isDwarvenCraft ? "dwarvenCraft" : "commonCraft"));
-		}
 	}
 	
 	@Override
 	protected void runImpl()
 	{
-		if (getClient().getActiveChar() == null)
+		final L2PcInstance activeChar = getClient().getActiveChar();
+
+		if (activeChar == null)
 			return;
 		
-		if (getClient().getActiveChar().getPrivateStoreType() != StoreType.NONE)
+		if (activeChar.getActiveTradeList()!= null || activeChar.getPrivateStoreType() != StoreType.NONE)
 		{
-			getClient().getActiveChar().sendMessage("Cannot use recipe book while trading");
+			activeChar.sendMessage("Cannot use recipe book while trading");
 			return;
 		}
 		
-		RecipeController.getInstance().requestBookOpen(getClient().getActiveChar(), _isDwarvenCraft);
+		if (activeChar.isCastingNow() || activeChar.isAllSkillsDisabled())
+		{
+			activeChar.sendPacket(SystemMessageId.NO_RECIPE_BOOK_WHILE_CASTING);
+			return;
+		}
+		
+		RecipeController.getInstance().requestBookOpen(activeChar, _isDwarvenCraft);
 	}
 	
 	@Override

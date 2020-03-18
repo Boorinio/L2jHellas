@@ -30,7 +30,7 @@ public abstract class L2GameServerPacket extends SendablePacket<L2GameClient>
 	{
 		
 	}
-	
+
 	protected abstract void writeImpl();
 	
 	public String getType()

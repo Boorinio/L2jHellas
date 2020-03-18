@@ -3,8 +3,8 @@ package com.l2jhellas.gameserver.handlers.admincommandhandlers;
 import java.util.StringTokenizer;
 
 import com.l2jhellas.Config;
-import com.l2jhellas.gameserver.emum.Team;
-import com.l2jhellas.gameserver.emum.skills.AbnormalEffect;
+import com.l2jhellas.gameserver.enums.Team;
+import com.l2jhellas.gameserver.enums.skills.AbnormalEffect;
 import com.l2jhellas.gameserver.handler.IAdminCommandHandler;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -244,8 +244,7 @@ public class AdminEffects implements IAdminCommandHandler
 			{
 				L2World.getInstance().forEachVisibleObject(activeChar, L2PcInstance.class, player ->
 				{
-					// TODO check for zodiac or another event?
-					if (player != null)
+					if (player != null && !player.isInFunEvent())
 					{
 						player.setTeam(Team.NONE);
 						player.broadcastUserInfo();

@@ -6,16 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.l2jhellas.Config;
 import com.l2jhellas.gameserver.datatables.sql.ItemTable;
 import com.l2jhellas.gameserver.datatables.xml.ArmorSetsData;
-import com.l2jhellas.gameserver.emum.items.ItemLocation;
-import com.l2jhellas.gameserver.emum.items.L2EtcItemType;
-import com.l2jhellas.gameserver.emum.items.L2WeaponType;
-import com.l2jhellas.gameserver.emum.player.StoreType;
+import com.l2jhellas.gameserver.enums.items.ItemLocation;
+import com.l2jhellas.gameserver.enums.items.L2EtcItemType;
+import com.l2jhellas.gameserver.enums.items.L2WeaponType;
+import com.l2jhellas.gameserver.enums.player.StoreType;
 import com.l2jhellas.gameserver.model.L2ArmorSet;
 import com.l2jhellas.gameserver.model.L2Object;
 import com.l2jhellas.gameserver.model.L2Skill;
@@ -472,10 +473,8 @@ public abstract class Inventory extends ItemContainer
 	{
 		synchronized (item)
 		{
-			if (!_items.contains(item))
-			{
+			if (!_items.containsKey(item.getObjectId()))
 				return null;
-			}
 			
 			removeItem(item);
 			item.setOwnerId(process, 0, actor, reference);
@@ -521,7 +520,7 @@ public abstract class Inventory extends ItemContainer
 	}
 	
 	@Override
-	protected void removeItem(L2ItemInstance item)
+	protected boolean removeItem(L2ItemInstance item)
 	{
 		// Unequip item if equiped
 		// if (item.isEquipped()) unEquipItemInSlotAndRecord(item.getEquipSlot());
@@ -529,7 +528,7 @@ public abstract class Inventory extends ItemContainer
 			if (_paperdoll[i] == item)
 				unEquipItemInSlot(i);
 		
-		super.removeItem(item);
+		return super.removeItem(item);
 	}
 	
 	public L2ItemInstance getPaperdollItem(int slot)
@@ -982,23 +981,15 @@ public abstract class Inventory extends ItemContainer
 			case L2Item.SLOT_L_EAR | L2Item.SLOT_R_EAR:
 			{
 				if (_paperdoll[PAPERDOLL_LEAR] == null)
-				{
 					setPaperdollItem(PAPERDOLL_LEAR, item);
-				}
 				else if (_paperdoll[PAPERDOLL_REAR] == null)
-				{
 					setPaperdollItem(PAPERDOLL_REAR, item);
-				}
 				else
 				{
 					if (_paperdoll[PAPERDOLL_REAR].getItemId() == item.getItemId())
-					{
 						setPaperdollItem(PAPERDOLL_LEAR, item);
-					}
 					else if (_paperdoll[PAPERDOLL_LEAR].getItemId() == item.getItemId())
-					{
 						setPaperdollItem(PAPERDOLL_REAR, item);
-					}
 					else
 						setPaperdollItem(PAPERDOLL_LEAR, item);
 				}
@@ -1115,16 +1106,14 @@ public abstract class Inventory extends ItemContainer
 	@Override
 	protected void refreshWeight()
 	{
-		int weight = 0;
-		
-		if (!Config.DISABLE_WEIGHT_PENALTY)
-			for (L2ItemInstance item : _items)
-			{
-				if (item != null && item.getItem() != null)
-					weight += item.getItem().getWeight() * item.getCount();
-			}
-		
-		_totalWeight = weight;
+		try
+		{
+			_totalWeight = !Config.DISABLE_WEIGHT_PENALTY ? Math.toIntExact(_items.values().stream().filter(Objects::nonNull).mapToLong(L2ItemInstance::getTotalWeight).reduce(Math::addExact).orElse(0L)) : 0;
+		}
+		catch (ArithmeticException ae)
+		{
+			_totalWeight = Integer.MAX_VALUE;
+		}
 	}
 	
 	public int getTotalWeight()
