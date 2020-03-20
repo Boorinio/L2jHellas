@@ -187,7 +187,7 @@ public class GrandBossManager
 	
 	public int getBossStatus(int bossId)
 	{
-		return _bossStatus.get(bossId);
+		return _bossStatus != null && _bossStatus.containsKey(bossId)  ? _bossStatus.get(bossId) : -1;
 	}
 	
 	public static void setBossStatus(int bossId, int status)

@@ -14,7 +14,8 @@ public final class ProtocolVersion extends L2GameClientPacket
 	@Override
 	protected void readImpl()
 	{
-		_version = readD();
+		if (readD() > 0 && readD() <= 747)
+			_version = readD();
 	}
 	
 	@Override
@@ -27,8 +28,7 @@ public final class ProtocolVersion extends L2GameClientPacket
 			case 744:
 			case 746:
 				getClient().sendPacket(new KeyPacket(getClient().enableCrypt()));
-				break;
-			
+				break;			
 			default:
 				getClient().closeNow();
 				break;

@@ -1664,7 +1664,7 @@ public class L2PcInstance extends L2Playable
 		{
 			if (item != null && item.isEquipped())
 			{
-				int crystaltype = item.getItem().getCrystalType();
+				int crystaltype = item.getItem().getCrystalType().getId();
 				
 				if (crystaltype > newPenalty)
 					newPenalty = crystaltype;
@@ -11869,7 +11869,6 @@ public class L2PcInstance extends L2Playable
 	{
 		setActiveEnchantItem(null);
 		sendPacket(EnchantResult.CANCELLED);
-		sendPacket(SystemMessageId.ENCHANT_SCROLL_CANCELLED);
 	}
 	
 	public boolean canEnchant()

@@ -262,7 +262,7 @@ public class Siege
 						if (player != null && player.isNoble())
 							Hero.getInstance().setCastleTaken(player.getObjectId(), getCastle().getCastleId());
 					}
-				}
+				}			
 		}
 	}
 	
@@ -414,7 +414,7 @@ public class Siege
 			_defenderRespawnDelayPenalty = 0; // Reset respawn delay
 			
 			getCastle().getZone().updateZoneStatusForCharactersInside();
-
+			
 			// Schedule a task to prepare auto siege end
 			_siegeEndDate = Calendar.getInstance();
 			_siegeEndDate.add(Calendar.MINUTE, SiegeManager.getInstance().getSiegeLength());
@@ -573,15 +573,15 @@ public class Siege
 				e.printStackTrace();
 		}
 	}
-	
+
 	public List<L2PcInstance> getAttackersInZone()
 	{
-		return getAttackerClans().stream()
+		return getAttackerClans().stream().filter(cl -> cl.getType().equals(SiegeClanType.ATTACKER))
 		.map(siegeclan -> ClanTable.getInstance().getClan(siegeclan.getClanId()))
 		.filter(Objects::nonNull)
 		.flatMap(clan -> clan.getOnlineMembers(0).stream())
 		.filter(L2PcInstance::isInSiege)
-		.collect(Collectors.toList());
+		.collect(Collectors.toList());		
 	}
 
 	public List<L2PcInstance> getPlayersInZone()
@@ -746,7 +746,7 @@ public class Siege
 		
 		for (L2Character player : players)
 		{
-			if (player.getActingPlayer().isGM() || player.getActingPlayer().isInJail())
+			if (player == null || player.getActingPlayer().isGM() || player.getActingPlayer().isInJail())
 				continue;
 			player.teleToLocation(teleportWhere);
 		}

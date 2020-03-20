@@ -165,15 +165,11 @@ public class Zaken extends AbstractNpcAI
 		StatsSet info = GrandBossManager.getStatsSet(ZAKEN);
 		if (GrandBossManager.getInstance().getBossStatus(ZAKEN) == DEAD)
 		{
-			// load the unlock date and time for zaken from DB
 			long temp = info.getLong("respawn_time") - System.currentTimeMillis();
-			// if zaken is locked until a certain time, mark it so and start the unlock timer
-			// the unlock time has not yet expired.
 			if (temp > 0)
 				startQuestTimer("zaken_unlock", temp, null, null, false);
 			else
 			{
-				// the time has already expired while the server was offline. Immediately spawn zaken.
 				L2GrandBossInstance zaken = (L2GrandBossInstance) addSpawn(ZAKEN, 55312, 219168, -3223, 0, false, 0, false);
 				GrandBossManager.setBossStatus(ZAKEN, ALIVE);
 				spawnBoss(zaken);

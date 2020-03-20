@@ -468,14 +468,12 @@ public class L2Clan
 	
 	public List<L2PcInstance> getOnlineMembers(int exclude)
 	{
-		//@formatter:off
 		return _members.values().stream()
 			.filter(member -> member.getObjectId() != exclude)
 			.filter(L2ClanMember::isOnline)
 			.map(L2ClanMember::getPlayerInstance)
 			.filter(Objects::nonNull)
-			.collect(Collectors.toList());
-		//@formatter:on
+			.collect(Collectors.toList());		
 	}
 	
 	public Integer[] getOfflineMembersIds()

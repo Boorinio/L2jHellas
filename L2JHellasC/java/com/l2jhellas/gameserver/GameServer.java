@@ -327,6 +327,9 @@ public class GameServer
 		}
 		
 		_selectorThread.start();
+		
+		RunOptimizer();
+		
 		Util.printRuntimeInfo();
 		_log.info(GameServer.class.getSimpleName() + ": Maximum Users On: " + Config.MAXIMUM_ONLINE_USERS);
 		long serverLoadEnd = System.currentTimeMillis();
@@ -335,7 +338,7 @@ public class GameServer
 		Toolkit.getDefaultToolkit().beep();
 		_loginThread = LoginServerThread.getInstance();
 		_loginThread.start();
-		RunOptimizer();
+		
 		_log.info(optimizer);		
 	}
 	
