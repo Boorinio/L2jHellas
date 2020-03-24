@@ -451,8 +451,6 @@ public class Castle
 			}
 			else if (door.getOpen())
 				door.closeMe();
-			
-			door.broadcastStatusUpdate();
 		}
 		loadDoorUpgrade(); // Check for any upgrade the doors may have
 	}

@@ -101,6 +101,8 @@ public class SiegeGuardManager
 					spawn.init();
 					if (isHired)
 						spawn.stopRespawn();
+					
+					spawn.getLastSpawn().broadcastInfo();
 				}
 			}
 		}

@@ -550,7 +550,6 @@ public class Quest
 				spawn.setLocz(z + 20);
 				spawn.stopRespawn();
 				result = spawn.doSpawn();
-				spawn.getLastSpawn().broadcastInfo();
 				
 				if (despawnDelay > 0)
 					result.scheduleDespawn(despawnDelay);

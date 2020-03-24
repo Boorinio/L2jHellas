@@ -1001,11 +1001,32 @@ public class Siege
 	
 	private void setNextSiegeDate()
 	{
-		while (getCastle().getSiegeDate().getTimeInMillis() < Calendar.getInstance().getTimeInMillis())
+		final Calendar siegeDate = _castle.getSiegeDate();
+		
+		if (siegeDate.getTimeInMillis() < System.currentTimeMillis())
+			siegeDate.setTimeInMillis(System.currentTimeMillis());
+		
+		switch (_castle.getCastleId())
 		{
-			// Set next siege date if siege has passed
-			getCastle().getSiegeDate().add(Calendar.DAY_OF_MONTH, SiegeManager._daytosiege); // Schedule to happen in 14 days
+			case 3:
+			case 4:
+			case 6:
+			case 7:
+				siegeDate.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+				break;
+				
+			default:
+				siegeDate.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+				break;
 		}
+		
+		siegeDate.add(Calendar.WEEK_OF_YEAR, 2);
+		
+		siegeDate.set(Calendar.HOUR_OF_DAY, 18);
+		siegeDate.set(Calendar.MINUTE, 0);
+		siegeDate.set(Calendar.SECOND, 0);
+		siegeDate.set(Calendar.MILLISECOND, 0);
+		
 		_isRegistrationOver = false; // Allow registration for next siege
 	}
 	
